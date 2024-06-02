@@ -53,19 +53,19 @@ FocusInterruptSoundsDB = {
 ["Keishy - Aerie Peak"] = "ROGUE",
 ["Aenshy - Goldrinn"] = "ROGUE",
 ["Skoshy - Goldrinn"] = "WARRIOR",
-["Radagashy - Goldrinn"] = "DRUID",
-["Kirashy - Nemesis"] = "SHAMAN",
-["Satishy - Goldrinn"] = "HUNTER",
+["Wishy - Nemesis"] = "DRUID",
+["Sashy - Goldrinn"] = "MONK",
+["Batezu - Nemesis"] = "WARLOCK",
 ["Trystam - Nemesis"] = "MONK",
-["Kuradis - Nemesis"] = "PALADIN",
+["Neshy - Nemesis"] = "PALADIN",
 ["Yashy - Nemesis"] = "SHAMAN",
+["Kerrishy - Goldrinn"] = "ROGUE",
 ["Satishy - Nemesis"] = "WARLOCK",
 ["Melishy - Goldrinn"] = "WARLOCK",
-["Kerrishy - Goldrinn"] = "ROGUE",
-["Neshy - Nemesis"] = "PALADIN",
-["Batezu - Nemesis"] = "WARLOCK",
-["Sashy - Goldrinn"] = "MONK",
-["Wishy - Nemesis"] = "DRUID",
+["Kuradis - Nemesis"] = "PALADIN",
+["Satishy - Goldrinn"] = "HUNTER",
+["Kirashy - Nemesis"] = "SHAMAN",
+["Radagashy - Goldrinn"] = "DRUID",
 },
 ["profiles"] = {
 ["DEATHKNIGHT"] = {
@@ -78,9 +78,9 @@ FocusInterruptSoundsDB = {
 },
 ["PRIEST"] = {
 },
-["ROGUE"] = {
+["HUNTER"] = {
 },
-["MONK"] = {
+["EVOKER"] = {
 },
 ["WARLOCK"] = {
 },
@@ -90,9 +90,9 @@ FocusInterruptSoundsDB = {
 },
 ["DRUID"] = {
 },
-["EVOKER"] = {
+["MONK"] = {
 },
-["HUNTER"] = {
+["ROGUE"] = {
 },
 },
 }
