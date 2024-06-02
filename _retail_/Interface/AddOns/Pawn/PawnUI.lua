@@ -35,6 +35,9 @@ local PawnUITotalGemLines = 0
 -- Index n is the quest advisor overlay image for the reward with index n
 local PawnQuestAdvisorOverlays = {}
 
+-- PlayerGetTimerunningSeasonID() returns nil when first executing this on a full load (not a /reload), so it gets set in PawnUI_EnsureLoaded instead.
+local StandardGemsUnavailable = nil
+
 -- Don't taint the global variable "_".
 local _
 
@@ -182,6 +185,8 @@ function PawnUI_InspectPawnButton_Attach()
 end
 
 function PawnUI_SocketingPawnButton_Attach()
+	if StandardGemsUnavailable then return end
+
 	-- Attach the socketing button.
 	VgerCore.Assert(ItemSocketingFrame ~= nil, "ItemSocketingFrame should be loaded by now!")
 	CreateFrame("Button", "PawnUI_SocketingPawnButton", ItemSocketingFrame, "PawnUI_SocketingPawnButtonTemplate")
@@ -1344,6 +1349,7 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	AddSockets("YellowSocket", YELLOW_GEM)
 	AddSockets("BlueSocket", BLUE_GEM)
 	AddSockets("MetaSocket", META_GEM)
+	AddSockets("CogwheelSocket", EMPTY_SOCKET_COGWHEEL)
 
 	local _, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true)
 	local _, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true)
@@ -1753,38 +1759,41 @@ function PawnUI_ShowBestGems()
 	local _
 
 	local GemQualityLevel = PawnGetGemQualityForItem(PawnGemQualityLevels, PawnUIGemQualityLevel)
+	if GemQualityLevel then
 
-	if not VgerCore.IsClassic and not VgerCore.IsMainline then
-		-- Burning Crusade Classic and Wrath Classic: Divide by color
-		if #(PawnScaleBestGems[PawnUICurrentScale].RedSocket[GemQualityLevel]) > 0 then
-			PawnUI_AddGemHeaderLine(format(PawnLocal.UI.GemsColorHeader, RED_GEM))
-			for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].RedSocket[GemQualityLevel]) do
-				PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+		if not VgerCore.IsClassic and not VgerCore.IsMainline then
+			-- Classic starting in Burning Crusade: Divide by color
+			if #(PawnScaleBestGems[PawnUICurrentScale].RedSocket[GemQualityLevel]) > 0 then
+				PawnUI_AddGemHeaderLine(format(PawnLocal.UI.GemsColorHeader, RED_GEM))
+				for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].RedSocket[GemQualityLevel]) do
+					PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+				end
+				ShownGems = true
 			end
-			ShownGems = true
-		end
-		if #(PawnScaleBestGems[PawnUICurrentScale].YellowSocket[GemQualityLevel]) > 0 then
-			PawnUI_AddGemHeaderLine(format(PawnLocal.UI.GemsColorHeader, YELLOW_GEM))
-			for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].YellowSocket[GemQualityLevel]) do
-				PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+			if #(PawnScaleBestGems[PawnUICurrentScale].YellowSocket[GemQualityLevel]) > 0 then
+				PawnUI_AddGemHeaderLine(format(PawnLocal.UI.GemsColorHeader, YELLOW_GEM))
+				for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].YellowSocket[GemQualityLevel]) do
+					PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+				end
+				ShownGems = true
 			end
-			ShownGems = true
-		end
-		if #(PawnScaleBestGems[PawnUICurrentScale].BlueSocket[GemQualityLevel]) > 0 then
-			PawnUI_AddGemHeaderLine(format(PawnLocal.UI.GemsColorHeader, BLUE_GEM))
-			for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].BlueSocket[GemQualityLevel]) do
-				PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+			if #(PawnScaleBestGems[PawnUICurrentScale].BlueSocket[GemQualityLevel]) > 0 then
+				PawnUI_AddGemHeaderLine(format(PawnLocal.UI.GemsColorHeader, BLUE_GEM))
+				for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].BlueSocket[GemQualityLevel]) do
+					PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+				end
+				ShownGems = true
 			end
-			ShownGems = true
-		end
-	else
-		-- Non-Classic WoW: All sockets are prismatic
-		if #(PawnScaleBestGems[PawnUICurrentScale].PrismaticSocket[GemQualityLevel]) > 0 then
-			for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].PrismaticSocket[GemQualityLevel]) do
-				PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+		else
+			-- Non-Classic WoW: All sockets are prismatic
+			if #(PawnScaleBestGems[PawnUICurrentScale].PrismaticSocket[GemQualityLevel]) > 0 then
+				for _, GemData in pairs(PawnScaleBestGems[PawnUICurrentScale].PrismaticSocket[GemQualityLevel]) do
+					PawnUI_AddGemLine(GemData.Name, GemData.Texture, GemData.ID)
+				end
+				ShownGems = true
 			end
-			ShownGems = true
 		end
+
 	end
 
 	if not ShownGems then
@@ -2101,7 +2110,11 @@ function PawnUIAboutTabPage_OnShow()
 		-- WoW Classic doesn't use the Mr. Robot scales, so hide that logo and information.
 		PawnUIFrame_MrRobotLogo:Hide()
 		PawnUIFrame_MrRobotLabel:SetPoint("TOPLEFT", 25, -210)
-		PawnUIFrame_MrRobotLabel:SetText("Special thanks to HawsJon for collecting the stat weights used in the starter scales.")
+		if VgerCore.IsCataclysm then
+			PawnUIFrame_MrRobotLabel:SetText("Default stat weights are based on the work of the WoWSims team. You can get more accurate, customized stat weights for your character by using the simulator at wowsims.github.io.")
+		else
+			PawnUIFrame_MrRobotLabel:SetText("Special thanks to HawsJon for collecting the stat weights used in the starter scales.")
+		end
 	end
 end
 
@@ -2111,7 +2124,7 @@ end
 
 function PawnUI_OnSocketUpdate()
 	if PawnSocketingTooltip then PawnSocketingTooltip:Hide() end
-	if not PawnCommon.ShowSocketingAdvisor then return end
+	if StandardGemsUnavailable then return end
 
 	-- Find out what item it is.
 	local _, ItemLink = ItemSocketingDescription:GetItem()
@@ -2132,6 +2145,7 @@ function PawnUI_OnSocketUpdate()
 		+ (ItemStats.RedSocket or 0)
 		+ (ItemStats.YellowSocket or 0)
 		+ (ItemStats.BlueSocket or 0)
+		+ (ItemStats.CogwheelSocket or 0)
 	-- We intentionally ignore meta sockets, because meta gems should be selected for their non-stat effects.
 	-- If there are no supported gems in the item, don't add our advisor tooltip to the window.
 	if SocketCount == 0 then return end
@@ -2631,6 +2645,7 @@ function PawnUISwitchToTab(Tab)
 		VgerCore.Fail("You must specify a valid Pawn tab.")
 		return
 	end
+	PawnUI_EnsureLoaded()
 
 	-- Loop through all tab frames, showing all but the current one.
 	local TabNumber
@@ -2711,10 +2726,12 @@ end
 function PawnUI_EnsureLoaded()
 	if not PawnUIOpenedYet then
 		PawnUIOpenedYet = true
+		StandardGemsUnavailable = not not (VgerCore.IsClassic or (PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()))
 		PawnUIFrame_ScaleSelector_Refresh()
 		PawnUIFrame_ShowScaleCheck_Label:SetText(format(PawnUIFrame_ShowScaleCheck_Label_Text, UnitName("player")))
-		if VgerCore.IsClassic then
+		if StandardGemsUnavailable then
 			-- WoW Classic Era doesn't have gems.
+			-- Timerunning season 1 (Mists of Pandaria Remix) didn't use standard gems, though future seasons may.
 			PawnUIFrameTab4:Hide()
 			PawnUIFrame_IgnoreGemsWhileLevelingCheck:Hide()
 			PawnUIFrame_ShowSocketingAdvisorCheck:Hide()
