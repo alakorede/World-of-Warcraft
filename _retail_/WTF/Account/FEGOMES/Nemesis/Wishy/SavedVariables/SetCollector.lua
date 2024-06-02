@@ -1,0 +1,2 @@
+
+SetCollectorCharacterDB = nil
