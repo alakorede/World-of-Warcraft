@@ -1,0 +1,23 @@
+
+APR_DB = {
+["HideVoid"] = true,
+["HideUndercut"] = false,
+["HideDragonriding"] = true,
+["HideRoll"] = true,
+["HideWorkOrder"] = true,
+["HideFollowers"] = true,
+["HideVendor"] = true,
+["HideBuyNonrefundable"] = true,
+["HideActionCam"] = true,
+["HideBuyToken"] = true,
+["HideMail"] = true,
+["HideGossip"] = true,
+["HideDelete"] = true,
+["HideBind"] = true,
+["HideEquipTrade"] = true,
+["HideInnkeeper"] = true,
+["PrintStartupMessage"] = true,
+["HideAbandonQuest"] = true,
+["HideEquip"] = false,
+["HideRefund"] = true,
+}

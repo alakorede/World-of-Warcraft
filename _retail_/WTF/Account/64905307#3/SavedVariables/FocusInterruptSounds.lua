@@ -1,0 +1,98 @@
+
+FocusInterruptSoundsDB = {
+["profileKeys"] = {
+["Shamanjuba - Nemesis"] = "SHAMAN",
+["Mitráculo - Nemesis"] = "DEMONHUNTER",
+["Chishy - Goldrinn"] = "SHAMAN",
+["Kirashy - Dentarg"] = "PALADIN",
+["Migoshy - Aerie Peak"] = "PALADIN",
+["Nostradamus - Goldrinn"] = "PRIEST",
+["Eshy - Nemesis"] = "DEATHKNIGHT",
+["Sifú - Goldrinn"] = "SHAMAN",
+["Córsega - Nemesis"] = "PALADIN",
+["Vacalactika - Nemesis"] = "DRUID",
+["Eshy - Steamwheedle Cartel"] = "WARRIOR",
+["Eshy - Goldrinn"] = "DEMONHUNTER",
+["Bankshy - Thrall"] = "MAGE",
+["Tamagoshy - Nemesis"] = "SHAMAN",
+["Batezu - Goldrinn"] = "WARLOCK",
+["Bearbull - Nemesis"] = "DRUID",
+["Molosso - Nemesis"] = "PRIEST",
+["Sharashy - Nemesis"] = "DEMONHUNTER",
+["Falkoshy - Nemesis"] = "EVOKER",
+["Sharan - Nemesis"] = "PALADIN",
+["Hanushy - Nemesis"] = "DRUID",
+["Migoshy - Goldrinn"] = "PALADIN",
+["Goroshy - Nemesis"] = "DEATHKNIGHT",
+["Elshy - Goldrinn"] = "MAGE",
+["Muruatan - Nemesis"] = "WARRIOR",
+["Muligan - Nemesis"] = "DRUID",
+["Belashy - Goldrinn"] = "HUNTER",
+["Trystam - Goldrinn"] = "WARRIOR",
+["Alexshy - Goldrinn"] = "EVOKER",
+["Aimekalo - Goldrinn"] = "WARRIOR",
+["Aleshy - Goldrinn"] = "PALADIN",
+["Muligan - Goldrinn"] = "SHAMAN",
+["Dishy - Goldrinn"] = "DRUID",
+["Apinéia - Nemesis"] = "DEATHKNIGHT",
+["Mariamolambo - Goldrinn"] = "DEMONHUNTER",
+["Trimegistos - Goldrinn"] = "PALADIN",
+["Jeshy - Goldrinn"] = "DEATHKNIGHT",
+["Natashy - Goldrinn"] = "PRIEST",
+["Artheras - Goldrinn"] = "DRUID",
+["Jeshy - Nemesis"] = "MAGE",
+["Onifade - Nemesis"] = "DRUID",
+["Akishy - Goldrinn"] = "ROGUE",
+["Turoshy - Nemesis"] = "WARRIOR",
+["Corsega - Nemesis"] = "PALADIN",
+["Arieshy - Goldrinn"] = "DEATHKNIGHT",
+["Aishy - Nemesis"] = "ROGUE",
+["Chicoxavier - Nemesis"] = "PRIEST",
+["Sharan - Goldrinn"] = "PALADIN",
+["Dishy - Nemesis"] = "PALADIN",
+["Keishy - Aerie Peak"] = "ROGUE",
+["Aenshy - Goldrinn"] = "ROGUE",
+["Skoshy - Goldrinn"] = "WARRIOR",
+["Radagashy - Goldrinn"] = "DRUID",
+["Kirashy - Nemesis"] = "SHAMAN",
+["Satishy - Goldrinn"] = "HUNTER",
+["Trystam - Nemesis"] = "MONK",
+["Kuradis - Nemesis"] = "PALADIN",
+["Yashy - Nemesis"] = "SHAMAN",
+["Satishy - Nemesis"] = "WARLOCK",
+["Melishy - Goldrinn"] = "WARLOCK",
+["Kerrishy - Goldrinn"] = "ROGUE",
+["Neshy - Nemesis"] = "PALADIN",
+["Batezu - Nemesis"] = "WARLOCK",
+["Sashy - Goldrinn"] = "MONK",
+["Wishy - Nemesis"] = "DRUID",
+},
+["profiles"] = {
+["DEATHKNIGHT"] = {
+},
+["WARRIOR"] = {
+},
+["PALADIN"] = {
+},
+["MAGE"] = {
+},
+["PRIEST"] = {
+},
+["ROGUE"] = {
+},
+["MONK"] = {
+},
+["WARLOCK"] = {
+},
+["DEMONHUNTER"] = {
+},
+["SHAMAN"] = {
+},
+["DRUID"] = {
+},
+["EVOKER"] = {
+},
+["HUNTER"] = {
+},
+},
+}

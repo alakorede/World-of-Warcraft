@@ -302,15 +302,15 @@ function mod:SunKingsSalvationMarker(_, unit, guid)
 end
 
 function mod:EssenceOverflow(args)
-	tDeleteItem(iconsInUse, args.sourceGUID)
+	self:DeleteFromTable(iconsInUse, args.sourceGUID)
 end
 
 function mod:EssenceFontDeath(args)
-	tDeleteItem(iconsInUse, args.destGUID)
+	self:DeleteFromTable(iconsInUse, args.destGUID)
 end
 
 function mod:VileOccultistDeath(args)
-	tDeleteItem(iconsInUse, args.destGUID)
+	self:DeleteFromTable(iconsInUse, args.destGUID)
 end
 
 -- Shade of Kael'thas
@@ -537,7 +537,7 @@ do
 	end
 
 	function mod:GreaterCastigationRemoved(args)
-		tDeleteItem(proxList, args.destName)
+		self:DeleteFromTable(proxList, args.destName)
 		if self:Me(args.destGUID) then
 			isOnMe = nil
 			self:CloseProximity(args.spellId)

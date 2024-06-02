@@ -1,6 +1,6 @@
-## Interface: 11501
+## Interface: 11502
 ## Title: Annoying Popup Remover
-## Version: v20.1.0-release
+## Version: v20.1.3-release
 ## Author: KyrosKrane Sylvanblade
 ## Notes: Removes multiple annoying confirmation popups throughout the game.
 ## IconTexture: Interface\AddOns\AnnoyingPopupRemover\Media\thumbup.blp

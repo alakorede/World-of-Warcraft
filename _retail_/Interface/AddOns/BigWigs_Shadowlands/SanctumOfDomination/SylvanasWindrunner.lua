@@ -369,7 +369,7 @@ end
 function mod:DarkCommunion(args)
 	local unit = self:GetUnitIdByGUID(args.sourceGUID)
 	if unit then
-		if IsItemInRange(116139, unit) then -- 50yd
+		if self:UnitWithinRange(unit, 60) then
 			self:Message(args.spellId, "orange", CL.orbs)
 			self:PlaySound(args.spellId, "long")
 			self:CDBar(args.spellId, 16.5, CL.orbs)
@@ -380,7 +380,7 @@ end
 function mod:Filth(args)
 	local unit = self:GetUnitIdByGUID(args.sourceGUID)
 	if unit then
-		if IsItemInRange(116139, unit) then -- 50yd
+		if self:UnitWithinRange(unit, 60) then
 			self:Message(351591, "purple", CL.casting:format(args.spellName))
 			self:PlaySound(351591, "alarm")
 			self:CDBar(351591, 13.5)
@@ -401,7 +401,7 @@ do
 		playerList = {}
 		local unit = self:GetUnitIdByGUID(args.sourceGUID)
 		if unit then
-			if IsItemInRange(116139, unit) then -- 50yd
+			if self:UnitWithinRange(unit, 60) then
 				self:Message(args.spellId, "orange", CL.casting:format(args.spellName))
 				self:CDBar(args.spellId, 16)
 			end
@@ -1011,7 +1011,7 @@ function mod:SummonDecrepitOrbs(args)
 	if self:Mythic() then
 		local unit = self:GetUnitIdByGUID(args.sourceGUID)
 		if unit then
-			if IsItemInRange(116139, unit) then -- 50yd
+			if self:UnitWithinRange(unit, 60) then
 				self:Message(args.spellId, "orange", CL.orbs)
 				self:PlaySound(args.spellId, "long")
 				self:Bar(args.spellId, 16, CL.orbs)
@@ -1035,7 +1035,7 @@ function mod:FuryApplied(args)
 	if self:Mythic() then
 		local unit = self:GetUnitIdByGUID(args.sourceGUID)
 		if unit then
-			if IsItemInRange(116139, unit) then -- 50yd
+			if self:UnitWithinRange(unit, 60) then
 				local amount = args.amount or 1
 				if amount % 3 == 0 or amount > 10 then
 					self:StackMessage(args.spellId, "purple", args.destName, args.amount, 0)

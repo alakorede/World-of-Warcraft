@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2015-2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.1.0-release
+-- Addon version: v20.1.3-release
 
 
 -- This file initializes some settings for Annoying Popup Remover.
@@ -24,7 +24,7 @@ APR.StoredDialogs = {}
 APR.Modules = {}
 
 -- Set the current version so we can display it.
-APR.Version = "v20.1.0-release"
+APR.Version = "v20.1.3-release"
 
 --[=[@alpha@
 -- Enable debug mode for test only
@@ -52,7 +52,7 @@ APR.HIDE_STARTUP = false
 --#########################################
 
 -- Determine whether we're running Classic or normal. Wrath Classic and Classic Era (vanilla) both count as Classic.
-APR.IsClassic = select(4, GetBuildInfo()) < 40000
+APR.IsClassic = select(4, GetBuildInfo()) < 50000
 
 -- Annoyingly, some functions on Classic Era still use old code. So, track that separately.
 APR.IsClassicEra = select(4, GetBuildInfo()) < 30000

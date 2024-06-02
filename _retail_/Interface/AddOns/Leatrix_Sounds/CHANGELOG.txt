@@ -1,6 +1,13 @@
-﻿10.2.23 - 10th April 2024
+﻿10.2.26 - 8th May 2024
+- Updated for game patch 10.2.7.
+- Updated sounds to game version 10.2.7.54604 (May 7 2024) (100207).
+- Added ability to toggle the main panel by clicking the slash command logo in the interface options panel.
+
+10.2.24 - 24th April 2024
+- Updated sounds to game version 10.2.6.54358 (Apr 19 2024) (100206).
+
+10.2.23 - 10th April 2024
 - Updated sounds to game version 10.2.6.54070 (Apr 2 2024) (100206).
-- Leatrix addons for Cataclysm Classic will be available April 2024.
 
 10.2.22 - 3rd April 2024
 - Updated sounds to game version 10.2.6.53989 (Mar 27 2024) (100206).

@@ -1,11 +1,8 @@
 # BigWigs [Shadowlands]
 
-## [v10.2.1](https://github.com/BigWigsMods/BigWigs_Shadowlands/tree/v10.2.1) (2024-01-16)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs_Shadowlands/compare/v10.2.0...v10.2.1) [Previous Releases](https://github.com/BigWigsMods/BigWigs_Shadowlands/releases)
+## [v10.2.2](https://github.com/BigWigsMods/BigWigs_Shadowlands/tree/v10.2.2) (2024-05-08)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs_Shadowlands/compare/v10.2.1...v10.2.2) [Previous Releases](https://github.com/BigWigsMods/BigWigs_Shadowlands/releases)
 
-- SepulcherOfTheFirstOnes/ArtificerXymox: Use GetIconTexture  
+- Cleanups  
 - bump toc  
-- Update workflow  
-- Cleanups  
-- Cleanups  
-- CastleNathria/Xymox: Locale cleanup  
+- Update zhCN (#1)  

@@ -25,6 +25,7 @@ local expansionID = 7;
 local db = {
 --Legion Timwalking
 {"Suramar","Timewalking (Legion)",nil,70900,{{3,71154},{8,146747},{14,146748},{12,146733},{12,146734},{12,146732},{13,146750}}},
+{"Eredath","Seeing Red",nil,70900,{{5,189983},{13,190112},{8,189982},{8,189978},{3,189977},{14,189984},{1,193036},{15,193035},}},
 };
 
 function AddToCollection()

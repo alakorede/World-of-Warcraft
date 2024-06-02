@@ -163,7 +163,7 @@ local function RepeatingChatMessages()
 	elseif miasmaOnMe and mod:GetOption("custom_on_repeating_yell_miasma") then -- Repeat Health instead
 		local currentHealthPercent = math.floor(mod:GetHealth("player"))
 		if currentHealthPercent < 75 then -- Only let players know when you are below 75%
-			local myIcon = GetRaidTargetIndex("player")
+			local myIcon = mod:GetIcon("player")
 			local msg = myIcon and ("{rt%d}%d%%"):format(myIcon, currentHealthPercent) or ("%d%%"):format(currentHealthPercent)
 			mod:Yell(false, msg, true)
 		end

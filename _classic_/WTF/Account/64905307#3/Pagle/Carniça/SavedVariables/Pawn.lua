@@ -1,6 +1,8 @@
 
 PawnOptions = {
 	["LastVersion"] = 2.0905,
+	["LastPlayerFullName"] = "Carniça-Pagle",
+	["AutoSelectScales"] = false,
 	["ItemLevels"] = {
 		{
 			["ID"] = 38661,
@@ -93,8 +95,6 @@ PawnOptions = {
 			["Link"] = "|cff0070dd|Hitem:39208::::::::58:::::::::|h[Sigil of the Dark Rider]|h|r",
 		}, -- [18]
 	},
-	["AutoSelectScales"] = false,
-	["LastPlayerFullName"] = "Carniça-Pagle",
 }
 PawnMrRobotScaleProviderOptions = nil
 PawnClassicScaleProviderOptions = {

@@ -1,5 +1,7 @@
 local app = select(2,...);
 
+local LDD = LibStub('LibDropDown');
+
 --Name, (2,3,4,5)texleft, texright, textop, texbottom, (6)catID (for C_TransmogCollection.GetCategoryInfo), (7,8,9)default rotation, roll, pitch for weapon only, (10)default rotation for player,
 --      (11,12)camSqDist Max(default),Min(nearer), (13,14) camDist Max,Min, (15,16) default pan y,z, (17, filled in during init) true/false if char can use weapontype
 local weaponType = {
@@ -793,14 +795,17 @@ end
 --Variants Drop Down
 local function OpenVariantSetsDropDown(frame, level, menuList)
   if not WeaponSetsCollectionFrame:IsShown() then return; end
+  local dropdown = WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown;
+  dropdown:ClearLines();
   
-	local info = UIDropDownMenu_CreateInfo();
 	local variantSets = VariantSets[AllSets[WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet].label];
   local comp = function(a,b) if a.setID > b.setID then return true; else return false; end end
   table.sort(variantSets, comp);
-  local listFrame = _G["DropDownList1"];
-  local listFrameName = listFrame:GetName();
+  
 	for i = 1, #variantSets do
+    local info = {}
+    info.isRadio = true;
+    
 		local numSourcesCollected, numSourcesTotal, allUsableCollected = GetSetSourceCounts(variantSets[i].setID);
 		local colorCode = colors.YELLOW_FONT_COLOR:GenerateHexColorMarkup();
 		if ( numSourcesCollected == numSourcesTotal ) then
@@ -812,7 +817,7 @@ local function OpenVariantSetsDropDown(frame, level, menuList)
 		end
     local setName = variantSets[i].difficulty;
     if not setName then setName = variantSets[i].name; end
-		info.text = setName.."      ";
+		info.text = setName.."           ";
 		info.checked = (variantSets[i].setID == WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet);
 		info.func = function()
         --get which variant of a weapon type is the current, if stay on weapon type is active
@@ -828,190 +833,174 @@ local function OpenVariantSetsDropDown(frame, level, menuList)
           WeaponSetsCollectionFrame.SelectWeapon();
         end
       end;
-		UIDropDownMenu_AddButton(info);
+    dropdown:AddLine(info);
     
-    local button = _G[listFrameName.."Button"..listFrame.numButtons];
-    if not button.RightText then
-      button.RightText = button:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-      button.RightText:SetPoint("RIGHT",button,"RIGHT",0,0);
+    if dropdown.lines[i].rightText == nil then
+      dropdown.lines[i].rightText = dropdown.lines[i]:CreateFontString('$parentRightText', 'ARTWORK', 'GameFontHighlightSmallLeft')
+      dropdown.lines[i].rightText:SetPoint('RIGHT')
     end
-    button.RightText:Show();
-    button.RightText:SetText(colorCode.."("..numSourcesCollected.."/"..numSourcesTotal..")");
+    
+    dropdown.lines[i].rightText:SetText(colorCode.."("..numSourcesCollected.."/"..numSourcesTotal..")")
 	end
 end
 
 --Filters Drop Down
 local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
-	local info = UIDropDownMenu_CreateInfo();
-  info.isNotRadio = true;
+	local info = {}
+  local dropdown = WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu
+
+  info.keepShown = true;
+  info.text = COLLECTED;
+  info.func = function(self)
+          local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED)
+          C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED, state);
+          --Call function to redo the weapon sets list
+          FillWeaponSetMaps(true);
+          self:SetCheckedState(state);
+        end
+  info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED) end;
+  dropdown:AddLine(info);
+
+  info.text = NOT_COLLECTED;
+  info.func = function(self)
+          local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED)
+          C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED, state);
+          --Call function to redo the weapon sets list
+          FillWeaponSetMaps(true);
+          self:SetCheckedState(state);
+        end
+  info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED) end;
+  dropdown:AddLine(info);
   
-  if level == 1 then
-    info.keepShownOnClick = true;
-    info.text = COLLECTED;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED, value);
-            --Call function to redo the weapon sets list
-            FillWeaponSetMaps(true);
-          end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED);
-    UIDropDownMenu_AddButton(info, level);
+  dropdown:AddLine({isSpacer = true;});
+
+  info.text = TRANSMOG_SET_PVE;
+  info.func = function(self)
+          local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE)
+          C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE, state);
+          --Call function to redo the weapon sets list
+          FillWeaponSetMaps(true);
+          self:SetCheckedState(state);
+        end
+  info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE) end;
+  dropdown:AddLine(info);
+
+  info.text = TRANSMOG_SET_PVP;
+  info.func = function(self)
+          local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP)
+          C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP, state);
+          --Call function to redo the weapon sets list
+          FillWeaponSetMaps(true);
+          self:SetCheckedState(state);
+        end
+  info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP) end;
+  dropdown:AddLine(info);
   
-    info.text = NOT_COLLECTED;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED, value);
-            --Call function to redo the weapon sets list
-            FillWeaponSetMaps(true);
+  --Show/Hide other faction sets
+  info.text = factionNames.opposingFaction;
+  info.func = function(self)
+          if (ExS_Settings.displayOtherFaction == true) then
+            ExS_Settings.displayOtherFaction = false;
+          else
+            ExS_Settings.displayOtherFaction = true;
           end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED);
-    UIDropDownMenu_AddButton(info, level);
+          --Call function to redo the weapon sets list
+          FillWeaponSetMaps(true);
+          self:SetCheckedState(ExS_Settings.displayOtherFaction);
+        end
+  info.checked = function() return ExS_Settings.displayOtherFaction end;
+  dropdown:AddLine(info);
   
-    UIDropDownMenu_AddSeparator(level);
+  --Show/Hide no longer obtainable sets
+  info.text = "Hide No Longer Obtainable Sets";
+  info.func = function(self)
+          if (ExS_Settings.hideNoLongerObtainable == true) then
+            ExS_Settings.hideNoLongerObtainable = false;
+          else
+            ExS_Settings.hideNoLongerObtainable = true;
+          end
+          --Call function to redo the weapon sets list
+          FillWeaponSetMaps(true);
+          self:SetCheckedState(ExS_Settings.hideNoLongerObtainable);
+        end
+  info.checked = function() return ExS_Settings.hideNoLongerObtainable end;
+  dropdown:AddLine(info);
   
-    info.text = TRANSMOG_SET_PVE;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE, value);
-            --Call function to redo the weapon sets list
-            FillWeaponSetMaps(true);
-          end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE);
-    UIDropDownMenu_AddButton(info, level);
+  dropdown:AddLine({isSpacer = true;});
   
-    info.text = TRANSMOG_SET_PVP;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP, value);
-            --Call function to redo the weapon sets list
-            FillWeaponSetMaps(true);
+  ----
+  --  Settings
+  ----  
+  
+  --Show/Hide no longer obtainable sets
+  info.text = "Show Hidden Sets";
+  info.func = function(self)
+          ShowHideSetsToggle();
+          self:SetCheckedState(ExS_Settings.showHiddenSets);
+        end
+  info.checked = function() return ExS_Settings.showHiddenSets end;
+  dropdown:AddLine(info);
+  
+  --Show/Hide no longer obtainable sets
+  info.text = "Disable Hide Set Button";
+  info.func = function(self)
+          ExS_Settings.disableHideSetButton = not ExS_Settings.disableHideSetButton;
+          WeaponSetsCollectionFrame.RightFrame.HiddenSetButton.backgroundTexture:SetDesaturated(ExS_Settings.disableHideSetButton);
+          self:SetCheckedState(ExS_Settings.disableHideSetButton);
+        end
+  info.checked = function() return ExS_Settings.disableHideSetButton end;
+  dropdown:AddLine(info);
+  
+  --Enable/Disable keeping on the same weapon type across sets
+  info.text = "Stay on Weapon Type when changing sets";
+  info.func = function(self)
+          if (ExS_Settings.stayOnWeaponType == true) then
+            ExS_Settings.stayOnWeaponType = false;
+          else
+            ExS_Settings.stayOnWeaponType = true;
           end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP);
-    UIDropDownMenu_AddButton(info, level);
-    
-    --Show/Hide other faction sets
-    info.text = factionNames.opposingFaction;
-    info.func = function(_, _, _, value)
-            if (ExS_Settings.displayOtherFaction == true) then
-              ExS_Settings.displayOtherFaction = false;
-            else
-              ExS_Settings.displayOtherFaction = true;
-            end
-            --Call function to redo the weapon sets list
-            FillWeaponSetMaps(true);
+          self:SetCheckedState(ExS_Settings.stayOnWeaponType);
+        end
+  info.checked = function() return ExS_Settings.stayOnWeaponType end;
+  dropdown:AddLine(info);
+  
+  --ProgressBar at top stays as all sets data or changes based on filter settings
+  info.text = "Update Progress Bar based on Filter Settings";
+  info.func = function(self)
+          if (ExS_Settings.progressBarByFilter == true) then
+            ExS_Settings.progressBarByFilter = false;
+          else
+            ExS_Settings.progressBarByFilter = true;
           end
-    info.checked = ExS_Settings.displayOtherFaction;
-    UIDropDownMenu_AddButton(info, level);
-    
-    UIDropDownMenu_AddSeparator(level);
-    
-    ----
-    --  Settings
-    ----
-    
-    --I don't think i need char collection icons for weapons. Can just throw up X's if the char doesn't have proficiency for them.
-    ----Show/Hide CharCollectionIcons
-    --info.text = "Show Character Collection Icons";
-    --info.tooltipText = "Shows a Red X above items that are not collected and cannot be collected by the current character's class. Shows a Red O above items that are collected but cannot be used by the current character's class. Shows an Orange O above items that have a class-specific version collected that cannot be transmogged by the current character's class, but has a non-class-specific version that can be collected.";
-    --info.tooltipOnButton = true;
-    --info.func = function(_, _, _, value)
-    --        if (ExS_Settings.showCharCollectionIcons == true) then
-    --          ExS_Settings.showCharCollectionIcons = false;
-    --        else
-    --          ExS_Settings.showCharCollectionIcons = true;
-    --        end
-    --        
-    --        for itemFrame in WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.itemFramesPool:EnumerateActive() do
-    --          SetsFrame.HandleItemFrames(itemFrame, false);
-    --        end
-    --      end
-    --info.checked = ExS_Settings.showCharCollectionIcons;
-    --UIDropDownMenu_AddButton(info, level);
-    --
-    --info.tooltipText = "";
-    --info.tooltipOnButton = false;
-    
-    info.keepShownOnClick = false;
-    
-    --Show/Hide no longer obtainable sets
-    info.text = "Hide No Longer Obtainable Sets";
-    info.func = function(_, _, _, value)
-            if (ExS_Settings.hideNoLongerObtainable == true) then
-              ExS_Settings.hideNoLongerObtainable = false;
-            else
-              ExS_Settings.hideNoLongerObtainable = true;
-            end
-            --Call function to redo the weapon sets list
-            FillWeaponSetMaps(true);
-          end
-    info.checked = ExS_Settings.hideNoLongerObtainable;
-    UIDropDownMenu_AddButton(info, level);
-    
-    --Show/Hide no longer obtainable sets
-    info.text = "Show Hidden Sets";
-    info.func = ShowHideSetsToggle();
-    info.checked = ExS_Settings.showHiddenSets;
-    UIDropDownMenu_AddButton(info, level);
-    
-    --Show/Hide no longer obtainable sets
-    info.text = "Disable Hide Set Button";
-    info.func = function(_, _, _, value)
-            ExS_Settings.disableHideSetButton = not ExS_Settings.disableHideSetButton;
-            WeaponSetsCollectionFrame.RightFrame.HiddenSetButton.backgroundTexture:SetDesaturated(ExS_Settings.disableHideSetButton);
-          end
-    info.checked = ExS_Settings.disableHideSetButton;
-    UIDropDownMenu_AddButton(info, level);
-    
-    --Enable/Disable keeping on the same weapon type across sets
-    info.text = "Stay on Weapon Type when changing sets";
-    info.func = function(_, _, _, value)
-            if (ExS_Settings.stayOnWeaponType == true) then
-              ExS_Settings.stayOnWeaponType = false;
-            else
-              ExS_Settings.stayOnWeaponType = true;
-            end
-          end
-    info.checked = ExS_Settings.stayOnWeaponType;
-    UIDropDownMenu_AddButton(info, level);
-    
-    --ProgressBar at top stays as all sets data or changes based on filter settings
-    info.text = "Update Progress Bar based on Filter Settings";
-    info.func = function(_, _, _, value)
-            if (ExS_Settings.progressBarByFilter == true) then
-              ExS_Settings.progressBarByFilter = false;
-            else
-              ExS_Settings.progressBarByFilter = true;
-            end
-          end
-    info.checked = ExS_Settings.progressBarByFilter;
-    UIDropDownMenu_AddButton(info, level);
-    
-    UIDropDownMenu_AddSeparator(level);
-    
-    --
-    -- Expansion Select opener
-    --
-    info.text = EXPANSION_FILTER_TEXT;
-    info.notCheckable = true;
-    info.func = nil;
-    info.hasArrow = true;
-    info.menuList = "ExpansionList";
-    UIDropDownMenu_AddButton(info, level, info.menuList);
-  elseif (menuList == "ExpansionList") then
-    --
-    -- Expansion List toggles
-    --
-    info.isNotRadio = false;
-    info.keepShownOnClick = true;
-    info.menuList = nil;
-    
-    for i = 1,ExpansionCount do
-      info.text = _G["EXPANSION_NAME"..(i-1)];
-      info.func = function()
-                    ExS_Settings.weaponExpansionToggles[i] = not ExS_Settings.weaponExpansionToggles[i];
-                    --Call function to redo the weapon sets list
-                    FillWeaponSetMaps(true);
-                  end
-      info.checked = ExS_Settings.weaponExpansionToggles[i];
-      UIDropDownMenu_AddButton(info, level);
-    end
+          self:SetCheckedState(ExS_Settings.progressBarByFilter);
+        end
+  info.checked = function() return ExS_Settings.progressBarByFilter end;
+  dropdown:AddLine(info);
+  
+  dropdown:AddLine({isSpacer = true;});
+  
+  --
+  -- Expansion Select opener
+  --
+  info.text = EXPANSION_FILTER_TEXT;
+  info.func = nil;
+  info.menu = {}
+  
+  for i = 1,ExpansionCount do
+    local subInfo = {}
+    subInfo.keepShown = true;
+    subInfo.text = _G["EXPANSION_NAME"..(i-1)];
+    subInfo.func = function(self)
+                  ExS_Settings.weaponExpansionToggles[i] = not ExS_Settings.weaponExpansionToggles[i];
+                  --Call function to redo the weapon sets list
+                  FillWeaponSetMaps(true);
+                  self:SetCheckedState(ExS_Settings.weaponExpansionToggles[i]);
+                end
+    subInfo.checked = function() return ExS_Settings.weaponExpansionToggles[i] end;
+    table.insert(info.menu, subInfo);
   end
+  
+  dropdown:AddLine(info);
 end
 
 ----
@@ -1641,8 +1630,11 @@ local function MarkSetAsFavorite(setID, markAsFav)
   end
 end
 
-local function FavoriteDropDown_Init(pSelf)
+local function FavoriteDropDown_Init()
   if not AllSets then return; end
+  local dropdown = WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown;
+  dropdown:ClearLines();
+  
   local scrollFrame = WeaponSetsCollectionFrame.LeftFrame.ScrollFrame;
   local baseButtonSetID = GetBaseSetID(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.favMenuSetID);
   local baseButtonSet = GetSetByID(baseButtonSetID);
@@ -1661,9 +1653,7 @@ local function FavoriteDropDown_Init(pSelf)
   local desc = set.difficulty;
   if desc == nil then desc = set.name; end
 
-	local info = UIDropDownMenu_CreateInfo();
-	info.notCheckable = true;
-	info.disabled = nil;
+	local info = {}
 
   --Favorite button
 	if baseButtonSet.favoriteSetID then
@@ -1686,7 +1676,7 @@ local function FavoriteDropDown_Init(pSelf)
       MarkSetAsFavorite(setID, true);
 		end
 	end
-	UIDropDownMenu_AddButton(info);
+  dropdown:AddLine(info);
   
   -- Hide All Variants of Set
   local hiddenCount = 0;
@@ -1739,13 +1729,12 @@ local function FavoriteDropDown_Init(pSelf)
           end
         end
   end
-  UIDropDownMenu_AddButton(info);
+  dropdown:AddLine(info);
   
 	-- Cancel
-	info = UIDropDownMenu_CreateInfo();
-	info.notCheckable = true;
+	info = {}
 	info.text = CANCEL;
-	UIDropDownMenu_AddButton(info);
+  dropdown:AddLine(info);
 end
 
 
@@ -1757,6 +1746,13 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
   if pEvent == "PLAYER_LOGIN" then
     if not IsAddOnLoaded("Blizzard_Collections") then
       LoadAddOn("Blizzard_Collections")
+    end
+    
+    factionNames.playerFaction, _ = UnitFactionGroup('player');
+    if factionNames.playerFaction == "Alliance" then
+      factionNames.opposingFaction = "Horde";
+    else
+      factionNames.opposingFaction = "Alliance";
     end
     
     WardrobeCollectionFrame.WeaponSetsCollectionFrame = WeaponSetsCollectionFrame;
@@ -1986,14 +1982,29 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
               elseif ( button == "RightButton" ) then
                 local dropDown = self:GetParent().FavoriteDropDown;
                 WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.favMenuSetID = self.setID;
-                ToggleDropDownMenu(1, nil, dropDown, self, 0, 0);
+                --ToggleDropDownMenu(1, nil, dropDown, self, 0, 0);
+                WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:SetAnchor("TOPLEFT", self, "BOTTOMLEFT", 9, -7);
+                FavoriteDropDown_Init();
+                WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:Toggle();
                 PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
               end
         end)
     end
     WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.currTopIndex = 1;
-    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown = CreateFrame("Frame", nil, WeaponSetsCollectionFrame.LeftFrame.ScrollFrame, "UIDropDownMenuTemplate");
-    UIDropDownMenu_Initialize(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown, FavoriteDropDown_Init, "MENU");
+    --WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown = CreateFrame("Frame", nil, WeaponSetsCollectionFrame.LeftFrame.ScrollFrame, "UIDropDownMenuTemplate");
+    --UIDropDownMenu_Initialize(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown, FavoriteDropDown_Init, "MENU");
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown = LDD:NewMenu(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame, "WepSetsFavDropDown")
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown.minWidth = 240
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:SetStyle('MENU')
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:SetFrameLevel(500)
+  
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:HookScript("OnShow", function() WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:HookScript("OnHide", function() WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+          if WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:IsShown() and not WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:IsMouseOver() then
+            WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.FavoriteDropDown:Toggle();
+          end
+      end)
     
     WeaponSetsCollectionFrame.LeftFrame.SearchBox = CreateFrame("EditBox", nil, WeaponSetsCollectionFrame.LeftFrame, "SearchBoxTemplate");
     WeaponSetsCollectionFrame.LeftFrame.SearchBox:SetPoint("TOPLEFT", WeaponSetsCollectionFrame.LeftFrame, "TOPLEFT", 13, -9);
@@ -2016,15 +2027,29 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     WeaponSetsCollectionFrame.LeftFrame.FilterButton.Icon:SetTexture("Interface\\ChatFrame\\ChatFrameExpandArrow");
     WeaponSetsCollectionFrame.LeftFrame.FilterButton.Icon:SetSize(10,12);
     WeaponSetsCollectionFrame.LeftFrame.FilterButton.Icon:SetPoint("RIGHT", WeaponSetsCollectionFrame.LeftFrame.FilterButton, "RIGHT", -5, 0);
-    WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetText("Filter")
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetText(FILTER)
     WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetScript("OnMouseDown", function()
         UIMenuButtonStretchMixin.OnMouseDown(WeaponSetsCollectionFrame.LeftFrame.FilterButton);
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-        ToggleDropDownMenu(1, nil, WeaponSetsCollectionFrame.LeftFrame.WeaponSetsFilterDropDown, "WeaponSetsFilterButton", WeaponSetsCollectionFrame.LeftFrame.FilterButton:GetWidth(), WeaponSetsCollectionFrame.LeftFrame.FilterButton:GetHeight());
+        WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:Toggle();
       end)
-    WardrobeCollectionFrame.WeaponSetsCollectionFrame.OpenWeaponSetsFilterDropDown = OpenWeaponSetsFilterDropDown;
-    WeaponSetsCollectionFrame.LeftFrame.WeaponSetsFilterDropDown = CreateFrame("Frame", "WeaponSetsFilterDropDown", WeaponSetsCollectionFrame.LeftFrame.FilterButton, "UIDropDownMenuTemplate");
-    UIDropDownMenu_Initialize(WeaponSetsCollectionFrame.LeftFrame.WeaponSetsFilterDropDown, WardrobeCollectionFrame.WeaponSetsCollectionFrame.OpenWeaponSetsFilterDropDown, "MENU");
+     
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu = LDD:NewMenu(WeaponSetsCollectionFrame.LeftFrame, "WepSetsFilterDropDown")
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:SetAnchor('TOPLEFT', WeaponSetsCollectionFrame.LeftFrame.FilterButton, 'TOPRIGHT', 8, -10)
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu.minWidth = 240
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:SetStyle('MENU')
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:SetFrameLevel(8)
+  
+    --WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:HookScript("OnShow", function() WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+    --WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:HookScript("OnHide", function() WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+    --WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+    --      if WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:IsShown() and
+    --            not WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:IsMouseOver() and
+    --            not WeaponSetsCollectionFrame.LeftFrame.FilterButton:IsMouseOver() then
+    --        WeaponSetsCollectionFrame.LeftFrame.FilterButton.Menu:Toggle();
+    --      end
+    --  end)
+    OpenWeaponSetsFilterDropDown();     
     
     WeaponSetsCollectionFrame.RightFrame = CreateFrame("Frame", nil, WeaponSetsCollectionFrame, "CollectionsBackgroundTemplate");
     WeaponSetsCollectionFrame.RightFrame.BGCornerTopLeft:Hide();
@@ -2110,23 +2135,29 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton:SetScript("OnMouseDown", function(self)
               UIMenuButtonStretchMixin.OnMouseDown(WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, button);
               PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-              ToggleDropDownMenu(1, nil, WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown, "WeaponVariantSetsDropDownButton", 0, 1);
+              OpenVariantSetsDropDown();
+              WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:Toggle();
       end)
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton.Text:ClearAllPoints();
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton.Text:SetPoint("LEFT", 11, -1);
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton.Text:SetSize(75, 10);
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton.Text:SetJustifyH("LEFT");
     
-    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown = CreateFrame("Frame", "WeaponVariantSetsDropDown", WeaponSetsCollectionFrame.RightFrame, "UIDropDownMenuTemplate")
-    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown.onHide = function(self)
-                for i=1, UIDROPDOWNMENU_MAXBUTTONS do
-                  if _G["DropDownList1Button"..i].RightText then
-                    _G["DropDownList1Button"..i].RightText:Hide();
-                  end
-                end
-      end;
-    UIDropDownMenu_Initialize(WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown, WardrobeCollectionFrame.WeaponSetsCollectionFrame.OpenVariantSetsDropDown, "MENU");
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown = LDD:NewMenu(WeaponSetsCollectionFrame.RightFrame, "WepSetsVariantDropDown")
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:SetStyle('MENU')
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:SetAnchor('TOPLEFT', WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, 'BOTTOMLEFT', 10, -8)
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:SetFrameLevel(8)
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:SetCheckAlignment("LEFT")
     
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:HookScript("OnShow", function() WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:HookScript("OnHide", function() WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+          if WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:IsShown() and
+              not WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:IsMouseOver() and
+              not WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton:IsMouseOver() then
+            WeaponSetsCollectionFrame.RightFrame.VariantSetsDropDown:Toggle();
+          end
+      end)
     
     -- Favorite Set Button --
     WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton = CreateFrame("Frame", "ExS_Weapon_FavoriteSetButton", WeaponSetsCollectionFrame.RightFrame);
@@ -2540,14 +2571,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
               SelectWeapon();
             end
           end)
-      end)
-    
-    factionNames.playerFaction, _ = UnitFactionGroup('player');
-    if factionNames.playerFaction == "Alliance" then
-      factionNames.opposingFaction = "Horde";
-    else
-      factionNames.opposingFaction = "Alliance";
-    end    
+      end)  
     
     app.ExS_AH_Init_Wep();
     WardrobeCollectionFrame.SetTab = ExW_SetTab;

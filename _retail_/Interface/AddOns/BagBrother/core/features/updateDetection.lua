@@ -26,9 +26,10 @@ end
 function Detection:OnEnable()
     self.Queued = {}
     self:RegisterEvent('CHAT_MSG_ADDON', 'OnMessage')
-    self:RegisterUpdateEvent('PLAYER_ENTERING_WORLD', function() return IsInInstance() and 'INSTANCE_CHAT' end)
     self:RegisterUpdateEvent('GUILD_ROSTER_UPDATE', function() return IsInGuild() and 'GUILD' end)
-    self:RegisterUpdateEvent('GROUP_ROSTER_UPDATE', function() return IsInGroup() and 'RAID' end)
+    self:RegisterUpdateEvent('GROUP_ROSTER_UPDATE', function() return IsInGroup(LE_PARTY_CATEGORY_HOME) and 'PARTY' end)
+    self:RegisterUpdateEvent('GROUP_ROSTER_UPDATE', function() return IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and 'INSTANCE_CHAT' end)
+    self:RegisterUpdateEvent('GROUP_ROSTER_UPDATE', function() return IsInRaid(LE_PARTY_CATEGORY_HOME) and 'RAID' end)
 
     local latest = Addon.sets.latest
     if latest.id and GetServerTime() >= (latest.cooldown or 0) then
@@ -39,17 +40,17 @@ function Detection:OnEnable()
     end
 
     C_ChatInfo.RegisterAddonMessagePrefix(ADDON)
-    C_Timer.NewTicker(1, function() self:Broadcast() end)
+    C_Timer.NewTicker(60, function() self:Broadcast() end)
 end
 
 function Detection:OnMessage(_, prefix, version, channel, sender)
     if prefix == ADDON then
         local latest = Addon.sets.latest
         local ours, theirs = int(latest.id or Addon.Version), int(version)
-        if theirs < ours then
-            self.Queued[channel] = true
-        elseif theirs > ours and theirs < nextExpansion then
+        if theirs > ours and theirs < nextExpansion then
             latest.id, latest.who = version, sender
+        else
+            self.Queued[channel] = theirs < ours or nil
         end
     end
 end

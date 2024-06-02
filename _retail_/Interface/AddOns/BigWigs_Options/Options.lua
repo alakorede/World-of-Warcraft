@@ -27,8 +27,13 @@ local configFrame, isPluginOpen
 local showToggleOptions, getAdvancedToggleOption = nil, nil
 local toggleOptionsStatusTable = {}
 
-local C_EncounterJournal_GetSectionInfo = C_EncounterJournal and C_EncounterJournal.GetSectionInfo or function(key)
-	local info = BigWigsAPI:GetLocale("BigWigs: Encounter Info")[key]
+local C_EncounterJournal_GetSectionInfo = loader.isClassic and function(key)
+	local info = loader.isCata and C_EncounterJournal.GetSectionInfo(key)
+	if info then
+		-- Cataclysm only has section info for Cataclysm content, return it if found
+		return info
+	end
+	info = BigWigsAPI:GetLocale("BigWigs: Encounter Info")[key]
 	if info then
 		-- Options uses a few more fields, so copy the entry and include them
 		local tbl = {}
@@ -39,7 +44,7 @@ local C_EncounterJournal_GetSectionInfo = C_EncounterJournal and C_EncounterJour
 		tbl.link = ("|cff66bbff|Hjournal:2:%d:1|h[%s]|h|r"):format(key, tbl.title)
 		return tbl
 	end
-end
+end or C_EncounterJournal.GetSectionInfo
 
 local getOptions
 local acOptions = {
@@ -637,6 +642,18 @@ function getAdvancedToggleOption(scrollFrame, dropdown, module, bossOption)
 	end)
 	widgets[#widgets + 1] = back
 
+	-- Add a small text label to the top right displaying the spell ID or key
+	local idLabel = AceGUI:Create("Label")
+	if type(dbKey) == "number" then
+		idLabel.label:SetFormattedText(L.optionsKey, dbKey)
+	else
+		idLabel.label:SetFormattedText(L.optionsKey, "\""..dbKey.."\"")
+	end
+	idLabel:SetColor(0.65, 0.65, 0.65)
+	idLabel:SetFullWidth(true)
+	idLabel.label:SetJustifyH("RIGHT")
+	widgets[#widgets + 1] = idLabel
+
 	local check = AceGUI:Create("CheckBox")
 	check:SetLabel(alternativeName and L.alternativeName:format(name, alternativeName) or name)
 	check:SetTriState(true)
@@ -677,25 +694,6 @@ function getAdvancedToggleOption(scrollFrame, dropdown, module, bossOption)
 			widgets[#widgets + 1] = roleRestrictionCheckbox
 		end
 	end
-
-	-- Add a small text label to the top right displaying what key is tied to this ability
-	local optionKeyLabel = AceGUI:Create("Label")
-	if type(dbKey) == "number" then
-		optionKeyLabel.label:SetFormattedText(L.optionsKey, dbKey)
-	else
-		optionKeyLabel.label:SetFormattedText(L.optionsKey, "\""..dbKey.."\"")
-	end
-	optionKeyLabel:SetColor(0.65, 0.65, 0.65)
-	optionKeyLabel:SetWidth(optionKeyLabel.label:GetStringWidth())
-	optionKeyLabel:SetHeight(30)
-	optionKeyLabel.frame:SetParent(check.frame)
-	optionKeyLabel.frame:Show()
-	optionKeyLabel:SetPoint("RIGHT", check.frame, "TOPRIGHT", -5, -13)
-	-- Manually release in a callback, since optionKeyLabel isn't added to the widgets table as a child
-	check:SetUserData("optionKeyLabel", optionKeyLabel)
-	check:SetCallback("OnRelease", function(widget)
-		widget:GetUserData("optionKeyLabel"):Release()
-	end)
 
 	if hasOptionFlag(dbKey, module, "PRIVATE") then
 		local privateAuraText = AceGUI:Create("Label")
@@ -1094,6 +1092,16 @@ local function populateToggleOptions(widget, module)
 		end -- End statistics table
 	end
 
+	-- Add a small text label to the top right displaying the boss encounter ID
+	if module:GetEncounterID() then
+		local idLabel = AceGUI:Create("Label")
+		idLabel.label:SetFormattedText(L.optionsKey, module:GetEncounterID())
+		idLabel:SetColor(0.65, 0.65, 0.65)
+		idLabel:SetFullWidth(true)
+		idLabel.label:SetJustifyH("RIGHT")
+		scrollFrame:AddChild(idLabel)
+	end
+
 	if module.SetupOptions then module:SetupOptions() end
 	for i, option in next, module.toggleOptions do
 		local o = option
@@ -1204,6 +1212,27 @@ do
 			"Classic",
 			"BurningCrusade",
 			"WrathOfTheLichKing",
+		}
+	elseif loader.isCata then
+		expansionHeader = {
+			"Classic",
+			"BurningCrusade",
+			"WrathOfTheLichKing",
+			"Cataclysm",
+		}
+	elseif loader.isBeta then
+		expansionHeader = {
+			"Classic",
+			"BurningCrusade",
+			"WrathOfTheLichKing",
+			"Cataclysm",
+			"MistsOfPandaria",
+			"WarlordsOfDraenor",
+			"Legion",
+			"BattleForAzeroth",
+			"Shadowlands",
+			"Dragonflight",
+			"TheWarWithin",
 		}
 	else
 		expansionHeader = {

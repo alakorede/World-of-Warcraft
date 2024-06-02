@@ -32,8 +32,6 @@ local db = {
 };
 
 local altAppearancesDB = {
---Plunderlord's
-{3443,198627,218283}, --hatless eyepatch
 
 }
 

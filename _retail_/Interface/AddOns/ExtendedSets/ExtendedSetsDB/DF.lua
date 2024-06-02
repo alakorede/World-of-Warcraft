@@ -1,17 +1,32 @@
 local app = select(2,...);
 
 local expansionID = 9;--69434
+--end of DF 90880
 
 --Name, Description, Label, classMask, patchID, sources, requiredFact, noLongerObtainable
 ----classMask:    (35=Plate, 68=Mail, 3592=Leather, 400=Cloth)
 local db = {
+{"Swabbie's",nil,"Plunderstorm",0,100206,{198786,169021,198781,198783,96233,198776},nil,true},
+{"Storm Captain's",nil,"Plunderstorm",0,100206,{198785,195323,198782,198784,198778,198777,},nil,true},
+
 --83014 orc --78462
 {"Sabellian's","","Sabellian Cosmetic",0,100000,{183074,{183073,183080},183075,183076,183077,183078,183079,}},
 };
 
+local altLabelDB = {
+[3443]="Plunderstorm",
+}
+
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
+--Draenei Heritage Masked Helm alt
+{3346,194095,194107}, --purple
+{3347,194102,194106}, --orange
+
+--Plunderlord's
+{3443,198627,218283}, --hatless eyepatch
+
 ----
 -- amirdrassil/s3
 ----
@@ -672,6 +687,7 @@ end
 
 app.ExpandedCallbacks[expansionID] = AddToCollection;
 app.altAppearancesDB[expansionID] = altAppearancesDB;
+app.altLabelDB[expansionID] = altLabelDB;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};

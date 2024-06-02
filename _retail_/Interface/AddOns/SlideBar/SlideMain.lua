@@ -1,6 +1,6 @@
 --[[
 	Slidebar AddOn for World of Warcraft (tm)
-	Version: 9.1.BETA.5.13 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://auctioneeraddon.com/dl/
 
@@ -344,7 +344,7 @@ end
 if lib.frame then
 	frame = lib.frame
 else
-	frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate")
+	frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 	frame:SetToplevel(true)
 	--frame:SetClampedToScreen(true)
 	frame:SetFrameStrata("TOOLTIP")

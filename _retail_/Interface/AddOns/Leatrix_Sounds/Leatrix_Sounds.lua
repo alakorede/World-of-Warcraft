@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- Leatrix Sounds 10.2.23 (10th April 2024)
+	-- Leatrix Sounds 10.2.26 (8th May 2024)
 	----------------------------------------------------------------------
 
 	--  Create global table
@@ -10,7 +10,7 @@
 	local LeaSoundsLC, LeaSoundsCB = {}, {}
 
 	-- Version
-	LeaSoundsLC["AddonVer"] = "10.2.23"
+	LeaSoundsLC["AddonVer"] = "10.2.26"
 
 	-- Get locale table
 	local void, Leatrix_Sounds = ...
@@ -967,10 +967,24 @@
 		subTitle:ClearAllPoints()
 		subTitle:SetPoint("BOTTOM", 0, 72)
 
-		local slashTitle = LeaSoundsLC:MakeTx(interPanel, "/lts", 0, 0)
+		local slashButton = CreateFrame("Button", nil, interPanel)
+		slashButton:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
+		slashButton:SetScript("OnClick", function() SlashCmdList["Leatrix_Sounds"]("") end)
+
+		local slashTitle = LeaSoundsLC:MakeTx(slashButton, "/lts", 0, 0)
 		slashTitle:SetFont(slashTitle:GetFont(), 72)
 		slashTitle:ClearAllPoints()
-		slashTitle:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
+		slashTitle:SetAllPoints()
+
+		slashButton:SetSize(slashTitle:GetSize())
+		slashButton:SetScript("OnEnter", function()
+			slashTitle.r,  slashTitle.g, slashTitle.b = slashTitle:GetTextColor()
+			slashTitle:SetTextColor(1, 1, 0)
+		end)
+
+		slashButton:SetScript("OnLeave", function()
+			slashTitle:SetTextColor(slashTitle.r, slashTitle.g, slashTitle.b)
+		end)
 
 		local pTex = interPanel:CreateTexture(nil, "BACKGROUND")
 		pTex:SetAllPoints()

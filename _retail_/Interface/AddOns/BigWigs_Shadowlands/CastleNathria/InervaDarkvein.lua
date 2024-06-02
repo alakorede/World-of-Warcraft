@@ -393,7 +393,7 @@ do
 	end
 
 	function mod:ConcentratedAnimaRemoved(args)
-		tDeleteItem(proxList, args.destName)
+		self:DeleteFromTable(proxList, args.destName)
 		if self:Me(args.destGUID) then
 			isOnMe = nil
 			self:CancelSayCountdown(332664)

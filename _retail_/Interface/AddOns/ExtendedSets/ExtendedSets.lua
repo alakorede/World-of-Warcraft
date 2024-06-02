@@ -1,6 +1,7 @@
 local app = select(2, ...);
 local SetsFrame;
 
+local LDD = LibStub('LibDropDown');
 local testSources = false;
 
 local ModelFrame;
@@ -131,11 +132,11 @@ local pvpDescriptions = {
     ["Combatant"] = true,
     ["Combatant I"] = true,
 }
-local raceIDs = {
-    1,2,3,4,5,6,7,8,9,
-    10,11,22,24,27,28,29,30,
-    31,32,34,36
-}
+--local raceIDs = {
+--    1,2,3,4,5,6,7,8,9,
+--    10,11,22,24,27,28,29,30,
+--    31,32,34,36
+--}
 --local raceList = {};
 local heritageSets = {
     [1522] = 28, --Highmountain
@@ -165,7 +166,10 @@ local heritageSets = {
     [2833] = 2, -- Orc
     [2834] = 2, -- Orc
     [2835] = 2, -- Orc
-    
+    [3515] = 8, -- Troll
+    [3350] = 8, -- Troll
+    [3346] = 11, -- Draenei
+    [3347] = 11, -- Draenei
 }
 local hiddenVisuals = {
     [1] = {77344,134110},
@@ -214,6 +218,8 @@ local ExpandedID = 1000000;
 local ExpandedCallbacks = {};
 app.ExpandedCallbacks = ExpandedCallbacks;
 app.altAppearancesDB = {};
+app.altLabelDB = {};
+app.altLabelAppendDB = {};
 --local ExpandedAltAppearances = {};
 --app.ExpandedAltAppearances = ExpandedAltAppearances;
 
@@ -471,9 +477,9 @@ app.GetColoredClassNameString = GetColoredClassNameString;
 --Returns a string colored based on the required faction.
 local function GetFactionColoredString(stringToColor, faction)
   if (faction == "Horde") then
-    return "|cFF8C1616"..stringToColor.."|r";
+    return "|cFFB02626"..stringToColor.."|r"; --8C1616
   else
-    return "|cFF162C57"..stringToColor.."|r";
+    return "|cFF0E50D0"..stringToColor.."|r"; --2150AA
   end
 end
 
@@ -1377,6 +1383,8 @@ local function OnShow()
   if #BaseList == 0 then
     SetsFrame.DisplaySet();
   end
+  
+  WardrobeCollectionFrame.FilterButton:Hide();
 end
 
 local function OnHide()
@@ -1385,6 +1393,8 @@ local function OnHide()
 	WardrobeCollectionFrame.SetsCollectionFrame:UnregisterEvent("TRANSMOG_COLLECTION_UPDATED");
 	WardrobeCollectionFrame.SetsCollectionFrame:UnregisterEvent("UNIT_FORM_CHANGED");
 	WardrobeCollectionFrame:ClearSearch(Enum.TransmogSearchType.BaseSets);
+  
+  WardrobeCollectionFrame.FilterButton:Show();
 end
 
 --Callback for Updating Item Frames. Used to limit refreshing/multiple false refreshes as loading in a set
@@ -1960,7 +1970,11 @@ local function OpenVariantSetsDropDown()
 	if ( not selectedSetID ) then
 		return;
 	end
-	local info = UIDropDownMenu_CreateInfo();
+  
+  local dropdown = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown;
+  dropdown:ClearLines();
+  
+	local info = {}
 	local baseSetID = GetBaseSetID(selectedSetID);
   
   local prevClass = 0;
@@ -1971,11 +1985,16 @@ local function OpenVariantSetsDropDown()
     
     if (prevClass ~= variantSet.classMask and GetColoredClassNameString(variantSet.classMask) ~= "") then
       info.text = GetColoredClassNameString(variantSet.classMask);
-      info.notCheckable = true;
+
+      info.isRadio = false;
+      info.checked = nil;
+      info.isTitle = true;
       info.func = function() WardrobeCollectionFrame.SetsCollectionFrame.SelectSet(variantSet.setID, true); end;
-      UIDropDownMenu_AddButton(info);
+      
+      dropdown:AddLine(info);
       
       prevClass = variantSet.classMask;
+      info.isTitle = false;
     end
     
     local variantID = variantSet.setID;
@@ -2000,10 +2019,12 @@ local function OpenVariantSetsDropDown()
     end
     
 		info.text = format(ITEM_SET_NAME, desc..colorCode, numSourcesCollected, numSourcesTotal);
-    info.notCheckable = false;
+    
 		info.checked = (variantSet.setID == selectedSetID);
+    info.isRadio = true;
 		info.func = function() WardrobeCollectionFrame.SetsCollectionFrame.SelectSet(variantSet.setID, true); end;
-		UIDropDownMenu_AddButton(info);
+    
+    dropdown:AddLine(info);
 	end
 end
 
@@ -2247,6 +2268,7 @@ local function InitializeSets(armorType, force, keepLabel)
   C_TransmogCollection.ClearSearch(2);
   C_TransmogCollection.ClearSearch(3);
 	WardrobeCollectionFrame.SetsCollectionFrame:Refresh();
+  WardrobeCollectionFrame.FilterButton:Hide();
 end
 
 local function AddToVarSets(set, baseSetID)
@@ -2698,6 +2720,19 @@ local setsFlagTP = {
   [3487] = true,
   [2346] = true,
   [2340] = true,
+  [3362] = true, --dark ranger general's kit
+  [3649] = true, --deep diver
+  [3650] = true, --deep diver
+  [3651] = true, --deep diver
+  [3652] = true, --deep diver
+  [3644] = true, --swimwear
+  [3645] = true, --swimwear
+  [3646] = true, --swimwear
+  [3647] = true, --swimwear
+  [3636] = true, --swimwear (shorts)
+  [3637] = true, --swimwear (shorts)
+  [3638] = true, --swimwear (shorts)
+  [3639] = true, --swimwear (shorts)
 }
 local setsFlagShop = {
   [1903] = true,
@@ -2708,6 +2743,9 @@ local setsFlagShop = {
   [1914] = true,
   [3085] = true,
   [3355] = true,
+}
+local setsFlagNoLongerObtainable = {
+  [3443] = true,
 }
 
 local function IsFavorite(setID)
@@ -2738,12 +2776,13 @@ local function FillSetMaps()
       data.favoriteSetID = nil;
     end
     
-    --If it was an old Rated armor set, flag it as no longer obtainable.
-    if (data.description == "Elite") and not data.limitedTimeSet then
+    if setsFlagNoLongerObtainable[data.setID] then
       data.noLongerObtainable = true;
-    end
+    --If it was an old Rated armor set, flag it as no longer obtainable.
+    elseif (data.description == "Elite") and not data.limitedTimeSet then
+      data.noLongerObtainable = true;
     --Flag the Pandaria Challenge Mode Dungeons as no longer obtainable.
-    if data.label == "Pandaria Challenge Dungeons" then
+    elseif data.label == "Pandaria Challenge Dungeons" then
       data.noLongerObtainable = true;
     end
     --Check if there is an updated label.
@@ -2751,8 +2790,13 @@ local function FillSetMaps()
     if setsCustomLabels[data.setID] then
       data.label = setsCustomLabels[data.setID];
     end
+    if app.altLabelDB[data.expansionID] and app.altLabelDB[data.expansionID][data.setID] then
+      data.label = app.altLabelDB[data.expansionID][data.setID];
+    elseif app.altLabelAppendDB[data.expansionID] and app.altLabelAppendDB[data.expansionID][data.setID] then
+      data.label = data.label..app.altLabelAppendDB[data.expansionID][data.setID];
+    end
     --Added trading post flag
-    if data.description == "Trading Post" or data.label == "Trading Post" or setsFlagTP[data.setID] then
+    if data.label == "Trading Post" or setsFlagTP[data.setID] or (data.description and string.find(data.description, "Trading Post")) then
       data.tp = true;
     else
       data.tp = false;
@@ -2763,6 +2807,7 @@ local function FillSetMaps()
     else
       data.shop = false;
     end
+    if data.classMask == 16383 then data.classMask = 0 end
     
     local sources = GetSetSources(data.setID, data);
     AddSourcesToSetsMap(data.setID, sources)
@@ -3372,13 +3417,8 @@ local function MarkSetAsFavorite(setID, markAsFav)
   end
 end
 
-local function FavoriteDropDown_Init(pSelf)
-	if not SetsFrame.GetBaseSetID then
-		return;
-	end
-  if not ExS_ScrollFrame.menuInitBaseSetID then
-    return;
-  end
+local function FavoriteDropDown_Init(button)
+  _FavoriteDropDown:SetAnchor("TOPLEFT", button, "BOTTOMLEFT", 9, -7);
   
   local baseButtonSetID = SetsFrame.GetBaseSetID(ExS_ScrollFrame.menuInitBaseSetID);
   local baseButtonSet = GetSetByID(baseButtonSetID);
@@ -3391,112 +3431,120 @@ local function FavoriteDropDown_Init(pSelf)
     setID = ExS_ScrollFrame.selectedSetID;
   end
   
-	local variantSets, anyHidden = SetsFrame.GetVariantSets(baseButtonSetID, true);
-  local set = GetSetByID(setID);
-	local useDescription = (#variantSets > 1);
-  local desc = set.description;
-  if desc == nil then desc = set.name; end
-
-	local info = UIDropDownMenu_CreateInfo();
-	info.notCheckable = true;
-	info.disabled = nil;
-
-  --Link outfit option on list right click
-  info.text = LINK_TRANSMOG_OUTFIT
-  info.func = function() LinkSetInChat(setID); end
-  UIDropDownMenu_AddButton(info);
+  if (setID ~= _FavoriteDropDown.setID) then
+    if _FavoriteDropDown:IsShown() then _FavoriteDropDown:Toggle() end
+    _FavoriteDropDown:ClearLines();
   
-  --Favorite button
-	if baseButtonSet.favoriteSetID then
-		if useDescription then
-			info.text = format(TRANSMOG_SETS_UNFAVORITE_WITH_DESCRIPTION, desc);
-		else
-			info.text = TRANSMOG_ITEM_UNSET_FAVORITE;
-		end
-		info.func = function()
-      MarkSetAsFavorite(baseButtonSet.favoriteSetID, false);
-		end
-	else
-		local targetSetID = WardrobeCollectionFrame.SetsCollectionFrame:GetDefaultSetIDForBaseSet(ExS_ScrollFrame.menuInitBaseSetID);
-		if useDescription then
-			info.text = format(TRANSMOG_SETS_FAVORITE_WITH_DESCRIPTION, desc);
-		else
-			info.text = TRANSMOG_ITEM_SET_FAVORITE;
-		end
-		info.func = function()
-      MarkSetAsFavorite(setID, true);
-		end
-	end
-	UIDropDownMenu_AddButton(info);
-  
-  -- Hide All Variants of Set
-  if ExS_Settings.disableHideSetButton then
-      info.text = "Hide Sets Button Disabled."
-      info.func = nil;
-      info.disabled = true;
-  else
-    --No sets hidden, so hiding all sets.
-    if not anyHidden then--hiddenCount == 0 then
-      info.text = "Hide all versions of this set."
-      info.func = function(self)
-            local baseSetID = GetBaseSetID(ExS_ScrollFrame.menuInitBaseSetID);
-            --local varSets = GetVariantSets(baseSetID);
-            local varSets = VariantSets[baseSetID];
-            if not varSets then
-              varSets = {NotUsedSets[baseSetID]};
-            end
-            
-            local hiddenLabel = tonumber(WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:GetText());
-            for i=1, #varSets do
-              if not ExS_HiddenSets[CurrArmorType][varSets[i].setID] then
-                ExS_HiddenSets[CurrArmorType][varSets[i].setID] = true;
-                hiddenLabel = hiddenLabel + 1;
-              end
-            end
-            WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:SetText(hiddenLabel);
-            
-            if GetBaseSetID(ExS_ScrollFrame.selectedSetID) == baseSetID then
-              local selectedSetID = ExS_ScrollFrame.selectedSetID;
-              ExS_HiddenSets[CurrArmorType][selectedSetID] = nil;
-              HideSet(ExS_ScrollFrame.selectedSetID);
-              ExS_HiddenSets[CurrArmorType][selectedSetID] = true;
-            elseif not ExS_Settings.showHiddenSets then
-              RemoveHiddenSetsFromBaseList();
-            end
-          end
-    else --at least one set is hidden, so show all sets.
-      info.text = "Show all versions of this set."
-      info.func = function(self)
-            local baseSetID = GetBaseSetID(ExS_ScrollFrame.menuInitBaseSetID);
-            --local varSets = GetVariantSets(baseSetID);
-            local varSets = VariantSets[baseSetID];
-            if not varSets then
-              varSets = {NotUsedSets[baseSetID]};
-            end
-            
-            local hiddenLabel = tonumber(WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:GetText());
-            for i=1, #varSets do
-              if ExS_HiddenSets[CurrArmorType][varSets[i].setID] then
-                ExS_HiddenSets[CurrArmorType][varSets[i].setID] = nil;
-                hiddenLabel = hiddenLabel - 1;
-              end
-            end
-            WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:SetText(hiddenLabel);
-            if GetBaseSetID(ExS_ScrollFrame.selectedSetID) == baseSetID then
-              WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton.backgroundTexture:SetTexCoord(.5,1,0,1);
-              --GameTooltip_SetTitle(GameTooltip, "Hide Set", NORMAL_FONT_COLOR, true);
-            end
-          end
+    local variantSets, anyHidden = SetsFrame.GetVariantSets(baseButtonSetID, true);
+    local set = GetSetByID(setID);
+    local useDescription = (#variantSets > 1);
+    local desc = set.description;
+    if desc == nil then desc = set.name; end
+
+    local info = {}
+    info.notCheckable = true;
+    info.disabled = nil;
+
+    --Link outfit option on list right click
+    info.text = LINK_TRANSMOG_OUTFIT
+    info.func = function() LinkSetInChat(setID); end
+    
+    _FavoriteDropDown:AddLine(info);
+    
+    --Favorite button
+    if baseButtonSet.favoriteSetID then
+      if useDescription then
+        info.text = format(TRANSMOG_SETS_UNFAVORITE_WITH_DESCRIPTION, desc);
+      else
+        info.text = TRANSMOG_ITEM_UNSET_FAVORITE;
+      end
+      info.func = function()
+        MarkSetAsFavorite(baseButtonSet.favoriteSetID, false);
+      end
+    else
+      local targetSetID = WardrobeCollectionFrame.SetsCollectionFrame:GetDefaultSetIDForBaseSet(ExS_ScrollFrame.menuInitBaseSetID);
+      if useDescription then
+        info.text = format(TRANSMOG_SETS_FAVORITE_WITH_DESCRIPTION, desc);
+      else
+        info.text = TRANSMOG_ITEM_SET_FAVORITE;
+      end
+      info.func = function()
+        MarkSetAsFavorite(setID, true);
+      end
     end
+    _FavoriteDropDown:AddLine(info);
+    
+    -- Hide All Variants of Set
+    if ExS_Settings.disableHideSetButton then
+        info.text = "Hide Sets Button Disabled."
+        info.func = nil;
+        info.disabled = true;
+    else
+      --No sets hidden, so hiding all sets.
+      if not anyHidden then--hiddenCount == 0 then
+        info.text = "Hide all versions of this set."
+        info.func = function(self)
+              local baseSetID = GetBaseSetID(ExS_ScrollFrame.menuInitBaseSetID);
+              
+              local varSets = VariantSets[baseSetID];
+              if not varSets then
+                varSets = {NotUsedSets[baseSetID]};
+              end
+              
+              local hiddenLabel = tonumber(WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:GetText());
+              for i=1, #varSets do
+                if not ExS_HiddenSets[CurrArmorType][varSets[i].setID] then
+                  ExS_HiddenSets[CurrArmorType][varSets[i].setID] = true;
+                  hiddenLabel = hiddenLabel + 1;
+                end
+              end
+              WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:SetText(hiddenLabel);
+              
+              if GetBaseSetID(ExS_ScrollFrame.selectedSetID) == baseSetID then
+                local selectedSetID = ExS_ScrollFrame.selectedSetID;
+                ExS_HiddenSets[CurrArmorType][selectedSetID] = nil;
+                HideSet(ExS_ScrollFrame.selectedSetID);
+                ExS_HiddenSets[CurrArmorType][selectedSetID] = true;
+              elseif not ExS_Settings.showHiddenSets then
+                RemoveHiddenSetsFromBaseList();
+              end
+            end
+      else --at least one set is hidden, so show all sets.
+        info.text = "Show all versions of this set."
+        info.func = function(self)
+              local baseSetID = GetBaseSetID(ExS_ScrollFrame.menuInitBaseSetID);
+              
+              local varSets = VariantSets[baseSetID];
+              if not varSets then
+                varSets = {NotUsedSets[baseSetID]};
+              end
+              
+              local hiddenLabel = tonumber(WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:GetText());
+              for i=1, #varSets do
+                if ExS_HiddenSets[CurrArmorType][varSets[i].setID] then
+                  ExS_HiddenSets[CurrArmorType][varSets[i].setID] = nil;
+                  hiddenLabel = hiddenLabel - 1;
+                end
+              end
+              WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:SetText(hiddenLabel);
+              if GetBaseSetID(ExS_ScrollFrame.selectedSetID) == baseSetID then
+                WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton.backgroundTexture:SetTexCoord(.5,1,0,1);
+                --GameTooltip_SetTitle(GameTooltip, "Hide Set", NORMAL_FONT_COLOR, true);
+              end
+            end
+      end
+    end
+    _FavoriteDropDown:AddLine(info);
+    info.disabled = false;
+    
+    -- Cancel
+    info = {}
+    info.notCheckable = true;
+    info.text = CANCEL;
+    _FavoriteDropDown:AddLine(info);
+    
+    _FavoriteDropDown.setID = setID;
   end
-  UIDropDownMenu_AddButton(info);
-  info.disabled = false;
-  
-	-- Cancel
-	info = UIDropDownMenu_CreateInfo();
-	info.notCheckable = true;
-	info.text = CANCEL;
-	UIDropDownMenu_AddButton(info);
 end
 
 --function to handle toggling show/hiding hidden sets.
@@ -3571,12 +3619,12 @@ local function CreateScrollbar(frame)
           end
           LinkSetInChat(setID);
         else
-          CloseDropDownMenus();
           ScrollFrame_SelectSet(pSelf.setID);
         end
 			elseif pButton == "RightButton" then
         ExS_ScrollFrame.menuInitBaseSetID = button.setID;
-        ToggleDropDownMenu(1, nil, _FavoriteDropDown, pSelf, 0, 0);
+        FavoriteDropDown_Init(button);
+        _FavoriteDropDown:Toggle();
 			end
 		end)
     button:SetScript("OnMouseUp", nil);--maybe
@@ -3619,8 +3667,18 @@ local function CreateScrollbar(frame)
   
   _ButtonsInFrame = ExS_ScrollFrame:GetHeight() / _ButtonHeight;
 	
-	_FavoriteDropDown = CreateFrame("Frame", "SetCollectionUngroupFavoriteDropDown", ExS_ScrollFrame, "UIDropDownMenuTemplate");
-	UIDropDownMenu_Initialize(_FavoriteDropDown, FavoriteDropDown_Init, "MENU");
+  _FavoriteDropDown = LDD:NewMenu(ExS_ScrollFrame, "SetsFavDropdown");
+  _FavoriteDropDown:SetStyle('MENU')
+  _FavoriteDropDown.minWidth = 170
+  _FavoriteDropDown:SetFrameLevel(500)
+  
+  _FavoriteDropDown:HookScript("OnShow", function() _FavoriteDropDown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+  _FavoriteDropDown:HookScript("OnHide", function() _FavoriteDropDown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+  _FavoriteDropDown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+        if _FavoriteDropDown:IsShown() and not _FavoriteDropDown:IsMouseOver() then
+          _FavoriteDropDown:Toggle();
+        end
+    end)
 
 	ExS_ScrollFrame:SetScript("OnKeyDown", function(pSelf, pKey)
 		ScrollFrame_HandleKey(pKey);
@@ -3771,87 +3829,76 @@ end
 ----
 -- FILTER DropDown
 ----
-function ExtendedWardrobeFilterDropDown_Initialize(self, level, menu)
-  if ( not WardrobeCollectionFrame.activeFrame ) then
-    return;
+local function ReInitSets(force, keepLabel)
+  local setType;
+  for i = 1, 4 do
+    if (ArmorTypeRadioIsChecked[i]) then
+      setType = i;
+      break;
+    end
   end
- 
-  if ( WardrobeCollectionFrame.activeFrame.searchType == 1 ) then
-    WardrobeFilterDropDown_InitializeItems(self, level);
-  elseif ( WardrobeCollectionFrame.activeFrame.searchType == Enum.TransmogSearchType.BaseSets ) then
-    ExtendedWardrobeFilterDropDown_InitializeBaseSets(self, level, menu);
-  end
+  InitializeSets(setType, force, keepLabel);
 end
 
-function ExtendedWardrobeFilterDropDown_InitializeBaseSets(self, level, menuList)
-  local info = UIDropDownMenu_CreateInfo();
+local function XpacPicker(self, button, index)
+  ExS_Settings.expansionToggles[index] = not ExS_Settings.expansionToggles[index];
+  ReInitSets(true, true);
+  self:SetCheckedState(ExS_Settings.expansionToggles[index]);
+end
+
+local function ExS_FilterDropDown_Init(self, level, menuList)
+  local info = {}
   info.isNotRadio = true;
  
-  if level == 1 then
-    info.keepShownOnClick = true;
+  --if level == 1 then
+    info.keepShown = true;
     info.text = COLLECTED;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED, value);
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+    info.func = function(self)
+            local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED);
+            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED, state);
+
+            ReInitSets(true, true);
+            self:SetCheckedState(state);
           end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED);
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_COLLECTED) end;
+    SetsFrame.FilterDropDown:AddLine(info);
   
     info.text = NOT_COLLECTED;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED, value);
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+    info.func = function(self)
+            local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED);
+            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED, state);
+
+            ReInitSets(true, true);
+            self:SetCheckedState(state);
           end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED);
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_UNCOLLECTED) end;
+    SetsFrame.FilterDropDown:AddLine(info);
   
-    UIDropDownMenu_AddSeparator(level);
+    SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
   
     info.text = TRANSMOG_SET_PVE;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE, value);
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+    info.func = function(self)
+            local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE);
+            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE, state);
+
+            ReInitSets(true, true);
+            self:SetCheckedState(state);
           end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE);
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE) end;
+    SetsFrame.FilterDropDown:AddLine(info);
   
     info.text = TRANSMOG_SET_PVP;
-    info.func = function(_, _, _, value)
-            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP, value);
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+    info.func = function(self)
+            local state = not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP);
+            C_TransmogSets.SetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP, state);
+
+            ReInitSets(true, true);
+            self:SetCheckedState(state);
           end
-    info.checked = C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP);
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP) end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
-    UIDropDownMenu_AddSeparator(level);
+    SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
     
     ----
     --  Settings
@@ -3859,28 +3906,22 @@ function ExtendedWardrobeFilterDropDown_InitializeBaseSets(self, level, menuList
     
     --Show/Hide other faction sets
     info.text = factionNames.opposingFaction;
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             if (ExS_Settings.displayOtherFaction == true) then
               ExS_Settings.displayOtherFaction = false;
             else
               ExS_Settings.displayOtherFaction = true;
             end
             
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+            ReInitSets(true, true);
+            self:SetCheckedState(ExS_Settings.displayOtherFaction);
           end
-    info.checked = ExS_Settings.displayOtherFaction;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.displayOtherFaction end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     --Show/Hide other class sets for player's armor weight
     info.text = "Show Only My Class's Sets";
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             if (ExS_Settings.displayOnlyMyClass == true) then
               ExS_Settings.displayOnlyMyClass = false;
             else
@@ -3898,15 +3939,16 @@ function ExtendedWardrobeFilterDropDown_InitializeBaseSets(self, level, menuList
             if setType == ClassArmorType[transmogrifyClass] then
               InitializeSets(setType, true, true);
             end
+            self:SetCheckedState(ExS_Settings.displayOnlyMyClass);
           end
-    info.checked = ExS_Settings.displayOnlyMyClass;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.displayOnlyMyClass end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     --Show/Hide CharCollectionIcons
     info.text = "Show Character Collection Icons";
     info.tooltipText = "Shows a Red X above items that are not collected and cannot be collected by the current character's class. Shows a Red O above items that are collected but cannot be used by the current character's class. Shows an Orange O above items that have a class-specific version collected that cannot be transmogged by the current character's class, but has a non-class-specific version that can be collected.";
     info.tooltipOnButton = true;
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             if (ExS_Settings.showCharCollectionIcons == true) then
               ExS_Settings.showCharCollectionIcons = false;
             else
@@ -3916,150 +3958,144 @@ function ExtendedWardrobeFilterDropDown_InitializeBaseSets(self, level, menuList
             for itemFrame in WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.itemFramesPool:EnumerateActive() do
               SetsFrame.HandleItemFrames(itemFrame, false);
             end
+            self:SetCheckedState(ExS_Settings.showCharCollectionIcons);
           end
-    info.checked = ExS_Settings.showCharCollectionIcons;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.showCharCollectionIcons end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     info.tooltipText = "";
     info.tooltipOnButton = false;
     
     --Show/Hide no longer obtainable sets
     info.text = "Hide No Longer Obtainable Sets";
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             if (ExS_Settings.hideNoLongerObtainable == true) then
               ExS_Settings.hideNoLongerObtainable = false;
             else
               ExS_Settings.hideNoLongerObtainable = true;
             end
             
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+            ReInitSets(true, true);
+            self:SetCheckedState(ExS_Settings.hideNoLongerObtainable);
           end
-    info.checked = ExS_Settings.hideNoLongerObtainable;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.hideNoLongerObtainable end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     --Show/Hide trading post sets
     info.text = "Hide Trading Post Sets";
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             if (ExS_Settings.hideTradingPost == true) then
               ExS_Settings.hideTradingPost = false;
             else
               ExS_Settings.hideTradingPost = true;
             end
             
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+            ReInitSets(true, true);
+            self:SetCheckedState(ExS_Settings.hideTradingPost);
           end
-    info.checked = ExS_Settings.hideTradingPost;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.hideTradingPost end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     --Show/Hide shop sets
     info.text = "Hide Out of Game (Shop, etc.) Sets";
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             if (ExS_Settings.hideShopsets == true) then
               ExS_Settings.hideShopsets = false;
             else
               ExS_Settings.hideShopsets = true;
             end
             
-            local setType;
-            for i = 1, 4 do
-              if (ArmorTypeRadioIsChecked[i]) then
-                setType = i;
-                break;
-              end
-            end
-            InitializeSets(setType, true, true);
+            ReInitSets(true, true);
+            self:SetCheckedState(ExS_Settings.hideShopsets);
           end
-    info.checked = ExS_Settings.hideShopsets;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.hideShopsets end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     --Show/Hide hidden sets
     info.text = "Show Hidden Sets";
-    info.func = function(_, _, _, value)
+    info.func = function(self)
               ShowHideSetsToggle();
+              self:SetCheckedState(ExS_Settings.showHiddenSets);
           end
-    info.checked = ExS_Settings.showHiddenSets;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.showHiddenSets end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
     --Disable Show/Hide hidden sets button
     info.text = "Disable Hide Set Button";
-    info.func = function(_, _, _, value)
+    info.func = function(self)
             ExS_Settings.disableHideSetButton = not ExS_Settings.disableHideSetButton;
             WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton.backgroundTexture:SetDesaturated(ExS_Settings.disableHideSetButton);
+            self:SetCheckedState(ExS_Settings.disableHideSetButton);
           end
-    info.checked = ExS_Settings.disableHideSetButton;
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ExS_Settings.disableHideSetButton end;
+    SetsFrame.FilterDropDown:AddLine(info);
     
-    UIDropDownMenu_AddSeparator(level);
+    SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
     
     --
     -- Expansion Select opener
     --
     
     info.text = EXPANSION_FILTER_TEXT;
-    info.notCheckable = true;
     info.func = nil;
-    info.hasArrow = true;
-    info.menuList = "ExpansionList";
-    UIDropDownMenu_AddButton(info, level, info.menuList);
+    info.menu = {}
     
-    info.notCheckable = false;
-    info.hasArrow = false;
-    info.menuList = nil;
+    for i = 1,ExpansionCount do
+      local subInfo = {}
+      subInfo.keepShown = true;
+      
+      if ExS_Settings.expansionToggles[i] == nil then ExS_Settings.expansionToggles[i] = true; end --will auto default new expansions to on as they are added.
+      subInfo.text = _G["EXPANSION_NAME"..(i-1)];
+      subInfo.func = XpacPicker
+      subInfo.args = {i};
+      subInfo.checked = function() return ExS_Settings.expansionToggles[i] end;
+      
+      tinsert(info.menu, subInfo);
+    end
+    SetsFrame.FilterDropDown:AddLine(info);
     
-    UIDropDownMenu_AddSeparator(level);
+    info.menu = nil;
+    
+    SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
     
     --
     -- Armor Type Select
     --
     
-    info.keepShownOnClick = false;
-    info.isNotRadio = false;
+    info.keepShown = false;
+    info.isRadio = true;
   
     local _,_,armortype = GetItemInfoInstant(165459);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(4, false, true);
           end
-    info.checked = ArmorTypeRadioIsChecked[4];
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ArmorTypeRadioIsChecked[4] end
+    SetsFrame.FilterDropDown:AddLine(info);
     
     local _,_,armortype = GetItemInfoInstant(166566);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(3, false, true);
           end
-    info.checked = ArmorTypeRadioIsChecked[3];
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ArmorTypeRadioIsChecked[3] end
+    SetsFrame.FilterDropDown:AddLine(info);
     
     local _,_,armortype = GetItemInfoInstant(165072);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(2, false, true);
           end
-    info.checked = ArmorTypeRadioIsChecked[2];
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ArmorTypeRadioIsChecked[2] end
+    SetsFrame.FilterDropDown:AddLine(info);
     
     local _,_,armortype = GetItemInfoInstant(165435);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(1, false, true);
           end
-    info.checked = ArmorTypeRadioIsChecked[1];
-    UIDropDownMenu_AddButton(info, level);
+    info.checked = function() return ArmorTypeRadioIsChecked[1] end
+    SetsFrame.FilterDropDown:AddLine(info);
     
     
     ---- Race Select
@@ -4133,30 +4169,30 @@ function ExtendedWardrobeFilterDropDown_InitializeBaseSets(self, level, menuList
   --    info.menuList = menu;
   --    UIDropDownMenu_AddButton(info, level);
   --  end
-  elseif (menuList == "ExpansionList") then
-    info.isNotRadio = false;
-    info.keepShownOnClick = true;
-    info.menuList = nil;
-    
-    for i = 1,ExpansionCount do
-      if ExS_Settings.expansionToggles[i] == nil then ExS_Settings.expansionToggles[i] = true; end --will auto default new expansions to on as they are added.
-      info.text = _G["EXPANSION_NAME"..(i-1)];
-      info.func = function()
-                    ExS_Settings.expansionToggles[i] = not ExS_Settings.expansionToggles[i];
-                    
-                    local setType;
-                    for i = 1, 4 do
-                      if (ArmorTypeRadioIsChecked[i]) then
-                        setType = i;
-                        break;
-                      end
-                    end
-                    InitializeSets(setType, true, true);
-                  end
-      info.checked = ExS_Settings.expansionToggles[i];
-      UIDropDownMenu_AddButton(info, level);
-    end
-  end
+  --elseif (menuList == "ExpansionList") then
+  --  info.isNotRadio = false;
+  --  info.keepShownOnClick = true;
+  --  info.menuList = nil;
+  --  
+  --  for i = 1,ExpansionCount do
+  --    if ExS_Settings.expansionToggles[i] == nil then ExS_Settings.expansionToggles[i] = true; end --will auto default new expansions to on as they are added.
+  --    info.text = _G["EXPANSION_NAME"..(i-1)];
+  --    info.func = function()
+  --                  ExS_Settings.expansionToggles[i] = not ExS_Settings.expansionToggles[i];
+  --                  
+  --                  local setType;
+  --                  for i = 1, 4 do
+  --                    if (ArmorTypeRadioIsChecked[i]) then
+  --                      setType = i;
+  --                      break;
+  --                    end
+  --                  end
+  --                  InitializeSets(setType, true, true);
+  --                end
+  --    info.checked = ExS_Settings.expansionToggles[i];
+  --    UIDropDownMenu_AddButton(info, level);
+  --  end
+  --end
 end
 
 function AppearanceTooltipOnEnter(self)
@@ -4263,7 +4299,7 @@ end
 ------
 --  Transmogrify
 ------
-local function TransmogrifySwapAlternate(self, setID,c)
+local function TransmogrifySwapAlternate(self, setID)
   local set = SetsForTransmogrify[SetsForTransmogrifyIndex[setID]];
   --local sourcesToSwap = {}
   --for sourceID,_ in pairs(set.sources) do
@@ -4527,7 +4563,7 @@ local function TransmogrifyGetFirstMatchingSetID(self,sourceIndex)
 	return nil;
 end
 
---On Page Change. Only change was making the GameTooltip refresh on page change.
+--On Page Change. This is mostly copy/pasta. The GameTooltip doesn't refresh on page change, so need to refresh the tooltip on page change. =/
 local function TransmogrifyOnPageChanged(self, userAction)
 	PlaySound(SOUNDKIT.UI_TRANSMOG_PAGE_TURN);
 	CloseDropDownMenus();
@@ -4548,12 +4584,14 @@ local function TransmogrifyOnMouseDown(self, button)
   
 		PlaySound(SOUNDKIT.UI_TRANSMOG_ITEM_CLICK);
 	elseif ( button == "RightButton" ) then
-		local dropDown = self:GetParent().RightClickDropDown;
-		if ( dropDown.activeFrame ~= self ) then
-			CloseDropDownMenus();
-		end
-		dropDown.activeFrame = self;
-		ToggleDropDownMenu(1, nil, dropDown, self, -6, -3);
+		--local dropDown = self:GetParent().RightClickDropDown;
+		--if ( dropDown.activeFrame ~= self ) then
+		--	CloseDropDownMenus();
+		--end
+		WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown.activeFrame = self;
+    WardrobeCollectionFrame.SetsTransmogFrame.OpenRightClickDropDown();
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:Toggle();
+		--ToggleDropDownMenu(1, nil, dropDown, self, -6, -3);
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	end
 end
@@ -4596,37 +4634,43 @@ end
 
 --Right click on set
 local function TransmogrifyOpenRightClickDropDown()
-  local self = WardrobeCollectionFrame.SetsTransmogFrame;
-	if ( not self.RightClickDropDown.activeFrame ) then
+  --local self = WardrobeCollectionFrame.SetsTransmogFrame;
+	if ( not WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown.activeFrame ) then
 		return;
 	end
-	local setID = self.RightClickDropDown.activeFrame.setID;
-	local info = UIDropDownMenu_CreateInfo();
+  
+  WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:ClearLines();
+  WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:SetAnchor('TOPLEFT', WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown.activeFrame, 'BOTTOMLEFT', 7, -10)
+	local setID = WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown.activeFrame.setID;
+	local info = {}--UIDropDownMenu_CreateInfo();
   -- Set Favorite
 	if ( C_TransmogSets.GetIsFavorite(setID) ) then
 		info.text = BATTLE_PET_UNFAVORITE;
-		info.func = function() self:SetFavorite(setID, false); end
+		info.func = function() WardrobeCollectionFrame.SetsTransmogFrame:SetFavorite(setID, false); end
 	else
 		info.text = BATTLE_PET_FAVORITE;
-		info.func = function() self:SetFavorite(setID, true); end
+		info.func = function() WardrobeCollectionFrame.SetsTransmogFrame:SetFavorite(setID, true); end
 	end
-	info.notCheckable = true;
-	UIDropDownMenu_AddButton(info);
+	--info.notCheckable = true;
+	--UIDropDownMenu_AddButton(info);
+  WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:AddLine(info);
   -- Swap to Alt Appearance
   if SetsForTransmogrify[SetsForTransmogrifyIndex[setID]].altSources then
-    info = UIDropDownMenu_CreateInfo();
-    info.notCheckable = true;
+    info = {}--UIDropDownMenu_CreateInfo();
+    --info.notCheckable = true;
     info.text = "Swap to Alt Appearance";
     info.func = function()
-      TransmogrifySwapAlternate(self, setID);
+      TransmogrifySwapAlternate(WardrobeCollectionFrame.SetsTransmogFrame, setID);
     end
-    UIDropDownMenu_AddButton(info);
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:AddLine(info);
+    --UIDropDownMenu_AddButton(info);
   end
 	-- Cancel
-	info = UIDropDownMenu_CreateInfo();
-	info.notCheckable = true;
+	info = {}--UIDropDownMenu_CreateInfo();
+	--info.notCheckable = true;
 	info.text = CANCEL;
-	UIDropDownMenu_AddButton(info);
+  WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:AddLine(info);
+	--UIDropDownMenu_AddButton(info);
 end
 
 local function TransmogrifyOnEvent(self, event, ...)
@@ -4778,6 +4822,12 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     if (ExS_Settings.hideNoLongerObtainable == nil) then
       ExS_Settings.hideNoLongerObtainable = false;
     end
+    if (ExS_Settings.hideTradingPost == nil) then
+      ExS_Settings.hideTradingPost = false;
+    end
+    if (ExS_Settings.hideShopsets == nil) then
+      ExS_Settings.hideShopsets = false;
+    end
     if (ExS_Settings.showHiddenSets == nil) then
       ExS_Settings.showHiddenSets = false;
     end
@@ -4832,7 +4882,7 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
 		SetsFrame.ResetBaseSetNewStatus = ResetBaseSetNewStatus;
 		SetsFrame.GetSortedSetSources = GetSortedSetSources;
 		SetsFrame.GetBaseSetID = GetBaseSetID;
-		SetsFrame.FavoriteDropDown_Init = FavoriteDropDown_Init;
+		--SetsFrame.FavoriteDropDown_Init = FavoriteDropDown_Init;
     SetsFrame.SortSets = SortSets;
     SetsFrame.SelectSet = ScrollFrame_SelectSet;
     SetsFrame.ScrollToSet = ScrollFrame_ScrollToSet;
@@ -4865,6 +4915,13 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
 		WardrobeCollectionFrame.SetsCollectionFrame.OnHide = OnHide;
     WardrobeCollectionFrame.SetsCollectionFrame:SetScript("OnHide", OnHide);
 		WardrobeCollectionFrame.SetsCollectionFrame.OnEvent = OnEvent;
+    WardrobeCollectionFrame:HookScript("OnShow", function()
+        if WardrobeCollectionFrame.activeFrame.searchType == Enum.TransmogSearchType.BaseSets then
+          WardrobeCollectionFrame.FilterButton:Hide();
+        else
+          WardrobeCollectionFrame.FilterButton:Show();
+        end
+      end)
     frame:SetScript("OnEvent", OnEvent);
     WardrobeCollectionFrame.SetsCollectionFrame:SetScript("OnEvent", OnEvent);
 		WardrobeCollectionFrame.SetsCollectionFrame.DisplaySet = DisplaySet;
@@ -4899,12 +4956,88 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     end
     WardrobeCollectionFrame.SetsTransmogFrame.OpenRightClickDropDown = TransmogrifyOpenRightClickDropDown;
     
+    -- Right Click Menu stuff for the Transmogrify (not collection) window
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown = LDD:NewMenu(WardrobeCollectionFrame.SetsTransmogFrame, "SetsTransmogRightClickDropDown")
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown.minWidth = 240
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:SetStyle('MENU')
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:SetFrameLevel(8)
+  
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:HookScript("OnShow", function() WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:HookScript("OnHide", function() WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+          if WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:IsShown() and not WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:IsMouseOver() then
+            WardrobeCollectionFrame.SetsTransmogFrame.RightClickDropdown:Toggle();
+          end
+      end)
+    
     WardrobeCollectionFrame.SetsTransmogFrame:HookScript("OnShow", function() WardrobeCollectionFrame.SetsTransmogFrame:RegisterEvent("UNIT_FORM_CHANGED") end)
     WardrobeCollectionFrame.SetsTransmogFrame:HookScript("OnHide", function() WardrobeCollectionFrame.SetsTransmogFrame:UnregisterEvent("UNIT_FORM_CHANGED") end)
     
     --WardrobeCollectionFrame.ItemsCollectionFrame.FilterVisuals = ExItems_FilterVisuals;
     
-    UIDropDownMenu_Initialize(WardrobeCollectionFrame.FilterDropDown, ExtendedWardrobeFilterDropDown_Initialize)--, "MENU");
+    --UIDropDownMenu_Initialize(WardrobeCollectionFrame.FilterDropDown, ExtendedWardrobeFilterDropDown_Initialize)--, "MENU");
+    factionNames.playerFaction, _ = UnitFactionGroup('player');
+    if factionNames.playerFaction == "Alliance" then
+      factionNames.opposingFaction = "Horde";
+    else
+      factionNames.opposingFaction = "Alliance";
+    end
+  
+    
+    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton = CreateFrame("Button", nil, WardrobeCollectionFrame.SetsCollectionFrame, "UIResettableDropdownButtonTemplate")
+    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetAllPoints(WardrobeCollectionFrame.FilterButton)
+    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetText(FILTER)
+    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetScript("OnClick", function() SetsFrame.FilterDropDown:Toggle() end)
+    
+    SetsFrame.FilterDropDown = LDD:NewMenu(WardrobeCollectionFrame.SetsCollectionFrame, "SetsFilterDropDown")
+    SetsFrame.FilterDropDown:SetAnchor('TOPLEFT', WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton, 'TOPRIGHT', 8, -10)
+    SetsFrame.FilterDropDown.minWidth = 240
+    SetsFrame.FilterDropDown:SetStyle('MENU')
+    SetsFrame.FilterDropDown:SetFrameLevel(10)
+  
+    --SetsFrame.FilterDropDown:HookScript("OnShow", function() SetsFrame.FilterDropDown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+    --SetsFrame.FilterDropDown:HookScript("OnHide", function() SetsFrame.FilterDropDown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+    --SetsFrame.FilterDropDown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+    --      --if SetsFrame.FilterDropDown:IsShown() and
+    --      --    not SetsFrame.FilterDropDown:IsMouseOver() and
+    --      --    not WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:IsMouseOver() then
+    --      --  local closeDD = true;
+    --      --  local child = { SetsFrame.FilterDropDown:GetChildren() }
+    --      --  for i = 1, SetsFrame.FilterDropDown:GetNumChildren() do
+    --      --    if child.IsMouseOver and child:IsMouseOver() then
+    --      --      closeDD = false;
+    --      --      break;
+    --      --    end
+    --      --  end
+    --      --  if closeDD then
+    --      --    SetsFrame.FilterDropDown:Toggle();
+    --      --  end
+    --      --end
+    --  end)
+    ExS_FilterDropDown_Init();
+    
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown = LDD:NewMenu(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame, "SetsVariantDropDown")
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetAnchor('TOPRIGHT', WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton, 'BOTTOMRIGHT', -9, -9)
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown.minWidth = 240
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetStyle('MENU')
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetFrameLevel(8)
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetCheckAlignment("LEFT")
+    
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:HookScript("OnShow", function() WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:HookScript("OnHide", function() WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+          if WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:IsShown() and
+              not WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:IsMouseOver() and
+              not WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:IsMouseOver() then
+            WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
+          end
+      end)
+    
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:SetScript("OnMouseDown", function()
+        UIMenuButtonStretchMixin.OnMouseDown(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton);
+        OpenVariantSetsDropDown();
+        WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
+      end)
 
     app.SetsFrame = SetsFrame;
 
