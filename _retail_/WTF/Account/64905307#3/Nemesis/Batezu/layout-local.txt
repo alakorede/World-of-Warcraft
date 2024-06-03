@@ -144,8 +144,8 @@ FrameLevel: 1
 Anchor: BOTTOM
 X: -155
 Y: 159
-W: 255
-H: 32
+W: 351
+H: 40
 Frame: ItemRefTooltip
 FrameLevel: 1
 Anchor: CENTER
@@ -244,3 +244,10 @@ X: -1
 Y: 180
 W: 309
 H: 30
+Frame: DetailsNewsWindow
+FrameLevel: 1
+Anchor: LEFT
+X: 12
+Y: 0
+W: 480
+H: 560

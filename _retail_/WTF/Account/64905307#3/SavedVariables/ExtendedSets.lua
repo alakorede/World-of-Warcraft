@@ -32,9 +32,9 @@ true,
 },
 ["showHiddenSets"] = false,
 ["hideTradingPost"] = false,
-["hideShopsets"] = false,
-["showDualWielding"] = false,
 ["disableHideSetButton"] = false,
+["showDualWielding"] = false,
+["hideShopsets"] = false,
 }
 ExS_HiddenSets = {
 {

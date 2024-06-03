@@ -50,6 +50,8 @@ L["Requires /reload to take effect."] = "Requiere una recarga (/reload) para que
 L["Right"] = "Derecha"
 L["Show Bag Icons"] = "Mostrar iconos de Bolsa"
 L["Show information on the tooltip about transmog sets."] = "Muestra información en la descripción emergente sobre conjuntos de transfiguración"
+--[[Translation missing --]]
+L["Show Mount Items"] = "Show Mount Items"
 L["Show Source Location Tooltip"] = "Mostrar localización de la fuente en la descripción emergente"
 L["Show Transmog Set Info"] = "Mostrar información sobre conjuntos de transfiguración"
 L["Shows a more detailed text for some of the tooltips."] = "Muestra un texto más detallado en algunos cuadros de diálogo."

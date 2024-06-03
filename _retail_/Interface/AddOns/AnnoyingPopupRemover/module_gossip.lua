@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2023 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.1.3-release
+-- Addon version: v20.2.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -204,6 +204,11 @@ GossipIDList[40649] = "Warmaster Blackhorn"
 GossipIDList[39999] = "Spine of Deathwing - normal"
 GossipIDList[40000] = "Spine of Deathwing - heroic"
 GossipIDList[40425] = "Madness of Deathwing"
+
+-- Start of various encounters in the Siege of Orgrimmar raid
+GossipIDList[42038] = "Norushen"
+GossipIDList[41620] = "Galakras"
+GossipIDList[110714] = "Skip to Garrosh"
 
 -- Myrrit digs
 GossipIDList[109101] = "Starting a Myrrit dig with 1 map"

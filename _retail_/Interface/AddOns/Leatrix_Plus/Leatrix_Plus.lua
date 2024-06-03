@@ -1,5 +1,5 @@
 ﻿----------------------------------------------------------------------
--- 	Leatrix Plus 10.2.26 (8th May 2024)
+-- 	Leatrix Plus 10.2.29 (29th May 2024)
 ----------------------------------------------------------------------
 
 --	01:Functns, 02:Locks, 03:Restart, 20:Live, 30:Isolated, 40:Player
@@ -18,7 +18,7 @@
 	local void
 
 	-- Version
-	LeaPlusLC["AddonVer"] = "10.2.26"
+	LeaPlusLC["AddonVer"] = "10.2.29"
 
 	-- Get locale table
 	local void, Leatrix_Plus = ...
@@ -894,7 +894,7 @@
 			-- Mute sounds when UNIT_FACTION is loaded (required for Soar)
 			local delayMute = CreateFrame("FRAME")
 			delayMute:RegisterEvent("UNIT_FACTION")
-			delayMute:SetScript("OnEvent", SetupMute)
+			delayMute:SetScript("OnEvent", function() if LeaPlusLC["MuteMountSounds"] == "On" then SetupMute() end end)
 
 			-- Setup mute when options are clicked
 			for k, v in pairs(mountTable) do
@@ -5589,6 +5589,20 @@
 						myButton:HookScript("OnLeave", function()
 							_G[name]:GetScript("OnLeave")()
 						end)
+					elseif name == "Narci_MinimapButton" then
+						-- Narcissus
+						local myButton = LibStub("LibDBIcon-1.0"):GetMinimapButton("LeaPlusCustomIcon_" .. name)
+						myButton.icon:SetTexture("Interface\\AddOns\\Narcissus\\Art\\Minimap\\LOGO-Dragonflight")
+						myButton:HookScript("OnEnter", function()
+							GameTooltip:SetOwner(myButton, "ANCHOR_TOP")
+							GameTooltip:AddLine("Narcissus")
+							GameTooltip:Show()
+							ReanchorTooltip(GameTooltip, myButton)
+						end)
+						hooksecurefunc(myButton.icon, "UpdateCoord", function()
+							myButton.icon:SetTexCoord(0, 0.25, 0.75, 1)
+						end)
+						myButton.icon:SetTexCoord(0, 0.25, 0.75, 1)
 					elseif name == "WIM3MinimapButton" then
 						-- WIM
 						local myButton = LibStub("LibDBIcon-1.0"):GetMinimapButton("LeaPlusCustomIcon_" .. name)
@@ -12681,8 +12695,8 @@
 				return
 			elseif str == "torch" or str == "t" then
 				-- Torch toggle
-				if tonumber(GetCVar("gamma")) ~= 1.1 then
-					SetCVar("gamma", 1.1)
+				if tonumber(GetCVar("gamma")) ~= 1.0 then
+					SetCVar("gamma", 1.0)
 					LeaPlusLC:DisplayMessage(L["Torch Off"], true)
 				else
 					SetCVar("gamma", 1.3)
@@ -13891,6 +13905,57 @@
 					ReloadUI()
 				else
 					LeaPlusLC:Print("Open the dragonriding trait frame first!")
+				end
+				return
+			elseif str == "talents" or str == "tal" then
+				-- Ensure the talents window is loaded
+				if not ClassTalentFrame then
+					LeaPlusLC:Print("Open the talents window first.")
+					return
+				end
+				-- Get player class
+				local void, class = UnitClass("player")
+				local importStream
+				if class == "PALADIN" then
+					importStream = ExportUtil.MakeImportDataStream("BIEAomTTpSA9oX6huYLb5nP3r3iWSi2BSIlkIlWLRCJkIBAAIAAAAAAAgikkkQiQCRgWiAAAAABBA")
+				elseif class == "WARLOCK" then
+					importStream = ExportUtil.MakeImportDataStream("BsQAj5LiEN4VXhSin5RcWeAUgoIhIJSCBBkSSSCFQS0SSItkEEAAAAAAAAAAAAIEaJJJA")
+				elseif class == "PRIEST" then
+					importStream = ExportUtil.MakeImportDataStream("BEQA/KVNHBYFUG61hTBXiMbcYCAAAAAAAokCCkQEJhkkkSUSoEAAAAAl0IkEJgSSSSQISCBlAA")
+				else
+					return
+				end
+				-- Delete the loadout called Mine
+				local activeSpecID = GetSpecialization()
+				local specID = GetSpecializationInfo(activeSpecID)
+				local configs = C_ClassTalents.GetConfigIDsBySpecID(specID)
+				for void, configID in ipairs(configs) do
+					local configInfo = C_Traits.GetConfigInfo(configID)
+					if configInfo.name == "Mine" then
+						C_ClassTalents.DeleteConfig(configID)
+					end
+				end
+				-- Create a new loadout called Mine
+				local headerValid, serializationVersion, specID, treeHash = ClassTalentFrame.TalentsTab:ReadLoadoutHeader(importStream)
+
+				local treeInfo = ClassTalentFrame.TalentsTab:GetTreeInfo()
+				local configID = ClassTalentFrame.TalentsTab:GetConfigID()
+
+				local loadoutContent = ClassTalentFrame.TalentsTab:ReadLoadoutContent(importStream, treeInfo.ID)
+				local loadoutEntryInfo = ClassTalentFrame.TalentsTab:ConvertToImportLoadoutEntryInfo(configID, treeInfo.ID, loadoutContent)
+
+				local newConfigHasPurchasedRanks = #loadoutEntryInfo > 0
+				local configInfo = C_Traits.GetConfigInfo(configID)
+				local success, errorString = C_ClassTalents.ImportLoadout(configID, loadoutEntryInfo, "Mine")
+				ClassTalentFrame.TalentsTab:OnTraitConfigCreateStarted(newConfigHasPurchasedRanks)
+				-- Add reload button
+				if not LeaPlusLC.TalentsReloadButton then
+					local reloadButton = LeaPlusLC:CreateButton("TalentsReloadButton", ClassTalentFrame.TalentsTab, ">>> RELOAD <<<", "BOTTOM", 0, 10, 200, 45, true, "")
+					reloadButton:ClearAllPoints()
+					reloadButton:SetPoint("LEFT", ClassTalentFrame.TalentsTab.ResetButton, "RIGHT", 60, -4)
+					reloadButton:SetScript("OnClick", ReloadUI)
+					reloadButton:Hide(); reloadButton:Show()
+					LeaPlusLC.TalentsReloadButton = reloadButton
 				end
 				return
 			elseif str == "admin" then

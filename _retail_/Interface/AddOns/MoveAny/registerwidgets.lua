@@ -267,6 +267,19 @@ function MoveAny:MenuOptions(opt, frame)
 				end
 			)
 
+			local resetDB = CreateFrame("Button", "resetdb", content, "UIPanelButtonTemplate")
+			resetDB:SetText(MoveAny:GT("LID_RESETELEMENT"))
+			resetDB:SetSize(btnsize * 6, btnsize)
+			resetDB:SetPoint("TOPLEFT", content, "TOPLEFT", 300, -8)
+			resetDB:SetScript(
+				"OnClick",
+				function()
+					MoveAny:ResetElement(name)
+					MoveAny:TrySaveEditMode()
+					C_UI.Reload()
+				end
+			)
+
 			local hide = CreateFrame("CheckButton", "hide", content, "ChatConfigCheckButtonTemplate")
 			hide:SetSize(btnsize, btnsize)
 			hide:SetPoint("TOPLEFT", content, "TOPLEFT", 150, -110)
@@ -681,11 +694,11 @@ function MoveAny:MenuOptions(opt, frame)
 			sliderW:SetValue(width)
 			sliderW:SetScript(
 				"OnValueChanged",
-				function(sel, val)
-					val = tonumber(string.format("%" .. 0 .. "f", val))
-					if val and val ~= opts["WIDTH"] then
-						opts["WIDTH"] = val
-						sel.Text:SetText(MoveAny:GT("LID_WIDTH") .. ": " .. val)
+				function(sel, valu)
+					valu = tonumber(string.format("%" .. 0 .. "f", valu))
+					if valu and valu ~= opts["WIDTH"] then
+						opts["WIDTH"] = valu
+						sel.Text:SetText(MoveAny:GT("LID_WIDTH") .. ": " .. valu)
 						if frame and frame.UpdateSize then
 							frame:UpdateSize()
 						end
@@ -806,6 +819,7 @@ function MoveAny:RegisterWidget(tab)
 	local sw = tab.sw
 	local sh = tab.sh
 	local secure = tab.ma_secure
+	local noreparent = tab.noreparent or false
 	local userplaced = tab.userplaced
 	local cleft = tab.cleft
 	local cright = tab.cright
@@ -1292,10 +1306,18 @@ function MoveAny:RegisterWidget(tab)
 				local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint(name)
 				if not InCombatLockdown() and frame.SetPointBase then
 					frame:ClearAllPoints()
-					frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+					if noreparent then
+						frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
+					else
+						frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+					end
 				elseif not frame.SetPointBase then
 					frame:ClearAllPoints()
-					frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+					if noreparent then
+						frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
+					else
+						frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+					end
 				end
 
 				frame.ma_retry_setpoint = false
@@ -1326,11 +1348,33 @@ function MoveAny:RegisterWidget(tab)
 				local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint(name)
 				if dbp1 and dbp3 then
 					if not InCombatLockdown() and sel.SetPointBase then
-						sel:ClearAllPointsBase()
-						sel:SetPointBase(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+						if noreparent then
+							sel:ClearAllPointsBase()
+							sel:SetPointBase(dbp1, sel:GetParent(), dbp3, dbp4, dbp5)
+						else
+							sel:ClearAllPointsBase()
+							sel:SetPointBase(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+						end
 					elseif not sel.SetPointBase then
-						sel:ClearAllPoints()
-						sel:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+						if D4:GetWoWBuild() ~= "RETAIL" and sel.OldSetPoint and sel.ClearAllPoints then
+							if not InCombatLockdown() then
+								if noreparent then
+									sel:OldClearAllPoints()
+									sel:OldSetPoint(dbp1, sel:GetParent(), dbp3, dbp4, dbp5)
+								else
+									sel:OldClearAllPoints()
+									sel:OldSetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+								end
+							end
+						else
+							if noreparent then
+								sel:ClearAllPoints()
+								sel:SetPoint(dbp1, sel:GetParent(), dbp3, dbp4, dbp5)
+							else
+								sel:ClearAllPoints()
+								sel:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+							end
+						end
 					elseif sel.ma_retry_setpoint == false then
 						sel.ma_retry_setpoint = true
 						frame:MAUpdatePoint()
@@ -1345,10 +1389,17 @@ function MoveAny:RegisterWidget(tab)
 	if not frame.ma_secure then
 		local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint(name)
 		if dbp1 and dbp3 then
-			frame:ClearAllPoints()
-			frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-			frame:ClearAllPoints()
-			frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+			if noreparent then
+				frame:ClearAllPoints()
+				frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
+				frame:ClearAllPoints()
+				frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
+			else
+				frame:ClearAllPoints()
+				frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+				frame:ClearAllPoints()
+				frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+			end
 		end
 	end
 

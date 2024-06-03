@@ -28,8 +28,14 @@ local function printDebug(tooltip, itemLink, bag, slot)
     addDoubleLine(tooltip, "Addon Version:", GetAddOnMetadata("CanIMogIt", "Version"))
     local playerClass = select(2, UnitClass("player"))
     local playerLevel = UnitLevel("player")
-    local playerSpec = GetSpecialization()
-    local playerSpecName = playerSpec and select(2, GetSpecializationInfo(playerSpec)) or "None"
+    local playerSpecName
+    if CanIMogIt.isRetail then
+        local playerSpec = GetSpecialization()
+        playerSpecName = playerSpec and select(2, GetSpecializationInfo(playerSpec)) or "None"
+    else
+        playerSpecName = "Classic, unknown"
+    end
+
     addDoubleLine(tooltip, "Player Class:", playerClass)
     addDoubleLine(tooltip, "Player Spec:", playerSpecName)
     addDoubleLine(tooltip, "Player Level:", playerLevel)
@@ -37,12 +43,21 @@ local function printDebug(tooltip, itemLink, bag, slot)
     addLine(tooltip, '--------')
 
     local itemID = CanIMogIt:GetItemID(itemLink)
-    addDoubleLine(tooltip, "Item ID:", tostring(itemID))
     if not itemID then
+        if string.find(itemLink, "battlepet:") then
+            local _, _, petSpeciesID = string.find(itemLink, "battlepet:(%d+):")
+            addDoubleLine(tooltip, "BattlePet Species ID:", tostring(petSpeciesID))
+            local collected, total = C_PetJournal.GetNumCollectedInfo(tonumber(petSpeciesID) or 0)
+            addDoubleLine(tooltip, "Number Collected:", collected .. "/" .. total)
+            addLine(tooltip, '--------')
+            return
+        end
         -- Keystones don't have an itemID...
         addLine(tooltip, 'No ItemID found. Is this a Keystone or Battle Pet?')
+        addLine(tooltip, '--------')
         return
     end
+    addDoubleLine(tooltip, "Item ID:", tostring(itemID))
     local _, _, quality, _, _, itemClass, itemSubClass, _, equipSlot, _, _, _, _, _, expansion = GetItemInfo(itemID)
     addDoubleLine(tooltip, "Item quality:", tostring(quality))
     addDoubleLine(tooltip, "Item class:", tostring(itemClass))
@@ -111,6 +126,30 @@ local function printDebug(tooltip, itemLink, bag, slot)
 
     addLine(tooltip, '--------')
 
+    local isMountItem = CanIMogIt:IsItemMount(itemLink)
+    if isMountItem ~= nil then
+        addDoubleLine(tooltip, "IsMountItem:", tostring(isMountItem))
+        if isMountItem then
+            addDoubleLine(tooltip, "PlayerKnowsMount:", tostring(CanIMogIt:PlayerKnowsMount(itemLink)))
+        end
+    end
+    local isPetItem = CanIMogIt:IsItemPet(itemLink)
+    if isPetItem ~= nil then
+        addDoubleLine(tooltip, "IsPetItem:", tostring(isPetItem))
+        if isPetItem then
+            addDoubleLine(tooltip, "PlayerKnowsPet:", tostring(CanIMogIt:PlayerKnowsPet(itemLink)))
+        end
+    end
+    local isToyItem = CanIMogIt:IsItemToy(itemLink)
+    if isToyItem ~= nil then
+        addDoubleLine(tooltip, "IsToyItem:", tostring(isToyItem))
+        if isToyItem then
+            addDoubleLine(tooltip, "PlayerKnowsToy:", tostring(CanIMogIt:PlayerKnowsToy(itemLink)))
+        end
+    end
+
+    addLine(tooltip, '--------')
+
     addDoubleLine(tooltip, "IsItemSoulbound:", tostring(CanIMogIt:IsItemSoulbound(itemLink, bag, slot)))
     addDoubleLine(tooltip, "CharacterCanEquipItem:", tostring(CanIMogIt:CharacterCanEquipItem(itemLink)))
     addDoubleLine(tooltip, "IsValidAppearanceForCharacter:", tostring(CanIMogIt:IsValidAppearanceForCharacter(itemLink)))
@@ -151,7 +190,12 @@ local function printDebug(tooltip, itemLink, bag, slot)
 
     addLine(tooltip, '--------')
 
-    addDoubleLine(tooltip, "Tooltip:", tostring(CanIMogIt:CalculateTooltipText(itemLink, bag, slot)))
+    local calculatedTooltipText = CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
+    if calculatedTooltipText ~= nil then
+        addDoubleLine(tooltip, "Tooltip:", tostring(calculatedTooltipText))
+    else
+        addDoubleLine(tooltip, "Tooltip:", 'nil')
+    end
 
     addLine(tooltip, '--------')
 
@@ -239,7 +283,10 @@ ItemRefShoppingTooltip1:HookScript("OnTooltipCleared", TooltipCleared)
 ItemRefShoppingTooltip2:HookScript("OnTooltipCleared", TooltipCleared)
 ShoppingTooltip1:HookScript("OnTooltipCleared", TooltipCleared)
 ShoppingTooltip2:HookScript("OnTooltipCleared", TooltipCleared)
-GameTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipCleared", TooltipCleared)
+
+if CanIMogIt.isRetail then
+    GameTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipCleared", TooltipCleared)
+end
 
 
 local function CanIMogIt_AttachItemTooltip(tooltip)

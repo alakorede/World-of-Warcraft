@@ -1,6 +1,7 @@
 local COMPAT, _, T = select(4,GetBuildInfo()), ...
 if T.SkipLocalActionBook then return end
-local MODERN, CF_CLASSIC, CF_WRATH, CI_ERA = COMPAT >= 10e4 or nil, COMPAT < 10e4 or nil, COMPAT < 10e4 and COMPAT > 3e4 or nil, COMPAT < 2e4 or nil
+local MODERN, CF_CLASSIC, CI_ERA = COMPAT >= 10e4 or nil, COMPAT < 10e4 or nil, COMPAT < 2e4 or nil
+local CF_WRATH, CF_CATA = COMPAT < 10e4 and COMPAT > 3e4 or nil, COMPAT < 10e4 and COMPAT > 4e4 or nil
 local MODERN_MOUNTS = MODERN or CF_WRATH
 local EV = T.Evie
 local AB = T.ActionBook:compatible(2,21)
@@ -34,6 +35,25 @@ local function newWidgetName(prefix)
 end
 local function getSpellMountID(sid)
 	return sid and (FORCED_MOUNT_SPELLS[sid] or MODERN_MOUNTS and C_MountJournal.GetMountFromSpell(sid)) or false
+end
+local GetCachedItemName, PeekCachedItemName do
+	local itemNames = {}
+	function EV:GET_ITEM_INFO_RECEIVED(iid, ok)
+		if itemNames[iid] == false and ok then
+			itemNames[iid] = GetItemInfo(iid) or false
+		end
+	end
+	function GetCachedItemName(ident)
+		local iid = tonumber(ident) or tonumber(type(ident) == "string" and ident:match("item:(%d+)"))
+		if iid then
+			local c, f = itemNames[iid], GetItemInfo(iid)
+			itemNames[iid] = f or c or false
+			return f or c or nil
+		end
+	end
+	function PeekCachedItemName(ident)
+		return itemNames[tonumber(ident) or tonumber(type(ident) == "string" and ident:match("item:(%d+)"))]
+	end
 end
 
 if MODERN_MOUNTS then -- mount: mount ID
@@ -341,8 +361,7 @@ do -- item: items ID/inventory slot
 			cdLeft = (cdStart or 0) > 0 and (enabled ~= 0) and (cdStart + cdLen - GetTime())
 		end
 		target = target or "target"
-		-- TODO: Drop the 3.4.3 condition after 3.4.3/when the client aligns
-		local canRange = not (COMPAT ~= 30403 and InCombatLockdown() and (UnitIsFriend("player", target) or not UnitExists(target))) or nil
+		local canRange = not (InCombatLockdown() and (UnitIsFriend("player", target) or not UnitExists(target))) or nil
 		local inRange, hasRange = canRange and NormalizeInRange[IsItemInRange(ident, target)]
 		inRange, hasRange = inRange ~= 0, inRange ~= nil
 		if ibag and islot then
@@ -371,7 +390,7 @@ do -- item: items ID/inventory slot
 		if type(flags) == "number" then
 			byName, forceShow, onlyEquipped = flags % 4 >= 2, flags % 2 >= 1, flags % 8 >= 4
 		end
-		local name = id <= LAST_EQUIP_SLOT and id or (byName and GetItemInfo(id) or ("item:" .. id))
+		local name = id <= LAST_EQUIP_SLOT and id or (byName and GetCachedItemName(id) or ("item:" .. id))
 		if not forceShow and onlyEquipped and not ((id > LAST_EQUIP_SLOT and IsEquippedItem(name)) or (id <= LAST_EQUIP_SLOT and GetInventoryItemLink("player", id))) then return end
 		if not forceShow and GetItemCount(name) == 0 then return end
 		if not actionMap[name] then
@@ -382,7 +401,7 @@ do -- item: items ID/inventory slot
 	local function describeItem(id, _flags)
 		local cat, cq = L"Item", MODERN and id and (C_TradeSkillUI.GetItemReagentQualityByItemInfo(id) or C_TradeSkillUI.GetItemCraftedQualityByItemInfo(id))
 		cat = cq and cat .. "|A:Professions-Icon-Quality-Tier" .. cq .. "-Small:0:0:2:0|a" or cat
-		return cat, GetItemInfo(id), GetItemIcon(id), nil, callMethod.SetItemByID, tonumber(id)
+		return cat, GetItemInfo(id) or PeekCachedItemName(id), GetItemIcon(id), nil, callMethod.SetItemByID, tonumber(id)
 	end
 	AB:RegisterActionType("item", createItem, describeItem, 2)
 	function EV.BAG_UPDATE()
@@ -577,8 +596,9 @@ do -- macro: name
 	end
 	AB:RegisterActionType("macro", createNamedMacro, describeMacro, 2)
 end
-if MODERN then -- battlepet: pet ID, species ID
+if MODERN or CF_WRATH then -- battlepet: pet ID, species ID
 	local petAction, special = {}, {}
+	local BPET_ATYPE_NAME, SummonCompanion = not MODERN and COMPANIONS or L"Battle Pet"
 	local function SetBattlePetByID(self, id)
 		local sid, cname, lvl, _, _, _, _, name, _, ptype, _, _, desc, _, cb = C_PetJournal.GetPetInfoByPetID(id)
 		if not sid then return false end
@@ -593,15 +613,25 @@ if MODERN then -- battlepet: pet ID, species ID
 			self:AddLine(desc, nc.r, nc.g, nc.b, 1)
 		end
 	end
+	if CF_WRATH then
+		SetBattlePetByID = callMethod.SetCompanionPet
+		function SummonCompanion(guid)
+			if C_PetJournal.IsCurrentlySummoned(guid) then
+				C_PetJournal.DismissSummonedPet(guid)
+			else
+				DoEmote("STAND")
+				C_PetJournal.SummonPetByGUID(guid)
+			end
+		end
+	end
 	local function battlepetHint(pid)
 		local sid, cn, _, _, _, _, _, n, tex = C_PetJournal.GetPetInfoByPetID(pid)
 		local cooldown, duration, enabled = C_PetJournal.GetPetCooldownByGUID(pid)
 		local cdLeft = (cooldown or 0) > 0 and (enabled ~= 0) and (cooldown + duration - GetTime())
-		local active = C_PetJournal.GetSummonedPetGUID()
-		local state = active and strcmputf8i(active, pid) == 0 and 1 or 0
+		local state = CF_WRATH and (C_PetJournal.IsCurrentlySummoned(pid) and 1 or 0) or strcmputf8i(C_PetJournal.GetSummonedPetGUID() or "", pid) == 0 and 1 or 0
 		return sid and not cdLeft and C_PetJournal.PetIsSummonable(pid), state, tex, cn or n or "", 0, cdLeft or 0, duration or 0, SetBattlePetByID, pid
 	end
-	do -- random favorite pet
+	if MODERN then -- random favorite pet
 		local rname, _, ricon = GetSpellInfo(243819)
 		local function randFaveHint()
 			return HasFullControl(), C_PetJournal.GetSummonedPetGUID() and 1 or 0, ricon, rname, 0, 0, 0, callMethod.SetSpellByID, 243819
@@ -612,10 +642,10 @@ if MODERN then -- battlepet: pet ID, species ID
 				return true, randFaveHint()
 			end
 		end)
-		RW:SetCastEscapeAction(GetSpellInfo(243819), petAction.fave)
+		RW:SetCastEscapeAction(rname, petAction.fave)
 		RW:SetCastEscapeAction("spell:243819", petAction.fave)
 		function special.fave()
-			return L"Battle Pet", rname, ricon, nil, callMethod.SetSpellByID, 243819
+			return BPET_ATYPE_NAME, rname, ricon, nil, callMethod.SetSpellByID, 243819
 		end
 	end
 	local GetBattlePetInfo do -- (petID[, speciesID])
@@ -640,16 +670,20 @@ if MODERN then -- battlepet: pet ID, species ID
 		if not rpid then return end
 		local pk = rpid:upper()
 		if not petAction[pk] then
-			petAction[pk] = AB:CreateActionSlot(battlepetHint, rpid, "attribute", "type","macro", "macrotext",EMOTE143_CMD1 .. "\n" .. SLASH_SUMMON_BATTLE_PET1 .. " " .. rpid)
+			if MODERN then
+				petAction[pk] = AB:CreateActionSlot(battlepetHint, rpid, "attribute", "type","macro", "macrotext",EMOTE143_CMD1 .. "\n" .. SLASH_SUMMON_BATTLE_PET1 .. " " .. rpid)
+			else -- no /summonbattlepet implementation as of 4.4.0
+				petAction[pk] = AB:CreateActionSlot(battlepetHint, rpid, "func", SummonCompanion, rpid)
+			end
 		end
 		return petAction[pk]
 	end
 	local function describeBattlePet(pid, spid)
 		if special[pid] then return special[pid]() end
 		local rpid, _, cn, lvl, _, _, _, _, n, tex = GetBattlePetInfo(pid, spid)
-		if not rpid then return L"Battle Pet", "?" end
+		if not rpid then return BPET_ATYPE_NAME, "?" end
 		if (cn or n) and ((lvl or 0) > 1) then cn = "[" .. lvl .. "] " .. (cn or n) end
-		return L"Battle Pet", cn or n or ("#" .. tostring(rpid)), tex, nil, SetBattlePetByID, rpid
+		return BPET_ATYPE_NAME, cn or n or ("#" .. tostring(rpid)), tex, nil, SetBattlePetByID, rpid
 	end
 	AB:RegisterActionType("battlepet", createBattlePet, describeBattlePet, 2)
 	RW:SetCommandHint(SLASH_SUMMON_BATTLE_PET1, 60, function(_, _, clause)
@@ -758,7 +792,8 @@ do -- raidmark
 		end
 	end)
 end
-if MODERN then -- worldmarker
+if MODERN or CF_CATA then -- worldmarker
+	local NUM_WORLD_MARKERS = MODERN and 8 or 5
 	local map, icons = {}, {[0]="Interface/Icons/INV_Misc_PunchCards_White",
 		"Interface/Icons/INV_Misc_QirajiCrystal_04","Interface/Icons/INV_Misc_QirajiCrystal_03",
 		"Interface/Icons/INV_Misc_QirajiCrystal_05","Interface/Icons/INV_Misc_QirajiCrystal_02",
@@ -776,7 +811,7 @@ if MODERN then -- worldmarker
 		local canMark = not not (IsInGroup() and (not IsInRaid() or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player") or IsEveryoneAssistant()))
 		return canMark, i > 0 and IsRaidMarkerActive(i) and 1 or 0, icons[i], i == 0 and REMOVE_WORLD_MARKERS or _G["WORLD_MARKER" .. i], 0, 0, 0, Tooltip_SetWorldMark, i
 	end
-	for i=1, 8 do
+	for i=1, NUM_WORLD_MARKERS do
 		map[i] = AB:CreateActionSlot(worldmarkHint, i, "attribute", "type","worldmarker", "action","toggle", "marker",i)
 	end
 	map[0] = AB:CreateActionSlot(worldmarkHint, 0, "attribute", "type","macro", "macrotext",SLASH_CLEAR_WORLD_MARKER1 .. " " .. ALL)
@@ -784,12 +819,13 @@ if MODERN then -- worldmarker
 		return map[id]
 	end
 	local function describeWorldmark(id)
+		if map[id] == nil then return L"Raid World Marker", "?" end
 		return L"Raid World Marker", id == 0 and REMOVE_WORLD_MARKERS or _G["WORLD_MARKER" .. id], icons[id]
 	end
 	AB:RegisterActionType("worldmark", createWorldmark, describeWorldmark, 1)
 	RW:SetCommandHint(SLASH_WORLD_MARKER1, 40, function(_, _, clause)
 		clause = tonumber(clause)
-		if clause and clause >= 1 and clause <= 8 then
+		if map[clause] and clause > 0 then
 			return true, worldmarkHint(clause)
 		end
 	end)
@@ -839,7 +875,10 @@ do -- extrabutton
 	end
 end
 do -- zoneability auto-collection
-	local col, colId = {__embed=true}
+	local skipZoneAbilities = {
+		[436521]=1, [436524]=1, -- Pandaria remix: Extract Gem + Unraveling Sands
+	}
+	local col, tpos, colId = {__embed=true}, {}
 	local function createZoneAbility(id)
 		return id == 0 and colId or nil
 	end
@@ -852,18 +891,18 @@ do -- zoneability auto-collection
 		if event ~= "internal.collection.preopen" or cid ~= colId then return end
 		local changed, ni, za = nil, 1, C_ZoneAbility and C_ZoneAbility.GetActiveAbilities()
 		for i=1, za and #za or 0 do
-			local ai = za[i]
-			local asid = ai and ai.spellID
-			if asid and not IsPassiveSpell(asid) then
+			local asid = za[i].spellID
+			if asid and not (skipZoneAbilities[asid] or IsPassiveSpell(asid)) then
 				local tk, aid = "INTZAs" .. asid, AB:GetActionSlot("spell", asid)
 				if aid then
 					changed = changed or col[ni] ~= tk or col[tk] ~= aid
-					col[ni], col[tk], ni = tk, aid, ni + 1
+					col[ni], col[tk], tpos[tk], ni = tk, aid, ni, ni + 1
 				end
 			end
 		end
 		for i=ni, #col do
-			changed, col[i], col[col[i] or ni] = 1, nil, nil
+			local tk = col[i]
+			changed, col[i], col[tpos[tk] == i and tk or i] = 1, nil, nil
 		end
 		if changed then
 			AB:UpdateActionSlot(colId, col)

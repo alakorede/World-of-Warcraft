@@ -133,6 +133,13 @@ L.south_west = "Suroeste"
 L.west = "Oeste"
 L.north_west = "Noroeste"
 
+-- Schools
+L.fire = "Fuego"
+L.frost = "Escarcha"
+L.shadow = "Sombras"
+L.nature = "Naturaleza"
+L.arcane = "Arcano"
+
 -- Common ability name replacements
 L.absorb = "Absorber" -- Used for shield-like abilities that absorb damage or healing
 L.heal_absorb = "Absorción de curación" -- Used for shield-like abilities that absorb healing only
@@ -173,6 +180,7 @@ L.orbs = "Orbes" -- Plural for L.orb
 L.curse = "Maldición" -- Any curse-type dispellable debuff, or debuffs called "Curse of XYZ", etc.
 L.curses = "Maldiciones" -- Plural of L.curse
 L.disease = "Enfermedad" -- Any disease-type dispellable debuff, or debuffs called "Disease of XYZ", etc.
+L.poison = "Veneno" -- Any poison-type dispellable debuff, or debuffs called "Poison of XYZ", etc.
 L.spirit = "Espíritu" -- Sometimes a boss will summon spirits, similar to ghosts, but not exactly, although you might have the same word for both. e.g. "Spirits of X" or "Wild Spirits"
 L.spirits = "Espíritus" -- Plural of L.spirit
 L.tornado = "Tornado" -- 'A tornado is a violently rotating column of air that is in contact with both the surface of the Earth and a cloud' - Wikipedia
@@ -186,3 +194,5 @@ L.mind_control_short = "CM" -- Short version of Mind Control, mainly for bars
 L.soak = "Soak" -- Abilities you have to stand in on purpose to soak the damage, like a sponge soaks water. Commonly for abilities that split damage between everyone standing in them.
 L.soaks = "Soaks" -- Plural of L.soak
 L.spell_reflection = "Reflejo de hechizos" -- Any ability that reflects spells
+L.parasite = "Parásito" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
+L.rooted = "Enraizado" -- Any ability that roots you in place, preventing you from moving

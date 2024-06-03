@@ -1,9 +1,5 @@
 
 OmniCCDB = {
-["global"] = {
-["dbVersion"] = 6,
-["addonVersion"] = "10.2.7",
-},
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Default",
 ["Mitráculo - Nemesis"] = "Default",
@@ -53,59 +49,31 @@ OmniCCDB = {
 ["Aishy - Nemesis"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
 ["Satishy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
+["Radagashy - Goldrinn"] = "Default",
 ["Dishy - Nemesis"] = "Default",
-["Keishy - Aerie Peak"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Sharan - Goldrinn"] = "Default",
-["Sashy - Goldrinn"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Trystam - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
-["Yashy - Nemesis"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Melishy - Goldrinn"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
-["Kuradis - Nemesis"] = "Default",
-["Kerrishy - Goldrinn"] = "Default",
 ["Aleshy - Goldrinn"] = "Default",
-["Radagashy - Goldrinn"] = "Default",
+["Kerrishy - Goldrinn"] = "Default",
+["Kuradis - Nemesis"] = "Default",
+["Trystam - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
+["Yashy - Nemesis"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Satishy - Nemesis"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Sharan - Goldrinn"] = "Default",
+["Keishy - Aerie Peak"] = "Default",
+},
+["global"] = {
+["dbVersion"] = 6,
+["addonVersion"] = "10.2.7",
 },
 ["profiles"] = {
 ["Default"] = {
-["themes"] = {
-["Plater Nameplates Theme"] = {
-["textStyles"] = {
-["seconds"] = {
-},
-["soon"] = {
-},
-["minutes"] = {
-},
-},
-},
-["Default"] = {
-["textStyles"] = {
-["seconds"] = {
-},
-["soon"] = {
-},
-["minutes"] = {
-},
-},
-},
-["Padrão"] = {
-["textStyles"] = {
-["soon"] = {
-},
-["seconds"] = {
-},
-["minutes"] = {
-},
-},
-},
-},
 ["rules"] = {
 {
 ["id"] = "Plater Nameplates Rule",
@@ -118,8 +86,52 @@ OmniCCDB = {
 ["priority"] = 1,
 },
 },
+["themes"] = {
+["Plater Nameplates Theme"] = {
+["textStyles"] = {
+["seconds"] = {
+},
+["minutes"] = {
+},
+["soon"] = {
+},
+},
+},
+["Default"] = {
+["textStyles"] = {
+["seconds"] = {
+},
+["minutes"] = {
+},
+["soon"] = {
+},
+},
 },
 ["Padrão"] = {
+["textStyles"] = {
+["soon"] = {
+},
+["minutes"] = {
+},
+["seconds"] = {
+},
+},
+},
+},
+},
+["Padrão"] = {
+["themes"] = {
+["Padrão"] = {
+["textStyles"] = {
+["soon"] = {
+},
+["minutes"] = {
+},
+["seconds"] = {
+},
+},
+},
+},
 ["rules"] = {
 {
 ["id"] = "auras",
@@ -147,18 +159,6 @@ OmniCCDB = {
 },
 ["name"] = "Barras de ação",
 ["enabled"] = false,
-},
-},
-["themes"] = {
-["Padrão"] = {
-["textStyles"] = {
-["soon"] = {
-},
-["seconds"] = {
-},
-["minutes"] = {
-},
-},
 },
 },
 },

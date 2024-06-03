@@ -302,12 +302,11 @@ function MoveAny:IsEnabled(element, value, settings)
 		MoveAny:GetTab()["ELES"] = MoveAny:GetTab()["ELES"] or {}
 		MoveAny:GetTab()["ELES"]["OPTIONS"] = MoveAny:GetTab()["ELES"]["OPTIONS"] or {}
 		MoveAny:GetTab()["ELES"]["OPTIONS"][element] = MoveAny:GetTab()["ELES"]["OPTIONS"][element] or {}
-		if MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"] == nil then
-			--MoveAny:MSG("VALUE NOT IN DB, SET IT", element, value)
+		if MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"] == nil and value ~= nil then
 			MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"] = value
 		end
 
-		return MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"]
+		return MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"] or false
 	end
 
 	return false
@@ -426,6 +425,18 @@ function MoveAny:SetElePoint(key, p1, p2, p3, p4, p5)
 
 	if key ~= "MALock" then
 		MoveAny:EnableSave("SetElePoint", key)
+	end
+end
+
+function MoveAny:ResetElement(name)
+	MoveAny:CheckDB()
+	if MoveAny:GetTab() and MoveAny:GetTab()["ELES"] then
+		MoveAny:GetTab()["ELES"]["OPTIONS"] = MoveAny:GetTab()["ELES"]["OPTIONS"] or {}
+		MoveAny:GetTab()["ELES"]["SIZES"] = MoveAny:GetTab()["ELES"]["SIZES"] or {}
+		MoveAny:GetTab()["ELES"]["POINTS"] = MoveAny:GetTab()["ELES"]["POINTS"] or {}
+		MoveAny:GetTab()["ELES"]["OPTIONS"][name] = {}
+		MoveAny:GetTab()["ELES"]["SIZES"][name] = {}
+		MoveAny:GetTab()["ELES"]["POINTS"][name] = {}
 	end
 end
 

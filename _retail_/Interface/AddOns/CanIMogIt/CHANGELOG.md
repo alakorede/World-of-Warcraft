@@ -1,3 +1,17 @@
+10.2.7v1.55 - 2024/05/16
+
+* Updated TOC.
+* [#319](https://gitlab.com/toreltwiddler/CanIMogIt/issues/319) Added tooltips and icon overlay to Mounts!
+* [#321](https://gitlab.com/toreltwiddler/CanIMogIt/issues/321) Added tooltips and icon overlay to Battle Pets!
+* [#322](https://gitlab.com/toreltwiddler/CanIMogIt/issues/322) Added tooltips and icon overlay to Toys!
+* [#323](https://gitlab.com/toreltwiddler/CanIMogIt/issues/323) Cataclysm support! Pet overlay is non-functional.  Adventure Guide, Tradeskills, and Auction House do not have tooltips or overlay.
+* [#324](https://gitlab.com/toreltwiddler/CanIMogIt/issues/324) Removed "(Experimental)" text from Show Source Location Tooltip option.
+* [#325](https://gitlab.com/toreltwiddler/CanIMogIt/issues/325) Fixes for 10.2.6 ItemInfo changes. (Thank you Jonathan Ferro!)
+* [#328](https://gitlab.com/toreltwiddler/CanIMogIt/issues/328) Fix error from Trading post items.
+* [#329](https://gitlab.com/toreltwiddler/CanIMogIt/issues/329) Checked Cataclysm Bag addons and UI addons. All work except for ElvUI Overlay.
+
+*****
+
 10.2.5v1.54 - 2024/03/09
 
 * Updated TOC.

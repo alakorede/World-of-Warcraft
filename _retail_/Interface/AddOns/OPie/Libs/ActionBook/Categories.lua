@@ -1,7 +1,6 @@
 local COMPAT, _, T = select(4,GetBuildInfo()), ...
 if T.SkipLocalActionBook then return end
-local MODERN = COMPAT >= 8e4
-local CF_WRATH, CI_ERA = not MODERN and COMPAT >= 3e4, COMPAT <= 2e4
+local MODERN, CF_WRATH, CF_CATA, CI_ERA = COMPAT > 10e4, COMPAT < 10e4 and COMPAT >= 3e4, COMPAT < 10e4 and COMPAT >= 4e4, COMPAT < 2e4
 local AB = T.ActionBook:compatible(2,21)
 local RW = T.ActionBook:compatible("Rewire", 1,27)
 assert(AB and RW and 1, "Incompatible library bundle")
@@ -173,7 +172,7 @@ AB:AugmentCategory(L"Items", function(_, add)
 		end
 	end
 end)
-if MODERN then -- Battle pets
+if MODERN or CF_WRATH then -- Battle pets/Companions
 	local running, sourceFilters, typeFilters, flagFilters, search = false, {}, {}, {[LE_PET_JOURNAL_FILTER_COLLECTED]=1, [LE_PET_JOURNAL_FILTER_NOT_COLLECTED]=1}, ""
 	hooksecurefunc(C_PetJournal, "SetSearchFilter", function(filter) search = filter end)
 	hooksecurefunc(C_PetJournal, "ClearSearchFilter", function() if not running then search = "" end end)
@@ -184,7 +183,7 @@ if MODERN then -- Battle pets
 		end
 		return petID
 	end
-	AB:AugmentCategory(L"Battle pets", function(_, add)
+	AB:AugmentCategory(not MODERN and COMPANIONS or L"Battle pets", function(_, add)
 		assert(not running, "Battle pets enumerator is not reentrant")
 		running = true
 		for i=1, C_PetJournal.GetNumPetSources() do
@@ -208,7 +207,9 @@ if MODERN then -- Battle pets
 		local sortParameter = C_PetJournal.GetPetSortParameter()
 		C_PetJournal.SetPetSortParameter(LE_SORT_BY_LEVEL)
 		
-		add("battlepet", "fave")
+		if MODERN then
+			add("battlepet", "fave")
+		end
 		for i=1,C_PetJournal.GetNumPets() do
 			add("battlepet", FilterPetInfo(C_PetJournal.GetPetInfoByIndex(i)))
 		end
@@ -227,15 +228,8 @@ if MODERN then -- Battle pets
 		
 		running = false
 	end)
-elseif CF_WRATH then
-	AB:AugmentCategory(COMPANIONS, function(_, add)
-		for i=1, GetNumCompanions("CRITTER") do
-			local _, _, sid = GetCompanionInfo("CRITTER", i)
-			add("spell", sid)
-		end
-	end)
 end
-if COMPAT >= 3e4 then -- Mounts
+if MODERN or CF_WRATH then -- Mounts
 	AB:AugmentCategory(L"Mounts", function(_, add)
 		if GetSpellInfo(150544) then add("spell", 150544) end
 		local myFactionId = UnitFactionGroup("player") == "Horde" and 0 or 1
@@ -272,9 +266,9 @@ if COMPAT >= 3e4 then -- equipmentset
 	end)
 end
 AB:AugmentCategory(L"Raid markers", function(_, add)
-	for k=0, MODERN and 1 or 0 do
+	for k=0, (MODERN or CF_CATA) and 1 or 0 do
 		k = k == 0 and "raidmark" or "worldmark"
-		for i=0,8 do
+		for i=0, k == "worldmark" and CF_CATA and 5 or 8 do
 			add(k, i)
 		end
 	end

@@ -62,6 +62,7 @@ local WEAPON_OFF_HAND = "INVTYPE_WEAPONOFFHAND"
 local HOLDABLE = "INVTYPE_HOLDABLE"
 local TABARD = "INVTYPE_TABARD"
 local BAG = "INVTYPE_BAG"
+local NONEQUIP = "INVTYPE_NON_EQUIP_IGNORE"
 
 
 local inventorySlotsMap = {
@@ -160,7 +161,7 @@ local APPEARANCES_SETS_TAB = 2
 
 
 -- Get the name for Cosmetic. Uses http://www.wowhead.com/item=130064/deadeye-monocle.
-local COSMETIC_NAME = select(3, GetItemInfoInstant(130064))
+local COSMETIC_NAME = select(3, C_Item.GetItemInfoInstant(130064))
 
 
 -- Built-in colors
@@ -573,6 +574,7 @@ function CanIMogIt:GetSets()
         end
     end
 end
+CanIMogIt.GetSets = CanIMogIt.RetailWrapper(CanIMogIt.GetSets)
 
 
 function CanIMogIt.GetRatio(setID)
@@ -843,8 +845,8 @@ function CanIMogIt:CalculateSourceLocationText(itemLink)
     if appearanceID == nil then return end
     local sources = C_TransmogCollection.GetAppearanceSources(appearanceID, 1, transmogLocation)
     if sources then
-        local totalSourceTypes = { 0, 0, 0, 0, 0, 0 }
-        local knownSourceTypes = { 0, 0, 0, 0, 0, 0 }
+        local totalSourceTypes = { 0, 0, 0, 0, 0, 0, 0 }
+        local knownSourceTypes = { 0, 0, 0, 0, 0, 0, 0 }
         local totalUnknownType = 0
         local knownUnknownType = 0
         for _, source in pairs(sources) do
@@ -914,7 +916,7 @@ end
 
 
 function CanIMogIt:GetItemExpansion(itemID)
-    return select(15, GetItemInfo(itemID))
+    return select(15, C_Item.GetItemInfo(itemID))
 end
 
 
@@ -934,17 +936,17 @@ end
 
 
 function CanIMogIt:GetItemClassName(itemLink)
-    return select(2, GetItemInfoInstant(itemLink))
+    return select(2, C_Item.GetItemInfoInstant(itemLink))
 end
 
 
 function CanIMogIt:GetItemSubClassName(itemLink)
-    return select(3, GetItemInfoInstant(itemLink))
+    return select(3, C_Item.GetItemInfoInstant(itemLink))
 end
 
 
 function CanIMogIt:GetItemSlotName(itemLink)
-    return select(4, GetItemInfoInstant(itemLink))
+    return select(4, C_Item.GetItemInfoInstant(itemLink))
 end
 
 
@@ -961,7 +963,7 @@ end
 function CanIMogIt:IsReadyForCalculations(itemLink)
     -- Returns true of the item's GetItemInfo is ready, or if it's a keystone,
     -- or if it's a battlepet.
-    if GetItemInfo(itemLink)
+    if C_Item.GetItemInfo(itemLink)
         or CanIMogIt:IsItemKeystone(itemLink)
         or CanIMogIt:IsItemBattlepet(itemLink) then
         return true
@@ -1110,19 +1112,14 @@ function CanIMogIt:IsEquippable(itemLink)
     -- Returns whether the item is equippable or not (exluding bags)
     local slotName = CanIMogIt:GetItemSlotName(itemLink)
     if slotName == nil then return end
-    return slotName ~= "" and slotName ~= BAG
+    return slotName ~= "" and slotName ~= NONEQUIP and slotName ~= BAG
 end
 
 
-function CanIMogIt:GetSourceID(itemLink)
-    local sourceID = select(2, C_TransmogCollection.GetItemInfo(itemLink))
-    if sourceID then
-        return sourceID, "C_TransmogCollection.GetItemInfo"
-    end
-
+local function RetailOldGetSourceID(itemLink)
     -- Some items don't have the C_TransmogCollection.GetItemInfo data,
     -- so use the old way to find the sourceID (using the DressUpModel).
-    local itemID, _, _, slotName = GetItemInfoInstant(itemLink)
+    local itemID, _, _, slotName = C_Item.GetItemInfoInstant(itemLink)
     local slots = inventorySlotsMap[slotName]
 
     if slots == nil or slots == false or C_Item.IsDressableItemByID(itemID) == false then return end
@@ -1153,6 +1150,20 @@ function CanIMogIt:GetSourceID(itemLink)
             return sourceID, "DressUpModel:GetItemTransmogInfo"
         end
     end
+end
+
+local function ClassicOldGetSourceID(itemLink)
+end
+
+local OldGetSourceID = CanIMogIt.RetailWrapper(RetailOldGetSourceID, ClassicOldGetSourceID)
+
+function CanIMogIt:GetSourceID(itemLink)
+    local sourceID = select(2, C_TransmogCollection.GetItemInfo(itemLink))
+    if sourceID then
+        return sourceID, "C_TransmogCollection.GetItemInfo"
+    end
+
+    return OldGetSourceID(itemLink)
 end
 
 
@@ -1288,7 +1299,7 @@ function CanIMogIt:IsTransmogable(itemLink)
         return false
     end
 
-    local itemID, _, _, slotName = GetItemInfoInstant(itemLink)
+    local itemID, _, _, slotName = C_Item.GetItemInfoInstant(itemLink)
 
     if CanIMogIt:IsItemBattlepet(itemLink) or CanIMogIt:IsItemKeystone(itemLink) then
         -- Item is never transmoggable if it's a battlepet or keystone.
@@ -1322,12 +1333,19 @@ function CanIMogIt:TextIsUnknown(unmodifiedText)
 end
 
 
-function CanIMogIt:PreLogicOptionsContinue(itemLink)
+function CanIMogIt:PreLogicOptionsContinue(isItemMount, isItemToy, isItemPet,
+        isItemEquippable)
     -- Apply the options. Returns false if it should stop the logic.
-    if CanIMogItOptions["showEquippableOnly"] and
-            not CanIMogIt:IsEquippable(itemLink) then
-        -- Don't bother if it's not equipable.
-        return false
+    mountCheck = CanIMogItOptions["showMountItems"] and isItemMount
+    toyCheck = CanIMogItOptions["showToyItems"] and isItemToy
+    petCheck = CanIMogItOptions["showPetItems"] and isItemPet
+
+    -- If showEquippableOnly is checked, only show equippable items.
+    if CanIMogItOptions["showEquippableOnly"] and not isItemEquippable then
+        -- Unless it's a mount, toy, or pet, and their respective option is enabled.
+        if not (mountCheck or toyCheck or petCheck) then
+            return false
+        end
     end
 
     return true
@@ -1368,14 +1386,22 @@ function CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
         return exception_text, exception_text
     end
 
-    local isTransmogable = CanIMogIt:IsTransmogable(itemLink)
-    -- if isTransmogable == nil then return end
+    local isTransmogable, playerKnowsTransmogFromItem, isValidAppearanceForCharacter,
+        playerKnowsTransmog, characterCanLearnTransmog, isItemEquippable,
+        isItemSoulbound, isItemMount, isItemToy, isItemPet, text, unmodifiedText;
 
-    local playerKnowsTransmogFromItem, isValidAppearanceForCharacter,
-        characterIsHighEnoughLevelToTransmog, playerKnowsTransmog, characterCanLearnTransmog,
-        isItemSoulbound, text, unmodifiedText;
+    isTransmogable = CanIMogIt:IsTransmogable(itemLink)
+    isItemMount = CanIMogIt:IsItemMount(itemLink)
+    isItemToy = CanIMogIt:IsItemToy(itemLink)
+    isItemPet = CanIMogIt:IsItemPet(itemLink)
+    isItemSoulbound = CanIMogIt:IsItemSoulbound(itemLink, bag, slot)
+    isItemEquippable = CanIMogIt:IsEquippable(itemLink)
 
-    local isItemSoulbound = CanIMogIt:IsItemSoulbound(itemLink, bag, slot)
+    if not CanIMogIt:PreLogicOptionsContinue(
+            isItemMount, isItemToy, isItemPet,
+            isItemEquippable) then
+        return "", ""
+    end
 
     -- Is the item transmogable?
     if isTransmogable then
@@ -1480,6 +1506,15 @@ function CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
                 end
             end
         end
+    elseif isItemMount then
+        -- This item is a mount, so let's figure out if we know it!
+        text, unmodifiedText = CanIMogIt:CalculateMountText(itemLink)
+    elseif isItemToy then
+        -- This item is a toy, so let's figure out if we know it!
+        text, unmodifiedText = CanIMogIt:CalculateToyText(itemLink)
+    elseif isItemPet then
+        -- This item is a pet, so let's figure out if we know it!
+        text, unmodifiedText = CanIMogIt:CalculatePetText(itemLink)
     else
         -- This item is never transmogable.
         text = CanIMogIt.NOT_TRANSMOGABLE
@@ -1562,8 +1597,6 @@ function CanIMogIt:GetTooltipText(itemLink, bag, slot)
 
     local text = ""
     local unmodifiedText = ""
-
-    if not CanIMogIt:PreLogicOptionsContinue(itemLink) then return "", "" end
 
     -- Return cached items
     local cachedData = CanIMogIt.cache:GetItemTextValue(itemLink)

@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0903,
+["LastVersion"] = 2.0906,
+["LastPlayerFullName"] = "Batezu-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -88,9 +90,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193766::::::::68:267::17:3:7978:7975:6652:2:9:68:28:2587:::::|h[Kokia's Burnout Rod]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Batezu-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,6 +143,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "WARLOCK",

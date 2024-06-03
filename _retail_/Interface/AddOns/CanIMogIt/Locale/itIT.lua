@@ -72,6 +72,8 @@ L["Show Bag Icons"] = "Mostra Icone Borsa"
 --[[Translation missing --]]
 L["Show information on the tooltip about transmog sets."] = "Show information on the tooltip about transmog sets."
 --[[Translation missing --]]
+L["Show Mount Items"] = "Show Mount Items"
+--[[Translation missing --]]
 L["Show Source Location Tooltip"] = "Show Source Location Tooltip"
 --[[Translation missing --]]
 L["Show Transmog Set Info"] = "Show Transmog Set Info"

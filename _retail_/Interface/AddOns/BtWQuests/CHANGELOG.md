@@ -1,3 +1,14 @@
+# v2.40.0
+
+- Added the Draenei heritage armor questline
+- Added the Troll heritage armor questline
+- Removed obsolete Flightstones questline
+- Fixed names of Embers of Neltharion major questlines
+
+# v2.39.0
+
+- Added Azerothian Archives questline
+
 # v2.38.0
 
 - Updated for 10.2.7

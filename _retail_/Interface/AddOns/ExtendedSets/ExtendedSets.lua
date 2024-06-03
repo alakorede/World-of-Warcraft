@@ -2735,14 +2735,16 @@ local setsFlagTP = {
   [3639] = true, --swimwear (shorts)
 }
 local setsFlagShop = {
-  [1903] = true,
-  [2482] = true,
-  [2857] = true,
-  [2200] = true,
-  [1913] = true,
-  [1914] = true,
-  [3085] = true,
-  [3355] = true,
+  [1903] = true, -- wendigo woolies
+  [2482] = true, -- fireplume regalia
+  [2857] = true, -- waveborne diplomat's
+  [2200] = true, -- celestial observer's
+  [1913] = true, -- eternal traveler
+  [1914] = true, -- sprite darter's
+  [3085] = true, -- high scholar's
+  [3355] = true, -- dreadlord's venombane
+  [3634] = true, -- green murloc romper
+  [3635] = true, -- purple murloc romper
 }
 local setsFlagNoLongerObtainable = {
   [3443] = true,

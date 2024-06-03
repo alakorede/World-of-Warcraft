@@ -446,14 +446,6 @@ function MoveAny:CustomBars()
 		end
 	end
 
-	if D4:GetWoWBuild() ~= "RETAIL" then
-		for i = 7, MAMaxAB do
-			for x = 1, 12 do
-				_G["BINDING_NAME_CLICK ActionBar" .. i .. "Button" .. x .. ":LeftButton"] = _G["BINDING_NAME_CLICK ActionBar" .. i .. "Button" .. x .. ":LeftButton"] or "Actionbar " .. i .. " Button " .. x
-			end
-		end
-	end
-
 	for i = 1, MAMaxAB do
 		if i ~= 2 and i <= 6 and MoveAny:IsEnabled("ACTIONBARS", false) or MoveAny:IsEnabled("ACTIONBAR" .. i, false) then
 			local name = "MAActionBar" .. i
@@ -478,7 +470,7 @@ function MoveAny:CustomBars()
 				local id = (i - 1) * 12 + x
 				if btn == nil then
 					btn = CreateFrame("CheckButton", btnname, bar, "ActionBarButtonTemplate, SecureActionButtonTemplate")
-					btn.commandName = "CLICK " .. btnname
+					--btn.commandName = "CLICK " .. btnname
 					btn:SetAttribute("action", id)
 				else
 					btn.bindingID = x
@@ -489,6 +481,12 @@ function MoveAny:CustomBars()
 					alwaysShow = 1
 				else
 					alwaysShow = 0
+				end
+
+				if GetCVar("ActionButtonUseKeyDown") == "1" then
+					btn:RegisterForClicks("AnyDown")
+				else
+					btn:RegisterForClicks("AnyUp")
 				end
 
 				btn:SetAttribute("statehidden", false)
@@ -520,6 +518,29 @@ function MoveAny:CustomBars()
 			MoveAny:UpdateActionBar(_G[name])
 		end
 	end
+
+	local f = CreateFrame("FRAME")
+	f:RegisterEvent("CVAR_UPDATE")
+	f:SetScript(
+		"OnEvent",
+		function(sel, event, cvar)
+			if event == "CVAR_UPDATE" and cvar ~= nil and cvar == "ActionButtonUseKeyDown" then
+				for i, v in pairs(abs) do
+					if v.btns then
+						for x, btn in pairs(v.btns) do
+							if btn then
+								if GetCVar("ActionButtonUseKeyDown") == "1" then
+									btn:RegisterForClicks("AnyDown")
+								else
+									btn:RegisterForClicks("AnyUp")
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	)
 
 	-- Masque
 	if once then
@@ -607,7 +628,7 @@ f:SetScript(
 					local bars = "[overridebar]" .. GetOverrideBarIndex() .. ";[shapeshift]" .. GetTempShapeshiftBarIndex() .. ";[vehicleui]" .. GetVehicleBarIndex() .. ";[possessbar]16;[bonusbar:5,bar:2]2;[bonusbar:5]11;[bonusbar:4,bar:2]2;[bonusbar:4]10;[bonusbar:3,bar:2]2;[bonusbar:3]9;[bonusbar:2,bar:2]2;[bonusbar:2]8;[bonusbar:1,bar:2]2;[bonusbar:1]7;[bar:6]6;[bar:5]5;[bar:4]4;[bar:3]3;[bar:2]2;1"
 					RegisterStateDriver(frame, "page", bars)
 				else
-					print("[MOVEANY] MISSING EXPANSION")
+					MoveAny:MSG("MISSING EXPANSION")
 				end
 
 				local _onAttributeChanged = [[

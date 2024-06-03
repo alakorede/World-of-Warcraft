@@ -1270,6 +1270,7 @@ end
 
 local function SelectWeapon()
   RefreshWeaponTypeButtons();
+  --WeaponSetsCollectionFrame.RightFrame.indexText:SetText(WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].activeSource);
   RemoveWeapons();
   if WeaponSetsCollectionFrame.RightFrame.Model.isPlayer then
     EquipWeapon();
@@ -2073,6 +2074,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     for i=1,#weaponType do
       local button = CreateFrame("Button", nil, WeaponSetsCollectionFrame.RightFrame);
       button:SetWidth(buttonWidth);
+      button:RegisterForMouse("LeftButtonDown", "RightButtonDown");
       button.WeaponIcon = button:CreateTexture(nil, "ARTWORK");
       button.WeaponIcon:SetPoint("CENTER", button, "LEFT", 5 + (WeaponSetsCollectionFrame.RightFrame.buttonHeight * .75), 0);
       button.WeaponIcon:SetTexture([[Interface\Addons\ExtendedSets\textures\weapon_icons.tga]]);
@@ -2081,20 +2083,26 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
       button.Text:SetPoint("LEFT",button.WeaponIcon,"RIGHT",5,0);
       button.Text:SetText(weaponType[i][1]);
       button.index = i;
-      button:SetScript("OnClick", function(self)
+      button:SetScript("OnMouseDown", function(self,button)
           if self.disabled == true then return; end
           WeaponSetsCollectionFrame.RightFrame.preferredWeapon = self.index;
           if WeaponSetsCollectionFrame.RightFrame.activeWeapon ~= self.index then
             WeaponSetsCollectionFrame.RightFrame.activeWeapon = self.index;
             SelectWeapon();
           else
-            if WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource > #WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].sources then
-              WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = 2;
-            else
-              WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource + 1;
-            end
             if WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource > WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].num then
-              WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = 1;
+              WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].num;
+            end
+            if (button == "LeftButton") then
+              WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource + 1;
+              if WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource > WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].num then
+                WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = 1;
+              end
+            else
+              WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource - 1;
+              if WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource < 1 then
+                WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].activeSource = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[self.index].num;
+              end
             end
             SelectWeapon();
           end
@@ -2313,9 +2321,9 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
                     end
                   elseif ( IsModifiedClick("DRESSUP") ) then
                     DressUpVisual(self.sourceID);
-                  --else --help for filling in weapon db
-                  --  print(self.sourceID);
                   end
+                  --help for filling in weapon db
+                  --print(self.sourceID);
         end)
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame:SetHyperlinksEnabled(true);
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame:SetScript("OnHyperlinkClick", function(self, link, text, button)
@@ -2340,6 +2348,13 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2 = WeaponSetsCollectionFrame.RightFrame.DetailsFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLeftGrey");
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetPoint("TOP", WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label, "BOTTOM", 0, -5);
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetTextColor(.55,.55,.7);
+    
+    ----test temp
+    --WeaponSetsCollectionFrame.RightFrame.indexText = WeaponSetsCollectionFrame.RightFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+    --WeaponSetsCollectionFrame.RightFrame.indexText:SetPoint("RIGHT",WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame,"LEFT",-15,0);
+    --WeaponSetsCollectionFrame.RightFrame.indexText:SetSize(75, 10);
+    --WeaponSetsCollectionFrame.RightFrame.indexText:SetJustifyH("LEFT");
+    --WeaponSetsCollectionFrame.RightFrame.indexText:SetText("Hi");
     
     
     WeaponSetsCollectionFrame.RightFrame.ResetRotation = CreateFrame("Button", nil, WeaponSetsCollectionFrame.RightFrame);

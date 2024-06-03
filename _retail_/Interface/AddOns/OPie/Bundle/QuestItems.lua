@@ -40,6 +40,7 @@ if MODERN then
 			[204911]=have1,
 			[205254]=consume,
 			[199192]=have1, [204359]=have1, [205226]=have1, [210549]=have1,
+			[211279]=have1, -- remix lootboxes
 		}
 	end
 	local includeSpell = {

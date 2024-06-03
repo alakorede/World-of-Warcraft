@@ -206,6 +206,9 @@ function MoveAny:LangdeDE()
 		["LID_SHARDBARFRAME"] = "Hexenmeister Macht Fenster (Splitter)",
 		["LID_OFFSET"] = "Versatz (Offset)",
 		["LID_EclipseBarFrame"] = "Eclipseleiste (Druide)",
+		["LID_REQUIRESFOR"] = "Benötigt: %s",
+		["LID_REQUIREDFOR"] = "Benötigt für: %s",
+		["LID_RESETELEMENT"] = "Element resetten",
 	}
 
 	if D4:GetWoWBuild() ~= "RETAIL" then
