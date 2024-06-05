@@ -1,11 +1,13 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0903,
+["LastVersion"] = 2.0906,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
-["ID"] = 198013,
-["Level"] = 319,
-["Link"] = "|cff0070dd|Hitem:198013::::::::70:104::26:1:8774:2:9:68:28:2153:::::|h[Twisted Leather Hood]|h|r",
+["ID"] = 193641,
+["Level"] = 326,
+["Link"] = "|cff0070dd|Hitem:193641::::::::70:256::17:5:7978:7975:6652:10532:10864:2:9:68:28:2587:::::|h[Headwrap of the Abandoned]|h|r",
 },
 {
 ["ID"] = 193676,
@@ -13,9 +15,9 @@ PawnOptions = {
 ["Link"] = "|cff0070dd|Hitem:193676::::::::69:104::17:5:7978:7975:6652:7937:8783:2:28:2155:9:69:::::|h[Ukhel Ancestry Beads]|h|r",
 },
 {
-["ID"] = 197653,
-["Level"] = 276,
-["Link"] = "|cff1eff00|Hitem:197653::::::::69:104::26:1:7963:2:28:2504:9:65:::::|h[Teerai Watcher Spaulders]|h|r",
+["ID"] = 193690,
+["Level"] = 336,
+["Link"] = "|cff0070dd|Hitem:193690::::::::70:256::17:4:7978:7975:6652:10864:2:9:69:28:2587:::::|h[Drake Hunter Shoulderpads]|h|r",
 },
 nil,
 {
@@ -39,9 +41,9 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:191991::::::::69:104::17:2:9156:6652:2:9:68:28:2424:::::|h[Ottuk Hide Waders]|h|r",
 },
 {
-["ID"] = 193793,
-["Level"] = 316,
-["Link"] = "|cff0070dd|Hitem:193793::::::::67:104::17:5:7978:7975:6652:7937:8815:2:28:2550:9:67:::::|h[Ferocious Hyena Hidebinders]|h|r",
+["ID"] = 193635,
+["Level"] = 326,
+["Link"] = "|cff0070dd|Hitem:193635::::::::70:256::17:5:7978:7975:6652:10532:10864:2:9:68:28:2587:::::|h[Infused Elemental Bands]|h|r",
 },
 {
 ["ID"] = 193661,
@@ -49,22 +51,22 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193661::::::::67:104::17:4:7978:7975:6652:8813:2:28:2155:9:67:::::|h[Blightweaver's Clutches]|h|r",
 },
 {
-["ID"] = 193708,
-["Level"] = 316,
+["ID"] = 193696,
+["Level"] = 460,
 ["AlsoFitsIn"] = 12,
-["Link"] = "|cff0070dd|Hitem:193708::::::::67:256::17:4:7978:7975:6652:10533:2:28:2155:9:67:::::|h[Platinum Star Band]|h|r",
+["Link"] = "|cff0070dd|Hitem:193696::::::::70:256::1:5:10323:7974:10532:3139:8766:1:28:2587:::::|h[Thunderous Downburst Ring]|h|r",
 },
 {
-["ID"] = 193708,
-["Level"] = 316,
-["AlsoFitsIn"] = 11,
-["Link"] = "|cff0070dd|Hitem:193708::::::::67:256::17:4:7978:7975:6652:10533:2:9:67:28:2155:::::|h[Platinum Star Band]|h|r",
-},
-{
-["ID"] = 193689,
+["ID"] = 193731,
 ["Level"] = 336,
+["AlsoFitsIn"] = 11,
+["Link"] = "|cff0070dd|Hitem:193731::::::::70:256::17:4:7978:7975:6652:10532:2:9:69:28:2587:::::|h[Circle of Ascended Frost]|h|r",
+},
+{
+["ID"] = 193791,
+["Level"] = 460,
 ["AlsoFitsIn"] = 14,
-["Link"] = "|cff0070dd|Hitem:193689::::::::69:104::17:3:7978:7975:6652:2:9:69:28:2549:::::|h[Granyth's Enduring Scale]|h|r",
+["Link"] = "|cff0070dd|Hitem:193791::::::::70:256::1:5:10323:7974:42:3139:8766:1:28:2155:::::|h[Time-Breaching Talon]|h|r",
 },
 {
 ["ID"] = 193689,
@@ -73,25 +75,22 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193689::::::::70:104::17:3:7978:7975:6652:2:9:69:28:2549:::::|h[Granyth's Enduring Scale]|h|r",
 },
 {
-["ID"] = 200278,
-["Level"] = 276,
-["Link"] = "|cff1eff00|Hitem:200278::::::::66:104::26:1:7963:2:28:2262:9:65:::::|h[Drake Archaeologist's Shawl]|h|r",
+["ID"] = 193763,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193763::::::::70:256::1:6:10323:7974:42:10864:3139:8766:1:28:2587:::::|h[Fireproof Drape]|h|r",
 },
 {
-["ID"] = 198008,
-["Level"] = 319,
-["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
+["ID"] = 193790,
+["Level"] = 460,
+["AlsoFitsIn"] = 17,
+["Link"] = "|cff0070dd|Hitem:193790::::::::70:256::1:5:10323:7974:42:3139:8766:1:28:2587:::::|h[Searing Tusk Shard]|h|r",
 },
 {
-["ID"] = 188507,
-["Level"] = 236,
-["AlsoFitsIn"] = 16,
-["Link"] = "|cff0070dd|Hitem:188507::::::::60:256::22:2:8760:6652:2:9:60:28:181:::::|h[Torturer's Mercy]|h|r",
+["ID"] = 193783,
+["Level"] = 336,
+["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::17:3:7978:7975:6652:2:9:69:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -145,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

@@ -133,6 +133,13 @@ L.south_west = "西南"
 L.west = "西方"
 L.north_west = "西北"
 
+-- Schools
+L.fire = "火焰"
+L.frost = "冰霜"
+L.shadow = "暗影"
+L.nature = "自然"
+L.arcane = "秘法"
+
 -- Common ability name replacements
 L.absorb = "吸收" -- Used for shield-like abilities that absorb damage or healing
 L.heal_absorb = "治療吸收盾" -- Used for shield-like abilities that absorb healing only
@@ -173,6 +180,7 @@ L.orbs = "寶珠" -- Plural for L.orb
 L.curse = "詛咒" -- Any curse-type dispellable debuff, or debuffs called "Curse of XYZ", etc.
 L.curses = "詛咒" -- Plural of L.curse
 L.disease = "疾病" -- Any disease-type dispellable debuff, or debuffs called "Disease of XYZ", etc.
+--L.poison = "Poison" -- Any poison-type dispellable debuff, or debuffs called "Poison of XYZ", etc.
 L.spirit = "靈魂" -- Sometimes a boss will summon spirits, similar to ghosts, but not exactly, although you might have the same word for both. e.g. "Spirits of X" or "Wild Spirits"
 L.spirits = "靈魂" -- Plural of L.spirit
 L.tornado = "旋風" -- 'A tornado is a violently rotating column of air that is in contact with both the surface of the Earth and a cloud' - Wikipedia
@@ -186,3 +194,5 @@ L.mind_control_short = "精神控制" -- Short version of Mind Control, mainly f
 L.soak = "分攤" -- Abilities you have to stand in on purpose to soak the damage, like a sponge soaks water. Commonly for abilities that split damage between everyone standing in them.
 L.soaks = "分攤" -- Plural of L.soak
 L.spell_reflection = "法術反射" -- Any ability that reflects spells
+L.parasite = "寄生" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
+L.rooted = "被定身" -- Any ability that roots you in place, preventing you from moving

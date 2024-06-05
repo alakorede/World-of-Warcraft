@@ -159,7 +159,18 @@ local function AddCategory(key)
 	end
 end
 
-local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
+local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requiresFor, requiredFor)
+	local oldVal = MoveAny:IsEnabled(key, val, true) or false
+	local bRequiresFor = nil
+	if requiresFor ~= nil then
+		bRequiresFor = MoveAny:IsEnabled(requiresFor)
+	end
+
+	local bRequiredFor = nil
+	if requiredFor ~= nil then
+		bRequiredFor = MoveAny:IsEnabled(requiredFor)
+	end
+
 	local bShowReload = showReload
 	local bGreyed = false
 	local lkey = key
@@ -167,9 +178,9 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
 		bShowReload = true
 	end
 
-	if val == nil then
+	if oldVal == nil then
 		MoveAny:MSG("Missing Value For: " .. tostring(key))
-		val = true
+		oldVal = true
 	end
 
 	if id then
@@ -180,7 +191,7 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
 		cbs[key] = CreateFrame("CheckButton", key .. "_CB", MALock.SC, "UICheckButtonTemplate")
 		local cb = cbs[key]
 		cb:SetSize(24, 24)
-		cb:SetChecked(MoveAny:IsEnabled(key, val, true))
+		cb:SetChecked(oldVal)
 		cb.func = func or nil
 		cb.f = cb:CreateFontString(nil, nil, "GameFontNormal")
 		cb.f:SetPoint("LEFT", cb, "RIGHT", 0, 0)
@@ -215,7 +226,15 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
 				lstr = "|cFFFFFFFF" .. lstr
 			end
 
-			if checked then
+			if bRequiresFor == false then
+				lstr = lstr .. " (" .. format(MoveAny:GT("LID_REQUIRESFOR"), MoveAny:GT("LID_" .. requiresFor)) .. ")"
+			end
+
+			if bRequiredFor == true then
+				lstr = lstr .. " (" .. format(MoveAny:GT("LID_REQUIREDFOR"), MoveAny:GT("LID_" .. requiredFor)) .. ")"
+			end
+
+			if bShowReload and checked ~= oldVal then
 				cb.f:SetText(format("[%s] %s", MoveAny:GT("LID_NEEDSARELOAD"), lstr))
 			else
 				cb.f:SetText(lstr)
@@ -226,8 +245,8 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
 			"OnClick",
 			function(sel)
 				MoveAny:SetEnabled(key, sel:GetChecked())
-				if bShowReload and sel:GetChecked() and sel.f then
-					cb:UpdateText(true)
+				if sel:GetChecked() and sel.f then
+					cb:UpdateText(sel:GetChecked())
 				end
 
 				if cb.func then
@@ -253,9 +272,27 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
 				end
 			end
 		)
+
+		if requiresFor ~= nil or requiredFor ~= nil then
+			function cb:Think()
+				if requiresFor ~= nil then
+					bRequiresFor = MoveAny:IsEnabled(requiresFor)
+				end
+
+				if requiredFor ~= nil then
+					bRequiredFor = MoveAny:IsEnabled(requiredFor)
+				end
+
+				cb:UpdateText(cb:GetChecked())
+				C_Timer.After(1, cb.Think)
+			end
+
+			cb:Think()
+			cb:UpdateText(cb:GetChecked())
+		end
 	end
 
-	cbs[key]:UpdateText()
+	cbs[key]:UpdateText(cbs[key]:GetChecked())
 	cbs[key]:ClearAllPoints()
 	if bGreyed then
 		cbs[key]:SetEnabled(false)
@@ -374,8 +411,8 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	D4:SetVersion(AddonName, 135994, "1.6.170")
-	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.170"))
+	D4:SetVersion(AddonName, 135994, "1.6.184")
+	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.184"))
 	MALock.CloseButton:SetScript(
 		"OnClick",
 		function()
@@ -435,7 +472,7 @@ function MoveAny:InitMALock()
 		end
 
 		AddCheckBox(posx, "PLAYERFRAME", false)
-		AddCheckBox(posx, "TARGETFRAME", false, nil, nil, "ShowTargetAndFocus")
+		AddCheckBox(posx, "TARGETFRAME", false, nil, nil, "ShowTargetAndFocus", nil, nil, "TARGETFRAMESPELLBAR")
 		if ComboFrame then
 			AddCheckBox(posx, "COMBOFRAME", false)
 		end
@@ -673,9 +710,9 @@ function MoveAny:InitMALock()
 			AddCheckBox(4, "BLIZZARDACTIONBUTTONSART", false)
 		end
 
-		AddCheckBox(4, "TARGETFRAMESPELLBAR", false)
+		AddCheckBox(24, "TARGETFRAMESPELLBAR", false, nil, nil, nil, nil, "TARGETFRAME")
 		if MoveAny:IsValidFrame(FocusFrame) then
-			AddCheckBox(4, "FOCUSFRAMESPELLBAR", false)
+			AddCheckBox(24, "FOCUSFRAMESPELLBAR", false, nil, nil, nil, nil, "FOCUSFRAME")
 		end
 
 		AddCheckBox(4, "UIWIDGETTOPCENTER", false)
@@ -1001,7 +1038,7 @@ function MoveAny:ShowProfiles()
 			end
 		)
 
-		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.170"))
+		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.184"))
 		MAProfiles.CloseButton:SetScript(
 			"OnClick",
 			function()
@@ -1940,7 +1977,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "RuneFrame",
-				["lstr"] = "LID_RUNEFRAME"
+				["lstr"] = "LID_RUNEFRAME",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -1951,7 +1990,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "WarlockPowerFrame",
-				["lstr"] = "LID_WARLOCKPOWERFRAME"
+				["lstr"] = "LID_WARLOCKPOWERFRAME",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -1960,7 +2001,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "ShardBarFrame",
-				["lstr"] = "LID_SHARDBARFRAME"
+				["lstr"] = "LID_SHARDBARFRAME",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -1971,7 +2014,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "MonkHarmonyBarFrame",
-				["lstr"] = "LID_MONKHARMONYBARFRAME"
+				["lstr"] = "LID_MONKHARMONYBARFRAME",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -1982,7 +2027,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "MonkStaggerBar",
-				["lstr"] = "LID_MONKSTAGGERBAR"
+				["lstr"] = "LID_MONKSTAGGERBAR",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -1993,7 +2040,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "MageArcaneChargesFrame",
-				["lstr"] = "LID_MAGEARCANECHARGESFRAME"
+				["lstr"] = "LID_MAGEARCANECHARGESFRAME",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -2005,7 +2054,9 @@ function MoveAny:LoadAddon()
 			MoveAny:RegisterWidget(
 				{
 					["name"] = "RogueComboPointBarFrame",
-					["lstr"] = "LID_COMBOPOINTPLAYERFRAME"
+					["lstr"] = "LID_COMBOPOINTPLAYERFRAME",
+					["userplaced"] = true,
+					["secure"] = true,
 				}
 			)
 		elseif class == "DRUID" then
@@ -2014,7 +2065,9 @@ function MoveAny:LoadAddon()
 			MoveAny:RegisterWidget(
 				{
 					["name"] = "DruidComboPointBarFrame",
-					["lstr"] = "LID_COMBOPOINTPLAYERFRAME"
+					["lstr"] = "LID_COMBOPOINTPLAYERFRAME",
+					["userplaced"] = true,
+					["secure"] = true,
 				}
 			)
 		end
@@ -2024,7 +2077,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "EclipseBarFrame",
-				["lstr"] = "LID_EclipseBarFrame"
+				["lstr"] = "LID_EclipseBarFrame",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -2040,7 +2095,9 @@ function MoveAny:LoadAddon()
 				MoveAny:RegisterWidget(
 					{
 						["name"] = "EssencePlayerFrame",
-						["lstr"] = "LID_ESSENCEPLAYERFRAME"
+						["lstr"] = "LID_ESSENCEPLAYERFRAME",
+						["userplaced"] = true,
+						["secure"] = true,
 					}
 				)
 
@@ -2057,7 +2114,9 @@ function MoveAny:LoadAddon()
 					MoveAny:RegisterWidget(
 						{
 							["name"] = "EssencePlayerFrame",
-							["lstr"] = "LID_ESSENCEPLAYERFRAME"
+							["lstr"] = "LID_ESSENCEPLAYERFRAME",
+							["userplaced"] = true,
+							["secure"] = true,
 						}
 					)
 				end
@@ -2071,7 +2130,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "PaladinPowerBarFrame",
-				["lstr"] = "LID_PALADINPOWERBARFRAME"
+				["lstr"] = "LID_PALADINPOWERBARFRAME",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -2080,7 +2141,9 @@ function MoveAny:LoadAddon()
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "PaladinPowerBar",
-				["lstr"] = "LID_PALADINPOWERBAR"
+				["lstr"] = "LID_PALADINPOWERBAR",
+				["userplaced"] = true,
+				["secure"] = true,
 			}
 		)
 	end
@@ -2366,7 +2429,7 @@ function MoveAny:LoadAddon()
 			)
 		end
 
-		if FocusFrame and MoveAny:IsEnabled("FOCUSFRAME", false) then
+		if (FocusFrame and MoveAny:IsEnabled("FOCUSFRAME", false)) or (FocusFrame and FocusFrameSpellBar and MoveAny:IsEnabled("FOCUSFRAMESPELLBAR", false)) then
 			MoveAny:RegisterWidget(
 				{
 					["name"] = "FocusFrame",
@@ -2533,7 +2596,7 @@ function MoveAny:LoadAddon()
 
 								table.insert(ab.btns, abtn)
 							else
-								print("[MoveAny] ACTION BUTTON NOT FOUND", name)
+								MoveAny:MSG("ACTION BUTTON NOT FOUND " .. name)
 							end
 						end
 					end
@@ -2606,8 +2669,8 @@ function MoveAny:LoadAddon()
 					end
 
 					if scale < 0 and SHOW_MULTI_ACTIONBAR_3 == "1" and MoveAny:IsEnabled("ACTIONBAR" .. 4, false) then
-						print("Please disable Actionbar4 in ESC -> Options -> Actionbar4, to get rid of the error.")
-						print("Actionbar4 will still be shown.")
+						MoveAny:MSG("Please disable Actionbar4 in ESC -> Options -> Actionbar4, to get rid of the error.")
+						MoveAny:MSG("Actionbar4 will still be shown.")
 					end
 				end
 			)
@@ -2999,41 +3062,55 @@ function MoveAny:LoadAddon()
 	end
 
 	if MoveAny:IsEnabled("TARGETFRAMESPELLBAR", false) then
-		TargetFrameSpellBar:HookScript(
-			"OnEvent",
-			function(sel, event)
-				if event ~= "UNIT_SPELLCAST_INTERRUPTED" and event ~= "UNIT_SPELLCAST_STOP" then
-					MoveAny:UpdateAlpha(sel)
+		if MoveAny:IsEnabled("TARGETFRAME", false) then
+			TargetFrameSpellBar:HookScript(
+				"OnEvent",
+				function(sel, event)
+					if event ~= "UNIT_SPELLCAST_INTERRUPTED" and event ~= "UNIT_SPELLCAST_STOP" then
+						MoveAny:UpdateAlpha(sel)
+					end
 				end
-			end
-		)
+			)
 
-		MoveAny:RegisterWidget(
-			{
-				["name"] = "TargetFrameSpellBar",
-				["lstr"] = "LID_TARGETFRAMESPELLBAR",
-				["userplaced"] = true
-			}
-		)
+			MoveAny:RegisterWidget(
+				{
+					["name"] = "TargetFrameSpellBar",
+					["lstr"] = "LID_TARGETFRAMESPELLBAR",
+					["userplaced"] = true
+				}
+			)
+		else
+			MoveAny:MSG("TARGETFRAME must be enabled in MoveAny, when you have TARGETFRAMESPELLBAR enabled in MoveAny.")
+			if D4:GetWoWBuild() == "RETAIL" then
+				MoveAny:MSG("If TARGETFRAME is enabled in Blizzard-Editmode, you need to disable it there in the Blizzard-Editmode")
+			end
+		end
 	end
 
 	if FocusFrame and FocusFrameSpellBar and MoveAny:IsEnabled("FOCUSFRAMESPELLBAR", false) then
-		FocusFrameSpellBar:HookScript(
-			"OnEvent",
-			function(sel, event)
-				if event ~= "UNIT_SPELLCAST_INTERRUPTED" and event ~= "UNIT_SPELLCAST_STOP" then
-					MoveAny:UpdateAlpha(sel)
+		if MoveAny:IsEnabled("FOCUSFRAME", false) then
+			FocusFrameSpellBar:HookScript(
+				"OnEvent",
+				function(sel, event)
+					if event ~= "UNIT_SPELLCAST_INTERRUPTED" and event ~= "UNIT_SPELLCAST_STOP" then
+						MoveAny:UpdateAlpha(sel)
+					end
 				end
-			end
-		)
+			)
 
-		MoveAny:RegisterWidget(
-			{
-				["name"] = "FocusFrameSpellBar",
-				["lstr"] = "LID_FOCUSFRAMESPELLBAR",
-				["userplaced"] = true
-			}
-		)
+			MoveAny:RegisterWidget(
+				{
+					["name"] = "FocusFrameSpellBar",
+					["lstr"] = "LID_FOCUSFRAMESPELLBAR",
+					["userplaced"] = true
+				}
+			)
+		else
+			MoveAny:MSG("FOCUSFRAME must be enabled in MoveAny, when you have FOCUSFRAMESPELLBAR enabled in MoveAny.")
+			if D4:GetWoWBuild() == "RETAIL" then
+				MoveAny:MSG("If FOCUSFRAME is enabled in Blizzard-Editmode, you need to disable it there in the Blizzard-Editmode")
+			end
+		end
 	end
 
 	if MoveAny:IsEnabled("TARGETOFTARGETFRAME", false) then
@@ -3462,18 +3539,88 @@ function MoveAny:LoadAddon()
 			)
 		else
 			for i = 1, 6 do
-				if _G["Boss" .. i .. "TargetFrame"] then
-					_G["Boss" .. i .. "TargetFrame"]:SetScale(1)
+				local frame = _G["Boss" .. i .. "TargetFrame"]
+				if frame then
+					frame.unit = "boss" .. i
+					frame:SetParent(MoveAny:GetMainPanel())
+					frame:SetScale(1)
+					if D4:GetWoWBuild() ~= "RETAIL" then
+						frame:Show()
+						frame:SetAlpha(0)
+						hooksecurefunc(
+							frame,
+							"Show",
+							function(sel)
+								sel.ma_show = true
+								sel:SetAlpha(1)
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"Hide",
+							function(sel)
+								sel.ma_show = false
+								sel:SetAlpha(0)
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetAlpha",
+							function(sel, alpha)
+								if sel.ma_set_alpha then return end
+								sel.ma_set_alpha = true
+								if sel.ma_show then
+									sel:SetAlpha(alpha)
+								else
+									sel:SetAlpha(0)
+								end
+
+								sel.ma_set_alpha = false
+							end
+						)
+
+						frame.OldHide = frame.Hide
+						frame.OldShow = frame.Show
+						frame.Hide = function() end
+						frame.Show = function() end
+						frame.OldSetPoint = frame.SetPoint
+						frame.OldClearAllPoints = frame.ClearAllPoints
+						frame.SetPoint = function(sel, ...) end
+						frame.ClearAllPoints = function(sel) end
+					end
+
 					MoveAny:RegisterWidget(
 						{
 							["name"] = "Boss" .. i .. "TargetFrame",
 							["lstr"] = "LID_BOSS" .. i,
 							["userplaced"] = true,
-							["secure"] = true,
+							["secure"] = true
 						}
 					)
 				end
 			end
+
+			function MoveAny:HandleBossFrames()
+				for i = 1, 6 do
+					local frame = _G["Boss" .. i .. "TargetFrame"]
+					local unit = "boss" .. i
+					if frame then
+						if UnitExists(unit) then
+							frame.ma_show = true
+							frame:SetAlpha(1)
+						else
+							frame.ma_show = false
+							frame:SetAlpha(0)
+						end
+					end
+				end
+
+				C_Timer.After(1, MoveAny.HandleBossFrames)
+			end
+
+			MoveAny:HandleBossFrames()
 		end
 	end
 

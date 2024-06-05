@@ -12,7 +12,7 @@ local strfind = string.find
 -- Generate our version variables
 --
 
-local BIGWIGS_VERSION = 329
+local BIGWIGS_VERSION = 333
 local BIGWIGS_RELEASE_STRING, BIGWIGS_VERSION_STRING
 local versionQueryString, versionResponseString = "Q^%d^%s^%d^%s", "V^%d^%s^%d^%s"
 local customGuildName = false
@@ -37,7 +37,7 @@ do
 	local ALPHA = "ALPHA"
 
 	local releaseType
-	local myGitHash = "e3dbf73" -- The ZIP packager will replace this with the Git hash.
+	local myGitHash = "19b8f00" -- The ZIP packager will replace this with the Git hash.
 	local releaseString
 	--[=[@alpha@
 	-- The following code will only be present in alpha ZIPs.
@@ -103,6 +103,7 @@ public.GetBestMapForUnit = GetBestMapForUnit
 public.GetInstanceInfo = GetInstanceInfo
 public.GetMapInfo = GetMapInfo
 public.GetSpellCooldown = C_Spell and C_Spell.GetSpellCooldown or GetSpellCooldown
+public.GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpellDescription
 public.GetSpellLink = C_Spell and C_Spell.GetSpellLink or GetSpellLink
 public.GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
 public.GetSpellTexture = C_Spell and C_Spell.GetSpellTexture or GetSpellTexture
@@ -307,9 +308,9 @@ do
 		[2657] = tww, -- Nerub'ar Palace
 
 		--[[ LittleWigs: Classic ]]--
-		[33] = lw_c, -- Shadowfang Keep
+		[33] = not (public.isVanilla or public.isTBC or public.isWrath) and lw_cata or nil, -- Shadowfang Keep
 		--[34] = lw_c, -- The Stockade
-		[36] = lw_c, -- Deadmines
+		[36] = not (public.isVanilla or public.isTBC or public.isWrath) and lw_cata or nil, -- Deadmines
 		--[43] = lw_c, -- Wailing Caverns
 		--[47] = lw_c, -- Razorfen Kraul
 		--[48] = lw_c, -- Blackfathom Deeps
@@ -369,6 +370,7 @@ do
 		[725] = lw_cata, -- The Stonecore
 		[938] = lw_cata, -- End Time
 		[939] = lw_cata, -- Well of Eternity
+		[940] = lw_cata, -- Hour of Twilight
 		[657] = lw_cata, -- The Vortex Pinnacle
 		[670] = lw_cata, -- Grim Batol
 		--[[ LittleWigs: Mists of Pandaria ]]--
@@ -378,6 +380,7 @@ do
 		[962] = lw_mop, -- Gate of the Setting Sun
 		[994] = lw_mop, -- Mogu'shan Palace
 		[1001] = lw_mop, -- Scarlet Halls
+		[1007] = lw_mop, -- Scholomance
 		[1011] = lw_mop, -- Siege of Niuzao Temple
 		[1112] = lw_mop, -- Pursuing the Black Harvest
 		[1004] = lw_mop, -- Scarlet Monastery
@@ -901,7 +904,8 @@ function mod:ADDON_LOADED(addon)
 
 	bwFrame:RegisterEvent("ZONE_CHANGED")
 	bwFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-	bwFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+	bwFrame:RegisterEvent("GROUP_FORMED")
+	bwFrame:RegisterEvent("GROUP_LEFT")
 	if C_EventUtils.IsEventValid("START_PLAYER_COUNTDOWN") then
 		bwFrame:RegisterEvent("START_PLAYER_COUNTDOWN")
 		bwFrame:RegisterEvent("CANCEL_PLAYER_COUNTDOWN")
@@ -1039,7 +1043,7 @@ function mod:UPDATE_FLOATING_CHAT_WINDOWS()
 	bwFrame:UnregisterEvent("UPDATE_FLOATING_CHAT_WINDOWS")
 	self.UPDATE_FLOATING_CHAT_WINDOWS = nil
 
-	self:GROUP_ROSTER_UPDATE()
+	self:GROUP_FORMED()
 	self:PLAYER_ENTERING_WORLD()
 	self:ZONE_CHANGED()
 end
@@ -1350,28 +1354,37 @@ end
 --
 
 do
-	local DBMdotRevision = "20240508013455" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
-	local DBMdotDisplayVersion = "10.2.39" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
-	local DBMdotReleaseRevision = "20240507000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotRevision = "20240529003752" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
+	local DBMdotDisplayVersion = "10.2.45" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
+	local DBMdotReleaseRevision = "20240528000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
 	local protocol = 3
 	local versionPrefix = "V"
-	local PForceDisable = 10
+	local PForceDisable = public.isCata and 11 or 10
 
 	local timer = nil
-	local function sendMsg()
+	local function sendDBMMsg()
 		if IsInGroup() then
 			local name = UnitName("player")
 			local realm = GetRealmName()
 			local normalizedPlayerRealm = realm:gsub("[%s-]+", "") -- Has to mimic DBM code
 			local msg = name.. "-" ..normalizedPlayerRealm.."\t"..protocol.."\t".. versionPrefix .."\t".. DBMdotRevision.."\t"..DBMdotReleaseRevision.."\t"..DBMdotDisplayVersion.."\t"..myLocale.."\ttrue\t"..PForceDisable
-			SendAddonMessage(dbmPrefix, msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- LE_PARTY_CATEGORY_INSTANCE = 2
+			local _, result = SendAddonMessage(dbmPrefix, msg, IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- LE_PARTY_CATEGORY_INSTANCE = 2
+			if type(result) == "number" and result ~= 0 then
+				if result == 9 then
+					timer = CTimerNewTicker(3, sendDBMMsg, 1)
+					return
+				else
+					sysprint("Failed to send initial _ version. Error code: ".. result)
+					geterrorhandler()("BigWigs: Failed to send initial _ version. Error code: ".. result)
+				end
+			end
 		end
 		timer = nil
 	end
 	function mod:DBM_VersionCheck(prefix, sender, _, _, displayVersion)
 		if prefix == "H" and (BigWigs and BigWigs.db and BigWigs.db.profile.fakeDBMVersion or self.isFakingDBM) then
 			if timer then timer:Cancel() end
-			timer = CTimerNewTicker(3.3, sendMsg, 1)
+			timer = CTimerNewTicker(3.3, sendDBMMsg, 1)
 		elseif prefix == "V" then
 			usersDBM[sender] = displayVersion
 		end
@@ -1451,36 +1464,17 @@ end
 ]]
 local ResetVersionWarning
 do
-	local loadingFrame = CreateFrame("Frame")
-	local isLoading = false
-	local isChangingWorld = false
-	loadingFrame:RegisterEvent("LOADING_SCREEN_DISABLED")
-	loadingFrame:RegisterEvent("LOADING_SCREEN_ENABLED")
-	loadingFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-	loadingFrame:RegisterEvent("PLAYER_LEAVING_WORLD")
-	loadingFrame:SetScript("OnEvent", function(_, event)
-		if event == "LOADING_SCREEN_ENABLED" then
-			isLoading = true
-		elseif event == "LOADING_SCREEN_DISABLED" then
-			isLoading = false
-		elseif event == "PLAYER_ENTERING_WORLD" then
-			isChangingWorld = false
-		elseif event == "PLAYER_LEAVING_WORLD" then
-			isChangingWorld = true
-		end
-	end)
-
 	local timer = nil
 	local function sendMsg()
 		if IsInGroup() then
 			local _, result = SendAddonMessage("BigWigs", versionResponseString, IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- LE_PARTY_CATEGORY_INSTANCE = 2
 			if type(result) == "number" and result ~= 0 then
-				local value = ("%d,%s,%s"):format(result, isLoading and "true" or "false", isChangingWorld and "true" or "false")
-				sysprint("Failed to send initial version. Error code: ".. value)
-				geterrorhandler()("BigWigs: Failed to send initial version. Error code: ".. value)
 				if result == 9 then
 					timer = CTimerNewTicker(3, sendMsg, 1)
 					return
+				else
+					sysprint("Failed to send initial version. Error code: ".. result)
+					geterrorhandler()("BigWigs: Failed to send initial version. Error code: ".. result)
 				end
 			end
 		end
@@ -1684,7 +1678,7 @@ end
 
 do
 	local grouped = nil
-	function mod:GROUP_ROSTER_UPDATE()
+	function mod:GROUP_FORMED()
 		local groupType = (IsInGroup(2) and 3) or (IsInRaid() and 2) or (IsInGroup() and 1) -- LE_PARTY_CATEGORY_INSTANCE = 2
 		if (not grouped and groupType) or (grouped and groupType and grouped ~= groupType) then
 			grouped = groupType
@@ -1696,7 +1690,11 @@ do
 			local name = UnitName("player")
 			local realm = GetRealmName()
 			local normalizedPlayerRealm = realm:gsub("[%s-]+", "") -- Has to mimic DBM code
-			SendAddonMessage(dbmPrefix, name.. "-" ..normalizedPlayerRealm.."\t1\tH\t", groupType == 3 and "INSTANCE_CHAT" or "RAID") -- Also request DBM versions
+			_, result = SendAddonMessage(dbmPrefix, name.. "-" ..normalizedPlayerRealm.."\t1\tH\t", groupType == 3 and "INSTANCE_CHAT" or "RAID") -- Also request DBM versions
+			if type(result) == "number" and result ~= 0 then
+				sysprint("Failed to ask for _ versions. Error code: ".. result)
+				geterrorhandler()("BigWigs: Failed to ask for _ versions. Error code: ".. result)
+			end
 		elseif grouped and not groupType then
 			grouped = nil
 			ResetVersionWarning()
@@ -1704,6 +1702,7 @@ do
 			usersHash = {}
 		end
 	end
+	mod.GROUP_LEFT = mod.GROUP_FORMED
 end
 
 function mod:BigWigs_BossModuleRegistered(_, _, module)

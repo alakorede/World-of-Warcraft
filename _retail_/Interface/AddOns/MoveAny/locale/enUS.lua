@@ -212,6 +212,9 @@ function MoveAny:LangenUS()
 		["LID_SHARDBARFRAME"] = "Warlock Power Frame (Shards)",
 		["LID_OFFSET"] = "Offset",
 		["LID_EclipseBarFrame"] = "Eclipse Bar Frame (Druid)",
+		["LID_REQUIRESFOR"] = "Requires: %s",
+		["LID_REQUIREDFOR"] = "Required for: %s",
+		["LID_RESETELEMENT"] = "Reset Element",
 	}
 
 	if D4:GetWoWBuild() ~= "RETAIL" then

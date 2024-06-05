@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0903,
+["LastVersion"] = 2.0906,
 ["LastPlayerFullName"] = "Muruatan-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
@@ -46,25 +46,22 @@ nil,
 ["Level"] = 46,
 ["Link"] = "|cff1eff00|Hitem:214772::::::::22:73::11:3:10606:10969:1517:2:9:22:28:2793:::::|h[Sunsoul Handguards]|h|r",
 },
-nil,
-nil,
-nil,
-nil,
-{
-["ID"] = 210333,
-["Level"] = 49,
-["Link"] = "|cffe6cc80|Hitem:210333::::::::22:73::11:2:10982:1508:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
+[16] = {
+["ID"] = 215639,
+["Level"] = 54,
+["AlsoFitsIn"] = 17,
+["Link"] = "|cff1eff00|Hitem:215639::::::::23:73::11:3:10607:10859:1513:2:9:23:28:2793:::::|h[Mist Shaman's Knuckles]|h|r",
 },
-{
+[15] = {
+["ID"] = 210333,
+["Level"] = 54,
+["Link"] = "|cffe6cc80|Hitem:210333::::::::23:73::11:2:10983:1513:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
+},
+[17] = {
 ["ID"] = 215938,
 ["Level"] = 41,
-["AlsoFitsIn"] = 17,
-["Link"] = "|cff1eff00|Hitem:215938::::::::22:73::11:3:10600:10859:1500:2:9:18:28:2793:::::|h[Cloudfall Edge]|h|r",
-},
-{
-["ID"] = 216574,
-["Level"] = 28,
-["Link"] = "|cff1eff00|Hitem:216574::::::::22:73::11:3:10595:10859:1487:2:9:13:28:2793:::::|h[Flamecaller's Bulwark]|h|r",
+["AlsoFitsIn"] = 16,
+["Link"] = "|cff1eff00|Hitem:215938::::::::23:73::11:3:10600:10859:1500:2:9:18:28:2793:::::|h[Cloudfall Edge]|h|r",
 },
 },
 ["LastKeybindingsSet"] = 1,

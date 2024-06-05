@@ -53,9 +53,9 @@ OmniCCDB = {
 ["Aishy - Nemesis"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
 ["Satishy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
-["Dishy - Nemesis"] = "Default",
 ["Keishy - Aerie Peak"] = "Default",
+["Dishy - Nemesis"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
 ["Sharan - Goldrinn"] = "Default",
@@ -63,10 +63,10 @@ OmniCCDB = {
 ["Neshy - Nemesis"] = "Default",
 ["Trystam - Nemesis"] = "Default",
 ["Batezu - Nemesis"] = "Default",
-["Yashy - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
 ["Satishy - Nemesis"] = "Default",
 ["Melishy - Goldrinn"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
+["Yashy - Nemesis"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
 ["Aleshy - Goldrinn"] = "Default",
@@ -74,48 +74,48 @@ OmniCCDB = {
 },
 ["profiles"] = {
 ["Default"] = {
-["themes"] = {
-["Plater Nameplates Theme"] = {
-["textStyles"] = {
-["seconds"] = {
-},
-["soon"] = {
-},
-["minutes"] = {
-},
-},
-},
-["Default"] = {
-["textStyles"] = {
-["seconds"] = {
-},
-["soon"] = {
-},
-["minutes"] = {
-},
-},
-},
-["Padrão"] = {
-["textStyles"] = {
-["soon"] = {
-},
-["seconds"] = {
-},
-["minutes"] = {
-},
-},
-},
-},
 ["rules"] = {
 {
-["id"] = "Plater Nameplates Rule",
 ["patterns"] = {
 "PlaterMainAuraIcon",
 "PlaterSecondaryAuraIcon",
 "ExtraIconRowIcon",
 },
-["theme"] = "Plater Nameplates Theme",
+["id"] = "Plater Nameplates Rule",
 ["priority"] = 1,
+["theme"] = "Plater Nameplates Theme",
+},
+},
+["themes"] = {
+["Plater Nameplates Theme"] = {
+["textStyles"] = {
+["soon"] = {
+},
+["minutes"] = {
+},
+["seconds"] = {
+},
+},
+},
+["Default"] = {
+["textStyles"] = {
+["soon"] = {
+},
+["minutes"] = {
+},
+["seconds"] = {
+},
+},
+},
+["Padrão"] = {
+["textStyles"] = {
+["seconds"] = {
+},
+["minutes"] = {
+},
+["soon"] = {
+},
+},
 },
 },
 },

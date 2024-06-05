@@ -1,1797 +1,1645 @@
 
 Prat3CharDB = {
-	["history"] = {
-		["cmdhistory"] = {
-			["ChatFrame10EditBox"] = {
-			},
-			["ChatFrame7EditBox"] = {
-			},
-			["ChatFrame5EditBox"] = {
-			},
-			["ChatFrame8EditBox"] = {
-			},
-			["ChatFrame4EditBox"] = {
-			},
-			["ChatFrame6EditBox"] = {
-			},
-			["ChatFrame9EditBox"] = {
-			},
-			["ChatFrame2EditBox"] = {
-			},
-			["ChatFrame3EditBox"] = {
-			},
-			["ChatFrame1EditBox"] = {
-			},
-		},
-	},
+["history"] = {
+["cmdhistory"] = {
+["ChatFrame10EditBox"] = {
+},
+["ChatFrame7EditBox"] = {
+},
+["ChatFrame5EditBox"] = {
+},
+["ChatFrame8EditBox"] = {
+},
+["ChatFrame4EditBox"] = {
+},
+["ChatFrame6EditBox"] = {
+},
+["ChatFrame1EditBox"] = {
+},
+["ChatFrame3EditBox"] = {
+},
+["ChatFrame2EditBox"] = {
+},
+["ChatFrame9EditBox"] = {
+},
+},
+},
 }
 Prat3HighCPUPerCharDB = {
-	["time"] = 1590464384,
-	["scrollback"] = {
-		["ChatFrame5"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame10"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame3"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 4,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-				{
-					["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
-					["serverTime"] = 1714758630,
-					["r"] = 1,
-					["b"] = 0,
-					["timestamp"] = 629.0840000000001,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["g"] = 1,
-				}, -- [1]
-				{
-					["message"] = "0 |4day:days;, 0 |4hour:hours;, 0 |4minute:minutes;, 0 |4second:seconds;",
-					["timestamp"] = 629.0840000000001,
-				}, -- [2]
-				{
-					["message"] = "========== End of Scrollback ==========",
-					["timestamp"] = 629.0840000000001,
-				}, -- [3]
-				{
-					["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["timestamp"] = 619.897,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [4]
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame7"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame6"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame11"] = {
-			["elements"] = {
-				{
-					["message"] = "|cff979797|Hpratcopy|h[11:42:52]|h|r [W To] |cffd8d8d8[|r|HBNplayer:|Kq11|k:11:1:BN_WHISPER:|Kq11|k:Tristam#1808|h|A:UI-ChatIcon-WoW:0:0:0:0|a|cffff7c0a|Kq11|k|r|h|cffd8d8d8]|r: oieee",
-					["b"] = 0.9647059440612793,
-					["r"] = 0,
-					["g"] = 1,
-					["timestamp"] = 4402.841,
-					["serverTime"] = 1714574572,
-					["extraData"] = {
-						53, -- [1]
-						1, -- [2]
-						2, -- [3]
-						["n"] = 3,
-					},
-				}, -- [1]
-			},
-			["headIndex"] = 1,
-			["maxElements"] = 128,
-		},
-		["ChatFrame8"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame4"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame9"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame1"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 72,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:37]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffTerrifying Screech|r.",
-					["timestamp"] = 1416.227,
-					["serverTime"] = 1714759417,
-				}, -- [1]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:37]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:131:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Feasting Skyscreamer's |cff71d5ff|Hspell:255041:0|h[Terrifying Screech]|h|r",
-					["serverTime"] = 1714759417,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1416.467,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [2]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:44]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff9d9d9d|Hitem:155635::::::::60:104:::::::::|h[Sinewy Wing]|h|r.",
-					["serverTime"] = 1714759424,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1422.989,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [3]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:04:34]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff9d9d9d|Hitem:158210::::::::60:104:::::::::|h[Fearsome Claw]|h|r.",
-					["serverTime"] = 1714759474,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1473.701,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [4]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:04:35]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff1eff00|Hitem:160120::::::::60:104:::2:6654:1709:2:9:34:28:500:::::|h[Direbone Frill Gauntlets of the Aurora]|h|r.",
-					["serverTime"] = 1714759475,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1474.248,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [5]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:04:38]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff9d9d9d|Hitem:158210::::::::60:104:::::::::|h[Fearsome Claw]|h|r.",
-					["serverTime"] = 1714759478,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1476.956,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [6]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:04:46]|h|r |cff7fff7fFIS|r: Feasting Skyscreamer is casting |cffff4444Terrifying Screech|r!",
-					["timestamp"] = 1485.785,
-					["serverTime"] = 1714759486,
-				}, -- [7]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:04:48]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffTerrifying Screech|r.",
-					["timestamp"] = 1487.092,
-					["serverTime"] = 1714759488,
-				}, -- [8]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:04:48]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:154:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Feasting Skyscreamer's |cff71d5ff|Hspell:255041:0|h[Terrifying Screech]|h|r",
-					["serverTime"] = 1714759488,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1487.519,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [9]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:06]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff9d9d9d|Hitem:155635::::::::60:104:::::::::|h[Sinewy Wing]|h|r.",
-					["serverTime"] = 1714759506,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1505.686,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [10]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:07]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cffffffff|Hitem:154899::::::::60:104:::::::::|h[Thick Paleo Steak]|h|rx2.",
-					["serverTime"] = 1714759507,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1505.953,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [11]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:19]|h|r |cffffaeaeDetails!:|r |cFFFFBB00First Hit|r: *?* |cFFFFBB00Boss First Target|r: Arieshy    ",
-					["timestamp"] = 1518.291,
-					["serverTime"] = 1714759519,
-				}, -- [12]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:19]|h|r Priestess Alun'za yells: Servants of Yazma are not welcome here!",
-					["serverTime"] = 1714759519,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1518.411,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [13]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:19]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Melee from Dazar'ai Honor Guard   ",
-					["timestamp"] = 1518.838,
-					["serverTime"] = 1714759519,
-				}, -- [14]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:29]|h|r Priestess Alun'za gilds her hands with gold.",
-					["serverTime"] = 1714759529,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						25, -- [2]
-						38, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1528.895,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [15]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:29]|h|r Priestess Alun'za yells: My claws will find your heart.",
-					["serverTime"] = 1714759529,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1528.895,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [16]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:44]|h|r |TInterface\\Icons\\SPELL_HOLY_PURIFY.BLP:20|tPriestess Alun'za casts |cFFFF0000|Hspell:255577|h[Transfusion]|h|r!",
-					["serverTime"] = 1714759544,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1543.474,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [17]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:05:44]|h|r Priestess Alun'za yells: You do not belong here!",
-					["serverTime"] = 1714759544,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1543.474,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [18]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:04]|h|r Priestess Alun'za gilds her hands with gold.",
-					["serverTime"] = 1714759564,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						25, -- [2]
-						38, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1562.962,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [19]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:04]|h|r Priestess Alun'za yells: Atal'Dazar's power flows through me!",
-					["serverTime"] = 1714759564,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1562.962,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [20]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:18]|h|r |TInterface\\Icons\\SPELL_HOLY_PURIFY.BLP:20|tPriestess Alun'za casts |cFFFF0000|Hspell:255577|h[Transfusion]|h|r!",
-					["serverTime"] = 1714759578,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1577.501,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [21]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:18]|h|r Priestess Alun'za yells: You do not belong here!",
-					["serverTime"] = 1714759578,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1577.501,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [22]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:33]|h|r Priestess Alun'za yells: De pools... must be... cleansed.",
-					["serverTime"] = 1714759593,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1591.923,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [23]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:35]|h|r You loot 24 Gold, 66 Silver, 24 Copper (+49 Silver, 30 Copper)",
-					["serverTime"] = 1714759595,
-					["r"] = 1,
-					["extraData"] = {
-						29, -- [1]
-						32, -- [2]
-						33, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1594.359,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [24]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:36]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cffffffff|Hitem:152576::::::::60:104:::::::::|h[Tidespray Linen]|h|rx2.",
-					["serverTime"] = 1714759596,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1595.319,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [25]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:37]|h|r Yazma says: My thanks for killing de priestess. You have only succeeded in strengthening my hold on de temple!",
-					["serverTime"] = 1714759597,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						21, -- [2]
-						22, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1596.372,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [26]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:38]|h|r |cffc69b6dArieshy|r receives loot: |cff0070dd|Hitem:158313::::::::60:104::1:2:6710:6652:2:9:10:28:500:::::|h[Legplates of Beaten Gold]|h|r.",
-					["serverTime"] = 1714759598,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1597.079,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [27]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:38]|h|r |cffc69b6dArieshy|r receives loot: |cff1eff00|Hitem:160123::::::::60:104:::2:6654:1704:2:9:10:28:500:::::|h[Direbone Frill Legplates of the Aurora]|h|r.",
-					["serverTime"] = 1714759598,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1597.627,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [28]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:56]|h|r You receive loot: |cff9d9d9d|Hitem:158210::::::::60:104:::::::::|h[Fearsome Claw]|h|rx3",
-					["serverTime"] = 1714759616,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						37, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1615.646,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [29]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:56]|h|r You receive loot: |cff9d9d9d|Hitem:158859::::::::60:104:::::::::|h[Jagged Fang]|h|rx2",
-					["serverTime"] = 1714759616,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						37, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1615.812,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [30]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:56]|h|r You receive loot: |cff9d9d9d|Hitem:155605::::::::60:104:::::::::|h[Huge Femur]|h|r",
-					["serverTime"] = 1714759616,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						37, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1615.887,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [31]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:06:58]|h|r Yazma says: Impressive. You made it farther than I thought... but I will still be drinking your blood.",
-					["serverTime"] = 1714759618,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						21, -- [2]
-						22, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1616.94,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [32]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:25]|h|r |cffffaeaeDetails!:|r |cFFFFBB00First Hit|r: *?* |cFFFFBB00Boss First Target|r: Onifade    ",
-					["timestamp"] = 1644.67,
-					["serverTime"] = 1714759645,
-				}, -- [33]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:25]|h|r Yazma yells: Dazar will awaken soon, but you will not live to see it!",
-					["serverTime"] = 1714759645,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1644.79,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [34]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:26]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Thrash from Onifade   ",
-					["timestamp"] = 1644.977,
-					["serverTime"] = 1714759646,
-				}, -- [35]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:28]|h|r |cff7fff7fFIS|r: Yazma is casting |cffff4444Wracking Pain|r!",
-					["timestamp"] = 1647.791,
-					["serverTime"] = 1714759648,
-				}, -- [36]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:30]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffWracking Pain|r.",
-					["timestamp"] = 1649.845,
-					["serverTime"] = 1714759650,
-				}, -- [37]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:31]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:191:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Yazma's |cff71d5ff|Hspell:250096:0|h[Wracking Pain]|h|r",
-					["serverTime"] = 1714759651,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1650.247,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [38]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:35]|h|r Yazma yells: Let your soul be shattered!",
-					["serverTime"] = 1714759655,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1654.474,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [39]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:35]|h|r |TINTERFACE\\ICONS\\Ability_DemonHunter_SoulCleave2.blp:20|t Yazma begins to cast |cFFFF0404|Hspell:249924|h[Soulrend]|h|r on Arieshy!",
-					["serverTime"] = 1714759655,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1654.474,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [40]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:48]|h|r |cff7fff7fFIS|r: Yazma is casting |cffff4444Wracking Pain|r!",
-					["timestamp"] = 1667.64,
-					["serverTime"] = 1714759668,
-				}, -- [41]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:50]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffWracking Pain|r.",
-					["timestamp"] = 1669.4,
-					["serverTime"] = 1714759670,
-				}, -- [42]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:07:50]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:194:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Yazma's |cff71d5ff|Hspell:250096:0|h[Wracking Pain]|h|r",
-					["serverTime"] = 1714759670,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1669.812,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [43]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:06]|h|r |cff7fff7fFIS|r: Yazma is casting |cffff4444Wracking Pain|r!",
-					["timestamp"] = 1685.845,
-					["serverTime"] = 1714759686,
-				}, -- [44]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:10]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffWracking Pain|r.",
-					["timestamp"] = 1688.966,
-					["serverTime"] = 1714759690,
-				}, -- [45]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:10]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:195:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Yazma's |cff71d5ff|Hspell:250096:0|h[Wracking Pain]|h|r",
-					["serverTime"] = 1714759690,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1689.393,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [46]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:16]|h|r Yazma yells: Let your soul be shattered!",
-					["serverTime"] = 1714759696,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.756,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [47]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:16]|h|r |TINTERFACE\\ICONS\\Ability_DemonHunter_SoulCleave2.blp:20|t Yazma begins to cast |cFFFF0404|Hspell:249924|h[Soulrend]|h|r on Guenin!",
-					["serverTime"] = 1714759696,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.756,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [48]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:16]|h|r Yazma yells: Fools! Zul will rip... your spirits... apart...",
-					["serverTime"] = 1714759696,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.876,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [49]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:16]|h|r |cffd8d8d8[|r|Hplayer:Rávén-Azralon:200:ACHIEVEMENT|h|cffd8bc3f59|r:|cffff7c0aRávén|r-|cffd174a9Azr|r|h|cffd8d8d8]|r has earned the achievement |cffffff00|Hachievement:12824:Player-3209-0A0FA611:1:5:3:24:4294967295:4294967295:4294967295:4294967295|h[Atal'Dazar]|h|r |cffffffff(|rCompleted 3/27/20|cffffffff)|r!",
-					["serverTime"] = 1714759696,
-					["r"] = 1,
-					["extraData"] = {
-						47, -- [1]
-						39, -- [2]
-						40, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.876,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [50]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:16]|h|r |cffd8d8d8[|r|Hplayer:Arieshy-Nemesis:201:ACHIEVEMENT|h|cffc69b6dArieshy|r|h|cffd8d8d8]|r has earned the achievement |cffffff00|Hachievement:12824:Player-3208-0DB87651:1:5:3:24:4294967295:4294967295:4294967295:4294967295|h[Atal'Dazar]|h|r |cffffffff(|rCompleted 3/27/20|cffffffff)|r!",
-					["serverTime"] = 1714759696,
-					["r"] = 1,
-					["extraData"] = {
-						47, -- [1]
-						39, -- [2]
-						41, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.876,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [51]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:16]|h|r |cffd8d8d8[|r|Hplayer:Guenin-Nemesis:202:ACHIEVEMENT|h|cffa330c9Guenin|r|h|cffd8d8d8]|r has earned the achievement |cffffff00|Hachievement:12824:Player-3208-0A0AE603:1:5:3:24:4294967295:4294967295:4294967295:4294967295|h[Atal'Dazar]|h|r |cffffffff(|rCompleted 3/27/20|cffffffff)|r!",
-					["serverTime"] = 1714759696,
-					["r"] = 1,
-					["extraData"] = {
-						47, -- [1]
-						39, -- [2]
-						42, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.876,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [52]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:17]|h|r Experience gained: 6050.",
-					["serverTime"] = 1714759697,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						1, -- [2]
-						2, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.998,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [53]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:17]|h|r Received 102 Gold, 96 Silver.",
-					["serverTime"] = 1714759697,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						1, -- [2]
-						2, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1695.998,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [54]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:17]|h|r You receive item: |cff1eff00|Hitem:171305::::::::60:104::11::1:28:500:::::|h[Salvaged Cache of Goods]|h|r",
-					["serverTime"] = 1714759697,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						37, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1696.062,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [55]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:18]|h|r You receive currency: |cffffffff|Hcurrency:2003:0|h[Dragon Isles Supplies]|h|rx10",
-					["serverTime"] = 1714759698,
-					["r"] = 0,
-					["extraData"] = {
-						59, -- [1]
-						43, -- [2]
-						44, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1697.01,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [56]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:18]|h|r You receive currency: |cffffffff|Hcurrency:1220:0|h[Order Resources]|h|rx75",
-					["serverTime"] = 1714759698,
-					["r"] = 0,
-					["extraData"] = {
-						59, -- [1]
-						43, -- [2]
-						44, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1697.01,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [57]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:20]|h|r You loot 30 Gold, 49 Silver, 75 Copper (+60 Silver, 99 Copper)",
-					["serverTime"] = 1714759700,
-					["r"] = 1,
-					["extraData"] = {
-						29, -- [1]
-						32, -- [2]
-						33, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1699.037,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [58]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:21]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff0070dd|Hitem:159610::::::::60:104::1:1:6710:2:9:35:28:500:::::|h[Vessel of Skittering Shadows]|h|r.",
-					["serverTime"] = 1714759701,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1700.144,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [59]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:21]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff1eff00|Hitem:160121::::::::60:104:::3:6654:4802:1713:2:9:59:28:500:::::|h[Direbone Frill Greatbelt of the Harmonious]|h|r.",
-					["serverTime"] = 1714759701,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1700.184,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [60]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:24]|h|r A role check has been initiated. Your group will be queued when all members have selected a role.",
-					["serverTime"] = 1714759704,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						1, -- [2]
-						2, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1702.932,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [61]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:24]|h|r Onifade has chosen: |A:UI-LFG-RoleIcon-Tank-Micro:16:16:0:0|a Tank",
-					["serverTime"] = 1714759704,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["timestamp"] = 1702.932,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [62]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:25]|h|r Destruction-Dalaran has chosen: |A:UI-LFG-RoleIcon-DPS-Micro:16:16:0:0|a Damage",
-					["serverTime"] = 1714759705,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["timestamp"] = 1704.653,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [63]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:26]|h|r Guenin has chosen: |A:UI-LFG-RoleIcon-DPS-Micro:16:16:0:0|a Damage",
-					["serverTime"] = 1714759706,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["timestamp"] = 1705.37,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [64]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:30]|h|r You leave the group.",
-					["serverTime"] = 1714759709,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						1, -- [2]
-						2, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1709.894,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [65]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r |CFF9482C9Quest Completist:|r No quests were returned from the server query. Attempting to check each quest individually...",
-					["timestamp"] = 1716.296,
-					["serverTime"] = 1714759716,
-				}, -- [66]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r |CFF9482C9Quest Completist:|r Query completed.",
-					["timestamp"] = 1716.296,
-					["serverTime"] = 1714759716,
-				}, -- [67]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r Dungeon Difficulty set to Normal.",
-					["serverTime"] = 1714759716,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						1, -- [2]
-						2, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1716.747,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [68]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r |Hchannel:channel:1|h[1] |h Changed Channel: |Hchannel:CHANNEL:1|h1|h",
-					["serverTime"] = 1714759716,
-					["r"] = 1,
-					["extraData"] = {
-						69, -- [1]
-						9, -- [2]
-						10, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1716.747,
-					["g"] = 0.7529412508010864,
-					["b"] = 0.7529412508010864,
-				}, -- [69]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r |Hchannel:channel:2|h[2] |h Changed Channel: |Hchannel:CHANNEL:2|h2|h",
-					["serverTime"] = 1714759716,
-					["r"] = 1,
-					["extraData"] = {
-						70, -- [1]
-						12, -- [2]
-						13, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1716.747,
-					["g"] = 0.7529412508010864,
-					["b"] = 0.7529412508010864,
-				}, -- [70]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r |Hchannel:channel:3|h[3] |h Changed Channel: |Hchannel:CHANNEL:3|h3|h",
-					["serverTime"] = 1714759716,
-					["r"] = 1,
-					["extraData"] = {
-						71, -- [1]
-						15, -- [2]
-						16, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1716.747,
-					["g"] = 0.7529412508010864,
-					["b"] = 0.7529412508010864,
-				}, -- [71]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:08:37]|h|r |Hchannel:channel:5|h[5] |h Changed Channel: |Hchannel:CHANNEL:5|h5|h",
-					["serverTime"] = 1714759716,
-					["r"] = 1,
-					["extraData"] = {
-						73, -- [1]
-						18, -- [2]
-						19, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1716.747,
-					["g"] = 0.7529412508010864,
-					["b"] = 0.7529412508010864,
-				}, -- [72]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:06]|h|r |TInterface\\Icons\\ABILITY_DEVOUR.BLP:20|tRezan uses his |cFFFF0000|Hspell:255371|h[Terrifying Visage]|h|r, hide!",
-					["serverTime"] = 1714759026,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1025.016,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [73]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:14]|h|r The restless bones come to life as a Reanimated Raptor!",
-					["serverTime"] = 1714759034,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1033.101,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [74]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:14]|h|r Onifade awakens a pile of bones!",
-					["serverTime"] = 1714759034,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						25, -- [2]
-						26, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1033.101,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [75]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:14]|h|r The restless bones come to life as a Reanimated Raptor!",
-					["serverTime"] = 1714759034,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1033.513,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [76]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:14]|h|r Arieshy awakens a pile of bones!",
-					["serverTime"] = 1714759034,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						25, -- [2]
-						27, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1033.513,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [77]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:15]|h|r Rezan sets his sights on Onifade to |TInterface\\Icons\\ABILITY_MOUNT_FOSSILIZEDRAPTOR.BLP:20|t|cFFFF0000|Hspell:255421|h[Devour]|h|r them!",
-					["serverTime"] = 1714759035,
-					["r"] = 1,
-					["extraData"] = {
-						43, -- [1]
-						28, -- [2]
-						29, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1034.7,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [78]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:41]|h|r |TInterface\\Icons\\ABILITY_DEVOUR.BLP:20|tRezan uses his |cFFFF0000|Hspell:255371|h[Terrifying Visage]|h|r, hide!",
-					["serverTime"] = 1714759061,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1060.216,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [79]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:47]|h|r The restless bones come to life as a Reanimated Raptor!",
-					["serverTime"] = 1714759067,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1066.739,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [80]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:47]|h|r Onifade awakens a pile of bones!",
-					["serverTime"] = 1714759067,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						25, -- [2]
-						26, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1066.739,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [81]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:50]|h|r The restless bones come to life as a Reanimated Raptor!",
-					["serverTime"] = 1714759070,
-					["r"] = 1,
-					["extraData"] = {
-						42, -- [1]
-						23, -- [2]
-						24, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1069.593,
-					["g"] = 0.8666667342185974,
-					["b"] = 0,
-				}, -- [82]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:57:50]|h|r Guenin awakens a pile of bones!",
-					["serverTime"] = 1714759070,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						25, -- [2]
-						30, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1069.593,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [83]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:58:12]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff9d9d9d|Hitem:158210::::::::60:104:::::::::|h[Fearsome Claw]|h|r.",
-					["serverTime"] = 1714759092,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1091.219,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [84]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:58:12]|h|r You loot 15 Gold, 13 Silver, 60 Copper (+30 Silver, 27 Copper)",
-					["serverTime"] = 1714759092,
-					["r"] = 1,
-					["extraData"] = {
-						29, -- [1]
-						32, -- [2]
-						33, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1091.881,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [85]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:58:12]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff9d9d9d|Hitem:158859::::::::60:104:::::::::|h[Jagged Fang]|h|r.",
-					["serverTime"] = 1714759092,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1091.881,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [86]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:58:13]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff0070dd|Hitem:159458::::::::60:104::1:3:6710:6652:8812:2:9:58:28:500:::::|h[Seal of the Regal Loa]|h|r.",
-					["serverTime"] = 1714759093,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1092.041,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [87]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:58:14]|h|r Yazma says: Rezan was a powerful loa. Perhaps you will make a worthy sacrifice for Zul.",
-					["serverTime"] = 1714759094,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						21, -- [2]
-						22, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1093.242,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [88]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:58:15]|h|r |cffc69b6dArieshy|r receives loot: |cff9d9d9d|Hitem:158210::::::::60:104:::::::::|h[Fearsome Claw]|h|r.",
-					["serverTime"] = 1714759095,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1093.922,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [89]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:59:42]|h|r |cff7fff7fFIS|r: Zanchuli Witch-Doctor is casting |cffff4444Venom Blast|r!",
-					["timestamp"] = 1181.367,
-					["serverTime"] = 1714759182,
-				}, -- [90]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:59:42]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffVenom Blast|r.",
-					["timestamp"] = 1181.394,
-					["serverTime"] = 1714759182,
-				}, -- [91]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[14:59:42]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:79:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Zanchuli Witch-Doctor's |cff71d5ff|Hspell:252923:0|h[Venom Blast]|h|r",
-					["serverTime"] = 1714759182,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1181.82,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [92]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:00:09]|h|r You receive loot: |cff9d9d9d|Hitem:158862::::::::60:104:::::::::|h[Ancient Grave Dust]|h|r",
-					["serverTime"] = 1714759209,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						37, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1208.044,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [93]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:00:19]|h|r |cff7fff7fFIS|r: Zanchuli Witch-Doctor is casting |cffff4444Venom Blast|r!",
-					["timestamp"] = 1218.648,
-					["serverTime"] = 1714759219,
-				}, -- [94]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:00:22]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffVenom Blast|r.",
-					["timestamp"] = 1221.075,
-					["serverTime"] = 1714759222,
-				}, -- [95]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:00:22]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:86:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Zanchuli Witch-Doctor's |cff71d5ff|Hspell:252923:0|h[Venom Blast]|h|r",
-					["serverTime"] = 1714759222,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1221.555,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [96]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:18]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff9d9d9d|Hitem:155608::::::::60:104:::::::::|h[Defiled Bone]|h|r.",
-					["serverTime"] = 1714759278,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1277.602,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [97]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:18]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff9d9d9d|Hitem:158771::::::::60:104:::::::::|h[Spirit Ichor]|h|r.",
-					["serverTime"] = 1714759278,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1277.749,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [98]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:21]|h|r You receive loot: |cff9d9d9d|Hitem:160929::::::::60:104::1:1:6657:2:9:60:28:500:::::|h[Cracked Cannon Ram]|h|r",
-					["serverTime"] = 1714759281,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						37, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1280.67,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [99]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:22]|h|r You loot 14 Gold, 8 Silver, 75 Copper (+28 Silver, 16 Copper)",
-					["serverTime"] = 1714759282,
-					["r"] = 1,
-					["extraData"] = {
-						29, -- [1]
-						32, -- [2]
-						33, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1281.484,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [100]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:22]|h|r |cffc69b6dArieshy|r receives loot: |cff9d9d9d|Hitem:158771::::::::60:104:::::::::|h[Spirit Ichor]|h|r.",
-					["serverTime"] = 1714759282,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1281.537,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [101]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:23]|h|r |cffc69b6dArieshy|r receives loot: |cff9d9d9d|Hitem:155608::::::::60:104:::::::::|h[Defiled Bone]|h|r.",
-					["serverTime"] = 1714759283,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1281.991,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [102]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:27]|h|r |cffffaeaeDetails!:|r |cFFFFBB00First Hit|r: *?*    ",
-					["timestamp"] = 1286.312,
-					["serverTime"] = 1714759287,
-				}, -- [103]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:27]|h|r Vol'kaal yells: You?! I tear you apart!",
-					["serverTime"] = 1714759287,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1286.432,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [104]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:27]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Whirlwind from Arieshy   ",
-					["timestamp"] = 1286.872,
-					["serverTime"] = 1714759287,
-				}, -- [105]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:52]|h|r Vol'kaal yells: You die with me!",
-					["serverTime"] = 1714759312,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1311.081,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [106]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:53]|h|r |cff7fff7fFIS|r: Vol'kaal is casting |cffff4444Noxious Stench|r!",
-					["timestamp"] = 1312.535,
-					["serverTime"] = 1714759313,
-				}, -- [107]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:57]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffNoxious Stench|r.",
-					["timestamp"] = 1316.323,
-					["serverTime"] = 1714759317,
-				}, -- [108]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:01:57]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:104:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Vol'kaal's |cff71d5ff|Hspell:259572:0|h[Noxious Stench]|h|r",
-					["serverTime"] = 1714759317,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1316.724,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [109]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:15]|h|r |cff7fff7fFIS|r: Vol'kaal is casting |cffff4444Noxious Stench|r!",
-					["timestamp"] = 1334.356,
-					["serverTime"] = 1714759335,
-				}, -- [110]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:17]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffNoxious Stench|r.",
-					["timestamp"] = 1335.984,
-					["serverTime"] = 1714759337,
-				}, -- [111]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:17]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:105:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Vol'kaal's |cff71d5ff|Hspell:259572:0|h[Noxious Stench]|h|r",
-					["serverTime"] = 1714759337,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1336.411,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [112]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:28]|h|r Vol'kaal yells: Master gonna build me again...",
-					["serverTime"] = 1714759348,
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1347.215,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [113]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:31]|h|r You loot 14 Gold, 83 Silver, 1 Copper (+29 Silver, 66 Copper)",
-					["serverTime"] = 1714759351,
-					["r"] = 1,
-					["extraData"] = {
-						29, -- [1]
-						32, -- [2]
-						33, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1349.962,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [114]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:32]|h|r |cffc69b6dArieshy|r receives loot: |cff0070dd|Hitem:159445::::::::60:104::1:2:6710:6652:2:9:10:28:500:::::|h[Grips of the Everlasting Guardian]|h|r.",
-					["serverTime"] = 1714759352,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1351.096,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [115]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:32]|h|r Yazma says: Vol'kaal... in pieces again? No matter... I can rebuild him. But when YOU die, there will be no coming back!",
-					["serverTime"] = 1714759352,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						21, -- [2]
-						22, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1351.363,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [116]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:56]|h|r |cff7fff7fFIS|r: Zanchuli Witch-Doctor is casting |cffff4444Venom Blast|r!",
-					["timestamp"] = 1375.198,
-					["serverTime"] = 1714759376,
-				}, -- [117]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:02:59]|h|r |cff7fff7fFIS|r: Zanchuli Witch-Doctor is casting |cffff4444Venom Blast|r!",
-					["timestamp"] = 1378.84,
-					["serverTime"] = 1714759379,
-				}, -- [118]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:01]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffVenom Blast|r.",
-					["timestamp"] = 1380.333,
-					["serverTime"] = 1714759381,
-				}, -- [119]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:01]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:112:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Zanchuli Witch-Doctor's |cff71d5ff|Hspell:252923:0|h[Venom Blast]|h|r",
-					["serverTime"] = 1714759381,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1380.587,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [120]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:13]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cff9d9d9d|Hitem:158862::::::::60:104:::::::::|h[Ancient Grave Dust]|h|r.",
-					["serverTime"] = 1714759393,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1392.378,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [121]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:13]|h|r |cffa5a5a5Rávén|r-Azralon receives loot: |cffffffff|Hitem:152576::::::::60:104:::::::::|h[Tidespray Linen]|h|r.",
-					["serverTime"] = 1714759393,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						34, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1392.556,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [122]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:16]|h|r |cff7fff7fFIS|r: Feasting Skyscreamer is casting |cffff4444Terrifying Screech|r!",
-					["timestamp"] = 1395.446,
-					["serverTime"] = 1714759396,
-				}, -- [123]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:17]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffTerrifying Screech|r.",
-					["timestamp"] = 1396.619,
-					["serverTime"] = 1714759397,
-				}, -- [124]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:18]|h|r |Hchannel:Battleground|h[IL] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:118:INSTANCE_CHAT|h|cffd8bc3f60|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Feasting Skyscreamer's |cff71d5ff|Hspell:255041:0|h[Terrifying Screech]|h|r",
-					["serverTime"] = 1714759398,
-					["r"] = 1,
-					["extraData"] = {
-						64, -- [1]
-						35, -- [2]
-						36, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1397.02,
-					["g"] = 0.2823529541492462,
-					["b"] = 0.03529411926865578,
-				}, -- [125]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:29]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff9d9d9d|Hitem:158859::::::::60:104:::::::::|h[Jagged Fang]|h|r.",
-					["serverTime"] = 1714759409,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1408.771,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [126]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:30]|h|r |cffa5a5a5Destruction|r-Dalaran receives loot: |cff9d9d9d|Hitem:158210::::::::60:104:::::::::|h[Fearsome Claw]|h|r.",
-					["serverTime"] = 1714759410,
-					["r"] = 0,
-					["extraData"] = {
-						28, -- [1]
-						3, -- [2]
-						31, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 1409.01,
-					["g"] = 0.6666666865348816,
-					["b"] = 0,
-				}, -- [127]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[15:03:36]|h|r |cff7fff7fFIS|r: Feasting Skyscreamer is casting |cffff4444Terrifying Screech|r!",
-					["timestamp"] = 1415.281,
-					["serverTime"] = 1714759416,
-				}, -- [128]
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-	},
+["time"] = 1590464384,
+["scrollback"] = {
+["ChatFrame3"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 4,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+{
+["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
+["serverTime"] = 1717385229,
+["r"] = 1,
+["b"] = 0,
+["timestamp"] = 7850.698,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["g"] = 1,
+},
+{
+["message"] = "0 |4day:days;, 0 |4hour:hours;, 0 |4minute:minutes;, 0 |4second:seconds;",
+["timestamp"] = 7850.698,
+},
+{
+["message"] = "========== End of Scrollback ==========",
+["timestamp"] = 7850.698,
+},
+{
+["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
+["r"] = 1,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["timestamp"] = 7842.271,
+["g"] = 1,
+["b"] = 0,
+},
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame11"] = {
+["maxElements"] = 128,
+["elements"] = {
+{
+["message"] = "|cff979797|Hpratcopy|h[11:42:52]|h|r [W To] |cffd8d8d8[|r|HBNplayer:|Kq11|k:11:1:BN_WHISPER:|Kq11|k:Tristam#1808|h|A:UI-ChatIcon-WoW:0:0:0:0|a|cffff7c0a|Kq11|k|r|h|cffd8d8d8]|r: oieee",
+["extraData"] = {
+53,
+1,
+2,
+["n"] = 3,
+},
+["b"] = 0.9647059440612793,
+["serverTime"] = 1714574572,
+["timestamp"] = 4402.841,
+["g"] = 1,
+["r"] = 0,
+},
+},
+["headIndex"] = 1,
+},
+["ChatFrame1"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 29,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+{
+["message"] = "|cff979797|Hpratcopy|h[00:39:56]|h|r Echo of Doragosa yells: These are sacred halls of learning! Only those registered may access them!",
+["serverTime"] = 1717385996,
+["r"] = 1,
+["extraData"] = {
+15,
+15,
+16,
+["n"] = 3,
+},
+["timestamp"] = 8617.836,
+["g"] = 0.250980406999588,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:39:56]|h|r |cffffaeaeDetails!:|r |cFFFFFF00First Hit|r: Melee from Echo of Doragosa |cFFFFBB00Boss First Target|r: Onifade    ",
+["timestamp"] = 8617.89,
+["serverTime"] = 1717385996,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:03]|h|r Echo of Doragosa yells: Think about what you have done!",
+["serverTime"] = 1717386003,
+["r"] = 1,
+["extraData"] = {
+15,
+15,
+16,
+["n"] = 3,
+},
+["timestamp"] = 8625.386,
+["g"] = 0.250980406999588,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:12]|h|r Echo of Doragosa says: Demerit points for you!",
+["serverTime"] = 1717386012,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8634.376,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:13]|h|r Experience gained: 58900.",
+["serverTime"] = 1717386013,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 8635.017,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:13]|h|r Received 107 Gold, 65 Silver, 92 Copper.",
+["serverTime"] = 1717386013,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 8635.017,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:13]|h|r |cffd8d8d8[|r|Hplayer:Xkingcharmng-Antonidas:189:ACHIEVEMENT|h|cffd8bc3f64|r:|cffc41e3aXkingcharmng|r-|cfffda266Ant|r|h|cffd8d8d8]|r has earned the achievement |cffffff00|Hachievement:16269:Player-84-0A97E15F:1:6:2:24:4294967295:4294967295:4294967295:4294967295|h[Algeth'ar Academy]|h|r |cffffffff(|rCompleted 5/16/24|cffffffff)|r!",
+["serverTime"] = 1717386013,
+["r"] = 1,
+["extraData"] = {
+47,
+33,
+34,
+["n"] = 3,
+},
+["timestamp"] = 8635.123,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:13]|h|r |cffd8d8d8[|r|Hplayer:Conquestd-Stormreaver:190:ACHIEVEMENT|h|cffd8bc3f62|r:|cff33937fConquestd|r-|cffcefda4Sto|r|h|cffd8d8d8]|r has earned the achievement |cffffff00|Hachievement:16269:Player-58-0DC12EA4:1:6:2:24:4294967295:4294967295:4294967295:4294967295|h[Algeth'ar Academy]|h|r |cffffffff(|rCompleted 5/16/24|cffffffff)|r!",
+["serverTime"] = 1717386013,
+["r"] = 1,
+["extraData"] = {
+47,
+33,
+35,
+["n"] = 3,
+},
+["timestamp"] = 8635.123,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:13]|h|r |cffd8d8d8[|r|Hplayer:Lovefire-Stormreaver:191:ACHIEVEMENT|h|cffd8bc3f62|r:|cff33937fLovefire|r-|cffcefda4Sto|r|h|cffd8d8d8]|r has earned the achievement |cffffff00|Hachievement:16269:Player-58-0DC12F2C:1:6:2:24:4294967295:4294967295:4294967295:4294967295|h[Algeth'ar Academy]|h|r |cffffffff(|rCompleted 5/16/24|cffffffff)|r!",
+["serverTime"] = 1717386013,
+["r"] = 1,
+["extraData"] = {
+47,
+33,
+36,
+["n"] = 3,
+},
+["timestamp"] = 8635.123,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:15]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff0070dd|Hitem:193705::::::::65:104::17:4:7978:7975:6652:10864:2:9:64:28:2587:::::|h[Breastplate of Proven Knowledge]|h|r.",
+["serverTime"] = 1717386015,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8637.417,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:16]|h|r You loot 29 Gold, 3 Silver, 23 Copper (+58 Silver, 6 Copper)",
+["serverTime"] = 1717386016,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+22,
+["n"] = 3,
+},
+["timestamp"] = 8637.844000000001,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:18]|h|r You leave the group.",
+["serverTime"] = 1717386018,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 8639.571,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:23]|h|r |CFF9482C9Quest Completist:|r No quests were returned from the server query. Attempting to check each quest individually...",
+["timestamp"] = 8644.593,
+["serverTime"] = 1717386023,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:23]|h|r |CFF9482C9Quest Completist:|r Query completed.",
+["timestamp"] = 8644.593,
+["serverTime"] = 1717386023,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:23]|h|r |Hchannel:channel:1|h[1] |h Changed Channel: |Hchannel:CHANNEL:1|h1|h",
+["serverTime"] = 1717386023,
+["r"] = 1,
+["extraData"] = {
+69,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 8644.593,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:23]|h|r |Hchannel:channel:2|h[2] |h Changed Channel: |Hchannel:CHANNEL:2|h2|h",
+["serverTime"] = 1717386023,
+["r"] = 1,
+["extraData"] = {
+70,
+6,
+7,
+["n"] = 3,
+},
+["timestamp"] = 8644.593,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:23]|h|r |Hchannel:channel:3|h[3] |h Changed Channel: |Hchannel:CHANNEL:3|h3|h",
+["serverTime"] = 1717386023,
+["r"] = 1,
+["extraData"] = {
+71,
+9,
+10,
+["n"] = 3,
+},
+["timestamp"] = 8644.593,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:23]|h|r |Hchannel:channel:5|h[5] |h Changed Channel: |Hchannel:CHANNEL:5|h5|h",
+["serverTime"] = 1717386023,
+["r"] = 1,
+["extraData"] = {
+73,
+12,
+13,
+["n"] = 3,
+},
+["timestamp"] = 8644.593,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:29]|h|r Repaired for 5 Gold, 30 Silver, 4 Copper.",
+["r"] = 1,
+["serverTime"] = 1717386029,
+["timestamp"] = 8651.45,
+["g"] = 0.85,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:29]|h|r You sold your junk for 4g 6s 81c",
+["serverTime"] = 1717386029,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+21,
+["n"] = 3,
+},
+["timestamp"] = 8651.45,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:29]|h|r You repaired your armor for 5g 30s 4c",
+["serverTime"] = 1717386029,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+21,
+["n"] = 3,
+},
+["timestamp"] = 8651.45,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:30]|h|r Sold junk for 3 Gold, 93 Silver, 6 Copper.",
+["r"] = 1,
+["serverTime"] = 1717386030,
+["timestamp"] = 8652.076000000001,
+["g"] = 0.85,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:34]|h|r You gained: |cffffffff86g 79s|r",
+["serverTime"] = 1717386034,
+["r"] = 1,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["timestamp"] = 8656.371000000001,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:36]|h|r |Hchannel:channel:3|h[3] |h |cffffff00Valley of Strength is under attack!|r",
+["serverTime"] = 1717386036,
+["r"] = 1,
+["extraData"] = {
+71,
+9,
+37,
+["n"] = 3,
+},
+["timestamp"] = 8657.972,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:38]|h|r Greeb Ramrocket yells: The zeppelin to Warsong Hold has just arrived! All aboard for Borean Tundra!",
+["serverTime"] = 1717386038,
+["r"] = 1,
+["extraData"] = {
+15,
+15,
+16,
+["n"] = 3,
+},
+["timestamp"] = 8659.787,
+["g"] = 0.250980406999588,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:40:59]|h|r Zelli Hotnozzle yells: The zeppelin to Thunder Bluff has arrived! All aboard for a smooth ride across the Barrens!",
+["serverTime"] = 1717386059,
+["r"] = 1,
+["extraData"] = {
+15,
+15,
+16,
+["n"] = 3,
+},
+["timestamp"] = 8680.581,
+["g"] = 0.250980406999588,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:41:47]|h|r |Hchannel:channel:3|h[3] |h |cffffff00Valley of Strength is under attack!|r",
+["serverTime"] = 1717386107,
+["r"] = 1,
+["extraData"] = {
+71,
+9,
+37,
+["n"] = 3,
+},
+["timestamp"] = 8729.172,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:42:29]|h|r You have learned a new spell: |cff71d5ff|Hspell:108238:0|h[Renewal]|h|r.",
+["serverTime"] = 1717386149,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 8771.109,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:42:56]|h|r |Hchannel:channel:3|h[3] |h |cffffff00Valley of Strength is under attack!|r",
+["serverTime"] = 1717386176,
+["r"] = 1,
+["extraData"] = {
+71,
+9,
+37,
+["n"] = 3,
+},
+["timestamp"] = 8797.903,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:15]|h|r |cFFFF0000Grail|r automatically initializing a server query for completed quests",
+["timestamp"] = 7857.115,
+["serverTime"] = 1717385235,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:15]|h|r |cFF00FF00Grail|r: starting to process completed query results",
+["timestamp"] = 7857.115,
+["serverTime"] = 1717385235,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:15]|h|r |cFFFF0000Grail|r: abandoned processing completed query results because currently complete 5366 but server only thinks 954",
+["timestamp"] = 7857.115,
+["serverTime"] = 1717385235,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:15]|h|r |cff3FC7EB[MoveAny |T135994:16:16:0:0|t]|r |cFFFFFF00 \"StatusBar2 (Reputation Bar)\" is already enabled in EditMode. Please deactivate in EditMode or MoveAny.",
+["timestamp"] = 7857.115,
+["serverTime"] = 1717385235,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:16]|h|r AutoDisenchant inactive",
+["r"] = 1,
+["serverTime"] = 1717385236,
+["timestamp"] = 7858.198,
+["g"] = 0.5,
+["b"] = 0.25,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:25]|h|r You are now queued in the Dungeon Finder.",
+["serverTime"] = 1717385245,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 7866.959,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:27:43]|h|r |cff33ff99CanIMogIt|r: Items updated: |cff15abff+0, |cffe69f00-0",
+["timestamp"] = 7885.406,
+["serverTime"] = 1717385263,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:24]|h|r Dungeon Difficulty set to Normal.",
+["serverTime"] = 1717385364,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 7986.326,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:25]|h|r |cffffaeaeDetails!:|r a new version is available, download it from Curse Forge app or website.    ",
+["timestamp"] = 7986.79,
+["serverTime"] = 1717385365,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:32]|h|r |cFF33FF99BigWigs|r: Failed to send initial version. Error code: 9,true,true",
+["timestamp"] = 7993.63,
+["serverTime"] = 1717385372,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:32]|h|r |CFF9482C9Quest Completist:|r No quests were returned from the server query. Attempting to check each quest individually...",
+["timestamp"] = 7993.993,
+["serverTime"] = 1717385372,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:32]|h|r |CFF9482C9Quest Completist:|r Query completed.",
+["timestamp"] = 7993.993,
+["serverTime"] = 1717385372,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:32]|h|r |cFF33FF99BigWigs|r: The |cFF436EEELittleWigs|r addon is missing!",
+["timestamp"] = 7993.993,
+["serverTime"] = 1717385372,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:33]|h|r |Hchannel:channel:1|h[1] |h Changed Channel: |Hchannel:CHANNEL:1|h1|h",
+["serverTime"] = 1717385373,
+["r"] = 1,
+["extraData"] = {
+69,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 7994.7,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:33]|h|r |Hchannel:channel:2|h[2] |h Left Channel: |Hchannel:CHANNEL:2|h2|h",
+["serverTime"] = 1717385373,
+["r"] = 1,
+["extraData"] = {
+70,
+6,
+7,
+["n"] = 3,
+},
+["timestamp"] = 7994.7,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:33]|h|r |Hchannel:channel:3|h[3] |h Changed Channel: |Hchannel:CHANNEL:3|h3|h",
+["serverTime"] = 1717385373,
+["r"] = 1,
+["extraData"] = {
+71,
+9,
+10,
+["n"] = 3,
+},
+["timestamp"] = 7994.7,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:33]|h|r |Hchannel:channel:5|h[5] |h Left Channel: |Hchannel:CHANNEL:5|h5|h",
+["serverTime"] = 1717385373,
+["r"] = 1,
+["extraData"] = {
+73,
+12,
+13,
+["n"] = 3,
+},
+["timestamp"] = 7994.7,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:33]|h|r Conquestd is now the leader of your group!",
+["serverTime"] = 1717385373,
+["r"] = 1,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["timestamp"] = 7994.7,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:40]|h|r Headteacher Doragosa yells: Welcome to Algeth'ar Academy! I am delighted that you received our invitation. The school is a touch behind schedule, but I have heard wondrous things about your capabilities. Perhaps you could help us?",
+["serverTime"] = 1717385380,
+["r"] = 1,
+["extraData"] = {
+15,
+15,
+16,
+["n"] = 3,
+},
+["timestamp"] = 8002.276,
+["g"] = 0.250980406999588,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:29:56]|h|r Bronze Dragonflight Recruiter says: You look in a hurry, but if I could borrow you for a second to pledge the Bronze Dragonflight I promise your time will be well spent.",
+["serverTime"] = 1717385396,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8017.857,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:00]|h|r Blue Dragonflight Recruiter says: Ummm... excuse me... Ummm... Will you be matriculating at Algeth'ar Academy for the upcoming year? If so, have you considered pledging the Blue Dragonflight?",
+["serverTime"] = 1717385400,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8021.898,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:03]|h|r Professor Mystakria says: New students! How wonderful. It has been quite some time since the Academy has been open.",
+["serverTime"] = 1717385403,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8024.712,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:06]|h|r Green Dragonflight Recruiter says: Hey, friend! I am still waking up, so please bear with me. Have you considered pledging the Green Dragonflight?",
+["serverTime"] = 1717385406,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8028.006,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:06]|h|r Red Dragonflight Recruiter says: Greetings! Have you considered pledging the Red Dragonflight? Anyone who is anyone will be. We are kind of a big deal.",
+["serverTime"] = 1717385406,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8028.006,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:10]|h|r Professor Ichistrasz says: Well, it seems like things are in further disrepair than we anticipated.",
+["serverTime"] = 1717385410,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8031.661,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:11]|h|r Professor Ichistrasz says: Indeed! Come with us! It should only take a moment to set up for a new lesson.",
+["serverTime"] = 1717385411,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8033.327,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:15]|h|r Professor Mystakria says: These lashers must have grown wild while we were away.",
+["serverTime"] = 1717385415,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8037.449000000001,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:20]|h|r Professor Mystakria says: Please, if you could, clear them out while we realign the life magics of this place?",
+["serverTime"] = 1717385420,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8041.946,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:30:29]|h|r Interface action failed because of an AddOn",
+["serverTime"] = 1717385429,
+["r"] = 1,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["timestamp"] = 8050.761,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:20]|h|r Professor Mystakria says: Perfect, we are just about--wait, Ichistrasz! There is too much life magic! What are you doing?",
+["serverTime"] = 1717385480,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8101.703,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:30]|h|r Professor Ichistrasz says: Me?! There is too much nature! What are you doing?",
+["serverTime"] = 1717385490,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8111.623000000001,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:35]|h|r Professor Mystakria says: What is that thing? This is your fault!",
+["serverTime"] = 1717385495,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8117.012,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:38]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Melee from Overgrown Ancient   ",
+["timestamp"] = 8120.12,
+["serverTime"] = 1717385498,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:38]|h|r |cffffaeaeDetails!:|r |cFFFFFF00First Hit|r: Melee from Overgrown Ancient |cFFFFBB00Boss First Target|r: Onifade    ",
+["timestamp"] = 8120.228,
+["serverTime"] = 1717385498,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:39]|h|r Professor Ichistrasz says: Absolutely not!",
+["serverTime"] = 1717385499,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8120.987,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:42]|h|r Professor Mystakria says: Please help us, new students.",
+["serverTime"] = 1717385502,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8123.734,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:56]|h|r Professor Mystakria says: Thank you so much for your help. Though this all could have been avoided by someone not trying too hard.",
+["serverTime"] = 1717385516,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8137.66,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:58]|h|r You receive loot: |cff0070dd|Hitem:193714::::::::65:104::17:5:7978:7975:6652:10533:10864:2:9:65:28:2587:::::|h[Frenzyroot Cuffs]|h|r",
+["serverTime"] = 1717385518,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+20,
+["n"] = 3,
+},
+["timestamp"] = 8139.78,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:58]|h|r |cffffff00Added missing appearances of: |cffff7fff|HBW_transmogset:2683|h[Tuskarr Dungeoneer's Garb]|h|r",
+["timestamp"] = 8139.914,
+["serverTime"] = 1717385518,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:31:59]|h|r You loot 16 Gold, 29 Silver, 97 Copper (+32 Silver, 59 Copper)",
+["serverTime"] = 1717385519,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+22,
+["n"] = 3,
+},
+["timestamp"] = 8140.621,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:32:07]|h|r Professor Ichistrasz says: What an overgrown statement.",
+["serverTime"] = 1717385527,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8148.691,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:32:17]|h|r Headteacher Doragosa says: It appears some new students have trickled in after you. They seem interested in our sports field. Help them sort out clearing the place, it is in quite a state.",
+["serverTime"] = 1717385537,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8158.707,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:32:43]|h|r Malinor says: Look at this Lish Llrath arena--wait, what are these birds doing here?",
+["serverTime"] = 1717385563,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8185.344,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:32:46]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff0070dd|Hitem:190326::::::::65:104:::::::::|h[Rousing Air]|h|rx3.",
+["serverTime"] = 1717385566,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8187.585,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:15]|h|r Malinor says: Clear them out! They have ruined the place.",
+["serverTime"] = 1717385595,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8217.356,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:15]|h|r The eagles press their assault!",
+["serverTime"] = 1717385595,
+["r"] = 1,
+["extraData"] = {
+17,
+24,
+25,
+["n"] = 3,
+},
+["timestamp"] = 8217.356,
+["g"] = 0.501960813999176,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:17]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|r.",
+["serverTime"] = 1717385597,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8219.49,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:18]|h|r You receive loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|rx3",
+["serverTime"] = 1717385598,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+20,
+["n"] = 3,
+},
+["timestamp"] = 8219.611,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:18]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|r.",
+["serverTime"] = 1717385598,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8220.397,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:27]|h|r Malinor says: So many birds! Help us get rid of them!",
+["serverTime"] = 1717385607,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8229.453,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:27]|h|r More eagles begin their approach.",
+["serverTime"] = 1717385607,
+["r"] = 1,
+["extraData"] = {
+17,
+24,
+25,
+["n"] = 3,
+},
+["timestamp"] = 8229.453,
+["g"] = 0.501960813999176,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:30]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|r.",
+["serverTime"] = 1717385610,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8232.121000000001,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:32]|h|r You receive loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|r",
+["serverTime"] = 1717385612,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+20,
+["n"] = 3,
+},
+["timestamp"] = 8234.429,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:42]|h|r Malinor says: All right. Now we need to clear out the big one. I will activate the goals for Lish Llrath--that is Talon Toss for you softskins. Use them to get her attention.",
+["serverTime"] = 1717385622,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8244.287,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:33:47]|h|r You receive loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|r",
+["serverTime"] = 1717385627,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+20,
+["n"] = 3,
+},
+["timestamp"] = 8249.474,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:05]|h|r Malinor says: At least we know that works. Watch yourselves.",
+["serverTime"] = 1717385645,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8267.482,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:05]|h|r A deafening screech is heard in the distance...",
+["serverTime"] = 1717385645,
+["r"] = 1,
+["extraData"] = {
+17,
+24,
+25,
+["n"] = 3,
+},
+["timestamp"] = 8267.482,
+["g"] = 0.501960813999176,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:09]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|rx2.",
+["serverTime"] = 1717385649,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8271.215,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:19]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Brambles from Onifade   ",
+["timestamp"] = 8280.672,
+["serverTime"] = 1717385659,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:19]|h|r |cffffaeaeDetails!:|r |cFFFFFF00First Hit|r: Brambles from Onifade |cFFFFBB00Boss First Target|r: Onifade    ",
+["timestamp"] = 8280.779,
+["serverTime"] = 1717385659,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:28]|h|r The Pitch's goals have activated, |TInterface\\ICONS\\INV_Misc_ThrowingBall_01.blp:20|t|cFFFF0000|Hspell:377182|h[Play Ball!]|h|r",
+["serverTime"] = 1717385668,
+["r"] = 1,
+["extraData"] = {
+42,
+27,
+28,
+["n"] = 3,
+},
+["timestamp"] = 8290.476,
+["g"] = 0.8666667342185974,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:30]|h|r Crawth is about to |TInterface\\ICONS\\Ability_Vehicle_SonicShockwave.blp:20|t|cFFFF0000|Hspell:377004|h[Deafening Screech]|h|r !",
+["serverTime"] = 1717385670,
+["r"] = 1,
+["extraData"] = {
+42,
+27,
+28,
+["n"] = 3,
+},
+["timestamp"] = 8291.772,
+["g"] = 0.8666667342185974,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:33]|h|r The Pitch's goals have activated, |TInterface\\ICONS\\INV_Misc_ThrowingBall_01.blp:20|t|cFFFF0000|Hspell:377182|h[Play Ball!]|h|r",
+["serverTime"] = 1717385673,
+["r"] = 1,
+["extraData"] = {
+42,
+27,
+28,
+["n"] = 3,
+},
+["timestamp"] = 8295.43,
+["g"] = 0.8666667342185974,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:41]|h|r You receive loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|r",
+["serverTime"] = 1717385681,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+20,
+["n"] = 3,
+},
+["timestamp"] = 8303.095,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:41]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff0070dd|Hitem:193722::::::::65:104::1:7:10323:7974:6652:10532:10864:3139:8766:1:28:2587:::::|h[Azure Belt of Competition]|h|r.",
+["serverTime"] = 1717385681,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8303.107,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:42]|h|r You loot 13 Gold, 59 Silver, 16 Copper (+27 Silver, 18 Copper)",
+["serverTime"] = 1717385682,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+22,
+["n"] = 3,
+},
+["timestamp"] = 8303.937,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:34:44]|h|r |cffa5a5a5Conquestd|r-Stormreaver receives loot: |cff9d9d9d|Hitem:192621::::::::65:104:::::::::|h[Long-Toed Talon]|h|rx4.",
+["serverTime"] = 1717385684,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+29,
+["n"] = 3,
+},
+["timestamp"] = 8306.482,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:35:31]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff9d9d9d|Hitem:192624::::::::65:104:::::::::|h[Cracked Scales]|h|rx2.",
+["serverTime"] = 1717385731,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8353.22,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:35:31]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff9d9d9d|Hitem:192635::::::::65:104:::::::::|h[Warped Metal]|h|r.",
+["serverTime"] = 1717385731,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8353.432,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:35:39]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cffffffff|Hitem:197741::::::::65:104:::::::::|h[Maybe Meat]|h|r.",
+["serverTime"] = 1717385739,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8360.982,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:35:40]|h|r Headteacher Doragosa says: Our history professor Maxdormu is almost ready for lessons. Do see if there is anything he needs assistance with.",
+["serverTime"] = 1717385740,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8362.436,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:35:49]|h|r |cff7fff7fFIS|r: Corrupted Manafiend is casting |cffff4444Surge|r!",
+["timestamp"] = 8370.734,
+["serverTime"] = 1717385749,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:35:52]|h|r |cff7fff7fFIS|r: Corrupted Manafiend is casting |cffff4444Mana Void|r!",
+["timestamp"] = 8373.801,
+["serverTime"] = 1717385752,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:32]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff9d9d9d|Hitem:192624::::::::65:104:::::::::|h[Cracked Scales]|h|rx2.",
+["serverTime"] = 1717385792,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8413.814,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:32]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff9d9d9d|Hitem:192624::::::::65:104:::::::::|h[Cracked Scales]|h|rx3.",
+["serverTime"] = 1717385792,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8414.229,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:34]|h|r Professor Maxdormu says: Please excuse the mess! It has been quite some time since students have been here. I am just putting together my lesson plan.",
+["serverTime"] = 1717385794,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8415.962,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:39]|h|r |cff7fff7fFIS|r: Corrupted Manafiend is casting |cffff4444Surge|r!",
+["timestamp"] = 8421.164,
+["serverTime"] = 1717385799,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:48]|h|r |cff7fff7fFIS|r: Corrupted Manafiend is casting |cffff4444Mana Void|r!",
+["timestamp"] = 8429.648000000001,
+["serverTime"] = 1717385808,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:54]|h|r |cff7fff7fFIS|r: Unruly Textbook is casting |cffff4444Monotonous Lecture|r!",
+["timestamp"] = 8436.303,
+["serverTime"] = 1717385814,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:54]|h|r Unruly Textbook says: Chapter 5 Section 2: Ecological Impact of Djaradin Hunting Behaviors...",
+["serverTime"] = 1717385814,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8436.49,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:56]|h|r |cff7fff7fFIS|r: Successfully interrupted |cffaaffffMonotonous Lecture|r.",
+["timestamp"] = 8438.411,
+["serverTime"] = 1717385816,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:57]|h|r |Hchannel:Battleground|h[I] |h|cffd8d8d8[|r|Hplayer:Onifade-Nemesis:131:INSTANCE_CHAT|h|cffd8bc3f65|r:|cffff7c0aOnifade|r|h|cffd8d8d8]|r: [FIS] Interrupted Unruly Textbook's |cff71d5ff|Hspell:388392:0|h[Monotonous Lecture]|h|r",
+["serverTime"] = 1717385817,
+["r"] = 1,
+["extraData"] = {
+63,
+30,
+31,
+["n"] = 3,
+},
+["timestamp"] = 8438.891,
+["g"] = 0.4980392456054688,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:36:58]|h|r Unruly Textbook says: Chapter 5 Section 2: Ecological Impact of Djaradin Hunting Behaviors...",
+["serverTime"] = 1717385818,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8440.131,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:10]|h|r Professor Maxdormu says: Ah! Here we are! Ahem--long ago, members of the blue dragonflight accidentally overloaded an arcane elemental and created a powerful construct named Vexamus that quickly started to wreak havoc!",
+["serverTime"] = 1717385830,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8452.109,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:29]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Melee from Vexamus   ",
+["timestamp"] = 8471.356,
+["serverTime"] = 1717385849,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:29]|h|r |cffffaeaeDetails!:|r |cFFFFFF00First Hit|r: Melee from Vexamus |cFFFFBB00Boss First Target|r: Onifade    ",
+["timestamp"] = 8471.463,
+["serverTime"] = 1717385849,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:32]|h|r Professor Maxdormu says: The blue dragons battled Vexamus fiercely, attempting to prevent it from absorbing stray Arcane Orbs that could allow it to grow further out of control.",
+["serverTime"] = 1717385852,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8474.4,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:43]|h|r Professor Maxdormu says: Though Vexamus tried its best to defeat the dragons, it was ultimately destroyed. Well done!",
+["serverTime"] = 1717385863,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8485.443,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:50]|h|r You loot 11 Gold, 28 Silver, 30 Copper",
+["serverTime"] = 1717385870,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+22,
+["n"] = 3,
+},
+["timestamp"] = 8492.43,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:52]|h|r Professor Maxdormu says: Since you did so well on your lesson, feel free to take something from the 'Good Students' Reward Chest.",
+["serverTime"] = 1717385872,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8493.858,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:37:53]|h|r |cffa5a5a5Lovefire|r-Stormreaver receives loot: |cff0070dd|Hitem:193709::::::::65:104::17:3:7978:7975:6652:2:9:62:28:2155:::::|h[Vexamus' Expulsion Rod]|h|r.",
+["serverTime"] = 1717385873,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+32,
+["n"] = 3,
+},
+["timestamp"] = 8495.218,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:38:14]|h|r |cff7fff7fFIS|r: Corrupted Manafiend is casting |cffff4444Mana Void|r!",
+["timestamp"] = 8515.906,
+["serverTime"] = 1717385894,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:38:25]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff9d9d9d|Hitem:192730::::::::65:104:::::::::|h[Unstable Arcane Essence]|h|r.",
+["serverTime"] = 1717385905,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8527.47,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:38:26]|h|r |cffa5a5a5Tromosa|r-Spinebreaker receives loot: |cff9d9d9d|Hitem:192624::::::::65:104:::::::::|h[Cracked Scales]|h|r.",
+["serverTime"] = 1717385906,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+23,
+["n"] = 3,
+},
+["timestamp"] = 8527.577,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:38:27]|h|r |cffa5a5a5Xkingcharmng|r-Antonidas receives loot: |cff9d9d9d|Hitem:192730::::::::65:104:::::::::|h[Unstable Arcane Essence]|h|r.",
+["serverTime"] = 1717385907,
+["r"] = 0,
+["extraData"] = {
+28,
+19,
+26,
+["n"] = 3,
+},
+["timestamp"] = 8529.352,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:38:44]|h|r Headteacher Doragosa says: Hmmm, we have been gone for some time. The growth here... ah! The way should be clear, please head to my office and wait. I hear new students that require my personal attention.",
+["serverTime"] = 1717385924,
+["r"] = 1,
+["extraData"] = {
+13,
+17,
+18,
+["n"] = 3,
+},
+["timestamp"] = 8546.237000000001,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:39:41]|h|r You loot 12 Gold, 49 Silver, 56 Copper (+24 Silver, 98 Copper)",
+["serverTime"] = 1717385981,
+["r"] = 1,
+["extraData"] = {
+29,
+21,
+22,
+["n"] = 3,
+},
+["timestamp"] = 8603.004,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:39:46]|h|r Echo of Doragosa yells: Greetings, new--Who are you? You are not registered here! This room is only for students! Head to the registrar at once!",
+["serverTime"] = 1717385986,
+["r"] = 1,
+["extraData"] = {
+15,
+15,
+16,
+["n"] = 3,
+},
+["timestamp"] = 8607.939,
+["g"] = 0.250980406999588,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[00:39:56]|h|r |cffffaeaeDetails!:|r (debug): |cFFFFFF00First Hit|r: Melee from Echo of Doragosa   ",
+["timestamp"] = 8617.783,
+["serverTime"] = 1717385996,
+},
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+},
 }

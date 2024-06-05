@@ -1122,6 +1122,7 @@ local function GetSortedSetSources(setID, givenSet)
           sourceCollectPairs[appInfo.sourceID] = { appInfo.isCollected, appInfo.isCollected};
         end
       end
+      
       for i=1,#appSources do
         local appInfo = C_TransmogCollection.GetSourceInfo(appSources[i]);
         if sourceCollectPairs[appInfo.sourceID] then
@@ -2377,6 +2378,13 @@ local function HideBlizzardSets(setID)
                       [2746] = true, --DF dup Primal Elements green set(leather)
                       [2744] = true, --DF dup Primal Elements green set(mail)
                       [2748] = true, --DF dup Primal Elements green set(plate)
+                      
+                      [3625] = true, --Deep Stormrider's Attire (unimplemented)(red)
+                      [3626] = true, --Frenzied Stormrider's Attire (unimplemented)(shiny red)
+                      [3627] = true, --Champion Stormrider's Attire (unimplemented)(purple)
+                      [3628] = true, --Sparking Stormrider's Attire (unimplemented)(shiny purple)
+                      [3629] = true, --Shining Stormrider's Attire (unimplemented)(yellow)
+                      [3630] = true, --Shining Stormrider's Attire (unimplemented)(shiny yellow)
     };
   
   --for i = 1, #setsToHide do
@@ -2735,17 +2743,21 @@ local setsFlagTP = {
   [3639] = true, --swimwear (shorts)
 }
 local setsFlagShop = {
-  [1903] = true,
-  [2482] = true,
-  [2857] = true,
-  [2200] = true,
-  [1913] = true,
-  [1914] = true,
-  [3085] = true,
-  [3355] = true,
+  [1903] = true, -- wendigo woolies
+  [2482] = true, -- fireplume regalia
+  [2857] = true, -- waveborne diplomat's
+  [2200] = true, -- celestial observer's
+  [1913] = true, -- eternal traveler
+  [1914] = true, -- sprite darter's
+  [3085] = true, -- high scholar's
+  [3355] = true, -- dreadlord's venombane
+  [3634] = true, -- green murloc romper
+  [3635] = true, -- purple murloc romper
+  [3128] = true, -- stormrider's attire
+  [3129] = true, -- thundering stormrider's attire
 }
 local setsFlagNoLongerObtainable = {
-  [3443] = true,
+  [3443] = true, -- plunderlord's finery
 }
 
 local function IsFavorite(setID)
@@ -2806,6 +2818,10 @@ local function FillSetMaps()
       data.shop = true;
     else
       data.shop = false;
+    end
+    --Added Remix flag
+    if app.mopRemixFlag[data.setID] then
+      data.isRemix = true;
     end
     if data.classMask == 16383 then data.classMask = 0 end
     
@@ -2951,6 +2967,9 @@ local function FillSetMaps()
             end
             if data.tp then
               BaseSets[otherBaseID].tp = true;
+            end
+            if data.isRemix then
+              BaseSets[otherBaseID].hasRemix = true;
             end
             
             --AddSetToHash(data, otherBaseID);
@@ -3142,7 +3161,12 @@ local function SetButtonData(button, set)
   end
   
   --Sets the sub-name on the button.
-  button.Label:SetText(set.label);
+  if ExS_Settings.hideListDescription then
+    button.Label:SetShown(false);
+  else
+    button.Label:SetShown(true);
+    button.Label:SetText(set.label);
+  end
   
   button.IconCover:Show();
   button.Icon:Show();
@@ -3168,6 +3192,7 @@ local function SetButtonData(button, set)
   button.Icon:SetDesaturation((setInfo.topCollected == 0) and 1 or 0);
   button.Favorite:SetShown(set.favoriteSetID);
   button.TradingPost:SetShown(set.tp);
+  button.Remix:SetShown(set.isRemix or set.hasRemix);
   
   --Setting if special apperance needed for newness or selectedness.
   if NotUsedSets[set.setID] == nil then 
@@ -3655,6 +3680,14 @@ local function CreateScrollbar(frame)
     button.TradingPost.icon:SetTexCoord(.2,.95,.1,.9);
     button.TradingPost.icon:SetRotation(math.pi);
     
+    button.Remix = CreateFrame("Frame", nil, button);
+    button.Remix:SetAllPoints();
+    button.Remix.icon = button.Remix:CreateTexture(nil, "BACKGROUND");
+    button.Remix.icon:SetPoint("BOTTOMRIGHT",button.Remix, "BOTTOMRIGHT", -1,1);
+    button.Remix.icon:SetSize(20,20);
+    button.Remix.icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon.tga]]);
+    button.Remix.icon:SetVertexColor(1,1,1,.3);
+    
     button.AltProgressBar = button:CreateTexture(nil, "ARTWORK");
     button.AltProgressBar:SetDrawLayer("ARTWORK", -1);
     button.AltProgressBar:SetPoint("BOTTOMLEFT", button.Background, "BOTTOMLEFT", 2, 2);
@@ -4020,6 +4053,8 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ExS_Settings.showHiddenSets end;
     SetsFrame.FilterDropDown:AddLine(info);
     
+    SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
+    
     --Disable Show/Hide hidden sets button
     info.text = "Disable Hide Set Button";
     info.func = function(self)
@@ -4028,6 +4063,17 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
             self:SetCheckedState(ExS_Settings.disableHideSetButton);
           end
     info.checked = function() return ExS_Settings.disableHideSetButton end;
+    SetsFrame.FilterDropDown:AddLine(info);
+    
+    --Hide Description on left list
+    info.text = "Hide Description (2nd Line) in Left List";
+    info.func = function(self)
+            ExS_Settings.hideListDescription = not ExS_Settings.hideListDescription;
+            self:SetCheckedState(ExS_Settings.hideListDescription);
+
+            SetsFrame.ScrollToSet(ExS_ScrollFrame.selectedSetID);
+          end
+    info.checked = function() return ExS_Settings.hideListDescription end;
     SetsFrame.FilterDropDown:AddLine(info);
     
     SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
@@ -4263,31 +4309,41 @@ end
 --else swaps appearance if multiple appearances for that slot
 local function ExS_SetSources_OnMouseDown(button)
 	if ( IsModifiedClick("CHATLINK") ) then
-    local sources = GetSetSourcesForSlot(button.setID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipTransmogSlot);
-		if ( #sources == 0 ) then
-			-- can happen if a slot only has HiddenUntilCollected sources
-      local sourceInfo = C_TransmogCollection.GetSourceInfo(WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
-			tinsert(sources, sourceInfo);
-		end
-    
-    CollectionWardrobeUtil.SortSources(sources, sources[1].visualID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
-		--WardrobeCollectionFrame_SortSources(sources, sources[1].visualID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
-		if ( WardrobeCollectionFrame.tooltipSourceIndex ) then
-			local index = CollectionWardrobeUtil.GetValidIndexForNumSources(WardrobeCollectionFrame.tooltipSourceIndex, #sources);
-			local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(sources[index].sourceID));
-			if ( link ) then
-				HandleModifiedItemClick(link);
+    --local sources = GetSetSourcesForSlot(button.setID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipTransmogSlot);
+		--if ( #sources == 0 ) then
+		--	-- can happen if a slot only has HiddenUntilCollected sources
+    --  local sourceInfo = C_TransmogCollection.GetSourceInfo(WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
+		--	tinsert(sources, sourceInfo);
+		--end
+    --
+    --CollectionWardrobeUtil.SortSources(sources, sources[1].visualID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
+		----WardrobeCollectionFrame_SortSources(sources, sources[1].visualID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
+		--if ( WardrobeCollectionFrame.tooltipSourceIndex ) then
+		--	local index = CollectionWardrobeUtil.GetValidIndexForNumSources(WardrobeCollectionFrame.tooltipSourceIndex, #sources);
+		--	local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(sources[index].sourceID));
+		--	if ( link ) then
+		--		HandleModifiedItemClick(link);
+		--	end
+		--end
+    local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(button.sourceID));
+
+		if ( not ChatEdit_InsertLink(link) ) then
+			if ( SocialPostFrame and Social_IsShown() ) then
+        Social_InsertLink(link);
 			end
 		end
 	elseif ( IsModifiedClick("DRESSUP") ) then
-    local sources = GetSetSourcesForSlot(button.setID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipTransmogSlot);
-		if ( #sources == 0 ) then
-			-- can happen if a slot only has HiddenUntilCollected sources
-      local sourceInfo = C_TransmogCollection.GetSourceInfo(WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID);
-			tinsert(sources, sourceInfo);
-		end
+    --local sources = GetSetSourcesForSlot(button.setID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipTransmogSlot);
+    --local sourceID;
+		--if ( #sources == 0 ) then
+		--	-- can happen if a slot only has HiddenUntilCollected sources
+    --  sourceID = C_TransmogCollection.GetSourceInfo(WardrobeCollectionFrame.SetsCollectionFrame.tooltipPrimarySourceID).sourceID;
+		--	--tinsert(sources, sourceInfo);
+    --else
+    --  sourceID = sources[1].sourceID;
+		--end
     
-		DressUpVisual(sources[1].sourceID);
+		DressUpVisual(button.sourceID);
   else
     SwapAlternateSourceID(button.setID, button.sourceID);
     ----For help filling in alt appearance db.
@@ -4833,6 +4889,9 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     end
     if (ExS_Settings.disableHideSetButton == nil) then
       ExS_Settings.disableHideSetButton = false;
+    end
+    if (ExS_Settings.hideListDescription == nil) then
+      ExS_Settings.hideListDescription = false;
     end
     if (ExS_Favorites == nil) then
       ExS_Favorites = {};

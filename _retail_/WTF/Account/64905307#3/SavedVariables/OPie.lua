@@ -18,6 +18,7 @@ OPie_SavedData = {
 ["Crsega"] = "BUTTON3",
 ["Shamanjuba"] = "BUTTON3",
 ["Custom1"] = "BUTTON3",
+["Muligan1"] = "BUTTON3",
 ["PaladinAuras"] = false,
 ["ustomDrake"] = "BUTTON3",
 ["Sifu"] = "BUTTON3",
@@ -344,6 +345,16 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["name"] = "Custom",
 },
+["Muligan1"] = {
+{
+"mount",
+2142,
+["sliceToken"] = "ABuem//Gphw",
+},
+["limit"] = "Muruatan-Nemesis",
+["save"] = true,
+["name"] = "Muligan",
+},
 ["PaladinAuras"] = {
 {
 "ring",
@@ -510,7 +521,7 @@ OPie_SavedData = {
 ["name"] = "Sharan",
 },
 ["OPieDeletedRings"] = {
-["SpecMenu"] = true,
+["DruidUtility"] = true,
 ["MageTools"] = true,
 ["DruidShift"] = true,
 ["DruidFeral"] = true,
@@ -518,7 +529,7 @@ OPie_SavedData = {
 ["TrinketSlots"] = true,
 ["WorldMarkers"] = true,
 ["MageTravel"] = true,
-["DruidUtility"] = true,
+["SpecMenu"] = true,
 ["CommonTrades"] = true,
 ["WarlockCombat"] = true,
 },
@@ -1007,8 +1018,8 @@ OPie_SavedData = {
 ["vm"] = 2,
 },
 {
-["sliceToken"] = "OPCLSa",
 ["id"] = "/cast [mod][noknown:119898] {{spell:755}}; {{spell:119898}}",
+["sliceToken"] = "OPCLSa",
 ["vm"] = 2,
 },
 {
@@ -1017,8 +1028,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuebu8Er27",
 },
 {
-["sliceToken"] = "OPCLSh",
 ["id"] = "/cast [mod:alt] {{spell:20707}}; [group,nomod][nogroup,mod] {{spell:29893}}; {{spell:6201}}",
+["sliceToken"] = "OPCLSh",
 ["vm"] = 3,
 },
 {
@@ -1032,30 +1043,30 @@ OPie_SavedData = {
 ["sliceToken"] = "OPCLSg",
 },
 {
-["sliceToken"] = "OPCLSe",
 ["id"] = "/cast [flyable,nocombat,nomod] {{mount:air}}; [outdoors,nocombat,nomod:alt] {{mount:ground}}; {{spell:126}}",
+["sliceToken"] = "OPCLSe",
 ["fastClick"] = true,
 },
 {
-["sliceToken"] = "OPCLSi",
 ["id"] = 1122,
+["sliceToken"] = "OPCLSi",
 ["vm"] = 2,
 },
 {
-["sliceToken"] = "ABuebu8Er2E",
 ["id"] = 111400,
+["sliceToken"] = "ABuebu8Er2E",
 },
 {
-["sliceToken"] = "ABuebu8Er2W",
 ["id"] = 688,
+["sliceToken"] = "ABuebu8Er2W",
 },
 {
-["sliceToken"] = "ABuebu8Er2Q",
 ["id"] = 697,
+["sliceToken"] = "ABuebu8Er2Q",
 },
 {
-["sliceToken"] = "ABuebu8Er2m",
 ["id"] = 150544,
+["sliceToken"] = "ABuebu8Er2m",
 },
 {
 "mount",
@@ -1072,12 +1083,12 @@ OPie_SavedData = {
 460,
 ["sliceToken"] = "ABuebu8Er26",
 },
-["save"] = true,
-["v"] = 2,
-["vm"] = 125,
 ["name"] = "Warlock General",
 ["limit"] = "WARLOCK",
+["vm"] = 125,
+["save"] = true,
 ["hotkey"] = "BUTTON3",
+["v"] = 2,
 },
 ["Custom8"] = {
 {
@@ -2183,40 +2194,40 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemFZYtMs",
 },
 {
-["sliceToken"] = "ABuemFZYtMw",
 ["id"] = 20577,
+["sliceToken"] = "ABuemFZYtMw",
 },
 {
-["sliceToken"] = "ABuemFZYtMe",
 ["id"] = 7744,
+["sliceToken"] = "ABuemFZYtMe",
 },
 {
-["sliceToken"] = "ABuemFZYtMr",
 ["id"] = 29893,
+["sliceToken"] = "ABuemFZYtMr",
 },
 {
-["sliceToken"] = "ABuemFZYtM1",
 ["id"] = 48020,
+["sliceToken"] = "ABuemFZYtM1",
 },
 {
-["sliceToken"] = "ABuemFZYtMt",
 ["id"] = 342601,
+["sliceToken"] = "ABuemFZYtMt",
 },
 {
-["sliceToken"] = "ABuemFZYtMy",
 ["id"] = 698,
+["sliceToken"] = "ABuemFZYtMy",
 },
 {
-["sliceToken"] = "ABuemFZYtM3",
 ["id"] = 6201,
+["sliceToken"] = "ABuemFZYtM3",
 },
 {
-["sliceToken"] = "ABuemFZYtMu",
 ["id"] = 5697,
+["sliceToken"] = "ABuemFZYtMu",
 },
 {
-["sliceToken"] = "ABuemFZYtMi",
 ["id"] = 20707,
+["sliceToken"] = "ABuemFZYtMi",
 },
 {
 "mount",
@@ -2243,8 +2254,8 @@ OPie_SavedData = {
 1556,
 ["sliceToken"] = "ABuemFZYtMa",
 },
-["name"] = "Batezu",
 ["save"] = true,
+["name"] = "Batezu",
 ["limit"] = "Batezu-Nemesis",
 },
 ["Chishy"] = {
