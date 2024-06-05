@@ -405,7 +405,12 @@ local function SetButtonData(button, set)
   local setIsShown = set.setID == GetBaseSetID(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet);
   
   --Sets the sub-name on the button.
-  button.Label:SetText(set.label);
+  if ExS_Settings.hideListDescription then
+    button.Label:SetShown(false);
+  else
+    button.Label:SetShown(true);
+    button.Label:SetText(set.label);
+  end
   
   button.IconCover:Show();
   button.Icon:Show();
@@ -413,6 +418,7 @@ local function SetButtonData(button, set)
   button.IconCover:SetShown(not setIsShown);
   button.Icon:SetDesaturated(setInfo.topCollected == 0);
   button.Favorite:SetShown(set.favoriteSetID);
+  button.Remix:SetShown(set.isRemix);
   
   --Setting if special apperance needed for newness or selectedness.
   
@@ -926,12 +932,6 @@ local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
   info.checked = function() return ExS_Settings.hideNoLongerObtainable end;
   dropdown:AddLine(info);
   
-  dropdown:AddLine({isSpacer = true;});
-  
-  ----
-  --  Settings
-  ----  
-  
   --Show/Hide no longer obtainable sets
   info.text = "Show Hidden Sets";
   info.func = function(self)
@@ -940,6 +940,12 @@ local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
         end
   info.checked = function() return ExS_Settings.showHiddenSets end;
   dropdown:AddLine(info);
+  
+  dropdown:AddLine({isSpacer = true;});
+  
+  ----
+  --  Settings
+  ----  
   
   --Show/Hide no longer obtainable sets
   info.text = "Disable Hide Set Button";
@@ -975,6 +981,17 @@ local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
           self:SetCheckedState(ExS_Settings.progressBarByFilter);
         end
   info.checked = function() return ExS_Settings.progressBarByFilter end;
+  dropdown:AddLine(info);
+  
+    --Hide Description on left list
+  info.text = "Hide Description (2nd Line) in Left List";
+  info.func = function(self)
+          ExS_Settings.hideListDescription = not ExS_Settings.hideListDescription;
+          self:SetCheckedState(ExS_Settings.hideListDescription);
+
+          SelectSet(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet);
+        end
+  info.checked = function() return ExS_Settings.hideListDescription end;
   dropdown:AddLine(info);
   
   dropdown:AddLine({isSpacer = true;});
@@ -1973,6 +1990,15 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].NumSets.label:SetPoint("RIGHT",WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].NumSets.icon,"LEFT",-1,0);
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].NumSets.label:SetText("1");
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].NumSets.label:SetTextColor(.8,.7,.4,.65);
+      
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix = CreateFrame("Frame", nil, WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix:SetAllPoints();
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon = WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix:CreateTexture(nil, "BACKGROUND");
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetPoint("BOTTOMRIGHT",WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix, "BOTTOMRIGHT", -1,1);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetSize(20,20);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon.tga]]);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetVertexColor(1,1,1,.3);
+    
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:Show();
       
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:SetScript("OnMouseUp", function(self, button)
@@ -2355,6 +2381,31 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     --WeaponSetsCollectionFrame.RightFrame.indexText:SetSize(75, 10);
     --WeaponSetsCollectionFrame.RightFrame.indexText:SetJustifyH("LEFT");
     --WeaponSetsCollectionFrame.RightFrame.indexText:SetText("Hi");
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest = CreateFrame("Button", nil, WeaponSetsCollectionFrame.RightFrame);
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:SetPoint("BOTTOMRIGHT", WeaponSetsCollectionFrame.RightFrame, "BOTTOMRIGHT", -5, 50);
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:SetSize(26, 26);
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:SetScript("OnEnter", function(self)
+  --            GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+  --            
+  --local aSource = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].activeSource;
+  --if not WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource] then
+  --  GameTooltip:SetText("Nope.");
+  --else
+  --local weaponSourceID = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][2];
+  --
+  --              local appSource = C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(weaponSourceID).visualID)[1]
+  --              local _,_,_,_,_,link = C_TransmogCollection.GetAppearanceSourceInfo(appSource);
+  --              GameTooltip:SetHyperlink(link);
+  --            end
+  --            GameTooltip:Show();
+  --    end)
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:SetScript("OnLeave", function(self)
+  --            GameTooltip:Hide();
+  --    end)
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest.tex = WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:CreateTexture();
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest.tex:SetAllPoints(WeaponSetsCollectionFrame.RightFrame.itemTooltipTest);
+  --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest.tex:SetColorTexture(1,1,1,1);
+    --end test
     
     
     WeaponSetsCollectionFrame.RightFrame.ResetRotation = CreateFrame("Button", nil, WeaponSetsCollectionFrame.RightFrame);

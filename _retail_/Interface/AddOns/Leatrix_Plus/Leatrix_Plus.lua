@@ -1,9 +1,9 @@
 ﻿----------------------------------------------------------------------
--- 	Leatrix Plus 10.2.29 (29th May 2024)
+-- 	Leatrix Plus 10.2.30 (5th June 2024)
 ----------------------------------------------------------------------
 
---	01:Functns, 02:Locks, 03:Restart, 20:Live, 30:Isolated, 40:Player
---	50:RunOnce, 60:Evnts, 62:Profile, 70:Lgot, 80:Commands, 90:Panel
+--	01:Functions 02:Locks,  03:Restart 40:Player
+--	60:Events    62:Profile 70:Logout  80:Commands, 90:Panel
 
 ----------------------------------------------------------------------
 -- 	Leatrix Plus
@@ -18,7 +18,7 @@
 	local void
 
 	-- Version
-	LeaPlusLC["AddonVer"] = "10.2.29"
+	LeaPlusLC["AddonVer"] = "10.2.30"
 
 	-- Get locale table
 	local void, Leatrix_Plus = ...
@@ -65,12 +65,6 @@
 	_G.BINDING_NAME_LEATRIX_PLUS_GLOBAL_WEBLINK = L["Show web link"]
 	_G.BINDING_NAME_LEATRIX_PLUS_GLOBAL_RARE = L["Announce rare"]
 	_G.BINDING_NAME_LEATRIX_PLUS_GLOBAL_MOUNTSPECIAL = L["Mount special"]
-
-	-- Disable bag automation
-	-- Open vendor, close vendor, open vendor
-	-- Click the bag icon to switch bag mode (either from single to combined or combined to single).
-	-- Buy alcohol if you don't have it already (if you do, skip this step) (tested with Bottle of Dalaran Noir).
-	-- Drink alcohol from bags.
 
 	-- Disable sticky editbox
 	-- Open 2 chat windows
@@ -661,6 +655,7 @@
 		or	(LeaPlusLC["ShowPlayerChain"]		~= LeaPlusDB["ShowPlayerChain"])		-- Show player chain
 		or	(LeaPlusLC["ShowReadyTimer"]		~= LeaPlusDB["ShowReadyTimer"])			-- Show ready timer
 		or	(LeaPlusLC["ShowWowheadLinks"]		~= LeaPlusDB["ShowWowheadLinks"])		-- Show Wowhead links
+		or	(LeaPlusLC["ShowThreadsOfTime"]		~= LeaPlusDB["ShowThreadsOfTime"])		-- Show Threads of Time
 
 		-- Frames
 		or	(LeaPlusLC["ManageWidgetTop"]		~= LeaPlusDB["ManageWidgetTop"])		-- Manage widget top
@@ -680,6 +675,7 @@
 		-- System
 		or	(LeaPlusLC["NoRestedEmotes"]		~= LeaPlusDB["NoRestedEmotes"])			-- Silence rested emotes
 		or	(LeaPlusLC["KeepAudioSynced"]		~= LeaPlusDB["KeepAudioSynced"])		-- Keep audio synced
+		or	(LeaPlusLC["NoBagAutomation"]		~= LeaPlusDB["NoBagAutomation"])		-- Disable bag automation
 		or	(LeaPlusLC["NoPetAutomation"]		~= LeaPlusDB["NoPetAutomation"])		-- Disable pet automation
 		or	(LeaPlusLC["CharAddonList"]			~= LeaPlusDB["CharAddonList"])			-- Show character addons
 		or	(LeaPlusLC["FasterLooting"]			~= LeaPlusDB["FasterLooting"])			-- Faster auto loot
@@ -701,110 +697,475 @@
 	end
 
 ----------------------------------------------------------------------
---	L20: Live
+--	L40: Player
 ----------------------------------------------------------------------
 
-	function LeaPlusLC:Live()
+	function LeaPlusLC:Player()
 
 		----------------------------------------------------------------------
-		--	Block duels
+		-- Block friend requests (no reload required)
 		----------------------------------------------------------------------
 
-		if LeaPlusLC["NoDuelRequests"] == "On" then
-			LpEvt:RegisterEvent("DUEL_REQUESTED");
-		else
-			LpEvt:UnregisterEvent("DUEL_REQUESTED");
-		end
+		do
 
-		----------------------------------------------------------------------
-		--	Block pet battle duels
-		----------------------------------------------------------------------
-
-		if LeaPlusLC["NoPetDuels"] == "On" then
-			LpEvt:RegisterEvent("PET_BATTLE_PVP_DUEL_REQUESTED");
-		else
-			LpEvt:UnregisterEvent("PET_BATTLE_PVP_DUEL_REQUESTED");
-		end
-
-		----------------------------------------------------------------------
-		--	Automatically accept Dungeon Finder queue requests
-		----------------------------------------------------------------------
-
-		if LeaPlusLC["AutoConfirmRole"] == "On" then
-			LFDRoleCheckPopupAcceptButton:SetScript("OnShow", function()
-				local leader, leaderGUID  = "", ""
-				for i = 1, GetNumSubgroupMembers() do
-					if UnitIsGroupLeader("party" .. i) then
-						leader = UnitName("party" .. i)
-						leaderGUID = UnitGUID("party" .. i)
-						break
+			-- Function to decline friend requests
+			local function DeclineReqs()
+				if LeaPlusLC["NoFriendRequests"] == "On" then
+					for i = BNGetNumFriendInvites(), 1, -1 do
+						local id, player = BNGetFriendInviteInfo(i)
+						if id and player then
+							BNDeclineFriendInvite(id)
+							C_Timer.After(0.1, function()
+								LeaPlusLC:Print(L["A friend request from"] .. " " .. player .. " " .. L["was automatically declined."])
+							end)
+						end
 					end
 				end
-				if LeaPlusLC:FriendCheck(leader, leaderGUID) then
-					LFDRoleCheckPopupAcceptButton:Click()
+			end
+
+			-- Event frame for incoming friend requests
+			local DecEvt = CreateFrame("FRAME")
+			DecEvt:SetScript("OnEvent", DeclineReqs)
+
+			-- Function to register or unregister the event
+			local function ControlEvent()
+				if LeaPlusLC["NoFriendRequests"] == "On" then
+					DecEvt:RegisterEvent("BN_FRIEND_INVITE_ADDED")
+					DeclineReqs()
+				else
+					DecEvt:UnregisterEvent("BN_FRIEND_INVITE_ADDED")
+				end
+			end
+
+			-- Set event status when option is clicked and on startup
+			LeaPlusCB["NoFriendRequests"]:HookScript("OnClick", ControlEvent)
+			ControlEvent()
+
+		end
+
+		----------------------------------------------------------------------
+		--	Block duels (no reload required)
+		----------------------------------------------------------------------
+
+		do
+
+			-- Handler for event
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1)
+				if not LeaPlusLC:FriendCheck(arg1) then
+					CancelDuel()
+					StaticPopup_Hide("DUEL_REQUESTED")
+					return
 				end
 			end)
-		else
-			LFDRoleCheckPopupAcceptButton:SetScript("OnShow", nil)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["NoDuelRequests"] == "On" then
+					frame:RegisterEvent("DUEL_REQUESTED")
+				else
+					frame:UnregisterEvent("DUEL_REQUESTED")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["NoDuelRequests"] == "On" then SetEvent() end
+			LeaPlusCB["NoDuelRequests"]:HookScript("OnClick", SetEvent)
+
 		end
 
 		----------------------------------------------------------------------
-		--	Invite from whispers
+		--	Block pet battle duels (no reload required)
 		----------------------------------------------------------------------
 
-		if LeaPlusLC["InviteFromWhisper"] == "On" then
-			LpEvt:RegisterEvent("CHAT_MSG_WHISPER");
-			LpEvt:RegisterEvent("CHAT_MSG_BN_WHISPER");
-		else
-			LpEvt:UnregisterEvent("CHAT_MSG_WHISPER");
-			LpEvt:UnregisterEvent("CHAT_MSG_BN_WHISPER");
+		do
+
+			-- Handler for event
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1)
+				if not LeaPlusLC:FriendCheck(arg1) then
+					C_PetBattles.CancelPVPDuel()
+					return
+				end
+			end)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["NoPetDuels"] == "On" then
+					frame:RegisterEvent("PET_BATTLE_PVP_DUEL_REQUESTED")
+				else
+					frame:UnregisterEvent("PET_BATTLE_PVP_DUEL_REQUESTED")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["NoPetDuels"] == "On" then SetEvent() end
+			LeaPlusCB["NoPetDuels"]:HookScript("OnClick", SetEvent)
+
 		end
 
 		----------------------------------------------------------------------
-		--	Block party invites and Party from friends
+		--	Queue from friends (no reload required)
 		----------------------------------------------------------------------
 
-		if LeaPlusLC["NoPartyInvites"] == "On" or LeaPlusLC["AcceptPartyFriends"] == "On" then
-			LpEvt:RegisterEvent("PARTY_INVITE_REQUEST");
-		else
-			LpEvt:UnregisterEvent("PARTY_INVITE_REQUEST");
+		do
+
+			-- Function to set option
+			local function RoleFunc()
+				if LeaPlusLC["AutoConfirmRole"] == "On" then
+					LFDRoleCheckPopupAcceptButton:SetScript("OnShow", function()
+						local leader, leaderGUID  = "", ""
+						for i = 1, GetNumSubgroupMembers() do
+							if UnitIsGroupLeader("party" .. i) then
+								leader = UnitName("party" .. i)
+								leaderGUID = UnitGUID("party" .. i)
+								break
+							end
+						end
+						if LeaPlusLC:FriendCheck(leader, leaderGUID) then
+							LFDRoleCheckPopupAcceptButton:Click()
+						end
+					end)
+				else
+					LFDRoleCheckPopupAcceptButton:SetScript("OnShow", nil)
+				end
+			end
+
+			-- Set option on startup if enabled and when option is clicked
+			if LeaPlusLC["AutoConfirmRole"] == "On" then RoleFunc() end
+			LeaPlusCB["AutoConfirmRole"]:HookScript("OnClick", RoleFunc)
+
 		end
 
 		----------------------------------------------------------------------
-		--	Automatic summon
+		--	Invite from whispers (no reload required)
 		----------------------------------------------------------------------
 
-		if LeaPlusLC["AutoAcceptSummon"] == "On" then
-			LpEvt:RegisterEvent("CONFIRM_SUMMON");
-		else
-			LpEvt:UnregisterEvent("CONFIRM_SUMMON");
+		do
+
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1, arg2, ...)
+				if (not UnitExists("party1") or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) and strlower(strtrim(arg1)) == strlower(LeaPlusLC["InvKey"]) then
+					if not LeaPlusLC:IsInLFGQueue() then
+						if event == "CHAT_MSG_WHISPER" then
+						local void, void, void, void, viod, void, void, void, void, guid = ...
+							if LeaPlusLC:FriendCheck(arg2, guid) or LeaPlusLC["InviteFriendsOnly"] == "Off" then
+								C_PartyInfo.InviteUnit(arg2)
+							end
+						elseif event == "CHAT_MSG_BN_WHISPER" then
+							local presenceID = select(11, ...)
+							if presenceID and BNIsFriend(presenceID) then
+								local index = BNGetFriendIndex(presenceID)
+								if index then
+									local accountInfo = C_BattleNet.GetFriendAccountInfo(index)
+									local gameAccountInfo = accountInfo.gameAccountInfo
+									local gameAccountID = gameAccountInfo.gameAccountID
+									if gameAccountID then
+										BNInviteFriend(gameAccountID)
+									end
+								end
+							end
+						end
+					end
+				end
+				return
+			end)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["InviteFromWhisper"] == "On" then
+					frame:RegisterEvent("CHAT_MSG_WHISPER")
+					frame:RegisterEvent("CHAT_MSG_BN_WHISPER")
+				else
+					frame:UnregisterEvent("CHAT_MSG_WHISPER")
+					frame:UnregisterEvent("CHAT_MSG_BN_WHISPER")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["InviteFromWhisper"] == "On" then SetEvent() end
+			LeaPlusCB["InviteFromWhisper"]:HookScript("OnClick", SetEvent)
+
+			-- Create configuration panel
+			local InvPanel = LeaPlusLC:CreatePanel("Invite from whispers", "InvPanel")
+
+			-- Add editbox
+			LeaPlusLC:MakeTx(InvPanel, "Settings", 16, -72)
+			LeaPlusLC:MakeCB(InvPanel, "InviteFriendsOnly", "Restrict to friends", 16, -92, false, "If checked, group invites will only be sent to friends.|n|nIf unchecked, group invites will be sent to everyone.")
+
+			LeaPlusLC:MakeTx(InvPanel, "Keyword", 356, -72)
+			local KeyBox = LeaPlusLC:CreateEditBox("KeyBox", InvPanel, 140, 10, "TOPLEFT", 356, -92, "KeyBox", "KeyBox")
+
+			-- Function to show the keyword in the option tooltip
+			local function SetKeywordTip()
+				LeaPlusCB["InviteFromWhisper"].tiptext = gsub(LeaPlusCB["InviteFromWhisper"].tiptext, "(|cffffffff)[^|]*(|r)",  "%1" .. LeaPlusLC["InvKey"] .. "%2")
+			end
+
+			-- Function to save the keyword
+			local function SetInvKey()
+				local keytext = KeyBox:GetText()
+				if keytext and keytext ~= "" then
+					LeaPlusLC["InvKey"] = strtrim(KeyBox:GetText())
+				else
+					LeaPlusLC["InvKey"] = "inv"
+				end
+				-- Show the keyword in the option tooltip
+				SetKeywordTip()
+			end
+
+			-- Show the keyword in the option tooltip on startup
+			SetKeywordTip()
+
+			-- Save the keyword when it changes
+			KeyBox:SetScript("OnTextChanged", SetInvKey)
+
+			-- Refresh editbox with trimmed keyword when edit focus is lost (removes additional spaces)
+			KeyBox:SetScript("OnEditFocusLost", function()
+				KeyBox:SetText(LeaPlusLC["InvKey"])
+			end)
+
+			-- Help button hidden
+			InvPanel.h:Hide()
+
+			-- Back button handler
+			InvPanel.b:SetScript("OnClick", function()
+				-- Save the keyword
+				SetInvKey()
+				-- Show the options panel
+				InvPanel:Hide(); LeaPlusLC["PageF"]:Show(); LeaPlusLC["Page2"]:Show()
+				return
+			end)
+
+			-- Add reset button
+			InvPanel.r:SetScript("OnClick", function()
+				-- Settings
+				LeaPlusLC["InviteFriendsOnly"] = "Off"
+				-- Reset the keyword to default
+				LeaPlusLC["InvKey"] = "inv"
+				-- Set the editbox to default
+				KeyBox:SetText("inv")
+				-- Save the keyword
+				SetInvKey()
+				-- Refresh panel
+				InvPanel:Hide(); InvPanel:Show()
+			end)
+
+			-- Ensure keyword is a string on startup
+			LeaPlusLC["InvKey"] = tostring(LeaPlusLC["InvKey"]) or "inv"
+
+			-- Set editbox value when shown
+			KeyBox:HookScript("OnShow", function()
+				KeyBox:SetText(LeaPlusLC["InvKey"])
+			end)
+
+			-- Configuration button handler
+			LeaPlusCB["InvWhisperBtn"]:SetScript("OnClick", function()
+				if IsShiftKeyDown() and IsControlKeyDown() then
+					-- Preset profile
+					LeaPlusLC["InviteFriendsOnly"] = "On"
+					LeaPlusLC["InvKey"] = "inv"
+					KeyBox:SetText(LeaPlusLC["InvKey"])
+					SetInvKey()
+				else
+					-- Show panel
+					InvPanel:Show()
+					LeaPlusLC:HideFrames()
+				end
+			end)
+
 		end
 
 		----------------------------------------------------------------------
-		--	Disable loot warnings
+		--	Party from friends (no reload required)
 		----------------------------------------------------------------------
 
-		if LeaPlusLC["NoConfirmLoot"] == "On" then
-			LpEvt:RegisterEvent("CONFIRM_LOOT_ROLL")
-			LpEvt:RegisterEvent("CONFIRM_DISENCHANT_ROLL")
-			LpEvt:RegisterEvent("LOOT_BIND_CONFIRM")
-			LpEvt:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
-			LpEvt:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
-		else
-			LpEvt:UnregisterEvent("CONFIRM_LOOT_ROLL")
-			LpEvt:UnregisterEvent("CONFIRM_DISENCHANT_ROLL")
-			LpEvt:UnregisterEvent("LOOT_BIND_CONFIRM")
-			LpEvt:UnregisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
-			LpEvt:UnregisterEvent("MAIL_LOCK_SEND_ITEMS")
+		do
+
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1, ...)
+
+				-- If a friend, accept if you're accepting friends and not in Dungeon Finder
+				local void, void, void, void, guid = ...
+				if (LeaPlusLC["AcceptPartyFriends"] == "On" and LeaPlusLC:FriendCheck(arg1, guid)) then
+					if not LeaPlusLC:IsInLFGQueue() then
+						AcceptGroup()
+						for i=1, STATICPOPUP_NUMDIALOGS do
+							if _G["StaticPopup"..i].which == "PARTY_INVITE" then
+								_G["StaticPopup"..i].inviteAccepted = 1
+								StaticPopup_Hide("PARTY_INVITE")
+								break
+							elseif _G["StaticPopup"..i].which == "PARTY_INVITE_XREALM" then
+								_G["StaticPopup"..i].inviteAccepted = 1
+								StaticPopup_Hide("PARTY_INVITE_XREALM")
+								break
+							end
+						end
+						-- Confirm invite to party sync group request
+						if QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Confirm:IsShown() then
+							QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Confirm:Click()
+						end
+						return
+					end
+				end
+				return
+
+			end)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["AcceptPartyFriends"] == "On" then
+					frame:RegisterEvent("PARTY_INVITE_REQUEST")
+				else
+					frame:UnregisterEvent("PARTY_INVITE_REQUEST")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["AcceptPartyFriends"] == "On" then SetEvent() end
+			LeaPlusCB["AcceptPartyFriends"]:HookScript("OnClick", SetEvent)
+
+		end
+		----------------------------------------------------------------------
+		--	Block party invites (no reload required)
+		----------------------------------------------------------------------
+
+		do
+
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1)
+				-- If not a friend and you're blocking invites, decline
+				if LeaPlusLC["NoPartyInvites"] == "On" then
+					if LeaPlusLC:FriendCheck(arg1, guid) then
+						return
+					else
+						DeclineGroup()
+						StaticPopup_Hide("PARTY_INVITE")
+						StaticPopup_Hide("PARTY_INVITE_XREALM")
+						-- Decline invite to party sync group request
+						if QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Decline:IsShown() then
+							QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Decline:Click()
+						end
+						return
+					end
+				end
+				return
+			end)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["NoPartyInvites"] == "On" then
+					frame:RegisterEvent("PARTY_INVITE_REQUEST")
+				else
+					frame:UnregisterEvent("PARTY_INVITE_REQUEST")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["NoPartyInvites"] == "On" then SetEvent() end
+			LeaPlusCB["NoPartyInvites"]:HookScript("OnClick", SetEvent)
+
 		end
 
-	end
+		----------------------------------------------------------------------
+		--	Automatic summon (no reload required)
+		----------------------------------------------------------------------
 
-----------------------------------------------------------------------
---	L30: Isolated
-----------------------------------------------------------------------
+		do
 
-	function LeaPlusLC:Isolated()
+			-- Event function
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1)
+				if not UnitAffectingCombat("player") then
+					local sName = C_SummonInfo.GetSummonConfirmSummoner()
+					local sLocation = C_SummonInfo.GetSummonConfirmAreaName()
+					LeaPlusLC:Print(L["The summon from"] .. " " .. sName .. " (" .. sLocation .. ") " .. L["will be automatically accepted in 10 seconds unless cancelled."])
+					C_Timer.After(10, function()
+						local sNameNew = C_SummonInfo.GetSummonConfirmSummoner()
+						local sLocationNew = C_SummonInfo.GetSummonConfirmAreaName()
+						if sName == sNameNew and sLocation == sLocationNew then
+							-- Automatically accept summon after 10 seconds if summoner name and location have not changed
+							C_SummonInfo.ConfirmSummon()
+							StaticPopup_Hide("CONFIRM_SUMMON")
+						end
+					end)
+				end
+				return
+			end)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["AutoAcceptSummon"] == "On" then
+					frame:RegisterEvent("CONFIRM_SUMMON")
+				else
+					frame:UnregisterEvent("CONFIRM_SUMMON")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["AutoAcceptSummon"] == "On" then SetEvent() end
+			LeaPlusCB["AutoAcceptSummon"]:HookScript("OnClick", SetEvent)
+
+		end
+
+		----------------------------------------------------------------------
+		--	Disable loot warnings (no reload required)
+		----------------------------------------------------------------------
+
+		do
+
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", function(self, event, arg1, arg2, ...)
+
+				-- Disable warnings for attempting to roll Need or Disenchant on loot
+				if event == "CONFIRM_LOOT_ROLL" or event == "CONFIRM_DISENCHANT_ROLL" then
+					ConfirmLootRoll(arg1, arg2)
+					StaticPopup_Hide("CONFIRM_LOOT_ROLL")
+					return
+				end
+
+				-- Disable warning for attempting to loot a Bind on Pickup item
+				if event == "LOOT_BIND_CONFIRM" then
+					ConfirmLootSlot(arg1, arg2)
+					StaticPopup_Hide("LOOT_BIND",...)
+					return
+				end
+
+				-- Disable warning for attempting to vendor an item within its refund window
+				if event == "MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL" then
+					SellCursorItem()
+					return
+				end
+
+				-- Disable warning for attempting to mail an item within its refund window
+				if event == "MAIL_LOCK_SEND_ITEMS" then
+					RespondMailLockSendItem(arg1, true)
+					return
+				end
+
+			end)
+
+			-- Function to set event
+			local function SetEvent()
+				if LeaPlusLC["NoConfirmLoot"] == "On" then
+					frame:RegisterEvent("CONFIRM_LOOT_ROLL")
+					frame:RegisterEvent("CONFIRM_DISENCHANT_ROLL")
+					frame:RegisterEvent("LOOT_BIND_CONFIRM")
+					frame:RegisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
+					frame:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
+				else
+					frame:UnregisterEvent("CONFIRM_LOOT_ROLL")
+					frame:UnregisterEvent("CONFIRM_DISENCHANT_ROLL")
+					frame:UnregisterEvent("LOOT_BIND_CONFIRM")
+					frame:UnregisterEvent("MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL")
+					frame:UnregisterEvent("MAIL_LOCK_SEND_ITEMS")
+				end
+			end
+
+			-- Set event on startup if enabled and when option is clicked
+			if LeaPlusLC["NoConfirmLoot"] == "On" then SetEvent() end
+			LeaPlusCB["NoConfirmLoot"]:HookScript("OnClick", SetEvent)
+
+		end
 
 		----------------------------------------------------------------------
 		-- Mute mount sounds (no reload required)
@@ -848,14 +1209,15 @@
 			LeaPlusLC:MakeCB(MountPanel, "MuteStriders", "Mechstriders", 150, -152, false, "If checked, mechanostriders will be quieter.")
 			LeaPlusLC:MakeCB(MountPanel, "MuteMechsuits", "Mechsuits", 150, -172, false, "If checked, mechsuits will be quieter.|n|nThis applies to Felsteel Annihilator, Lightforged Warframe, Sky Golem and other mechsuits.")
 			LeaPlusLC:MakeCB(MountPanel, "MuteOttuks", "Ottuks", 150, -192, false, "If checked, ottuks will be quieter.")
-			LeaPlusLC:MakeCB(MountPanel, "MuteRazorwings", "Razorwings", 150, -212, false, "If checked, razorwings will be muted.")
-			LeaPlusLC:MakeCB(MountPanel, "MuteRockets", "Rockets", 150, -232, false, "If checked, rockets will be muted.")
+			LeaPlusLC:MakeCB(MountPanel, "MutePanthers", "Panthers", 150, -212, false, "If checked, the jewelcrafting panther mounts will be quieter.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteRazorwings", "Razorwings", 150, -232, false, "If checked, razorwings will be muted.")
 
-			LeaPlusLC:MakeCB(MountPanel, "MuteSoulEaters", "Soul Eaters", 284, -92, false, "If checked, Gladiator Soul Eater mounts will be quieter.")
-			LeaPlusLC:MakeCB(MountPanel, "MuteSoulseekers", "Soulseekers", 284, -112, false, "If checked, soulseekers will be quieter.|n|nThis applies to Corridor Creeper, Mawsworn Soulhunter and Bound Shadehound.")
-			LeaPlusLC:MakeCB(MountPanel, "MuteTravelers", "Travelers", 284, -132, false, "If checked, traveling merchant greetings and farewells will be muted.|n|nThis applies to Traveler's Tundra Mammoth, Grand Expedition Yak and Mighty Caravan Brutosaur.")
-			LeaPlusLC:MakeCB(MountPanel, "MuteUnicorns", "Unicorns", 284, -152, false, "If checked, unicorns will be quieter.|n|nThis applies to Lucid Nightmare, Wild Dreamrunner, Pureheart Courser and other unicorn mounts.")
-			LeaPlusLC:MakeCB(MountPanel, "MuteZeppelins", "Zeppelins", 284, -172, false, "If checked, zeppelins will be muted.|n|nThis applies to zeppelin mounts and transports.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteRockets", "Rockets", 284, -92, false, "If checked, rockets will be muted.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteSoulEaters", "Soul Eaters", 284, -112, false, "If checked, Gladiator Soul Eater mounts will be quieter.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteSoulseekers", "Soulseekers", 284, -132, false, "If checked, soulseekers will be quieter.|n|nThis applies to Corridor Creeper, Mawsworn Soulhunter and Bound Shadehound.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteTravelers", "Travelers", 284, -152, false, "If checked, traveling merchant greetings and farewells will be muted.|n|nThis applies to Traveler's Tundra Mammoth, Grand Expedition Yak and Mighty Caravan Brutosaur.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteUnicorns", "Unicorns", 284, -172, false, "If checked, unicorns will be quieter.|n|nThis applies to Lucid Nightmare, Wild Dreamrunner, Pureheart Courser and other unicorn mounts.")
+			LeaPlusLC:MakeCB(MountPanel, "MuteZeppelins", "Zeppelins", 284, -192, false, "If checked, zeppelins will be muted.|n|nThis applies to zeppelin mounts and transports.")
 
 			LeaPlusLC:MakeTx(MountPanel, "Specific", 418, -72)
 			LeaPlusLC:MakeCB(MountPanel, "MuteBanLu", "Ban-Lu", 418, -92, false, "If checked, Ban-Lu will no longer talk to you.")
@@ -1105,64 +1467,6 @@
 		end
 
 		----------------------------------------------------------------------
-		-- Easy item destroy
-		----------------------------------------------------------------------
-
-		if LeaPlusLC["EasyItemDestroy"] == "On" then
-
-			-- Get the type "DELETE" into the field to confirm text
-			local TypeDeleteLine = gsub(DELETE_GOOD_ITEM, "[\r\n]", "@")
-			local void, TypeDeleteLine = strsplit("@", TypeDeleteLine, 2)
-
-			-- Add hyperlinks to regular item destroy
-			StaticPopupDialogs["DELETE_ITEM"].OnHyperlinkEnter = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkEnter
-			StaticPopupDialogs["DELETE_ITEM"].OnHyperlinkLeave = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkLeave
-			StaticPopupDialogs["DELETE_QUEST_ITEM"].OnHyperlinkEnter = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkEnter
-			StaticPopupDialogs["DELETE_QUEST_ITEM"].OnHyperlinkLeave = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkLeave
-			StaticPopupDialogs["DELETE_GOOD_QUEST_ITEM"].OnHyperlinkEnter = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkEnter
-			StaticPopupDialogs["DELETE_GOOD_QUEST_ITEM"].OnHyperlinkLeave = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkLeave
-
-			-- Hide editbox and set item link
-			local easyDelFrame = CreateFrame("FRAME")
-			easyDelFrame:RegisterEvent("DELETE_ITEM_CONFIRM")
-			easyDelFrame:SetScript("OnEvent", function()
-				if StaticPopup1EditBox:IsShown() then
-					-- Item requires player to type delete so hide editbox and show link
-					StaticPopup1EditBox:Hide()
-					StaticPopup1Button1:Enable()
-					local link = select(3, GetCursorInfo())
-					if link then
-						-- Custom link for battle pets
-						local linkType, linkOptions, name = LinkUtil.ExtractLink(link)
-						if linkType == "battlepet" then
-							local speciesID, level, breedQuality = strsplit(":", linkOptions)
-							local qualityColor = BAG_ITEM_QUALITY_COLORS[tonumber(breedQuality)]
-							link = qualityColor:WrapTextInColorCode(name .. " |n" .. L["Level"] .. " " .. level .. L["Battle Pet"])
-						end
-						StaticPopup1Text:SetText(gsub(StaticPopup1Text:GetText(), gsub(TypeDeleteLine, "@", ""), "") .. "|n" .. link)
-					end
-				else
-					-- Item does not require player to type delete so just show item link
-					StaticPopup1:SetHeight(StaticPopup1:GetHeight() + 40)
-					StaticPopup1EditBox:Hide()
-					StaticPopup1Button1:Enable()
-					local link = select(3, GetCursorInfo())
-					if link then
-						-- Custom link for battle pets
-						local linkType, linkOptions, name = LinkUtil.ExtractLink(link)
-						if linkType == "battlepet" then
-							local speciesID, level, breedQuality = strsplit(":", linkOptions)
-							local qualityColor = BAG_ITEM_QUALITY_COLORS[tonumber(breedQuality)]
-							link = qualityColor:WrapTextInColorCode(name .. " |n" .. L["Level"] .. " " .. level .. L["Battle Pet"])
-						end
-						StaticPopup1Text:SetText(gsub(StaticPopup1Text:GetText(), gsub(TypeDeleteLine, "@", ""), "") .. "|n|n" .. link)
-					end
-				end
-			end)
-
-		end
-
-		----------------------------------------------------------------------
 		-- Faster movie skip
 		----------------------------------------------------------------------
 
@@ -1188,35 +1492,6 @@
 					if MovieFrame:IsShown() and MovieFrame.CloseDialog and MovieFrame.CloseDialog.ConfirmButton then
 						MovieFrame.CloseDialog.ConfirmButton:Click()
 					end
-				end
-			end)
-
-		end
-
-		----------------------------------------------------------------------
-		-- Unclamp chat frame
-		----------------------------------------------------------------------
-
-		if LeaPlusLC["UnclampChat"] == "On" and not LeaLockList["UnclampChat"] then
-
-			-- Process normal and existing chat frames on startup
-			for i = 1, 50 do
-				if _G["ChatFrame" .. i] then
-					_G["ChatFrame" .. i]:SetClampedToScreen(false)
-					_G["ChatFrame" .. i]:SetClampRectInsets(0, 0, 0, 0)
-				end
-			end
-
-			-- Process new chat frames and combat log
-			hooksecurefunc("FloatingChatFrame_UpdateBackgroundAnchors", function(self)
-				self:SetClampRectInsets(0, 0, 0, 0)
-			end)
-
-			-- Process temporary chat frames
-			hooksecurefunc("FCF_OpenTemporaryWindow", function()
-				local cf = FCF_GetCurrentChatFrame():GetName() or nil
-				if cf then
-					_G[cf]:SetClampRectInsets(0, 0, 0, 0)
 				end
 			end)
 
@@ -2615,6 +2890,20 @@
 		end
 
 		----------------------------------------------------------------------
+		--	Disable bag automation
+		----------------------------------------------------------------------
+
+		-- Taint (old)
+		-- Open vendor, close vendor, open vendor
+		-- Click the bag icon to switch bag mode (either from single to combined or combined to single).
+		-- Buy alcohol if you don't have it already (if you do, skip this step) (tested with Bottle of Dalaran Noir).
+		-- Drink alcohol from bags.
+
+		if LeaPlusLC["NoBagAutomation"] == "On" and not LeaLockList["NoBagAutomation"] then
+			RunScript("hooksecurefunc('OpenAllBags', CloseAllBags)")
+		end
+
+		----------------------------------------------------------------------
 		--	Automate quests (no reload required)
 		----------------------------------------------------------------------
 
@@ -3732,14 +4021,27 @@
 
 		if LeaPlusLC["NoCombatLogTab"] == "On" and not LeaLockList["NoCombatLogTab"] then
 
+			-- Function to setup the combat log tab
+			local function SetupCombatLogTab()
+				ChatFrame2Tab:EnableMouse(false)
+				ChatFrame2Tab:SetText(" ") -- Needs to be something for chat settings to function
+				ChatFrame2Tab:SetScale(0.01)
+				ChatFrame2Tab:SetWidth(0.01)
+				ChatFrame2Tab:SetHeight(0.01)
+			end
+
+			local frame = CreateFrame("FRAME")
+			frame:SetScript("OnEvent", SetupCombatLogTab)
+
 			-- Ensure combat log is docked
 			if ChatFrame2.isDocked then
 				-- Set combat log attributes when chat windows are updated
-				LpEvt:RegisterEvent("UPDATE_CHAT_WINDOWS")
+				frame:RegisterEvent("UPDATE_CHAT_WINDOWS")
 				-- Set combat log tab placement when tabs are assigned by the client
 				hooksecurefunc("FCF_SetTabPosition", function()
 					ChatFrame2Tab:SetPoint("BOTTOMLEFT", ChatFrame1Tab, "BOTTOMRIGHT", 0, 0)
 				end)
+				SetupCombatLogTab()
 			else
 				-- If combat log is undocked, do nothing but show warning
 				C_Timer.After(1, function()
@@ -4361,16 +4663,145 @@
 
 		end
 
-		-- Release memory
-		LeaPlusLC.Isolated = nil
+		----------------------------------------------------------------------
+		-- Easy item destroy
+		----------------------------------------------------------------------
 
-	end
+		if LeaPlusLC["EasyItemDestroy"] == "On" then
 
-----------------------------------------------------------------------
---	L40: Player
-----------------------------------------------------------------------
+			-- Get the type "DELETE" into the field to confirm text
+			local TypeDeleteLine = gsub(DELETE_GOOD_ITEM, "[\r\n]", "@")
+			local void, TypeDeleteLine = strsplit("@", TypeDeleteLine, 2)
 
-	function LeaPlusLC:Player()
+			-- Add hyperlinks to regular item destroy
+			StaticPopupDialogs["DELETE_ITEM"].OnHyperlinkEnter = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkEnter
+			StaticPopupDialogs["DELETE_ITEM"].OnHyperlinkLeave = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkLeave
+			StaticPopupDialogs["DELETE_QUEST_ITEM"].OnHyperlinkEnter = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkEnter
+			StaticPopupDialogs["DELETE_QUEST_ITEM"].OnHyperlinkLeave = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkLeave
+			StaticPopupDialogs["DELETE_GOOD_QUEST_ITEM"].OnHyperlinkEnter = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkEnter
+			StaticPopupDialogs["DELETE_GOOD_QUEST_ITEM"].OnHyperlinkLeave = StaticPopupDialogs["DELETE_GOOD_ITEM"].OnHyperlinkLeave
+
+			-- Hide editbox and set item link
+			local easyDelFrame = CreateFrame("FRAME")
+			easyDelFrame:RegisterEvent("DELETE_ITEM_CONFIRM")
+			easyDelFrame:SetScript("OnEvent", function()
+				if StaticPopup1EditBox:IsShown() then
+					-- Item requires player to type delete so hide editbox and show link
+					StaticPopup1EditBox:Hide()
+					StaticPopup1Button1:Enable()
+					local link = select(3, GetCursorInfo())
+					if link then
+						-- Custom link for battle pets
+						local linkType, linkOptions, name = LinkUtil.ExtractLink(link)
+						if linkType == "battlepet" then
+							local speciesID, level, breedQuality = strsplit(":", linkOptions)
+							local qualityColor = BAG_ITEM_QUALITY_COLORS[tonumber(breedQuality)]
+							link = qualityColor:WrapTextInColorCode(name .. " |n" .. L["Level"] .. " " .. level .. L["Battle Pet"])
+						end
+						StaticPopup1Text:SetText(gsub(StaticPopup1Text:GetText(), gsub(TypeDeleteLine, "@", ""), "") .. "|n" .. link)
+					end
+				else
+					-- Item does not require player to type delete so just show item link
+					StaticPopup1:SetHeight(StaticPopup1:GetHeight() + 40)
+					StaticPopup1EditBox:Hide()
+					StaticPopup1Button1:Enable()
+					local link = select(3, GetCursorInfo())
+					if link then
+						-- Custom link for battle pets
+						local linkType, linkOptions, name = LinkUtil.ExtractLink(link)
+						if linkType == "battlepet" then
+							local speciesID, level, breedQuality = strsplit(":", linkOptions)
+							local qualityColor = BAG_ITEM_QUALITY_COLORS[tonumber(breedQuality)]
+							link = qualityColor:WrapTextInColorCode(name .. " |n" .. L["Level"] .. " " .. level .. L["Battle Pet"])
+						end
+						StaticPopup1Text:SetText(gsub(StaticPopup1Text:GetText(), gsub(TypeDeleteLine, "@", ""), "") .. "|n|n" .. link)
+					end
+				end
+			end)
+
+		end
+
+		----------------------------------------------------------------------
+		-- Unclamp chat frame
+		----------------------------------------------------------------------
+
+		if LeaPlusLC["UnclampChat"] == "On" and not LeaLockList["UnclampChat"] then
+
+			-- Process normal and existing chat frames on startup
+			for i = 1, 50 do
+				if _G["ChatFrame" .. i] then
+					_G["ChatFrame" .. i]:SetClampedToScreen(false)
+					_G["ChatFrame" .. i]:SetClampRectInsets(0, 0, 0, 0)
+				end
+			end
+
+			-- Process new chat frames and combat log
+			hooksecurefunc("FloatingChatFrame_UpdateBackgroundAnchors", function(self)
+				self:SetClampRectInsets(0, 0, 0, 0)
+			end)
+
+			-- Process temporary chat frames
+			hooksecurefunc("FCF_OpenTemporaryWindow", function()
+				local cf = FCF_GetCurrentChatFrame():GetName() or nil
+				if cf then
+					_G[cf]:SetClampRectInsets(0, 0, 0, 0)
+				end
+			end)
+
+		end
+
+		----------------------------------------------------------------------
+		-- Show Threads of Time (Mists of Pandaria Remix)
+		----------------------------------------------------------------------
+
+		if LeaPlusLC["ShowThreadsOfTime"] == "On" then
+
+			if PlayerGetTimerunningSeasonID() then
+
+				-- Define currencies
+				local currencyTable = {0, 1, 2, 3, 4, 5, 6, 7, 148}
+
+				-- Character frame Threads of Time value
+				hooksecurefunc("PaperDollFrame_UpdateStats", function()
+					local threadsValue = 0
+					for i = 1, #currencyTable do
+						threadsValue = threadsValue + C_CurrencyInfo.GetCurrencyInfo(2853 + currencyTable[i]).quantity
+					end
+					if threadsValue > 0 then
+						CharacterStatsPane.ItemLevelFrame.Value:SetText(CharacterStatsPane.ItemLevelFrame.Value:GetText() .. "   (" .. threadsValue .. ")")
+					end
+				end)
+
+				-- Tooltip Threads of Time value
+				CharacterStatsPane.ItemLevelFrame:HookScript("OnEnter", function()
+					local threadsValue = 0
+					for i = 1, #currencyTable do
+						threadsValue = threadsValue + C_CurrencyInfo.GetCurrencyInfo(2853 + currencyTable[i]).quantity
+					end
+					if threadsValue > 0 then
+						GameTooltip:AddLine(" ")
+
+						GameTooltip:AddLine(L["Threads of Time"] .. " " .. threadsValue, 1, 1, 1)
+						local numLines = GameTooltip:NumLines()
+						_G["GameTooltipTextLeft" .. numLines]:SetFont(GameTooltipTextLeft1:GetFont())
+
+						GameTooltip:AddLine(L["The total of your Threads of Time."])
+						local numLines = GameTooltip:NumLines()
+						_G["GameTooltipTextLeft" .. numLines]:SetFont(GameTooltipTextLeft2:GetFont())
+
+						GameTooltip:Show()
+					end
+				end)
+
+			else
+
+				-- Lockout option if not running Mists of Pandaria Remix
+				LeaPlusLC:LockItem(LeaPlusCB["ShowThreadsOfTime"], true)
+				LeaPlusCB["ShowThreadsOfTime"].tiptext = LeaPlusCB["ShowThreadsOfTime"].tiptext .. "|n|n|cff00AAFF" .. L["Requires Mists of Pandaria Remix."]
+
+			end
+
+		end
 
 		----------------------------------------------------------------------
 		-- Keep audio synced
@@ -4648,7 +5079,7 @@
 									local chtfrm = _G["ChatFrame" .. i]
 									local NumMsg = chtfrm:GetNumMessages()
 									local StartMsg = 1
-									if NumMsg > 128 then StartMsg = NumMsg - 127 end
+									if NumMsg > 256 then StartMsg = NumMsg - 255 end
 									for iMsg = StartMsg, NumMsg do
 										local chatMessage, r, g, b, chatTypeID = chtfrm:GetMessageInfo(iMsg)
 										if chatMessage then
@@ -7993,7 +8424,7 @@
 				editBox:SetText("")
 				local NumMsg = chtfrm:GetNumMessages()
 				local StartMsg = 1
-				if NumMsg > 128 then StartMsg = NumMsg - 127 end
+				if NumMsg > 256 then StartMsg = NumMsg - 255 end
 				local totalMsgCount = 0
 				for iMsg = StartMsg, NumMsg do
 					local chatMessage, r, g, b, chatTypeID = chtfrm:GetMessageInfo(iMsg)
@@ -9624,32 +10055,6 @@
 		end
 
 		----------------------------------------------------------------------
-		-- Final code for Player
-		----------------------------------------------------------------------
-
-		-- Show first run message
-		if not LeaPlusDB["FirstRunMessageSeen"] then
-			C_Timer.After(1, function()
-				LeaPlusLC:Print(L["Enter"] .. " |cff00ff00" .. "/ltp" .. "|r " .. L["or click the minimap button to open Leatrix Plus."])
-				LeaPlusDB["FirstRunMessageSeen"] = true
-			end)
-		end
-
-		-- Register logout event to save settings
-		LpEvt:RegisterEvent("PLAYER_LOGOUT")
-
-		-- Release memory
-		LeaPlusLC.Player = nil
-
-	end
-
-----------------------------------------------------------------------
--- 	L50: RunOnce
-----------------------------------------------------------------------
-
-	function LeaPlusLC:RunOnce()
-
-		----------------------------------------------------------------------
 		-- Flares (world markers)
 		----------------------------------------------------------------------
 
@@ -10370,179 +10775,57 @@
 		-- Panel alpha
 		----------------------------------------------------------------------
 
-		-- Function to set panel alpha
-		local function SetPlusAlpha()
-			-- Set panel alpha
-			LeaPlusLC["PageF"].t:SetAlpha(1 - LeaPlusLC["PlusPanelAlpha"])
-			-- Show formatted value
-			LeaPlusCB["PlusPanelAlpha"].f:SetFormattedText("%.0f%%", LeaPlusLC["PlusPanelAlpha"] * 100)
+		do
+
+			-- Function to set panel alpha
+			local function SetPlusAlpha()
+				-- Set panel alpha
+				LeaPlusLC["PageF"].t:SetAlpha(1 - LeaPlusLC["PlusPanelAlpha"])
+				-- Show formatted value
+				LeaPlusCB["PlusPanelAlpha"].f:SetFormattedText("%.0f%%", LeaPlusLC["PlusPanelAlpha"] * 100)
+			end
+
+			-- Set alpha on startup
+			SetPlusAlpha()
+
+			-- Set alpha after changing slider
+			LeaPlusCB["PlusPanelAlpha"]:HookScript("OnValueChanged", SetPlusAlpha)
+
 		end
-
-		-- Set alpha on startup
-		SetPlusAlpha()
-
-		-- Set alpha after changing slider
-		LeaPlusCB["PlusPanelAlpha"]:HookScript("OnValueChanged", SetPlusAlpha)
 
 		----------------------------------------------------------------------
 		-- Panel scale
 		----------------------------------------------------------------------
 
-		-- Function to set panel scale
-		local function SetPlusScale()
-			-- Reset panel position
-			LeaPlusLC["MainPanelA"], LeaPlusLC["MainPanelR"], LeaPlusLC["MainPanelX"], LeaPlusLC["MainPanelY"] = "CENTER", "CENTER", 0, 0
-			if LeaPlusLC["PageF"]:IsShown() then
-				LeaPlusLC["PageF"]:Hide()
-				LeaPlusLC["PageF"]:Show()
-			end
-			-- Set panel scale
-			LeaPlusLC["PageF"]:SetScale(LeaPlusLC["PlusPanelScale"])
-			-- Update music player highlight bar scale
-			LeaPlusLC:UpdateList()
-		end
+		do
 
-		-- Set scale on startup
-		LeaPlusLC["PageF"]:SetScale(LeaPlusLC["PlusPanelScale"])
-
-		-- Set scale and reset panel position after changing slider
-		LeaPlusCB["PlusPanelScale"]:HookScript("OnMouseUp", SetPlusScale)
-		LeaPlusCB["PlusPanelScale"]:HookScript("OnMouseWheel", SetPlusScale)
-
-		-- Show formatted slider value
-		LeaPlusCB["PlusPanelScale"]:HookScript("OnValueChanged", function()
-			LeaPlusCB["PlusPanelScale"].f:SetFormattedText("%.0f%%", LeaPlusLC["PlusPanelScale"] * 100)
-		end)
-
-		----------------------------------------------------------------------
-		-- Block friend requests
-		----------------------------------------------------------------------
-
-		-- Function to decline friend requests
-		local function DeclineReqs()
-			if LeaPlusLC["NoFriendRequests"] == "On" then
-				for i = BNGetNumFriendInvites(), 1, -1 do
-					local id, player = BNGetFriendInviteInfo(i)
-					if id and player then
-						BNDeclineFriendInvite(id)
-						C_Timer.After(0.1, function()
-							LeaPlusLC:Print(L["A friend request from"] .. " " .. player .. " " .. L["was automatically declined."])
-						end)
-					end
+			-- Function to set panel scale
+			local function SetPlusScale()
+				-- Reset panel position
+				LeaPlusLC["MainPanelA"], LeaPlusLC["MainPanelR"], LeaPlusLC["MainPanelX"], LeaPlusLC["MainPanelY"] = "CENTER", "CENTER", 0, 0
+				if LeaPlusLC["PageF"]:IsShown() then
+					LeaPlusLC["PageF"]:Hide()
+					LeaPlusLC["PageF"]:Show()
 				end
+				-- Set panel scale
+				LeaPlusLC["PageF"]:SetScale(LeaPlusLC["PlusPanelScale"])
+				-- Update music player highlight bar scale
+				LeaPlusLC:UpdateList()
 			end
+
+			-- Set scale on startup
+			LeaPlusLC["PageF"]:SetScale(LeaPlusLC["PlusPanelScale"])
+
+			-- Set scale and reset panel position after changing slider
+			LeaPlusCB["PlusPanelScale"]:HookScript("OnMouseUp", SetPlusScale)
+			LeaPlusCB["PlusPanelScale"]:HookScript("OnMouseWheel", SetPlusScale)
+
+			-- Show formatted slider value
+			LeaPlusCB["PlusPanelScale"]:HookScript("OnValueChanged", function()
+				LeaPlusCB["PlusPanelScale"].f:SetFormattedText("%.0f%%", LeaPlusLC["PlusPanelScale"] * 100)
+			end)
+
 		end
-
-		-- Event frame for incoming friend requests
-		local DecEvt = CreateFrame("FRAME")
-		DecEvt:SetScript("OnEvent", DeclineReqs)
-
-		-- Function to register or unregister the event
-		local function ControlEvent()
-			if LeaPlusLC["NoFriendRequests"] == "On" then
-				DecEvt:RegisterEvent("BN_FRIEND_INVITE_ADDED")
-				DeclineReqs()
-			else
-				DecEvt:UnregisterEvent("BN_FRIEND_INVITE_ADDED")
-			end
-		end
-
-		-- Set event status when option is enabled
-		LeaPlusCB["NoFriendRequests"]:HookScript("OnClick", ControlEvent)
-
-		-- Set event status on startup
-		ControlEvent()
-
-		----------------------------------------------------------------------
-		-- Invite from whisper (configuration panel)
-		----------------------------------------------------------------------
-
-		-- Create configuration panel
-		local InvPanel = LeaPlusLC:CreatePanel("Invite from whispers", "InvPanel")
-
-		-- Add editbox
-		LeaPlusLC:MakeTx(InvPanel, "Settings", 16, -72)
-		LeaPlusLC:MakeCB(InvPanel, "InviteFriendsOnly", "Restrict to friends", 16, -92, false, "If checked, group invites will only be sent to friends.|n|nIf unchecked, group invites will be sent to everyone.")
-
-		LeaPlusLC:MakeTx(InvPanel, "Keyword", 356, -72)
-		local KeyBox = LeaPlusLC:CreateEditBox("KeyBox", InvPanel, 140, 10, "TOPLEFT", 356, -92, "KeyBox", "KeyBox")
-
-		-- Function to show the keyword in the option tooltip
-		local function SetKeywordTip()
-			LeaPlusCB["InviteFromWhisper"].tiptext = gsub(LeaPlusCB["InviteFromWhisper"].tiptext, "(|cffffffff)[^|]*(|r)",  "%1" .. LeaPlusLC["InvKey"] .. "%2")
-		end
-
-		-- Function to save the keyword
-		local function SetInvKey()
-			local keytext = KeyBox:GetText()
-			if keytext and keytext ~= "" then
-				LeaPlusLC["InvKey"] = strtrim(KeyBox:GetText())
-			else
-				LeaPlusLC["InvKey"] = "inv"
-			end
-			-- Show the keyword in the option tooltip
-			SetKeywordTip()
-		end
-
-		-- Show the keyword in the option tooltip on startup
-		SetKeywordTip()
-
-		-- Save the keyword when it changes
-		KeyBox:SetScript("OnTextChanged", SetInvKey)
-
-		-- Refresh editbox with trimmed keyword when edit focus is lost (removes additional spaces)
-		KeyBox:SetScript("OnEditFocusLost", function()
-			KeyBox:SetText(LeaPlusLC["InvKey"])
-		end)
-
-		-- Help button hidden
-		InvPanel.h:Hide()
-
-		-- Back button handler
-		InvPanel.b:SetScript("OnClick", function()
-			-- Save the keyword
-			SetInvKey()
-			-- Show the options panel
-			InvPanel:Hide(); LeaPlusLC["PageF"]:Show(); LeaPlusLC["Page2"]:Show()
-			return
-		end)
-
-		-- Add reset button
-		InvPanel.r:SetScript("OnClick", function()
-			-- Settings
-			LeaPlusLC["InviteFriendsOnly"] = "Off"
-			-- Reset the keyword to default
-			LeaPlusLC["InvKey"] = "inv"
-			-- Set the editbox to default
-			KeyBox:SetText("inv")
-			-- Save the keyword
-			SetInvKey()
-			-- Refresh panel
-			InvPanel:Hide(); InvPanel:Show()
-		end)
-
-		-- Ensure keyword is a string on startup
-		LeaPlusLC["InvKey"] = tostring(LeaPlusLC["InvKey"]) or "inv"
-
-		-- Set editbox value when shown
-		KeyBox:HookScript("OnShow", function()
-			KeyBox:SetText(LeaPlusLC["InvKey"])
-		end)
-
-		-- Configuration button handler
-		LeaPlusCB["InvWhisperBtn"]:SetScript("OnClick", function()
-			if IsShiftKeyDown() and IsControlKeyDown() then
-				-- Preset profile
-				LeaPlusLC["InviteFriendsOnly"] = "On"
-				LeaPlusLC["InvKey"] = "inv"
-				KeyBox:SetText(LeaPlusLC["InvKey"])
-				SetInvKey()
-			else
-				-- Show panel
-				InvPanel:Show()
-				LeaPlusLC:HideFrames()
-			end
-		end)
 
 		----------------------------------------------------------------------
 		-- Create panel in game options panel
@@ -10600,14 +10883,25 @@
 		end
 
 		----------------------------------------------------------------------
-		-- Final code for RunOnce
+		-- Final code for Player
 		----------------------------------------------------------------------
 
+		-- Show first run message
+		if not LeaPlusDB["FirstRunMessageSeen"] then
+			C_Timer.After(1, function()
+				LeaPlusLC:Print(L["Enter"] .. " |cff00ff00" .. "/ltp" .. "|r " .. L["or click the minimap button to open Leatrix Plus."])
+				LeaPlusDB["FirstRunMessageSeen"] = true
+			end)
+		end
+
+		-- Register logout event to save settings
+		LpEvt:RegisterEvent("PLAYER_LOGOUT")
+
 		-- Update addon memory usage (speeds up initial value)
-		UpdateAddOnMemoryUsage();
+		UpdateAddOnMemoryUsage()
 
 		-- Release memory
-		LeaPlusLC.RunOnce = nil
+		LeaPlusLC.Player = nil
 
 	end
 
@@ -10616,169 +10910,6 @@
 ----------------------------------------------------------------------
 
 	local function eventHandler(self, event, arg1, arg2, ...)
-
-		----------------------------------------------------------------------
-		-- Invite from whisper
-		----------------------------------------------------------------------
-
-		if event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER" then
-			if (not UnitExists("party1") or UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) and strlower(strtrim(arg1)) == strlower(LeaPlusLC["InvKey"]) then
-				if not LeaPlusLC:IsInLFGQueue() then
-					if event == "CHAT_MSG_WHISPER" then
-					local void, void, void, void, viod, void, void, void, void, guid = ...
-						if LeaPlusLC:FriendCheck(arg2, guid) or LeaPlusLC["InviteFriendsOnly"] == "Off" then
-							C_PartyInfo.InviteUnit(arg2)
-						end
-					elseif event == "CHAT_MSG_BN_WHISPER" then
-						local presenceID = select(11, ...)
-						if presenceID and BNIsFriend(presenceID) then
-							local index = BNGetFriendIndex(presenceID)
-							if index then
-								local accountInfo = C_BattleNet.GetFriendAccountInfo(index)
-								local gameAccountInfo = accountInfo.gameAccountInfo
-								local gameAccountID = gameAccountInfo.gameAccountID
-								if gameAccountID then
-									BNInviteFriend(gameAccountID)
-								end
-							end
-						end
-					end
-				end
-			end
-			return
-		end
-
-		----------------------------------------------------------------------
-		-- Block duel requests
-		----------------------------------------------------------------------
-
-		if event == "DUEL_REQUESTED" and not LeaPlusLC:FriendCheck(arg1) then
-			CancelDuel()
-			StaticPopup_Hide("DUEL_REQUESTED")
-			return
-		end
-
-		----------------------------------------------------------------------
-		-- Block pet battle duel requests
-		----------------------------------------------------------------------
-
-		if event == "PET_BATTLE_PVP_DUEL_REQUESTED" and not LeaPlusLC:FriendCheck(arg1) then
-			C_PetBattles.CancelPVPDuel()
-			return
-		end
-
-		----------------------------------------------------------------------
-		-- Accept summon
-		----------------------------------------------------------------------
-
-		if event == "CONFIRM_SUMMON" then
-			if not UnitAffectingCombat("player") then
-				local sName = C_SummonInfo.GetSummonConfirmSummoner()
-				local sLocation = C_SummonInfo.GetSummonConfirmAreaName()
-				LeaPlusLC:Print(L["The summon from"] .. " " .. sName .. " (" .. sLocation .. ") " .. L["will be automatically accepted in 10 seconds unless cancelled."])
-				C_Timer.After(10, function()
-					local sNameNew = C_SummonInfo.GetSummonConfirmSummoner()
-					local sLocationNew = C_SummonInfo.GetSummonConfirmAreaName()
-					if sName == sNameNew and sLocation == sLocationNew then
-						-- Automatically accept summon after 10 seconds if summoner name and location have not changed
-						C_SummonInfo.ConfirmSummon()
-						StaticPopup_Hide("CONFIRM_SUMMON")
-					end
-				end)
-			end
-			return
-		end
-
-		----------------------------------------------------------------------
-		-- Block party invites and party from friends
-		----------------------------------------------------------------------
-
-		if event == "PARTY_INVITE_REQUEST" then
-
-			-- If a friend, accept if you're accepting friends and not in Dungeon Finder
-			local void, void, void, void, guid = ...
-			if (LeaPlusLC["AcceptPartyFriends"] == "On" and LeaPlusLC:FriendCheck(arg1, guid)) then
-				if not LeaPlusLC:IsInLFGQueue() then
-					AcceptGroup()
-					for i=1, STATICPOPUP_NUMDIALOGS do
-						if _G["StaticPopup"..i].which == "PARTY_INVITE" then
-							_G["StaticPopup"..i].inviteAccepted = 1
-							StaticPopup_Hide("PARTY_INVITE")
-							break
-						elseif _G["StaticPopup"..i].which == "PARTY_INVITE_XREALM" then
-							_G["StaticPopup"..i].inviteAccepted = 1
-							StaticPopup_Hide("PARTY_INVITE_XREALM")
-							break
-						end
-					end
-					-- Confirm invite to party sync group request
-					if QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Confirm:IsShown() then
-						QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Confirm:Click()
-					end
-					return
-				end
-			end
-
-			-- If not a friend and you're blocking invites, decline
-			if LeaPlusLC["NoPartyInvites"] == "On" then
-				if LeaPlusLC:FriendCheck(arg1, guid) then
-					return
-				else
-					DeclineGroup()
-					StaticPopup_Hide("PARTY_INVITE")
-					StaticPopup_Hide("PARTY_INVITE_XREALM")
-					-- Decline invite to party sync group request
-					if QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Decline:IsShown() then
-						QuestSessionManager.ConfirmInviteToGroupReceivedDialog.ButtonContainer.Decline:Click()
-					end
-					return
-				end
-			end
-
-			return
-		end
-
-		----------------------------------------------------------------------
-		-- Disable loot warnings
-		----------------------------------------------------------------------
-
-		-- Disable warnings for attempting to roll Need or Disenchant on loot
-		if event == "CONFIRM_LOOT_ROLL" or event == "CONFIRM_DISENCHANT_ROLL" then
-			ConfirmLootRoll(arg1, arg2)
-			StaticPopup_Hide("CONFIRM_LOOT_ROLL")
-			return
-		end
-
-		-- Disable warning for attempting to loot a Bind on Pickup item
-		if event == "LOOT_BIND_CONFIRM" then
-			ConfirmLootSlot(arg1, arg2)
-			StaticPopup_Hide("LOOT_BIND",...)
-			return
-		end
-
-		-- Disable warning for attempting to vendor an item within its refund window
-		if event == "MERCHANT_CONFIRM_TRADE_TIMER_REMOVAL" then
-			SellCursorItem()
-			return
-		end
-
-		-- Disable warning for attempting to mail an item within its refund window
-		if event == "MAIL_LOCK_SEND_ITEMS" then
-			RespondMailLockSendItem(arg1, true)
-			return
-		end
-
-		----------------------------------------------------------------------
-		-- Hide the combat log
-		----------------------------------------------------------------------
-
-		if event == "UPDATE_CHAT_WINDOWS" then
-			ChatFrame2Tab:EnableMouse(false)
-			ChatFrame2Tab:SetText(" ") -- Needs to be something for chat settings to function
-			ChatFrame2Tab:SetScale(0.01)
-			ChatFrame2Tab:SetWidth(0.01)
-			ChatFrame2Tab:SetHeight(0.01)
-		end
 
 		----------------------------------------------------------------------
 		-- L62: Profile events
@@ -10980,6 +11111,7 @@
 				LeaPlusLC:LoadVarChk("ShowReadyTimer", "Off")				-- Show ready timer
 				LeaPlusLC:LoadVarChk("ShowWowheadLinks", "Off")				-- Show Wowhead links
 				LeaPlusLC:LoadVarChk("WowheadLinkComments", "Off")			-- Show Wowhead links to comments
+				LeaPlusLC:LoadVarChk("ShowThreadsOfTime", "Off")			-- Show Threads of Time
 
 				-- Frames
 				LeaPlusLC:LoadVarChk("ManageWidgetTop", "Off")				-- Manage widget top
@@ -11024,6 +11156,7 @@
 				LeaPlusLC:LoadVarChk("MuteCustomSounds", "Off")				-- Mute custom sounds
 				LeaPlusLC:LoadVarStr("MuteCustomList", "")					-- Mute custom sounds list
 
+				LeaPlusLC:LoadVarChk("NoBagAutomation", "Off")				-- Disable bag automation
 				LeaPlusLC:LoadVarChk("NoPetAutomation", "Off")				-- Disable pet automation
 				LeaPlusLC:LoadVarChk("CharAddonList", "Off")				-- Show character addons
 				LeaPlusLC:LoadVarChk("NoRaidRestrictions", "Off")			-- Remove raid restrictions
@@ -11126,6 +11259,7 @@
 
 							-- Bags
 							if E.private.bags.enable then
+								Lock("NoBagAutomation", reason, "Bags") -- Disable bag automation
 								Lock("HideCleanupBtns", reason, "Bags") -- Hide clean-up buttons
 							end
 
@@ -11170,9 +11304,6 @@
 				end
 
 				-- Run other startup items
-				LeaPlusLC:Live()
-				LeaPlusLC:Isolated()
-				LeaPlusLC:RunOnce()
 				LeaPlusLC:SetDim()
 
 			end
@@ -11335,6 +11466,7 @@
 			LeaPlusDB["ShowReadyTimer"]			= LeaPlusLC["ShowReadyTimer"]
 			LeaPlusDB["ShowWowheadLinks"]		= LeaPlusLC["ShowWowheadLinks"]
 			LeaPlusDB["WowheadLinkComments"]	= LeaPlusLC["WowheadLinkComments"]
+			LeaPlusDB["ShowThreadsOfTime"]		= LeaPlusLC["ShowThreadsOfTime"]
 
 			-- Frames
 			LeaPlusDB["ManageWidgetTop"]		= LeaPlusLC["ManageWidgetTop"]
@@ -11379,6 +11511,7 @@
 			LeaPlusDB["MuteCustomSounds"]		= LeaPlusLC["MuteCustomSounds"]
 			LeaPlusDB["MuteCustomList"]			= LeaPlusLC["MuteCustomList"]
 
+			LeaPlusDB["NoBagAutomation"]		= LeaPlusLC["NoBagAutomation"]
 			LeaPlusDB["NoPetAutomation"]		= LeaPlusLC["NoPetAutomation"]
 			LeaPlusDB["CharAddonList"]			= LeaPlusLC["CharAddonList"]
 			LeaPlusDB["NoRaidRestrictions"]		= LeaPlusLC["NoRaidRestrictions"]
@@ -11816,7 +11949,6 @@
 			end
 			LeaPlusLC:SetDim(); -- Lock invalid options
 			LeaPlusLC:ReloadCheck(); -- Show reload button if needed
-			LeaPlusLC:Live(); -- Run live code
 		end)
 	end
 
@@ -13958,6 +14090,42 @@
 					LeaPlusLC.TalentsReloadButton = reloadButton
 				end
 				return
+			elseif str == "svars" then
+				-- Print saved variables
+				LeaPlusLC:Print(L["Saved Variables"] .. "|n")
+				LeaPlusLC:Print(L["The following list shows option label, setting name and currently saved value.  Enable |cffffffffIncrease chat history|r (chat) and |cffffffffRecent chat window|r (chat) to make it easier."] .. "|n")
+				LeaPlusLC:Print(L["Modifying saved variables must start with |cffffffff/ltp nosave|r to prevent your changes from being reverted during reload or logout."] .. "|n")
+				LeaPlusLC:Print(L['Syntax is |cffffffff/run LeaPlusDB[' .. '"' .. 'setting name' .. '"' .. '] = ' .. '"' .. 'value' .. '" |r(case sensitive).'])
+				LeaPlusLC:Print(L["When done, |cffffffff/reload|r to save your changes."] .. "|n")
+				-- Checkboxes
+				LeaPlusLC:Print(L["Checkboxes"] .. "|n")
+				LeaPlusLC:Print(L["Checkboxes can be set to On or Off."] .. "|n")
+				for key, value in pairs(LeaPlusDB) do
+					if LeaPlusCB[key] and LeaPlusCB[key].f then
+						if not _G["LeaPlusGlobalSlider" .. key] then
+							LeaPlusLC:Print(string.gsub(LeaPlusCB[key].f:GetText(), "%*$", "") .. ": |cffffffff" .. key .. "|r |cff1eff0c(" .. value .. ")|r")
+						end
+					end
+				end
+				-- Sliders
+				LeaPlusLC:Print("|n" .. L["Sliders"] .. "|n")
+				LeaPlusLC:Print(L["Sliders can be set to a numeric value which must be in the range supported by the slider."] .. "|n")
+				for key, value in pairs(LeaPlusDB) do
+					if LeaPlusCB[key] and LeaPlusCB[key].f then
+						if _G["LeaPlusGlobalSlider" .. key] then
+							LeaPlusLC:Print("Slider: " .. "|cffffffff" .. key .. "|r |cff1eff0c(" .. value .. ")|r" .. " (" .. string.gsub(LeaPlusCB[key].f:GetText(), "%*$", "") .. ")" )
+						end
+					end
+				end
+				-- Dropdowns
+				LeaPlusLC:Print("|n" .. L["Dropdowns"] .. "|n")
+				LeaPlusLC:Print(L["Sliders can be set to a numeric value which must be in the range supported by the dropdown."] .. "|n")
+				for key, value in pairs(LeaPlusDB) do
+					if key and LeaPlusCB["ListFrame" .. key] then
+						LeaPlusLC:Print("Dropdown: " .. "|cffffffff" .. key .. "|r |cff1eff0c(" .. value .. ")|r")
+					end
+				end
+				return
 			elseif str == "admin" then
 				-- Preset profile (used for testing)
 				LpEvt:UnregisterAllEvents()						-- Prevent changes
@@ -14070,6 +14238,7 @@
 				LeaPlusDB["ShowReadyTimer"] = "On"				-- Show ready timer
 				LeaPlusDB["ShowWowheadLinks"] = "On"			-- Show Wowhead links
 				LeaPlusDB["WowheadLinkComments"] = "On"			-- Show Wowhead links to comments
+				LeaPlusDB["ShowThreadsOfTime"] = "On"			-- Show Threads of Time
 
 				-- Interface: Manage frames
 				LeaPlusDB["ManageWidgetTop"] = "On"				-- Manage widget top
@@ -14111,6 +14280,7 @@
 				LeaPlusDB["MuteCustomSounds"] = "On"			-- Mute custom sounds
 				LeaPlusDB["MuteCustomList"] = ""				-- Mute custom sounds list
 
+				LeaPlusDB["NoBagAutomation"] = "On"				-- Disable bag automation
 				LeaPlusDB["NoPetAutomation"] = "On"				-- Disable pet automation
 				LeaPlusDB["CharAddonList"] = "On"				-- Show character addons
 				LeaPlusDB["NoRaidRestrictions"] = "On"			-- Remove raid restrictions
@@ -14487,6 +14657,7 @@
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "ShowPlayerChain"			, 	"Show player chain"				,	340, -232, 	true,	"If checked, you will be able to show a rare, elite or rare elite chain around the player frame.")
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "ShowReadyTimer"			, 	"Show ready timer"				,	340, -252, 	true,	"If checked, a timer will be shown under the dungeon ready frame and the PvP encounter ready frame so that you know how long you have left to click the enter button.")
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "ShowWowheadLinks"			, 	"Show Wowhead links"			, 	340, -272, 	true,	"If checked, Wowhead links will be shown in the world map frame and the achievements frame.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "ShowThreadsOfTime"			, 	"Show Threads of Time"			, 	340, -292, 	true,	"If checked, your total Threads of Time will be shown in the character frame next to your average item level.")
 
 	LeaPlusLC:CfgBtn("ModMinimapBtn", LeaPlusCB["MinimapModder"])
 	LeaPlusLC:CfgBtn("MoveTooltipButton", LeaPlusCB["TipModEnable"])
@@ -14540,16 +14711,17 @@
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "MuteCustomSounds"			, 	"Mute custom sounds"			,	146, -252, 	false,	"If checked, you will be able to mute your own choice of sounds.")
 
 	LeaPlusLC:MakeTx(LeaPlusLC[pg], "Game Options"				, 	340, -72)
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "CharAddonList"				, 	"Show character addons"			, 	340, -92, 	true,	"If checked, the addon list (accessible from the game menu) will show character based addons by default.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoPetAutomation"			, 	"Disable pet automation"		, 	340, -112, 	true, 	"If checked, battle pets which are automatically summoned will be dismissed within a few seconds.|n|nThis includes dragging a pet onto the first team slot in the pet journal and entering a battle pet team save command.|n|nNote that pets which are automatically summoned during combat will be dismissed when combat ends.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoRaidRestrictions"		, 	"Remove raid restrictions"		,	340, -132, 	false,	"If checked, converting a party group to a raid group will succeed even if there are low level characters in the group.|n|nEveryone in the group needs to have Leatrix Plus installed with this option enabled.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoConfirmLoot"				, 	"Disable loot warnings"			,	340, -152, 	false,	"If checked, confirmations will no longer appear when you choose a loot roll option or attempt to sell or mail a tradable item.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "FasterLooting"				, 	"Faster auto loot"				,	340, -172, 	true,	"If checked, the amount of time it takes to auto loot creatures will be significantly reduced.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "FasterMovieSkip"			, 	"Faster movie skip"				,	340, -192, 	true,	"If checked, you will be able to cancel movies without being prompted for confirmation.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "CombatPlates"				, 	"Combat plates"					,	340, -212, 	true,	"If checked, enemy nameplates will be shown during combat and hidden when combat ends.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "EasyItemDestroy"			, 	"Easy item destroy"				,	340, -232, 	true,	"If checked, you will no longer need to type delete when destroying a superior quality item.|n|nIn addition, item links will be shown in all item destroy confirmation windows.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "LockoutSharing"			, 	"Lockout sharing"				, 	340, -252, 	true, 	"If checked, the 'Display only character achievements to others' setting in the game options panel ('Social' menu) will be permanently checked and locked.")
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoTransforms"				, 	"Remove transforms"				, 	340, -272, 	false, 	"If checked, you will be able to have certain transforms removed automatically when they are applied to your character.|n|nYou can choose the transforms in the configuration panel.|n|nExamples include Weighted Jack-o'-Lantern and Hallowed Wand.|n|nTransforms applied during combat will be removed when combat ends.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoBagAutomation"			, 	"Disable bag automation"		, 	340, -92, 	true,	"If checked, your bags will not be opened or closed automatically when you interact with a merchant or bank.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "CharAddonList"				, 	"Show character addons"			, 	340, -112, 	true,	"If checked, the addon list (accessible from the game menu) will show character based addons by default.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoPetAutomation"			, 	"Disable pet automation"		, 	340, -132, 	true, 	"If checked, battle pets which are automatically summoned will be dismissed within a few seconds.|n|nThis includes dragging a pet onto the first team slot in the pet journal and entering a battle pet team save command.|n|nNote that pets which are automatically summoned during combat will be dismissed when combat ends.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoRaidRestrictions"		, 	"Remove raid restrictions"		,	340, -152, 	false,	"If checked, converting a party group to a raid group will succeed even if there are low level characters in the group.|n|nEveryone in the group needs to have Leatrix Plus installed with this option enabled.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoConfirmLoot"				, 	"Disable loot warnings"			,	340, -172, 	false,	"If checked, confirmations will no longer appear when you choose a loot roll option or attempt to sell or mail a tradable item.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "FasterLooting"				, 	"Faster auto loot"				,	340, -192, 	true,	"If checked, the amount of time it takes to auto loot creatures will be significantly reduced.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "FasterMovieSkip"			, 	"Faster movie skip"				,	340, -212, 	true,	"If checked, you will be able to cancel movies without being prompted for confirmation.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "CombatPlates"				, 	"Combat plates"					,	340, -232, 	true,	"If checked, enemy nameplates will be shown during combat and hidden when combat ends.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "EasyItemDestroy"			, 	"Easy item destroy"				,	340, -252, 	true,	"If checked, you will no longer need to type delete when destroying a superior quality item.|n|nIn addition, item links will be shown in all item destroy confirmation windows.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "LockoutSharing"			, 	"Lockout sharing"				, 	340, -272, 	true, 	"If checked, the 'Display only character achievements to others' setting in the game options panel ('Social' menu) will be permanently checked and locked.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoTransforms"				, 	"Remove transforms"				, 	340, -292, 	false, 	"If checked, you will be able to have certain transforms removed automatically when they are applied to your character.|n|nYou can choose the transforms in the configuration panel.|n|nExamples include Weighted Jack-o'-Lantern and Hallowed Wand.|n|nTransforms applied during combat will be removed when combat ends.")
 
 	LeaPlusLC:CfgBtn("SetWeatherDensityBtn", LeaPlusCB["SetWeatherDensity"])
 	LeaPlusLC:CfgBtn("MuteGameSoundsBtn", LeaPlusCB["MuteGameSounds"])

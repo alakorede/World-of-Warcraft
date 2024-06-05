@@ -32,7 +32,8 @@ local db = {
 };
 
 local altAppearancesDB = {
-
+{3634,218961,218962}, --happy green murloc helm
+{3635,218967,218968}, --happy purple murloc helm
 }
 
 function AddToCollection()

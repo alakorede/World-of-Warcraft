@@ -116,6 +116,28 @@ local altLabelAppendDB = {
 [3379] = ' (3)', --end Cloth World sets
 }
 
+local setsFlagRemix = {
+[3368] = true, --Vestments of serenity (white)
+[3438] = true, --                      (green)
+[3439] = true, --                      (blue)
+[3394] = true, --Tian Monastary Clothing (blue)
+[3395] = true, --                        (red)
+[3396] = true, --                        (white)
+[3415] = true, --Sun Pearl Clothing (yellow)
+[3414] = true, --                   (red)
+[3413] = true, --                   (green)
+[3434] = true, --Robes of Quiet Reflection (brown)
+[3435] = true, --                          (green)
+[3436] = true, --                          (red)
+[3437] = true, --                          (yellow)
+[3403] = true, --Kor'kron Shaman (cool)
+[3404] = true, --Kor'kron Shaman (warm)
+[3405] = true, --Kor'kron Shaman (yellow)
+[3380] = true, --Guise of the Shado-pan (dark)
+[3381] = true, --Guise of the Shado-pan (original)
+[3440] = true, --Battleplate of Resounding Rings
+}
+
 --Legion alt appearances at 35559
 
 function AddToCollection()
@@ -160,6 +182,7 @@ app.ExpandedCallbacks[expansionID] = AddToCollection;
 app.altAppearancesDB[expansionID] = altAppearancesDB;
 app.altLabelDB[expansionID] = altLabelDB;
 app.altLabelAppendDB[expansionID] = altLabelAppendDB;
+app.mopRemixFlag = setsFlagRemix;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};
