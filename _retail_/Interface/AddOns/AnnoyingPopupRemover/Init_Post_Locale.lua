@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2023 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.2.0-release
+-- Addon version: v20.3.0-release
 
 -- This file initializes settings that require or depend on localized strings for Annoying Popup Remover.
 

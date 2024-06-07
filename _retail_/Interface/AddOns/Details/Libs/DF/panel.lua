@@ -2580,7 +2580,7 @@ function detailsFramework:ShowTextPromptPanel(message, callback)
 		textbox:SetPoint("topleft", promptFrame, "topleft", 10, -60)
 		promptFrame.EntryBox = textbox
 
-		local buttonTrue = detailsFramework:CreateButton(promptFrame, nil, 60, 20, "Okey", nil, nil, nil, nil, nil, nil, options_dropdown_template)
+		local buttonTrue = detailsFramework:CreateButton(promptFrame, nil, 60, 20, "Okay", nil, nil, nil, nil, nil, nil, options_dropdown_template)
 		buttonTrue:SetPoint("bottomright", promptFrame, "bottomright", -10, 5)
 		promptFrame.button_true = buttonTrue
 
@@ -4800,6 +4800,7 @@ function detailsFramework:CreateBorderFrame(parent, name)
 	local parentName = name or ("DetailsFrameworkBorderFrame" .. tostring(math.random(1, 100000000)))
 
 	local f = CreateFrame("frame", parentName, parent, "BackdropTemplate")
+	detailsFramework:Mixin(f, detailsFramework.FrameFunctions)
 	f:SetFrameLevel(f:GetFrameLevel()+1)
 	f:SetAllPoints()
 

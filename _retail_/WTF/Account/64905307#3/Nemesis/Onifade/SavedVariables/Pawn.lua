@@ -1,8 +1,6 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.0906,
-["LastPlayerFullName"] = "Onifade-Nemesis",
-["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -15,9 +13,9 @@ PawnOptions = {
 ["Link"] = "|cff0070dd|Hitem:193676::::::::69:104::17:5:7978:7975:6652:7937:8783:2:28:2155:9:69:::::|h[Ukhel Ancestry Beads]|h|r",
 },
 {
-["ID"] = 197653,
-["Level"] = 276,
-["Link"] = "|cff1eff00|Hitem:197653::::::::69:104::26:1:7963:2:28:2504:9:65:::::|h[Teerai Watcher Spaulders]|h|r",
+["ID"] = 193807,
+["Level"] = 306,
+["Link"] = "|cff0070dd|Hitem:193807::::::::66:104::17:4:7978:7975:6652:10864:2:28:2587:9:66:::::|h[Shoulders of Animated Stone]|h|r",
 },
 nil,
 {
@@ -91,6 +89,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:180663::::::::60:104::11:1:6706:2:9:55:28:1337:::::|h[War Scholar's Bonesaw]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Onifade-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DRUID",

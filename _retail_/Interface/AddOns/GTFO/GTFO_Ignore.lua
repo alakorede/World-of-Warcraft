@@ -19,14 +19,15 @@ GTFO.IgnoreSpellCategory["Lava"] = {
 	override = true
 }
 
-if (not (GTFO.ClassicMode or GTFO.BurningCrusadeMode or GTFO.WrathMode)) then
-
+if (GTFO.CataclysmMode or GTFO.RetailMode) then
 	GTFO.IgnoreSpellCategory["HagaraWateryEntrenchment"] = {
 		-- mobID = 55689; -- Hagara the Stormbinder
 		spellID = 110317,
 		desc = "Watery Entrenchment (Hagara - Cataclysm)"
 	}
+end
 
+if (GTFO.RetailMode) then
 	GTFO.IgnoreSpellCategory["GarroshDesecrated"] = {
 		-- Garrosh Hellscream
 		spellID = 144762,
@@ -173,3 +174,5 @@ GTFO.IgnoreScan["420714"] = true; -- Noxious Blossom
 GTFO.IgnoreScan["425461"] = true; -- Tainted Heart
 GTFO.IgnoreScan["295625"] = true; -- Anger of the Bloodfin
 GTFO.IgnoreScan["422750"] = true; -- Shadowflame Rage
+GTFO.IgnoreScan["453445"] = true; -- Brilliance
+GTFO.IgnoreScan["441197"] = true; -- Righteous Frenzy

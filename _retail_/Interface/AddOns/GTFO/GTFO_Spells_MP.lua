@@ -5,7 +5,7 @@
 GTFO Spell List - Mists of Pandaria
 ]]--
 
-if (not (GTFO.ClassicMode or GTFO.BurningCrusadeMode or GTFO.WrathMode)) then
+if (GTFO.RetailMode) then
 
 -- ***************
 -- * Scholomance *
@@ -2503,6 +2503,11 @@ GTFO.SpellID["135868"] = {
 GTFO.SpellID["131831"] = {
 	--desc = "Fiery Keg Smash (Master Cheng)";
 	sound = 1;
+};
+
+GTFO.SpellID["126292"] = {
+  --desc = "Shadow Fissure (Shadowmaster Sydow)";
+  sound = 1;
 };
 
 end

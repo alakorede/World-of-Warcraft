@@ -160,6 +160,11 @@ local function AddCategory(key)
 end
 
 local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requiresFor, requiredFor)
+	local lkey = key
+	if id then
+		key = key .. id
+	end
+
 	local oldVal = MoveAny:IsEnabled(key, val, true) or false
 	local bRequiresFor = nil
 	if requiresFor ~= nil then
@@ -173,7 +178,6 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requ
 
 	local bShowReload = showReload
 	local bGreyed = false
-	local lkey = key
 	if bShowReload == nil then
 		bShowReload = true
 	end
@@ -181,10 +185,6 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requ
 	if oldVal == nil then
 		MoveAny:MSG("Missing Value For: " .. tostring(key))
 		oldVal = true
-	end
-
-	if id then
-		key = key .. id
 	end
 
 	if cbs[key] == nil then
@@ -411,8 +411,8 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	D4:SetVersion(AddonName, 135994, "1.6.184")
-	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.184"))
+	D4:SetVersion(AddonName, 135994, "1.6.197")
+	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.197"))
 	MALock.CloseButton:SetScript(
 		"OnClick",
 		function()
@@ -784,7 +784,7 @@ function MoveAny:InitMALock()
 			AddCheckBox(4, "TARGETFRAMENAMEBACKGROUND", false)
 		end
 
-		if IsAddOnLoaded("ImproveAny") then
+		if D4:IsAddOnLoaded("ImproveAny") then
 			AddCategory("ImproveAny")
 			if D4:GetWoWBuild() ~= "RETAIL" then
 				AddCheckBox(4, "IASKILLS", true)
@@ -797,7 +797,7 @@ function MoveAny:InitMALock()
 			AddCheckBox(4, "IACoordsFrame", true)
 		end
 
-		if IsAddOnLoaded("!KalielsTracker") then
+		if D4:IsAddOnLoaded("!KalielsTracker") then
 			AddCategory("!KalielsTracker")
 			AddCheckBox(4, "!KalielsTrackerButtons", false)
 		end
@@ -929,17 +929,16 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	MAGridFrame:SetSize(GetScreenWidth(), GetScreenHeight())
-	MAGridFrame:SetPoint("CENTER", MoveAny:GetMainPanel(), "CENTER", 0, 0)
+	MAGridFrame:SetAllPoints(MoveAny:GetMainPanel())
 	MAGridFrame:SetFrameStrata("LOW")
 	MAGridFrame:SetFrameLevel(1)
 	MAGridFrame.hor = MAGridFrame:CreateTexture()
 	MAGridFrame.hor:SetPoint("CENTER", 0, -0.5)
-	MAGridFrame.hor:SetSize(GetScreenWidth(), 1)
+	MAGridFrame.hor:SetSize(MoveAny:GetMainPanel():GetWidth(), 1)
 	MAGridFrame.hor:SetColorTexture(1, 1, 1, 1)
 	MAGridFrame.ver = MAGridFrame:CreateTexture()
 	MAGridFrame.ver:SetPoint("CENTER", 0.5, 0)
-	MAGridFrame.ver:SetSize(1, GetScreenHeight())
+	MAGridFrame.ver:SetSize(1, MoveAny:GetMainPanel():GetHeight())
 	MAGridFrame.ver:SetColorTexture(1, 1, 1, 1)
 	MoveAny:UpdateGrid()
 	local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint("MALock")
@@ -958,10 +957,10 @@ function MoveAny:UpdateGrid()
 		v:Hide()
 	end
 
-	for x = 0, GetScreenWidth() / 2, MoveAny:GetGridSize() do
+	for x = 0, MoveAny:GetMainPanel():GetWidth() / 2, MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0.5 + x, 0)
-		MAGridFrame.lines[id]:SetSize(1.09, GetScreenHeight())
+		MAGridFrame.lines[id]:SetSize(1.09, MoveAny:GetMainPanel():GetHeight())
 		if x % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -972,10 +971,10 @@ function MoveAny:UpdateGrid()
 		id = id + 1
 	end
 
-	for x = 0, -GetScreenWidth() / 2, -MoveAny:GetGridSize() do
+	for x = 0, -MoveAny:GetMainPanel():GetWidth() / 2, -MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0.5 + x, 0)
-		MAGridFrame.lines[id]:SetSize(1.09, GetScreenHeight())
+		MAGridFrame.lines[id]:SetSize(1.09, MoveAny:GetMainPanel():GetHeight())
 		if x % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -986,10 +985,10 @@ function MoveAny:UpdateGrid()
 		id = id + 1
 	end
 
-	for y = 0, GetScreenHeight() / 2, MoveAny:GetGridSize() do
+	for y = 0, MoveAny:GetMainPanel():GetHeight() / 2, MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0, 0.5 + y)
-		MAGridFrame.lines[id]:SetSize(GetScreenWidth(), 1.09, GetScreenHeight())
+		MAGridFrame.lines[id]:SetSize(MoveAny:GetMainPanel():GetWidth(), 1.09, MoveAny:GetMainPanel():GetHeight())
 		if y % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -1000,10 +999,10 @@ function MoveAny:UpdateGrid()
 		id = id + 1
 	end
 
-	for y = 0, -GetScreenHeight() / 2, -MoveAny:GetGridSize() do
+	for y = 0, -MoveAny:GetMainPanel():GetHeight() / 2, -MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0, 0.5 + y)
-		MAGridFrame.lines[id]:SetSize(GetScreenWidth(), 1.09)
+		MAGridFrame.lines[id]:SetSize(MoveAny:GetMainPanel():GetWidth(), 1.09)
 		if y % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -1038,7 +1037,7 @@ function MoveAny:ShowProfiles()
 			end
 		)
 
-		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.184"))
+		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.197"))
 		MAProfiles.CloseButton:SetScript(
 			"OnClick",
 			function()
@@ -1795,16 +1794,16 @@ function MoveAny:LoadAddon()
 	MoveAny.init = true
 	local _, class = UnitClass("player")
 	if MoveAny:IsEnabled("SHOWTIPS", true) then
-		if IsAddOnLoaded("Dominos") then
+		if D4:IsAddOnLoaded("Dominos") then
 			MoveAny:MSG("Dominos Detected, please make sure Dominos Elements are disabled in MoveAny!")
 		end
 
-		if IsAddOnLoaded("Bartender4") then
+		if D4:IsAddOnLoaded("Bartender4") then
 			MoveAny:MSG("Bartender4 Detected, please make sure that an element is only controlled by one addon at a time!")
 		end
 	end
 
-	if IsAddOnLoaded("D4KiR MoveAndImprove") then
+	if D4:IsAddOnLoaded("D4KiR MoveAndImprove") then
 		MoveAny:MSG("DON'T use MoveAndImprove, when you use MoveAny")
 	end
 
@@ -3187,7 +3186,7 @@ function MoveAny:LoadAddon()
 		)
 	end
 
-	if IsAddOnLoaded("!KalielsTracker") and MoveAny:IsEnabled("!KalielsTrackerButtons", false) then
+	if D4:IsAddOnLoaded("!KalielsTracker") and MoveAny:IsEnabled("!KalielsTrackerButtons", false) then
 		C_Timer.After(
 			1,
 			function()
@@ -3304,7 +3303,7 @@ function MoveAny:LoadAddon()
 		)
 	end
 
-	if not IsAddOnLoaded("Dominos") then
+	if not D4:IsAddOnLoaded("Dominos") then
 		if MoveAny:IsEnabled("MICROMENU", false) then
 			MoveAny:RegisterWidget(
 				{
@@ -3365,7 +3364,7 @@ function MoveAny:LoadAddon()
 		)
 	end
 
-	if IsAddOnLoaded("ImproveAny") then
+	if D4:IsAddOnLoaded("ImproveAny") then
 		if MoveAny:IsEnabled("MONEYBAR", true) then
 			MoveAny:RegisterWidget(
 				{
@@ -3874,7 +3873,7 @@ function MoveAny:LoadAddon()
 	end
 
 	if D4:GetWoWBuild() == "RETAIL" then
-		LoadAddOn("Blizzard_ArchaeologyUI")
+		D4:LoadAddOn("Blizzard_ArchaeologyUI")
 	end
 
 	if MoveAny:IsEnabled("ARCHEOLOGYDIGSITEPROGRESSBAR", false) and ARCHEOLOGYDIGSITEPROGRESSBAR then
@@ -4392,7 +4391,7 @@ function MoveAny:LoadAddon()
 		end
 	end
 
-	if not IsAddOnLoaded("Dominos") then
+	if not D4:IsAddOnLoaded("Dominos") then
 		if MoveAny.InitMicroMenu then
 			MoveAny:InitMicroMenu()
 		end
@@ -4445,7 +4444,7 @@ function MoveAny:LoadAddon()
 			WorldMapFrame.ScrollContainer.GetCursorPosition = function(fr)
 				local x, y = MapCanvasScrollControllerMixin.GetCursorPosition(fr)
 				local scale = WorldMapFrame:GetScale()
-				if not IsAddOnLoaded("Mapster") and not IsAddOnLoaded("GW2_UI") then
+				if not D4:IsAddOnLoaded("Mapster") and not D4:IsAddOnLoaded("GW2_UI") then
 					return x / scale, y / scale
 				else
 					local reverseEffectiveScale = 1 / UIParent:GetEffectiveScale()

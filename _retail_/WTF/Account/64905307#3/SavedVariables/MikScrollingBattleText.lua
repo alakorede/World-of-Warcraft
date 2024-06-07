@@ -16,10 +16,10 @@ MSBTProfiles_SavedVars = {
 ["scrollHeight"] = 230,
 ["offsetX"] = -359,
 ["scrollWidth"] = 90,
-["behavior"] = "MSBT_NORMAL",
+["stickyBehavior"] = "Normal",
 ["offsetY"] = -309,
 ["animationStyle"] = "Straight",
-["stickyBehavior"] = "Normal",
+["behavior"] = "MSBT_NORMAL",
 },
 ["Outgoing"] = {
 ["scrollHeight"] = 230,

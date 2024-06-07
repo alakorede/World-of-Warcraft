@@ -2026,3 +2026,14 @@ Change Log:
 * Updated for patch 10.2.7
 * Updated ToC for WoW Classic 1.15.2
 * Updated ToC for WoW Cataclysm 4.4.0
+
+5.8
+* Added support for The War Within (placeholders)
+* Added support for new WoW 11.0 menu system
+* Fixed special ignore list showing Retail spells for Classic versions
+* Fixed Retail spells loading for Classic versions
+* Integrated more Skada fixes from bKader
+* Updated ToC for WoW Classic 1.15.2 (again)
+* Added Dragonflight spells (world)
+* Added Mists of Pandaria spells (world)
+* Added Mists of Pandaria remix spells
