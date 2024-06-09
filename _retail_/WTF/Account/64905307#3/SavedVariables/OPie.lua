@@ -527,16 +527,16 @@ OPie_SavedData = {
 },
 ["OPieDeletedRings"] = {
 ["DruidUtility"] = true,
-["CommonTrades"] = true,
+["MageTools"] = true,
 ["DruidShift"] = true,
 ["DruidFeral"] = true,
 ["RaidSymbols"] = true,
 ["TrinketSlots"] = true,
-["WarlockCombat"] = true,
+["WorldMarkers"] = true,
 ["MageTravel"] = true,
 ["SpecMenu"] = true,
-["MageTools"] = true,
-["WorldMarkers"] = true,
+["CommonTrades"] = true,
+["WarlockCombat"] = true,
 },
 ["Bearbull"] = {
 {
@@ -1023,8 +1023,8 @@ OPie_SavedData = {
 ["vm"] = 2,
 },
 {
-["id"] = "/cast [mod][noknown:119898] {{spell:755}}; {{spell:119898}}",
 ["sliceToken"] = "OPCLSa",
+["id"] = "/cast [mod][noknown:119898] {{spell:755}}; {{spell:119898}}",
 ["vm"] = 2,
 },
 {
@@ -1033,8 +1033,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuebu8Er27",
 },
 {
-["id"] = "/cast [mod:alt] {{spell:20707}}; [group,nomod][nogroup,mod] {{spell:29893}}; {{spell:6201}}",
 ["sliceToken"] = "OPCLSh",
+["id"] = "/cast [mod:alt] {{spell:20707}}; [group,nomod][nogroup,mod] {{spell:29893}}; {{spell:6201}}",
 ["vm"] = 3,
 },
 {
@@ -1048,30 +1048,30 @@ OPie_SavedData = {
 ["sliceToken"] = "OPCLSg",
 },
 {
-["id"] = "/cast [flyable,nocombat,nomod] {{mount:air}}; [outdoors,nocombat,nomod:alt] {{mount:ground}}; {{spell:126}}",
 ["sliceToken"] = "OPCLSe",
+["id"] = "/cast [flyable,nocombat,nomod] {{mount:air}}; [outdoors,nocombat,nomod:alt] {{mount:ground}}; {{spell:126}}",
 ["fastClick"] = true,
 },
 {
-["id"] = 1122,
 ["sliceToken"] = "OPCLSi",
+["id"] = 1122,
 ["vm"] = 2,
 },
 {
-["id"] = 111400,
 ["sliceToken"] = "ABuebu8Er2E",
+["id"] = 111400,
 },
 {
-["id"] = 688,
 ["sliceToken"] = "ABuebu8Er2W",
+["id"] = 688,
 },
 {
-["id"] = 697,
 ["sliceToken"] = "ABuebu8Er2Q",
+["id"] = 697,
 },
 {
-["id"] = 150544,
 ["sliceToken"] = "ABuebu8Er2m",
+["id"] = 150544,
 },
 {
 "mount",
@@ -1088,12 +1088,12 @@ OPie_SavedData = {
 460,
 ["sliceToken"] = "ABuebu8Er26",
 },
-["name"] = "Warlock General",
-["limit"] = "WARLOCK",
-["vm"] = 125,
 ["save"] = true,
-["hotkey"] = "BUTTON3",
 ["v"] = 2,
+["vm"] = 125,
+["limit"] = "WARLOCK",
+["name"] = "Warlock General",
+["hotkey"] = "BUTTON3",
 },
 ["Custom8"] = {
 {
@@ -2199,40 +2199,40 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemFZYtMs",
 },
 {
-["id"] = 20577,
 ["sliceToken"] = "ABuemFZYtMw",
+["id"] = 20577,
 },
 {
-["id"] = 7744,
 ["sliceToken"] = "ABuemFZYtMe",
+["id"] = 7744,
 },
 {
-["id"] = 29893,
 ["sliceToken"] = "ABuemFZYtMr",
+["id"] = 29893,
 },
 {
-["id"] = 48020,
 ["sliceToken"] = "ABuemFZYtM1",
+["id"] = 48020,
 },
 {
-["id"] = 342601,
 ["sliceToken"] = "ABuemFZYtMt",
+["id"] = 342601,
 },
 {
-["id"] = 698,
 ["sliceToken"] = "ABuemFZYtMy",
+["id"] = 698,
 },
 {
-["id"] = 6201,
 ["sliceToken"] = "ABuemFZYtM3",
+["id"] = 6201,
 },
 {
-["id"] = 5697,
 ["sliceToken"] = "ABuemFZYtMu",
+["id"] = 5697,
 },
 {
-["id"] = 20707,
 ["sliceToken"] = "ABuemFZYtMi",
+["id"] = 20707,
 },
 {
 "mount",
@@ -2259,8 +2259,8 @@ OPie_SavedData = {
 1556,
 ["sliceToken"] = "ABuemFZYtMa",
 },
-["save"] = true,
 ["name"] = "Batezu",
+["save"] = true,
 ["limit"] = "Batezu-Nemesis",
 },
 ["Chishy"] = {
@@ -2781,8 +2781,8 @@ OPie_SavedData = {
 986,
 ["sliceToken"] = "ABuemPLLkx1",
 },
-["limit"] = "Shamanjuba-Nemesis",
 ["save"] = true,
+["limit"] = "Shamanjuba-Nemesis",
 ["name"] = "Shamanjuba",
 },
 },

@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0906,
+["LastVersion"] = 2.0907,
+["LastPlayerFullName"] = "Batezu-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -9,8 +11,8 @@ PawnOptions = {
 },
 {
 ["ID"] = 193676,
-["Level"] = 336,
-["Link"] = "|cff0070dd|Hitem:193676::::::::69:104::17:5:7978:7975:6652:7937:8783:2:28:2155:9:69:::::|h[Ukhel Ancestry Beads]|h|r",
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193676::::::::70:267::1:7:10323:7974:6652:8784:10244:3139:8766:1:28:2155:::::|h[Ukhel Ancestry Beads]|h|r",
 },
 {
 ["ID"] = 197653,
@@ -19,14 +21,14 @@ PawnOptions = {
 },
 nil,
 {
-["ID"] = 186463,
-["Level"] = 441,
-["Link"] = "|cffa335ee|Hitem:186463::::::::70:104::3:4:9552:9505:9465:8767:1:28:888:::::|h[Túnica Fiada no Terror]|h|r",
+["ID"] = 193683,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193683::::::::70:267::1:6:10323:7974:6652:10864:3139:8766:1:28:2587:::::|h[Blessed Ohn'ir Robes]|h|r",
 },
 {
-["ID"] = 197660,
-["Level"] = 276,
-["Link"] = "|cff1eff00|Hitem:197660::::::::66:104::26:1:7963:2:28:2152:9:65:::::|h[Teerai Watcher Belt]|h|r",
+["ID"] = 193816,
+["Level"] = 336,
+["Link"] = "|cff0070dd|Hitem:193816::::::::70:267::17:5:7978:7975:6652:10533:10864:2:28:2155:9:69:::::|h[Lost Hero's Waist Wrap]|h|r",
 },
 {
 ["ID"] = 198015,
@@ -44,21 +46,21 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193793::::::::67:104::17:5:7978:7975:6652:7937:8815:2:28:2550:9:67:::::|h[Ferocious Hyena Hidebinders]|h|r",
 },
 {
-["ID"] = 193661,
-["Level"] = 316,
-["Link"] = "|cff0070dd|Hitem:193661::::::::67:104::17:4:7978:7975:6652:8813:2:28:2155:9:67:::::|h[Blightweaver's Clutches]|h|r",
+["ID"] = 193648,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193648::::::::70:267::1:6:10323:7974:40:10864:3139:8766:1:28:2587:::::|h[Azureblade's Work Gloves]|h|r",
+},
+{
+["ID"] = 193804,
+["Level"] = 346,
+["AlsoFitsIn"] = 12,
+["Link"] = "|cff0070dd|Hitem:193804::::::::70:267::17:4:7978:7975:6652:10532:2:28:2587:9:70:::::|h[Eternal Sentry's Ring]|h|r",
 },
 {
 ["ID"] = 193731,
 ["Level"] = 316,
-["AlsoFitsIn"] = 12,
-["Link"] = "|cff0070dd|Hitem:193731::::::::68:267::17:4:7978:7975:6652:10533:2:9:67:28:2587:::::|h[Circle of Ascended Frost]|h|r",
-},
-{
-["ID"] = 200172,
-["Level"] = 306,
 ["AlsoFitsIn"] = 11,
-["Link"] = "|cff0070dd|Hitem:200172::::::::68:104::17:3:9156:6652:7937:2:9:68:28:2424:::::|h[Zephyrdance Signet]|h|r",
+["Link"] = "|cff0070dd|Hitem:193731::::::::69:267::17:4:7978:7975:6652:10533:2:9:67:28:2587:::::|h[Circle of Ascended Frost]|h|r",
 },
 {
 ["ID"] = 193689,
@@ -78,19 +80,17 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193763::::::::68:267::17:4:7978:7975:6652:10864:2:9:68:28:2155:::::|h[Fireproof Drape]|h|r",
 },
 {
-["ID"] = 198008,
-["Level"] = 319,
-["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
+["ID"] = 193803,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193803::::::::70:267::1:5:10323:7974:6652:3139:8766:1:28:2155:::::|h[Infinite Dragonspire]|h|r",
 },
 {
-["ID"] = 193766,
-["Level"] = 326,
-["Link"] = "|cff0070dd|Hitem:193766::::::::68:267::17:3:7978:7975:6652:2:9:68:28:2587:::::|h[Kokia's Burnout Rod]|h|r",
+["ID"] = 193710,
+["Level"] = 336,
+["AlsoFitsIn"] = 16,
+["Link"] = "|cff0070dd|Hitem:193710::::::::69:267::17:3:7978:7975:6652:2:28:2155:9:69:::::|h[Spellboon Saber]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Batezu-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "WARLOCK",

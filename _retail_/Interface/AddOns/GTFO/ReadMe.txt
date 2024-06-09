@@ -2037,3 +2037,13 @@ Change Log:
 * Added Dragonflight spells (world)
 * Added Mists of Pandaria spells (world)
 * Added Mists of Pandaria remix spells
+
+5.9
+* Utilized the new Blizzard buff/debuff functions
+* Fixed various bugs with TWW workarounds
+* Added TWW spells for Kriegval's Rest
+* Added TWW spells for Fungal Folly
+* Added TWW spells for Earthcrawl Mines 
+
+5.9.1
+* Fixed Pandaria spells for Throne of Thunder

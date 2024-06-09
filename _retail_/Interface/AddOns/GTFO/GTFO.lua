@@ -26,13 +26,13 @@ GTFO = {
 		SoundOverrides = { "", "", "", "" }; -- Override table for GTFO sounds
 		IgnoreSpellList = { };
 	};
-	Version = "5.8"; -- Version number (text format)
+	Version = "5.9.1"; -- Version number (text format)
 	VersionNumber = 0; -- Numeric version number for checking out-of-date clients (placeholder until client is detected)
-	RetailVersionNumber = 50800; -- Numeric version number for checking out-of-date clients (retail)
-	ClassicVersionNumber = 50800; -- Numeric version number for checking out-of-date clients (Vanilla classic)
+	RetailVersionNumber = 50901; -- Numeric version number for checking out-of-date clients (retail)
+	ClassicVersionNumber = 50900; -- Numeric version number for checking out-of-date clients (Vanilla classic)
 	BurningCrusadeVersionNumber = 50000; -- Numeric version number for checking out-of-date clients (TBC classic)
 	WrathVersionNumber = 50503; -- Numeric version number for checking out-of-date clients (Wrath classic)
-	CataclysmVersionNumber = 50800; -- Numeric version number for checking out-of-date clients (Wrath classic)
+	CataclysmVersionNumber = 50900; -- Numeric version number for checking out-of-date clients (Wrath classic)
 	DataLogging = nil; -- Indicate whether or not the addon needs to run the datalogging function (for hooking)
 	DataCode = "4"; -- Saved Variable versioning, change this value to force a reset to default
 	CanTank = nil; -- The active character is capable of tanking
@@ -2471,13 +2471,9 @@ end
 function GTFO_DebuffStackCount(target, iSpellID)
 	local spellName = GTFO_GetSpellName(tonumber(iSpellID));
 	if (spellName) then
-		local debuffInfo;
-		local debuffIndex = GTFO_GetDebuffSpellIndex(target, iSpellID);
+		local debuffIndex, debuff = GTFO_GetDebuffSpellIndex(target, iSpellID);
 		if (debuffIndex) then
-			debuffInfo = select(3, UnitDebuff(target, debuffIndex));
-		end
-		if (debuffInfo) then
-			return tonumber(debuffInfo);
+			return tonumber(debuff.applications);
 		end
 	end
 	return 0;
@@ -2486,10 +2482,10 @@ end
 function GTFO_GetBuffSpellIndex(target, iSpellID)
 	if (iSpellID) then
 		for i = 1, 40, 1 do
-			local buff = select(10, UnitBuff(target, i));
+			local buff = C_UnitAuras.GetAuraDataByIndex(target, i, "HELPFUL");
 			if (buff) then
-				if (tonumber(buff) == tonumber(iSpellID)) then
-					return i;
+				if (tonumber(buff.spellId) == tonumber(iSpellID)) then
+					return i, buff;
 				end
 			else
 				return nil;
@@ -2502,10 +2498,10 @@ end
 function GTFO_GetDebuffSpellIndex(target, iSpellID)
 	if (iSpellID) then
 		for i = 1, 40, 1 do
-			local debuff = select(10, UnitDebuff(target, i));
+			local debuff = C_UnitAuras.GetAuraDataByIndex(target, i, "HARMFUL");
 			if (debuff) then
-				if (tonumber(debuff) == tonumber(iSpellID)) then
-					return i;
+				if (tonumber(debuff.spellId) == tonumber(iSpellID)) then
+					return i, debuff;
 				end
 			else
 				return nil;
@@ -2516,18 +2512,18 @@ function GTFO_GetDebuffSpellIndex(target, iSpellID)
 end
 
 function GTFO_BuffTime(target, iSpellID)
-	local index = GTFO_GetBuffSpellIndex(target, iSpellID);
-	if (index) then
-		return tonumber(select(6, UnitBuff(target, index)) - GetTime()) or 0;
+	local index, buff = GTFO_GetBuffSpellIndex(target, iSpellID);
+	if (index and buff.expirationTime > 0) then
+		return (tonumber(buff.expirationTime) - GetTime()) or 0;
 	else
 		return 0;
 	end
 end
 
 function GTFO_DebuffTime(target, iSpellID)
-	local index = GTFO_GetDebuffSpellIndex(target, iSpellID);
-	if (index) then
-		return tonumber(select(6, UnitDebuff(target, index)) - GetTime()) or 0;
+	local index, debuff = GTFO_GetDebuffSpellIndex(target, iSpellID);
+	if (index and debuff.expirationTime > 0) then
+		return (tonumber(debuff.expirationTime) - GetTime()) or 0;
 	else
 		return 0;
 	end
@@ -2756,7 +2752,7 @@ function GTFO_SpellScan(spellId, spellOrigin, spellDamage)
 				Times = 1;
 				SpellID = spellId;
 				SpellName = tostring(select(1, GTFO_GetSpellName(spellId)));
-				SpellDescription = GetSpellDescription(spellId) or "";
+				SpellDescription = GTFO_GetSpellDescription(spellId) or "";
 				SpellOrigin = tostring(spellOrigin);
 				IsDebuff = (spellDamage == "DEBUFF");
 				Damage = damage;
@@ -2812,7 +2808,7 @@ function GTFO_Command_Data()
 		dataOutput = dataOutput.."-- |cff00ff00"..tostring(data.SpellName).." (x"..data.Times;
 
 		if (data.SpellDescription == nil or data.SpellDescription == "") then
-			data.SpellDescription = GetSpellDescription(data.SpellID) or "";
+			data.SpellDescription = GTFO_GetSpellDescription(data.SpellID) or "";
 		end
 		
 		if (data.Damage > 0) then
@@ -2879,11 +2875,16 @@ end
 
 function GTFO_GetSpellLink(spellId)
 	if (GTFO.BetaMode) then
-		local spell = C_Spell.GetSpellLink(spellId);
-		if (spell) then
-			return spell.name;
-		end
+		return C_Spell.GetSpellLink(spellId);
 	else
 		return GetSpellLink(spellId);
+	end
+end
+
+function GTFO_GetSpellDescription(spellId)
+	if (GTFO.BetaMode) then
+		return C_Spell.GetSpellDescription(spellId);
+	else
+		return GetSpellDescription(spellId);
 	end
 end

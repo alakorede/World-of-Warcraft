@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2023 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.3.0-release
+-- Addon version: v20.5.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -208,6 +208,7 @@ GossipIDList[40425] = "Madness of Deathwing"
 -- Start of various encounters in the Siege of Orgrimmar raid
 GossipIDList[42038] = "Norushen"
 GossipIDList[41620] = "Galakras"
+GossipIDList[41867] = "Spoils of Pandaria"
 GossipIDList[110714] = "Skip to Garrosh"
 
 -- Myrrit digs

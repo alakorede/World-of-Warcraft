@@ -542,6 +542,34 @@ function boss:AddMarkerOption(state, markType, icon, id, ...)
 	return option
 end
 
+--- Create a custom auto talk option
+-- @bool state Boolean value to represent default state
+-- @string[opt] talkType The type of description to use ("boss" or nil for generic)
+-- @string[opt] name A unique name the option should have if you want to create multiple options in one module
+-- @return an option string to be used in conjuction with :GetOption
+function boss:AddAutoTalkOption(state, talkType, name)
+	if name and type(name) ~= "string" then
+		core:Error("Invalid auto talk name: ".. tostring(name))
+	elseif name then
+		name = "_".. name
+	end
+
+	local moduleLocale = self:GetLocale()
+	local option = format(state and "custom_on_autotalk%s" or "custom_off_autotalk%s", name or "")
+	if talkType == "boss" then
+		moduleLocale[option] = L.autotalk
+		moduleLocale[option.."_desc"] = L.autotalk_boss_desc
+		moduleLocale[option.."_icon"] = "ui_chat"
+	elseif not talkType then
+		moduleLocale[option] = L.autotalk
+		moduleLocale[option.."_desc"] = L.autotalk_generic_desc
+		moduleLocale[option.."_icon"] = "ui_chat"
+	else
+		core:Error("Invalid auto talk type: ".. tostring(talkType))
+	end
+	return option
+end
+
 -------------------------------------------------------------------------------
 -- Combat log functions
 -- @section combat_events
@@ -1901,50 +1929,80 @@ do
 end
 
 do
-	local GetSpellCooldown = loader.GetSpellCooldown
+
 	local canInterrupt = false
-	local spellList = isCata and {
-		80964, -- Skull Bash (Druid-Feral-Bear)
-		80965, -- Skull Bash (Druid-Feral-Cat)
-		78675, -- Solar Beam (Druid-Balance)
-		34490, -- Silencing Shot (Hunter-Marksmanship)
-		57994, -- Wind Shear (Shaman)
-		47528, -- Mind Freeze (Death Knight)
-		96231, -- Rebuke (Paladin)
-		15487, -- Silence (Priest-Shadow)
-		2139, -- Counterspell (Mage)
-		1766, -- Kick (Rogue)
-		6552, -- Pummel (Warrior)
-	} or {
-		106839, -- Skull Bash (Druid)
-		78675, -- Solar Beam (Druid-Balance)
-		116705, -- Spear Hand Strike (Monk)
-		147362, -- Counter Shot (Hunter)
-		187707, -- Muzzle (Hunter-Survival)
-		57994, -- Wind Shear (Shaman)
-		47528, -- Mind Freeze (Death Knight)
-		96231, -- Rebuke (Paladin)
-		15487, -- Silence (Priest)
-		2139, -- Counterspell (Mage)
-		1766, -- Kick (Rogue)
-		6552, -- Pummel (Warrior)
-		183752, -- Disrupt (Demon Hunter)
-		351338, -- Quell (Evoker)
-	}
-	function UpdateInterruptStatus()
-		if IsSpellKnown(19647, true) then -- Spell Lock (Warlock Felhunter)
-			canInterrupt = 19647
-			return
+	if isCata then
+		local spellList = {
+			78675, -- Solar Beam (Druid-Balance)
+			80964, -- Skull Bash (Druid-Feral-Bear)
+			80965, -- Skull Bash (Druid-Feral-Cat)
+			34490, -- Silencing Shot (Hunter-Marksmanship)
+			57994, -- Wind Shear (Shaman)
+			47528, -- Mind Freeze (Death Knight)
+			96231, -- Rebuke (Paladin)
+			15487, -- Silence (Priest-Shadow)
+			2139, -- Counterspell (Mage)
+			1766, -- Kick (Rogue)
+			6552, -- Pummel (Warrior)
+		}
+		function UpdateInterruptStatus()
+			if IsSpellKnown(19647, true) then -- Spell Lock (Warlock Felhunter)
+				canInterrupt = 19647
+				return
+			end
+			canInterrupt = false
+			for i = 1, #spellList do
+				local spell = spellList[i]
+				if IsSpellKnown(spell) then
+					if spell == 80964 then -- Skull Bash (Druid-Feral-Bear)
+						if myRole == "TANK" then
+							canInterrupt = spell
+						elseif myRolePosition == "RANGED" then
+							return
+						else
+							canInterrupt = 80965 -- Skull Bash (Druid-Feral-Cat)
+						end
+					else
+						canInterrupt = spell
+					end
+					return
+				end
+			end
 		end
-		canInterrupt = false
-		for i = 1, #spellList do
-			local spell = spellList[i]
-			if IsSpellKnown(spell) then
-				canInterrupt = spell
-				break
+	else
+		local spellList = {
+			78675, -- Solar Beam (Druid-Balance)
+			106839, -- Skull Bash (Druid)
+			116705, -- Spear Hand Strike (Monk)
+			147362, -- Counter Shot (Hunter)
+			187707, -- Muzzle (Hunter-Survival)
+			57994, -- Wind Shear (Shaman)
+			47528, -- Mind Freeze (Death Knight)
+			96231, -- Rebuke (Paladin)
+			15487, -- Silence (Priest)
+			2139, -- Counterspell (Mage)
+			1766, -- Kick (Rogue)
+			6552, -- Pummel (Warrior)
+			183752, -- Disrupt (Demon Hunter)
+			351338, -- Quell (Evoker)
+		}
+		function UpdateInterruptStatus()
+			if IsSpellKnown(19647, true) then -- Spell Lock (Warlock Felhunter)
+				canInterrupt = 19647
+				return
+			end
+			canInterrupt = false
+			for i = 1, #spellList do
+				local spell = spellList[i]
+				if IsSpellKnown(spell) then
+					canInterrupt = spell
+					return
+				end
 			end
 		end
 	end
+
+	local GetSpellCooldown = loader.GetSpellCooldown
 	--- Check if you can interrupt.
 	-- @string[opt] guid if not nil, will only return true if the GUID matches your target or focus.
 	-- @return boolean, if the unit can interrupt

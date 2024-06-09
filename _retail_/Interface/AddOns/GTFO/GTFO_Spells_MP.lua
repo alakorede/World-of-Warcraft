@@ -1235,12 +1235,14 @@ GTFO.SpellID["138319"] = {
 	soundFunction = function()
 		local debuffCount = 0;
 		for i = 1, 40 do
-			local _, _, _, _, _, _, expirationTime, _, _, _, debuffSpellId = UnitDebuff("player", i);
-			if (debuffSpellId == 134256) then
-				return 1; -- Standing in a pool with the residual debuff
-			end
-			if (debuffSpellId == 138319) then
-				debuffCount = debuffCount + 1;
+			local index, debuff = C_UnitAuras.GetAuraDataByIndex("player", i, "HARMFUL");
+			if (debuff) then
+				if (debuff.spellId == 134256) then
+					return 1; -- Standing in a pool with the residual debuff
+				end
+				if (debuff.spellId == 138319) then
+					debuffCount = debuffCount + 1;
+				end
 			end
 		end
 		if (debuffCount > 1) then

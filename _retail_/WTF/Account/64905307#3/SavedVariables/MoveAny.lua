@@ -896,8 +896,8 @@ MATAB = {
 },
 ["StaticPopup1"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 985,
 ["RE"] = "BOTTOMLEFT",
+["PY"] = 983,
 ["PX"] = 901,
 },
 ["QuestFrame"] = {
@@ -913,6 +913,10 @@ MATAB = {
 ["ContainerFrame1"] = {
 },
 ["ProfessionsFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PX"] = 472,
+["PY"] = 356,
+["RE"] = "BOTTOMLEFT",
 },
 ["SettingsPanel"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -936,9 +940,9 @@ MATAB = {
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 508,
+["PX"] = 248,
+["PY"] = 512,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 241,
 },
 ["ContainerFrameCombinedBags"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -958,8 +962,8 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 728,
-["PX"] = 341,
+["PX"] = 342,
+["PY"] = 729,
 ["RE"] = "BOTTOMLEFT",
 },
 ["PVPMatchScoreboard"] = {
@@ -972,9 +976,9 @@ MATAB = {
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
+["RE"] = "BOTTOMLEFT",
 ["PY"] = 262,
 ["PX"] = 255,
-["RE"] = "BOTTOMLEFT",
 },
 ["MailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1993,7 +1997,7 @@ MATAB = {
 ["ENDCAPS"] = {
 ["ENABLED"] = false,
 },
-["QUEUESTATUSFRAME"] = {
+["FOCUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["MABagBar"] = {
@@ -2032,13 +2036,13 @@ MATAB = {
 ["FOCUSFRAMESPELLBAR"] = {
 ["ENABLED"] = false,
 },
-["ARENAPREPFRAMES"] = {
+["TICKETSTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["DEBUFFS"] = {
 ["ENABLED"] = false,
 },
-["TICKETSTATUSFRAME"] = {
+["ARENAPREPFRAMES"] = {
 ["ENABLED"] = false,
 },
 ["UIWIDGETPOWERBAR"] = {
@@ -2055,7 +2059,7 @@ MATAB = {
 ["SAVEFRAMESCALE"] = {
 ["ENABLED"] = true,
 },
-["FOCUSFRAME"] = {
+["QUEUESTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["CASTINGBAR"] = {

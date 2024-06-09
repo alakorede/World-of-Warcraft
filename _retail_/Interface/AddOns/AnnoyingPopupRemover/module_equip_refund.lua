@@ -1,8 +1,8 @@
 -- module_equip_refund.lua
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
--- Copyright (c) 2021 KyrosKrane Sylvanblade
+-- Copyright (c) 2021-2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.3.0-release
+-- Addon version: v20.5.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -113,14 +113,13 @@ if not APR.IsClassic or this.WorksInClassic then
 			return
 		end
 
-		-- Check if a dialog is shown, and if so, hide it, then call the accept function
-		if APR:Hide_StaticPopup("EQUIP_BIND_REFUNDABLE", slot) then
-			-- note that Hide_StaticPopup returns the ID of the matching popup, or nil. We don't care about the specific ID, just that it's not nil.
+		-- Note that if we hide the dialog, the OnHide function is called, which cancels the pending equip request. 
+		-- So, we have to accept first, then hide.
 
-			-- call the approval function and hide the popup
-			RunNextFrame(function() StaticPopupDialogs["EQUIP_BIND_REFUNDABLE"]:OnAccept(slot) end)
-			-- note that due to the way Blizz does the dialogs, you can't do dialog:OnAccept() - it doesn't exist. The StaticPopup_OnClick function actually references the static version.
-		end
+		StaticPopupDialogs["EQUIP_BIND_REFUNDABLE"]:OnAccept(slot)
+		-- note that due to the way Blizz does the dialogs, you can't do dialog:OnAccept() - it doesn't exist. The StaticPopup_OnClick function actually references the static version.
+
+		APR:Hide_StaticPopup("EQUIP_BIND_REFUNDABLE", slot)
 
 	end -- APR.Events:EQUIP_BIND_REFUNDABLE_CONFIRM()
 end -- WoW Classic check

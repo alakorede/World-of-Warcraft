@@ -1,8 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0906,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["AutoSelectScales"] = true,
+["LastVersion"] = 2.0907,
 ["ItemLevels"] = {
 {
 ["ID"] = 193641,
@@ -91,6 +89,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::17:3:7978:7975:6652:2:9:69:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",
