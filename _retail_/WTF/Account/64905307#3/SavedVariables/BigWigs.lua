@@ -3,13 +3,13 @@ BigWigs3DB = {
 ["namespaces"] = {
 ["BigWigs_Plugins_Victory"] = {
 },
-["BigWigs_Plugins_Raid Icons"] = {
+["LibDualSpec-1.0"] = {
 },
 ["BigWigs_Plugins_Colors"] = {
 },
 ["BigWigs_Plugins_Alt Power"] = {
 },
-["LibDualSpec-1.0"] = {
+["BigWigs_Plugins_BossBlock"] = {
 },
 ["BigWigs_Plugins_Bars"] = {
 ["profiles"] = {
@@ -27,11 +27,7 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Sounds"] = {
 },
-["BigWigs_Plugins_AutoReply"] = {
-},
-["BigWigs_Plugins_Messages"] = {
-},
-["BigWigs_Plugins_Statistics"] = {
+["BigWigs_Plugins_Wipe"] = {
 },
 ["BigWigs_Plugins_Proximity"] = {
 ["profiles"] = {
@@ -41,21 +37,25 @@ BigWigs3DB = {
 },
 },
 },
-["BigWigs_Plugins_Wipe"] = {
+["BigWigs_Plugins_Statistics"] = {
+},
+["BigWigs_Plugins_Messages"] = {
+},
+["BigWigs_Plugins_AutoReply"] = {
 },
 ["BigWigs_Plugins_Pull"] = {
 },
-["BigWigs_Plugins_BossBlock"] = {
+["BigWigs_Plugins_Raid Icons"] = {
 },
-},
-["profileKeys"] = {
-["Dishy - Goldrinn"] = "Default",
 },
 ["global"] = {
 ["watchedMovies"] = {
 [-1597] = true,
 [927] = true,
 },
+},
+["profileKeys"] = {
+["Dishy - Goldrinn"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {

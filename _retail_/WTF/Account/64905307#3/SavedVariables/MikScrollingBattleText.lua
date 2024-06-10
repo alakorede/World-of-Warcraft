@@ -20,11 +20,11 @@ MSBTProfiles_SavedVars = {
 ["stickyDirection"] = "Up",
 ["scrollHeight"] = 230,
 ["offsetX"] = -359,
-["scrollWidth"] = 90,
 ["behavior"] = "MSBT_NORMAL",
+["stickyBehavior"] = "Normal",
 ["offsetY"] = -309,
 ["animationStyle"] = "Straight",
-["stickyBehavior"] = "Normal",
+["scrollWidth"] = 90,
 },
 ["Static"] = {
 ["disabled"] = true,

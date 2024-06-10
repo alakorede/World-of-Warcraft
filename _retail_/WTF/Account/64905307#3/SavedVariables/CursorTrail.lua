@@ -1,8 +1,8 @@
 
 CursorTrail_Config = {
 ["NewFeaturesSeen"] = {
-["SparkleCheckbox"] = true,
 ["DefaultsBtn11"] = true,
+["SparkleCheckbox"] = true,
 },
 ["Profiles"] = {
 },

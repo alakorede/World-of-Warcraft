@@ -1,8 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0907,
-["LastPlayerFullName"] = "Batezu-Nemesis",
-["AutoSelectScales"] = true,
+["LastVersion"] = 2.0908,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -26,14 +24,14 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193683::::::::70:267::1:6:10323:7974:6652:10864:3139:8766:1:28:2587:::::|h[Blessed Ohn'ir Robes]|h|r",
 },
 {
-["ID"] = 193816,
-["Level"] = 336,
-["Link"] = "|cff0070dd|Hitem:193816::::::::70:267::17:5:7978:7975:6652:10533:10864:2:28:2155:9:69:::::|h[Lost Hero's Waist Wrap]|h|r",
+["ID"] = 193691,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193691::::::::70:267::1:7:10323:7974:6652:10533:10864:3139:8766:1:28:2587:::::|h[Sky Saddle Cord]|h|r",
 },
 {
-["ID"] = 198015,
-["Level"] = 306,
-["Link"] = "|cff1eff00|Hitem:198015::::::::70:104::26:1:7963:2:28:2153:9:68:::::|h[Twisted Leather Breeches]|h|r",
+["ID"] = 193799,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193799::::::::70:267::1:6:10323:7974:41:10864:3139:8766:1:28:2155:::::|h[Crazed Traveler's Legwraps]|h|r",
 },
 {
 ["ID"] = 191991,
@@ -57,16 +55,16 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193804::::::::70:267::17:4:7978:7975:6652:10532:2:28:2587:9:70:::::|h[Eternal Sentry's Ring]|h|r",
 },
 {
-["ID"] = 193731,
-["Level"] = 316,
+["ID"] = 193804,
+["Level"] = 346,
 ["AlsoFitsIn"] = 11,
-["Link"] = "|cff0070dd|Hitem:193731::::::::69:267::17:4:7978:7975:6652:10533:2:9:67:28:2587:::::|h[Circle of Ascended Frost]|h|r",
+["Link"] = "|cff0070dd|Hitem:193804::::::::70:267::17:4:7978:7975:6652:10532:2:9:70:28:2587:::::|h[Eternal Sentry's Ring]|h|r",
 },
 {
-["ID"] = 193689,
-["Level"] = 336,
+["ID"] = 193660,
+["Level"] = 460,
 ["AlsoFitsIn"] = 14,
-["Link"] = "|cff0070dd|Hitem:193689::::::::69:104::17:3:7978:7975:6652:2:9:69:28:2549:::::|h[Granyth's Enduring Scale]|h|r",
+["Link"] = "|cff0070dd|Hitem:193660::::::::70:267::1:5:10323:7974:6652:3139:8766:1:28:2155:::::|h[Idol of Pure Decay]|h|r",
 },
 {
 ["ID"] = 193689,
@@ -91,6 +89,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193710::::::::69:267::17:3:7978:7975:6652:2:28:2155:9:69:::::|h[Spellboon Saber]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Batezu-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "WARLOCK",

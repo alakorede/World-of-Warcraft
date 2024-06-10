@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0906,
+["LastVersion"] = 2.0908,
+["LastPlayerFullName"] = "Shamanjuba-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -89,9 +91,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:159641::::::::57:264::1:2:6710:41:2:28:500:9:57:::::|h[G3T-00t]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Shamanjuba-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -145,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "SHAMAN",
