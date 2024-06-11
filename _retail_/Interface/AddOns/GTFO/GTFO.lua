@@ -26,7 +26,7 @@ GTFO = {
 		SoundOverrides = { "", "", "", "" }; -- Override table for GTFO sounds
 		IgnoreSpellList = { };
 	};
-	Version = "5.9.1"; -- Version number (text format)
+	Version = "5.9.2"; -- Version number (text format)
 	VersionNumber = 0; -- Numeric version number for checking out-of-date clients (placeholder until client is detected)
 	RetailVersionNumber = 50901; -- Numeric version number for checking out-of-date clients (retail)
 	ClassicVersionNumber = 50900; -- Numeric version number for checking out-of-date clients (Vanilla classic)
@@ -647,7 +647,7 @@ function GTFO_OnEvent(self, event, ...)
 				end
 				alertID = GTFO_GetAlertID(GTFO.SpellID[SpellID]);
 				if (GTFO.SpellID[SpellID].test) then
-					GTFO_ScanPrint("TEST ALERT: Spell ID #"..SpellID, true);
+					GTFO_ErrorPrint("TEST ALERT: Spell ID #"..SpellID.." "..GTFO_GetSpellLink(SpellID));
 				end
 				GTFO_PlaySound(alertID);
 				if (SpellType == "SPELL_PERIODIC_DAMAGE" or SpellType == "SPELL_DAMAGE" or SpellType == "SPELL_ENERGIZE") then

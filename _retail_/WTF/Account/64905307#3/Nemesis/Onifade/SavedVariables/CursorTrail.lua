@@ -2,8 +2,8 @@
 CursorTrail_PlayerConfig = {
 ["FadeOut"] = true,
 ["UserOfsY"] = 0,
-["UserShowMouseLook"] = false,
 ["ShapeColorG"] = 1,
+["UserShowMouseLook"] = false,
 ["ShapeColorB"] = 1,
 ["ModelID"] = 165956,
 ["UserScale"] = 1,

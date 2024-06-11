@@ -418,11 +418,7 @@ NeatPlatesHubSettings = {
 ["StyleHeadlineNeutral"] = false,
 ["StyleEnemyBarsNoMinions"] = false,
 ["WidgetBuffEnrage"] = false,
-["ColorLowHealth"] = {
-["a"] = 0.9999977946281433,
-["b"] = 0,
-["g"] = 0,
-["r"] = 0.9999977946281433,
+["CustomColorLookup"] = {
 },
 ["WidgetRangeScaleOptions"] = {
 ["y"] = 1,
@@ -491,8 +487,8 @@ NeatPlatesHubSettings = {
 ["r"] = 0.9999977946281433,
 },
 ["FriendlyStatusTextMode"] = "HealthFunctionNone",
-["TextShowServerIndicator"] = true,
 ["UnitSpotlightScale"] = 1.4,
+["TextUnitNameArenaID"] = false,
 ["ColorNeutral"] = {
 ["a"] = 0.9999977946281433,
 ["b"] = 0,
@@ -507,6 +503,7 @@ NeatPlatesHubSettings = {
 },
 ["WidgetResourceMode"] = 1,
 ["WidgetRangeMode"] = 1,
+["StyleEnemyBarsOnPlayers"] = true,
 ["WidgetComboPointsScaleOptions"] = {
 ["y"] = 1,
 ["x"] = 1,
@@ -515,7 +512,6 @@ NeatPlatesHubSettings = {
 ["x"] = 0,
 },
 },
-["StyleEnemyBarsOnPlayers"] = true,
 ["StyleFriendlyBarsNoMinions"] = false,
 ["Customization"] = {
 ["NameOnly"] = {
@@ -560,7 +556,7 @@ NeatPlatesHubSettings = {
 ["FriendlyAlphaSpotlightMode"] = "None",
 ["ScaleIgnoreInactive"] = false,
 ["UnitSpotlightScaleEnable"] = true,
-["TextUnitNameArenaID"] = false,
+["TextShowServerIndicator"] = true,
 ["EmphasizedUnique"] = true,
 ["CustomFocusColor"] = false,
 ["PreciseAuraThreshold"] = 10,
@@ -604,7 +600,11 @@ NeatPlatesHubSettings = {
 ["r"] = 0.03529404103755951,
 },
 ["TextHealthTextMode"] = 1,
-["CustomColorLookup"] = {
+["ColorLowHealth"] = {
+["a"] = 0.9999977946281433,
+["b"] = 0,
+["g"] = 0,
+["r"] = 0.9999977946281433,
 },
 ["HideAuraDuration"] = false,
 ["WidgetResourceTimerFontSize"] = 8,

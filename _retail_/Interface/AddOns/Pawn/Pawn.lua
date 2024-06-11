@@ -7,7 +7,7 @@
 -- Main non-UI code
 ------------------------------------------------------------
 
-PawnVersion = 2.0908
+PawnVersion = 2.0909
 
 -- Pawn requires this version of VgerCore:
 local PawnVgerCoreVersionRequired = 1.18
@@ -318,6 +318,9 @@ function PawnInitialize()
 			if button == "RightButton" then
 				local _, ItemLink = ItemRefTooltip:GetItem()
 				if ItemLink then PawnUI_SetCompareItemAndShow(2, ItemLink) end
+			elseif button == "LeftButton" and IsAltKeyDown() then
+				local _, ItemLink = ItemRefTooltip:GetItem()
+				if ItemLink then PawnUIGetAllTextForItem(ItemLink) end
 			end
 		end)
 

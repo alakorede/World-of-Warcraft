@@ -878,8 +878,8 @@ MATAB = {
 },
 ["GameMenuFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 545,
+["RE"] = "BOTTOMLEFT",
 ["PX"] = 957,
 },
 ["CharacterFrame"] = {
@@ -962,9 +962,9 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 730,
+["PX"] = 341,
+["PY"] = 726,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 343,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -1991,10 +1991,10 @@ MATAB = {
 ["CASTINGBAR"] = {
 ["ENABLED"] = false,
 },
-["FOCUSFRAME"] = {
+["QUEUESTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
-["QUEUESTATUSFRAME"] = {
+["FOCUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["BUFFS"] = {
@@ -2030,10 +2030,10 @@ MATAB = {
 ["FRAMESKEYDRAG"] = {
 ["ENABLED"] = false,
 },
-["TICKETSTATUSFRAME"] = {
+["ARENAPREPFRAMES"] = {
 ["ENABLED"] = false,
 },
-["ARENAPREPFRAMES"] = {
+["TICKETSTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["DEBUFFS"] = {

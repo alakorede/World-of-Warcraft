@@ -1,13 +1,13 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0908,
+["LastVersion"] = 2.0909,
 ["LastPlayerFullName"] = "Onifade-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
-["ID"] = 198013,
-["Level"] = 319,
-["Link"] = "|cff0070dd|Hitem:198013::::::::70:104::26:1:8774:2:9:68:28:2153:::::|h[Twisted Leather Hood]|h|r",
+["ID"] = 193692,
+["Level"] = 326,
+["Link"] = "|cff0070dd|Hitem:193692::::::::68:104::17:5:7978:7975:6652:10533:10864:2:28:2587:9:68:::::|h[Stoneroot Headdress]|h|r",
 },
 {
 ["ID"] = 193676,
@@ -31,9 +31,9 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:197660::::::::66:104::26:1:7963:2:28:2152:9:65:::::|h[Teerai Watcher Belt]|h|r",
 },
 {
-["ID"] = 198015,
-["Level"] = 306,
-["Link"] = "|cff1eff00|Hitem:198015::::::::70:104::26:1:7963:2:28:2153:9:68:::::|h[Twisted Leather Breeches]|h|r",
+["ID"] = 193684,
+["Level"] = 326,
+["Link"] = "|cff0070dd|Hitem:193684::::::::68:104::17:4:7978:7975:6652:10864:2:28:2587:9:68:::::|h[Legguards of Adamant Rule]|h|r",
 },
 {
 ["ID"] = 191991,

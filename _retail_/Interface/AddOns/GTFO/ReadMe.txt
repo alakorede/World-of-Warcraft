@@ -2047,3 +2047,18 @@ Change Log:
 
 5.9.1
 * Fixed Pandaria spells for Throne of Thunder
+
+5.9.2
+* Added TWW spells for Ara-Kara, City of Echoes
+* Added TWW spells for Cinderbrew Meadery
+* Added TWW spells for City of Threads
+* Added TWW spells for Darkflame Cleft
+* Added TWW spells for Priory of the Scared Flame
+* Added TWW spells for Tak-Rethan Abyss
+* Added TWW spells for The Dawnbreaker
+* Added TWW spells for The Dread Pit
+* Added TWW spells for The Rookery
+* Added TWW spells for The Spiral Weave
+* Added TWW spells for The Stonevault
+* Added TWW spells for The Waterworks
+* Added TWW spells for Underkeep

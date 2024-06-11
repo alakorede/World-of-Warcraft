@@ -14,6 +14,7 @@ mod:SetStage(1)
 --
 
 local isHeadPhase = false
+local firstRefresh = false
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -52,7 +53,7 @@ function mod:GetOptions()
 		78403, -- Molten Tantrum
 		-- Heroic
 		"adds",
-		92177, -- Armageddon
+		{92177, "CASTBAR"}, -- Armageddon
 		-- General
 		"stages",
 		"berserk",
@@ -70,6 +71,9 @@ end
 
 function mod:OnBossEnable()
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
+	self:Log("SPELL_AURA_REFRESH", "PointOfVulnerabilityRefresh", 79010)
+	self:Log("SPELL_CAST_START", "MassiveCrash", 88253)
+	self:Log("SPELL_AURA_REMOVED", "MassiveCrashRemoved", 88253)
 	self:Log("SPELL_AURA_APPLIED", "ParasiticInfection", 78097, 78941)
 	self:Log("SPELL_AURA_APPLIED", "PillarOfFlame", 78006)
 	self:Log("SPELL_CAST_SUCCESS", "LavaSpew", 77690)
@@ -91,6 +95,7 @@ end
 
 function mod:OnEngage()
 	isHeadPhase = false
+	firstRefresh = false
 	self:SetStage(1)
 	self:Berserk(600)
 	self:Bar("slump", 100, L.slump_bar, 36702)
@@ -139,9 +144,29 @@ do
 	end
 end
 
+function mod:PointOfVulnerabilityRefresh(args)
+	if self:IsEngaged() then
+		if firstRefresh then
+			firstRefresh = false
+			self:Message(79011, "green", args.spellName, false, true) -- XXX TEST
+		else
+			self:Message(79011, "green", CL.over:format(args.spellName), false, true) -- XXX TEST
+		end
+	end
+end
+
+function mod:MassiveCrash(args)
+	firstRefresh = true
+	self:Message("slump", "green", args.spellName, false, true) -- XXX TEST
+end
+
+function mod:MassiveCrashRemoved(args)
+	self:Message("slump", "green", CL.over:format(args.spellName), false, true) -- XXX TEST
+end
+
 function mod:ArmageddonApplied(args)
 	self:Message(args.spellId, "red", CL.other:format(CL.add, args.spellName))
-	self:Bar(args.spellId, 8)
+	self:CastBar(args.spellId, 8)
 	if isHeadPhase then
 		self:PlaySound(args.spellId, "alarm")
 	end

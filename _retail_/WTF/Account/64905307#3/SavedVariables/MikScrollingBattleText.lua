@@ -5,9 +5,6 @@ MSBTProfiles_SavedVars = {
 ["critFontName"] = "DorisPP",
 ["enableBlizzardDamage"] = true,
 ["scrollAreas"] = {
-["Notification"] = {
-["disabled"] = true,
-},
 ["Outgoing"] = {
 ["scrollHeight"] = 230,
 ["offsetX"] = 266,
@@ -16,17 +13,20 @@ MSBTProfiles_SavedVars = {
 ["animationStyle"] = "Straight",
 ["scrollWidth"] = 90,
 },
+["Static"] = {
+["disabled"] = true,
+},
 ["Incoming"] = {
 ["stickyDirection"] = "Up",
 ["scrollHeight"] = 230,
 ["offsetX"] = -359,
-["behavior"] = "MSBT_NORMAL",
 ["stickyBehavior"] = "Normal",
+["behavior"] = "MSBT_NORMAL",
 ["offsetY"] = -309,
 ["animationStyle"] = "Straight",
 ["scrollWidth"] = 90,
 },
-["Static"] = {
+["Notification"] = {
 ["disabled"] = true,
 },
 },
