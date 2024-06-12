@@ -347,14 +347,19 @@ function MoveAny:MenuOptions(opt, frame)
 					MoveAny:SetEleOption(name, "ClickThrough", checked)
 					local dragf = _G[name .. "_MA_DRAG"]
 					if checked then
-						dragf.t:SetVertexColor(MoveAny:GetColor("clickthrough"))
 						if frame then
+							dragf:Show()
+							dragf.t:SetVertexColor(MoveAny:GetColor("clickthrough"))
 							frame:EnableMouse(false)
+						else
+							dragf:Hide()
 						end
 					else
-						dragf.t:SetVertexColor(MoveAny:GetColor("el"))
 						if frame then
+							dragf.t:SetVertexColor(MoveAny:GetColor("el"))
 							frame:EnableMouse(true)
+						else
+							dragf:Hide()
 						end
 					end
 				end
@@ -552,8 +557,8 @@ function MoveAny:MenuOptions(opt, frame)
 			slider:SetValue(opts["SPACING"])
 			slider:SetScript(
 				"OnValueChanged",
-				function(sel, val)
-					val = tonumber(string.format("%" .. 0 .. "f", val))
+				function(sel, valu)
+					val = tonumber(string.format("%" .. 0 .. "f", valu))
 					if val and val ~= opts["SPACING"] then
 						opts["SPACING"] = val
 						slider.Text:SetText(MoveAny:GT("LID_SPACING") .. ": " .. val)
@@ -718,8 +723,8 @@ function MoveAny:MenuOptions(opt, frame)
 			sliderH:SetValue(height)
 			sliderH:SetScript(
 				"OnValueChanged",
-				function(sel, val)
-					val = tonumber(string.format("%" .. 0 .. "f", val))
+				function(sel, valu)
+					val = tonumber(string.format("%" .. 0 .. "f", valu))
 					if val and val ~= opts["HEIGHT"] then
 						opts["HEIGHT"] = val
 						sel.Text:SetText(MoveAny:GT("LID_HEIGHT") .. ": " .. val)
@@ -1030,6 +1035,13 @@ function MoveAny:RegisterWidget(tab)
 		tinsert(MoveAny:GetDragFrames(), dragframe)
 	end
 
+	local dragf = _G[name .. "_MA_DRAG"]
+	if frame then
+		dragf:Show()
+	else
+		dragf:Hide()
+	end
+
 	if frame == nil then
 		C_Timer.After(
 			tab.delay or 0.2,
@@ -1096,7 +1108,6 @@ function MoveAny:RegisterWidget(tab)
 
 	local maframe1 = _G["MA" .. name]
 	local maframe2 = _G[string.gsub(name, "MA", "")]
-	local dragf = _G[name .. "_MA_DRAG"]
 	if MoveAny:GetEleOption(name, "Hide", false, "Hide2") then
 		frame.oldparent = frame.oldparent or frame:GetParent()
 		hooksecurefunc(
@@ -1533,7 +1544,7 @@ function MoveAny:CheckAlphas()
 		MoveAny:UpdateAlphas()
 	end
 
-	local ele = GetMouseFocus()
+	local ele = D4:GetMouseFocus()
 	if ele and ele ~= CompactRaidFrameManager then
 		if ele and (ele == WorldFrame or ele == UIParent) and lastEle ~= nil and ele ~= lastEle then
 			lastEle = nil
@@ -1541,7 +1552,7 @@ function MoveAny:CheckAlphas()
 		end
 
 		if ele ~= WorldFrame and ele ~= UIParent then
-			local dufloaded = IsAddOnLoaded("DUnitFrames")
+			local dufloaded = D4:IsAddOnLoaded("DUnitFrames")
 			if not dufloaded or (dufloaded and ele ~= PlayerFrame and ele ~= TargetFrame and ele.GetMAEle and ele:GetMAEle() and ele:GetMAEle() ~= PlayerFrame and ele:GetMAEle() ~= TargetFrame) then
 				if tContains(MoveAny:GetAlphaFrames(), ele) then
 					ele:SetAlpha(1)
@@ -1567,7 +1578,7 @@ function MoveAny:CheckAlphas()
 end
 
 function MoveAny:UpdateAlpha(ele, mouseEle)
-	local dufloaded = IsAddOnLoaded("DUnitFrames")
+	local dufloaded = D4:IsAddOnLoaded("DUnitFrames")
 	if ele == nil then
 		MoveAny:MSG("UpdateAlphas: ele is nil")
 	else

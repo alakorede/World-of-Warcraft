@@ -1,10 +1,8 @@
 # BigWigs
 
-## [v333](https://github.com/BigWigsMods/BigWigs/tree/v333) (2024-06-03)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v332...v333) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v335.3](https://github.com/BigWigsMods/BigWigs/tree/v335.3) (2024-06-11)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v335.2...v335.3) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- bump version  
-- Core: Add more common locale  
-- Plugins/Statistics: Allow old raid stat recording, for Mists of Pandaria (Remix)  
-- Loader: Update group handling code  
-- Loader: Don't load Cataclysm dungeons on classic era, fixes #1639 (#1640)  
+- NerubarPalace/TheBloodboundHorror: Drycode module  
+- NerubarPalace/Ulgrax: Fix menu divider  
+- Plugins/Messages: Reduce default on screen time for standard messages  

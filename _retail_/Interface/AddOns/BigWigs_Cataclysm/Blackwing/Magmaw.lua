@@ -52,7 +52,7 @@ function mod:GetOptions()
 		78403, -- Molten Tantrum
 		-- Heroic
 		"adds",
-		92177, -- Armageddon
+		{92177, "CASTBAR"}, -- Armageddon
 		-- General
 		"stages",
 		"berserk",
@@ -70,6 +70,8 @@ end
 
 function mod:OnBossEnable()
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
+	self:Log("SPELL_CAST_START", "MassiveCrash", 88253)
+	self:Log("SPELL_AURA_REMOVED", "MassiveCrashRemoved", 88253)
 	self:Log("SPELL_AURA_APPLIED", "ParasiticInfection", 78097, 78941)
 	self:Log("SPELL_AURA_APPLIED", "PillarOfFlame", 78006)
 	self:Log("SPELL_CAST_SUCCESS", "LavaSpew", 77690)
@@ -94,11 +96,12 @@ function mod:OnEngage()
 	self:SetStage(1)
 	self:Berserk(600)
 	self:Bar("slump", 100, L.slump_bar, 36702)
-	self:Bar(78006, 30) -- Pillar of Flame
+	self:CDBar(78006, 30) -- Pillar of Flame
 	self:CDBar(77690, 24) -- Lava Spew
 	self:CDBar(89773, 90) -- Mangle
 	if self:Heroic() then
 		self:Bar("adds", 30, CL.add, L.adds_icon)
+		self:RegisterUnitEvent("UNIT_HEALTH", nil, "boss1")
 	end
 end
 
@@ -110,7 +113,7 @@ function mod:CHAT_MSG_MONSTER_YELL(_, msg)
 	if msg:find(L.stage2_yell_trigger, nil, true) then
 		self:SetStage(2)
 		self:StopBar(CL.add)
-		self:Message("stages", "cyan", CL.stage:format(2), false)
+		self:Message("stages", "cyan", CL.percent:format(30, CL.stage:format(2)), false)
 	end
 end
 
@@ -138,16 +141,24 @@ do
 	end
 end
 
+function mod:MassiveCrash(args)
+	self:Message("slump", "green", args.spellName, false, true) -- XXX TEST
+end
+
+function mod:MassiveCrashRemoved(args)
+	self:Message("slump", "green", CL.over:format(args.spellName), false, true) -- XXX TEST
+end
+
 function mod:ArmageddonApplied(args)
 	self:Message(args.spellId, "red", CL.other:format(CL.add, args.spellName))
-	self:Bar(args.spellId, 8)
+	self:CastBar(args.spellId, 8)
 	if isHeadPhase then
 		self:PlaySound(args.spellId, "alarm")
 	end
 end
 
 function mod:ArmageddonRemoved(args)
-	self:StopBar(args.spellName)
+	self:StopBar(CL.cast:format(args.spellName))
 end
 
 do
@@ -215,6 +226,16 @@ do
 			prev = args.time
 			self:PersonalMessage(args.spellId, "underyou", CL.fire)
 			self:PlaySound(args.spellId, "underyou")
+		end
+	end
+end
+
+function mod:UNIT_HEALTH(event, unit)
+	local hp = self:GetHealth(unit)
+	if hp < 36 then
+		self:UnregisterUnitEvent(event, unit)
+		if hp > 30 then
+			self:Message("stages", "cyan", CL.soon:format(CL.stage:format(2)), false)
 		end
 	end
 end

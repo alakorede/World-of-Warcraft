@@ -2,11 +2,16 @@ local appName, app = ...
 local L = app.L;
 
 -- Global locals
-local ipairs, pairs, rawset, select, setmetatable, tonumber, tostring, type, GetItemCount, GetItemInfo, GetItemInfoInstant
----@diagnostic disable-next-line: deprecated
-	= ipairs, pairs, rawset, select, setmetatable, tonumber, tostring, type, GetItemCount, GetItemInfo, GetItemInfoInstant;
-local C_QuestLog_IsOnQuest
-	= C_QuestLog.IsOnQuest;
+local ipairs, pairs, rawset, select, setmetatable, tonumber, tostring, type
+	= ipairs, pairs, rawset, select, setmetatable, tonumber, tostring, type;
+local C_QuestLog_IsOnQuest = C_QuestLog.IsOnQuest;
+
+-- WoW API Cache
+local GetItemID = app.WOWAPI.GetItemID;
+local GetItemInfo = app.WOWAPI.GetItemInfo;
+local GetItemIcon = app.WOWAPI.GetItemIcon;
+local GetItemCount = app.WOWAPI.GetItemCount;
+local GetFactionBonusReputation = app.WOWAPI.GetFactionBonusReputation;
 
 -- App locals
 local AssignChildren, GetRelativeValue, IsQuestFlaggedCompletedForObject, NestObject, SearchForField, SearchForFieldContainer
@@ -32,7 +37,7 @@ app.ParseItemID = function(itemName)
 			return itemID;
 		else
 			-- The itemID given was actually the name or a link.
-			itemID = GetItemInfoInstant(itemName);
+			itemID = GetItemID(itemName);
 			if itemID then
 				-- Oh good, it was cached by WoW.
 				return itemID;
@@ -152,7 +157,7 @@ local itemFields = {
 		return t.link;
 	end,
 	["icon"] = function(t)
-		return select(5, GetItemInfoInstant(t.itemID)) or "Interface\\Icons\\INV_Misc_QuestionMark";
+		return GetItemIcon(t.itemID) or "Interface\\Icons\\INV_Misc_QuestionMark";
 	end,
 	["link"] = function(t)
 		return BestItemLinkPerItemID[t.itemID];
@@ -263,7 +268,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 	-- Clone base item fields and extend the properties.
 	local heirloomFields = {
 		icon = function(t)
-			return select(4, C_Heirloom_GetHeirloomInfo(t.heirloomID)) or select(5, GetItemInfoInstant(t.heirloomID));
+			return select(4, C_Heirloom_GetHeirloomInfo(t.heirloomID)) or GetItemIcon(t.heirloomID);
 		end,
 		link = function(t)
 			return C_Heirloom_GetHeirloomLink(t.heirloomID) or select(2, GetItemInfo(t.heirloomID));
@@ -488,7 +493,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 			else
 				-- This is used for the Grand Commendations unlocking Bonus Reputation
 				if ATTAccountWideData.FactionBonus[t.factionID] then return 1; end
-				if select(15, GetFactionInfoByID(t.factionID)) then
+				if GetFactionBonusReputation(t.factionID) then
 					ATTAccountWideData.FactionBonus[t.factionID] = 1;
 					return 1;
 				end

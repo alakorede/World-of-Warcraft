@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- 	Leatrix Maps 10.2.30 (5th June 2024)
+	-- 	Leatrix Maps 10.2.32 (6th June 2024)
 	----------------------------------------------------------------------
 
 	-- 10:Func, 20:Comm, 30:Evnt, 40:Panl
@@ -12,7 +12,7 @@
 	local LeaMapsLC, LeaMapsCB, LeaConfigList = {}, {}, {}
 
 	-- Version
-	LeaMapsLC["AddonVer"] = "10.2.30"
+	LeaMapsLC["AddonVer"] = "10.2.32"
 
 	-- Get locale table
 	local void, Leatrix_Maps = ...
@@ -27,6 +27,9 @@
 				print(L["LEATRIX MAPS: THIS RELEASE IS FOR DRAGONFLIGHT ONLY!"])
 			end)
 			return
+		end
+		if gametocversion and gametocversion == 110000 then -- 11.0.0
+			LeaMapsLC.NewPatch = true
 		end
 	end
 
@@ -1259,6 +1262,15 @@
 			LeaMapsLC:MakeSL(tintFrame, "tintBlue", "Blue", "Drag to set the amount of blue.", 0, 1, 0.1, 206, -142, "%.1f")
 			LeaMapsLC:MakeSL(tintFrame, "tintAlpha", "Opacity", "Drag to set the opacity.", 0.1, 1, 0.1, 206, -202, "%.1f")
 
+			if LeaMapsLC.NewPatch then
+				-- Disable tint option and hide show unexplored areas configuration button
+				LeaMapsLC["RevTint"] = "Off"
+				LeaMapsDB["RevTint"] = "Off"
+				LeaMapsLC:LockItem(LeaMapsCB["RevTint"], true)
+				LeaMapsCB["RevTint"].tiptext = LeaMapsCB["RevTint"].tiptext .. "|n|n|cff00AAFF" .. L["Not currently available."]
+				LeaMapsCB["RevTintBtn"]:Hide()
+			end
+
 			-- Add preview color block
 			local prvTitle = LeaMapsLC:MakeWD(tintFrame, "Preview", 386, -130); prvTitle:Hide()
 			tintFrame.preview = tintFrame:CreateTexture(nil, "ARTWORK")
@@ -2298,6 +2310,10 @@
 				if reason then
 					LeaMapsCB[option].tiptext = LeaMapsCB[option].tiptext .. "|n|n|cff00AAFF" .. L[reason]
 				end
+			end
+
+			if LeaMapsLC.NewPatch then
+				LockDF("NoMapBorder", "Not currently available.")
 			end
 
 		elseif event == "PLAYER_LOGIN" then

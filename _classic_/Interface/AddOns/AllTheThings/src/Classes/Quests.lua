@@ -19,10 +19,16 @@ local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted;
 ---@diagnostic disable-next-line: undefined-global
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn or IsQuestComplete;
 local C_QuestLog_IsOnQuest = C_QuestLog.IsOnQuest;
-local GetFactionInfoByID, GetNumQuestLogRewardCurrencies, GetQuestLogRewardInfo, GetSpellInfo =
-	  GetFactionInfoByID, GetNumQuestLogRewardCurrencies, GetQuestLogRewardInfo, GetSpellInfo;
+local GetNumQuestLogRewardCurrencies, GetQuestLogRewardInfo =
+	  GetNumQuestLogRewardCurrencies, GetQuestLogRewardInfo;
 local ALLIANCE_FACTION_ID = Enum.FlightPathFaction.Alliance;
 local HORDE_FACTION_ID = Enum.FlightPathFaction.Horde;
+
+-- WoW API Cache
+local GetFactionName = app.WOWAPI.GetFactionName;
+local GetFactionCurrentReputation = app.WOWAPI.GetFactionCurrentReputation;
+local GetSpellName = app.WOWAPI.GetSpellName;
+local GetSpellIcon = app.WOWAPI.GetSpellIcon;
 
 -- Class locals
 local LastQuestTurnedIn, MostRecentQuestTurnIns;
@@ -1229,7 +1235,7 @@ app.QuestLockCriteriaFunctions = criteriaFuncs;
 local function QuestWithReputationDescription(t)
 	if app.Settings.Collectibles.Reputations then
 		local factionID = t.maxReputation[1];
-		return L.ITEM_GIVES_REP .. (select(1, GetFactionInfoByID(factionID)) or ("Faction #" .. tostring(factionID))) .. "'";
+		return L.ITEM_GIVES_REP .. (GetFactionName(factionID) or ("Faction #" .. tostring(factionID))) .. "'";
 	end
 end
 local function QuestWithReputationCollectibleAsCost(t)
@@ -1470,7 +1476,7 @@ local createQuest = app.CreateClass("Quest", "questID", {
 		local flag = IsQuestFlaggedCompletedForObject(t);
 		if flag then return flag; end
 		local maxReputation = t.maxReputation;
-		if (select(6, GetFactionInfoByID(maxReputation[1])) or 0) >= maxReputation[2] then
+		if GetFactionCurrentReputation(maxReputation[1]) >= maxReputation[2] then
 			return t.repeatable and 1 or 2;
 		end
 		if app.Settings.AccountWide.Reputations then
@@ -1556,14 +1562,14 @@ app.CreateQuestObjective = app.CreateClass("Objective", "objectiveID", {
 				if objective then return objective.text; end
 			end
 			return app.GetNameFromProviders(t)
-				or (t.spellID and GetSpellInfo(t.spellID))
+				or (t.spellID and GetSpellName(t.spellID))
 				or RETRIEVING_DATA;
 		end
 		return "INVALID: Must be relative to a Quest Object.";
 	end,
 	icon = function(t)
 		return app.GetIconFromProviders(t)
-			or (t.spellID and select(3, GetSpellInfo(t.spellID)))
+			or (t.spellID and GetSpellIcon(t.spellID))
 			or t.parent.icon or "Interface\\Worldmap\\Gear_64Grey";
 	end,
 	model = function(t)

@@ -5,7 +5,7 @@
 GTFO Fail List - Dragonflight
 ]]--
 
-if (not (GTFO.ClassicMode or GTFO.BurningCrusadeMode or GTFO.WrathMode)) then
+if (GTFO.RetailMode) then
 
 --- ************************
 --- * Dragon Isles (World) *
@@ -1238,6 +1238,15 @@ GTFO.SpellID["414167"] = {
   sound = 3;
 };
 
+GTFO.SpellID["430685"] = {
+  --desc = "Unstable Void Rift";
+  sound = 3;
+};
+
+GTFO.SpellID["444645"] = {
+  --desc = "Infinite Arrows (Riftwalker Nilara)";
+  sound = 3;
+};
 
 --- *******************
 --- * Ruby Life Pools *

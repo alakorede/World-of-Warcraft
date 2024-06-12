@@ -39,26 +39,28 @@ BINDING_NAME_ALLTHETHINGS_TOGGLERANDOM = L.TOGGLE_RANDOM
 BINDING_NAME_ALLTHETHINGS_REROLL_RANDOM = L.REROLL_RANDOM
 
 -- Performance Cache
+local print, rawget, rawset, tostring, ipairs, pairs, tonumber, wipe, select, setmetatable, getmetatable, tinsert, tremove, type, math_floor
+	= print, rawget, rawset, tostring, ipairs, pairs, tonumber, wipe, select, setmetatable, getmetatable, tinsert, tremove, type, math.floor
+
+-- Global WoW API Cache
 local C_CreatureInfo_GetRaceInfo = C_CreatureInfo.GetRaceInfo;
 local C_Map_GetMapInfo = C_Map.GetMapInfo;
 local GetAchievementCriteriaInfo = _G.GetAchievementCriteriaInfo;
 local GetAchievementInfo = _G.GetAchievementInfo;
 local GetAchievementLink = _G.GetAchievementLink;
-local GetFactionInfoByID = _G.GetFactionInfoByID;
----@diagnostic disable-next-line: deprecated
-local GetItemInfo = _G.GetItemInfo;
----@diagnostic disable-next-line: deprecated
-local GetItemInfoInstant = _G.GetItemInfoInstant;
-local GetSpellInfo = GetSpellInfo;
 local InCombatLockdown = _G.InCombatLockdown;
-local DESCRIPTION_SEPARATOR = app.DESCRIPTION_SEPARATOR;
-local print, rawget, rawset, tostring, ipairs, pairs, tonumber, wipe, select, setmetatable, getmetatable, tinsert, tremove,
-		GetTimePreciseSec, type, math_floor
-	= print, rawget, rawset, tostring, ipairs, pairs, tonumber, wipe, select, setmetatable, getmetatable, tinsert, tremove,
-		GetTimePreciseSec, type, math.floor
----@class ATTGameTooltip: GameTooltip
-local GameTooltip = GameTooltip;
-local ATTAccountWideData;
+local GetTimePreciseSec = GetTimePreciseSec
+
+-- WoW API Cache
+local GetFactionName = app.WOWAPI.GetFactionName;
+local GetFactionBonusReputation = app.WOWAPI.GetFactionBonusReputation;
+local GetItemInfo = app.WOWAPI.GetItemInfo;
+local GetItemID = app.WOWAPI.GetItemID;
+local GetItemIcon = app.WOWAPI.GetItemIcon;
+local GetItemInfoInstant = app.WOWAPI.GetItemInfoInstant;
+local GetSpellName = app.WOWAPI.GetSpellName;
+local GetSpellIcon = app.WOWAPI.GetSpellIcon;
+local GetSpellLink = app.WOWAPI.GetSpellLink;
 
 local C_TradeSkillUI = C_TradeSkillUI;
 local C_TradeSkillUI_GetCategories, C_TradeSkillUI_GetCategoryInfo, C_TradeSkillUI_GetRecipeInfo, C_TradeSkillUI_GetRecipeSchematic, C_TradeSkillUI_GetTradeSkillLineForRecipe
@@ -67,6 +69,8 @@ local C_TradeSkillUI_GetCategories, C_TradeSkillUI_GetCategoryInfo, C_TradeSkill
 local function GetCategoryIDs()
 	return { C_TradeSkillUI_GetCategories() };
 end
+---@class ATTGameTooltip: GameTooltip
+local GameTooltip = GameTooltip;
 
 -- App & Module locals
 local ArrayAppend, constructor = app.ArrayAppend, app.constructor;
@@ -76,6 +80,8 @@ local AttachTooltipSearchResults = app.Modules.Tooltip.AttachTooltipSearchResult
 local IsRetrieving = app.Modules.RetrievingData.IsRetrieving;
 local GetProgressColorText = app.Modules.Color.GetProgressColorText;
 local TryColorizeName = app.TryColorizeName;
+local DESCRIPTION_SEPARATOR = app.DESCRIPTION_SEPARATOR;
+local ATTAccountWideData;
 
 -- Color Lib
 local GetProgressColor = app.Modules.Color.GetProgressColor;
@@ -275,7 +281,7 @@ local function GetIconFromProviders(group)
 				if v[1] == "o" then
 					icon = app.ObjectIcons[v[2]];
 				elseif v[1] == "i" then
-					icon = select(5, GetItemInfoInstant(v[2]));
+					icon = GetItemIcon(v[2]);
 				end
 				if icon then return icon; end
 			end
@@ -549,7 +555,7 @@ app.AddEventHandler("OnStartup", RefreshTradeSkillCache)
 app.AddEventHandler("OnStartup", function()
 	local conversions = app.Settings.InformationTypeConversionMethods;
 	conversions.professionName = function(spellID)
-		return GetSpellInfo(app.SkillIDToSpellID[spellID] or 0) or C_TradeSkillUI.GetTradeSkillDisplayName(spellID) or RETRIEVING_DATA;
+		return GetSpellName(app.SkillIDToSpellID[spellID] or 0) or C_TradeSkillUI.GetTradeSkillDisplayName(spellID) or RETRIEVING_DATA;
 	end;
 end);
 app.AddEventRegistration("SKILL_LINES_CHANGED", function()
@@ -2995,7 +3001,7 @@ local function GetSearchResults(method, paramA, paramB, ...)
 		end
 		-- an item used for a faction which is repeatable
 		if group.itemID and group.factionID and group.repeatable then
-			tinsert(tooltipInfo, { left = L.ITEM_GIVES_REP .. (select(1, GetFactionInfoByID(group.factionID)) or ("Faction #" .. tostring(group.factionID))) .. "'", wrap = true, color = app.Colors.TooltipDescription });
+			tinsert(tooltipInfo, { left = L.ITEM_GIVES_REP .. (GetFactionName(group.factionID) or ("Faction #" .. tostring(group.factionID))) .. "'", wrap = true, color = app.Colors.TooltipDescription });
 		end
 		if paramA == "itemID" and paramB == 137642 then
 			if app.Settings:GetTooltipSetting("SummarizeThings") then
@@ -3710,6 +3716,7 @@ app.ThingKeys = {
 	artifactID = true,
 	azeriteEssenceID = true,
 	followerID = true,
+	factionID = true,
 	explorationID = true,
 	achievementID = true,	-- special handling
 	criteriaID = true,	-- special handling
@@ -5761,7 +5768,7 @@ local CreateHeirloomLevel = app.CreateClass("HeirloomLevel", "heirloomLevelID", 
 -- Heirloom Item
 local createHeirloom = app.ExtendClass("Item", "Heirloom", "heirloomID", {
 	itemID = function(t) return t.heirloomID; end,
-	icon = function(t) return select(4, C_Heirloom_GetHeirloomInfo(t.itemID)) or select(5, GetItemInfoInstant(t.itemID)); end,
+	icon = function(t) return select(4, C_Heirloom_GetHeirloomInfo(t.itemID)) or GetItemIcon(t.itemID); end,
 	link = function(t) return C_Heirloom_GetHeirloomLink(t.itemID) or select(2, GetItemInfo(t.itemID)); end,
 	collectibleAsCost = app.ReturnFalse,
 	collectible = function(t)
@@ -5779,7 +5786,7 @@ local createHeirloom = app.ExtendClass("Item", "Heirloom", "heirloomID", {
 			else
 				-- This is used for the Grand Commendations unlocking Bonus Reputation
 				if ATTAccountWideData.FactionBonus[t.factionID] then return 1; end
-				if select(15, GetFactionInfoByID(t.factionID)) then
+				if GetFactionBonusReputation(t.factionID) then
 					ATTAccountWideData.FactionBonus[t.factionID] = 1;
 					return 1;
 				end
@@ -6242,7 +6249,6 @@ end)();
 
 -- Music Rolls & Selfie Filter Lib: Music Rolls
 (function()
-local GetSpellLink, GetSpellInfo = GetSpellLink, GetSpellInfo;
 local fields = {
 	["key"] = function(t)
 		return "questID";
@@ -6298,7 +6304,7 @@ local fields = {
 		return "questID";
 	end,
 	["icon"] = function(t)
-		return select(3, GetSpellInfo(t.spellID));
+		return GetSpellIcon(t.spellID);
 	end,
 	["link"] = function(t)
 		return GetSpellLink(t.spellID);
@@ -6694,21 +6700,21 @@ local fields = {
 	end,
 	--[[
 	["name"] = function(t)
-		if app.GetSpecializationBaseTradeSkill(t.professionID) then return GetSpellInfo(t.professionID); end
-		if t.professionID == 129 then return GetSpellInfo(t.spellID); end
+		if app.GetSpecializationBaseTradeSkill(t.professionID) then return GetSpellName(t.professionID); end
+		if t.professionID == 129 then return GetSpellName(t.spellID); end
 		return C_TradeSkillUI.GetTradeSkillDisplayName(t.professionID);
 	end,
 	["icon"] = function(t)
-		if app.GetSpecializationBaseTradeSkill(t.professionID) then return select(3, GetSpellInfo(t.professionID)); end
-		if t.professionID == 129 then return select(3, GetSpellInfo(t.spellID)); end
+		if app.GetSpecializationBaseTradeSkill(t.professionID) then return GetSpellIcon(t.professionID); end
+		if t.professionID == 129 then return GetSpellIcon(t.spellID); end
 		return C_TradeSkillUI.GetTradeSkillTexture(t.professionID);
 	end,
 	]]--
 	["name"] = function(t)
-		return t.spellID ~= 2366 and select(1, GetSpellInfo(t.spellID)) or C_TradeSkillUI.GetTradeSkillDisplayName(t.professionID);
+		return t.spellID ~= 2366 and GetSpellName(t.spellID) or C_TradeSkillUI.GetTradeSkillDisplayName(t.professionID);
 	end,
 	["icon"] = function(t)
-		return select(3, GetSpellInfo(t.spellID)) or C_TradeSkillUI.GetTradeSkillTexture(t.professionID);
+		return GetSpellIcon(t.spellID) or C_TradeSkillUI.GetTradeSkillTexture(t.professionID);
 	end,
 	["spellID"] = function(t)
 		return app.SkillIDToSpellID[t.professionID];
@@ -8553,7 +8559,7 @@ RowOnEnter = function (self)
 		-- an item used for a faction which is repeatable
 		if reference.itemID and reference.factionID and reference.repeatable then
 			tinsert(tooltipInfo, {
-				left = L.ITEM_GIVES_REP .. (select(1, GetFactionInfoByID(reference.factionID)) or ("Faction #" .. tostring(reference.factionID))) .. "'",
+				left = L.ITEM_GIVES_REP .. (GetFactionName(reference.factionID) or ("Faction #" .. tostring(reference.factionID))) .. "'",
 				color = app.Colors.TooltipDescription,
 				wrap = true,
 			});
@@ -9552,6 +9558,13 @@ function app:GetDataCache()
 	db.g = app.Categories.Instances;
 	db.icon = app.asset("Category_D&R");
 	tinsert(g, db);
+	
+	-- Delves
+	if app.Categories.Delves then
+		tinsert(g, app.CreateNPC(app.HeaderConstants.DELVES, {
+			g = app.Categories.Delves,
+		}));
+	end
 
 	-- Zones
 	if app.Categories.Zones then
@@ -10950,7 +10963,6 @@ customWindowUpdates.CurrentInstance = function(self, force, got)
 				self.ScrollBar:SetValue(1);
 			else
 				-- If we don't have any data cached for this mapID and it exists in game, report it to the chat window.
-				local mapID = mapID;
 				self.CurrentMaps = {[mapID]=true};
 				local mapInfo = C_Map_GetMapInfo(mapID);
 				if mapInfo then
@@ -10966,6 +10978,7 @@ customWindowUpdates.CurrentInstance = function(self, force, got)
 						end
 					end
 					-- only report for mapIDs which actually exist
+					mapID = self.mapID
 					print("No data found for this Location ", app.GetMapName(mapID), " [", mapID, "]");
 					print("Path: ", mapPath);
 					app.report();
@@ -13917,11 +13930,11 @@ app.LoadDebugger = function()
 					local rawGroups = {};
 					for i=1,GetNumQuestRewards(),1 do
 						local link = GetQuestItemLink("reward", i);
-						if link then tinsert(rawGroups, { ["itemID"] = GetItemInfoInstant(link) }); end
+						if link then tinsert(rawGroups, { ["itemID"] = GetItemID(link) }); end
 					end
 					for i=1,GetNumQuestChoices(),1 do
 						local link = GetQuestItemLink("choice", i);
-						if link then tinsert(rawGroups, { ["itemID"] = GetItemInfoInstant(link) }); end
+						if link then tinsert(rawGroups, { ["itemID"] = GetItemID(link) }); end
 					end
 					-- GetNumQuestLogRewardSpells removed in 10.1
 					-- for i=1,GetNumQuestLogRewardSpells(questID),1 do
@@ -13981,7 +13994,7 @@ app.LoadDebugger = function()
 					local itemString = msg:match("item[%-?%d:]+");
 					if itemString then
 						-- print("Looted Item",itemString)
-						local itemID = GetItemInfoInstant(itemString);
+						local itemID = GetItemID(itemString);
 						AddObject({ ["unit"] = j, ["g"] = { { ["itemID"] = itemID, ["rawlink"] = itemString } } });
 					end
 				-- Capture personal loot sources
@@ -14001,7 +14014,7 @@ app.LoadDebugger = function()
 					for i=1,slots,1 do
 						loot = GetLootSlotLink(i);
 						if loot then
-							itemID = GetItemInfoInstant(loot);
+							itemID = GetItemID(loot);
 							if itemID then
 								source = { GetLootSourceInfo(i) };
 								for j=1,#source,2 do
@@ -14020,7 +14033,7 @@ app.LoadDebugger = function()
 					end
 				elseif e == "QUEST_LOOT_RECEIVED" then
 					local questID, itemLink = ...
-					local itemID = GetItemInfoInstant(itemLink)
+					local itemID = GetItemID(itemLink)
 					local info = { ["questID"] = questID, ["g"] = { { ["itemID"] = itemID, ["rawlink"] = itemLink } } }
 					app.PrintDebug("Add Quest Loot from",questID,itemLink,itemID)
 					AddObject(info)

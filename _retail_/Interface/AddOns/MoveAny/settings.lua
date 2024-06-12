@@ -160,6 +160,11 @@ local function AddCategory(key)
 end
 
 local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requiresFor, requiredFor)
+	local lkey = key
+	if id then
+		key = key .. id
+	end
+
 	local oldVal = MoveAny:IsEnabled(key, val, true) or false
 	local bRequiresFor = nil
 	if requiresFor ~= nil then
@@ -173,7 +178,6 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requ
 
 	local bShowReload = showReload
 	local bGreyed = false
-	local lkey = key
 	if bShowReload == nil then
 		bShowReload = true
 	end
@@ -181,10 +185,6 @@ local function AddCheckBox(x, key, val, func, id, editModeEnum, showReload, requ
 	if oldVal == nil then
 		MoveAny:MSG("Missing Value For: " .. tostring(key))
 		oldVal = true
-	end
-
-	if id then
-		key = key .. id
 	end
 
 	if cbs[key] == nil then
@@ -411,8 +411,8 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	D4:SetVersion(AddonName, 135994, "1.6.184")
-	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.184"))
+	D4:SetVersion(AddonName, 135994, "1.6.200")
+	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.200"))
 	MALock.CloseButton:SetScript(
 		"OnClick",
 		function()
@@ -479,9 +479,11 @@ function MoveAny:InitMALock()
 
 		if D4:GetWoWBuild() ~= "RETAIL" then
 			AddCheckBox(posx, "TARGETFRAMEBUFF1", false, nil, nil, "ShowTargetAndFocus")
+			AddCheckBox(posx, "TARGETFRAMEDEBUFF1", false, nil, nil, "ShowTargetAndFocus")
 		end
 
 		if D4:GetWoWBuild() ~= "RETAIL" then
+			AddCheckBox(posx, "TARGETFRAMETOTBUFF1", false, nil, nil, "ShowTargetAndFocus")
 			AddCheckBox(posx, "TARGETFRAMETOTDEBUFF1", false, nil, nil, "ShowTargetAndFocus")
 		end
 
@@ -489,6 +491,7 @@ function MoveAny:InitMALock()
 			AddCheckBox(posx, "FOCUSFRAME", false, nil, nil, "ShowTargetAndFocus")
 			if D4:GetWoWBuild() ~= "RETAIL" then
 				AddCheckBox(posx, "FOCUSFRAMEBUFF1", false, nil, nil, "ShowTargetAndFocus")
+				AddCheckBox(posx, "FOCUSFRAMEDEBUFF1", false, nil, nil, "ShowTargetAndFocus")
 			end
 		end
 
@@ -784,7 +787,7 @@ function MoveAny:InitMALock()
 			AddCheckBox(4, "TARGETFRAMENAMEBACKGROUND", false)
 		end
 
-		if IsAddOnLoaded("ImproveAny") then
+		if D4:IsAddOnLoaded("ImproveAny") then
 			AddCategory("ImproveAny")
 			if D4:GetWoWBuild() ~= "RETAIL" then
 				AddCheckBox(4, "IASKILLS", true)
@@ -797,7 +800,7 @@ function MoveAny:InitMALock()
 			AddCheckBox(4, "IACoordsFrame", true)
 		end
 
-		if IsAddOnLoaded("!KalielsTracker") then
+		if D4:IsAddOnLoaded("!KalielsTracker") then
 			AddCategory("!KalielsTracker")
 			AddCheckBox(4, "!KalielsTrackerButtons", false)
 		end
@@ -929,17 +932,16 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	MAGridFrame:SetSize(GetScreenWidth(), GetScreenHeight())
-	MAGridFrame:SetPoint("CENTER", MoveAny:GetMainPanel(), "CENTER", 0, 0)
+	MAGridFrame:SetAllPoints(MoveAny:GetMainPanel())
 	MAGridFrame:SetFrameStrata("LOW")
 	MAGridFrame:SetFrameLevel(1)
 	MAGridFrame.hor = MAGridFrame:CreateTexture()
 	MAGridFrame.hor:SetPoint("CENTER", 0, -0.5)
-	MAGridFrame.hor:SetSize(GetScreenWidth(), 1)
+	MAGridFrame.hor:SetSize(MoveAny:GetMainPanel():GetWidth(), 1)
 	MAGridFrame.hor:SetColorTexture(1, 1, 1, 1)
 	MAGridFrame.ver = MAGridFrame:CreateTexture()
 	MAGridFrame.ver:SetPoint("CENTER", 0.5, 0)
-	MAGridFrame.ver:SetSize(1, GetScreenHeight())
+	MAGridFrame.ver:SetSize(1, MoveAny:GetMainPanel():GetHeight())
 	MAGridFrame.ver:SetColorTexture(1, 1, 1, 1)
 	MoveAny:UpdateGrid()
 	local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint("MALock")
@@ -958,10 +960,10 @@ function MoveAny:UpdateGrid()
 		v:Hide()
 	end
 
-	for x = 0, GetScreenWidth() / 2, MoveAny:GetGridSize() do
+	for x = 0, MoveAny:GetMainPanel():GetWidth() / 2, MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0.5 + x, 0)
-		MAGridFrame.lines[id]:SetSize(1.09, GetScreenHeight())
+		MAGridFrame.lines[id]:SetSize(1.09, MoveAny:GetMainPanel():GetHeight())
 		if x % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -972,10 +974,10 @@ function MoveAny:UpdateGrid()
 		id = id + 1
 	end
 
-	for x = 0, -GetScreenWidth() / 2, -MoveAny:GetGridSize() do
+	for x = 0, -MoveAny:GetMainPanel():GetWidth() / 2, -MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0.5 + x, 0)
-		MAGridFrame.lines[id]:SetSize(1.09, GetScreenHeight())
+		MAGridFrame.lines[id]:SetSize(1.09, MoveAny:GetMainPanel():GetHeight())
 		if x % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -986,10 +988,10 @@ function MoveAny:UpdateGrid()
 		id = id + 1
 	end
 
-	for y = 0, GetScreenHeight() / 2, MoveAny:GetGridSize() do
+	for y = 0, MoveAny:GetMainPanel():GetHeight() / 2, MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0, 0.5 + y)
-		MAGridFrame.lines[id]:SetSize(GetScreenWidth(), 1.09, GetScreenHeight())
+		MAGridFrame.lines[id]:SetSize(MoveAny:GetMainPanel():GetWidth(), 1.09, MoveAny:GetMainPanel():GetHeight())
 		if y % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -1000,10 +1002,10 @@ function MoveAny:UpdateGrid()
 		id = id + 1
 	end
 
-	for y = 0, -GetScreenHeight() / 2, -MoveAny:GetGridSize() do
+	for y = 0, -MoveAny:GetMainPanel():GetHeight() / 2, -MoveAny:GetGridSize() do
 		MAGridFrame.lines[id] = MAGridFrame.lines[id] or MAGridFrame:CreateTexture()
 		MAGridFrame.lines[id]:SetPoint("CENTER", 0, 0.5 + y)
-		MAGridFrame.lines[id]:SetSize(GetScreenWidth(), 1.09)
+		MAGridFrame.lines[id]:SetSize(MoveAny:GetMainPanel():GetWidth(), 1.09)
 		if y % 50 == 0 then
 			MAGridFrame.lines[id]:SetColorTexture(1, 1, 0.5, 0.25)
 		else
@@ -1038,7 +1040,7 @@ function MoveAny:ShowProfiles()
 			end
 		)
 
-		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.184"))
+		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.200"))
 		MAProfiles.CloseButton:SetScript(
 			"OnClick",
 			function()
@@ -1795,16 +1797,16 @@ function MoveAny:LoadAddon()
 	MoveAny.init = true
 	local _, class = UnitClass("player")
 	if MoveAny:IsEnabled("SHOWTIPS", true) then
-		if IsAddOnLoaded("Dominos") then
+		if D4:IsAddOnLoaded("Dominos") then
 			MoveAny:MSG("Dominos Detected, please make sure Dominos Elements are disabled in MoveAny!")
 		end
 
-		if IsAddOnLoaded("Bartender4") then
+		if D4:IsAddOnLoaded("Bartender4") then
 			MoveAny:MSG("Bartender4 Detected, please make sure that an element is only controlled by one addon at a time!")
 		end
 	end
 
-	if IsAddOnLoaded("D4KiR MoveAndImprove") then
+	if D4:IsAddOnLoaded("D4KiR MoveAndImprove") then
 		MoveAny:MSG("DON'T use MoveAndImprove, when you use MoveAny")
 	end
 
@@ -2217,11 +2219,115 @@ function MoveAny:LoadAddon()
 									bb:SetScale(scale)
 									bb:SetAlpha(alpha)
 								end
+							end
+						end
 
+						local bbf = CreateFrame("FRAME")
+						bbf:RegisterEvent("UNIT_AURA")
+						bbf:SetScript(
+							"OnEvent",
+							function()
+								frame:UpdateBuffScaleAlpha()
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetPoint",
+							function()
+								frame:UpdateBuffScaleAlpha()
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetScale",
+							function(sel)
+								if sel.ma_bb_set_scale then return end
+								sel.ma_bb_set_scale = true
+								frame:UpdateBuffScaleAlpha()
+								sel.ma_bb_set_scale = false
+							end
+						)
+
+						frame:UpdateBuffScaleAlpha()
+					end,
+				}
+			)
+		end
+
+		if D4:GetWoWBuild() ~= "RETAIL" and MoveAny:IsEnabled("TARGETFRAMEDEBUFF1", false) then
+			MoveAny:RegisterWidget(
+				{
+					["name"] = "TargetFrameDebuff1",
+					["lstr"] = "LID_TARGETFRAMEDEBUFF1",
+					["userplaced"] = true,
+					["setup"] = function()
+						local frame = TargetFrameDebuff1
+						function frame:UpdateDebuffScaleAlpha()
+							if _G["TargetFrameDebuff" .. 1] == nil then return end
+							local scale = _G["TargetFrameDebuff" .. 1]:GetScale()
+							local alpha = _G["TargetFrameDebuff" .. 1]:GetAlpha()
+							for i = 1, 32 do
 								local db = _G["TargetFrameDebuff" .. i]
 								if db then
 									db:SetScale(scale)
 									db:SetAlpha(alpha)
+								end
+							end
+						end
+
+						local bbf = CreateFrame("FRAME")
+						bbf:RegisterEvent("UNIT_AURA")
+						bbf:SetScript(
+							"OnEvent",
+							function()
+								frame:UpdateDebuffScaleAlpha()
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetPoint",
+							function()
+								frame:UpdateDebuffScaleAlpha()
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetScale",
+							function(sel)
+								if sel.ma_db_set_scale then return end
+								sel.ma_db_set_scale = true
+								frame:UpdateDebuffScaleAlpha()
+								sel.ma_db_set_scale = false
+							end
+						)
+
+						frame:UpdateDebuffScaleAlpha()
+					end,
+				}
+			)
+		end
+
+		if D4:GetWoWBuild() ~= "RETAIL" and MoveAny:IsEnabled("TARGETFRAMETOTBUFF1", false) then
+			MoveAny:RegisterWidget(
+				{
+					["name"] = "TargetFrameToTBuff1",
+					["lstr"] = "LID_TARGETFRAMETOTBUFF1",
+					["userplaced"] = true,
+					["setup"] = function()
+						local frame = TargetFrameToTBuff1
+						function frame:UpdateBuffScaleAlpha()
+							if _G["TargetFrameToTBuff" .. 1] == nil then return end
+							local scale = _G["TargetFrameToTBuff" .. 1]:GetScale()
+							local alpha = _G["TargetFrameToTBuff" .. 1]:GetAlpha()
+							for i = 1, 32 do
+								local bb = _G["TargetFrameToTBuff" .. i]
+								if bb and i > 1 then
+									bb:SetScale(scale)
+									bb:SetAlpha(alpha)
 								end
 							end
 						end
@@ -2246,8 +2352,11 @@ function MoveAny:LoadAddon()
 						hooksecurefunc(
 							frame,
 							"SetScale",
-							function()
+							function(sel)
+								if sel.ma_db_set_scale then return end
+								sel.ma_db_set_scale = true
 								frame:UpdateBuffScaleAlpha()
+								sel.ma_db_set_scale = false
 							end
 						)
 
@@ -2265,7 +2374,7 @@ function MoveAny:LoadAddon()
 					["userplaced"] = true,
 					["setup"] = function()
 						local frame = TargetFrameToTDebuff1
-						function frame:UpdateBuffScaleAlpha()
+						function frame:UpdateDebuffScaleAlpha()
 							if _G["TargetFrameToTDebff" .. 1] == nil then return end
 							local scale = _G["TargetFrameToTDebff" .. 1]:GetScale()
 							local alpha = _G["TargetFrameToTDebff" .. 1]:GetAlpha()
@@ -2275,12 +2384,6 @@ function MoveAny:LoadAddon()
 									bb:SetScale(scale)
 									bb:SetAlpha(alpha)
 								end
-
-								local db = _G["TargetFrameDebuff" .. i]
-								if db then
-									db:SetScale(scale)
-									db:SetAlpha(alpha)
-								end
 							end
 						end
 
@@ -2289,7 +2392,7 @@ function MoveAny:LoadAddon()
 						bbf:SetScript(
 							"OnEvent",
 							function()
-								frame:UpdateBuffScaleAlpha()
+								frame:UpdateDebuffScaleAlpha()
 							end
 						)
 
@@ -2297,19 +2400,22 @@ function MoveAny:LoadAddon()
 							frame,
 							"SetPoint",
 							function()
-								frame:UpdateBuffScaleAlpha()
+								frame:UpdateDebuffScaleAlpha()
 							end
 						)
 
 						hooksecurefunc(
 							frame,
 							"SetScale",
-							function()
-								frame:UpdateBuffScaleAlpha()
+							function(sel)
+								if sel.ma_db_set_scale then return end
+								sel.ma_db_set_scale = true
+								frame:UpdateDebuffScaleAlpha()
+								sel.ma_db_set_scale = false
 							end
 						)
 
-						frame:UpdateBuffScaleAlpha()
+						frame:UpdateDebuffScaleAlpha()
 					end,
 				}
 			)
@@ -2389,12 +2495,6 @@ function MoveAny:LoadAddon()
 									bb:SetScale(scale)
 									bb:SetAlpha(alpha)
 								end
-
-								local db = _G["FocusFrameDebuff" .. i]
-								if db then
-									db:SetScale(scale)
-									db:SetAlpha(alpha)
-								end
 							end
 						end
 
@@ -2418,12 +2518,70 @@ function MoveAny:LoadAddon()
 						hooksecurefunc(
 							frame,
 							"SetScale",
-							function()
+							function(sel)
+								if sel.ma_db_set_scale then return end
+								sel.ma_db_set_scale = true
 								frame:UpdateBuffScaleAlpha()
+								sel.ma_db_set_scale = false
 							end
 						)
 
 						frame:UpdateBuffScaleAlpha()
+					end,
+				}
+			)
+		end
+
+		if FocusFrame and D4:GetWoWBuild() ~= "RETAIL" and MoveAny:IsEnabled("FOCUSFRAMEDEBUFF1", false) then
+			MoveAny:RegisterWidget(
+				{
+					["name"] = "FocusFrameDebuff1",
+					["lstr"] = "LID_FOCUSFRAMEDEBUFF1",
+					["userplaced"] = true,
+					["setup"] = function()
+						local frame = FocusFrameDebuff1
+						function frame:UpdateDebuffScaleAlpha()
+							if _G["FocusFrameDebuff" .. 1] == nil then return end
+							local scale = _G["FocusFrameDebuff" .. 1]:GetScale()
+							local alpha = _G["FocusFrameDebuff" .. 1]:GetAlpha()
+							for i = 1, 32 do
+								local db = _G["FocusFrameDebuff" .. i]
+								if db and i > 1 then
+									db:SetScale(scale)
+									db:SetAlpha(alpha)
+								end
+							end
+						end
+
+						local bbf = CreateFrame("FRAME")
+						bbf:RegisterEvent("UNIT_AURA")
+						bbf:SetScript(
+							"OnEvent",
+							function()
+								frame:UpdateDebuffScaleAlpha()
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetPoint",
+							function()
+								frame:UpdateDebuffScaleAlpha()
+							end
+						)
+
+						hooksecurefunc(
+							frame,
+							"SetScale",
+							function(sel)
+								if sel.ma_db_set_scale then return end
+								sel.ma_db_set_scale = true
+								frame:UpdateDebuffScaleAlpha()
+								sel.ma_db_set_scale = false
+							end
+						)
+
+						frame:UpdateDebuffScaleAlpha()
 					end,
 				}
 			)
@@ -3187,7 +3345,7 @@ function MoveAny:LoadAddon()
 		)
 	end
 
-	if IsAddOnLoaded("!KalielsTracker") and MoveAny:IsEnabled("!KalielsTrackerButtons", false) then
+	if D4:IsAddOnLoaded("!KalielsTracker") and MoveAny:IsEnabled("!KalielsTrackerButtons", false) then
 		C_Timer.After(
 			1,
 			function()
@@ -3304,7 +3462,7 @@ function MoveAny:LoadAddon()
 		)
 	end
 
-	if not IsAddOnLoaded("Dominos") then
+	if not D4:IsAddOnLoaded("Dominos") then
 		if MoveAny:IsEnabled("MICROMENU", false) then
 			MoveAny:RegisterWidget(
 				{
@@ -3365,7 +3523,7 @@ function MoveAny:LoadAddon()
 		)
 	end
 
-	if IsAddOnLoaded("ImproveAny") then
+	if D4:IsAddOnLoaded("ImproveAny") then
 		if MoveAny:IsEnabled("MONEYBAR", true) then
 			MoveAny:RegisterWidget(
 				{
@@ -3874,7 +4032,7 @@ function MoveAny:LoadAddon()
 	end
 
 	if D4:GetWoWBuild() == "RETAIL" then
-		LoadAddOn("Blizzard_ArchaeologyUI")
+		D4:LoadAddOn("Blizzard_ArchaeologyUI")
 	end
 
 	if MoveAny:IsEnabled("ARCHEOLOGYDIGSITEPROGRESSBAR", false) and ARCHEOLOGYDIGSITEPROGRESSBAR then
@@ -4392,7 +4550,7 @@ function MoveAny:LoadAddon()
 		end
 	end
 
-	if not IsAddOnLoaded("Dominos") then
+	if not D4:IsAddOnLoaded("Dominos") then
 		if MoveAny.InitMicroMenu then
 			MoveAny:InitMicroMenu()
 		end
@@ -4445,7 +4603,7 @@ function MoveAny:LoadAddon()
 			WorldMapFrame.ScrollContainer.GetCursorPosition = function(fr)
 				local x, y = MapCanvasScrollControllerMixin.GetCursorPosition(fr)
 				local scale = WorldMapFrame:GetScale()
-				if not IsAddOnLoaded("Mapster") and not IsAddOnLoaded("GW2_UI") then
+				if not D4:IsAddOnLoaded("Mapster") and not D4:IsAddOnLoaded("GW2_UI") then
 					return x / scale, y / scale
 				else
 					local reverseEffectiveScale = 1 / UIParent:GetEffectiveScale()

@@ -11,7 +11,7 @@ BigWigs:AddColors("Omnotron Defense System", {
 	[80157] = "blue",
 	[80161] = "blue",
 	[91849] = "orange",
-	[91879] = "orange",
+	[91879] = {"blue","orange"},
 	[92023] = {"blue","orange"},
 	[92048] = {"blue","orange"},
 	[92053] = "blue",

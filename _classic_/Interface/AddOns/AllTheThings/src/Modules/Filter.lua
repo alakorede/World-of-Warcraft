@@ -9,8 +9,11 @@ local _, app = ...;
 -- Encapsulates the functionality for all filtering logic which is used to check if a given Object meets the applicable filters via User Settings
 
 -- Global locals
-local ipairs, select, pairs, type, GetFactionInfoByID, rawget, wipe
-	= ipairs, select, pairs, type, GetFactionInfoByID, rawget, wipe;
+local ipairs, select, pairs, type, rawget, wipe
+	= ipairs, select, pairs, type, rawget, wipe;
+
+-- WoW API Cache
+local GetFactionCurrentReputation = app.WOWAPI.GetFactionCurrentReputation;
 
 -- App locals
 local containsAny = app.containsAny;
@@ -86,6 +89,9 @@ local function DefineToggleFilter(name, filterGroup, filter)
 		RawCharacterFilters[name] = filter;
 	end
 end
+api.DefineToggleFilter = function(name, filterScope, filter)
+	DefineToggleFilter(name, filterScope == "A" and AccountFilters or CharacterFilters, filter)
+end
 
 -- Whether the group has a binding designation, which means it basically cannot be moved to another Character
 local function FilterBind(group)
@@ -152,7 +158,7 @@ function(item)
 	local minReputation = item.minReputation;
 	if minReputation then
 		if ExclusiveFactions[minReputation[1]] then
-			if minReputation[2] > (select(6, GetFactionInfoByID(minReputation[1])) or 0) then
+			if minReputation[2] > GetFactionCurrentReputation(minReputation[1]) then
 				return false;
 			else
 				return true;
@@ -170,7 +176,7 @@ end);
 -- function(item)
 -- 	local maxReputation = item.maxReputation;
 -- 	if maxReputation then
--- 		if maxReputation[2] > (select(6, GetFactionInfoByID(maxReputation[1])) or 0) then
+-- 		if maxReputation[2] > GetFactionCurrentReputation(maxReputation[1]) then
 -- 			return false;
 -- 		else
 -- 			return true;
@@ -390,7 +396,7 @@ end
 
 -- Filter Combinations
 local function PrintExclusionCause(name, o)
-	app.PrintDebug("FilterExclude",name,o.hash,o.link or o.name)
+	app.PrintDebug("F-EX",name,o.hash,o.link or o.name)
 end
 local function SettingsAccountFilters(o)
 	for name,filter in pairs(AccountFilters) do
@@ -557,6 +563,50 @@ end)
 app.AddEventHandler("OnRecalculate_NewSettings", function()
 	CacheSettingsData();
 end)
+
+-- Maybe need something like this eventually? This hasn't been tested or utilized much
+-- local PreviousFilters = {}
+-- -- Returns the set of Filter names which are currently enabled
+-- api.GetFilterSet = function(filters)
+-- 	local Get = api.Get
+-- 	wipe(PreviousFilters)
+-- 	for name,_ in pairs(api.Filters) do
+-- 		PreviousFilters[name] = Get[name]() or nil
+-- 	end
+-- 	app.PrintDebug("ALL FILTERS GET")
+-- 	return PreviousFilters
+-- end
+-- -- Expects being provided with a table of Filter names for which Filters should be activated
+-- -- If nothing is provided, then the previous filters are re-enabled
+-- -- Ideally used for allowing a swap of filters for processing a specific ATT window
+-- api.SwapFilterSet = function(filters)
+-- 	if not filters and not PreviousFilters then return end
+-- 	local Get = api.Get
+-- 	local Set = api.Set
+-- 	if PreviousFilters then
+-- 		for name,_ in pairs(api.Filters) do
+-- 			Set[name]()
+-- 		end
+-- 		app.PrintDebug("ALL FILTERS OFF")
+-- 		for _,name in pairs(PreviousFilters) do
+-- 			app.PrintDebug("PREV FILTER ON:",name)
+-- 			Set[name](true)
+-- 		end
+-- 		wipe(PreviousFilters)
+-- 	end
+-- 	if filters then
+-- 		PreviousFilters = filters
+-- 		for name,_ in pairs(api.Filters) do
+-- 			PreviousFilters[name] = Get[name]() or nil
+-- 			Set[name]()
+-- 			app.PrintDebug("ALL FILTERS SWAPPED")
+-- 		end
+-- 		for _,name in pairs(filters) do
+-- 			app.PrintDebug("SWAP FILTER ON:",name)
+-- 			Set[name](true)
+-- 		end
+-- 	end
+-- end
 
 -- temp sanity debug logging
 -- for name,setFilter in pairs(api.Set) do

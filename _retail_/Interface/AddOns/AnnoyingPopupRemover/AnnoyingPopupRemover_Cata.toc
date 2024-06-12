@@ -1,6 +1,6 @@
 ## Interface: 40400
 ## Title: Annoying Popup Remover
-## Version: v20.2.0-release
+## Version: v20.5.0-release
 ## Author: KyrosKrane Sylvanblade
 ## Notes: Removes multiple annoying confirmation popups throughout the game.
 ## IconTexture: Interface\AddOns\AnnoyingPopupRemover\Media\thumbup.blp
@@ -29,6 +29,7 @@ Init.lua
 Localization.lua
 Localization_frFR.lua
 Init_Post_Locale.lua
+Hide_StaticPopup.lua
 
 module_loot.lua
 module_roll.lua
