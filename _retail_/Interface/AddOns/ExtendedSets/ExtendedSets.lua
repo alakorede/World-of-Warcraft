@@ -2,7 +2,6 @@ local app = select(2, ...);
 local SetsFrame;
 
 local LDD = LibStub('LibDropDown');
-local testSources = false;
 
 local ModelFrame;
 local setStats = { numberSets = 0, numberCollected = 0 };
@@ -220,6 +219,7 @@ app.ExpandedCallbacks = ExpandedCallbacks;
 app.altAppearancesDB = {};
 app.altLabelDB = {};
 app.altLabelAppendDB = {};
+app.altNoteDB = {};
 --local ExpandedAltAppearances = {};
 --app.ExpandedAltAppearances = ExpandedAltAppearances;
 
@@ -1086,7 +1086,7 @@ local function GetSortedSetSources(setID, givenSet)
       local sortOrder = EJ_GetInvTypeSortOrder(sourceInfo.invType);
       --local appearanceID = sourceInfo.visualID;
       
-      --local itemArmorType = select(7,GetItemInfoInstant(sourceInfo.itemID));
+      --local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo.itemID));
       --local isPlayerArmorWeight = (sourceInfo.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
       
       ----Interesting shortcut, but wouldn't work for other armor types. Also doesn't work with HiddenUntilCollected items.
@@ -1158,7 +1158,7 @@ local function GetSortedSetSources(setID, givenSet)
           --  canCharCollectIt = true;
           --end
           local sourceInfo2 = C_TransmogCollection.GetSourceInfo(source);
-          local itemArmorType = select(7,GetItemInfoInstant(sourceInfo2.itemID));
+          local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo2.itemID));
           
           local isPlayerArmorWeight = (sourceInfo2.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
           
@@ -1179,7 +1179,7 @@ local function GetSortedSetSources(setID, givenSet)
           local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(source));
           
           local sourceInfo2 = C_TransmogCollection.GetSourceInfo(source);
-          local itemArmorType = select(7,GetItemInfoInstant(sourceInfo2.itemID));
+          local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo2.itemID));
           local isPlayerArmorWeight = (sourceInfo2.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
           
           if isPlayerArmorWeight then
@@ -1267,7 +1267,7 @@ local function GetIconForSet(setID)
     for i=1,10 do
       local source = GetSetSourcesForSlot(setID, i);
       if source then
-        sourceData.icon = select(5,GetItemInfoInstant(source[1].itemID));
+        sourceData.icon = select(5,C_Item.GetItemInfoInstant(source[1].itemID));
         break;
       end
     end
@@ -1517,7 +1517,7 @@ end
 local function GetDisplaySetInfo(setID)
   local setinfo = GetSetByID(setID);
   
-  return setinfo.name, setinfo.label, setinfo.limitedTimeSet, setinfo.description, setinfo.requiredFaction, setinfo.note, setinfo.noLongerObtainable;
+  return setinfo.name, setinfo.label, setinfo.limitedTimeSet, setinfo.description, setinfo.requiredFaction, setinfo.note, setinfo.noLongerObtainable, setinfo.expansionID;
 end
 
 --Handles Setting or Refreshing the collection based appearances for the row of ItemFrames.
@@ -1544,14 +1544,17 @@ local function HandleItemFrames(itemFrame, forceItemFrameDataUpdate)
     
     if itemFrameType == "OtherClassCanCollect" or itemFrameType == "Collected" or itemFrameType == "CollectedUpdatePending" then
       if itemFrameType == "OtherClassCanCollect" then
+        itemFrame.CollectionIcon:SetShown(true);
         itemFrame.CollectionIcon.Icon:SetVertexColor(1,1,1);
         itemFrame.CollectionIcon.Icon:SetAtlas("UI-QuestIcon-TurnIn-Normal");
         itemFrame.CollectionIcon.Text = "An appearance source usable by other classes can still be collected.";
       elseif itemFrameType == "CollectedUpdatePending" then
+        itemFrame.CollectionIcon:SetShown(true);
         itemFrame.CollectionIcon.Icon:SetVertexColor(.9,.9,.9);
         itemFrame.CollectionIcon.Icon:SetAtlas("unitframeicon-chromietime");
         itemFrame.CollectionIcon.Text = "Retrieving Item Info...";
       else
+        itemFrame.CollectionIcon:SetShown(false);
         itemFrame.CollectionIcon.Icon:SetAtlas(nil);
         itemFrame.CollectionIcon.Text = "";
       end
@@ -1566,6 +1569,7 @@ local function HandleItemFrames(itemFrame, forceItemFrameDataUpdate)
         itemFrame.CollectionIcon.Icon:SetVertexColor(1,0,0);
         itemFrame.CollectionIcon.Text = "This appearance cannot be used by this character.";
       end
+      itemFrame.CollectionIcon:SetShown(true);
       itemFrame.CollectionIcon.Icon:SetAtlas("PlayerRaidBlip");
       
       itemFrame.Icon:SetAlpha(0.6);
@@ -1606,18 +1610,21 @@ local function HandleItemFrames(itemFrame, forceItemFrameDataUpdate)
     end
     
     if itemFrameType == "NotCollectedCharCantGet" then
+      itemFrame.CollectionIcon:SetShown(true);
       itemFrame.CollectionIcon.Icon:SetVertexColor(1,0,0);
       itemFrame.CollectionIcon.Icon:SetAtlas("islands-markedarea");
       itemFrame.CollectionIcon.Text = "Cannot collect or use this appearance on this character.";
     elseif itemFrameType == "NotCollectedUpdatePending" then
+      itemFrame.CollectionIcon:SetShown(true);
       itemFrame.CollectionIcon.Icon:SetVertexColor(.9,.9,.9);
       itemFrame.CollectionIcon.Icon:SetAtlas("unitframeicon-chromietime");
       itemFrame.CollectionIcon.Text = "Retrieving Item Info...";
     else
-      itemFrame.CollectionIcon.Icon:SetAtlas(nil);
-      itemFrame.CollectionIcon.Text = "";
+      itemFrame.CollectionIcon:SetShown(false);
     end
   end
+  
+  itemFrame.RemixIcon:SetShown(itemFrame.isRemix);
 end
 
 local function DisplaySet(self, givenSetID, force)
@@ -1633,7 +1640,7 @@ local function DisplaySet(self, givenSetID, force)
   WardrobeCollectionFrame.SetsCollectionFrame.selectedSetID = setID;
 	ExS_ScrollFrame.selectedSetID = setID;
 
-  local name, label, limitedTimeSet, description, requiredFaction, note, noLongerObtainable = GetDisplaySetInfo(setID);
+  local name, label, limitedTimeSet, description, requiredFaction, note, noLongerObtainable, expacID = GetDisplaySetInfo(setID);
   
 	WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame:Show();
 	WardrobeCollectionFrame.SetsCollectionFrame.Model:Show();
@@ -1700,6 +1707,20 @@ local function DisplaySet(self, givenSetID, force)
   
     --WardrobeCollectionFrame.SetsCollectionFrame.Model:SetCustomRace(4, 1);
   WardrobeCollectionFrame.SetsCollectionFrame.Model:Undress()
+  
+  local showRemix = false;
+  if expacID == 4 then
+    if app.mopRemixFlag[setID] then
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetShown(true);
+      showRemix = true;
+    elseif app.mopItemRemixFlag[setID] then
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetShown(true);
+    else
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetShown(false);
+    end
+  else
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetShown(false);
+  end
 
 	for i = 1, #sortedSources do
 		local itemFrame = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.itemFramesPool:Acquire();
@@ -1714,6 +1735,11 @@ local function DisplaySet(self, givenSetID, force)
 		itemFrame.invType = sortedSources[i].invType;
 		itemFrame.Icon:SetTexture(C_TransmogCollection.GetSourceIcon(itemFrame.sourceID));
     itemFrame.IconBorder:Hide();
+    if showRemix or (expacID == 4 and app.mopItemRemixFlag[setID] and app.mopItemRemixFlag[setID][itemFrame.sourceID]) then
+      itemFrame.isRemix = true;
+    else
+      itemFrame.isRemix = false;
+    end
     
     if itemFrame.CollectionIcon == nil then
       itemFrame.CollectionIcon = CreateFrame("frame", nil, itemFrame);
@@ -1732,6 +1758,29 @@ local function DisplaySet(self, givenSetID, force)
       itemFrame.CollectionIcon:SetScript("OnLeave", function(self)
                 GameTooltip:Hide();
           end);
+    end
+    
+    if itemFrame.RemixIcon == nil then
+      itemFrame.RemixIcon = CreateFrame("frame", nil, itemFrame);
+      itemFrame.RemixIcon:SetPoint("CENTER",itemFrame,"BOTTOM",-1,-4);
+      itemFrame.RemixIcon:SetSize(25,25);
+      itemFrame.RemixIcon.Icon = itemFrame.RemixIcon:CreateTexture(nil, "OVERLAY");
+      itemFrame.RemixIcon.Icon:SetAllPoints();
+      itemFrame.RemixIcon.Icon:SetDrawLayer("OVERLAY", 2);
+      itemFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_vert.tga]]);
+      itemFrame.RemixIcon.Icon:SetAlpha(0.9);
+      itemFrame.RemixIcon.Icon:SetDesaturation(.4);
+      itemFrame.RemixIcon.Text = "MoP Remix Exclusive";
+      
+      itemFrame.RemixIcon:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                GameTooltip_SetTitle(GameTooltip, self.Text, NORMAL_FONT_COLOR, true);
+                GameTooltip:Show();
+          end);
+      itemFrame.RemixIcon:SetScript("OnLeave", function(self)
+                GameTooltip:Hide();
+          end);
+      itemFrame.RemixIcon:SetShown(false);
     end
     
     
@@ -2819,9 +2868,17 @@ local function FillSetMaps()
     else
       data.shop = false;
     end
+    --Alt Note
+    if app.altNoteDB[data.expansionID] and app.altNoteDB[data.expansionID][data.setID] then
+      data.note = app.altNoteDB[data.expansionID][data.setID];
+    end
     --Added Remix flag
-    if app.mopRemixFlag[data.setID] then
-      data.isRemix = true;
+    if data.expansionID == 4 then
+      if app.mopRemixFlag[data.setID] then
+        data.isRemix = true;
+      elseif app.mopItemRemixFlag[data.setID] then
+        data.hasRemix = true;
+      end
     end
     if data.classMask == 16383 then data.classMask = 0 end
     
@@ -2968,8 +3025,8 @@ local function FillSetMaps()
             if data.tp then
               BaseSets[otherBaseID].tp = true;
             end
-            if data.isRemix then
-              BaseSets[otherBaseID].hasRemix = true;
+            if data.isRemix or data.hasRemix then
+              BaseSets[otherBaseID].variantRemix = true;
             end
             
             --AddSetToHash(data, otherBaseID);
@@ -3036,15 +3093,13 @@ local function FillSetMaps()
     RemoveHiddenSetsFromBaseList();
   end
   
-  
-  if testSources then
-    for a,b in pairs(BaseList) do 
-    testSourceInfos(b.setID);
-    end
-    for a,b in pairs(VariantSetsIDs) do
-    testSourceInfos(a);
-    end
-  end
+  --Testing. I don't remember what this was for.
+  -- for a,b in pairs(BaseList) do 
+  -- testSourceInfos(b.setID);
+  -- end
+  -- for a,b in pairs(VariantSetsIDs) do
+  -- testSourceInfos(a);
+  -- end
   
   
   SetsFrame.SortSets(BaseList, false);
@@ -3181,7 +3236,7 @@ local function SetButtonData(button, set)
       end
     end
     for a,b in pairs(NotUsedSets[set.setID].sources) do setSource = a; break; end
-    local _, _, _, _, icon = GetItemInfoInstant(C_TransmogCollection.GetSourceInfo(setSource).itemID);
+    local _, _, _, _, icon = C_Item.GetItemInfoInstant(C_TransmogCollection.GetSourceInfo(setSource).itemID);
     button.Icon:SetTexture(icon);
     button.IconCover:SetShown(true);
   else
@@ -3192,7 +3247,7 @@ local function SetButtonData(button, set)
   button.Icon:SetDesaturation((setInfo.topCollected == 0) and 1 or 0);
   button.Favorite:SetShown(set.favoriteSetID);
   button.TradingPost:SetShown(set.tp);
-  button.Remix:SetShown(set.isRemix or set.hasRemix);
+  button.Remix:SetShown(set.isRemix or set.hasRemix or set.variantRemix);
   
   --Setting if special apperance needed for newness or selectedness.
   if NotUsedSets[set.setID] == nil then 
@@ -4111,7 +4166,7 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.keepShown = false;
     info.isRadio = true;
   
-    local _,_,armortype = GetItemInfoInstant(165459);
+    local _,_,armortype = C_Item.GetItemInfoInstant(165459);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(4, false, true);
@@ -4119,7 +4174,7 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ArmorTypeRadioIsChecked[4] end
     SetsFrame.FilterDropDown:AddLine(info);
     
-    local _,_,armortype = GetItemInfoInstant(166566);
+    local _,_,armortype = C_Item.GetItemInfoInstant(166566);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(3, false, true);
@@ -4127,7 +4182,7 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ArmorTypeRadioIsChecked[3] end
     SetsFrame.FilterDropDown:AddLine(info);
     
-    local _,_,armortype = GetItemInfoInstant(165072);
+    local _,_,armortype = C_Item.GetItemInfoInstant(165072);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(2, false, true);
@@ -4135,7 +4190,7 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ArmorTypeRadioIsChecked[2] end
     SetsFrame.FilterDropDown:AddLine(info);
     
-    local _,_,armortype = GetItemInfoInstant(165435);
+    local _,_,armortype = C_Item.GetItemInfoInstant(165435);
     info.text = armortype;
     info.func = function(_, _, _, value)
             InitializeSets(1, false, true);
@@ -4856,8 +4911,8 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
   --  addonsLoaded[3] = true;
     
   if pEvent == "PLAYER_LOGIN" then
-    if not IsAddOnLoaded("Blizzard_Collections") then
-      LoadAddOn("Blizzard_Collections")
+    if not C_AddOns.IsAddOnLoaded("Blizzard_Collections") then
+      C_AddOns.LoadAddOn("Blizzard_Collections")
     end
     
     if (ExS_Settings == nil) then
@@ -5097,6 +5152,16 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
         OpenVariantSetsDropDown();
         WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
       end)
+      
+    --large remix icon in bottom right corner of frame
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon = CreateFrame("frame", nil, WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetPoint("BOTTOMRIGHT",WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame,"BOTTOMRIGHT",-2,1);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetSize(200,200);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon.Icon = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:CreateTexture(nil, "BACKGROUND", nil, -2);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon.Icon:SetAllPoints();
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetFrameLevel(4);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_large.tga]]);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon.Icon:SetAlpha(0.2);
 
     app.SetsFrame = SetsFrame;
 

@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- 	Leatrix Maps 10.2.32 (6th June 2024)
+	-- 	Leatrix Maps 10.2.33 (12th June 2024)
 	----------------------------------------------------------------------
 
 	-- 10:Func, 20:Comm, 30:Evnt, 40:Panl
@@ -12,7 +12,7 @@
 	local LeaMapsLC, LeaMapsCB, LeaConfigList = {}, {}, {}
 
 	-- Version
-	LeaMapsLC["AddonVer"] = "10.2.32"
+	LeaMapsLC["AddonVer"] = "10.2.33"
 
 	-- Get locale table
 	local void, Leatrix_Maps = ...
@@ -1062,9 +1062,18 @@
 			-- Create table to store revealed overlays
 			local overlayTextures = {}
 			local bfoverlayTextures = {}
+			local tex = {}
 
 			-- Function to refresh overlays (Blizzard_SharedMapDataProviders\MapExplorationDataProvider)
 			local function MapExplorationPin_RefreshOverlays(pin, fullUpdate)
+
+				if LeaMapsLC.NewPatch then
+					for k, v in pairs(tex) do
+						v:SetVertexColor(1, 1, 1, 1)
+					end
+					wipe(tex)
+				end
+
 				overlayTextures = {}
 				local mapID = WorldMapFrame.mapID; if not mapID then return end
 				local artID = C_Map.GetMapArtID(mapID); if not artID or not Leatrix_Maps["Reveal"][artID] then return end
@@ -1116,6 +1125,9 @@
 							end
 							for k = 1, numTexturesWide do
 								local texture = pin.overlayTexturePool:Acquire()
+								if LeaMapsLC.NewPatch then
+									tinsert(tex, texture)
+								end
 								if ( k < numTexturesWide ) then
 									texturePixelWidth = TILE_SIZE_WIDTH
 									textureFileWidth = TILE_SIZE_WIDTH
@@ -1161,8 +1173,18 @@
 				pin.overlayTexturePool.resetterFunc = TexturePool_ResetVertexColor
 			end
 
+			local bftex = {}
+
 			-- Repeat refresh overlays function for Battlefield map
 			local function bfMapExplorationPin_RefreshOverlays(pin, fullUpdate)
+
+				if LeaMapsLC.NewPatch then
+					for k, v in pairs(bftex) do
+						v:SetVertexColor(1, 1, 1, 1)
+					end
+					wipe(bftex)
+				end
+
 				bfoverlayTextures = {}
 				local mapID = BattlefieldMapFrame.mapID; if not mapID then return end
 				local artID = C_Map.GetMapArtID(mapID); if not artID or not Leatrix_Maps["Reveal"][artID] then return end
@@ -1214,6 +1236,9 @@
 							end
 							for k = 1, numTexturesWide do
 								local texture = pin.overlayTexturePool:Acquire()
+								if LeaMapsLC.NewPatch then
+									tinsert(bftex, texture)
+								end
 								if ( k < numTexturesWide ) then
 									texturePixelWidth = TILE_SIZE_WIDTH
 									textureFileWidth = TILE_SIZE_WIDTH
@@ -1261,15 +1286,6 @@
 			LeaMapsLC:MakeSL(tintFrame, "tintGreen", "Green", "Drag to set the amount of green.", 0, 1, 0.1, 36, -202, "%.1f")
 			LeaMapsLC:MakeSL(tintFrame, "tintBlue", "Blue", "Drag to set the amount of blue.", 0, 1, 0.1, 206, -142, "%.1f")
 			LeaMapsLC:MakeSL(tintFrame, "tintAlpha", "Opacity", "Drag to set the opacity.", 0.1, 1, 0.1, 206, -202, "%.1f")
-
-			if LeaMapsLC.NewPatch then
-				-- Disable tint option and hide show unexplored areas configuration button
-				LeaMapsLC["RevTint"] = "Off"
-				LeaMapsDB["RevTint"] = "Off"
-				LeaMapsLC:LockItem(LeaMapsCB["RevTint"], true)
-				LeaMapsCB["RevTint"].tiptext = LeaMapsCB["RevTint"].tiptext .. "|n|n|cff00AAFF" .. L["Not currently available."]
-				LeaMapsCB["RevTintBtn"]:Hide()
-			end
 
 			-- Add preview color block
 			local prvTitle = LeaMapsLC:MakeWD(tintFrame, "Preview", 386, -130); prvTitle:Hide()
@@ -1535,7 +1551,7 @@
 			pTex:SetTexCoord(0, 1, 1, 0)
 
 			-- LeaMapsLC.DF: Block taint in 10.0.02 when closing keybindings panel
-			expTitle:SetText("Dragonflight")
+			expTitle:SetText("Dragonflight & The War Within")
 			local category = Settings.RegisterCanvasLayoutCategory(interPanel, "Leatrix Maps")
 			Settings.RegisterAddOnCategory(category)
 

@@ -1,8 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0909,
-["LastPlayerFullName"] = "Onifade-Nemesis",
-["AutoSelectScales"] = true,
+["LastVersion"] = 2.091,
 ["ItemLevels"] = {
 {
 ["ID"] = 193692,
@@ -91,6 +89,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:180663::::::::60:104::11:1:6706:2:9:55:28:1337:::::|h[War Scholar's Bonesaw]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Onifade-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DRUID",

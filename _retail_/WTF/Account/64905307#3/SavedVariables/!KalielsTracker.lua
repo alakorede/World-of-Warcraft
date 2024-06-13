@@ -113,12 +113,12 @@ KalielsTrackerDB = {
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
-[70702] = {
-["title"] = "Continued Waygate Exploration",
-["zone"] = "The Waking Shores",
-["level"] = 59,
-["startMapID"] = 0,
+[62723] = {
+["title"] = "Bolstering Bastion",
+["zone"] = "Bastion",
+["level"] = 63,
 ["isCalling"] = false,
+["startMapID"] = 0,
 },
 [40525] = {
 ["title"] = "Getting the Band Back Together",
@@ -127,12 +127,12 @@ KalielsTrackerDB = {
 ["isCalling"] = false,
 ["startMapID"] = 2094,
 },
-[62723] = {
-["title"] = "Bolstering Bastion",
-["zone"] = "Bastion",
-["level"] = 63,
-["isCalling"] = false,
+[70702] = {
+["title"] = "Continued Waygate Exploration",
+["zone"] = "The Waking Shores",
+["level"] = 59,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [57639] = {
 ["title"] = "The Legend of Korrak",
@@ -667,12 +667,12 @@ KalielsTrackerDB = {
 ["quests"] = {
 ["num"] = 11,
 ["cache"] = {
-[77813] = {
-["title"] = "Lightning Strikes",
-["zone"] = "Dragon Isles",
-["level"] = 60,
+[29575] = {
+["title"] = "Undercutting the Competition",
+["zone"] = "Mana-Tombs",
+["level"] = 30,
 ["isCalling"] = false,
-["startMapID"] = 0,
+["startMapID"] = 272,
 },
 [29573] = {
 ["title"] = "Safety is Job One",
@@ -688,10 +688,10 @@ KalielsTrackerDB = {
 ["isCalling"] = false,
 ["startMapID"] = 0,
 },
-[75833] = {
-["title"] = "Report to the Trading Post",
-["zone"] = "Trading Post",
-["level"] = 61,
+[77813] = {
+["title"] = "Lightning Strikes",
+["zone"] = "Dragon Isles",
+["level"] = 60,
 ["isCalling"] = false,
 ["startMapID"] = 0,
 },
@@ -702,10 +702,10 @@ KalielsTrackerDB = {
 ["isCalling"] = false,
 ["startMapID"] = 0,
 },
-[71149] = {
-["title"] = "Continued Waygate Exploration",
-["zone"] = "The Waking Shores",
-["level"] = 64,
+[76159] = {
+["title"] = "Report to the Trading Post",
+["zone"] = "Trading Post",
+["level"] = 63,
 ["isCalling"] = false,
 ["startMapID"] = 0,
 },
@@ -730,12 +730,12 @@ KalielsTrackerDB = {
 ["isCalling"] = false,
 ["startMapID"] = 0,
 },
-[29575] = {
-["title"] = "Undercutting the Competition",
-["zone"] = "Mana-Tombs",
-["level"] = 30,
+[75833] = {
+["title"] = "Report to the Trading Post",
+["zone"] = "Trading Post",
+["level"] = 61,
 ["isCalling"] = false,
-["startMapID"] = 272,
+["startMapID"] = 0,
 },
 [65991] = {
 ["title"] = "Time for a Reckoning",
@@ -751,19 +751,19 @@ KalielsTrackerDB = {
 ["isCalling"] = false,
 ["startMapID"] = 272,
 },
-[76159] = {
-["title"] = "Report to the Trading Post",
-["zone"] = "Trading Post",
-["level"] = 63,
-["isCalling"] = false,
-["startMapID"] = 0,
-},
 [72664] = {
 ["title"] = "Eggs in Abundance",
 ["zone"] = "Little Scales Daycare",
 ["level"] = 64,
 ["isCalling"] = false,
 ["startMapID"] = 2022,
+},
+[71149] = {
+["title"] = "Continued Waygate Exploration",
+["zone"] = "The Waking Shores",
+["level"] = 64,
+["isCalling"] = false,
+["startMapID"] = 0,
 },
 },
 },
@@ -1879,21 +1879,20 @@ KalielsTrackerDB = {
 },
 ["Córsega - Nemesis"] = {
 ["quests"] = {
-["num"] = 10,
 ["cache"] = {
 [76317] = {
 ["title"] = "Call of the Dream",
 ["zone"] = "Guardians of the Dream",
 ["level"] = 70,
-["isCalling"] = false,
 ["startMapID"] = 1978,
+["isCalling"] = false,
 },
 [72135] = {
 ["title"] = "Neltharus: Secrets Within",
 ["zone"] = "Dungeon",
 ["level"] = 70,
-["isCalling"] = false,
 ["startMapID"] = 2080,
+["isCalling"] = false,
 },
 [71146] = {
 ["title"] = "Continued Waygate Exploration",
@@ -1941,8 +1940,8 @@ KalielsTrackerDB = {
 ["title"] = "The Harbinger",
 ["zone"] = "Hunt for the Harbinger",
 ["level"] = 70,
-["isCalling"] = false,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [76159] = {
 ["title"] = "Report to the Trading Post",
@@ -1955,10 +1954,11 @@ KalielsTrackerDB = {
 ["title"] = "Story of a Spectacular Victory",
 ["zone"] = "The Azure Span",
 ["level"] = 70,
-["isCalling"] = false,
 ["startMapID"] = 2075,
+["isCalling"] = false,
 },
 },
+["num"] = 4,
 },
 },
 ["Vacalactika - Nemesis"] = {
@@ -2534,21 +2534,20 @@ KalielsTrackerDB = {
 },
 ["Onifade - Nemesis"] = {
 ["quests"] = {
-["num"] = 6,
 ["cache"] = {
 [62159] = {
 ["title"] = "Aiding the Shadowlands",
 ["zone"] = "Oribos",
 ["level"] = 60,
-["isCalling"] = false,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [72192] = {
 ["title"] = "Halls of Infusion: Entropy to Order",
 ["zone"] = "Dungeon",
 ["level"] = 68,
-["isCalling"] = false,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [71149] = {
 ["title"] = "Continued Waygate Exploration",
@@ -2561,8 +2560,8 @@ KalielsTrackerDB = {
 ["title"] = "Bolstering Bastion",
 ["zone"] = "Bastion",
 ["level"] = 68,
-["isCalling"] = false,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [71146] = {
 ["title"] = "Continued Waygate Exploration",
@@ -2571,12 +2570,12 @@ KalielsTrackerDB = {
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
-[62763] = {
-["title"] = "Support the Court",
-["zone"] = "Ardenweald",
-["level"] = 68,
-["isCalling"] = false,
+[71150] = {
+["title"] = "Continued Waygate Exploration",
+["zone"] = "The Waking Shores",
+["level"] = 60,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [71148] = {
 ["title"] = "Continued Waygate Exploration",
@@ -2592,12 +2591,12 @@ KalielsTrackerDB = {
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
-[62778] = {
-["title"] = "Reinforcing Revendreth",
-["zone"] = "Revendreth",
+[62763] = {
+["title"] = "Support the Court",
+["zone"] = "Ardenweald",
 ["level"] = 68,
-["isCalling"] = false,
 ["startMapID"] = 0,
+["isCalling"] = false,
 },
 [71151] = {
 ["title"] = "Continued Waygate Exploration",
@@ -2613,9 +2612,9 @@ KalielsTrackerDB = {
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
-[75833] = {
-["title"] = "Report to the Trading Post",
-["zone"] = "Trading Post",
+[77813] = {
+["title"] = "Lightning Strikes",
+["zone"] = "Dragon Isles",
 ["level"] = 60,
 ["isCalling"] = false,
 ["startMapID"] = 0,
@@ -2624,20 +2623,6 @@ KalielsTrackerDB = {
 ["title"] = "Rallying Maldraxxus",
 ["zone"] = "Maldraxxus",
 ["level"] = 68,
-["isCalling"] = false,
-["startMapID"] = 0,
-},
-[77813] = {
-["title"] = "Lightning Strikes",
-["zone"] = "Dragon Isles",
-["level"] = 60,
-["isCalling"] = false,
-["startMapID"] = 0,
-},
-[71150] = {
-["title"] = "Continued Waygate Exploration",
-["zone"] = "The Waking Shores",
-["level"] = 60,
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
@@ -2648,7 +2633,22 @@ KalielsTrackerDB = {
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
+[62778] = {
+["title"] = "Reinforcing Revendreth",
+["zone"] = "Revendreth",
+["level"] = 68,
+["startMapID"] = 0,
+["isCalling"] = false,
 },
+[75833] = {
+["title"] = "Report to the Trading Post",
+["zone"] = "Trading Post",
+["level"] = 60,
+["isCalling"] = false,
+["startMapID"] = 0,
+},
+},
+["num"] = 6,
 },
 },
 ["Eshy - Goldrinn"] = {
@@ -3584,6 +3584,13 @@ KalielsTrackerDB = {
 ["startMapID"] = 0,
 ["isCalling"] = false,
 },
+[77813] = {
+["title"] = "Golpe com raio",
+["zone"] = "Ilhas do Dragão",
+["level"] = 60,
+["startMapID"] = 0,
+["isCalling"] = false,
+},
 [70541] = {
 ["title"] = "Estratégias de caça: companheiro",
 ["zone"] = "Chapada Ohn'ahrana",
@@ -3597,13 +3604,6 @@ KalielsTrackerDB = {
 ["zone"] = "O Amor Está no Ar",
 ["level"] = 29,
 ["startMapID"] = 84,
-["isCalling"] = false,
-},
-[77813] = {
-["title"] = "Golpe com raio",
-["zone"] = "Ilhas do Dragão",
-["level"] = 60,
-["startMapID"] = 0,
 ["isCalling"] = false,
 },
 },
@@ -3699,7 +3699,7 @@ KalielsTrackerDB = {
 },
 ["Chicoxavier - Nemesis"] = {
 ["quests"] = {
-["num"] = 33,
+["num"] = 32,
 ["cache"] = {
 [71151] = {
 ["title"] = "Continued Waygate Exploration",
@@ -4566,8 +4566,9 @@ KalielsTrackerDB = {
 },
 },
 ["Batezu - Nemesis"] = {
+["collapsed"] = true,
 ["quests"] = {
-["num"] = 19,
+["num"] = 16,
 ["cache"] = {
 [77813] = {
 ["title"] = "Lightning Strikes",
@@ -4660,13 +4661,6 @@ KalielsTrackerDB = {
 ["isCalling"] = false,
 ["startMapID"] = 2112,
 },
-[72953] = {
-["title"] = "Zskera Vault: Az",
-["zone"] = "The Forbidden Reach",
-["level"] = 70,
-["isCalling"] = false,
-["startMapID"] = 2151,
-},
 [66166] = {
 ["title"] = "Eyes and Ears",
 ["zone"] = "Thaldraszus",
@@ -4739,7 +4733,6 @@ KalielsTrackerDB = {
 },
 },
 },
-["collapsed"] = true,
 },
 ["Kuradis - Nemesis"] = {
 ["collapsed"] = true,

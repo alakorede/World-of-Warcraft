@@ -2,13 +2,13 @@
 GTFOData = {
 ["TrivialDamagePercent"] = 2,
 ["Active"] = true,
-["EnableVibration"] = false,
 ["SoundOverrides"] = {
 "",
 "",
 "",
 "",
 },
+["UnmuteMode"] = false,
 ["IgnoreSpellList"] = {
 },
 ["TestMode"] = false,
@@ -27,6 +27,6 @@ true,
 ["GarroshDesecrated"] = false,
 ["HagaraWateryEntrenchment"] = false,
 },
-["UnmuteMode"] = false,
+["EnableVibration"] = false,
 ["TrivialMode"] = false,
 }

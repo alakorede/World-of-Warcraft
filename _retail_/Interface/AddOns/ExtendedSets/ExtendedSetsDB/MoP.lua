@@ -18,35 +18,83 @@ local db = {
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
-{421,52387,61896}, --Siege of Orgrimmar, Mail/Shaman, Chest/Robe (Normal)
-{422,52632,61898}, --Siege of Orgrimmar, Mail/Shaman, Chest/Robe (Mythic)
-{423,52273,61897}, --Siege of Orgrimmar, Mail/Shaman, Chest/Robe (LFR)
+{489,61767,196577},--SoO, Paladin, Chest/Robe (lfr)--remix
+{487,57097,196593},--SoO, Paladin, Chest/Robe (normal)--remix
+{488,61768,196584},--SoO, Paladin, Chest/Robe (mythic)--remix
+{488,61567,196586},--SoO, Paladin, funky pants (mythic)
 
-{557,52453,57092}, --Siege of Orgrimmar, Leather/Druid, Chest/Robe (Normal)
+{421,57093,52382}, --Siege of Orgrimmar, Mail/Shaman, Chest/Robe (Normal)
+{421,57082,52380},--SoO,Shaman,Pants/skirt (normal)
+{422,61764,52625}, --Siege of Orgrimmar, Mail/Shaman, Chest/Robe (Mythic)
+{422,61097,52623},--SoO,Shaman,Pants/skirt (mythic)
+{423,61763,52292}, --Siege of Orgrimmar, Mail/Shaman, Chest/Robe (LFR)
+{423,61096,52265},--SoO,Shaman,Pants/skirt (lfr)
 
-{425,51060,51055}, --Throne of Thunder, Mail/Shaman, Chest/Robe (Heroic)
-{424,50062,50057}, --Throne of Thunder, Mail/Shaman, Chest/Robe (Normal)
-{426,50436,50431}, --Throne of Thunder, Mail/Shaman, Chest/Robe (LFR)
+{559,61909,195840}, --Siege of Orgrimmar, Leather/Druid, Chest/Robe (lfr)
+{557,61908,57092}, --Siege of Orgrimmar, Leather/Druid, Chest/Robe (Normal)
+{559,52295,195846}, --Siege of Orgrimmar, Leather/Druid, pants/skirt (lfr)--remix
+{558,52710,195847}, --Siege of Orgrimmar, Leather/Druid, pants/skirt (mythic)--remix
 
-{510,50015,49631}, --Throne of Thunder, Leather/Monk, Chest/Robe (Normal)
-{512,50389,50218}, --Throne of Thunder, Leather/Monk, Chest/Robe (LFR)
-{511,51013,50842}, --Throne of Thunder, Leather/Monk, Chest/Robe (Heroic)
+{508,61059,195935},--SoO, Monk, Chest/Robe (LFR)--remix
+{508,61824,52351},--SoO, Monk, Pants/skirt (lfr)
+{506,57090,195938},--SoO, Monk, Chest/Robe (normal)--remix
+{506,61823,52424},--SoO, Monk, pants/skirt (normal)
+{507,61060,195951},--SoO, Monk, Chest/Robe (mythic)--remix
+{507,61825,52675},--SoO, Monk, Pants/skirt (mythic)
 
-{338,44975,44970}, --Heart of Fear, Mail/Shaman, Chest/Robe (Heroic)
-{427,43647,46990}, --Heart of Fear, Mail/Shaman, Chest/Robe (Normal)
-{428,44527,44697}, --Heart of Fear, Mail/Shaman, Chest/Robe (LFR)
+
+{525,61007,218931},--SoO, Cloth/Mage, Chest/Robe (LFR)--remix
+{525,61007,52359},--SoO, Cloth/Mage, non-puffy robe (LFR)
+{523,57095,52939},--SoO,Cloth/Mage,non-puffy robe(Normal)
+{523,57095,218932},--SoO,Cloth/Mage,Chest/Robe(Normal)--remix
+{524,61008,218924},--SoO,Cloth/Mage,Chest/Robe(Mythic)--remix
+{524,61008,52681},--SoO,Cloth/Mage,non-puffy robe(Mythic)
+
+{457,61854,218936},--SoO,Cloth/Warlock,Chest/robe(LFR)--remix
+
+{425,51050,51055}, --Throne of Thunder, Mail/Shaman, Chest/Robe (Heroic)
+{424,50052,50057}, --Throne of Thunder, Mail/Shaman, Chest/Robe (Normal)
+{426,50426,50431}, --Throne of Thunder, Mail/Shaman, Chest/Robe (LFR)
+
+{510,49623,49631}, --Throne of Thunder, Leather/Monk, Chest/Robe (Normal)
+{512,50204,50218}, --Throne of Thunder, Leather/Monk, Chest/Robe (LFR)
+{511,50828,50842}, --Throne of Thunder, Leather/Monk, Chest/Robe (Heroic)
+
+{562,50198,218941},--ToT, Leather/Druid, Chest/Robe (lfr)--remix
+{560,49619,195837},--ToT, Leather/Druid, Chest/Robe (Normal)--remix
+{561,50822,218940},--ToT, Leather/Druid, Chest/Robe (heroic)--remix
+
+{459,50196,195596},--ToT, Cloth/Warlock, No puffy robes (LFR)
+{458,49615,218935},--ToT, Cloth/Warlock, chest/robe (normal)--remix
+{460,50820,218934},--ToT, Cloth/Warlock, chest/robe (heroic)--remix
+
+{338,46656,44970}, --Heart of Fear, Mail/Shaman, Chest/Robe (Heroic)
+{427,46613,46990}, --Heart of Fear, Mail/Shaman, Chest/Robe (Normal)
+{428,46687,44697}, --Heart of Fear, Mail/Shaman, Chest/Robe (LFR)
 
 {579,44556,46685}, --Heart of Fear, Plate/DK, Chest/Robe (LFR)
 {578,43676,46992}, --Heart of Fear, Plate/DK, Chest/Robe (Normal)
 {580,44780,46654}, --Heart of Fear, Plate/DK, Chest/Robe (Heroic)
 
+{565,44713,195792},--HoF,Leather/Druid,Chest/Robe (LFR)--remix
+{563,44317,195808},--HoF,Leather/Druid,Chest/Robe (normal)--remix
+{564,44828,218939},--HoF,Leather/Druid,Chest/Robe (heroic)--remix
+
+{462,44756,218933},--HoF, Cloth/Warlock, Chest/Robe (LFR)--remix
+{462,44756,44610},--HoF, Cloth/Warlock, puffy robes (LFR)
+
 {277,43265,47810}, --Season 12, Plate/Paladin, Chest/Robe (Gladiator)
 {196,43002,48776}, --Season 12, Plate/Paladin, Chest/Robe (Honor)
+{1060,43435,43434}, --Season 12, Plate/Paladin, Chest/Robe (Elite)
 
 {3372,41890,41825}, --MoP: World Cloth 1 (green)
 {3365,62542,41841}, --MoP:Dungeon Cloth (original)
 {3369,45298,41833}, --MoP:Dungeon Cloth (purple)
 {3408,45528,42736}, --Mop:world mail 1 (green/kilt)
+}
+
+local altNoteDB = {
+[3440] = "Ensemble on <Normal Raid Apparel> Vendor",
 }
 
 local altLabelDB = {
@@ -138,6 +186,65 @@ local setsFlagRemix = {
 [3440] = true, --Battleplate of Resounding Rings
 }
 
+-- --flags for sets that include a remix item
+-- [489] = true,
+-- [487] = true,
+-- [488] = true,
+-- [559] = true,
+-- [558] = true,
+-- [508] = true,
+-- [506] = true,
+-- [507] = true,
+-- [525] = true,
+-- [523] = true,
+-- [524] = true,
+-- [457] = true,
+-- [562] = true,
+-- [560] = true,
+-- [561] = true,
+-- [458] = true,
+-- [460] = true,
+-- [565] = true,
+-- [563] = true,
+-- [564] = true,
+-- [462] = true,
+-- }
+
+local itemsFlagRemix = {
+--[setID] = { [sourceID] = true, },
+[489] = {[196577] = true, },--SoO, Paladin, Chest/Robe (lfr)
+[487] = {[196593] = true, },--SoO, Paladin, Chest/Robe (normal)
+[488] = {[196584] = true, },--SoO, Paladin, Chest/Robe (mythic)
+
+[559] = {[195846] = true, }, --Siege of Orgrimmar, Leather/Druid, pants/skirt (lfr)
+[558] = {[195847] = true, }, --Siege of Orgrimmar, Leather/Druid, pants/skirt (mythic)
+
+[508] = {[195935] = true, },--SoO, Monk, Chest/Robe (LFR)
+[506] = {[195938] = true, },--SoO, Monk, Chest/Robe (normal)
+[507] = {[195951] = true, },--SoO, Monk, Chest/Robe (mythic)
+
+[525] = {[218931] = true, },--SoO, Cloth/Mage, Chest/Robe (LFR)
+[523] = {[218932] = true, },--SoO,Cloth/Mage,Chest/Robe(Normal)
+[524] = {[218924] = true, },--SoO,Cloth/Mage,Chest/Robe(Mythic)
+
+[457] = {[218936] = true, },--SoO,Cloth/Warlock,Chest/robe(LFR)
+
+[562] = {[218941] = true, },--ToT, Leather/Druid, Chest/Robe (lfr)
+[560] = {[195837] = true, },--ToT, Leather/Druid, Chest/Robe (Normal)
+[561] = {[218940] = true, },--ToT, Leather/Druid, Chest/Robe (heroic)
+
+[458] = {[218935] = true, },--ToT, Cloth/Warlock, chest/robe (normal)
+[460] = {[218934] = true, },--ToT, Cloth/Warlock, chest/robe (heroic)
+
+[565] = {[195792] = true, },--HoF,Leather/Druid,Chest/Robe (LFR)
+[563] = {[195808] = true, },--HoF,Leather/Druid,Chest/Robe (normal)
+[564] = {[218939] = true, },--HoF,Leather/Druid,Chest/Robe (heroic)
+
+[462] = {[218933] = true, },--HoF, Cloth/Warlock, Chest/Robe (LFR)
+
+[3415] = { [196194] = true, }, --Sun Pearl Clothing, Yellow, Shoes
+}
+
 --Legion alt appearances at 35559
 
 function AddToCollection()
@@ -183,6 +290,8 @@ app.altAppearancesDB[expansionID] = altAppearancesDB;
 app.altLabelDB[expansionID] = altLabelDB;
 app.altLabelAppendDB[expansionID] = altLabelAppendDB;
 app.mopRemixFlag = setsFlagRemix;
+app.mopItemRemixFlag = itemsFlagRemix;
+app.altNoteDB[expansionID] = altNoteDB;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};

@@ -1171,6 +1171,11 @@ local function FillDetails(weaponSourceID, aSource)
   end
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label:SetText(label);
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetText(WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][6]);
+  
+  local isRemix = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][5] == "MoP Remix Exclusive" or
+                  WeaponSetsCollectionFrame.GetCurrentSet().isAllRemix;
+  WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetShown(isRemix);
+  WeaponSetsCollectionFrame.RightFrame.RemixIcon:SetShown(isRemix);
 end
 
 --Equip a weapon, if the current model is the player
@@ -1762,8 +1767,8 @@ end
 WeaponSetsCollectionFrame:RegisterEvent("PLAYER_LOGIN");
 WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
   if pEvent == "PLAYER_LOGIN" then
-    if not IsAddOnLoaded("Blizzard_Collections") then
-      LoadAddOn("Blizzard_Collections")
+    if not C_AddOns.IsAddOnLoaded("Blizzard_Collections") then
+      C_AddOns.LoadAddOn("Blizzard_Collections")
     end
     
     factionNames.playerFaction, _ = UnitFactionGroup('player');
@@ -2363,7 +2368,27 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame:SetScript("OnHyperlinkLeave", function(self, link, text)
                 GameTooltip:Hide();
               end)
-              
+    
+    --remix icon below the item icon
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon = CreateFrame("frame", nil, WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetPoint("LEFT",WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame,"RIGHT",2,0);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetSize(25,25);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon.Icon = WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:CreateTexture(nil, "OVERLAY");
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon.Icon:SetAllPoints();
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon.Icon:SetDrawLayer("OVERLAY", 2);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_vert.tga]]);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon.Icon:SetAlpha(0.5);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon.Text = "MoP Remix Exclusive";
+    
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetScript("OnEnter", function(self)
+              GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+              GameTooltip_SetTitle(GameTooltip, self.Text, NORMAL_FONT_COLOR, true);
+              GameTooltip:Show();
+        end);
+    WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetScript("OnLeave", function(self)
+              GameTooltip:Hide();
+        end);
+    
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Name = WeaponSetsCollectionFrame.RightFrame.DetailsFrame:CreateFontString(nil, "OVERLAY", "Fancy24Font");
     Mixin(WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Name,ShrinkUntilTruncateFontStringMixin);
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Name:SetFontObjectsToTry("Fancy24Font","Fancy16Font");
@@ -2375,6 +2400,16 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetPoint("TOP", WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label, "BOTTOM", 0, -5);
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetTextColor(.55,.55,.7);
     
+    --large remix icon in bottom right corner of frame
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon = CreateFrame("frame", nil, WeaponSetsCollectionFrame.RightFrame);
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon:SetPoint("BOTTOMRIGHT",WeaponSetsCollectionFrame.RightFrame,"BOTTOMRIGHT",-2,1);
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon:SetSize(200,200);
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon = WeaponSetsCollectionFrame.RightFrame.RemixIcon:CreateTexture(nil, "OVERLAY");
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon:SetAllPoints();
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon:SetDrawLayer("BACKGROUND", 2);
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_large.tga]]);
+    WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon:SetAlpha(0.2);
+
     ----test temp
     --WeaponSetsCollectionFrame.RightFrame.indexText = WeaponSetsCollectionFrame.RightFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
     --WeaponSetsCollectionFrame.RightFrame.indexText:SetPoint("RIGHT",WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame,"LEFT",-15,0);

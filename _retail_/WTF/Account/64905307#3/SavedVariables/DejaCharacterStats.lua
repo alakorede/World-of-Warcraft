@@ -15892,63 +15892,9 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Muruatan:Nemesis:3",
 },
-["Radagashy:Goldrinn:2"] = {
+["Onifade:Nemesis:3"] = {
 {
 ["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "CorruptionCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CR_CORRUPTION",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "CR_CORRUPTION_RESISTANCE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "CR_TOTAL_CORRUPTION",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "ConquestCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "RATING_2V2",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "RATING_3V3",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "RATING_RBG",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "CONQUEST_PROGRESS",
-["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "GeneralCategory",
@@ -15991,9 +15937,6 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
 },
 {
 ["statKey"] = "OffenseCategory",
@@ -16060,21 +16003,28 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "DefenseCategory",
-["hidden"] = true,
+},
+{
+["statKey"] = "ARMOR",
 },
 {
 ["statKey"] = "DODGE",
 ["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "PARRY",
 ["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "BLOCK",
-["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "STAGGER",
+["roles"] = {
+"TANK",
+},
+["hidden"] = false,
 ["hideAt"] = 0,
 },
 {
@@ -16132,14 +16082,37 @@ DCS_ClassSpecDB = {
 ["hidden"] = true,
 },
 {
-["statKey"] = "STAGGER",
-["hidden"] = true,
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
 ["hideAt"] = 0,
-["roles"] = {
-"TANK",
 },
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
 },
-["uniqueKey"] = "Radagashy:Goldrinn:2",
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Onifade:Nemesis:3",
 },
 ["Sharashy:Nemesis:2"] = {
 {
@@ -16593,9 +16566,63 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Bearbull:Nemesis:4",
 },
-["Onifade:Nemesis:3"] = {
+["Radagashy:Goldrinn:2"] = {
 {
 ["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "CorruptionCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CR_CORRUPTION",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "CR_CORRUPTION_RESISTANCE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "CR_TOTAL_CORRUPTION",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "ConquestCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "RATING_2V2",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "RATING_3V3",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "RATING_RBG",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "CONQUEST_PROGRESS",
+["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "GeneralCategory",
@@ -16638,6 +16665,9 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
 },
 {
 ["statKey"] = "OffenseCategory",
@@ -16704,28 +16734,21 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "DefenseCategory",
-},
-{
-["statKey"] = "ARMOR",
+["hidden"] = true,
 },
 {
 ["statKey"] = "DODGE",
 ["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "PARRY",
 ["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "BLOCK",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "STAGGER",
-["roles"] = {
-"TANK",
-},
-["hidden"] = false,
+["hidden"] = true,
 ["hideAt"] = 0,
 },
 {
@@ -16783,37 +16806,14 @@ DCS_ClassSpecDB = {
 ["hidden"] = true,
 },
 {
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
+["statKey"] = "STAGGER",
+["hidden"] = true,
 ["hideAt"] = 0,
+["roles"] = {
+"TANK",
 },
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
 },
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Onifade:Nemesis:3",
+["uniqueKey"] = "Radagashy:Goldrinn:2",
 },
 ["Artheras:Goldrinn:3"] = {
 {
@@ -17488,7 +17488,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Muligan:Nemesis:5",
 },
-["Sharan:Nemesis:1"] = {
+["Hanushy:Nemesis:5"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -17677,11 +17677,11 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAGGER",
-["hidden"] = true,
-["hideAt"] = 0,
 ["roles"] = {
 "TANK",
 },
+["hidden"] = true,
+["hideAt"] = 0,
 },
 {
 ["statKey"] = "HonorCategory",
@@ -17714,7 +17714,7 @@ DCS_ClassSpecDB = {
 ["statKey"] = "UserCat5",
 ["hidden"] = true,
 },
-["uniqueKey"] = "Sharan:Nemesis:1",
+["uniqueKey"] = "Hanushy:Nemesis:5",
 },
 ["Córsega:Nemesis:2"] = {
 {
@@ -18834,7 +18834,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Alexshy:Goldrinn:5",
 },
-["Migoshy:Goldrinn:5"] = {
+["Nostradamus:Goldrinn:1"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -18868,6 +18868,7 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STRENGTH",
+["hidden"] = true,
 },
 {
 ["statKey"] = "AGILITY",
@@ -18875,7 +18876,6 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "INTELLECT",
-["hidden"] = true,
 },
 {
 ["statKey"] = "STAMINA",
@@ -18888,29 +18888,32 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
 },
 {
 ["statKey"] = "ATTACK_AP",
+["hidden"] = true,
 },
 {
 ["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
 },
 {
 ["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
 },
 {
 ["statKey"] = "SPELLPOWER",
-["hidden"] = true,
 },
 {
 ["statKey"] = "MANAREGEN",
-["hidden"] = true,
 },
 {
 ["statKey"] = "ENERGY_REGEN",
 },
 {
 ["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
 },
 {
 ["statKey"] = "FOCUS_REGEN",
@@ -19020,11 +19023,11 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAGGER",
+["hideAt"] = 0,
+["hidden"] = true,
 ["roles"] = {
 "TANK",
 },
-["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "HonorCategory",
@@ -19057,7 +19060,7 @@ DCS_ClassSpecDB = {
 ["statKey"] = "UserCat5",
 ["hidden"] = true,
 },
-["uniqueKey"] = "Migoshy:Goldrinn:5",
+["uniqueKey"] = "Nostradamus:Goldrinn:1",
 },
 ["Eshy:Nemesis:1"] = {
 {
@@ -20470,7 +20473,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Radagashy:Goldrinn:4",
 },
-["Nostradamus:Goldrinn:1"] = {
+["Migoshy:Goldrinn:5"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -20504,7 +20507,6 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STRENGTH",
-["hidden"] = true,
 },
 {
 ["statKey"] = "AGILITY",
@@ -20512,6 +20514,7 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "INTELLECT",
+["hidden"] = true,
 },
 {
 ["statKey"] = "STAMINA",
@@ -20524,32 +20527,29 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
 },
 {
 ["statKey"] = "ATTACK_AP",
-["hidden"] = true,
 },
 {
 ["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
 },
 {
 ["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
 },
 {
 ["statKey"] = "SPELLPOWER",
+["hidden"] = true,
 },
 {
 ["statKey"] = "MANAREGEN",
+["hidden"] = true,
 },
 {
 ["statKey"] = "ENERGY_REGEN",
 },
 {
 ["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
 },
 {
 ["statKey"] = "FOCUS_REGEN",
@@ -20659,11 +20659,11 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAGGER",
-["hideAt"] = 0,
-["hidden"] = true,
 ["roles"] = {
 "TANK",
 },
+["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "HonorCategory",
@@ -20696,7 +20696,7 @@ DCS_ClassSpecDB = {
 ["statKey"] = "UserCat5",
 ["hidden"] = true,
 },
-["uniqueKey"] = "Nostradamus:Goldrinn:1",
+["uniqueKey"] = "Migoshy:Goldrinn:5",
 },
 ["Kirashy:Dentarg:1"] = {
 {
@@ -21207,7 +21207,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Trystam:Goldrinn:1",
 },
-["Hanushy:Nemesis:5"] = {
+["Aishy:Nemesis:2"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -21245,10 +21245,10 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "AGILITY",
-["hidden"] = true,
 },
 {
 ["statKey"] = "INTELLECT",
+["hidden"] = true,
 },
 {
 ["statKey"] = "STAMINA",
@@ -21261,25 +21261,23 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
 },
 {
 ["statKey"] = "ATTACK_AP",
-["hidden"] = true,
 },
 {
 ["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
 },
 {
 ["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
 },
 {
 ["statKey"] = "SPELLPOWER",
+["hidden"] = true,
 },
 {
 ["statKey"] = "MANAREGEN",
+["hidden"] = true,
 },
 {
 ["statKey"] = "ENERGY_REGEN",
@@ -21399,8 +21397,8 @@ DCS_ClassSpecDB = {
 ["roles"] = {
 "TANK",
 },
-["hidden"] = true,
 ["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "HonorCategory",
@@ -21414,26 +21412,21 @@ DCS_ClassSpecDB = {
 ["hideAt"] = 0,
 },
 {
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
 ["statKey"] = "UserCat4",
-["hidden"] = true,
 },
 {
 ["statKey"] = "UserCat5",
-["hidden"] = true,
 },
-["uniqueKey"] = "Hanushy:Nemesis:5",
+{
+["statKey"] = "UserCat3",
+},
+{
+["statKey"] = "UserCat2",
+},
+{
+["statKey"] = "UserCat1",
+},
+["uniqueKey"] = "Aishy:Nemesis:2",
 },
 ["Akishy:Goldrinn:1"] = {
 {
@@ -21656,7 +21649,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Akishy:Goldrinn:1",
 },
-["Aishy:Nemesis:2"] = {
+["Sharan:Nemesis:1"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -21694,10 +21687,10 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "AGILITY",
+["hidden"] = true,
 },
 {
 ["statKey"] = "INTELLECT",
-["hidden"] = true,
 },
 {
 ["statKey"] = "STAMINA",
@@ -21710,23 +21703,25 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
 },
 {
 ["statKey"] = "ATTACK_AP",
+["hidden"] = true,
 },
 {
 ["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
 },
 {
 ["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
 },
 {
 ["statKey"] = "SPELLPOWER",
-["hidden"] = true,
 },
 {
 ["statKey"] = "MANAREGEN",
-["hidden"] = true,
 },
 {
 ["statKey"] = "ENERGY_REGEN",
@@ -21843,11 +21838,11 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAGGER",
+["hidden"] = true,
+["hideAt"] = 0,
 ["roles"] = {
 "TANK",
 },
-["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "HonorCategory",
@@ -21861,21 +21856,26 @@ DCS_ClassSpecDB = {
 ["hideAt"] = 0,
 },
 {
-["statKey"] = "UserCat4",
-},
-{
-["statKey"] = "UserCat5",
-},
-{
-["statKey"] = "UserCat3",
+["statKey"] = "UserCat1",
+["hidden"] = true,
 },
 {
 ["statKey"] = "UserCat2",
+["hidden"] = true,
 },
 {
-["statKey"] = "UserCat1",
+["statKey"] = "UserCat3",
+["hidden"] = true,
 },
-["uniqueKey"] = "Aishy:Nemesis:2",
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Sharan:Nemesis:1",
 },
 ["Sharashy:Nemesis:5"] = {
 {

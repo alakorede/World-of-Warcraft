@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0908,
+["LastVersion"] = 2.091,
+["LastPlayerFullName"] = "Batezu-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -89,9 +91,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193710::::::::69:267::17:3:7978:7975:6652:2:28:2155:9:69:::::|h[Spellboon Saber]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Batezu-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -145,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "WARLOCK",

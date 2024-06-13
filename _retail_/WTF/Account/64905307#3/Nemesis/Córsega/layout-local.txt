@@ -123,8 +123,8 @@ FrameLevel: 1
 Anchor: BOTTOM
 X: -155
 Y: 159
-W: 351
-H: 40
+W: 255
+H: 32
 Frame: ItemRefTooltip
 FrameLevel: 1
 Anchor: CENTER

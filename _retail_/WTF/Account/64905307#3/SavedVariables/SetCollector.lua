@@ -46,7 +46,7 @@ SetCollectorDB = {
 ["Vacalactika - Nemesis"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
 ["Eshy - Steamwheedle Cartel"] = "Default",
-["Batezu - Nemesis"] = "Default",
+["Satishy - Goldrinn"] = "Default",
 ["Jeshy - Nemesis"] = "Default",
 ["Onifade - Nemesis"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
@@ -60,15 +60,15 @@ SetCollectorDB = {
 ["Sashy - Goldrinn"] = "Default",
 ["Sharashy - Nemesis"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
-["Sharan - Goldrinn"] = "Default",
-["Keishy - Aerie Peak"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Hanushy - Nemesis"] = "Default",
 ["Dishy - Nemesis"] = "Default",
-["Wishy - Nemesis"] = "Default",
+["Keishy - Aerie Peak"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Hanushy - Nemesis"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Migoshy - Goldrinn"] = "Default",
-["Satishy - Goldrinn"] = "Default",
+["Sharan - Goldrinn"] = "Default",
 ["Trystam - Nemesis"] = "Default",
 ["Aishy - Nemesis"] = "Default",
 ["Yashy - Nemesis"] = "Default",
@@ -248715,20 +248715,20 @@ SetCollectorDB = {
 ["setID"] = 246,
 ["baseSetId"] = 246,
 },
-["SET 2880"] = {
-["collection"] = "RAID",
-["setID"] = 2880,
-["baseSetId"] = 2862,
-},
-["SET 2155"] = {
-["collection"] = "RAID",
-["setID"] = 2155,
-["baseSetId"] = 2154,
+["SET 1287"] = {
+["collection"] = "PVP",
+["setID"] = 1287,
+["baseSetId"] = 1258,
 },
 ["SET 1188"] = {
 ["collection"] = "PVP",
 ["setID"] = 1188,
 ["baseSetId"] = 82,
+},
+["SET 2155"] = {
+["collection"] = "RAID",
+["setID"] = 2155,
+["baseSetId"] = 2154,
 },
 ["SET 1425"] = {
 ["collection"] = "DUNGEON",
@@ -249075,25 +249075,25 @@ SetCollectorDB = {
 ["setID"] = 2034,
 ["baseSetId"] = 2032,
 },
-["SET 1154"] = {
+["SET 208"] = {
 ["collection"] = "PVP",
-["setID"] = 1154,
-["baseSetId"] = 130,
+["setID"] = 208,
+["baseSetId"] = 208,
 },
 ["SET 2356"] = {
 ["collection"] = "RAID",
 ["setID"] = 2356,
 ["baseSetId"] = 2354,
 },
+["SET 1154"] = {
+["collection"] = "PVP",
+["setID"] = 1154,
+["baseSetId"] = 130,
+},
 ["SET 250"] = {
 ["collection"] = "PVP",
 ["setID"] = 250,
 ["baseSetId"] = 250,
-},
-["SET 208"] = {
-["collection"] = "PVP",
-["setID"] = 208,
-["baseSetId"] = 208,
 },
 ["SET 1989"] = {
 ["collection"] = "RAID",
@@ -249205,25 +249205,25 @@ SetCollectorDB = {
 ["setID"] = 2916,
 ["baseSetId"] = 2915,
 },
-["SET 258"] = {
+["SET 1975"] = {
 ["collection"] = "PVP",
-["setID"] = 258,
-["baseSetId"] = 258,
+["setID"] = 1975,
+["baseSetId"] = 1969,
 },
 ["SET 53"] = {
 ["collection"] = "PVP",
 ["setID"] = 53,
 ["baseSetId"] = 122,
 },
-["SET 1150"] = {
-["collection"] = "PVP",
-["setID"] = 1150,
-["baseSetId"] = 134,
+["SET 2049"] = {
+["collection"] = "EXPANSION",
+["setID"] = 2049,
+["baseSetId"] = 2047,
 },
-["SET 1975"] = {
+["SET 258"] = {
 ["collection"] = "PVP",
-["setID"] = 1975,
-["baseSetId"] = 1969,
+["setID"] = 258,
+["baseSetId"] = 258,
 },
 ["SET 1231"] = {
 ["collection"] = "PVP",
@@ -250000,10 +250000,10 @@ SetCollectorDB = {
 ["setID"] = 860,
 ["baseSetId"] = 860,
 },
-["SET 1517"] = {
+["SET 2883"] = {
 ["collection"] = "RAID",
-["setID"] = 1517,
-["baseSetId"] = 1516,
+["setID"] = 2883,
+["baseSetId"] = 2863,
 },
 ["SET 132"] = {
 ["collection"] = "PVP",
@@ -250330,10 +250330,10 @@ SetCollectorDB = {
 ["setID"] = 487,
 ["baseSetId"] = 487,
 },
-["SET 2024"] = {
-["collection"] = "EXPANSION",
-["setID"] = 2024,
-["baseSetId"] = 2023,
+["SET 1405"] = {
+["collection"] = "PVP",
+["setID"] = 1405,
+["baseSetId"] = 1405,
 },
 ["SET 1325"] = {
 ["collection"] = "RAID",
@@ -250375,11 +250375,6 @@ SetCollectorDB = {
 ["setID"] = 688,
 ["baseSetId"] = 687,
 },
-["SET 581"] = {
-["collection"] = "RAID",
-["setID"] = 581,
-["baseSetId"] = 581,
-},
 ["SET 401"] = {
 ["collection"] = "PVP",
 ["setID"] = 401,
@@ -250389,6 +250384,11 @@ SetCollectorDB = {
 ["collection"] = "RAID",
 ["setID"] = 180,
 ["baseSetId"] = 179,
+},
+["SET 581"] = {
+["collection"] = "RAID",
+["setID"] = 581,
+["baseSetId"] = 581,
 },
 ["SET 602"] = {
 ["collection"] = "PVP",
@@ -250760,10 +250760,10 @@ SetCollectorDB = {
 ["setID"] = 2163,
 ["baseSetId"] = 2162,
 },
-["SET 1473"] = {
-["collection"] = "RAID",
-["setID"] = 1473,
-["baseSetId"] = 1472,
+["SET 1400"] = {
+["collection"] = "PVP",
+["setID"] = 1400,
+["baseSetId"] = 1400,
 },
 ["SET 1811"] = {
 ["collection"] = "RAID",
@@ -250775,10 +250775,10 @@ SetCollectorDB = {
 ["setID"] = 1480,
 ["baseSetId"] = 1480,
 },
-["SET 1400"] = {
-["collection"] = "PVP",
-["setID"] = 1400,
-["baseSetId"] = 1400,
+["SET 2706"] = {
+["collection"] = "EXPANSION",
+["setID"] = 2706,
+["baseSetId"] = 2706,
 },
 ["SET 1129"] = {
 ["collection"] = "PVP",
@@ -250865,20 +250865,20 @@ SetCollectorDB = {
 ["setID"] = 852,
 ["baseSetId"] = 852,
 },
-["SET 1204"] = {
+["SET 200"] = {
 ["collection"] = "PVP",
-["setID"] = 1204,
-["baseSetId"] = 108,
+["setID"] = 200,
+["baseSetId"] = 200,
 },
 ["SET 2651"] = {
 ["collection"] = "RAID",
 ["setID"] = 2651,
 ["baseSetId"] = 2613,
 },
-["SET 2156"] = {
-["collection"] = "RAID",
-["setID"] = 2156,
-["baseSetId"] = 2154,
+["SET 1204"] = {
+["collection"] = "PVP",
+["setID"] = 1204,
+["baseSetId"] = 108,
 },
 ["SET 1301"] = {
 ["collection"] = "RAID",
@@ -250945,10 +250945,10 @@ SetCollectorDB = {
 ["setID"] = 969,
 ["baseSetId"] = 969,
 },
-["SET 200"] = {
-["collection"] = "PVP",
-["setID"] = 200,
-["baseSetId"] = 200,
+["SET 2156"] = {
+["collection"] = "RAID",
+["setID"] = 2156,
+["baseSetId"] = 2154,
 },
 ["SET 212"] = {
 ["collection"] = "PVP",
@@ -250995,10 +250995,10 @@ SetCollectorDB = {
 ["setID"] = 1155,
 ["baseSetId"] = 129,
 },
-["SET 2706"] = {
-["collection"] = "EXPANSION",
-["setID"] = 2706,
-["baseSetId"] = 2706,
+["SET 1473"] = {
+["collection"] = "RAID",
+["setID"] = 1473,
+["baseSetId"] = 1472,
 },
 ["SET 914"] = {
 ["collection"] = "RAID",
@@ -251245,15 +251245,15 @@ SetCollectorDB = {
 ["setID"] = 338,
 ["baseSetId"] = 427,
 },
-["SET 1405"] = {
-["collection"] = "PVP",
-["setID"] = 1405,
-["baseSetId"] = 1405,
-},
 ["SET 456"] = {
 ["collection"] = "RAID",
 ["setID"] = 456,
 ["baseSetId"] = 455,
+},
+["SET 2024"] = {
+["collection"] = "EXPANSION",
+["setID"] = 2024,
+["baseSetId"] = 2023,
 },
 ["SET 2327"] = {
 ["collection"] = "TRADING",
@@ -251425,15 +251425,15 @@ SetCollectorDB = {
 ["setID"] = 1055,
 ["baseSetId"] = 281,
 },
-["SET 2883"] = {
-["collection"] = "RAID",
-["setID"] = 2883,
-["baseSetId"] = 2863,
-},
 ["SET 1468"] = {
 ["collection"] = "DUNGEON",
 ["setID"] = 1468,
 ["baseSetId"] = 1468,
+},
+["SET 1517"] = {
+["collection"] = "RAID",
+["setID"] = 1517,
+["baseSetId"] = 1516,
 },
 ["SET 272"] = {
 ["collection"] = "PVP",
@@ -251900,10 +251900,10 @@ SetCollectorDB = {
 ["setID"] = 1073,
 ["baseSetId"] = 234,
 },
-["SET 2049"] = {
-["collection"] = "EXPANSION",
-["setID"] = 2049,
-["baseSetId"] = 2047,
+["SET 1150"] = {
+["collection"] = "PVP",
+["setID"] = 1150,
+["baseSetId"] = 134,
 },
 ["SET 373"] = {
 ["collection"] = "PVP",
@@ -252210,10 +252210,10 @@ SetCollectorDB = {
 ["setID"] = 2929,
 ["baseSetId"] = 2929,
 },
-["SET 1287"] = {
-["collection"] = "PVP",
-["setID"] = 1287,
-["baseSetId"] = 1258,
+["SET 2880"] = {
+["collection"] = "RAID",
+["setID"] = 2880,
+["baseSetId"] = 2862,
 },
 ["SET 950"] = {
 ["collection"] = "PVP",

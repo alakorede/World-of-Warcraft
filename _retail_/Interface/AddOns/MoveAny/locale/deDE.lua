@@ -101,7 +101,7 @@ function MoveAny:LangdeDE()
 		["LID_MAINMENUEXPBAR"] = "Erfahrungsleiste",
 		["LID_REPUTATIONWATCHBAR"] = "Rufleiste",
 		["LID_UIWIDGETPOWERBAR"] = "Machtleiste (Bossleiste, Elanleiste, Dunkelmond-Jahrmarkt, ...)",
-		["LID_POWERBAR"] = "Power Bar (Encounters, ...)",
+		["LID_POWERBAR"] = "Machtleiste (Boss Begegnungen, ...)",
 		["LID_COUNT"] = "Anzahl",
 		["LID_ROWS"] = "Reihen",
 		["LID_SPACING"] = "Abstand (Lücke)",
@@ -209,6 +209,9 @@ function MoveAny:LangdeDE()
 		["LID_REQUIRESFOR"] = "Benötigt: %s",
 		["LID_REQUIREDFOR"] = "Benötigt für: %s",
 		["LID_RESETELEMENT"] = "Element resetten",
+		["LID_TARGETFRAMEDEBUFF1"] = "Zielfenster Debuff 1",
+		["LID_FOCUSFRAMEDEBUFF1"] = "Fokusfenster Debuff 1",
+		["LID_TARGETFRAMETOTBUFF1"] = "Ziel des Zielfenster Buff 1",
 	}
 
 	if D4:GetWoWBuild() ~= "RETAIL" then

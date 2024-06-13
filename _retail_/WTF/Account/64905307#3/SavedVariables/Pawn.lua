@@ -11,7 +11,7 @@ PawnCommon = {
 ["Debug"] = false,
 ["ColorTooltipBorder"] = true,
 ["ShowTooltipIcons"] = true,
-["LastVersion"] = 2.0909,
+["LastVersion"] = 2.091,
 ["ShowSocketingAdvisor"] = true,
 ["ShowSpecIcons"] = true,
 ["IgnoreGemsWhileLeveling"] = true,
@@ -73,10 +73,10 @@ PawnCommon = {
 ["\"MrRobot\":PRIEST1"] = {
 ["IconTexturePath"] = 135940,
 ["PerCharacterOptions"] = {
-["Nostradamus-Goldrinn"] = {
+["Chicoxavier-Nemesis"] = {
 ["Visible"] = true,
 },
-["Chicoxavier-Nemesis"] = {
+["Nostradamus-Goldrinn"] = {
 ["Visible"] = true,
 },
 ["Molosso-Nemesis"] = {
@@ -560,10 +560,10 @@ PawnCommon = {
 ["\"MrRobot\":WARRIOR2"] = {
 ["IconTexturePath"] = 132347,
 ["PerCharacterOptions"] = {
-["Sharashy-Nemesis"] = {
+["Skoshy-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Skoshy-Goldrinn"] = {
+["Sharashy-Nemesis"] = {
 ["Visible"] = true,
 },
 ["Turoshy-Nemesis"] = {
@@ -692,10 +692,10 @@ PawnCommon = {
 ["Dishy-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Onifade-Nemesis"] = {
+["Artheras-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Artheras-Goldrinn"] = {
+["Onifade-Nemesis"] = {
 ["Visible"] = true,
 },
 },

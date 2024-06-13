@@ -884,9 +884,9 @@ MATAB = {
 },
 ["CharacterFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 599,
-["PX"] = 71,
 ["RE"] = "BOTTOMLEFT",
+["PY"] = 746,
+["PX"] = 1503,
 },
 ["GroupLootHistoryFrame"] = {
 },
@@ -914,9 +914,9 @@ MATAB = {
 },
 ["ProfessionsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 356,
+["PX"] = 1080,
+["PY"] = 354,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 472,
 },
 ["SettingsPanel"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -962,9 +962,9 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 341,
-["PY"] = 726,
 ["RE"] = "BOTTOMLEFT",
+["PY"] = 462,
+["PX"] = 466,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -998,15 +998,17 @@ MATAB = {
 },
 ["ContainerFrame10"] = {
 },
+["ArchaeologyFrame"] = {
+},
 ["GarrisonCapacitiveDisplayFrame"] = {
 },
 ["ScrappingMachineFrame"] = {
 },
 ["SpellBookFrame"] = {
 ["AN"] = "BOTTOMLEFT",
+["RE"] = "BOTTOMLEFT",
 ["PY"] = 562,
 ["PX"] = 212,
-["RE"] = "BOTTOMLEFT",
 },
 ["StaticPopup2"] = {
 },
@@ -1034,9 +1036,9 @@ MATAB = {
 },
 ["CollectionsJournal"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 439.66552734375,
+["PX"] = 1090,
+["PY"] = 555,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 70.16646575927734,
 },
 ["OpenMailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
