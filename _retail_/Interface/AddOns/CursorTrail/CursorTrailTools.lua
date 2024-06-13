@@ -1,5 +1,4 @@
 --[[---------------------------------------------------------------------------
-    Addon:  CursorTrail
     File:   CursorTrailTools.lua
     Desc:   This contains non-essential functions that were useful during
             the development of this addon, and may be useful in the future
@@ -9,6 +8,7 @@
 local kAddonFolderName, private = ...
 
 --[[                       Saved (Persistent) Variables                      ]]
+CursorTrail_Config = CursorTrail_Config or {}
 CursorTrail_PlayerConfig = CursorTrail_PlayerConfig or {}
 
 --[[                       Aliases to Globals                                ]]
@@ -19,7 +19,6 @@ local C_Timer = _G.C_Timer
 local CreateFrame = _G.CreateFrame
 local CopyTable = _G.CopyTable
 local date = _G.date
-local debugstack = _G.debugstack
 local floor = _G.floor
 local GetBuildInfo = _G.GetBuildInfo
 local GetCurrentResolution = _G.GetCurrentResolution
@@ -29,6 +28,7 @@ local GetScreenHeight = _G.GetScreenHeight
 local GetScreenWidth = _G.GetScreenWidth
 local GetTime = _G.GetTime
 local geterrorhandler = _G.geterrorhandler
+local InCombatLockdown = _G.InCombatLockdown
 local max =_G.math.max
 local min =_G.math.min
 local next = _G.next
@@ -55,7 +55,7 @@ setfenv(1, _G.CursorTrail)  -- Everything after this uses our namespace rather t
 --[[                       Helper Functions                                  ]]
 
 -------------------------------------------------------------------------------
-msgBox = private.Controls.MsgBox
+msgBox = private.UDControls.MsgBox
 
 -------------------------------------------------------------------------------
 function printMsg(msg)
@@ -73,13 +73,13 @@ end
 -------------------------------------------------------------------------------
 function dumpObject(obj, heading, indents)
     local dataType
- 
+
     indents = indents or ""
     heading = heading or "Object Dump"
     if (heading ~= nil and heading ~= "") then print(indents .. heading .. " ...") end
     if (obj == nil) then print(indents .. "Object is NIL."); return end
     indents = indents .. "    "
- 
+
     local count = 0
     local varName, value
     for varName, value in pairs(obj) do
@@ -104,13 +104,13 @@ end
 --~ -------------------------------------------------------------------------------
 --~ function dumpObjectSorted(obj, heading, indents)
 --~     local dataType
---~  
+--~
 --~     indents = indents or ""
 --~     heading = heading or "Object Dump"
 --~     if (heading ~= nil and heading ~= "") then print(indents .. heading .. " ...") end
 --~     if (obj == nil) then print(indents .. "Object is NIL."); return end
 --~     indents = indents .. "    "
---~  
+--~
 --~     local count = 0
 --~     local varName, value
 --~     local lines = {}
@@ -131,8 +131,8 @@ end
 --~             if (dataType=="table") then dumpObject(value, varName, indents) end
 --~         end
 --~     end
---~     if (count == 0) then 
---~         print(indents .. "Object is empty.") 
+--~     if (count == 0) then
+--~         print(indents .. "Object is empty.")
 --~     else
 --~         table.sort(lines)
 --~         for i = 1, #lines do print(lines[i]) end
@@ -182,6 +182,82 @@ function str_split(str, delimiter)
     end
     ----for i = 1, #parts do print("Part#"..i.." = ".. parts[i]) end  -- Dump results.
     return parts
+end
+
+-------------------------------------------------------------------------------
+function strContains(str, sub)  -- Based on kgriffs/string_util.lua on GitHub.
+    return str:find(sub, 1, true) ~= nil
+end
+
+--~ -------------------------------------------------------------------------------
+--~ function strStartsWith(str, start)  -- Based on kgriffs/string_util.lua on GitHub.
+--~     return str:sub(1, #start) == start
+--~ end
+
+--~ -------------------------------------------------------------------------------
+--~ function strEndsWith(str, ending)  -- Based on kgriffs/string_util.lua on GitHub.
+--~     return ending == "" or str:sub(-#ending) == ending
+--~ end
+
+--~ -------------------------------------------------------------------------------
+--~ function strInsert(str, pos, text)  -- Based on kgriffs/string_util.lua on GitHub.
+--~     return str:sub(1, pos - 1) .. text .. str:sub(pos)
+--~ end
+
+--~ -------------------------------------------------------------------------------
+--~ function strReplace(str, old, new)  -- Based on kgriffs/string_util.lua on GitHub.
+--~     local s = str
+--~     local search_start_idx = 1
+
+--~     while true do
+--~         local start_idx, end_idx = s:find(old, search_start_idx, true)
+--~         if (not start_idx) then
+--~             break
+--~         end
+
+--~         local postfix = s:sub(end_idx + 1)
+--~         s = s:sub(1, (start_idx - 1)) .. new .. postfix
+
+--~         search_start_idx = -1 * postfix:len()
+--~     end
+
+--~     return s
+--~ end
+
+-------------------------------------------------------------------------------
+function staticClearTable(tbl)
+  -- Removes all non-table keys from the table without changing the memory location
+  -- of the table or any of its sub-tables.  (Sub-tables will remain, but will be empty.)
+    assert(type(tbl) == "table")
+    for k, v in pairs(tbl) do
+        if type(v) == "table" then
+            staticClearTable(v)
+        else
+            tbl[k] = nil
+        end
+    end
+end
+
+-------------------------------------------------------------------------------
+function staticCopyTable(src, dest, debugPath)
+  -- Copies values of keys from src table to dest table without changing
+  -- the memory address of the dest table or any of its sub-tables.
+  -- The dest table keys are cleared first using staticClearTable().
+  -- Note: src and dest must have same sub-table structure!  Else table addresses would differ.
+  --       For tables that don't have the same sub-table structure, use CopyTable().
+    debugPath = debugPath or "dest"
+    assert(type(src) == "table")
+    assert(type(dest) == "table", "Destination missing sub-table '"..debugPath.."'.")
+    if src == dest then return end  -- Avoid copying a table to itself.  (Not sure what would happen.)
+
+    staticClearTable(dest)
+    for k, v in pairs(src) do
+        if type(v) == "table" then
+            staticCopyTable( v, dest[k], debugPath.."."..k )
+        else
+            dest[k] = v
+        end
+    end
 end
 
 -------------------------------------------------------------------------------
@@ -260,13 +336,23 @@ function dbg(msg)
     ----local timestamp = GetTime()
     ----local timestamp = date("%Y-%m-%d %H:%M:%S")
     local timestamp = date("%I:%M:%S")
-    print("|c00ff3030["..timestamp.."] "..(kAddonName or "")..": "..(msg or "nil").."|r")  -- Color format = xRGB.
+    print("|c00ff3030["..timestamp.."] "..(kAddonFolderName or "")..": "..(msg or "nil").."|r")  -- Color format = xRGB.
 end
 
 -------------------------------------------------------------------------------
 function errHandler(msg)  -- Used by xpcall().  See also the Blizzard function, geterrorhandler().
     dbg(msg)
     print("Call Stack ...\n" .. debugstack(2, 3, 2))
+end
+
+-------------------------------------------------------------------------------
+function propagateKeyboardInput(frame, bPropagate)  -- Safely propagates keyboard input.
+-- NOTE: Since patch 10.1.5 (2023-07-11), SetPropagateKeyboardInput() is restricted and
+--       may no longer be called by insecure code while in combat.
+    if not InCombatLockdown() then
+        return frame:SetPropagateKeyboardInput(bPropagate)
+    end
+    ----print(kAddonAlertHeading.."WARNING - Unable to propagate keyboard input during combat!")
 end
 
 --[[                       Text Frame Functions                              ]]
@@ -306,14 +392,14 @@ end
 --~     TextFrameText = TextFrame:CreateFontString(nil,"OVERLAY", "GameFontNormal")
 --~     TextFrameText:SetPoint("CENTER", TextFrame, "CENTER", 0, 0)
 --~     TextFrameText:SetJustifyH("CENTER")
---~     TextFrameText:SetJustifyV("CENTER")
+--~     TextFrameText:SetJustifyV("MIDDLE")
 --~ end
 
 -------------------------------------------------------------------------------
 function DebugText(txt, width, height)
     if not DbgFrame then
         -- Create the frame.
-        DbgFrame = CreateFrame("frame", kAddonName.."DebugFrame", nil, "BackdropTemplate")
+        DbgFrame = CreateFrame("frame", kAddonFolderName.."DebugFrame", nil, "BackdropTemplate")
         DbgFrame:Hide()
         DbgFrame:SetPoint("CENTER", UIParent, "CENTER")
         DbgFrame:SetFrameStrata("TOOLTIP")
@@ -357,10 +443,10 @@ end
 
 -------------------------------------------------------------------------------
 function showErrMsg(msg)
--- REQUIRES:    'kAddonName' to have been set to the addon's name.  i.e. First line
---              of your lua file should look like this -->  local kAddonName = ...
+-- REQUIRES:    'kAddonFolderName' to have been set to the addon's name.  i.e. First line
+--              of your lua file should look like this -->  local kAddonFolderName = ...
     local bar = ":::::::::::::"
-    msgBox( bar.." [ "..kAddonName.." ] "..bar.."\n\n"..msg,
+    msgBox( bar.." [ "..kAddonFolderName.." ] "..bar.."\n\n"..msg,
             nil, nil,
             nil, nil,
             nil, nil, true, SOUNDKIT.ALARM_CLOCK_WARNING_3 )
@@ -369,22 +455,27 @@ end
 --[[                          Tool Functions                                 ]]
 
 -------------------------------------------------------------------------------
-function HandleToolSwitches(params)
+function HandleToolSwitches(params)  --[ Keywords: Slash Commands ]
     local paramAsNum = tonumber(params)
 
+    -------------------------------------------------------------------------------
     if (params == "screen") then
         Screen_Dump()
+    -------------------------------------------------------------------------------
     elseif (params == "camera") then
         Camera_Dump()
+    -------------------------------------------------------------------------------
     elseif (params == "config") then
         dumpObject(PlayerConfig, "CONFIG INFO")
+    -------------------------------------------------------------------------------
     elseif (params == "model") then
         CursorModel_Dump()
+    -------------------------------------------------------------------------------
     ----elseif (params == "cal") then
     ----    Calibrating_DoNextStep()
     ----elseif (params == "track") then
     ----    TrackPosition()
-    -----------------------------------------------------
+    -------------------------------------------------------------------------------
     -- NOTE: You can also enable the switch "kEditBaseValues" in the main file and then use
     --       the arrow keys to alter the values below (while the UI is displayed).
     --       Arrow keys (no modifier key) change BaseOfsX and BaseOfsY.
@@ -418,13 +509,13 @@ function HandleToolSwitches(params)
     -----------------------------------------------------
     elseif (params:sub(1,3) == "mdl") then
         local modelID = tonumber(params:sub(4))
-        local msg = kAddonName
+        local msg = kAddonFolderName
         if (modelID == nil) then
             modelID = CursorModel:GetModelFileID()
             msg = msg .. " model ID is " .. (modelID or "NIL") .. "."
         else
             local origBaseScale = CursorModel.Constants.BaseScale
-            local tmpConfig = CopyTable(kDefaultConfig)
+            local tmpConfig = CopyTable( kDefaultConfig[kDefaultConfigKey] )
             tmpConfig.ModelID = modelID
             CursorTrail_Load(tmpConfig)
             CursorTrail_Show()
@@ -435,30 +526,153 @@ function HandleToolSwitches(params)
             msg = msg .. " changed model ID to " .. (modelID or "NIL") .. "."
         end
         print(msg)
+    -------------------------------------------------------------------------------
     elseif (params:sub(1,3) == "pos") then  -- Set position (0,0), (1,1), (2,2), etc.
         local delta = tonumber(params:sub(4))
         CursorModel:SetPosition(0, delta, delta)
-    elseif (params:sub(1,9) == "testmodel") then
-        local modelID = tonumber(params:sub(10))
-        if not TestCursorModel then
-            TestCursorModel = CreateFrame("PlayerModel", nil, kGameFrame)
+    -------------------------------------------------------------------------------
+    elseif (params:sub(1,9) == "testmodel" or params:sub(1,2) == "tm") then  -- /ct testmodel <modelID> <scale> <rotationX>
+        local rad, CreateVector3D = Globals.rad, Globals.CreateVector3D
+        local cmd, modelID, scale, rotX, rotY, rotZ, ofsX, ofsY, ofsZ = string.split(" ", params)
+        if modelID then modelID = tonumber(modelID) end
+        if scale then scale = tonumber(scale) else scale=1 end
+        if rotX then rotX = tonumber(rotX) else rotX=0 end
+        if rotY then rotY = tonumber(rotY) else rotY=0 end
+        if rotZ then rotZ = tonumber(rotZ) else rotZ=0 end
+        if ofsX then ofsX = tonumber(ofsX) else ofsX=0 end
+        if ofsY then ofsY = tonumber(ofsY) else ofsY=0 end
+        if ofsZ then ofsZ = tonumber(ofsZ) else ofsZ=0 end
+
+        local useSetTransform = true
+        if cmd == "tmn" then useSetTransform = false end -- Specify command "tmn" instead of "tm" to not use SetTransform.
+
+        -- Some preset test models.
+        if modelID == -1 then
+            modelID=166498; scale=0.004  -- (Electric, Blue (Long))
+        elseif modelID == -2 then
+            modelID=166492; scale=0.032  -- (Electric, Blue)
+        elseif modelID == -3 then
+            modelID=166538; scale=0.0162  -- (Burning Cloud, Blue)
+        elseif modelID == -4 then
+            modelID=975870; scale=0.011; rotX=180; rotY=100; rotZ=270  -- (Swirling, Purple & Orange)  /ct tm 975870 0.011 180 100 270
+        elseif modelID == -5 then
+            modelID=667272; scale=0.005  -- (<New> Green Ring)
+        elseif modelID == -6 then
+            if useSetTransform then
+                modelID=343980; scale=0.022; rotX=270  -- (Cat Mark, Green)  /ct tm 343980 0.022 270
+            else
+                modelID=343980; scale=0.06; ofsY=21  -- (Cat Mark, Green)  /ct tmn 343980 0.06 0 0 0 0 21
+            end
+        elseif modelID == -7 then
+            modelID=1029302; scale=0.004  -- (Beam Target)
+        else
+            assert(modelID == nil or modelID >= 0)
         end
-        TestCursorModel:SetAllPoints()
-        TestCursorModel:SetFrameStrata("TOOLTIP")
-        TestCursorModel:ClearModel()
-        TestCursorModel:SetScale(1)  -- Very important!
-        TestCursorModel:SetPosition(0, 0, 0)  -- Very Important!
-        TestCursorModel:SetAlpha(1)
-        TestCursorModel:SetFacing(0)
-        if modelID then TestCursorModel:SetModel(modelID) end
-        TestCursorModel:SetCustomCamera(1) -- Very important! (Note: CursorModel:SetCamera(1) doesn't work here.)
-    ----elseif (paramAsNum ~= nil) then
-    ----    print(kAddonName .. " processed number", paramAsNum, ".")
+
+        local debugHeader = "|cff00FFFFTestModel|r|cffFFFF00>|r  "
+        print(debugHeader..(modelID or "nil").."  scale:", scale, "  rot:", rotX, rotY, rotZ, "  ofs:", ofsX, ofsY, ofsZ)
+        rotX = rad(rotX); rotY = rad(rotY); rotZ = rad(rotZ)  -- Convert degrees to radians.
+
+        ----if TestModel then TestModel:ClearModel() end
+        if not TestModel then
+            TestModel = CreateFrame("PlayerModel", nil, kGameFrame)
+            TestModel:SetAllPoints()
+        end
+
+        local cameraID = 1 -- (0 is non movable.  1 can be rotated. Used by dressing room, character view, etc.  Other #s can be freely moved.)
+        TestModel:ClearModel()
+        TestModel:SetScale(1)
+        if not modelID then return true end  -- Done.
+
+        local modelX = (ScreenMidX + ofsX) / ScreenHypotenuse
+        local modelY = (ScreenMidY + ofsY) / ScreenHypotenuse
+        local modelZ = ofsZ
+
+        TestModel:SetAlpha(1)
+        TestModel:SetFrameStrata( CursorModel:GetFrameStrata() )
+        TestModel:UseModelCenterToTransform(true)
+        TestModel:SetKeepModelOnHide(true)
+        TestModel:Hide()  -- Prevents flickering when model is set.
+
+        TestModel.UseSetTransform = useSetTransform
+        TestModel.Scale = scale
+        TestModel.RotX = rotX; TestModel.RotY = rotY; TestModel.RotZ = rotZ
+        TestModel.OfsX = ofsX; TestModel.OfsY = ofsY; TestModel.OfsZ = ofsZ;
+
+----local posX, posY, posZ, yaw, pitch, roll, animId, animVariation, animFrame, centerModel = GetUICameraInfo(cameraID);
+----Globals.Model_ApplyUICamera(TestModel, cameraID)
+----vdt_dump({Globals.GetUICameraInfo(cameraID)}, "ck1")
+------TestModel:RefreshCamera()  <<< Clobbers your custom camera?
+----TestModel:SetCameraTarget(0,0,0);
+
+    local numTimes = (useSetTransform and 1) or 2  -- For some reason, have to do this part twice when using SetFacing/SetPitch/SetRoll.
+    for i = 1, numTimes do
+        TestModel:SetScale(1)  -- Very important!
+        TestModel:SetModel(modelID)
+        TestModel:SetCustomCamera(cameraID) -- Very important! (Note: SetCamera() doesn't work here.)
+
+        --'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ----local delay = 0.04  -- Need a 0.04 sec delay between SetModel() and SetTransform() calls.
+        if TestModel.UseSetTransform then
+            print(debugHeader.."Using SetTransform.")
+            --_________________________________________________________________
+            -- SetTransform()
+            --  PROS: Tracking mouse position is trivial.  (Might solve ultrawide monitor problems.)
+            --  CONS: Can't scale models as small as using SetScale(), and using
+            --        the Z offset to "scale" the model is complicated, requiring
+            --        varying changes to Y offset as well.
+            -- Note: SetTransform() requires a custom camera!  Use MakeCurrentCameraCustom() or SetCustomCamera().
+            --_________________________________________________________________
+            ----TestModel:SetCustomCamera(cameraID) -- Works, but HasCustomCamera() still returns false.  WTF?
+            ----TestModel:SetCamera(cameraID)
+            ----TestModel:MakeCurrentCameraCustom() -- Must use a custom camera when using SetTransform().
+            ----C_Timer.After(delay, function()  -- Required delay?
+                TestModel:SetTransform( CreateVector3D(modelX, modelY, modelZ),  -- (Position x,y,z)
+                                        CreateVector3D(rotX, rotY, rotZ),  scale)  -- (Rotation x,y,z) | Scale
+                TestModel:Show()
+            ----end) -- C_Timer
+            ----TestModel:SetCameraDistance(TestModel:GetCameraDistance()*3) -- Note: Requires a custom camera. --<<< NO EFFECT.
+        --'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        else -- Use SetFacing/SetPitch/SetRoll.  (Note: Require a non-custom camera.)
+            print(debugHeader.."Using SetFacing/SetPitch/SetRoll.")
+            --_________________________________________________________________
+            -- SetScale(), SetFacing(), SetPitch(), SetRoll()
+            --  PROS: Original implemention.  Can scale models smaller than SetTransform() can.
+            --  CONS: Difficult to keep model in sync with mouse position.
+            --        Complicated to add new models.
+            --_________________________________________________________________
+            TestModel:ClearTransform()
+            TestModel:SetScale(scale)
+            ----TestModel:SetModelScale(scale)
+            ----C_Timer.After(delay, function()  -- Required delay?
+                ----ofsX, ofsY, ofsZ = TestModel:TransformCameraSpaceToModelSpace(CreateVector3D(ofsX, ofsY, ofsZ)):GetXYZ()
+                TestModel:SetPosition(ofsZ, ofsX, ofsY)
+                TestModel:SetFacing(rotX)
+                TestModel:SetPitch(rotY)
+                TestModel:SetRoll(rotZ)
+
+                --TODO: Retest this ...
+                ----local lightValues = { omnidirectional = false, point = CreateVector3D(0, 0, 0), ambientIntensity = .7, ambientColor = CreateColor(1, 1, 1), diffuseIntensity = 0, diffuseColor = CreateColor(1, 1, 1) };
+                ----local enabled = true;
+                ----TestModel:SetLight(enabled, lightValues);
+                TestModel:Show()
+            ----end) -- C_Timer
+        end
+    end -- FOR
+        --'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ----vdt_dump(TestModel, "TestModel")
+        ----CursorModel_Dump("TEST MODEL INFO", TestModel)
+        ----C_Timer.After(0.5, function() CursorModel_Dump("TEST MODEL INFO (DELAYED)", TestModel) end)
+        ----Camera_Dump("TEST MODEL CAMERA INFO", TestModel)
+        ----C_Timer.After(0.5, function() Camera_Dump("TEST MODEL CAMERA INFO (DELAYED)", TestModel) end)
+    -------------------------------------------------------------------------------
     elseif (params == "fonts") then
-        private.Controls.DisplayAllFonts()
+        private.UDControls.DisplayAllFonts()
+    -------------------------------------------------------------------------------
     elseif (params == "bug") then  -- Cause a bug to test error reporting.
         xpcall(bogus_function, geterrorhandler())
         ----xpcall(bogus_function, errHandler)
+    -------------------------------------------------------------------------------
     else
         return false  -- 'params' was NOT handled by this function.
     end
@@ -470,7 +684,7 @@ end
 function CmdLineValue(name, val, plusOrMinus)
     val = tonumber(val)
     if (val == nil) then
-        print(kAddonName .. " "..name.." is", CursorModel.Constants[name], ".")
+        print(kAddonFolderName .. " "..name.." is", CursorModel.Constants[name], ".")
     else
         if (plusOrMinus == "+") then
             val = CursorModel.Constants[name] + val
@@ -491,7 +705,7 @@ function CmdLineValue(name, val, plusOrMinus)
 
         CursorModel.Constants[name] = val  -- Change the specified value.
         CursorTrail_ApplyModelSettings()   -- Apply the change.
-        print(kAddonName .. " changed "..name.." to", val, ".")
+        print(kAddonFolderName .. " changed "..name.." to", val, ".")
         ----if (name == "BaseScale") then CursorModel_Dump() end
     end
 end
@@ -502,9 +716,9 @@ function Screen_Dump(heading)
     local origGameFrame = kGameFrame
     local width, height
     local indents = "    "
-    
+
     print((heading or "SCREEN INFO") .. " ...")
-    
+
     if GetCurrentResolution then  -- Use old API?
         ----NOT WORKING CORRECTLY ANYMORE ...
         ----local currentResolutionIndex = GetCurrentResolution()
@@ -520,10 +734,10 @@ function Screen_Dump(heading)
 
     for i = 1, 2 do
         if (i == 1) then
-            print(indents.."-----[ WORLD FRAME ]-----")
+            print(indents.."-----[ WorldFrame ]-----")
             kGameFrame = WorldFrame
         else
-            print(indents.."-----[ UI PARENT FRAME ]-----")
+            print(indents.."-----[ UIParent ]-----")
             kGameFrame = UIParent
         end
 
@@ -545,32 +759,32 @@ function Screen_Dump(heading)
 end
 
 -------------------------------------------------------------------------------
-function Camera_Dump(heading)
-    assert(CursorModel)
-    local z, x, y = CursorModel:GetCameraPosition()
-    local tz, tx, ty = CursorModel:GetCameraTarget()
-
-    heading = heading or "CAMERA INFO (Distance/Yaw/Pitch)"
-    print( heading.." ..."
-            .."\n  Camera Position = "
-                ..round(z,3) -- Camera's distance from the view port?
-                .."  /  "..round(x,3)   -- Rotation around the z-axis.
-                .."  /  "..round(y,3)   -- Rotation around the y-axis.
-            .."\n  Camera Target    = "
-                ..round(tz,3)  -- Camera target's distance from the view port?
-                .."  /  "..round(tx,3)    -- Rotation around the z-axis.
-                .."  /  "..round(ty,3)    -- Rotation around the y-axis.
-            .."\n  Model Yaw (Left/Right) =", round(CursorModel:GetFacing(),3)
-            .."\n  Model Pitch (Up/Down) =", round(CursorModel:GetPitch(),3) )
+function Camera_Dump(heading, model)
+    model = model or CursorModel
+    heading = heading or "CAMERA INFO"
+    local x, y, z
+    print(heading.." ...")
+    print("  HasCustomCamera =", model:HasCustomCamera())
+    z, x, y = model:GetCameraPosition()
+    print("  GetCameraPosition =", round(z,3)..",  "..round(x,3)..",  "..round(y,3))
+    z, x, y = model:GetCameraTarget()
+    print("  GetCameraTarget =", round(z,3)..",  "..round(x,3)..",  "..round(y,3))
+    print("  GetCameraDistance =", round(model:GetCameraDistance(),3))
+    print("  GetCameraRoll =", round(model:GetCameraRoll(),3))
+    print("  GetCameraFacing (Yaw Left/Right) =", round(model:GetCameraFacing(),3))
+    ----print("  GetCameraPitch (Up/Down) = n/a")
 end
 
 -------------------------------------------------------------------------------
-function CursorModel_Dump(heading)
-    assert(CursorModel)
-    dumpObject(CursorModel, heading or "MODEL INFO")
-    local w, h = CursorModel:GetSize()
-    print("|cff9999ff    Width =|r", round(w))
-    print("|cff9999ff    Height =|r", round(h))
+function CursorModel_Dump(heading, model)
+    model = model or CursorModel
+    dumpObject(model, heading or "MODEL INFO")
+    local color = "|cff9999ff"
+    local w, h = model:GetSize()
+    print(color.."    GetWidth, GetHeight =|r", round(w), ",", round(h))
+    print(color.."    GetScale, GetModelScale =|r", round(model:GetScale(),3), ",", round(model:GetModelScale(),3))
+    local z, x, y = model:GetPosition()
+    print(color.."    GetPosition (Z,x,y) =|r", round(z,3), ",", round(x,3), ",", round(y,3))
 end
 
 --~ -------------------------------------------------------------------------------
@@ -590,7 +804,7 @@ end
 --~             CursorModel:SetScale( Calibrating.OriginalModelScale )
 --~             Calibrating = nil
 --~             TextFrame_SetText()
---~             print(kAddonName.." calibration aborted.")
+--~             print(kAddonFolderName.." calibration aborted.")
 --~         end
 --~         return
 --~     end

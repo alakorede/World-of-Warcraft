@@ -51,22 +51,22 @@ TomTomDB = {
 ["Sharan - Goldrinn"] = "Default",
 ["Radagashy - Goldrinn"] = "Default",
 ["Dishy - Nemesis"] = "Default",
-["Keishy - Aerie Peak"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
 ["Aleshy - Goldrinn"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Trystam - Nemesis"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
 ["Yashy - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
 ["Melishy - Goldrinn"] = "Default",
 ["Satishy - Nemesis"] = "Default",
 ["Batezu - Nemesis"] = "Default",
 ["Neshy - Nemesis"] = "Default",
 ["Sashy - Goldrinn"] = "Default",
 ["Satishy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
+["Keishy - Aerie Peak"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -148,22 +148,22 @@ TomTomWaypointsM = {
 ["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
 ["Dishy - Nemesis"] = "Dishy - Nemesis",
-["Keishy - Aerie Peak"] = "Keishy - Aerie Peak",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
 ["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
 ["Kuradis - Nemesis"] = "Kuradis - Nemesis",
 ["Trystam - Nemesis"] = "Trystam - Nemesis",
-["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
+["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
 ["Melishy - Goldrinn"] = "Melishy - Goldrinn",
 ["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Batezu - Nemesis"] = "Batezu - Nemesis",
 ["Neshy - Nemesis"] = "Neshy - Nemesis",
 ["Sashy - Goldrinn"] = "Sashy - Goldrinn",
 ["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
+["Keishy - Aerie Peak"] = "Keishy - Aerie Peak",
 },
 ["profiles"] = {
 ["Shamanjuba - Nemesis"] = {
@@ -316,7 +316,7 @@ TomTomWaypointsM = {
 },
 },
 },
-["Keishy - Aerie Peak"] = {
+["Wishy - Nemesis"] = {
 },
 ["Aenshy - Goldrinn"] = {
 },
@@ -330,9 +330,9 @@ TomTomWaypointsM = {
 },
 ["Trystam - Nemesis"] = {
 },
-["Lilishy - Goldrinn"] = {
-},
 ["Yashy - Nemesis"] = {
+},
+["Lilishy - Goldrinn"] = {
 },
 ["Melishy - Goldrinn"] = {
 },
@@ -346,7 +346,7 @@ TomTomWaypointsM = {
 },
 ["Satishy - Goldrinn"] = {
 },
-["Wishy - Nemesis"] = {
+["Keishy - Aerie Peak"] = {
 },
 },
 }

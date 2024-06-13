@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0901,
+["LastVersion"] = 2.091,
+["LastPlayerFullName"] = "Apinéia-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -73,9 +75,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193689::::::::70:104::17:3:7978:7975:6652:2:9:69:28:2549:::::|h[Granyth's Enduring Scale]|h|r",
 },
 {
-["ID"] = 200278,
-["Level"] = 276,
-["Link"] = "|cff1eff00|Hitem:200278::::::::66:104::26:1:7963:2:28:2262:9:65:::::|h[Drake Archaeologist's Shawl]|h|r",
+["ID"] = 193763,
+["Level"] = 286,
+["Link"] = "|cff0070dd|Hitem:193763::::::::64:250::17:4:7978:7975:6652:10864:2:28:2587:9:64:::::|h[Fireproof Drape]|h|r",
 },
 {
 ["ID"] = 198008,
@@ -89,9 +91,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:180663::::::::60:104::11:1:6706:2:9:55:28:1337:::::|h[War Scholar's Bonesaw]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Apinéia-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -145,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DEATHKNIGHT",

@@ -4,6 +4,12 @@ CursorTrail_Config = {
 ["DefaultsBtn11"] = true,
 ["SparkleCheckbox"] = true,
 },
+["ProfileOptions"] = {
+},
 ["Profiles"] = {
+["_SelectedName"] = {
+},
+},
+["ProfileBackups"] = {
 },
 }

@@ -1,11 +1,13 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.091,
+["LastPlayerFullName"] = "Onifade-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
-["ID"] = 193692,
-["Level"] = 326,
-["Link"] = "|cff0070dd|Hitem:193692::::::::68:104::17:5:7978:7975:6652:10533:10864:2:28:2587:9:68:::::|h[Stoneroot Headdress]|h|r",
+["ID"] = 193800,
+["Level"] = 336,
+["Link"] = "|cff0070dd|Hitem:193800::::::::69:104::17:5:7978:7975:6652:10533:10864:2:28:2155:9:69:::::|h[Vision of Foreshadowed Ends]|h|r",
 },
 {
 ["ID"] = 193676,
@@ -45,8 +47,8 @@ nil,
 },
 {
 ["ID"] = 193661,
-["Level"] = 316,
-["Link"] = "|cff0070dd|Hitem:193661::::::::67:104::17:4:7978:7975:6652:8813:2:28:2155:9:67:::::|h[Blightweaver's Clutches]|h|r",
+["Level"] = 336,
+["Link"] = "|cff0070dd|Hitem:193661::::::::69:104::17:4:7978:7975:6652:10864:2:28:2155:9:69:::::|h[Blightweaver's Clutches]|h|r",
 },
 {
 ["ID"] = 200172,
@@ -89,9 +91,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:180663::::::::60:104::11:1:6706:2:9:55:28:1337:::::|h[War Scholar's Bonesaw]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Onifade-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -145,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DRUID",

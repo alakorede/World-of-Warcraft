@@ -884,8 +884,8 @@ MATAB = {
 },
 ["CharacterFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 746,
+["RE"] = "BOTTOMLEFT",
 ["PX"] = 1503,
 },
 ["GroupLootHistoryFrame"] = {
@@ -914,8 +914,8 @@ MATAB = {
 },
 ["ProfessionsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 1080,
 ["PY"] = 354,
+["PX"] = 1080,
 ["RE"] = "BOTTOMLEFT",
 },
 ["SettingsPanel"] = {
@@ -962,8 +962,8 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 462,
+["RE"] = "BOTTOMLEFT",
 ["PX"] = 466,
 },
 ["PVPMatchScoreboard"] = {
@@ -1006,8 +1006,8 @@ MATAB = {
 },
 ["SpellBookFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 562,
+["RE"] = "BOTTOMLEFT",
 ["PX"] = 212,
 },
 ["StaticPopup2"] = {
@@ -1036,8 +1036,8 @@ MATAB = {
 },
 ["CollectionsJournal"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 1090,
 ["PY"] = 555,
+["PX"] = 1090,
 ["RE"] = "BOTTOMLEFT",
 },
 ["OpenMailFrame"] = {
@@ -1993,10 +1993,10 @@ MATAB = {
 ["CASTINGBAR"] = {
 ["ENABLED"] = false,
 },
-["QUEUESTATUSFRAME"] = {
+["FOCUSFRAME"] = {
 ["ENABLED"] = false,
 },
-["FOCUSFRAME"] = {
+["QUEUESTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["BUFFS"] = {
@@ -2032,10 +2032,10 @@ MATAB = {
 ["FRAMESKEYDRAG"] = {
 ["ENABLED"] = false,
 },
-["ARENAPREPFRAMES"] = {
+["TICKETSTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
-["TICKETSTATUSFRAME"] = {
+["ARENAPREPFRAMES"] = {
 ["ENABLED"] = false,
 },
 ["DEBUFFS"] = {

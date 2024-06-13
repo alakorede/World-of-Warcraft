@@ -539,10 +539,10 @@ OPie_SavedData = {
 ["DruidFeral"] = true,
 ["RaidSymbols"] = true,
 ["TrinketSlots"] = true,
-["WarlockCombat"] = true,
+["WorldMarkers"] = true,
 ["MageTravel"] = true,
 ["CommonTrades"] = true,
-["WorldMarkers"] = true,
+["WarlockCombat"] = true,
 },
 ["Bearbull"] = {
 {
@@ -928,116 +928,30 @@ OPie_SavedData = {
 ["limit"] = "Tamagoshy-Nemesis",
 ["name"] = "Customization",
 },
-["Monk2"] = {
+["ostradamus"] = {
 {
-["id"] = 218164,
-["sliceToken"] = "ABuekhLgJ6N",
-},
-{
-["id"] = 116670,
-["sliceToken"] = "ABuekhLgJ6B",
-},
-{
-["id"] = 256948,
-["sliceToken"] = "ABuekyYuxbu",
-},
-{
-["id"] = 243435,
-["sliceToken"] = "ABuekyYuxbed",
-},
-{
-["id"] = 122281,
-["sliceToken"] = "ABuekyYuxbe3",
-},
-{
-["id"] = 310454,
-["sliceToken"] = "ABuevswNwaw",
-},
-{
-["id"] = 116849,
-["sliceToken"] = "ABuekyYuxbes",
-},
-{
-["id"] = 119381,
-["sliceToken"] = "ABuekyYuxbea",
-},
-{
-["id"] = 116095,
-["sliceToken"] = "ABuekhLgJ6/",
-},
-{
-["id"] = 115078,
-["sliceToken"] = "ABuekyYuxbep",
-},
-{
-["id"] = 137639,
-["sliceToken"] = "ABuekhLgJ6V",
-},
-{
-["id"] = 123904,
-["sliceToken"] = "ABuekhLgJ6C",
-},
-{
-["id"] = 212051,
-["sliceToken"] = "ABuekyYuxbeo",
-},
-{
-["id"] = 115178,
-["sliceToken"] = "ABuekyYuxbe2",
-},
-{
-["id"] = 116680,
-["sliceToken"] = "ABuekyYuxbei",
-},
-{
-"item",
-6948,
-["sliceToken"] = "ABuekyYuxbew",
-},
-{
-"item",
-140192,
-["sliceToken"] = "ABuekyYuxbe1",
-},
-{
-["id"] = 101643,
-["sliceToken"] = "ABuekyYuxbeu",
-},
-{
-["id"] = 119996,
-["sliceToken"] = "ABuekyYuxbey",
-},
-{
-["id"] = 126892,
-["sliceToken"] = "ABuekyYuxbeq",
-},
-{
-["id"] = 125883,
-["sliceToken"] = "ABuekyYuxbet",
+"mount",
+285,
+["sliceToken"] = "ABuemUrGXGw",
 },
 {
 "mount",
-652,
-["sliceToken"] = "ABuekhLgJ6X",
+1795,
+["sliceToken"] = "ABuemUrGXGe",
 },
 {
 "mount",
-517,
-["sliceToken"] = "ABuekhLgJ6Z",
+986,
+["sliceToken"] = "ABuemUrGXGr",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuekyYuxber",
+["sliceToken"] = "ABuem8siN9w",
 },
-{
-["id"] = 150544,
-["sliceToken"] = "ABuekyYuxbee",
-},
-["limit"] = "Sashy-Goldrinn",
 ["save"] = true,
-["hotkey"] = "BUTTON3",
-["name"] = "Monk2",
+["limit"] = "Nostradamus-Goldrinn",
+["name"] = "Nostradamus",
 },
 ["ashyCustom"] = {
 {
@@ -1214,12 +1128,12 @@ OPie_SavedData = {
 },
 ["Apinia"] = {
 {
-["id"] = 50977,
 ["sliceToken"] = "ABuemPKeIqw",
+["id"] = 50977,
 },
 {
-["id"] = 3714,
 ["sliceToken"] = "ABuemPKeIqy",
+["id"] = 3714,
 },
 {
 "item",
@@ -1241,8 +1155,8 @@ OPie_SavedData = {
 460,
 ["sliceToken"] = "ABuemPKeIqt",
 },
-["save"] = true,
 ["limit"] = "Apinéia-Nemesis",
+["save"] = true,
 ["name"] = "Apinéia",
 },
 ["Custom4"] = {
@@ -1563,8 +1477,8 @@ OPie_SavedData = {
 ["id"] = 51052,
 },
 {
-["id"] = 50977,
 ["sliceToken"] = "ABuejM0n422",
+["id"] = 50977,
 },
 {
 "item",
@@ -1592,8 +1506,8 @@ OPie_SavedData = {
 ["id"] = 49039,
 },
 {
-["id"] = 46585,
 ["sliceToken"] = "ABuek4qG3Uw",
+["id"] = 46585,
 },
 {
 ["sliceToken"] = "OPCDCf",
@@ -1605,20 +1519,20 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuejNlDf1y",
 },
 {
-["id"] = 48265,
 ["sliceToken"] = "ABuekqv/ZPr",
+["id"] = 48265,
 },
 {
 ["id"] = 212552,
 ["sliceToken"] = "ABuekqv/ZPe",
 },
 {
-["id"] = 3714,
 ["sliceToken"] = "ABuejM0n42o",
+["id"] = 3714,
 },
 {
-["id"] = 61999,
 ["sliceToken"] = "ABuek1rCFXw",
+["id"] = 61999,
 },
 {
 "toy",
@@ -1645,8 +1559,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuejM0n42i",
 },
 {
-["id"] = 53428,
 ["sliceToken"] = "ABuejM0n42u",
+["id"] = 53428,
 },
 {
 "mount",
@@ -1654,20 +1568,20 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuevlyGR7w",
 },
 {
-["id"] = 150544,
 ["sliceToken"] = "ABuejNlDf1t",
+["id"] = 150544,
 },
 {
 "mount",
 460,
 ["sliceToken"] = "ABuejNlDf11",
 },
-["limit"] = "DEATHKNIGHT",
-["name"] = "Combat",
-["vm"] = 125,
 ["save"] = true,
-["hotkey"] = "BUTTON3",
 ["v"] = 1,
+["vm"] = 125,
+["name"] = "Combat",
+["limit"] = "DEATHKNIGHT",
+["hotkey"] = "BUTTON3",
 },
 ["Muligan2"] = {
 {
@@ -2291,9 +2205,120 @@ OPie_SavedData = {
 460,
 ["sliceToken"] = "ABuemPIIVo1",
 },
-["name"] = "Chicoxavier",
 ["save"] = true,
+["name"] = "Chicoxavier",
 ["limit"] = "Chicoxavier-Nemesis",
+},
+["Monk2"] = {
+{
+["id"] = 218164,
+["sliceToken"] = "ABuekhLgJ6N",
+},
+{
+["id"] = 116670,
+["sliceToken"] = "ABuekhLgJ6B",
+},
+{
+["id"] = 256948,
+["sliceToken"] = "ABuekyYuxbu",
+},
+{
+["id"] = 243435,
+["sliceToken"] = "ABuekyYuxbed",
+},
+{
+["id"] = 122281,
+["sliceToken"] = "ABuekyYuxbe3",
+},
+{
+["id"] = 310454,
+["sliceToken"] = "ABuevswNwaw",
+},
+{
+["id"] = 116849,
+["sliceToken"] = "ABuekyYuxbes",
+},
+{
+["id"] = 119381,
+["sliceToken"] = "ABuekyYuxbea",
+},
+{
+["id"] = 116095,
+["sliceToken"] = "ABuekhLgJ6/",
+},
+{
+["id"] = 115078,
+["sliceToken"] = "ABuekyYuxbep",
+},
+{
+["id"] = 137639,
+["sliceToken"] = "ABuekhLgJ6V",
+},
+{
+["id"] = 123904,
+["sliceToken"] = "ABuekhLgJ6C",
+},
+{
+["id"] = 212051,
+["sliceToken"] = "ABuekyYuxbeo",
+},
+{
+["id"] = 115178,
+["sliceToken"] = "ABuekyYuxbe2",
+},
+{
+["id"] = 116680,
+["sliceToken"] = "ABuekyYuxbei",
+},
+{
+"item",
+6948,
+["sliceToken"] = "ABuekyYuxbew",
+},
+{
+"item",
+140192,
+["sliceToken"] = "ABuekyYuxbe1",
+},
+{
+["id"] = 101643,
+["sliceToken"] = "ABuekyYuxbeu",
+},
+{
+["id"] = 119996,
+["sliceToken"] = "ABuekyYuxbey",
+},
+{
+["id"] = 126892,
+["sliceToken"] = "ABuekyYuxbeq",
+},
+{
+["id"] = 125883,
+["sliceToken"] = "ABuekyYuxbet",
+},
+{
+"mount",
+652,
+["sliceToken"] = "ABuekhLgJ6X",
+},
+{
+"mount",
+517,
+["sliceToken"] = "ABuekhLgJ6Z",
+},
+{
+"mount",
+460,
+["sliceToken"] = "ABuekyYuxber",
+},
+{
+["id"] = 150544,
+["sliceToken"] = "ABuekyYuxbee",
+},
+["limit"] = "Sashy-Goldrinn",
+["save"] = true,
+["hotkey"] = "BUTTON3",
+["name"] = "Monk2",
 },
 ["Artheras"] = {
 {
@@ -2324,31 +2349,6 @@ OPie_SavedData = {
 ["save"] = true,
 ["limit"] = "Artheras-Goldrinn",
 ["name"] = "Artheras",
-},
-["ostradamus"] = {
-{
-"mount",
-285,
-["sliceToken"] = "ABuemUrGXGw",
-},
-{
-"mount",
-1795,
-["sliceToken"] = "ABuemUrGXGe",
-},
-{
-"mount",
-986,
-["sliceToken"] = "ABuemUrGXGr",
-},
-{
-"mount",
-460,
-["sliceToken"] = "ABuem8siN9w",
-},
-["save"] = true,
-["limit"] = "Nostradamus-Goldrinn",
-["name"] = "Nostradamus",
 },
 ["Batezu2"] = {
 {

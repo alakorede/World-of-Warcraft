@@ -1,6 +1,7 @@
 
 GrailDatabase = {
 ["_retail_"] = {
+["delayEvents"] = true,
 ["learned"] = {
 ["QUEST_NAME"] = {
 "enUS|52148|75511|Tracking Quest",
@@ -345,6 +346,8 @@ GrailDatabase = {
 "54988|enUS|201180|2151:29.23,52.80",
 "54988|enUS|6000101|2024:12.76,42.02",
 "54988|enUS|6000102|2024:79.38,36.00",
+"54988|enUS|205781|",
+"54988|enUS|3000024||205781",
 },
 ["QUEST_CODE"] = {
 "0|enUS|44027|A:105071",
@@ -2295,9 +2298,9 @@ GrailDatabase = {
 "121|54988|enUS|57567|A:-2151",
 "121|54988|enUS|57565|A:-2151",
 "121|54988|enUS|48642|A:-882",
+"121|54988|enUS|72135|N63",
 },
 },
-["delayEventsHandled"] = true,
 ["Tracking"] = {
 "2020-09-26 16:57 Nemesis/Dishy/Horde/PALADIN/BloodElf/3/enUS/US/35662",
 "New quest completed 43449 Vignette: Oreth the Vile",
@@ -2445,7 +2448,7 @@ GrailDatabase = {
 "New quest completed 48651 UNKNOWN NAME",
 "New quest completed 48084 UNKNOWN NAME",
 },
-["delayEvents"] = true,
+["delayEventsHandled"] = true,
 },
 ["BadQuestData"] = {
 },
