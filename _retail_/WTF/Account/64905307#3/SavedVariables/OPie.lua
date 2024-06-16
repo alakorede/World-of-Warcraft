@@ -22,14 +22,14 @@ OPie_SavedData = {
 ["PaladinAuras"] = false,
 ["ustomDrake"] = "BUTTON3",
 ["Sifu"] = "BUTTON3",
-["Sharan"] = "BUTTON3",
+["Sharan1"] = "BUTTON3",
 ["Bearbull"] = "BUTTON3",
 ["AltCombat"] = "BUTTON3",
 ["Aleshy"] = "BUTTON3",
 ["tomization"] = "BUTTON3",
 ["ashyCustom"] = "BUTTON3",
 ["riamolambo"] = "BUTTON3",
-["Custom8"] = "BUTTON3",
+["Apinia"] = "BUTTON3",
 ["shyPaladin"] = "BUTTON3",
 ["Lilishy"] = "BUTTON3",
 ["Batezu"] = "BUTTON3",
@@ -52,8 +52,8 @@ OPie_SavedData = {
 ["CustomRing"] = "BUTTON3",
 ["ostradamus"] = "BUTTON3",
 ["Priest"] = "BUTTON3",
-["Apinia"] = "BUTTON3",
-["Sharan1"] = "BUTTON3",
+["Custom8"] = "BUTTON3",
+["Sharan"] = "BUTTON3",
 ["Custom4"] = "BUTTON3",
 },
 ["ShowCooldowns"] = true,
@@ -242,33 +242,28 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemP6BrPw",
 },
 ["save"] = true,
-["name"] = "Córsega",
 ["limit"] = "Córsega-Nemesis",
+["name"] = "Córsega",
 },
-["Shamanjuba"] = {
+["Muligan2"] = {
+{
+"item",
+6948,
+["sliceToken"] = "ABuemGryTqw",
+},
 {
 "mount",
 460,
-["sliceToken"] = "ABuemPLLkxw",
+["sliceToken"] = "ABuemGryTqe",
 },
 {
 "mount",
-1679,
-["sliceToken"] = "ABuemPLLkxe",
-},
-{
-"mount",
-1795,
-["sliceToken"] = "ABuemPLLkxr",
-},
-{
-"mount",
-986,
-["sliceToken"] = "ABuemPLLkx1",
+1240,
+["sliceToken"] = "ABuemGryTqr",
 },
 ["save"] = true,
-["name"] = "Shamanjuba",
-["limit"] = "Shamanjuba-Nemesis",
+["name"] = "Muligan",
+["limit"] = "Muligan-Nemesis",
 },
 ["Custom1"] = {
 {
@@ -363,8 +358,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemB0k29w",
 },
 ["save"] = true,
-["name"] = "Muligan",
 ["limit"] = "Muruatan-Nemesis",
+["name"] = "Muligan",
 },
 ["PaladinAuras"] = {
 {
@@ -385,10 +380,10 @@ OPie_SavedData = {
 ["id"] = 25780,
 ["sliceToken"] = "OPCPAf",
 },
-["name"] = "Paladin Buffs",
+["limit"] = "PALADIN",
 ["save"] = true,
 ["hotkey"] = "BUTTON3",
-["limit"] = "PALADIN",
+["name"] = "Paladin Buffs",
 },
 ["ustomDrake"] = {
 {
@@ -498,8 +493,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemPchSu1",
 },
 ["save"] = true,
-["name"] = "Sifu",
 ["limit"] = "Sifú-Goldrinn",
+["name"] = "Sifu",
 },
 ["Sharan"] = {
 {
@@ -528,21 +523,21 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemU0mOjw",
 },
 ["save"] = true,
-["name"] = "Sharan",
 ["limit"] = "Sharan-Goldrinn",
+["name"] = "Sharan",
 },
 ["OPieDeletedRings"] = {
-["SpecMenu"] = true,
-["MageTools"] = true,
-["DruidShift"] = true,
 ["DruidUtility"] = true,
+["CommonTrades"] = true,
+["DruidShift"] = true,
 ["DruidFeral"] = true,
 ["RaidSymbols"] = true,
 ["TrinketSlots"] = true,
-["WorldMarkers"] = true,
-["MageTravel"] = true,
-["CommonTrades"] = true,
+["SpecMenu"] = true,
 ["WarlockCombat"] = true,
+["MageTravel"] = true,
+["MageTools"] = true,
+["WorldMarkers"] = true,
 },
 ["Bearbull"] = {
 {
@@ -571,8 +566,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemPZsgRt",
 },
 ["save"] = true,
-["name"] = "Bearbull",
 ["limit"] = "Bearbull-Nemesis",
+["name"] = "Bearbull",
 },
 ["AltCombat"] = {
 {
@@ -817,9 +812,6 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["limit"] = "Aleshy-Goldrinn",
 },
-["OPieFlagStore"] = {
-["StoreVersion"] = 3,
-},
 ["tomization"] = {
 {
 ["id"] = 190336,
@@ -925,106 +917,104 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuevjuvuCA",
 },
 ["save"] = true,
-["limit"] = "Tamagoshy-Nemesis",
 ["name"] = "Customization",
+["limit"] = "Tamagoshy-Nemesis",
 },
-["ostradamus"] = {
+["Batezu2"] = {
 {
-"mount",
-285,
-["sliceToken"] = "ABuemUrGXGw",
-},
-{
-"mount",
-1795,
-["sliceToken"] = "ABuemUrGXGe",
+"item",
+6948,
+["sliceToken"] = "ABuemFZYtMs",
 },
 {
+["id"] = 20577,
+["sliceToken"] = "ABuemFZYtMw",
+},
+{
+["id"] = 7744,
+["sliceToken"] = "ABuemFZYtMe",
+},
+{
+["id"] = 29893,
+["sliceToken"] = "ABuemFZYtMr",
+},
+{
+["id"] = 48020,
+["sliceToken"] = "ABuemFZYtM1",
+},
+{
+["id"] = 342601,
+["sliceToken"] = "ABuemFZYtMt",
+},
+{
+["id"] = 698,
+["sliceToken"] = "ABuemFZYtMy",
+},
+{
+["id"] = 6201,
+["sliceToken"] = "ABuemFZYtM3",
+},
+{
+["id"] = 5697,
+["sliceToken"] = "ABuemFZYtMu",
+},
+{
+["id"] = 20707,
+["sliceToken"] = "ABuemFZYtMi",
+},
+{
 "mount",
-986,
-["sliceToken"] = "ABuemUrGXGr",
+83,
+["sliceToken"] = "ABuemFZYtMd",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuem8siN9w",
-},
-["save"] = true,
-["limit"] = "Nostradamus-Goldrinn",
-["name"] = "Nostradamus",
-},
-["ashyCustom"] = {
-{
-["id"] = 556,
-["sliceToken"] = "ABuevpGStjer",
+["sliceToken"] = "ABuemFZYtM2",
 },
 {
-"item",
-6948,
-["sliceToken"] = "ABuevpGStjee",
+"mount",
+1563,
+["sliceToken"] = "ABuemFZYtMo",
 },
 {
-["id"] = 33697,
-["sliceToken"] = "ABuevpGStjew",
-},
-{
-["id"] = 2008,
-["sliceToken"] = "ABuevpGStjeq",
-},
-{
-["id"] = 2484,
-["sliceToken"] = "ABuevpGStjwM",
-},
-{
-["id"] = 318038,
-["sliceToken"] = "ABuevpGStjwN",
-},
-{
-["id"] = 2645,
-["sliceToken"] = "ABuevpGStjwB",
-},
-{
-["id"] = 192106,
-["sliceToken"] = "ABuevpGStjw/",
-},
-{
-["id"] = 192058,
-["sliceToken"] = "ABuevpGStjwV",
-},
-{
-["id"] = 546,
-["sliceToken"] = "ABuevpGStjwC",
-},
-{
-["id"] = 198067,
-["sliceToken"] = "ABuevpGStjwX",
-},
-{
-["id"] = 6196,
-["sliceToken"] = "ABuevpGStjey",
+"mount",
+1240,
+["sliceToken"] = "ABuemFZYtMp",
 },
 {
 "mount",
 1556,
-["sliceToken"] = "ABuevpGStjwL",
+["sliceToken"] = "ABuemFZYtMa",
+},
+["save"] = true,
+["name"] = "Batezu",
+["limit"] = "Batezu-Nemesis",
+},
+["hicoxavier"] = {
+{
+"mount",
+1795,
+["sliceToken"] = "ABuemPIIVow",
 },
 {
 "mount",
-651,
-["sliceToken"] = "ABuevpGStjwK",
+285,
+["sliceToken"] = "ABuemPIIVoe",
+},
+{
+"mount",
+1591,
+["sliceToken"] = "ABuemPIIVor",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuevpGStjw=",
+["sliceToken"] = "ABuemPIIVo1",
 },
-{
-["id"] = 150544,
-["sliceToken"] = "ABuevpGStjwZ",
-},
+["limit"] = "Chicoxavier-Nemesis",
 ["save"] = true,
-["limit"] = "Yashy-Nemesis",
-["name"] = "YashyCustom",
+["name"] = "Chicoxavier",
 },
 ["riamolambo"] = {
 {
@@ -1043,8 +1033,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemUOt6Ar",
 },
 ["save"] = true,
-["limit"] = "Mariamolambo-Goldrinn",
 ["name"] = "Mariamolambo",
+["limit"] = "Mariamolambo-Goldrinn",
 },
 ["WarlockLTS"] = {
 {
@@ -1126,38 +1116,30 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["v"] = 2,
 },
-["Apinia"] = {
+["ostradamus"] = {
 {
-["sliceToken"] = "ABuemPKeIqw",
-["id"] = 50977,
-},
-{
-["sliceToken"] = "ABuemPKeIqy",
-["id"] = 3714,
-},
-{
-"item",
-6948,
-["sliceToken"] = "ABuemPKeIqe",
+"mount",
+285,
+["sliceToken"] = "ABuemUrGXGw",
 },
 {
 "mount",
-221,
-["sliceToken"] = "ABuemPKeIqr",
+1795,
+["sliceToken"] = "ABuemUrGXGe",
 },
 {
 "mount",
-397,
-["sliceToken"] = "ABuemPKeIq1",
+986,
+["sliceToken"] = "ABuemUrGXGr",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuemPKeIqt",
+["sliceToken"] = "ABuem8siN9w",
 },
-["limit"] = "Apinéia-Nemesis",
 ["save"] = true,
-["name"] = "Apinéia",
+["name"] = "Nostradamus",
+["limit"] = "Nostradamus-Goldrinn",
 },
 ["Custom4"] = {
 {
@@ -1323,8 +1305,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemPidhHi",
 },
 ["save"] = true,
-["limit"] = "Batezu-Goldrinn",
 ["name"] = "Batezu",
+["limit"] = "Batezu-Goldrinn",
 },
 ["rimegistos"] = {
 {
@@ -1348,8 +1330,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemPvOxer",
 },
 ["save"] = true,
-["limit"] = "Trimegistos-Goldrinn",
 ["name"] = "Trimegistos",
+["limit"] = "Trimegistos-Goldrinn",
 },
 ["PaladinTools"] = {
 {
@@ -1441,8 +1423,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemA2Zmi1",
 },
 ["save"] = true,
-["name"] = "Mitraculo",
 ["limit"] = "Mitráculo-Nemesis",
+["name"] = "Mitraculo",
 },
 ["Muligan"] = {
 {
@@ -1456,8 +1438,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemSfD1Jr",
 },
 ["save"] = true,
-["limit"] = "Muligan-Goldrinn",
 ["name"] = "Muligan",
+["limit"] = "Muligan-Goldrinn",
 },
 ["DKCombat"] = {
 {
@@ -1477,8 +1459,8 @@ OPie_SavedData = {
 ["id"] = 51052,
 },
 {
-["sliceToken"] = "ABuejM0n422",
 ["id"] = 50977,
+["sliceToken"] = "ABuejM0n422",
 },
 {
 "item",
@@ -1506,8 +1488,8 @@ OPie_SavedData = {
 ["id"] = 49039,
 },
 {
-["sliceToken"] = "ABuek4qG3Uw",
 ["id"] = 46585,
+["sliceToken"] = "ABuek4qG3Uw",
 },
 {
 ["sliceToken"] = "OPCDCf",
@@ -1519,20 +1501,20 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuejNlDf1y",
 },
 {
-["sliceToken"] = "ABuekqv/ZPr",
 ["id"] = 48265,
+["sliceToken"] = "ABuekqv/ZPr",
 },
 {
 ["id"] = 212552,
 ["sliceToken"] = "ABuekqv/ZPe",
 },
 {
-["sliceToken"] = "ABuejM0n42o",
 ["id"] = 3714,
+["sliceToken"] = "ABuejM0n42o",
 },
 {
-["sliceToken"] = "ABuek1rCFXw",
 ["id"] = 61999,
+["sliceToken"] = "ABuek1rCFXw",
 },
 {
 "toy",
@@ -1559,8 +1541,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuejM0n42i",
 },
 {
-["sliceToken"] = "ABuejM0n42u",
 ["id"] = 53428,
+["sliceToken"] = "ABuejM0n42u",
 },
 {
 "mount",
@@ -1568,72 +1550,84 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuevlyGR7w",
 },
 {
-["sliceToken"] = "ABuejNlDf1t",
 ["id"] = 150544,
+["sliceToken"] = "ABuejNlDf1t",
 },
 {
 "mount",
 460,
 ["sliceToken"] = "ABuejNlDf11",
 },
-["save"] = true,
-["v"] = 1,
-["vm"] = 125,
-["name"] = "Combat",
 ["limit"] = "DEATHKNIGHT",
-["hotkey"] = "BUTTON3",
-},
-["Muligan2"] = {
-{
-"item",
-6948,
-["sliceToken"] = "ABuemGryTqw",
-},
-{
-"mount",
-460,
-["sliceToken"] = "ABuemGryTqe",
-},
-{
-"mount",
-1240,
-["sliceToken"] = "ABuemGryTqr",
-},
+["name"] = "Combat",
+["vm"] = 125,
 ["save"] = true,
-["limit"] = "Muligan-Nemesis",
-["name"] = "Muligan",
+["hotkey"] = "BUTTON3",
+["v"] = 1,
 },
-["Eshy"] = {
-{
-["id"] = 58984,
-["sliceToken"] = "ABuejNFSYlk",
-},
-{
-["id"] = 188501,
-["sliceToken"] = "ABuejNFSYlj",
-},
-{
-["id"] = 131347,
-["sliceToken"] = "ABuejNFSYl4",
-},
+["Custom"] = {
 {
 "item",
 6948,
-["sliceToken"] = "ABuejNFSYlh",
+["sliceToken"] = "ABuevsWIbaR",
+},
+{
+"item",
+122530,
+["sliceToken"] = "ABuevsWIba7",
+},
+{
+["id"] = 274738,
+["sliceToken"] = "ABuevsWIbaE",
 },
 {
 ["id"] = 150544,
-["sliceToken"] = "ABuejNFSYlg",
+["sliceToken"] = "ABuevsWIbaW",
+},
+{
+"mount",
+981,
+["sliceToken"] = "ABuevsWIbaQ",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuejNFSYlf",
+["sliceToken"] = "ABuevsWIbam",
 },
-["name"] = "Eshy",
+{
+"mount",
+409,
+["sliceToken"] = "ABuevsWIban",
+},
+{
+"mount",
+1193,
+["sliceToken"] = "ABuevsWIba6",
+},
+["limit"] = "Sharashy-Nemesis",
 ["save"] = true,
 ["hotkey"] = "BUTTON3",
-["limit"] = "Eshy-Goldrinn",
+["name"] = "Custom",
+},
+["onifade"] = {
+{
+"mount",
+1795,
+["sliceToken"] = "ABueQqwzjqw",
+},
+{
+"mount",
+986,
+["sliceToken"] = "ABueQqwzjqe",
+},
+{
+"mount",
+460,
+["sliceToken"] = "ABueQqwzjqr",
+},
+["save"] = true,
+["limit"] = "Onifade-Nemesis",
+["name"] = "onifade",
 },
 ["Rogue1"] = {
 {
@@ -1720,127 +1714,37 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["limit"] = "Akishy-Goldrinn",
 },
-["MageCombat"] = {
+["Eshy"] = {
 {
-["id"] = 108839,
-["sliceToken"] = "OPCMCf",
-["vm"] = 2,
+["id"] = 58984,
+["sliceToken"] = "ABuejNFSYlk",
 },
 {
-["id"] = 30449,
-["sliceToken"] = "OPCMCs",
-["vm"] = 3,
+["id"] = 188501,
+["sliceToken"] = "ABuejNFSYlj",
+},
+{
+["id"] = 131347,
+["sliceToken"] = "ABuejNFSYl4",
 },
 {
 "item",
 6948,
-["sliceToken"] = "ABuevAHTmHeN",
-},
-{
-["id"] = 1459,
-["sliceToken"] = "ABuevAHTmHeB",
-},
-{
-["id"] = 190336,
-["sliceToken"] = "ABuevAHTmHe/",
-},
-{
-["id"] = 45438,
-["sliceToken"] = "OPCMCb",
-},
-{
-["id"] = 80353,
-["sliceToken"] = "OPCMCt",
-},
-{
-["id"] = 190319,
-["sliceToken"] = "OPCMCc",
-["vm"] = 3,
-},
-{
-["id"] = 66,
-["sliceToken"] = "ABuevAHTmHeC",
-},
-{
-["id"] = 130,
-["sliceToken"] = "ABuevAHTmHeX",
-},
-{
-["id"] = 281403,
-["sliceToken"] = "ABuevAHTmHeZ",
-},
-{
-["id"] = 11426,
-["sliceToken"] = "ABuevAHTmHe=",
-},
-{
-["id"] = 55342,
-["sliceToken"] = "OPCMCm",
-["vm"] = 2,
-},
-{
-["id"] = "/cast {{spell:11426}}; {{spell:235450}}; {{spell:235313}}",
-["sliceToken"] = "OPCMCi",
-},
-{
-["id"] = 12051,
-["sliceToken"] = "OPCMCe",
+["sliceToken"] = "ABuejNFSYlh",
 },
 {
 ["id"] = 150544,
-["sliceToken"] = "ABuevAHTmHeK",
+["sliceToken"] = "ABuejNFSYlg",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuevAHTmHeJ",
+["sliceToken"] = "ABuejNFSYlf",
 },
-{
-"mount",
-446,
-["sliceToken"] = "ABuevAHTmHeH",
-},
-{
-"mount",
-1589,
-["sliceToken"] = "ABuevAHTmHe0",
-},
-{
-"mount",
-652,
-["sliceToken"] = "ABuevAHTmHeG",
-},
-{
-"mount",
-439,
-["sliceToken"] = "ABuevAHTmHeF",
-},
-{
-"mount",
-1556,
-["sliceToken"] = "ABuevAHTmHeD",
-},
-{
-"mount",
-403,
-["sliceToken"] = "ABuevAHTmHeS",
-},
-{
-"mount",
-551,
-["sliceToken"] = "ABuevAHTmHe9",
-},
-{
-"mount",
-1048,
-["sliceToken"] = "ABuevAHTmHeA",
-},
-["limit"] = "MAGE",
-["name"] = "Combat",
-["vm"] = 125,
+["name"] = "Eshy",
 ["save"] = true,
 ["hotkey"] = "BUTTON3",
-["v"] = 1,
+["limit"] = "Eshy-Goldrinn",
 },
 ["aultHunter"] = {
 {
@@ -2006,117 +1910,273 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["name"] = "Druid Rada",
 },
-["Chishy"] = {
+["shyPaladin"] = {
 {
-["id"] = 192106,
-["sliceToken"] = "ABuevcSWFcs",
+["id"] = 642,
+["sliceToken"] = "ABuejVG9Unw3",
 },
 {
-["id"] = 2645,
-["sliceToken"] = "ABuejMVCJGY",
+["id"] = 1022,
+["sliceToken"] = "ABuejVG9UnZ",
 },
 {
-["id"] = 52127,
-["sliceToken"] = "ABuevcSWFca",
+["id"] = 1044,
+["sliceToken"] = "ABuejVG9UnC",
 },
 {
-["id"] = 382021,
-["sliceToken"] = "ABuevcSWFcp",
+["id"] = 203538,
+["sliceToken"] = "ABuejBoL/p3",
 },
 {
-["id"] = 318038,
-["sliceToken"] = "ABuevcSWFco",
+["id"] = 203539,
+["sliceToken"] = "ABuejBoL/ps",
 },
 {
-"item",
-6948,
-["sliceToken"] = "ABuejMVCJG9",
+["id"] = 6940,
+["sliceToken"] = "ABuejVG9UnX",
 },
 {
 "item",
 140192,
-["sliceToken"] = "ABuejMVCJGA",
+["sliceToken"] = "ABuekuQ7gDw",
 },
 {
 "item",
-141605,
-["sliceToken"] = "ABuektQJI=w",
+6948,
+["sliceToken"] = "ABuejVsHyj3",
 },
 {
-["id"] = 556,
-["sliceToken"] = "ABuejMVCJGP",
-},
-{
-["id"] = 6196,
-["sliceToken"] = "ABuejMVCJGI",
-},
-{
-["id"] = 108271,
-["sliceToken"] = "ABuejMVCJG8",
-},
-{
-["id"] = 2008,
-["sliceToken"] = "ABuejMVCJGU",
-},
-{
-["id"] = 212048,
-["sliceToken"] = "ABuek12QEBwt",
-},
-{
-["id"] = 98008,
-["sliceToken"] = "ABuejMVCJGT",
-},
-{
-["id"] = 32182,
-["sliceToken"] = "ABuek12QEB/",
-},
-{
-["id"] = 8143,
-["sliceToken"] = "ABuek12QEBI",
-},
-{
-["id"] = 198103,
-["sliceToken"] = "ABuek12QEBZ",
-},
-{
-["id"] = 108280,
-["sliceToken"] = "ABuek12QEBB",
-},
-{
-["id"] = 2484,
-["sliceToken"] = "ABuek12QEBX",
+"battlepet",
+"fave",
+["sliceToken"] = "ABuejVG9Un=",
 },
 {
 "toy",
 166779,
-["sliceToken"] = "ABuek12QEBwp",
+["sliceToken"] = "ABuejVG9UnK",
 },
 {
-["id"] = 107079,
-["sliceToken"] = "ABuek12QEBL",
+["id"] = 53563,
+["sliceToken"] = "ABuek1R0rh1",
 },
 {
-["id"] = 546,
-["sliceToken"] = "ABuek12QEBY",
+["id"] = 156910,
+["sliceToken"] = "ABuek1R0rhr",
 },
 {
-"mount",
-1589,
-["sliceToken"] = "ABuev7ONntw",
+["id"] = 62124,
+["sliceToken"] = "ABuejBoL/pa",
+},
+{
+["id"] = 7328,
+["sliceToken"] = "ABuejVG9Un/",
+},
+{
+["id"] = 212056,
+["sliceToken"] = "ABuek1R0rhw",
+},
+{
+["id"] = 20066,
+["sliceToken"] = "ABuejBoL/pp",
+},
+{
+["id"] = 195710,
+["sliceToken"] = "ABuejVG9UnV",
+},
+{
+["id"] = 190784,
+["sliceToken"] = "ABuejVG9Unws",
 },
 {
 ["id"] = 150544,
-["sliceToken"] = "ABuejMVCJGO",
+["sliceToken"] = "ABuejVsHyjs",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuejMBwMgw",
+["sliceToken"] = "ABuejVsHyja",
 },
-["limit"] = "Chishy-Goldrinn",
+["limit"] = "Dishy-Nemesis",
 ["save"] = true,
 ["hotkey"] = "BUTTON3",
-["name"] = "Chishy",
+["name"] = "Dishy (Paladin)",
+},
+["MageCombat"] = {
+{
+["id"] = 108839,
+["sliceToken"] = "OPCMCf",
+["vm"] = 2,
+},
+{
+["id"] = 30449,
+["sliceToken"] = "OPCMCs",
+["vm"] = 3,
+},
+{
+"item",
+6948,
+["sliceToken"] = "ABuevAHTmHeN",
+},
+{
+["id"] = 1459,
+["sliceToken"] = "ABuevAHTmHeB",
+},
+{
+["id"] = 190336,
+["sliceToken"] = "ABuevAHTmHe/",
+},
+{
+["id"] = 45438,
+["sliceToken"] = "OPCMCb",
+},
+{
+["id"] = 80353,
+["sliceToken"] = "OPCMCt",
+},
+{
+["id"] = 190319,
+["sliceToken"] = "OPCMCc",
+["vm"] = 3,
+},
+{
+["id"] = 66,
+["sliceToken"] = "ABuevAHTmHeC",
+},
+{
+["id"] = 130,
+["sliceToken"] = "ABuevAHTmHeX",
+},
+{
+["id"] = 281403,
+["sliceToken"] = "ABuevAHTmHeZ",
+},
+{
+["id"] = 11426,
+["sliceToken"] = "ABuevAHTmHe=",
+},
+{
+["id"] = 55342,
+["sliceToken"] = "OPCMCm",
+["vm"] = 2,
+},
+{
+["id"] = "/cast {{spell:11426}}; {{spell:235450}}; {{spell:235313}}",
+["sliceToken"] = "OPCMCi",
+},
+{
+["id"] = 12051,
+["sliceToken"] = "OPCMCe",
+},
+{
+["id"] = 150544,
+["sliceToken"] = "ABuevAHTmHeK",
+},
+{
+"mount",
+460,
+["sliceToken"] = "ABuevAHTmHeJ",
+},
+{
+"mount",
+446,
+["sliceToken"] = "ABuevAHTmHeH",
+},
+{
+"mount",
+1589,
+["sliceToken"] = "ABuevAHTmHe0",
+},
+{
+"mount",
+652,
+["sliceToken"] = "ABuevAHTmHeG",
+},
+{
+"mount",
+439,
+["sliceToken"] = "ABuevAHTmHeF",
+},
+{
+"mount",
+1556,
+["sliceToken"] = "ABuevAHTmHeD",
+},
+{
+"mount",
+403,
+["sliceToken"] = "ABuevAHTmHeS",
+},
+{
+"mount",
+551,
+["sliceToken"] = "ABuevAHTmHe9",
+},
+{
+"mount",
+1048,
+["sliceToken"] = "ABuevAHTmHeA",
+},
+["name"] = "Combat",
+["limit"] = "MAGE",
+["vm"] = 125,
+["save"] = true,
+["hotkey"] = "BUTTON3",
+["v"] = 1,
+},
+["Sharan1"] = {
+{
+"mount",
+149,
+["sliceToken"] = "ABuemAosE6w",
+},
+{
+"mount",
+397,
+["sliceToken"] = "ABuemAosE6e",
+},
+{
+"mount",
+460,
+["sliceToken"] = "ABuemAosE6r",
+},
+{
+"item",
+6948,
+["sliceToken"] = "ABuemAosE61",
+},
+["save"] = true,
+["limit"] = "Sharan-Nemesis",
+["name"] = "Sharan",
+},
+["Artheras"] = {
+{
+"mount",
+1795,
+["sliceToken"] = "ABuemP5pCNw",
+},
+{
+"mount",
+1240,
+["sliceToken"] = "ABuemP5pCNe",
+},
+{
+"mount",
+460,
+["sliceToken"] = "ABuemP5pCNr",
+},
+{
+"mount",
+986,
+["sliceToken"] = "ABuemP5pCN1",
+},
+{
+"item",
+6948,
+["sliceToken"] = "ABuemP5pCNt",
+},
+["save"] = true,
+["name"] = "Artheras",
+["limit"] = "Artheras-Goldrinn",
 },
 ["Custom8"] = {
 {
@@ -2184,30 +2244,8 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["limit"] = "Hanushy-Nemesis",
 },
-["hicoxavier"] = {
-{
-"mount",
-1795,
-["sliceToken"] = "ABuemPIIVow",
-},
-{
-"mount",
-285,
-["sliceToken"] = "ABuemPIIVoe",
-},
-{
-"mount",
-1591,
-["sliceToken"] = "ABuemPIIVor",
-},
-{
-"mount",
-460,
-["sliceToken"] = "ABuemPIIVo1",
-},
-["save"] = true,
-["name"] = "Chicoxavier",
-["limit"] = "Chicoxavier-Nemesis",
+["OPieFlagStore"] = {
+["StoreVersion"] = 3,
 },
 ["Monk2"] = {
 {
@@ -2320,107 +2358,6 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["name"] = "Monk2",
 },
-["Artheras"] = {
-{
-"mount",
-1795,
-["sliceToken"] = "ABuemP5pCNw",
-},
-{
-"mount",
-1240,
-["sliceToken"] = "ABuemP5pCNe",
-},
-{
-"mount",
-460,
-["sliceToken"] = "ABuemP5pCNr",
-},
-{
-"mount",
-986,
-["sliceToken"] = "ABuemP5pCN1",
-},
-{
-"item",
-6948,
-["sliceToken"] = "ABuemP5pCNt",
-},
-["save"] = true,
-["limit"] = "Artheras-Goldrinn",
-["name"] = "Artheras",
-},
-["Batezu2"] = {
-{
-"item",
-6948,
-["sliceToken"] = "ABuemFZYtMs",
-},
-{
-["id"] = 20577,
-["sliceToken"] = "ABuemFZYtMw",
-},
-{
-["id"] = 7744,
-["sliceToken"] = "ABuemFZYtMe",
-},
-{
-["id"] = 29893,
-["sliceToken"] = "ABuemFZYtMr",
-},
-{
-["id"] = 48020,
-["sliceToken"] = "ABuemFZYtM1",
-},
-{
-["id"] = 342601,
-["sliceToken"] = "ABuemFZYtMt",
-},
-{
-["id"] = 698,
-["sliceToken"] = "ABuemFZYtMy",
-},
-{
-["id"] = 6201,
-["sliceToken"] = "ABuemFZYtM3",
-},
-{
-["id"] = 5697,
-["sliceToken"] = "ABuemFZYtMu",
-},
-{
-["id"] = 20707,
-["sliceToken"] = "ABuemFZYtMi",
-},
-{
-"mount",
-83,
-["sliceToken"] = "ABuemFZYtMd",
-},
-{
-"mount",
-460,
-["sliceToken"] = "ABuemFZYtM2",
-},
-{
-"mount",
-1563,
-["sliceToken"] = "ABuemFZYtMo",
-},
-{
-"mount",
-1240,
-["sliceToken"] = "ABuemFZYtMp",
-},
-{
-"mount",
-1556,
-["sliceToken"] = "ABuemFZYtMa",
-},
-["save"] = true,
-["limit"] = "Batezu-Nemesis",
-["name"] = "Batezu",
-},
 ["CustomRing"] = {
 {
 ["id"] = 2645,
@@ -2516,30 +2453,117 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["limit"] = "Kirashy-Nemesis",
 },
-["Sharan1"] = {
+["Chishy"] = {
 {
-"mount",
-149,
-["sliceToken"] = "ABuemAosE6w",
+["id"] = 192106,
+["sliceToken"] = "ABuevcSWFcs",
 },
 {
-"mount",
-397,
-["sliceToken"] = "ABuemAosE6e",
+["id"] = 2645,
+["sliceToken"] = "ABuejMVCJGY",
 },
 {
-"mount",
-460,
-["sliceToken"] = "ABuemAosE6r",
+["id"] = 52127,
+["sliceToken"] = "ABuevcSWFca",
+},
+{
+["id"] = 382021,
+["sliceToken"] = "ABuevcSWFcp",
+},
+{
+["id"] = 318038,
+["sliceToken"] = "ABuevcSWFco",
 },
 {
 "item",
 6948,
-["sliceToken"] = "ABuemAosE61",
+["sliceToken"] = "ABuejMVCJG9",
 },
+{
+"item",
+140192,
+["sliceToken"] = "ABuejMVCJGA",
+},
+{
+"item",
+141605,
+["sliceToken"] = "ABuektQJI=w",
+},
+{
+["id"] = 556,
+["sliceToken"] = "ABuejMVCJGP",
+},
+{
+["id"] = 6196,
+["sliceToken"] = "ABuejMVCJGI",
+},
+{
+["id"] = 108271,
+["sliceToken"] = "ABuejMVCJG8",
+},
+{
+["id"] = 2008,
+["sliceToken"] = "ABuejMVCJGU",
+},
+{
+["id"] = 212048,
+["sliceToken"] = "ABuek12QEBwt",
+},
+{
+["id"] = 98008,
+["sliceToken"] = "ABuejMVCJGT",
+},
+{
+["id"] = 32182,
+["sliceToken"] = "ABuek12QEB/",
+},
+{
+["id"] = 8143,
+["sliceToken"] = "ABuek12QEBI",
+},
+{
+["id"] = 198103,
+["sliceToken"] = "ABuek12QEBZ",
+},
+{
+["id"] = 108280,
+["sliceToken"] = "ABuek12QEBB",
+},
+{
+["id"] = 2484,
+["sliceToken"] = "ABuek12QEBX",
+},
+{
+"toy",
+166779,
+["sliceToken"] = "ABuek12QEBwp",
+},
+{
+["id"] = 107079,
+["sliceToken"] = "ABuek12QEBL",
+},
+{
+["id"] = 546,
+["sliceToken"] = "ABuek12QEBY",
+},
+{
+"mount",
+1589,
+["sliceToken"] = "ABuev7ONntw",
+},
+{
+["id"] = 150544,
+["sliceToken"] = "ABuejMVCJGO",
+},
+{
+"mount",
+460,
+["sliceToken"] = "ABuejMBwMgw",
+},
+["limit"] = "Chishy-Goldrinn",
 ["save"] = true,
-["name"] = "Sharan",
-["limit"] = "Sharan-Nemesis",
+["hotkey"] = "BUTTON3",
+["name"] = "Chishy",
 },
 ["Priest"] = {
 {
@@ -2651,160 +2675,136 @@ OPie_SavedData = {
 ["hotkey"] = "BUTTON3",
 ["name"] = "Priest",
 },
-["shyPaladin"] = {
+["Apinia"] = {
 {
-["id"] = 642,
-["sliceToken"] = "ABuejVG9Unw3",
+["id"] = 50977,
+["sliceToken"] = "ABuemPKeIqw",
 },
 {
-["id"] = 1022,
-["sliceToken"] = "ABuejVG9UnZ",
-},
-{
-["id"] = 1044,
-["sliceToken"] = "ABuejVG9UnC",
-},
-{
-["id"] = 203538,
-["sliceToken"] = "ABuejBoL/p3",
-},
-{
-["id"] = 203539,
-["sliceToken"] = "ABuejBoL/ps",
-},
-{
-["id"] = 6940,
-["sliceToken"] = "ABuejVG9UnX",
-},
-{
-"item",
-140192,
-["sliceToken"] = "ABuekuQ7gDw",
+["id"] = 3714,
+["sliceToken"] = "ABuemPKeIqy",
 },
 {
 "item",
 6948,
-["sliceToken"] = "ABuejVsHyj3",
+["sliceToken"] = "ABuemPKeIqe",
 },
 {
-"battlepet",
-"fave",
-["sliceToken"] = "ABuejVG9Un=",
+"mount",
+221,
+["sliceToken"] = "ABuemPKeIqr",
 },
 {
-"toy",
-166779,
-["sliceToken"] = "ABuejVG9UnK",
-},
-{
-["id"] = 53563,
-["sliceToken"] = "ABuek1R0rh1",
-},
-{
-["id"] = 156910,
-["sliceToken"] = "ABuek1R0rhr",
-},
-{
-["id"] = 62124,
-["sliceToken"] = "ABuejBoL/pa",
-},
-{
-["id"] = 7328,
-["sliceToken"] = "ABuejVG9Un/",
-},
-{
-["id"] = 212056,
-["sliceToken"] = "ABuek1R0rhw",
-},
-{
-["id"] = 20066,
-["sliceToken"] = "ABuejBoL/pp",
-},
-{
-["id"] = 195710,
-["sliceToken"] = "ABuejVG9UnV",
-},
-{
-["id"] = 190784,
-["sliceToken"] = "ABuejVG9Unws",
-},
-{
-["id"] = 150544,
-["sliceToken"] = "ABuejVsHyjs",
+"mount",
+397,
+["sliceToken"] = "ABuemPKeIq1",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuejVsHyja",
+["sliceToken"] = "ABuemPKeIqt",
 },
-["limit"] = "Dishy-Nemesis",
 ["save"] = true,
-["hotkey"] = "BUTTON3",
-["name"] = "Dishy (Paladin)",
+["name"] = "Apinéia",
+["limit"] = "Apinéia-Nemesis",
 },
-["onifade"] = {
+["Shamanjuba"] = {
+{
+"mount",
+460,
+["sliceToken"] = "ABuemPLLkxw",
+},
+{
+"mount",
+1679,
+["sliceToken"] = "ABuemPLLkxe",
+},
 {
 "mount",
 1795,
-["sliceToken"] = "ABueQqwzjqw",
+["sliceToken"] = "ABuemPLLkxr",
 },
 {
 "mount",
 986,
-["sliceToken"] = "ABueQqwzjqe",
-},
-{
-"mount",
-460,
-["sliceToken"] = "ABueQqwzjqr",
+["sliceToken"] = "ABuemPLLkx1",
 },
 ["save"] = true,
-["name"] = "onifade",
-["limit"] = "Onifade-Nemesis",
+["limit"] = "Shamanjuba-Nemesis",
+["name"] = "Shamanjuba",
 },
-["Custom"] = {
+["ashyCustom"] = {
+{
+["id"] = 556,
+["sliceToken"] = "ABuevpGStjer",
+},
 {
 "item",
 6948,
-["sliceToken"] = "ABuevsWIbaR",
+["sliceToken"] = "ABuevpGStjee",
 },
 {
-"item",
-122530,
-["sliceToken"] = "ABuevsWIba7",
+["id"] = 33697,
+["sliceToken"] = "ABuevpGStjew",
 },
 {
-["id"] = 274738,
-["sliceToken"] = "ABuevsWIbaE",
+["id"] = 2008,
+["sliceToken"] = "ABuevpGStjeq",
 },
 {
-["id"] = 150544,
-["sliceToken"] = "ABuevsWIbaW",
+["id"] = 2484,
+["sliceToken"] = "ABuevpGStjwM",
+},
+{
+["id"] = 318038,
+["sliceToken"] = "ABuevpGStjwN",
+},
+{
+["id"] = 2645,
+["sliceToken"] = "ABuevpGStjwB",
+},
+{
+["id"] = 192106,
+["sliceToken"] = "ABuevpGStjw/",
+},
+{
+["id"] = 192058,
+["sliceToken"] = "ABuevpGStjwV",
+},
+{
+["id"] = 546,
+["sliceToken"] = "ABuevpGStjwC",
+},
+{
+["id"] = 198067,
+["sliceToken"] = "ABuevpGStjwX",
+},
+{
+["id"] = 6196,
+["sliceToken"] = "ABuevpGStjey",
 },
 {
 "mount",
-981,
-["sliceToken"] = "ABuevsWIbaQ",
+1556,
+["sliceToken"] = "ABuevpGStjwL",
+},
+{
+"mount",
+651,
+["sliceToken"] = "ABuevpGStjwK",
 },
 {
 "mount",
 460,
-["sliceToken"] = "ABuevsWIbam",
+["sliceToken"] = "ABuevpGStjw=",
 },
 {
-"mount",
-409,
-["sliceToken"] = "ABuevsWIban",
+["id"] = 150544,
+["sliceToken"] = "ABuevpGStjwZ",
 },
-{
-"mount",
-1193,
-["sliceToken"] = "ABuevsWIba6",
-},
-["limit"] = "Sharashy-Nemesis",
 ["save"] = true,
-["hotkey"] = "BUTTON3",
-["name"] = "Custom",
+["name"] = "YashyCustom",
+["limit"] = "Yashy-Nemesis",
 },
 },
 },

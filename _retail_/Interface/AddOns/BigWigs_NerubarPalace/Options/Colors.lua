@@ -17,10 +17,9 @@ BigWigs:AddColors("The Bloodbound Horror", {
 	[438696] = "red",
 	[442530] = "red",
 	[443042] = "yellow",
-	[443305] = "yellow",
+	[443203] = "yellow",
 	[443612] = "blue",
 	[444363] = "purple",
-	[445016] = "purple",
 	[445518] = "blue",
 	[445570] = {"blue","green"},
 	[445936] = "orange",
@@ -44,15 +43,48 @@ BigWigs:AddColors("Sikran, Captain of the Sureki", {
 })
 
 BigWigs:AddColors("Rasha'nan", {
-	["stages"] = "cyan",
+	[439776] = "blue",
+	[439784] = "orange",
+	[439785] = "blue",
+	[439787] = "blue",
+	[439789] = "yellow",
+	[439792] = "orange",
+	[439795] = "red",
+	[439811] = "yellow",
+	[439815] = "yellow",
+	[444687] = "purple",
+	[452806] = "yellow",
+	[455287] = "blue",
+	[456853] = "cyan",
+	[457877] = "cyan",
+	[458067] = {"blue","purple"},
 })
 
 BigWigs:AddColors("Eggtender Ovi'nax", {
-	["stages"] = "cyan",
+	[441362] = {"blue","purple"},
+	[442250] = "blue",
+	[442257] = "red",
+	[442432] = "cyan",
+	[442526] = "orange",
+	[442660] = "blue",
+	[442799] = "blue",
+	[446349] = {"blue","yellow"},
+	[446351] = "blue",
+	[446700] = "yellow",
+	[450661] = "red",
+	[458212] = "blue",
 })
 
 BigWigs:AddColors("Nexus-Princess Ky'veza", {
-	["stages"] = "cyan",
+	[435405] = "cyan",
+	[436867] = {"blue","cyan"},
+	[437343] = "blue",
+	[437620] = "orange",
+	[438245] = "yellow",
+	[439576] = "yellow",
+	[440377] = "purple",
+	[440576] = {"blue","purple"},
+	[442277] = "red",
 })
 
 BigWigs:AddColors("The Silken Court", {

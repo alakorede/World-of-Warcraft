@@ -1,4 +1,8 @@
-﻿10.2.30 - 5th June 2024
+﻿10.2.34 - 15th June 2024
+- Preliminary update for The War Within Beta.
+- Updated sounds to game version 11.0.0.55120 (Jun 11 2024) (110000).
+
+10.2.30 - 5th June 2024
 - Updated sounds to game version 10.2.7.54988 (May 31 2024) (100207).
 
 10.2.28 - 22nd May 2024

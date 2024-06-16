@@ -15,9 +15,9 @@ PawnOptions = {
 ["Link"] = "|cff0070dd|Hitem:193676::::::::69:104::17:5:7978:7975:6652:7937:8783:2:28:2155:9:69:::::|h[Ukhel Ancestry Beads]|h|r",
 },
 {
-["ID"] = 197653,
-["Level"] = 276,
-["Link"] = "|cff1eff00|Hitem:197653::::::::69:104::26:1:7963:2:28:2504:9:65:::::|h[Teerai Watcher Spaulders]|h|r",
+["ID"] = 193802,
+["Level"] = 296,
+["Link"] = "|cff0070dd|Hitem:193802::::::::65:250::17:4:7978:7975:6652:10864:2:28:2155:9:65:::::|h[Pauldrons of Immutable Truth]|h|r",
 },
 nil,
 {

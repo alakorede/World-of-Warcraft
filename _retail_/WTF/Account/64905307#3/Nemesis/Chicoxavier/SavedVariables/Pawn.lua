@@ -1,8 +1,6 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.091,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 193641,
@@ -15,9 +13,9 @@ PawnOptions = {
 ["Link"] = "|cff0070dd|Hitem:193676::::::::69:104::17:5:7978:7975:6652:7937:8783:2:28:2155:9:69:::::|h[Ukhel Ancestry Beads]|h|r",
 },
 {
-["ID"] = 193690,
-["Level"] = 336,
-["Link"] = "|cff0070dd|Hitem:193690::::::::70:256::17:4:7978:7975:6652:10864:2:9:69:28:2587:::::|h[Drake Hunter Shoulderpads]|h|r",
+["ID"] = 193788,
+["Level"] = 346,
+["Link"] = "|cff0070dd|Hitem:193788::::::::70:256::17:4:7978:7975:6652:10864:2:28:2587:9:70:::::|h[Molten Magma Mantle]|h|r",
 },
 nil,
 {
@@ -46,9 +44,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193635::::::::70:256::17:5:7978:7975:6652:10532:10864:2:9:68:28:2587:::::|h[Infused Elemental Bands]|h|r",
 },
 {
-["ID"] = 193661,
-["Level"] = 316,
-["Link"] = "|cff0070dd|Hitem:193661::::::::67:104::17:4:7978:7975:6652:8813:2:28:2155:9:67:::::|h[Blightweaver's Clutches]|h|r",
+["ID"] = 193775,
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193775::::::::70:256::1:6:10323:7974:6652:10864:3139:8766:1:28:2587:::::|h[Warlord's Cindermitts]|h|r",
 },
 {
 ["ID"] = 193696,
@@ -87,10 +85,13 @@ nil,
 },
 {
 ["ID"] = 193783,
-["Level"] = 336,
-["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::17:3:7978:7975:6652:2:9:69:28:2587:::::|h[Irontorch Igniter]|h|r",
+["Level"] = 460,
+["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::1:5:10323:7974:6652:3139:8766:1:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

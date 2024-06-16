@@ -8,7 +8,6 @@ if L then
 	L.slump_desc = "Warnt vor dem nach vorne Schlittern, das das Rodeo erlaubt zu starten."
 	L.slump_bar = "Rodeo"
 	L.slump_message = "Yeehaa, Rodeo!"
-	L.slump_emote_trigger = "%s schlittert nach vorne und entblößt seine Zangen!" -- check
 
 	L.expose_emote_trigger = "Kopf" -- check
 end
@@ -36,16 +35,8 @@ end
 
 L = BigWigs:NewBossLocale("Atramedes", "deDE")
 if L then
-	L.ground_phase = "Bodenphase"
-	L.ground_phase_desc = "Warnt, wenn Atramedes landet."
-	L.air_phase = "Luftphase"
-	L.air_phase_desc = "Warnt, wenn Atramedes abhebt."
-
+	L.obnoxious_fiend = "Nerviges Scheusal" -- NPC ID 49740
 	L.air_phase_trigger = "Ja, lauft! Jeder Schritt lässt Euer Herz stärker klopfen. Laut und heftig... ohrenbetäubend. Es gibt kein Entkommen!" -- check
-
-	L.obnoxious_soon = "Nerviges Scheusal bald!"
-
-	L.searing_soon = "Sengende Flamme in 10 sek!"
 end
 
 L = BigWigs:NewBossLocale("Maloriak", "deDE")

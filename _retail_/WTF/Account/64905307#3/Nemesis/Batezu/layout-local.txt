@@ -1,11 +1,4 @@
 Version: 1
-Frame: rABS_PetBar
-FrameLevel: 1
-Anchor: BOTTOM
-X: -1
-Y: 180
-W: 309
-H: 30
 Frame: Roth_UIPetFrame
 FrameLevel: 1
 Anchor: RIGHT
@@ -111,6 +104,13 @@ X: -210
 Y: 220
 W: 56
 H: 56
+Frame: rABS_PetBar
+FrameLevel: 1
+Anchor: BOTTOM
+X: -1
+Y: 180
+W: 309
+H: 30
 Frame: rABS_MultiBarRight
 FrameLevel: 1
 Anchor: RIGHT

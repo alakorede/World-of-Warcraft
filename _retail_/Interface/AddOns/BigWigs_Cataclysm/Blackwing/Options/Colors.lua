@@ -24,6 +24,7 @@ BigWigs:AddColors("Magmaw", {
 	[78403] = {"blue","purple"},
 	[78941] = "blue",
 	[79011] = "green",
+	[88253] = "red",
 	[89773] = {"blue","purple"},
 	[92134] = "blue",
 	[92177] = "red",
@@ -33,11 +34,12 @@ BigWigs:AddColors("Magmaw", {
 })
 
 BigWigs:AddColors("Atramedes", {
-	[77840] = {"red","yellow"},
+	[77611] = "cyan",
+	[77612] = "orange",
+	[77840] = "yellow",
 	[78092] = {"blue","red"},
-	[92677] = {"blue","yellow"},
-	["air_phase"] = "yellow",
-	["ground_phase"] = "yellow",
+	[92685] = {"blue","red"},
+	["stages"] = "cyan",
 })
 
 BigWigs:AddColors("Chimaeron", {

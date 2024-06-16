@@ -17,17 +17,20 @@ BigWigs:AddSounds("Magmaw", {
 	[78006] = "alert",
 	[78941] = "warning",
 	[79011] = "long",
+	[88253] = "info",
 	[89773] = "info",
 	[92134] = "underyou",
 	[92177] = "alarm",
 	["adds"] = "info",
-	["slump"] = "info",
 })
 
 BigWigs:AddSounds("Atramedes", {
-	[77840] = "alert",
+	[77611] = "info",
+	[77612] = "alert",
+	[77840] = "warning",
 	[78092] = "warning",
-	[92677] = "long",
+	[92685] = "alarm",
+	["stages"] = "long",
 })
 
 BigWigs:AddSounds("Chimaeron", {

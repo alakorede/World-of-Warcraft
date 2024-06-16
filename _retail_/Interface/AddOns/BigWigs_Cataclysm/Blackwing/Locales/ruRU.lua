@@ -8,7 +8,6 @@ if L then
 	L.slump_desc = "Магмарь падает вперед открывая себя, позволяя начать родео."
 	L.slump_bar = "Родео"
 	L.slump_message = "Йихо, погнали!"
-	L.slump_emote_trigger = "%s внезапно падает, выставляя клешни!"
 
 	L.expose_emote_trigger = "голову"
 end
@@ -36,16 +35,8 @@ end
 
 L = BigWigs:NewBossLocale("Atramedes", "ruRU")
 if L then
-	L.ground_phase = "Наземная фаза"
-	L.ground_phase_desc = "Сообщать о приземлении Атрамеда."
-	L.air_phase = "Воздушная фаза"
-	L.air_phase_desc = "Сообщать о взлете Атрамеда."
-
+	L.obnoxious_fiend = "Гнусный бес" -- NPC ID 49740
 	L.air_phase_trigger = "Да, беги! С каждым шагом твое сердце бьется все быстрее. Эти громкие, оглушительные удары... Тебе некуда бежать!"
-
-	L.obnoxious_soon = "Скоро Несносность Беса!"
-
-	L.searing_soon = "Жгучее пламя через 10сек!"
 end
 
 L = BigWigs:NewBossLocale("Maloriak", "ruRU")

@@ -1,5 +1,5 @@
 ﻿----------------------------------------------------------------------
--- 	Leatrix Plus 10.2.33 (12th June 2024)
+-- 	Leatrix Plus 10.2.34 (15th June 2024)
 ----------------------------------------------------------------------
 
 --	01:Functions 02:Locks,  03:Restart 40:Player
@@ -18,7 +18,7 @@
 	local void
 
 	-- Version
-	LeaPlusLC["AddonVer"] = "10.2.33"
+	LeaPlusLC["AddonVer"] = "10.2.34"
 
 	-- Get locale table
 	local void, Leatrix_Plus = ...
@@ -5824,29 +5824,6 @@
 				AddonCompartmentFrame:ClearAllPoints()
 				AddonCompartmentFrame:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", -2, -2)
 
-				-- Show compartment menu on hover if hide addon menu is unchecked
-				if LeaPlusLC["HideMiniAddonMenu"] == "Off" then
-
-					-- Toggle button visibility when pointer enters and leaves minimap and on startup
-					Minimap:HookScript("OnEnter", function()
-						AddonCompartmentFrame:Show()
-					end)
-
-					Minimap:HookScript("OnLeave", function()
-						if not MouseIsOver(AddonCompartmentFrame) then
-							AddonCompartmentFrame:Hide()
-						end
-					end)
-
-					-- Hide compartment menu on startup
-					C_Timer.After(0.1, function()
-						if not MouseIsOver(AddonCompartmentFrame) and not MouseIsOver(Minimap) then
-							AddonCompartmentFrame:Hide()
-						end
-					end)
-
-				end
-
 				-- Debug
 				-- AddonCompartmentFrame:SetText("56")
 
@@ -7500,6 +7477,8 @@
 			-- Minimap button click function
 			local function MiniBtnClickFunc(arg1, arg2)
 
+				if arg1 == "Leatrix_Plus" then arg1 = "LeftButton" end -- Needed for compartment menu clicks
+
 				-- Prevent options panel from showing if Blizzard Store is showing
 				if StoreFrame and StoreFrame:GetAttribute("isshown") then return end
 				-- Left button down
@@ -7508,14 +7487,27 @@
 					-- Control key toggles target tracking
 					if IsControlKeyDown() and not IsShiftKeyDown() and not IsAltKeyDown() then
 						for i = 1, C_Minimap.GetNumTrackingTypes() do
-							local name, texture, active, category = C_Minimap.GetTrackingInfo(i)
-							if name == MINIMAP_TRACKING_TARGET then
-								if active then
-									C_Minimap.SetTracking(i, false)
-									LeaPlusLC:DisplayMessage(L["Target Tracking Disabled"], true)
-								else
-									C_Minimap.SetTracking(i, true)
-									LeaPlusLC:DisplayMessage(L["Target Tracking Enabled"], true)
+							if LeaPlusLC.NewPatch then
+								local trackingInfo = C_Minimap.GetTrackingInfo(i)
+								if trackingInfo.name and trackingInfo.name == MINIMAP_TRACKING_TARGET then
+									if trackingInfo.active then
+										C_Minimap.SetTracking(i, false)
+										LeaPlusLC:DisplayMessage(L["Target Tracking Disabled"], true)
+									else
+										C_Minimap.SetTracking(i, true)
+										LeaPlusLC:DisplayMessage(L["Target Tracking Enabled"], true)
+									end
+								end
+							else
+								local name, texture, active, category = C_Minimap.GetTrackingInfo(i)
+								if name == MINIMAP_TRACKING_TARGET then
+									if active then
+										C_Minimap.SetTracking(i, false)
+										LeaPlusLC:DisplayMessage(L["Target Tracking Disabled"], true)
+									else
+										C_Minimap.SetTracking(i, true)
+										LeaPlusLC:DisplayMessage(L["Target Tracking Enabled"], true)
+									end
 								end
 							end
 						end
@@ -9039,16 +9031,31 @@
 					if (not tooltip or not parent) then
 						return
 					end
-					if GetMouseFocus() == WorldFrame then
-						if LeaPlusLC["TooltipAnchorMenu"] == 2 then
-							tooltip:SetOwner(parent, "ANCHOR_CURSOR")
-							return
-						elseif LeaPlusLC["TooltipAnchorMenu"] == 3 then
-							tooltip:SetOwner(parent, "ANCHOR_CURSOR_LEFT", LeaPlusLC["TipCursorX"], LeaPlusLC["TipCursorY"])
-							return
-						elseif LeaPlusLC["TooltipAnchorMenu"] == 4 then
-							tooltip:SetOwner(parent, "ANCHOR_CURSOR_RIGHT", LeaPlusLC["TipCursorX"], LeaPlusLC["TipCursorY"])
-							return
+					if LeaPlusLC.NewPatch then
+						if WorldFrame:IsMouseMotionFocus() then
+							if LeaPlusLC["TooltipAnchorMenu"] == 2 then
+								tooltip:SetOwner(parent, "ANCHOR_CURSOR")
+								return
+							elseif LeaPlusLC["TooltipAnchorMenu"] == 3 then
+								tooltip:SetOwner(parent, "ANCHOR_CURSOR_LEFT", LeaPlusLC["TipCursorX"], LeaPlusLC["TipCursorY"])
+								return
+							elseif LeaPlusLC["TooltipAnchorMenu"] == 4 then
+								tooltip:SetOwner(parent, "ANCHOR_CURSOR_RIGHT", LeaPlusLC["TipCursorX"], LeaPlusLC["TipCursorY"])
+								return
+							end
+						end
+					else
+						if GetMouseFocus() == WorldFrame then
+							if LeaPlusLC["TooltipAnchorMenu"] == 2 then
+								tooltip:SetOwner(parent, "ANCHOR_CURSOR")
+								return
+							elseif LeaPlusLC["TooltipAnchorMenu"] == 3 then
+								tooltip:SetOwner(parent, "ANCHOR_CURSOR_LEFT", LeaPlusLC["TipCursorX"], LeaPlusLC["TipCursorY"])
+								return
+							elseif LeaPlusLC["TooltipAnchorMenu"] == 4 then
+								tooltip:SetOwner(parent, "ANCHOR_CURSOR_RIGHT", LeaPlusLC["TipCursorX"], LeaPlusLC["TipCursorY"])
+								return
+							end
 						end
 					end
 				end
@@ -9563,7 +9570,7 @@
 
 				-- Get unit information
 				if LeaPlusLC.NewPatch then
-					if GetMouseFoci() == WorldFrame then
+					if WorldFrame:IsMouseMotionFocus() then
 						LT["Unit"] = "mouseover"
 						-- Hide and quit if tips should be hidden during combat
 						if LeaPlusLC["TipHideInCombat"] == "On" and UnitAffectingCombat("player") then
@@ -12573,191 +12580,376 @@
 				return
 			elseif str == "id" then
 				-- Show web link for tooltip
-				if not LeaPlusLC.WowheadLock then
-					-- Set Wowhead link prefix
-					if GameLocale == "deDE" then LeaPlusLC.WowheadLock = "de.wowhead.com"
-					elseif GameLocale == "esMX" then LeaPlusLC.WowheadLock = "es.wowhead.com"
-					elseif GameLocale == "esES" then LeaPlusLC.WowheadLock = "es.wowhead.com"
-					elseif GameLocale == "frFR" then LeaPlusLC.WowheadLock = "fr.wowhead.com"
-					elseif GameLocale == "itIT" then LeaPlusLC.WowheadLock = "it.wowhead.com"
-					elseif GameLocale == "ptBR" then LeaPlusLC.WowheadLock = "pt.wowhead.com"
-					elseif GameLocale == "ruRU" then LeaPlusLC.WowheadLock = "ru.wowhead.com"
-					elseif GameLocale == "koKR" then LeaPlusLC.WowheadLock = "ko.wowhead.com"
-					elseif GameLocale == "zhCN" then LeaPlusLC.WowheadLock = "cn.wowhead.com"
-					elseif GameLocale == "zhTW" then LeaPlusLC.WowheadLock = "cn.wowhead.com"
-					else							 LeaPlusLC.WowheadLock = "wowhead.com"
+				if LeaPlusLC.NewPatch then
+					if not LeaPlusLC.WowheadLock then
+						-- Set Wowhead link prefix
+						if GameLocale == "deDE" then LeaPlusLC.WowheadLock = "de.wowhead.com"
+						elseif GameLocale == "esMX" then LeaPlusLC.WowheadLock = "es.wowhead.com"
+						elseif GameLocale == "esES" then LeaPlusLC.WowheadLock = "es.wowhead.com"
+						elseif GameLocale == "frFR" then LeaPlusLC.WowheadLock = "fr.wowhead.com"
+						elseif GameLocale == "itIT" then LeaPlusLC.WowheadLock = "it.wowhead.com"
+						elseif GameLocale == "ptBR" then LeaPlusLC.WowheadLock = "pt.wowhead.com"
+						elseif GameLocale == "ruRU" then LeaPlusLC.WowheadLock = "ru.wowhead.com"
+						elseif GameLocale == "koKR" then LeaPlusLC.WowheadLock = "ko.wowhead.com"
+						elseif GameLocale == "zhCN" then LeaPlusLC.WowheadLock = "cn.wowhead.com"
+						elseif GameLocale == "zhTW" then LeaPlusLC.WowheadLock = "cn.wowhead.com"
+						else							 LeaPlusLC.WowheadLock = "wowhead.com"
+						end
 					end
-				end
-				if not LeaPlusLC.BlizzardLock then
-					-- Set Blizzard link prefix (https://wowpedia.fandom.com/wiki/Localization) (region will be added by website automatically)
-						if GameLocale == "deDE" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/de-de/character/eu/" -- Germany
-					elseif GameLocale == "frFR" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/fr-fr/character/eu/" -- France
-					elseif GameLocale == "itIT" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/it-it/character/eu/" -- Italy
-					elseif GameLocale == "ruRU" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/ru-ru/character/eu/" -- Russia
-					elseif GameLocale == "koKR" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/ko-kr/character/kr/" -- Korea
-					elseif GameLocale == "zhTW" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/zh-tw/character/tw/" -- Tiawan
-					elseif GameLocale == "esES" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-es/character/us/" -- Spain (esES connected to US)
-					elseif GameLocale == "esES" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-es/character/eu/" -- Spain (esES connected to EU)
-					elseif GameLocale == "esMX" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-mx/character/us/" -- Mexico (esMX connected to US)
-					elseif GameLocale == "esMX" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-mx/character/eu/" -- Spain (esMX connected to EU)
-					elseif GameLocale == "ptBR" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/pt-br/character/us/" -- Brazil (ptBR connected to US)
-					elseif GameLocale == "ptBR" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/pt-br/character/eu/" -- Portugal (ptBR connected to US)
-					elseif GameLocale == "enUS" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/en-gb/character/eu/" -- UK (enUS connected to Europe)
-					else 														 LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/en-us/character/us/" -- US (default)
+					if not LeaPlusLC.BlizzardLock then
+						-- Set Blizzard link prefix (https://wowpedia.fandom.com/wiki/Localization) (region will be added by website automatically)
+							if GameLocale == "deDE" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/de-de/character/eu/" -- Germany
+						elseif GameLocale == "frFR" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/fr-fr/character/eu/" -- France
+						elseif GameLocale == "itIT" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/it-it/character/eu/" -- Italy
+						elseif GameLocale == "ruRU" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/ru-ru/character/eu/" -- Russia
+						elseif GameLocale == "koKR" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/ko-kr/character/kr/" -- Korea
+						elseif GameLocale == "zhTW" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/zh-tw/character/tw/" -- Tiawan
+						elseif GameLocale == "esES" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-es/character/us/" -- Spain (esES connected to US)
+						elseif GameLocale == "esES" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-es/character/eu/" -- Spain (esES connected to EU)
+						elseif GameLocale == "esMX" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-mx/character/us/" -- Mexico (esMX connected to US)
+						elseif GameLocale == "esMX" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-mx/character/eu/" -- Spain (esMX connected to EU)
+						elseif GameLocale == "ptBR" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/pt-br/character/us/" -- Brazil (ptBR connected to US)
+						elseif GameLocale == "ptBR" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/pt-br/character/eu/" -- Portugal (ptBR connected to US)
+						elseif GameLocale == "enUS" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/en-gb/character/eu/" -- UK (enUS connected to Europe)
+						else 														 LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/en-us/character/us/" -- US (default)
+						end
 					end
-				end
-				-- Store frame under mouse
-				local mouseFocus = GetMouseFocus()
-				-- Floating battle pet tooltip (linked in chat)
-				if mouseFocus == FloatingBattlePetTooltip and FloatingBattlePetTooltip.Name then
-					local tipTitle = FloatingBattlePetTooltip.Name:GetText()
-					if tipTitle then
-						local speciesId, petGUID = C_PetJournal.FindPetIDByName(tipTitle, false)
-						if petGUID then
-							local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(petGUID)
-							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. creatureID)
-							LeaPlusLC.FactoryEditBox.f:SetText(L["Pet"] .. ": " .. name .. " (" .. creatureID .. ")")
+					-- Floating battle pet tooltip (linked in chat)
+					if FloatingBattlePetTooltip:IsMouseMotionFocus() and FloatingBattlePetTooltip.Name then
+						local tipTitle = FloatingBattlePetTooltip.Name:GetText()
+						if tipTitle then
+							local speciesId, petGUID = C_PetJournal.FindPetIDByName(tipTitle, false)
+							if petGUID then
+								local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(petGUID)
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. creatureID)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["Pet"] .. ": " .. name .. " (" .. creatureID .. ")")
+								return
+							end
+						end
+					end
+					-- Floating pet battle ability tooltip (linked in chat)
+					if FloatingPetBattleAbilityTooltip and FloatingPetBattleAbilityTooltip:IsMouseMotionFocus() and FloatingPetBattleAbilityTooltip.Name then
+						local tipTitle = FloatingPetBattleAbilityTooltip.Name:GetText()
+						if tipTitle then
+							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
+							LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Pet Ability"] .. ": " .. tipTitle)
 							return
 						end
 					end
-				end
-				-- Floating pet battle ability tooltip (linked in chat)
-				if FloatingPetBattleAbilityTooltip and mouseFocus == FloatingPetBattleAbilityTooltip and FloatingPetBattleAbilityTooltip.Name then
-					local tipTitle = FloatingPetBattleAbilityTooltip.Name:GetText()
-					if tipTitle then
-						LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
-						LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Pet Ability"] .. ": " .. tipTitle)
-						return
-					end
-				end
-				-- Pet journal ability tooltip (tooltip in pet journal)
-				if PetJournalPrimaryAbilityTooltip and PetJournalPrimaryAbilityTooltip:IsShown() and PetJournalPrimaryAbilityTooltip.Name then
-					local tipTitle = PetJournalPrimaryAbilityTooltip.Name:GetText()
-					if tipTitle then
-						LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
-						LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Pet Ability"] .. ": " .. tipTitle)
-						return
-					end
-				end
-				-- ItemRefTooltip or GameTooltip
-				local tooltip
-				if mouseFocus == ItemRefTooltip then tooltip = ItemRefTooltip else tooltip = GameTooltip end
-				-- Process tooltip
-				if tooltip:IsShown() then
-					-- Item
-					local void, itemLink = tooltip:GetItem()
-					if itemLink then
-						local itemID = GetItemInfoFromHyperlink(itemLink)
-						if itemID then
-							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/item=" .. itemID, false)
-							LeaPlusLC.FactoryEditBox.f:SetText(L["Item"] .. ": " .. itemLink .. " (" .. itemID .. ")")
+					-- Pet journal ability tooltip (tooltip in pet journal)
+					if PetJournalPrimaryAbilityTooltip and PetJournalPrimaryAbilityTooltip:IsShown() and PetJournalPrimaryAbilityTooltip.Name then
+						local tipTitle = PetJournalPrimaryAbilityTooltip.Name:GetText()
+						if tipTitle then
+							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
+							LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Pet Ability"] .. ": " .. tipTitle)
 							return
 						end
 					end
-					-- Spell
-					local name, spellID = tooltip:GetSpell()
-					if name and spellID then
-						LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/spell=" .. spellID, false)
-						LeaPlusLC.FactoryEditBox.f:SetText(L["Spell"] .. ": " .. name .. " (" .. spellID .. ")")
-						return
-					end
-					-- NPC
-					local npcName = UnitName("mouseover")
-					local npcGuid = UnitGUID("mouseover") or nil
-					if npcName and npcGuid then
-						local void, void, void, void, void, npcID = strsplit("-", npcGuid)
-						if npcID then
-							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. npcID, false)
-							LeaPlusLC.FactoryEditBox.f:SetText(L["NPC"] .. ": " .. npcName .. " (" .. npcID .. ")")
+					-- ItemRefTooltip or GameTooltip
+					local tooltip
+					if ItemRefTooltip:IsMouseMotionFocus() then tooltip = ItemRefTooltip else tooltip = GameTooltip end
+					-- Process tooltip
+					if tooltip:IsShown() then
+						-- Item
+						local void, itemLink = tooltip:GetItem()
+						if itemLink then
+							local itemID = GetItemInfoFromHyperlink(itemLink)
+							if itemID then
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/item=" .. itemID, false)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["Item"] .. ": " .. itemLink .. " (" .. itemID .. ")")
+								return
+							end
+						end
+						-- Spell
+						local name, spellID = tooltip:GetSpell()
+						if name and spellID then
+							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/spell=" .. spellID, false)
+							LeaPlusLC.FactoryEditBox.f:SetText(L["Spell"] .. ": " .. name .. " (" .. spellID .. ")")
 							return
 						end
-					end
-					-- Pet, player and unknown tooltip (this must be last)
-					local tipTitle = GameTooltipTextLeft1:GetText()
-					if tipTitle then
-						local speciesId, petGUID = C_PetJournal.FindPetIDByName(GameTooltipTextLeft1:GetText(), false)
-						if petGUID then
-							-- Pet
-							local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(petGUID)
-							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. creatureID)
-							LeaPlusLC.FactoryEditBox.f:SetText(L["Pet"] .. ": " .. name .. " (" .. creatureID .. ")")
-							return
-						else
-							-- Show armory link for players outside zhCN
-							local unitFocus
-							if mouseFocus == WorldFrame then unitFocus = "mouseover" else unitFocus = select(2, GameTooltip:GetUnit()) end
-							if unitFocus and UnitIsPlayer(unitFocus) then
-								-- Show armory link
-								local name, realm = UnitName(unitFocus)
-								local class = UnitClassBase(unitFocus)
-								if class then
-									local color = RAID_CLASS_COLORS[class]
-									local escapeColor = string.format("|cff%02x%02x%02x", color.r*255, color.g*255, color.b*255)
-									if not realm then realm = GetNormalizedRealmName() end
-									if name and realm then
-										-- Debug
-										-- local realm = "StrandoftheAncients" -- Debug
-										-- Chinese armory not available
-										if GameLocale == "zhCN" then return end
-										-- Fix non-standard names
-											if realm == "Area52" then realm = "Area-52"
-										elseif realm == "AzjolNerub" then realm = "AzjolNerub"
-										elseif realm == "Chantséternels" then realm = "Chants-Éternels"
-										elseif realm == "ConfrérieduThorium" then realm = "Confrérie-du-Thorium"
-										elseif realm == "ConseildesOmbres" then realm = "Conseil-des-Ombres"
-										elseif realm == "CultedelaRivenoire" then realm = "Culte-de-la-Rive-noire"
-										elseif realm == "DerRatvonDalaran" then realm = "Der-Rat-von-Dalaran"
-										elseif realm == "DieewigeWacht" then realm = "Die-ewige-Wacht"
-										elseif realm == "FestungderStürme" then realm = "Festung-der-Stürme"
-										elseif realm == "KultderVerdammten" then realm = "Kult-der-Verdammten"
-										elseif realm == "LaCroisadeécarlate" then realm = "La-Croisade-Écarlate"
-										elseif realm == "MarécagedeZangar" then realm = "Marécage-de-Zangar"
-										elseif realm == "Pozzodell'Eternità" then realm = "Pozzo-dellEternità"
-										elseif realm == "Templenoir" then realm = "Temple-noir"
-										elseif realm == "VanCleef" then realm = "Vancleef"
-										elseif realm == "ZirkeldesCenarius" then realm = "Zirkel-des-Cenarius"
-										-- Fix Russian names
-										elseif realm == "СвежевательДуш" then realm = "Свежеватель-Душ"
-										elseif realm == "СтражСмерти" then realm = "Страж-Смерти"
-										elseif realm == "Ревущийфьорд" then realm = "Ревущий-фьорд"
-										elseif realm == "ТкачСмерти" then realm = "Ткач-Смерти"
-										elseif realm == "Борейскаятундра" then realm = "Борейская-тундра"
-										elseif realm == "Ясеневыйлес" then realm = "Ясеневый-лес"
-										elseif realm == "ПиратскаяБухта" then realm = "Пиратская-Бухта"
-										elseif realm == "ВечнаяПесня" then realm = "Вечная-Песня"
-										elseif realm == "ЧерныйШрам" then realm = "Черный-Шрам"
-										elseif realm == "ВестникРока" then realm = "Вестник-Рока"
-										-- Fix all other names
-										else
-											-- Realm name is not one of the above so fix it
-											realm = realm:gsub("(%l[of])(%u)", "-%1-%2") -- Add hyphen after of if capital follows of (CavernsofTime becomes Cavernsof-Time)
-											realm = realm:gsub("(ofthe)", "-of-the-") -- Replace ofthe with -of-the- (ShrineoftheDormantFlame becomes Shrine-of-the-DormantFlame)
-											realm = realm:gsub("(%l)(%u)", "%1 %2") -- Add space before capital letters (CavernsofTime becomes Cavernsof Time)
-											realm = realm:gsub(" ", "-") -- Replace space with hyphen (Cavernsof Time becomes Cavernsof-Time)
-											realm = realm:gsub("'", "") -- Remove apostrophe
-											realm = realm:gsub("[(]", "-") -- Replace opening parentheses with hyphen
-											realm = realm:gsub("[)]", "") -- Remove closing parentheses
-										end
-										-- print(realm) -- Debug
-										LeaPlusLC:ShowSystemEditBox(LeaPlusLC.BlizzardLock .. strlower(realm) .. "/" .. strlower(name))
-										realm = realm:gsub("-", " ") -- Replace hyphen with space
-										LeaPlusLC.FactoryEditBox.f:SetText(escapeColor .. L["Player"] .. ": " .. name .. " (" .. realm .. ")")
-										return
-									end
-								end
+						-- NPC
+						local npcName = UnitName("mouseover")
+						local npcGuid = UnitGUID("mouseover") or nil
+						if npcName and npcGuid then
+							local void, void, void, void, void, npcID = strsplit("-", npcGuid)
+							if npcID then
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. npcID, false)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["NPC"] .. ": " .. npcName .. " (" .. npcID .. ")")
+								return
+							end
+						end
+						-- Pet, player and unknown tooltip (this must be last)
+						local tipTitle = GameTooltipTextLeft1:GetText()
+						if tipTitle then
+							local speciesId, petGUID = C_PetJournal.FindPetIDByName(GameTooltipTextLeft1:GetText(), false)
+							if petGUID then
+								-- Pet
+								local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(petGUID)
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. creatureID)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["Pet"] .. ": " .. name .. " (" .. creatureID .. ")")
+								return
 							else
-								-- Unknown tooltip
-								-- if mouseFocus ~= WorldFrame then
+								-- Show armory link for players outside zhCN
+								local unitFocus
+								if WorldFrame:IsMouseMotionFocus() then unitFocus = "mouseover" else unitFocus = select(2, GameTooltip:GetUnit()) end
+								if unitFocus and UnitIsPlayer(unitFocus) then
+									-- Show armory link
+									local name, realm = UnitName(unitFocus)
+									local class = UnitClassBase(unitFocus)
+									if class then
+										local color = RAID_CLASS_COLORS[class]
+										local escapeColor = string.format("|cff%02x%02x%02x", color.r*255, color.g*255, color.b*255)
+										if not realm then realm = GetNormalizedRealmName() end
+										if name and realm then
+											-- Debug
+											-- local realm = "StrandoftheAncients" -- Debug
+											-- Chinese armory not available
+											if GameLocale == "zhCN" then return end
+											-- Fix non-standard names
+												if realm == "Area52" then realm = "Area-52"
+											elseif realm == "AzjolNerub" then realm = "AzjolNerub"
+											elseif realm == "Chantséternels" then realm = "Chants-Éternels"
+											elseif realm == "ConfrérieduThorium" then realm = "Confrérie-du-Thorium"
+											elseif realm == "ConseildesOmbres" then realm = "Conseil-des-Ombres"
+											elseif realm == "CultedelaRivenoire" then realm = "Culte-de-la-Rive-noire"
+											elseif realm == "DerRatvonDalaran" then realm = "Der-Rat-von-Dalaran"
+											elseif realm == "DieewigeWacht" then realm = "Die-ewige-Wacht"
+											elseif realm == "FestungderStürme" then realm = "Festung-der-Stürme"
+											elseif realm == "KultderVerdammten" then realm = "Kult-der-Verdammten"
+											elseif realm == "LaCroisadeécarlate" then realm = "La-Croisade-Écarlate"
+											elseif realm == "MarécagedeZangar" then realm = "Marécage-de-Zangar"
+											elseif realm == "Pozzodell'Eternità" then realm = "Pozzo-dellEternità"
+											elseif realm == "Templenoir" then realm = "Temple-noir"
+											elseif realm == "VanCleef" then realm = "Vancleef"
+											elseif realm == "ZirkeldesCenarius" then realm = "Zirkel-des-Cenarius"
+											-- Fix Russian names
+											elseif realm == "СвежевательДуш" then realm = "Свежеватель-Душ"
+											elseif realm == "СтражСмерти" then realm = "Страж-Смерти"
+											elseif realm == "Ревущийфьорд" then realm = "Ревущий-фьорд"
+											elseif realm == "ТкачСмерти" then realm = "Ткач-Смерти"
+											elseif realm == "Борейскаятундра" then realm = "Борейская-тундра"
+											elseif realm == "Ясеневыйлес" then realm = "Ясеневый-лес"
+											elseif realm == "ПиратскаяБухта" then realm = "Пиратская-Бухта"
+											elseif realm == "ВечнаяПесня" then realm = "Вечная-Песня"
+											elseif realm == "ЧерныйШрам" then realm = "Черный-Шрам"
+											elseif realm == "ВестникРока" then realm = "Вестник-Рока"
+											-- Fix all other names
+											else
+												-- Realm name is not one of the above so fix it
+												realm = realm:gsub("(%l[of])(%u)", "-%1-%2") -- Add hyphen after of if capital follows of (CavernsofTime becomes Cavernsof-Time)
+												realm = realm:gsub("(ofthe)", "-of-the-") -- Replace ofthe with -of-the- (ShrineoftheDormantFlame becomes Shrine-of-the-DormantFlame)
+												realm = realm:gsub("(%l)(%u)", "%1 %2") -- Add space before capital letters (CavernsofTime becomes Cavernsof Time)
+												realm = realm:gsub(" ", "-") -- Replace space with hyphen (Cavernsof Time becomes Cavernsof-Time)
+												realm = realm:gsub("'", "") -- Remove apostrophe
+												realm = realm:gsub("[(]", "-") -- Replace opening parentheses with hyphen
+												realm = realm:gsub("[)]", "") -- Remove closing parentheses
+											end
+											-- print(realm) -- Debug
+											LeaPlusLC:ShowSystemEditBox(LeaPlusLC.BlizzardLock .. strlower(realm) .. "/" .. strlower(name))
+											realm = realm:gsub("-", " ") -- Replace hyphen with space
+											LeaPlusLC.FactoryEditBox.f:SetText(escapeColor .. L["Player"] .. ": " .. name .. " (" .. realm .. ")")
+											return
+										end
+									end
+								else
+									-- Unknown tooltip
 									tipTitle = tipTitle:gsub("|c%x%x%x%x%x%x%x%x", "") -- Remove color tag
 									LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
 									LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Link will search Wowhead"])
 									return
-								-- end
+								end
 							end
 						end
 					end
+					return
+				else
+					-- This is for Dragonflight
+					if not LeaPlusLC.WowheadLock then
+						-- Set Wowhead link prefix
+						if GameLocale == "deDE" then LeaPlusLC.WowheadLock = "de.wowhead.com"
+						elseif GameLocale == "esMX" then LeaPlusLC.WowheadLock = "es.wowhead.com"
+						elseif GameLocale == "esES" then LeaPlusLC.WowheadLock = "es.wowhead.com"
+						elseif GameLocale == "frFR" then LeaPlusLC.WowheadLock = "fr.wowhead.com"
+						elseif GameLocale == "itIT" then LeaPlusLC.WowheadLock = "it.wowhead.com"
+						elseif GameLocale == "ptBR" then LeaPlusLC.WowheadLock = "pt.wowhead.com"
+						elseif GameLocale == "ruRU" then LeaPlusLC.WowheadLock = "ru.wowhead.com"
+						elseif GameLocale == "koKR" then LeaPlusLC.WowheadLock = "ko.wowhead.com"
+						elseif GameLocale == "zhCN" then LeaPlusLC.WowheadLock = "cn.wowhead.com"
+						elseif GameLocale == "zhTW" then LeaPlusLC.WowheadLock = "cn.wowhead.com"
+						else							 LeaPlusLC.WowheadLock = "wowhead.com"
+						end
+					end
+					if not LeaPlusLC.BlizzardLock then
+						-- Set Blizzard link prefix (https://wowpedia.fandom.com/wiki/Localization) (region will be added by website automatically)
+							if GameLocale == "deDE" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/de-de/character/eu/" -- Germany
+						elseif GameLocale == "frFR" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/fr-fr/character/eu/" -- France
+						elseif GameLocale == "itIT" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/it-it/character/eu/" -- Italy
+						elseif GameLocale == "ruRU" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/ru-ru/character/eu/" -- Russia
+						elseif GameLocale == "koKR" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/ko-kr/character/kr/" -- Korea
+						elseif GameLocale == "zhTW" then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/zh-tw/character/tw/" -- Tiawan
+						elseif GameLocale == "esES" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-es/character/us/" -- Spain (esES connected to US)
+						elseif GameLocale == "esES" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-es/character/eu/" -- Spain (esES connected to EU)
+						elseif GameLocale == "esMX" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-mx/character/us/" -- Mexico (esMX connected to US)
+						elseif GameLocale == "esMX" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/es-mx/character/eu/" -- Spain (esMX connected to EU)
+						elseif GameLocale == "ptBR" and GetCurrentRegion() == 1 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/pt-br/character/us/" -- Brazil (ptBR connected to US)
+						elseif GameLocale == "ptBR" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/pt-br/character/eu/" -- Portugal (ptBR connected to US)
+						elseif GameLocale == "enUS" and GetCurrentRegion() == 3 then LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/en-gb/character/eu/" -- UK (enUS connected to Europe)
+						else 														 LeaPlusLC.BlizzardLock = "https://worldofwarcraft.com/en-us/character/us/" -- US (default)
+						end
+					end
+					-- Store frame under mouse
+					local mouseFocus = GetMouseFocus()
+					-- Floating battle pet tooltip (linked in chat)
+					if mouseFocus == FloatingBattlePetTooltip and FloatingBattlePetTooltip.Name then
+						local tipTitle = FloatingBattlePetTooltip.Name:GetText()
+						if tipTitle then
+							local speciesId, petGUID = C_PetJournal.FindPetIDByName(tipTitle, false)
+							if petGUID then
+								local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(petGUID)
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. creatureID)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["Pet"] .. ": " .. name .. " (" .. creatureID .. ")")
+								return
+							end
+						end
+					end
+					-- Floating pet battle ability tooltip (linked in chat)
+					if FloatingPetBattleAbilityTooltip and mouseFocus == FloatingPetBattleAbilityTooltip and FloatingPetBattleAbilityTooltip.Name then
+						local tipTitle = FloatingPetBattleAbilityTooltip.Name:GetText()
+						if tipTitle then
+							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
+							LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Pet Ability"] .. ": " .. tipTitle)
+							return
+						end
+					end
+					-- Pet journal ability tooltip (tooltip in pet journal)
+					if PetJournalPrimaryAbilityTooltip and PetJournalPrimaryAbilityTooltip:IsShown() and PetJournalPrimaryAbilityTooltip.Name then
+						local tipTitle = PetJournalPrimaryAbilityTooltip.Name:GetText()
+						if tipTitle then
+							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
+							LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Pet Ability"] .. ": " .. tipTitle)
+							return
+						end
+					end
+					-- ItemRefTooltip or GameTooltip
+					local tooltip
+					if mouseFocus == ItemRefTooltip then tooltip = ItemRefTooltip else tooltip = GameTooltip end
+					-- Process tooltip
+					if tooltip:IsShown() then
+						-- Item
+						local void, itemLink = tooltip:GetItem()
+						if itemLink then
+							local itemID = GetItemInfoFromHyperlink(itemLink)
+							if itemID then
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/item=" .. itemID, false)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["Item"] .. ": " .. itemLink .. " (" .. itemID .. ")")
+								return
+							end
+						end
+						-- Spell
+						local name, spellID = tooltip:GetSpell()
+						if name and spellID then
+							LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/spell=" .. spellID, false)
+							LeaPlusLC.FactoryEditBox.f:SetText(L["Spell"] .. ": " .. name .. " (" .. spellID .. ")")
+							return
+						end
+						-- NPC
+						local npcName = UnitName("mouseover")
+						local npcGuid = UnitGUID("mouseover") or nil
+						if npcName and npcGuid then
+							local void, void, void, void, void, npcID = strsplit("-", npcGuid)
+							if npcID then
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. npcID, false)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["NPC"] .. ": " .. npcName .. " (" .. npcID .. ")")
+								return
+							end
+						end
+						-- Pet, player and unknown tooltip (this must be last)
+						local tipTitle = GameTooltipTextLeft1:GetText()
+						if tipTitle then
+							local speciesId, petGUID = C_PetJournal.FindPetIDByName(GameTooltipTextLeft1:GetText(), false)
+							if petGUID then
+								-- Pet
+								local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(petGUID)
+								LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/npc=" .. creatureID)
+								LeaPlusLC.FactoryEditBox.f:SetText(L["Pet"] .. ": " .. name .. " (" .. creatureID .. ")")
+								return
+							else
+								-- Show armory link for players outside zhCN
+								local unitFocus
+								if mouseFocus == WorldFrame then unitFocus = "mouseover" else unitFocus = select(2, GameTooltip:GetUnit()) end
+								if unitFocus and UnitIsPlayer(unitFocus) then
+									-- Show armory link
+									local name, realm = UnitName(unitFocus)
+									local class = UnitClassBase(unitFocus)
+									if class then
+										local color = RAID_CLASS_COLORS[class]
+										local escapeColor = string.format("|cff%02x%02x%02x", color.r*255, color.g*255, color.b*255)
+										if not realm then realm = GetNormalizedRealmName() end
+										if name and realm then
+											-- Debug
+											-- local realm = "StrandoftheAncients" -- Debug
+											-- Chinese armory not available
+											if GameLocale == "zhCN" then return end
+											-- Fix non-standard names
+												if realm == "Area52" then realm = "Area-52"
+											elseif realm == "AzjolNerub" then realm = "AzjolNerub"
+											elseif realm == "Chantséternels" then realm = "Chants-Éternels"
+											elseif realm == "ConfrérieduThorium" then realm = "Confrérie-du-Thorium"
+											elseif realm == "ConseildesOmbres" then realm = "Conseil-des-Ombres"
+											elseif realm == "CultedelaRivenoire" then realm = "Culte-de-la-Rive-noire"
+											elseif realm == "DerRatvonDalaran" then realm = "Der-Rat-von-Dalaran"
+											elseif realm == "DieewigeWacht" then realm = "Die-ewige-Wacht"
+											elseif realm == "FestungderStürme" then realm = "Festung-der-Stürme"
+											elseif realm == "KultderVerdammten" then realm = "Kult-der-Verdammten"
+											elseif realm == "LaCroisadeécarlate" then realm = "La-Croisade-Écarlate"
+											elseif realm == "MarécagedeZangar" then realm = "Marécage-de-Zangar"
+											elseif realm == "Pozzodell'Eternità" then realm = "Pozzo-dellEternità"
+											elseif realm == "Templenoir" then realm = "Temple-noir"
+											elseif realm == "VanCleef" then realm = "Vancleef"
+											elseif realm == "ZirkeldesCenarius" then realm = "Zirkel-des-Cenarius"
+											-- Fix Russian names
+											elseif realm == "СвежевательДуш" then realm = "Свежеватель-Душ"
+											elseif realm == "СтражСмерти" then realm = "Страж-Смерти"
+											elseif realm == "Ревущийфьорд" then realm = "Ревущий-фьорд"
+											elseif realm == "ТкачСмерти" then realm = "Ткач-Смерти"
+											elseif realm == "Борейскаятундра" then realm = "Борейская-тундра"
+											elseif realm == "Ясеневыйлес" then realm = "Ясеневый-лес"
+											elseif realm == "ПиратскаяБухта" then realm = "Пиратская-Бухта"
+											elseif realm == "ВечнаяПесня" then realm = "Вечная-Песня"
+											elseif realm == "ЧерныйШрам" then realm = "Черный-Шрам"
+											elseif realm == "ВестникРока" then realm = "Вестник-Рока"
+											-- Fix all other names
+											else
+												-- Realm name is not one of the above so fix it
+												realm = realm:gsub("(%l[of])(%u)", "-%1-%2") -- Add hyphen after of if capital follows of (CavernsofTime becomes Cavernsof-Time)
+												realm = realm:gsub("(ofthe)", "-of-the-") -- Replace ofthe with -of-the- (ShrineoftheDormantFlame becomes Shrine-of-the-DormantFlame)
+												realm = realm:gsub("(%l)(%u)", "%1 %2") -- Add space before capital letters (CavernsofTime becomes Cavernsof Time)
+												realm = realm:gsub(" ", "-") -- Replace space with hyphen (Cavernsof Time becomes Cavernsof-Time)
+												realm = realm:gsub("'", "") -- Remove apostrophe
+												realm = realm:gsub("[(]", "-") -- Replace opening parentheses with hyphen
+												realm = realm:gsub("[)]", "") -- Remove closing parentheses
+											end
+											-- print(realm) -- Debug
+											LeaPlusLC:ShowSystemEditBox(LeaPlusLC.BlizzardLock .. strlower(realm) .. "/" .. strlower(name))
+											realm = realm:gsub("-", " ") -- Replace hyphen with space
+											LeaPlusLC.FactoryEditBox.f:SetText(escapeColor .. L["Player"] .. ": " .. name .. " (" .. realm .. ")")
+											return
+										end
+									end
+								else
+									-- Unknown tooltip
+									-- if mouseFocus ~= WorldFrame then
+										tipTitle = tipTitle:gsub("|c%x%x%x%x%x%x%x%x", "") -- Remove color tag
+										LeaPlusLC:ShowSystemEditBox("https://" .. LeaPlusLC.WowheadLock .. "/search?q=" .. tipTitle, false)
+										LeaPlusLC.FactoryEditBox.f:SetText("|cffff0000" .. L["Link will search Wowhead"])
+										return
+									-- end
+								end
+							end
+						end
+					end
+					return
 				end
-				return
 			elseif str == "mountid" then
 				-- Get mount ID by mount name
 				if not arg1 or arg1 == "" then LeaPlusLC:Print("Missing mount name.") return end
@@ -13722,35 +13914,74 @@
 				return
 			elseif str == "click" then
 				-- Click a button so a user can test if it is allowed (optional number of times to click)
-				local frame = GetMouseFocus()
-				local ftype = frame:GetObjectType()
-				if frame and ftype and ftype == "Button" then
-					if arg1 and tonumber(arg1) > 1 and tonumber(arg1) < 1000 then
-						for i =1, tonumber(arg1) do C_Timer.After(0.1 * i, function() frame:Click() end) end
-					else
-						frame:Click()
+				if LeaPlusLC.NewPatch then
+					local mouseFoci = GetMouseFoci()
+					if mouseFoci then
+						local frame = mouseFoci[#mouseFoci]
+						local ftype = frame:GetObjectType()
+						if frame and ftype and ftype == "Button" then
+							if arg1 and tonumber(arg1) > 1 and tonumber(arg1) < 1000 then
+								for i =1, tonumber(arg1) do C_Timer.After(0.1 * i, function() frame:Click() end) end
+							else
+								frame:Click()
+							end
+						else
+							LeaPlusLC:Print("Hover the pointer over a button.")
+						end
+						return
 					end
 				else
-					LeaPlusLC:Print("Hover the pointer over a button.")
+					local frame = GetMouseFocus()
+					local ftype = frame:GetObjectType()
+					if frame and ftype and ftype == "Button" then
+						if arg1 and tonumber(arg1) > 1 and tonumber(arg1) < 1000 then
+							for i =1, tonumber(arg1) do C_Timer.After(0.1 * i, function() frame:Click() end) end
+						else
+							frame:Click()
+						end
+					else
+						LeaPlusLC:Print("Hover the pointer over a button.")
+					end
+					return
 				end
-				return
 			elseif str == "frame" then
 				-- Print frame name under mouse
-				local frame = GetMouseFocus()
-				local ftype = frame:GetObjectType()
-				if frame and ftype then
-					local fname = frame:GetName()
-					local issecure, tainted = issecurevariable(fname)
-					if issecure then issecure = "Yes" else issecure = "No" end
-					if tainted then tainted = "Yes" else tainted = "No" end
-					if fname then
-						LeaPlusLC:Print("Name: |cffffffff" .. fname)
-						LeaPlusLC:Print("Type: |cffffffff" .. ftype)
-						LeaPlusLC:Print("Secure: |cffffffff" .. issecure)
-						LeaPlusLC:Print("Tainted: |cffffffff" .. tainted)
+				if LeaPlusLC.NewPatch then
+					local mouseFoci = GetMouseFoci()
+					if mouseFoci then
+						local frame = mouseFoci[#mouseFoci]
+						local ftype = frame:GetObjectType()
+						if frame and ftype then
+							local fname = frame:GetName()
+							local issecure, tainted = issecurevariable(fname)
+							if issecure then issecure = "Yes" else issecure = "No" end
+							if tainted then tainted = "Yes" else tainted = "No" end
+							if fname then
+								LeaPlusLC:Print("Name: |cffffffff" .. fname)
+								LeaPlusLC:Print("Type: |cffffffff" .. ftype)
+								LeaPlusLC:Print("Secure: |cffffffff" .. issecure)
+								LeaPlusLC:Print("Tainted: |cffffffff" .. tainted)
+							end
+						end
 					end
+					return
+				else
+					local frame = GetMouseFocus()
+					local ftype = frame:GetObjectType()
+					if frame and ftype then
+						local fname = frame:GetName()
+						local issecure, tainted = issecurevariable(fname)
+						if issecure then issecure = "Yes" else issecure = "No" end
+						if tainted then tainted = "Yes" else tainted = "No" end
+						if fname then
+							LeaPlusLC:Print("Name: |cffffffff" .. fname)
+							LeaPlusLC:Print("Type: |cffffffff" .. ftype)
+							LeaPlusLC:Print("Secure: |cffffffff" .. issecure)
+							LeaPlusLC:Print("Tainted: |cffffffff" .. tainted)
+						end
+					end
+					return
 				end
-				return
 			elseif str == "arrow" then
 				-- Arrow (left: drag, shift/ctrl: rotate, mouseup: loc, pointer must be on arrow stem)
 				local f = CreateFrame("Frame", nil, WorldMapFrame.ScrollContainer)
