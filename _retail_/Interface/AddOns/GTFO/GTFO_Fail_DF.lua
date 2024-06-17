@@ -1248,6 +1248,17 @@ GTFO.SpellID["444645"] = {
   sound = 3;
 };
 
+GTFO.SpellID["398373"] = {
+  --desc = "Petrifying Bite (Spinmarrow)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["412644"] = {
+  --desc = "Rumbling Earth (Kob'rok)";
+  sound = 3;
+};
+
 --- *******************
 --- * Ruby Life Pools *
 --- *******************
@@ -2631,6 +2642,12 @@ GTFO.SpellID["408429"] = {
 
 GTFO.SpellID["402746"] = {
   --desc = "Drifting Embers (Scalecommander Sarkareth)";
+  sound = 3;
+};
+
+GTFO.SpellID["410981"] = {
+  --desc = "Iron Jaws (Djaradin Dragonhunter)";
+  applicationOnly = true;
   sound = 3;
 };
 

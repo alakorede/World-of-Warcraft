@@ -15,9 +15,9 @@ APR_DB = {
 ["HideDelete"] = true,
 ["HideUndercut"] = false,
 ["HideEquipTrade"] = true,
-["HideAbandonQuest"] = true,
-["PrintStartupMessage"] = true,
 ["HideMail"] = true,
+["PrintStartupMessage"] = true,
+["HideAbandonQuest"] = true,
 ["HideEquip"] = false,
 ["HideRefund"] = true,
 }

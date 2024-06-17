@@ -16,45 +16,45 @@ BetterWardrobe_Options = {
 ["Apinéia - Nemesis"] = "Default",
 ["Sifú - Goldrinn"] = "Default",
 ["Mariamolambo - Goldrinn"] = "Default",
-["Sharan - Goldrinn"] = "Default",
+["Natashy - Goldrinn"] = "Default",
 ["Trimegistos - Goldrinn"] = "Default",
 ["Jeshy - Goldrinn"] = "Default",
 ["Córsega - Nemesis"] = "Default",
 ["Vacalactika - Nemesis"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
-["Kerrishy - Goldrinn"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Aishy - Nemesis"] = "Default",
+["Akishy - Goldrinn"] = "Default",
+["Kuradis - Nemesis"] = "Default",
+["Turoshy - Nemesis"] = "Default",
 ["Onifade - Nemesis"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
-["Melishy - Goldrinn"] = "Default",
+["Satishy - Nemesis"] = "Default",
 ["Tamagoshy - Nemesis"] = "Default",
-["Falkoshy - Nemesis"] = "Default",
+["Corsega - Nemesis"] = "Default",
 ["Batezu - Goldrinn"] = "Default",
 ["Bearbull - Nemesis"] = "Default",
-["Arieshy - Goldrinn"] = "Default",
+["Kerrishy - Goldrinn"] = "Default",
 ["Molosso - Nemesis"] = "Default",
-["Sashy - Goldrinn"] = "Default",
-["Satishy - Goldrinn"] = "Default",
-["Chicoxavier - Nemesis"] = "Default",
+["Aishy - Nemesis"] = "Default",
 ["Batezu - Nemesis"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
+["Chicoxavier - Nemesis"] = "Default",
+["Satishy - Goldrinn"] = "Default",
+["Dishy - Nemesis"] = "Default",
 ["Sharan - Nemesis"] = "Default",
 ["Hanushy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Trystam - Goldrinn"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Migoshy - Goldrinn"] = "Default",
 ["Elshy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
-["Dishy - Nemesis"] = "Default",
+["Trystam - Goldrinn"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
 ["Yashy - Nemesis"] = "Default",
-["Corsega - Nemesis"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Turoshy - Nemesis"] = "Default",
-["Kuradis - Nemesis"] = "Default",
-["Akishy - Goldrinn"] = "Default",
-["Natashy - Goldrinn"] = "Default",
+["Falkoshy - Nemesis"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Arieshy - Goldrinn"] = "Default",
+["Sharan - Goldrinn"] = "Default",
 ["Muruatan - Nemesis"] = "Default",
 },
 ["profiles"] = {
@@ -80,49 +80,106 @@ BetterWardrobe_CharacterData = {
 ["Apinéia - Nemesis"] = "Apinéia - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
 ["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Natashy - Goldrinn"] = "Natashy - Goldrinn",
 ["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
 ["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Akishy - Goldrinn"] = "Akishy - Goldrinn",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Turoshy - Nemesis"] = "Turoshy - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
-["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Corsega - Nemesis"] = "Corsega - Nemesis",
 ["Batezu - Goldrinn"] = "Batezu - Goldrinn",
 ["Bearbull - Nemesis"] = "Bearbull - Nemesis",
-["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
 ["Molosso - Nemesis"] = "Molosso - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Sharan - Nemesis"] = "Sharan - Nemesis",
 ["Hanushy - Nemesis"] = "Hanushy - Nemesis",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
-["Dishy - Nemesis"] = "Dishy - Nemesis",
+["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Corsega - Nemesis"] = "Corsega - Nemesis",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Turoshy - Nemesis"] = "Turoshy - Nemesis",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Akishy - Goldrinn"] = "Akishy - Goldrinn",
-["Natashy - Goldrinn"] = "Natashy - Goldrinn",
+["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 }
 BetterWardrobe_SavedSetData = {
+["profileKeys"] = {
+["Shamanjuba - Nemesis"] = "Shamanjuba - Nemesis",
+["Mitráculo - Nemesis"] = "Mitráculo - Nemesis",
+["Muligan - Nemesis"] = "Muligan - Nemesis",
+["Belashy - Goldrinn"] = "Belashy - Goldrinn",
+["Chishy - Goldrinn"] = "Chishy - Goldrinn",
+["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
+["Alexshy - Goldrinn"] = "Alexshy - Goldrinn",
+["Nostradamus - Goldrinn"] = "Nostradamus - Goldrinn",
+["Eshy - Nemesis"] = "Eshy - Nemesis",
+["Kirashy - Nemesis"] = "Kirashy - Nemesis",
+["Muligan - Goldrinn"] = "Muligan - Goldrinn",
+["Dishy - Goldrinn"] = "Dishy - Goldrinn",
+["Apinéia - Nemesis"] = "Apinéia - Nemesis",
+["Sifú - Goldrinn"] = "Sifú - Goldrinn",
+["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
+["Natashy - Goldrinn"] = "Natashy - Goldrinn",
+["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
+["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
+["Córsega - Nemesis"] = "Córsega - Nemesis",
+["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
+["Artheras - Goldrinn"] = "Artheras - Goldrinn",
+["Akishy - Goldrinn"] = "Akishy - Goldrinn",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Turoshy - Nemesis"] = "Turoshy - Nemesis",
+["Onifade - Nemesis"] = "Onifade - Nemesis",
+["Eshy - Goldrinn"] = "Eshy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
+["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
+["Corsega - Nemesis"] = "Corsega - Nemesis",
+["Batezu - Goldrinn"] = "Batezu - Goldrinn",
+["Bearbull - Nemesis"] = "Bearbull - Nemesis",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
+["Molosso - Nemesis"] = "Molosso - Nemesis",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Batezu - Nemesis"] = "Batezu - Nemesis",
+["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Dishy - Nemesis"] = "Dishy - Nemesis",
+["Sharan - Nemesis"] = "Sharan - Nemesis",
+["Hanushy - Nemesis"] = "Hanushy - Nemesis",
+["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
+["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
+["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
+["Elshy - Goldrinn"] = "Elshy - Goldrinn",
+["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Yashy - Nemesis"] = "Yashy - Nemesis",
+["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Muruatan - Nemesis"] = "Muruatan - Nemesis",
+},
 ["global"] = {
 ["sets"] = {
 ["Shamanjuba - Nemesis"] = {
@@ -288,6 +345,12 @@ BetterWardrobe_SavedSetData = {
 },
 ["Mariamolambo - Goldrinn"] = {
 },
+["Córsega - Nemesis"] = {
+},
+["Trimegistos - Goldrinn"] = {
+},
+["Jeshy - Goldrinn"] = {
+},
 ["Natashy - Goldrinn"] = {
 {
 ["outfitID"] = 0,
@@ -317,21 +380,15 @@ BetterWardrobe_SavedSetData = {
 ["index"] = 1,
 },
 },
-["Trimegistos - Goldrinn"] = {
-},
-["Jeshy - Goldrinn"] = {
-},
-["Córsega - Nemesis"] = {
-},
 ["Vacalactika - Nemesis"] = {
 },
 ["Artheras - Goldrinn"] = {
 },
-["Kirashy - Nemesis"] = {
+["Sifú - Goldrinn"] = {
 },
-["Satishy - Nemesis"] = {
+["Turoshy - Nemesis"] = {
 },
-["Bearbull - Nemesis"] = {
+["Corsega - Nemesis"] = {
 },
 ["Onifade - Nemesis"] = {
 },
@@ -364,7 +421,7 @@ BetterWardrobe_SavedSetData = {
 ["index"] = 1,
 },
 },
-["Falkoshy - Nemesis"] = {
+["Sashy - Goldrinn"] = {
 },
 ["Akishy - Goldrinn"] = {
 {
@@ -395,11 +452,11 @@ BetterWardrobe_SavedSetData = {
 ["index"] = 1,
 },
 },
-["Elshy - Goldrinn"] = {
+["Melishy - Goldrinn"] = {
 },
 ["Batezu - Goldrinn"] = {
 },
-["Corsega - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 },
 ["Arieshy - Goldrinn"] = {
 },
@@ -439,6 +496,8 @@ BetterWardrobe_SavedSetData = {
 ["Chicoxavier - Nemesis"] = {
 },
 ["Sharan - Goldrinn"] = {
+},
+["Sharan - Nemesis"] = {
 },
 ["Dishy - Nemesis"] = {
 {
@@ -577,42 +636,13 @@ BetterWardrobe_SavedSetData = {
 ["index"] = 5,
 },
 },
-["Sharan - Nemesis"] = {
-},
 ["Wishy - Nemesis"] = {
 },
 ["Aenshy - Goldrinn"] = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Trystam - Goldrinn"] = {
-{
-["outfitID"] = 0,
-["sources"] = {
-50108,
-0,
-190681,
-0,
-190676,
-84223,
-190680,
-190677,
-91248,
-190678,
-0,
-0,
-0,
-0,
-190683,
-168078,
-111562,
-0,
-0,
-},
-["name"] = "WarriorGold",
-["icon"] = 840662,
-["index"] = 1,
-},
+["Tamagoshy - Nemesis"] = {
 },
 ["Migoshy - Goldrinn"] = {
 {
@@ -643,13 +673,44 @@ BetterWardrobe_SavedSetData = {
 ["index"] = 1,
 },
 },
-["Hanushy - Nemesis"] = {
-},
 ["Kerrishy - Goldrinn"] = {
 },
-["Tamagoshy - Nemesis"] = {
+["Hanushy - Nemesis"] = {
+},
+["Trystam - Goldrinn"] = {
+{
+["outfitID"] = 0,
+["sources"] = {
+50108,
+0,
+190681,
+0,
+190676,
+84223,
+190680,
+190677,
+91248,
+190678,
+0,
+0,
+0,
+0,
+190683,
+168078,
+111562,
+0,
+0,
+},
+["name"] = "WarriorGold",
+["icon"] = 840662,
+["index"] = 1,
+},
 },
 ["Yashy - Nemesis"] = {
+},
+["Falkoshy - Nemesis"] = {
+},
+["Satishy - Nemesis"] = {
 },
 ["Satishy - Goldrinn"] = {
 {
@@ -680,76 +741,15 @@ BetterWardrobe_SavedSetData = {
 ["index"] = 1,
 },
 },
-["Melishy - Goldrinn"] = {
-},
-["Sashy - Goldrinn"] = {
-},
 ["Kuradis - Nemesis"] = {
 },
-["Turoshy - Nemesis"] = {
+["Elshy - Goldrinn"] = {
 },
-["Sifú - Goldrinn"] = {
+["Kirashy - Nemesis"] = {
 },
 ["Muruatan - Nemesis"] = {
 },
 },
-},
-["profileKeys"] = {
-["Shamanjuba - Nemesis"] = "Shamanjuba - Nemesis",
-["Mitráculo - Nemesis"] = "Mitráculo - Nemesis",
-["Muligan - Nemesis"] = "Muligan - Nemesis",
-["Belashy - Goldrinn"] = "Belashy - Goldrinn",
-["Chishy - Goldrinn"] = "Chishy - Goldrinn",
-["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
-["Alexshy - Goldrinn"] = "Alexshy - Goldrinn",
-["Nostradamus - Goldrinn"] = "Nostradamus - Goldrinn",
-["Eshy - Nemesis"] = "Eshy - Nemesis",
-["Kirashy - Nemesis"] = "Kirashy - Nemesis",
-["Muligan - Goldrinn"] = "Muligan - Goldrinn",
-["Dishy - Goldrinn"] = "Dishy - Goldrinn",
-["Apinéia - Nemesis"] = "Apinéia - Nemesis",
-["Sifú - Goldrinn"] = "Sifú - Goldrinn",
-["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
-["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
-["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
-["Córsega - Nemesis"] = "Córsega - Nemesis",
-["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
-["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
-["Onifade - Nemesis"] = "Onifade - Nemesis",
-["Eshy - Goldrinn"] = "Eshy - Goldrinn",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
-["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
-["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
-["Batezu - Goldrinn"] = "Batezu - Goldrinn",
-["Bearbull - Nemesis"] = "Bearbull - Nemesis",
-["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
-["Molosso - Nemesis"] = "Molosso - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
-["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
-["Sharan - Nemesis"] = "Sharan - Nemesis",
-["Hanushy - Nemesis"] = "Hanushy - Nemesis",
-["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
-["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Trystam - Goldrinn"] = "Trystam - Goldrinn",
-["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
-["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
-["Dishy - Nemesis"] = "Dishy - Nemesis",
-["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Corsega - Nemesis"] = "Corsega - Nemesis",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Turoshy - Nemesis"] = "Turoshy - Nemesis",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Akishy - Goldrinn"] = "Akishy - Goldrinn",
-["Natashy - Goldrinn"] = "Natashy - Goldrinn",
-["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 ["profiles"] = {
 ["Shamanjuba - Nemesis"] = {
@@ -764,11 +764,11 @@ BetterWardrobe_SavedSetData = {
 },
 ["Alexshy - Goldrinn"] = {
 },
-["Arieshy - Goldrinn"] = {
+["Belashy - Goldrinn"] = {
 },
 ["Sashy - Goldrinn"] = {
 },
-["Aishy - Nemesis"] = {
+["Satishy - Goldrinn"] = {
 },
 ["Eshy - Nemesis"] = {
 },
@@ -784,31 +784,31 @@ BetterWardrobe_SavedSetData = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Migoshy - Goldrinn"] = {
+["Akishy - Goldrinn"] = {
 },
-["Apinéia - Nemesis"] = {
+["Migoshy - Goldrinn"] = {
 },
 ["Kirashy - Nemesis"] = {
 },
-["Natashy - Goldrinn"] = {
-},
-["Jeshy - Goldrinn"] = {
-},
-["Melishy - Goldrinn"] = {
-},
-["Trystam - Goldrinn"] = {
+["Córsega - Nemesis"] = {
 },
 ["Elshy - Goldrinn"] = {
 },
-["Córsega - Nemesis"] = {
+["Trystam - Goldrinn"] = {
+},
+["Melishy - Goldrinn"] = {
+},
+["Jeshy - Goldrinn"] = {
+},
+["Natashy - Goldrinn"] = {
 },
 ["Vacalactika - Nemesis"] = {
 },
-["Akishy - Goldrinn"] = {
+["Apinéia - Nemesis"] = {
 },
-["Satishy - Goldrinn"] = {
+["Aishy - Nemesis"] = {
 },
-["Belashy - Goldrinn"] = {
+["Arieshy - Goldrinn"] = {
 },
 },
 }
@@ -829,45 +829,45 @@ BetterWardrobe_SubstituteItemData = {
 ["Apinéia - Nemesis"] = "Default",
 ["Sifú - Goldrinn"] = "Default",
 ["Mariamolambo - Goldrinn"] = "Default",
-["Sharan - Goldrinn"] = "Default",
+["Natashy - Goldrinn"] = "Default",
 ["Trimegistos - Goldrinn"] = "Default",
 ["Jeshy - Goldrinn"] = "Default",
 ["Córsega - Nemesis"] = "Default",
 ["Vacalactika - Nemesis"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
-["Kerrishy - Goldrinn"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Aishy - Nemesis"] = "Default",
+["Akishy - Goldrinn"] = "Default",
+["Kuradis - Nemesis"] = "Default",
+["Turoshy - Nemesis"] = "Default",
 ["Onifade - Nemesis"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
-["Melishy - Goldrinn"] = "Default",
+["Satishy - Nemesis"] = "Default",
 ["Tamagoshy - Nemesis"] = "Default",
-["Falkoshy - Nemesis"] = "Default",
+["Corsega - Nemesis"] = "Default",
 ["Batezu - Goldrinn"] = "Default",
 ["Bearbull - Nemesis"] = "Default",
-["Arieshy - Goldrinn"] = "Default",
+["Kerrishy - Goldrinn"] = "Default",
 ["Molosso - Nemesis"] = "Default",
-["Sashy - Goldrinn"] = "Default",
-["Satishy - Goldrinn"] = "Default",
-["Chicoxavier - Nemesis"] = "Default",
+["Aishy - Nemesis"] = "Default",
 ["Batezu - Nemesis"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
+["Chicoxavier - Nemesis"] = "Default",
+["Satishy - Goldrinn"] = "Default",
+["Dishy - Nemesis"] = "Default",
 ["Sharan - Nemesis"] = "Default",
 ["Hanushy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Trystam - Goldrinn"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Migoshy - Goldrinn"] = "Default",
 ["Elshy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
-["Dishy - Nemesis"] = "Default",
+["Trystam - Goldrinn"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
 ["Yashy - Nemesis"] = "Default",
-["Corsega - Nemesis"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Turoshy - Nemesis"] = "Default",
-["Kuradis - Nemesis"] = "Default",
-["Akishy - Goldrinn"] = "Default",
-["Natashy - Goldrinn"] = "Default",
+["Falkoshy - Nemesis"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Arieshy - Goldrinn"] = "Default",
+["Sharan - Goldrinn"] = "Default",
 ["Muruatan - Nemesis"] = "Default",
 },
 ["profiles"] = {
@@ -893,45 +893,45 @@ BetterWardrobe_ListData = {
 ["Apinéia - Nemesis"] = "Apinéia - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
 ["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Natashy - Goldrinn"] = "Natashy - Goldrinn",
 ["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
 ["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Akishy - Goldrinn"] = "Akishy - Goldrinn",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Turoshy - Nemesis"] = "Turoshy - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
-["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Corsega - Nemesis"] = "Corsega - Nemesis",
 ["Batezu - Goldrinn"] = "Batezu - Goldrinn",
 ["Bearbull - Nemesis"] = "Bearbull - Nemesis",
-["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
 ["Molosso - Nemesis"] = "Molosso - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Sharan - Nemesis"] = "Sharan - Nemesis",
 ["Hanushy - Nemesis"] = "Hanushy - Nemesis",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
-["Dishy - Nemesis"] = "Dishy - Nemesis",
+["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Corsega - Nemesis"] = "Corsega - Nemesis",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Turoshy - Nemesis"] = "Turoshy - Nemesis",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Akishy - Goldrinn"] = "Akishy - Goldrinn",
-["Natashy - Goldrinn"] = "Natashy - Goldrinn",
+["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 ["profiles"] = {
@@ -999,29 +999,29 @@ BetterWardrobe_ListData = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Hanushy - Nemesis"] = {
+["Sharan - Nemesis"] = {
 },
 ["Migoshy - Goldrinn"] = {
 },
-["Aishy - Nemesis"] = {
+["Córsega - Nemesis"] = {
 },
-["Batezu - Nemesis"] = {
+["Akishy - Goldrinn"] = {
+},
+["Satishy - Goldrinn"] = {
+},
+["Melishy - Goldrinn"] = {
+},
+["Radagashy - Goldrinn"] = {
 },
 ["Elshy - Goldrinn"] = {
 },
 ["Satishy - Nemesis"] = {
 },
-["Radagashy - Goldrinn"] = {
+["Batezu - Nemesis"] = {
 },
-["Melishy - Goldrinn"] = {
+["Aishy - Nemesis"] = {
 },
-["Satishy - Goldrinn"] = {
-},
-["Akishy - Goldrinn"] = {
-},
-["Córsega - Nemesis"] = {
-},
-["Sharan - Nemesis"] = {
+["Hanushy - Nemesis"] = {
 },
 ["Muruatan - Nemesis"] = {
 },
@@ -1044,45 +1044,45 @@ BetterWardrobe_ListData = {
 ["Apinéia - Nemesis"] = "Apinéia - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
 ["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Natashy - Goldrinn"] = "Natashy - Goldrinn",
 ["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
 ["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Akishy - Goldrinn"] = "Akishy - Goldrinn",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Turoshy - Nemesis"] = "Turoshy - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
-["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Corsega - Nemesis"] = "Corsega - Nemesis",
 ["Batezu - Goldrinn"] = "Batezu - Goldrinn",
 ["Bearbull - Nemesis"] = "Bearbull - Nemesis",
-["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
 ["Molosso - Nemesis"] = "Molosso - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Sharan - Nemesis"] = "Sharan - Nemesis",
 ["Hanushy - Nemesis"] = "Hanushy - Nemesis",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
-["Dishy - Nemesis"] = "Dishy - Nemesis",
+["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Corsega - Nemesis"] = "Corsega - Nemesis",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Turoshy - Nemesis"] = "Turoshy - Nemesis",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Akishy - Goldrinn"] = "Akishy - Goldrinn",
-["Natashy - Goldrinn"] = "Natashy - Goldrinn",
+["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 ["profiles"] = {
@@ -1114,37 +1114,37 @@ BetterWardrobe_ListData = {
 },
 ["Mariamolambo - Goldrinn"] = {
 },
-["Natashy - Goldrinn"] = {
+["Córsega - Nemesis"] = {
 },
 ["Trimegistos - Goldrinn"] = {
 },
 ["Jeshy - Goldrinn"] = {
 },
-["Córsega - Nemesis"] = {
+["Natashy - Goldrinn"] = {
 },
 ["Vacalactika - Nemesis"] = {
 },
 ["Artheras - Goldrinn"] = {
 },
-["Kirashy - Nemesis"] = {
+["Sifú - Goldrinn"] = {
 },
-["Satishy - Nemesis"] = {
+["Turoshy - Nemesis"] = {
 },
-["Bearbull - Nemesis"] = {
+["Corsega - Nemesis"] = {
 },
 ["Onifade - Nemesis"] = {
 },
 ["Eshy - Goldrinn"] = {
 },
-["Falkoshy - Nemesis"] = {
+["Sashy - Goldrinn"] = {
 },
 ["Akishy - Goldrinn"] = {
 },
-["Elshy - Goldrinn"] = {
+["Melishy - Goldrinn"] = {
 },
 ["Batezu - Goldrinn"] = {
 },
-["Corsega - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 },
 ["Arieshy - Goldrinn"] = {
 },
@@ -1158,9 +1158,9 @@ BetterWardrobe_ListData = {
 },
 ["Sharan - Goldrinn"] = {
 },
-["Dishy - Nemesis"] = {
-},
 ["Sharan - Nemesis"] = {
+},
+["Dishy - Nemesis"] = {
 },
 ["Wishy - Nemesis"] = {
 },
@@ -1168,34 +1168,35 @@ BetterWardrobe_ListData = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Trystam - Goldrinn"] = {
+["Tamagoshy - Nemesis"] = {
 },
 ["Migoshy - Goldrinn"] = {
 },
-["Hanushy - Nemesis"] = {
-},
 ["Kerrishy - Goldrinn"] = {
 },
-["Tamagoshy - Nemesis"] = {
+["Hanushy - Nemesis"] = {
+},
+["Trystam - Goldrinn"] = {
 },
 ["Yashy - Nemesis"] = {
 },
+["Falkoshy - Nemesis"] = {
+},
+["Satishy - Nemesis"] = {
+},
 ["Satishy - Goldrinn"] = {
-},
-["Melishy - Goldrinn"] = {
-},
-["Sashy - Goldrinn"] = {
 },
 ["Kuradis - Nemesis"] = {
 },
-["Turoshy - Nemesis"] = {
+["Elshy - Goldrinn"] = {
 },
-["Sifú - Goldrinn"] = {
+["Kirashy - Nemesis"] = {
 },
 ["Muruatan - Nemesis"] = {
 },
 },
 },
+["lastUpdte"] = 1,
 ["OutfitDB"] = {
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Shamanjuba - Nemesis",
@@ -1213,45 +1214,45 @@ BetterWardrobe_ListData = {
 ["Apinéia - Nemesis"] = "Apinéia - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
 ["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Natashy - Goldrinn"] = "Natashy - Goldrinn",
 ["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
 ["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Akishy - Goldrinn"] = "Akishy - Goldrinn",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Turoshy - Nemesis"] = "Turoshy - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
-["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Corsega - Nemesis"] = "Corsega - Nemesis",
 ["Batezu - Goldrinn"] = "Batezu - Goldrinn",
 ["Bearbull - Nemesis"] = "Bearbull - Nemesis",
-["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
 ["Molosso - Nemesis"] = "Molosso - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Sharan - Nemesis"] = "Sharan - Nemesis",
 ["Hanushy - Nemesis"] = "Hanushy - Nemesis",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
-["Dishy - Nemesis"] = "Dishy - Nemesis",
+["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Corsega - Nemesis"] = "Corsega - Nemesis",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Turoshy - Nemesis"] = "Turoshy - Nemesis",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Akishy - Goldrinn"] = "Akishy - Goldrinn",
-["Natashy - Goldrinn"] = "Natashy - Goldrinn",
+["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 ["char"] = {
@@ -1318,7 +1319,6 @@ BetterWardrobe_ListData = {
 },
 },
 },
-["lastUpdte"] = 1,
 ["HiddenAppearanceDB"] = {
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Shamanjuba - Nemesis",
@@ -1336,45 +1336,45 @@ BetterWardrobe_ListData = {
 ["Apinéia - Nemesis"] = "Apinéia - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
 ["Mariamolambo - Goldrinn"] = "Mariamolambo - Goldrinn",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Natashy - Goldrinn"] = "Natashy - Goldrinn",
 ["Trimegistos - Goldrinn"] = "Trimegistos - Goldrinn",
 ["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Akishy - Goldrinn"] = "Akishy - Goldrinn",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Turoshy - Nemesis"] = "Turoshy - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
-["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Corsega - Nemesis"] = "Corsega - Nemesis",
 ["Batezu - Goldrinn"] = "Batezu - Goldrinn",
 ["Bearbull - Nemesis"] = "Bearbull - Nemesis",
-["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
 ["Molosso - Nemesis"] = "Molosso - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Sharan - Nemesis"] = "Sharan - Nemesis",
 ["Hanushy - Nemesis"] = "Hanushy - Nemesis",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
-["Dishy - Nemesis"] = "Dishy - Nemesis",
+["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Corsega - Nemesis"] = "Corsega - Nemesis",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Turoshy - Nemesis"] = "Turoshy - Nemesis",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Akishy - Goldrinn"] = "Akishy - Goldrinn",
-["Natashy - Goldrinn"] = "Natashy - Goldrinn",
+["Falkoshy - Nemesis"] = "Falkoshy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 ["profiles"] = {
@@ -1442,29 +1442,29 @@ BetterWardrobe_ListData = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Hanushy - Nemesis"] = {
+["Sharan - Nemesis"] = {
 },
 ["Migoshy - Goldrinn"] = {
 },
-["Aishy - Nemesis"] = {
+["Córsega - Nemesis"] = {
 },
-["Batezu - Nemesis"] = {
+["Akishy - Goldrinn"] = {
+},
+["Satishy - Goldrinn"] = {
+},
+["Melishy - Goldrinn"] = {
+},
+["Radagashy - Goldrinn"] = {
 },
 ["Elshy - Goldrinn"] = {
 },
 ["Satishy - Nemesis"] = {
 },
-["Radagashy - Goldrinn"] = {
+["Batezu - Nemesis"] = {
 },
-["Melishy - Goldrinn"] = {
+["Aishy - Nemesis"] = {
 },
-["Satishy - Goldrinn"] = {
-},
-["Akishy - Goldrinn"] = {
-},
-["Córsega - Nemesis"] = {
-},
-["Sharan - Nemesis"] = {
+["Hanushy - Nemesis"] = {
 },
 ["Muruatan - Nemesis"] = {
 },
