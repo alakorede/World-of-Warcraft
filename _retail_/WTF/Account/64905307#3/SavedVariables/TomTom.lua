@@ -49,24 +49,24 @@ TomTomDB = {
 ["Aishy - Nemesis"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
 ["Sharan - Goldrinn"] = "Default",
-["Radagashy - Goldrinn"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Dishy - Nemesis"] = "Default",
 ["Keishy - Aerie Peak"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
-["Kerrishy - Goldrinn"] = "Default",
-["Kuradis - Nemesis"] = "Default",
-["Trystam - Nemesis"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
-["Yashy - Nemesis"] = "Default",
-["Melishy - Goldrinn"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Sashy - Goldrinn"] = "Default",
 ["Satishy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Trystam - Nemesis"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
+["Satishy - Nemesis"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Yashy - Nemesis"] = "Default",
+["Kuradis - Nemesis"] = "Default",
+["Kerrishy - Goldrinn"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
+["Radagashy - Goldrinn"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -146,24 +146,24 @@ TomTomWaypointsM = {
 ["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
 ["Sharan - Goldrinn"] = "Sharan - Goldrinn",
-["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
 ["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Keishy - Aerie Peak"] = "Keishy - Aerie Peak",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
-["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Trystam - Nemesis"] = "Trystam - Nemesis",
-["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
-["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
 ["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Trystam - Nemesis"] = "Trystam - Nemesis",
+["Batezu - Nemesis"] = "Batezu - Nemesis",
+["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Yashy - Nemesis"] = "Yashy - Nemesis",
+["Kuradis - Nemesis"] = "Kuradis - Nemesis",
+["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
 },
 ["profiles"] = {
 ["Shamanjuba - Nemesis"] = {
@@ -262,7 +262,7 @@ TomTomWaypointsM = {
 },
 ["Sharan - Goldrinn"] = {
 },
-["Radagashy - Goldrinn"] = {
+["Wishy - Nemesis"] = {
 },
 ["Dishy - Nemesis"] = {
 [862] = {
@@ -281,9 +281,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["minimap"] = true,
@@ -306,9 +306,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["world"] = {
-},
 ["minimap"] = {
+},
+["world"] = {
 },
 },
 ["minimap"] = true,
@@ -322,31 +322,31 @@ TomTomWaypointsM = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Aleshy - Goldrinn"] = {
-},
-["Kerrishy - Goldrinn"] = {
-},
-["Kuradis - Nemesis"] = {
-},
-["Trystam - Nemesis"] = {
-},
-["Lilishy - Goldrinn"] = {
-},
-["Yashy - Nemesis"] = {
-},
-["Melishy - Goldrinn"] = {
-},
-["Satishy - Nemesis"] = {
-},
-["Batezu - Nemesis"] = {
-},
-["Neshy - Nemesis"] = {
+["Satishy - Goldrinn"] = {
 },
 ["Sashy - Goldrinn"] = {
 },
-["Satishy - Goldrinn"] = {
+["Neshy - Nemesis"] = {
 },
-["Wishy - Nemesis"] = {
+["Trystam - Nemesis"] = {
+},
+["Batezu - Nemesis"] = {
+},
+["Lilishy - Goldrinn"] = {
+},
+["Satishy - Nemesis"] = {
+},
+["Melishy - Goldrinn"] = {
+},
+["Yashy - Nemesis"] = {
+},
+["Kuradis - Nemesis"] = {
+},
+["Kerrishy - Goldrinn"] = {
+},
+["Aleshy - Goldrinn"] = {
+},
+["Radagashy - Goldrinn"] = {
 },
 },
 }

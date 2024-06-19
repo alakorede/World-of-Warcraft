@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:00f668c405509dee6fa24eb39208d2b7ba5971575776550f46d972942f7ea3f5
-size 573
+local L = BigWigs:NewBossLocale("Nalak", "esES")
+if L then
+	--L.engage_yell = "Can you feel a chill wind blow? The storm is coming..."
+
+	--L.ability = "Next ability"
+	--L.ability_desc = "Cooldown timer for the next ability."
+end
+
+L = BigWigs:NewBossLocale("Salyis's Warband", "esES")
+if L then
+	--L.engage_yell = "Bring me their corpses!"
+end
+
+L = BigWigs:NewBossLocale("Ordos", "esES")
+if L then
+	--L.engage_yell = "You will take my place on the eternal brazier."
+
+	--L.burning_soul_bar = "Explosions"
+	--L.burning_soul_self_bar = "You explode!"
+end
+

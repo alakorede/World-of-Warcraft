@@ -1,5 +1,5 @@
 ﻿----------------------------------------------------------------------
--- 	Leatrix Plus 10.2.34 (15th June 2024)
+-- 	Leatrix Plus 10.2.35 (19th June 2024)
 ----------------------------------------------------------------------
 
 --	01:Functions 02:Locks,  03:Restart 40:Player
@@ -18,7 +18,7 @@
 	local void
 
 	-- Version
-	LeaPlusLC["AddonVer"] = "10.2.34"
+	LeaPlusLC["AddonVer"] = "10.2.35"
 
 	-- Get locale table
 	local void, Leatrix_Plus = ...
@@ -3443,6 +3443,13 @@
 		if LeaPlusLC["CharAddonList"] == "On" and not LeaLockList["CharAddonList"] then
 			-- Set the addon list to character by default
 			if LeaPlusLC.NewPatch then
+				hooksecurefunc(AddonList.Dropdown, "SetupMenu", function(self)
+					local nextRadio
+					MenuUtil.TraverseMenu(self:GetMenuDescription(), function(description)
+						nextRadio = description
+					end)
+					self:Pick(nextRadio, MenuInputContext.MouseWheel)
+				end)
 			else
 				if AddonCharacterDropDown and AddonCharacterDropDown.selectedValue then
 					AddonCharacterDropDown.selectedValue = UnitName("player")
@@ -8536,6 +8543,20 @@
 				end
 			end)
 
+			-- Add entry to chat menu to show recent chat window
+			if LeaPlusLC.NewPatch then
+				Menu.ModifyMenu("MENU_FCF_TAB", function(self, rootDescription, contextData)
+					rootDescription:CreateDivider()
+					rootDescription:CreateTitle(L["Leatrix Plus"])
+					local recentChatButton = rootDescription:CreateButton(L["Recent chat window"], function()
+						local currentChatFrame = FCF_GetCurrentChatFrame()
+						editBox:SetFont(currentChatFrame:GetFont())
+						editFrame:SetPanExtent(select(2, currentChatFrame:GetFont()))
+						ShowChatbox(currentChatFrame)
+					end)
+				end)
+			end
+
 		end
 
 		----------------------------------------------------------------------
@@ -11446,7 +11467,7 @@
 				end
 
 				if LeaPlusLC.NewPatch then
-					LockDF("CharAddonList", "Not currently available in The War Within.")
+					-- LockDF("CharAddonList", "Not currently available in The War Within.")
 				end
 
 				-- Run other startup items
@@ -14495,6 +14516,10 @@
 						LeaPlusLC:Print("Dropdown: " .. "|cffffffff" .. key .. "|r |cff1eff0c(" .. value .. ")|r")
 					end
 				end
+				return
+			elseif str == "tags" then
+				-- Print open menu tags (such as dropdown menus)
+				Menu.PrintOpenMenuTags()
 				return
 			elseif str == "admin" then
 				-- Preset profile (used for testing)

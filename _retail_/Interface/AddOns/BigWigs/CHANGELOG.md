@@ -1,21 +1,13 @@
 # BigWigs
 
-## [v336](https://github.com/BigWigsMods/BigWigs/tree/v336) (2024-06-14)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v335.5...v336) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v336.1](https://github.com/BigWigsMods/BigWigs/tree/v336.1) (2024-06-16)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v336...v336.1) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- bump version  
+- Update zhCN (#1659)  
+- NerubarPalace/Ulgrax: Update module based on heroic testing  
+- Update deDE (#1658)  
+- Plugins/Statistics: Ignore 40 player on retail  
 - Core: Add more common locale  
-- Rashanan: Add Private Auras  
-- NerubarPalace/Kyveza: Tweak Chasmal Gash  
-- NerubarPalace/Kyveza: Drycode  
-- NerubarPalace/Ovinax: Remove bad copied comment  
-    [skip-ci]  
-- NerubarPalace/Locales: Remove duplicate locales  
-- NerubarPalace/Locales: Update locales  
-- NerubarPalace/Ovinax: Timers based on short testing  
-- NerubarPalace/Rashanan: Drycode  
-- NerubarPalace/TheBloodboundHorror: Fix Crimson Rain SpellId  
-- NerubarPalace/TheSilkenCourt: Add MobIds  
-- NerubarPalace/Kyveza: Add MobId  
-- Aberrus/AssaultOfTheZaqali: Remove unused variables  
-- NerubarPalace/TheBloodboundHorror: Initial timers  
+- Update deDE (#1656)  
+- NerubarPalace/Rashanan: Fix Private Aura error  
+- NerubarPalace/Rashanan: Early timer table and fix npc id  

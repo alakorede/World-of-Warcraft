@@ -1,15 +1,15 @@
 
 CursorTrail_Config = {
 ["NewFeaturesSeen"] = {
-["DefaultsBtn11"] = true,
 ["SparkleCheckbox"] = true,
+["DefaultsBtn11"] = true,
 },
 ["ProfileOptions"] = {
+},
+["ProfileBackups"] = {
 },
 ["Profiles"] = {
 ["_SelectedName"] = {
 },
-},
-["ProfileBackups"] = {
 },
 }

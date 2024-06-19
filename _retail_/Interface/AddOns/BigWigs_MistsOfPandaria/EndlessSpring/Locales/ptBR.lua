@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a092d8f0a18cfb8a4b3047ccea9d57e2818ea6da8c40a6bec0815a20841c0fd6
-size 320
+
+local L = BigWigs:NewBossLocale("Protectors of the Endless", "ptBR")
+if not L then return end
+if L then
+
+end
+
+L = BigWigs:NewBossLocale("Tsulong", "ptBR")
+if L then
+
+end
+
+L = BigWigs:NewBossLocale("Lei Shi", "ptBR")
+if L then
+
+end
+
+L = BigWigs:NewBossLocale("Sha of Fear", "ptBR")
+if L then
+
+end
+

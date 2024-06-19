@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1fd2246bce4c4627e66a53c628ebc3f14a3438f9a1f49a2f1eb9ec764b1005ea
-size 743
+local L = BigWigs:NewBossLocale("Nalak", "ruRU")
+if L then
+	L.engage_yell = "Чувствуете порывы холодного ветра? Приближается буря..."
+
+	L.ability = "Следующая способность"
+	L.ability_desc = "Таймер восстановления следующей способности."
+end
+
+L = BigWigs:NewBossLocale("Salyis's Warband", "ruRU")
+if L then
+	L.engage_yell = "Принесите мне их трупы!"
+end
+
+L = BigWigs:NewBossLocale("Ordos", "ruRU")
+if L then
+	L.engage_yell = "Вы займете мое место на вечной жаровне."
+
+	L.burning_soul_bar = "Взрывы"
+	L.burning_soul_self_bar = "Ты взорвешься!"
+end
+
