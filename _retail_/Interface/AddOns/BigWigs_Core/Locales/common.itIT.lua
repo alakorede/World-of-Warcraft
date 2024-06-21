@@ -46,6 +46,7 @@ L.general = "Generali" -- General settings, i.e. things that apply to normal, he
 L.door_open = "Porta aperta" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Cancello aperto" -- When a gate is open, usually after a speech from an NPC
 
+--L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s per %s sec" -- Spell for 10 seconds
 L.over = "%s Terminato" -- Spell Over
 L.removed = "%s Rimosso" -- Spell Removed
@@ -65,8 +66,10 @@ L.you_die_sec = "Morirai in %d sec" -- "You die in 15 sec" (sec = seconds)
 --L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "Add Apparso"
-L.adds_spawned = "Adds Apparso"
+L.add_spawned = "Add Apparso" -- singular
+L.adds_spawned = "Adds Apparso" -- plural
+--L.add_spawning = "Add spawning" -- singular
+--L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s Reinizializzato"
 L.spawning = "Apparizione di %s"
 L.next_add = "Prossimo Add"

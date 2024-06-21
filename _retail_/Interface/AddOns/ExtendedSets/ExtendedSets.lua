@@ -2,6 +2,7 @@ local app = select(2, ...);
 local SetsFrame;
 
 local LDD = LibStub('LibDropDown');
+local currToc = select(4,GetBuildInfo());
 
 local ModelFrame;
 local setStats = { numberSets = 0, numberCollected = 0 };
@@ -169,6 +170,12 @@ local heritageSets = {
     [3350] = 8, -- Troll
     [3346] = 11, -- Draenei
     [3347] = 11, -- Draenei
+    [3700] = 84, -- Earthen1
+    [3701] = 84, -- Earthen1
+    [3702] = 84, -- Earthen1
+    [3700] = 85, -- Earthen2
+    [3701] = 85, -- Earthen2
+    [3702] = 85, -- Earthen2
 }
 local hiddenVisuals = {
     [1] = {77344,134110},
@@ -1033,10 +1040,6 @@ local function IsForClass(itemLink)
   --ExS_GameTooltip:ClearLines();
   --ExS_GameTooltip:SetHyperlink(itemLink);
   local tooltipInfo = C_TooltipInfo.GetHyperlink(itemLink);
-  TooltipUtil.SurfaceArgs(tooltipInfo);
-  for _, line in ipairs(tooltipInfo.lines) do
-      TooltipUtil.SurfaceArgs(line)
-  end
   
   if tooltipInfo.lines[1].leftText == "Retrieving item information" then return nil; end
   
@@ -1835,21 +1838,28 @@ local function DisplaySet(self, givenSetID, force)
 		WardrobeCollectionFrame.SetsCollectionFrame.Model:TryOn(itemFrame.sourceID);
 	end
 
+  local WardrobeSetsCollectionVariantSetsButton;
+  if currToc >= 110000 then
+    WardrobeSetsCollectionVariantSetsButton = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown;
+  else
+    WardrobeSetsCollectionVariantSetsButton = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton;
+  end
+
 	-- variant sets
 	local variantSets = GetVariantSets(setID)--GetBaseSetID(setID));
 	if ( #variantSets <= 1 )  then
-		WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:Hide();
+		WardrobeSetsCollectionVariantSetsButton:Hide();
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("TOPRIGHT", WardrobeSetsCollectionVariantSetsButton, "TOPRIGHT", 0, 0);
 	else
-		WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:Show();
+		WardrobeSetsCollectionVariantSetsButton:Show();
     if description == nil then
-      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:SetText(name);
+      WardrobeSetsCollectionVariantSetsButton:SetText(name);
     else
-      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:SetText(description);
+      WardrobeSetsCollectionVariantSetsButton:SetText(description);
     end
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("RIGHT", WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton, "LEFT", -4, 0);
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("RIGHT", WardrobeSetsCollectionVariantSetsButton, "LEFT", -4, 0);
 	end
 end
 
@@ -2790,6 +2800,11 @@ local setsFlagTP = {
   [3637] = true, --swimwear (shorts)
   [3638] = true, --swimwear (shorts)
   [3639] = true, --swimwear (shorts)
+  [3875] = true, -- Plunderlord's Finery (yellow/orange)
+  [3885] = true, --Battered Harvest Golem(red)
+  [3886] = true, --Battered Harvest Golem(purple)
+  [3887] = true, --Battered Harvest Golem(green)
+  [3888] = true, --Battered Harvest Golem(blue)
 }
 local setsFlagShop = {
   [1903] = true, -- wendigo woolies
@@ -3223,8 +3238,6 @@ local function SetButtonData(button, set)
     button.Label:SetText(set.label);
   end
   
-  button.IconCover:Show();
-  button.Icon:Show();
   if NotUsedSets[set.setID] ~= nil then 
     local setSource;
     if not NotUsedSets[set.setID].sources then 
@@ -3237,15 +3250,30 @@ local function SetButtonData(button, set)
     end
     for a,b in pairs(NotUsedSets[set.setID].sources) do setSource = a; break; end
     local _, _, _, _, icon = C_Item.GetItemInfoInstant(C_TransmogCollection.GetSourceInfo(setSource).itemID);
-    button.Icon:SetTexture(icon);
-    button.IconCover:SetShown(true);
+    if currToc >= 110000 then
+      button.IconFrame:SetIconTexture(icon);
+      button.IconFrame:SetIconCoverShown(true);
+    else
+      button.Icon:SetTexture(icon);
+      button.IconCover:SetShown(true);
+    end
   else
-    button.Icon:SetTexture(GetIconForSet(set.setID));
-    button.IconCover:SetShown((set.setID == GetBaseSetID(ExS_ScrollFrame.selectedSetID)) or false);
+    if currToc >= 110000 then
+      button.IconFrame:SetIconTexture(GetIconForSet(set.setID));
+      button.IconFrame:SetIconCoverShown((set.setID == GetBaseSetID(ExS_ScrollFrame.selectedSetID)) or false);
+    else
+      button.Icon:SetTexture(GetIconForSet(set.setID));
+      button.IconCover:SetShown((set.setID == GetBaseSetID(ExS_ScrollFrame.selectedSetID)) or false);
+    end
   end
-
-  button.Icon:SetDesaturation((setInfo.topCollected == 0) and 1 or 0);
-  button.Favorite:SetShown(set.favoriteSetID);
+  
+  if currToc >= 110000 then
+    button.IconFrame:SetIconDesaturation((setInfo.topCollected == 0) and 1 or 0);
+    button.IconFrame:SetFavoriteIconShown(set.favoriteSetID);
+  else
+    button.Icon:SetDesaturation((setInfo.topCollected == 0) and 1 or 0);
+    button.Favorite:SetShown(set.favoriteSetID);
+  end
   button.TradingPost:SetShown(set.tp);
   button.Remix:SetShown(set.isRemix or set.hasRemix or set.variantRemix);
   
@@ -3306,7 +3334,11 @@ local function ScrollFrame_SelectSet(setID, notDefault)
   for i = 1, #ExS_ScrollFrame.buttons do 
     if ExS_ScrollFrame.buttons[i]:IsShown() and ExS_ScrollFrame.buttons[i].setID ~= nil then 
       ExS_ScrollFrame.buttons[i].SelectedTexture:SetShown(baseID == GetBaseSetID(ExS_ScrollFrame.buttons[i].setID));
-      ExS_ScrollFrame.buttons[i].IconCover:SetShown(baseID == GetBaseSetID(ExS_ScrollFrame.buttons[i].setID));
+      if currToc >= 110000 then
+        ExS_ScrollFrame.buttons[i].IconFrame:SetIconCoverShown(baseID == GetBaseSetID(ExS_ScrollFrame.buttons[i].setID));
+      else
+        ExS_ScrollFrame.buttons[i].IconCover:SetShown(baseID == GetBaseSetID(ExS_ScrollFrame.buttons[i].setID));
+      end
       ExS_ScrollFrame.buttons[i].New:SetShown(ResetBaseSetNewStatus(ExS_ScrollFrame.buttons[i].setID));
     end
 	end
@@ -5131,7 +5163,8 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     ExS_FilterDropDown_Init();
     
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown = LDD:NewMenu(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame, "SetsVariantDropDown")
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetAnchor('TOPRIGHT', WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton, 'BOTTOMRIGHT', -9, -9)
+    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetAnchor('TOPRIGHT', WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown and 
+                                         WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown or WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton, 'BOTTOMRIGHT', -9, -9)
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown.minWidth = 240
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetStyle('MENU')
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:SetFrameLevel(8)
@@ -5140,18 +5173,27 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:HookScript("OnShow", function() WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:RegisterEvent("GLOBAL_MOUSE_DOWN") end)
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:HookScript("OnHide", function() WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:UnregisterEvent("GLOBAL_MOUSE_DOWN") end)
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:HookScript("OnEvent", function(pSelf, pEvent, pUnit)
+          --local 
           if WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:IsShown() and
               not WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:IsMouseOver() and
-              not WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:IsMouseOver() then
+              not  (WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown and WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown
+                              or WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton):IsMouseOver() then
             WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
           end
       end)
     
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:SetScript("OnMouseDown", function()
-        UIMenuButtonStretchMixin.OnMouseDown(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton);
-        OpenVariantSetsDropDown();
-        WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
-      end)
+    if currToc >= 110000 then
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown:SetScript("OnMouseDown", function()
+          OpenVariantSetsDropDown();
+          WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
+        end)
+    else
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton:SetScript("OnMouseDown", function()
+          UIMenuButtonStretchMixin.OnMouseDown(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton);
+          OpenVariantSetsDropDown();
+          WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantsDropDown:Toggle();
+        end)
+    end
       
     --large remix icon in bottom right corner of frame
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon = CreateFrame("frame", nil, WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame);

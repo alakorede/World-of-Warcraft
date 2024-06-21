@@ -569,6 +569,12 @@ GTFO.SpellID["443181"] = {
   sound = 1;
 };
 
+GTFO.SpellID["412360"] = {
+  --desc = "Calcifying Burst (Spinmarrow)";
+  applicationOnly = true;
+  sound = 2;
+};
+
 --- *******************
 --- * Ruby Life Pools *
 --- *******************

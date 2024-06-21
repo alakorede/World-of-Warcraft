@@ -1,5 +1,4 @@
 --[[---------------------------------------------------------------------------
-    Addon:  CursorTrail
     File:   CursorTrailHelp.lua
     Desc:   Functions and variables for showing this addon's help text.
 -----------------------------------------------------------------------------]]
@@ -59,6 +58,16 @@ When "Sparkle" is turn on, the chosen shape color is ignored and the shape "spar
 * Show during Mouse Look:  When on, the cursor effects will remain visible while using the mouse to look around.
 
 * Defaults:  Each default has different preset options.  You can use them as a starting point for your own effects.  To save a default, select "Save as" from the profiles menu.
+]]
+
+kHelpText_Tips = [[
+- The mouse wheel can be used to change the option under the mouse.
+
+- The Up/Down arrow keys can be used to change the option that has focus.
+
+- Right-clicking the profile name is a quick way to save it.
+
+- Right-clicking most options sets them to their default value.
 ]]
 
 kHelpText_SlashCommands = [[
@@ -154,6 +163,12 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
         HelpFrame:AddText(ORANGE.."Options", 0, topMargin, bigFont)
         HelpFrame:AddText(kHelpText_Options, 0, lineSpacing, smallFont)
         ----HelpFrame:AddText(BLUE.."\nTIP:|r You can use the mouse wheel or Up/Down keys to change values.", 0, lineSpacing, smallFont)
+        HelpFrame:AddText(" ", 0, lineSpacing, smallFont)
+
+        -- TIPS:
+        HelpFrame.topicOffsets["TIPS"] = HelpFrame:GetNextVerticalPosition() -12
+        HelpFrame:AddText(ORANGE.."Tips", 0, 0, bigFont)
+        HelpFrame:AddText(kHelpText_Tips, 0, lineSpacing, smallFont)
         HelpFrame:AddText(" ", 0, lineSpacing, smallFont)
 
         -- SLASH COMMANDS:

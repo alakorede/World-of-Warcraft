@@ -47,7 +47,7 @@ function MoveAny:LangenUS()
 		["LID_MAGEARCANECHARGESFRAME"] = "Mage Arcane Charges frame",
 		["LID_ESSENCEPLAYERFRAME"] = "Essence Player Frame (Evoker)",
 		["LID_PALADINPOWERBARFRAME"] = "Paladin Power Bar (Holy Power)",
-		["LID_MAFPSFrame"] = "FPS",
+		["LID_MAFPSFrame"] = "FPS (New FPS-Counter)",
 		["LID_IAPingFrame"] = "Ping",
 		["LID_IACoordsFrame"] = "Coords Frame",
 		["LID_MINIMAP"] = "Mini Map",
@@ -107,7 +107,7 @@ function MoveAny:LangenUS()
 		["LID_MAINMENUEXPBAR"] = "Exp Bar",
 		["LID_REPUTATIONWATCHBAR"] = "Reputation Bar",
 		["LID_UIWIDGETPOWERBAR"] = "Power Bar (Boss Bar, Vigor Bar, Darkmoon faire, ...)",
-		["LID_POWERBAR"] = "Power Bar (Encounters, ...)",
+		["LID_POWERBAR"] = "Power Bar (Boss Encounters, ...)",
 		["LID_COUNT"] = "Count",
 		["LID_ROWS"] = "Rows",
 		["LID_SPACING"] = "Spacing",
@@ -220,7 +220,7 @@ function MoveAny:LangenUS()
 		["LID_TARGETFRAMETOTBUFF1"] = "Target of Target Frame Buff 1",
 	}
 
-	if D4:GetWoWBuild() ~= "RETAIL" then
+	if MoveAny:GetWoWBuild() ~= "RETAIL" then
 		tab["LID_ACTIONBARS"] = "Actionbars 1 + 5 + 6"
 		tab["LID_ACTIONBAR1"] = "Actionbars 1 (Main Bar)"
 		tab["LID_ACTIONBAR2"] = "Actionbars 2 (2. Page of Actionbar 1)"

@@ -1,3 +1,4 @@
+local _, D4 = ...
 --[[ INPUTS ]]
 function D4:AddCategory(tab)
     tab.sw = tab.sw or 25
@@ -97,7 +98,13 @@ function D4:CreateSlider(tab)
     slider:SetPoint(unpack(tab.pTab))
     slider.Low:SetText(tab.vmin)
     slider.High:SetText(tab.vmax)
-    slider.Text:SetText(format(D4:Trans(tab.key), tab.value))
+    local struct = D4:Trans(tab.key)
+    if struct then
+        slider.Text:SetText(string.format(struct, tab.value))
+    else
+        D4:MSG("[D4] missing format string:", tab.key)
+    end
+
     slider:SetMinMaxValues(tab.vmin, tab.vmax)
     slider:SetObeyStepOnDrag(true)
     slider:SetValueStep(tab.steps)
@@ -114,7 +121,12 @@ function D4:CreateSlider(tab)
                 tab:func()
             end
 
-            slider.Text:SetText(format(D4:Trans(tab.key), val))
+            local struct2 = D4:Trans(tab.key)
+            if struct2 then
+                slider.Text:SetText(string.format(struct2, val))
+            else
+                D4:MSG("[D4] Missing format string:", tab.key)
+            end
         end
     )
 
@@ -188,7 +200,7 @@ function D4:SetAppendTab(newTab)
     TAB = newTab
 end
 
-function D4:AppendCategory(name)
+function D4:AppendCategory(name, x, y)
     if Y == 0 then
         Y = Y - 5
     else
@@ -199,7 +211,7 @@ function D4:AppendCategory(name)
         {
             ["name"] = name,
             ["parent"] = PARENT,
-            ["pTab"] = {"TOPLEFT", 5, Y},
+            ["pTab"] = {"TOPLEFT", x or 5, y or Y},
         }
     )
 
@@ -208,7 +220,7 @@ function D4:AppendCategory(name)
     return Y
 end
 
-function D4:AppendCheckbox(key, value, func)
+function D4:AppendCheckbox(key, value, func, x, y)
     value = value or false
     x = x or 5
     local val = TAB[key]
@@ -220,7 +232,7 @@ function D4:AppendCheckbox(key, value, func)
         {
             ["name"] = key,
             ["parent"] = PARENT,
-            ["pTab"] = {"TOPLEFT", x, Y},
+            ["pTab"] = {"TOPLEFT", x, y or Y},
             ["value"] = val,
             ["funcV"] = function(sel, checked)
                 TAB[key] = checked

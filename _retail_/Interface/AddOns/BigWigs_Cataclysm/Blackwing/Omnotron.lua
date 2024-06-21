@@ -19,6 +19,9 @@ local poisonProtocolCount = 1
 local lightningConductorCount = 1
 local powerGeneratorCount = 1
 local arcaneAnnihilatorCount = 0
+local gripOfDeathCount = 0
+local chemicalCloudDamageThrottle = 2
+local poolExplosionUnderMe = false
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -57,9 +60,10 @@ function mod:GetOptions()
 		-- Arcanotron
 		79710, -- Arcane Annihilator
 		79624, -- Power Generator
+		{79735, "DISPEL"}, -- Converted Power
 		-- Heroic
 		"nef",
-		91849, -- Grip of Death
+		{91849, "CASTBAR"}, -- Grip of Death
 		91879, -- Arcane Blowback
 		{92048, "ICON", "SAY", "SAY_COUNTDOWN", "CASTBAR", "CASTBAR_COUNTDOWN", "ME_ONLY_EMPHASIZE"}, -- Shadow Infusion
 		{92053, "SAY", "SAY_COUNTDOWN"}, -- Shadow Conductor
@@ -79,9 +83,9 @@ function mod:GetOptions()
 		[79501] = L.flamethrower, -- Acquiring Target (Flamethrower)
 		[79023] = L.incinerate, -- Incineration Security Measure (Incinerate)
 		[79888] = L.lightning, -- Lightning Conductor (Lightning)
-		[80157] = CL.bomb, -- Chemical Bomb (Bomb)
 		[80053] = CL.adds, -- Poison Protocol (Adds)
 		[79624] = CL.pool, -- Power Generator (Pool)
+		[79735] = CL.magic_buff_boss:format(""), -- Converted Power (Magic buff on BOSS:)
 		["nef"] = CL.next_ability, -- Lord Victor Nefarius (Next ability)
 		[91879] = L.pool_explosion, -- Arcane Blowback (Pool Explosion)
 		[92048] = L.infusion, -- Shadow Infusion (Infusion)
@@ -108,9 +112,11 @@ function mod:OnBossEnable()
 	-- Arcanotron
 	self:Log("SPELL_CAST_START", "ArcaneAnnihilator", 79710)
 	self:Log("SPELL_CAST_SUCCESS", "PowerGenerator", 79624)
+	self:Log("SPELL_AURA_APPLIED_DOSE", "ConvertedPowerAppliedDose", 79735)
 	-- Heroic
 	self:Log("SPELL_CAST_SUCCESS", "OverchargedPowerGenerator", 91857)
 	self:Log("SPELL_AURA_APPLIED", "OverchargedPowerGeneratorApplied", 91858)
+	self:Log("SPELL_AURA_REMOVED", "OverchargedPowerGeneratorRemoved", 91858)
 	self:Log("SPELL_CAST_START", "GripOfDeath", 91849)
 	self:Log("SPELL_AURA_APPLIED", "EncasingShadowsApplied", 92023)
 	self:Log("SPELL_AURA_APPLIED", "ShadowInfusionApplied", 92048)
@@ -129,6 +135,9 @@ function mod:OnEngage()
 	lightningConductorCount = 1
 	powerGeneratorCount = 1
 	arcaneAnnihilatorCount = 0
+	gripOfDeathCount = 0
+	chemicalCloudDamageThrottle = 2
+	poolExplosionUnderMe = false
 	if self:Heroic() then
 		self:Berserk(600, true)
 	end
@@ -206,8 +215,9 @@ end
 do
 	local function printTarget(self, _, guid)
 		if self:Me(guid) then
-			self:PersonalMessage(80157, nil, CL.bomb)
-			self:Say(80157, CL.bomb, nil, "Bomb")
+			-- Not shortening this to "Bomb" as the adds are called "Poison Bomb" and might cause confusion
+			self:PersonalMessage(80157)
+			self:Say(80157, nil, nil, "Chemical Bomb")
 		end
 	end
 	function mod:ChemicalBomb(args)
@@ -235,8 +245,9 @@ end
 do
 	local prev = 0
 	function mod:ChemicalCloudDamage(args)
-		if self:Me(args.destGUID) and args.time - prev > 3 then
+		if self:Me(args.destGUID) and args.time - prev > chemicalCloudDamageThrottle then -- Some people ignore it if a Power Generator (Pool) is under it, so we try to slowly increase the throttle
 			prev = args.time
+			chemicalCloudDamageThrottle = chemicalCloudDamageThrottle + 1
 			self:PersonalMessage(args.spellId, "underyou")
 			self:PlaySound(args.spellId, "underyou")
 		end
@@ -268,27 +279,51 @@ function mod:PowerGenerator(args)
 	self:PlaySound(args.spellId, "info")
 end
 
+do
+	local prev = 0
+	function mod:ConvertedPowerAppliedDose(args)
+		if not self:Player(args.destFlags) and args.time - prev > 2 and self:Dispeller("magic", true, args.spellId) then -- Can be Spellstolen
+			prev = args.time
+			self:Message(args.spellId, "orange", CL.magic_buff_other:format(args.destName, args.spellName))
+			self:PlaySound(args.spellId, "info")
+		end
+	end
+end
+
 -- Heroic
 function mod:OverchargedPowerGenerator()
 	self:Message(91879, "orange", L.pool_explosion)
 	self:Bar(91879, 8, L.pool_explosion)
 	self:CDBar("nef", 35, CL.next_ability, L.nef_icon)
-	self:PlaySound(91879, "info")
+	self:PlaySound(91879, "warning")
 end
 
 do
-	local prev = 0
+	local function PoolExplosion()
+		if poolExplosionUnderMe and mod:IsEngaged() then
+			mod:SimpleTimer(PoolExplosion, 2)
+			mod:PersonalMessage(91879, "underyou", L.pool_explosion)
+			mod:PlaySound(91879, "underyou")
+		end
+	end
 	function mod:OverchargedPowerGeneratorApplied(args)
-		if self:Me(args.destGUID) and args.time - prev > 1.5 then
-			prev = args.time
-			self:PersonalMessage(91879, "underyou", L.pool_explosion)
-			self:PlaySound(91879, "underyou")
+		if not poolExplosionUnderMe and self:Me(args.destGUID) then
+			poolExplosionUnderMe = true
+			PoolExplosion()
+		end
+	end
+
+	function mod:OverchargedPowerGeneratorRemoved(args)
+		if poolExplosionUnderMe and self:Me(args.destGUID) then
+			poolExplosionUnderMe = false
 		end
 	end
 end
 
 function mod:GripOfDeath(args)
-	self:Message(args.spellId, "orange")
+	gripOfDeathCount = gripOfDeathCount + 1
+	self:Message(args.spellId, "orange", CL.count:format(args.spellName, gripOfDeathCount))
+	self:CastBar(args.spellId, 2, CL.count:format(args.spellName, gripOfDeathCount))
 	self:CDBar("nef", 35, CL.next_ability, L.nef_icon)
 end
 
@@ -346,6 +381,7 @@ do
 			local npcId = self:MobId(args.sourceGUID)
 			if npcId == 42180 then -- Toxitron
 				poisonProtocolCount = 1
+				chemicalCloudDamageThrottle = 2
 				self:CDBar(80053, self:Normal() and 21 or 15.5, CL.count:format(CL.adds, poisonProtocolCount)) -- Poison Protocol
 			elseif npcId == 42178 then -- Magmatron
 				acquiringTargetCount = 1

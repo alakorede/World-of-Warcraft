@@ -69,7 +69,7 @@ function mod:GetOptions()
 		-- Heroic
 		{92067, "SAY", "ICON"},
 		{92075, "SAY", "ICON"},
-		{92307, "ICON", "ME_ONLY_EMPHASIZE"},
+		{92307, "SAY", "ICON", "ME_ONLY_EMPHASIZE"}, -- Frost Beacon
 		-- General
 		"switch"
 	},{
@@ -81,7 +81,8 @@ function mod:GetOptions()
 		[92067] = "heroic",
 		switch = "general",
 	},{
-		[82860] = CL.fire, -- Inferno Rush (Fire)
+		[82860] = CL.underyou:format(CL.fire), -- Inferno Rush (Fire under YOU)
+		[92307] = CL.orb, -- Frost Beacon (Orb)
 	}
 end
 
@@ -91,7 +92,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_REMOVED", "StaticOverloadRemoved", 92067)
 	self:Log("SPELL_AURA_APPLIED", "GravityCore", 92075)
 	self:Log("SPELL_AURA_REMOVED", "GravityCoreRemoved", 92075)
-	self:Log("SPELL_AURA_APPLIED", "FrostBeacon", 92307)
+	self:Log("SPELL_AURA_APPLIED", "FrostBeaconApplied", 92307)
+	self:Log("SPELL_AURA_REMOVED", "FrostBeaconRemoved", 92307)
 
 	--normal
 	self:Log("SPELL_AURA_APPLIED", "LightningRodApplied", 83099)
@@ -153,7 +155,7 @@ do
 			scheduled = self:ScheduleTimer(lrWarn, 0.3, args.spellId)
 		end
 		if self:Me(args.destGUID) then
-			self:Say(args.spellId)
+			self:Say(args.spellId, nil, nil, "Lightning Rod")
 			--self:Flash(args.spellId)
 		end
 	end
@@ -190,7 +192,7 @@ end
 
 function mod:GravityCore(args)
 	if self:Me(args.destGUID) then
-		self:Say(args.spellId, L["gravity_core_say"])
+		self:Say(args.spellId, L["gravity_core_say"], nil, "Gravity")
 		--self:Flash(args.spellId)
 	end
 	self:TargetMessageOld(args.spellId, args.destName, "yellow", "alarm")
@@ -203,7 +205,7 @@ end
 
 function mod:StaticOverload(args)
 	if self:Me(args.destGUID) then
-		self:Say(args.spellId, L["static_overload_say"])
+		self:Say(args.spellId, L["static_overload_say"], nil, "Overload")
 		--self:Flash(args.spellId)
 	end
 	self:TargetMessageOld(args.spellId, args.destName, "yellow", "alarm")
@@ -214,14 +216,22 @@ function mod:StaticOverloadRemoved(args)
 	self:PrimaryIcon(args.spellId)
 end
 
-function mod:FrostBeacon(args)
-	self:TargetMessage(args.spellId, "yellow", args.destName)
+function mod:FrostBeaconApplied(args)
+	self:TargetMessage(args.spellId, "yellow", args.destName, CL.orb)
 	self:PrimaryIcon(args.spellId, args.destName)
 	if self:Me(args.destGUID) then
+		self:Say(args.spellId, CL.orb, nil, "Orb")
 		self:PlaySound(args.spellId, "warning", nil, args.destName)
 	else
 		self:PlaySound(args.spellId, "alarm", nil, args.destName)
 	end
+end
+
+function mod:FrostBeaconRemoved(args)
+	if self:Me(args.destGUID) then
+		self:PersonalMessage(args.spellId, "removed", CL.orb)
+	end
+	--self:PrimaryIcon(args.spellId)
 end
 
 function mod:UNIT_HEALTH(event, unit)

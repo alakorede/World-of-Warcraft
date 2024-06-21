@@ -1,4 +1,4 @@
-local PROFILESUI_VERSION = "2024-05-28"  -- Version (date) of this file.  Stored as "ProfilesUI.VERSION".
+local PROFILESUI_VERSION = "2024-06-06"  -- Version (date) of this file.  Stored as "ProfilesUI.VERSION".
 
 --[[---------------------------------------------------------------------------
     FILE:   UDProfiles.lua
@@ -155,6 +155,11 @@ local PROFILESUI_VERSION = "2024-05-28"  -- Version (date) of this file.  Stored
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
 CHANGE HISTORY:
+    Jun 06, 2024
+        - Changed the rate the mousewheel scrolls through listbox items.
+        - Updated comments.
+        - Removed some unnecessary local variables.
+
     May 28, 2024
         - Original version.
 
@@ -175,12 +180,12 @@ local assert = assert
 local C_Timer = C_Timer
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
-local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
+----local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local DropDownList1 = DropDownList1
 local DropDownList1Backdrop = DropDownList1Backdrop
 local GameTooltip = GameTooltip
 local GetAddOnMetadata = GetAddOnMetadata or C_AddOns.GetAddOnMetadata
-local hooksecurefunc = hooksecurefunc
+----local hooksecurefunc = hooksecurefunc
 local HIGHLIGHT_FONT_COLOR = HIGHLIGHT_FONT_COLOR
 local InCombatLockdown = InCombatLockdown
 local IsShiftKeyDown = IsShiftKeyDown
@@ -191,7 +196,6 @@ local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 local pairs = pairs
 local PlaySound = PlaySound
 local print = print
-local SOUNDKIT = SOUNDKIT
 local select = select
 local StaticPopupDialogs = StaticPopupDialogs
 local StaticPopup_Show = StaticPopup_Show
@@ -200,7 +204,7 @@ local table = table
 local tostringall = tostringall
 local type = type
 local UnitFullName = UnitFullName
-local unpack = unpack
+----local unpack = unpack
 
 local UIDropDownMenu_AddSeparator = UIDropDownMenu_AddSeparator
 local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
@@ -2128,6 +2132,7 @@ function ProfilesUI:setListBoxBackColor(r, g, b, alpha)
 end
 -------------------------------------------------------------------------------
 function ProfilesUI:setListBoxLinesPerPage(linesPerPage, optionalLineHeight)
+    ----linesPerPage = 5  -- For testing scrolling.
     gMainFrame.profilesListBox:setLinesPerPage(linesPerPage, optionalLineHeight)
     ----gMainFrame.backupsListBox:setLinesPerPage(linesPerPage, optionalLineHeight)
 end
@@ -3242,7 +3247,7 @@ end
 
 --=============================================================================
 local function createPopupListBox(parent, titleText,
-            clickHandler,  -- function(thisLB, line, clickedText) ... end
+            clickHandler,  -- function(thisLB, line, clickedText, mouseButton) ... end
             deleteHandler,  -- Can be nil.  function(thisLB, line, clickedText) ... end
             deleteButtonTooltip,
             listboxTooltip)
@@ -3390,6 +3395,8 @@ local function createPopupListBox(parent, titleText,
     local listboxW = listbox:calcWidth()
     local listboxH = listbox:calcHeight( listbox.cust.maxLinesPerPage )
     listbox:Configure(listboxW, listboxH, listbox.cust.lineHeight)
+    ----listbox.sliderFrame:SetValueStep(3)  -- For testing mouse wheel step size.
+    listbox:SetDynamicWheelSpeed(true)
 
     ----listbox:SetFrameLevel( gMainFrame:GetFrameLevel() + 10 ) <--DIDN'T WORK.  Use SetFrameStrata().
     listbox:SetFrameStrata("FULLSCREEN")
@@ -3587,8 +3594,21 @@ local function createPopupListBox(parent, titleText,
                 -- Else do default mousewheel behavior (scroll contents).
                 thisDisplayFrame:_onMouseWheel(delta)
             end)
-    ---------------------------------------------------------------------------
-    ----listbox:SetScript("OnShow", function(self) dbg() end)
+--~     ---------------------------------------------------------------------------
+--~     listbox:SetScript("OnShow", function(self)
+--~                 -- Set mousewheel scrolling step size, adjusted by max # of items in the listbox.
+--~                 local numItems = self:GetNumItems()
+--~                 local numLines = self:GetNumLines()  -- # of visible lines at one time.
+--~                 local diff = numItems - numLines
+--~                 local step = math.floor(diff/10) -- Set step so around 10 mousewheels will scroll the entire list.
+--~                 if step < 1 then
+--~                     step = 1
+--~                 elseif step > numLines-1 then  -- Don't scroll more lines than are in view!
+--~                     step = numLines-1
+--~                 end
+--~                 self.sliderFrame:SetValueStep(step)
+--~                 ----dbg()
+--~             end)
 
     return listbox
 end
@@ -3642,6 +3662,7 @@ function ProfilesUI:createProfilesListBox()
         -- Load listbox with the sorted profile names.
         self:Clear()
         local count = 0
+        ----for i = 1, 200 do self:AddItem("Line "..i)  -- For testing mousewheel scrolling.
         for i, name in ipairs(sortedNames) do
             self:AddItem(name) -- Add name to listbox.
             count = count + 1

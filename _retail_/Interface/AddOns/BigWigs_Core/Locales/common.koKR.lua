@@ -46,6 +46,7 @@ L.general = "일반" -- General settings, i.e. things that apply to normal, hero
 --L.door_open = "Door open" -- When a door is open, usually after a speech from an NPC
 --L.gate_open = "Gate open" -- When a gate is open, usually after a speech from an NPC
 
+--L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s %s초 남음" -- Spell for 10 seconds
 L.over = "%s 종료" -- Spell Over
 L.removed = "%s 제거됨" -- Spell Removed
@@ -65,8 +66,10 @@ L.you_die_sec = "당신은 %d 초 후 죽습니다" -- "You die in 15 sec" (sec 
 --L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "추가 몹 생성"
-L.adds_spawned = "추가 몹들 생성"
+L.add_spawned = "추가 몹 생성" -- singular
+L.adds_spawned = "추가 몹들 생성" -- plural
+--L.add_spawning = "Add spawning" -- singular
+--L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s 생성"
 L.spawning = "%s 생성"
 L.next_add = "다음 몹 추가"

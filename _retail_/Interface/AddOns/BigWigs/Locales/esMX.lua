@@ -1,6 +1,8 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "esMX")
 if not L then return end
 
+--L.tempMessage = "Your bar positions have reset, but you can now Import/Export profiles."
+
 -- Core.lua
 L.berserk = "Enfurecer"
 L.berserk_desc = "Muestra un contador que avisa cuando el jefe entrará en enfurecer"
@@ -20,7 +22,6 @@ L.health = "Salud"
 L.health_desc = "Activa funciones para mostrar varias informaciones de salud durante un encuentro con un jefe."
 
 L.already_registered = "|cffff0000ATENCIÓN:|r |cff00ff00%s|r (|cffffff00%s|r) ya existe ese módulo en BigWigs, pero sin embargo está intentando registrarlo de nuevo. Esto normalmente ocurre cuando tienes varias copias de este módulo en tu carpeta de addons posiblemente por una actualización fallida. Es recomendable que borres la carpeta de BigWigs y lo reinstales por completo."
-L.testNameplate = "Objetivo detectado, creando una barra test en la placa de nombre sobre la placa de nombre del objetivo. |cFF33FF99Esta funcionalidad se usa muy poco, suele ser de sólo 1 barra, y es necesaria para llevar la cuenta de los enfriamientos cuando se lucha contra varios jefes/esbirros que lanzan el mismo hechizo.|r"
 
 -- Loader / Options.lua
 L.officialRelease = "Estás usando la versión oficial de BigWigs %s (%s)"
@@ -79,22 +80,17 @@ L.optionsKey = "ID: %s" -- The ID that messages/bars/options use
 L.raidBosses = "Jefes de Banda"
 L.dungeonBosses = "Jefes de Calabozo"
 L.introduction = "Bienvenido a BigWigs. Abróchate el cinturón y come cacahuetes mientras disfrutas del paseo. De manera no intrusiva te ayudará a preparar ese nuevo encuentro de banda como una cena de 7 platos para tu grupo de banda."
-L.toggleAnchorsBtnShow = "Mostrar anclajes móviles"
-L.toggleAnchorsBtnHide = "Ocultar anclajes móviles"
-L.toggleAnchorsBtnShow_desc = "Muestra todos los anclajes móviles, permitiendo mover las barras, los mensajes, etc."
-L.toggleAnchorsBtnHide_desc = "Oculta todos los anclajes móviles, bloqueanto todo en su lugar."
-L.testBarsBtn = "Crear barra de prueba"
-L.testBarsBtn_desc = "Crea barras para que las pruebes con los ajustes actuales"
 L.sound = "Sonido"
 L.minimapIcon = "Icono del minimapa"
 L.minimapToggle = "Cambia entre mostrar/ocultar el icono en el minimapa."
 L.compartmentMenu = "Sin icono de compartimento"
 L.compartmentMenu_desc = "Al desactivar esta opción, BigWigs aparecerá en el menú de compartimiento de addon. Recomendamos dejar esta opción activada."
 L.configure = "Configurar"
-L.test = "Probar"
 L.resetPositions = "Restablecer posiciones"
 L.colors = "Colores"
 L.selectEncounter = "Seleccionar encuentro"
+--L.privateAuraSounds = "Private Aura Sounds"
+--L.privateAuraSounds_desc = "Private auras can't be tracked normally, but you can set a sound to be played when you are targeted with the ability."
 L.listAbilities = "Listar las habilidades en el chat"
 
 L.dbmFaker = "Fingir que estoy usando DBM"

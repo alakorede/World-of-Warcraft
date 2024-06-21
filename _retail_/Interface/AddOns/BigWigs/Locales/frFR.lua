@@ -1,6 +1,8 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "frFR")
 if not L then return end
 
+--L.tempMessage = "Your bar positions have reset, but you can now Import/Export profiles."
+
 -- Core.lua
 L.berserk = "Berserk"
 L.berserk_desc = "Prévient quand le boss devient fou furieux."
@@ -20,7 +22,6 @@ L.adds_desc = "Active les fonctions relatives aux adds qui apparaissent durant l
 --L.health_desc = "Enable functions for displaying various health information during the boss encounter."
 
 L.already_registered = "|cffff0000ATTENTION :|r |cff00ff00%s|r (|cffffff00%s|r) existe déjà en tant que module dans BigWigs, mais quelque chose essaye de l'enregistrer à nouveau. Cela signifie souvent que vous avez deux copies de ce module dans votre répertoire AddOns suite à une mauvaise mise à jour d'un gestionnaire d'addons. Il est recommandé de supprimer tous les répertoires de BigWigs et de le réinstaller complètement."
-L.testNameplate = "Cible détectée, création d'une barre d'info de test par dessus la barre d'info de la cible. |cFF33FF99Cette fonctionnalité est rarement utilisée : elle se présente habituellement sous la forme d'une seule barre, et est nécessaire pour le bon suivi des temps de recharge lors des combats face à plusieurs monstres qui utilisent le même sort.|r"
 
 -- Loader / Options.lua
 L.officialRelease = "Vous utilisez une version FINALISÉE de BigWigs %s (%s)."
@@ -79,22 +80,17 @@ L.options = "Options"
 L.raidBosses = "Boss de raid"
 L.dungeonBosses = "Boss de donjon"
 L.introduction = "Bienvenue sur BigWigs, votre compagnon des rencontres de boss. Attachez votre ceinture, gavez-vous de cacahouètes et profitez du voyage. Il ne fera pas de mal à vos enfants, mais vous aidera à préparer cette nouvelle rencontre de boss pour votre groupe de raid."
-L.toggleAnchorsBtnShow = "Afficher les ancres"
-L.toggleAnchorsBtnHide = "Cacher les ancres"
-L.toggleAnchorsBtnShow_desc = "Afficher les ancres pour permettre de déplacer les barres, les messages, etc."
-L.toggleAnchorsBtnHide_desc = "Cacher les ancres pour verrouiller les positions."
-L.testBarsBtn = "Créer une barre de test"
-L.testBarsBtn_desc = "Créée une barre pour que vous puissiez tester vos paramètres d'affichage actuels."
 L.sound = "Son"
 L.minimapIcon = "Icône de la minicarte"
 L.minimapToggle = "Affiche ou non l'icône de la minicarte."
 L.compartmentMenu = "Aucun icône de compartiment"
 L.compartmentMenu_desc = "Désactiver cette option rendra Bigwigs visible dans le menu compartiment addon. Nous recommendons de laisser cette option activée."
 L.configure = "Configuration"
-L.test = "Test"
 L.resetPositions = "Réinitialiser les positions"
 L.colors = "Couleurs"
 L.selectEncounter = "Sélectionnez une rencontre"
+--L.privateAuraSounds = "Private Aura Sounds"
+--L.privateAuraSounds_desc = "Private auras can't be tracked normally, but you can set a sound to be played when you are targeted with the ability."
 L.listAbilities = "Lister les techniques dans la discussion de groupe"
 
 L.dbmFaker = "Prétendre d'utiliser DBM"

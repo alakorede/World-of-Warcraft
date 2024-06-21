@@ -41,7 +41,7 @@ function MoveAny:LangdeDE()
 		["LID_MAGEARCANECHARGESFRAME"] = "Magier Arkane Ladungen Fenster",
 		["LID_ESSENCEPLAYERFRAME"] = "Essenz Spieler Fenster (Rufer)",
 		["LID_PALADINPOWERBARFRAME"] = "Paladin Machtleiste (Heilige Macht)",
-		["LID_MAFPSFrame"] = "FPS",
+		["LID_MAFPSFrame"] = "FPS (Neuer FPS-Zähler)",
 		["LID_IAPingFrame"] = "Ping",
 		["LID_IACoordsFrame"] = "Koordinatenfenster",
 		["LID_MINIMAP"] = "Minimap",
@@ -101,7 +101,7 @@ function MoveAny:LangdeDE()
 		["LID_MAINMENUEXPBAR"] = "Erfahrungsleiste",
 		["LID_REPUTATIONWATCHBAR"] = "Rufleiste",
 		["LID_UIWIDGETPOWERBAR"] = "Machtleiste (Bossleiste, Elanleiste, Dunkelmond-Jahrmarkt, ...)",
-		["LID_POWERBAR"] = "Power Bar (Encounters, ...)",
+		["LID_POWERBAR"] = "Machtleiste (Boss Begegnungen, ...)",
 		["LID_COUNT"] = "Anzahl",
 		["LID_ROWS"] = "Reihen",
 		["LID_SPACING"] = "Abstand (Lücke)",
@@ -214,7 +214,7 @@ function MoveAny:LangdeDE()
 		["LID_TARGETFRAMETOTBUFF1"] = "Ziel des Zielfenster Buff 1",
 	}
 
-	if D4:GetWoWBuild() ~= "RETAIL" then
+	if MoveAny:GetWoWBuild() ~= "RETAIL" then
 		tab["LID_ACTIONBARS"] = "Aktionsleisten 1 + 5 + 6"
 		tab["LID_ACTIONBAR1"] = "Aktionsleiste 1 (Hauptleiste)"
 		tab["LID_ACTIONBAR2"] = "Aktionsleiste 2 (2. Seite von Aktionsleiste 1)"

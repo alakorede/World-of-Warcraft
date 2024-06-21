@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- 	Leatrix Maps 10.2.32 (6th June 2024)
+	-- 	Leatrix Maps 10.2.35 (19th June 2024)
 	----------------------------------------------------------------------
 
 	-- 10:Func, 20:Comm, 30:Evnt, 40:Panl
@@ -12,7 +12,7 @@
 	local LeaMapsLC, LeaMapsCB, LeaConfigList = {}, {}, {}
 
 	-- Version
-	LeaMapsLC["AddonVer"] = "10.2.32"
+	LeaMapsLC["AddonVer"] = "10.2.35"
 
 	-- Get locale table
 	local void, Leatrix_Maps = ...
@@ -93,6 +93,22 @@
 		-- Hide the world map tutorial button
 		WorldMapFrame.BorderFrame.Tutorial:HookScript("OnShow", WorldMapFrame.BorderFrame.Tutorial.Hide)
 		SetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_WORLD_MAP_FRAME, true)
+
+		----------------------------------------------------------------------
+		-- Hide filter reset button
+		----------------------------------------------------------------------
+
+		if LeaMapsLC["NoFilterResetBtn"] == "On" then
+			-- Create hidden frame
+			local hiddenFrame = CreateFrame("FRAME")
+			hiddenFrame:Hide()
+			-- Parent reset button to hidden frame
+			for i, v in pairs({WorldMapFrame:GetChildren()}) do
+				if v.ResetButton then
+					v.ResetButton:SetParent(hiddenFrame)
+				end
+			end
+		end
 
 		----------------------------------------------------------------------
 		-- Scale the map
@@ -1062,9 +1078,18 @@
 			-- Create table to store revealed overlays
 			local overlayTextures = {}
 			local bfoverlayTextures = {}
+			local tex = {}
 
 			-- Function to refresh overlays (Blizzard_SharedMapDataProviders\MapExplorationDataProvider)
 			local function MapExplorationPin_RefreshOverlays(pin, fullUpdate)
+
+				if LeaMapsLC.NewPatch then
+					for k, v in pairs(tex) do
+						v:SetVertexColor(1, 1, 1, 1)
+					end
+					wipe(tex)
+				end
+
 				overlayTextures = {}
 				local mapID = WorldMapFrame.mapID; if not mapID then return end
 				local artID = C_Map.GetMapArtID(mapID); if not artID or not Leatrix_Maps["Reveal"][artID] then return end
@@ -1116,6 +1141,9 @@
 							end
 							for k = 1, numTexturesWide do
 								local texture = pin.overlayTexturePool:Acquire()
+								if LeaMapsLC.NewPatch then
+									tinsert(tex, texture)
+								end
 								if ( k < numTexturesWide ) then
 									texturePixelWidth = TILE_SIZE_WIDTH
 									textureFileWidth = TILE_SIZE_WIDTH
@@ -1161,8 +1189,18 @@
 				pin.overlayTexturePool.resetterFunc = TexturePool_ResetVertexColor
 			end
 
+			local bftex = {}
+
 			-- Repeat refresh overlays function for Battlefield map
 			local function bfMapExplorationPin_RefreshOverlays(pin, fullUpdate)
+
+				if LeaMapsLC.NewPatch then
+					for k, v in pairs(bftex) do
+						v:SetVertexColor(1, 1, 1, 1)
+					end
+					wipe(bftex)
+				end
+
 				bfoverlayTextures = {}
 				local mapID = BattlefieldMapFrame.mapID; if not mapID then return end
 				local artID = C_Map.GetMapArtID(mapID); if not artID or not Leatrix_Maps["Reveal"][artID] then return end
@@ -1214,6 +1252,9 @@
 							end
 							for k = 1, numTexturesWide do
 								local texture = pin.overlayTexturePool:Acquire()
+								if LeaMapsLC.NewPatch then
+									tinsert(bftex, texture)
+								end
 								if ( k < numTexturesWide ) then
 									texturePixelWidth = TILE_SIZE_WIDTH
 									textureFileWidth = TILE_SIZE_WIDTH
@@ -1261,15 +1302,6 @@
 			LeaMapsLC:MakeSL(tintFrame, "tintGreen", "Green", "Drag to set the amount of green.", 0, 1, 0.1, 36, -202, "%.1f")
 			LeaMapsLC:MakeSL(tintFrame, "tintBlue", "Blue", "Drag to set the amount of blue.", 0, 1, 0.1, 206, -142, "%.1f")
 			LeaMapsLC:MakeSL(tintFrame, "tintAlpha", "Opacity", "Drag to set the opacity.", 0.1, 1, 0.1, 206, -202, "%.1f")
-
-			if LeaMapsLC.NewPatch then
-				-- Disable tint option and hide show unexplored areas configuration button
-				LeaMapsLC["RevTint"] = "Off"
-				LeaMapsDB["RevTint"] = "Off"
-				LeaMapsLC:LockItem(LeaMapsCB["RevTint"], true)
-				LeaMapsCB["RevTint"].tiptext = LeaMapsCB["RevTint"].tiptext .. "|n|n|cff00AAFF" .. L["Not currently available."]
-				LeaMapsCB["RevTintBtn"]:Hide()
-			end
 
 			-- Add preview color block
 			local prvTitle = LeaMapsLC:MakeWD(tintFrame, "Preview", 386, -130); prvTitle:Hide()
@@ -1364,6 +1396,46 @@
 					LeaMapsLC["PageF"]:Hide()
 				end
 			end)
+
+			-- Add tint unexplored areas checkbox to world map filter menu
+			if LeaMapsLC.NewPatch then
+
+				do
+
+					-- Define essential functions
+					local function IsSelected()
+						return LeaMapsLC["RevTint"] == "On"
+					end
+
+					local function SetSelected()
+						if LeaMapsLC["RevTint"] == "On" then
+							LeaMapsLC["RevTint"] = "Off"
+						else
+							LeaMapsLC["RevTint"] = "On"
+						end
+						SetTintCol()
+						if LeaMapsCB["RevTint"]:IsShown() then LeaMapsCB["RevTint"]:Hide(); LeaMapsCB["RevTint"]:Show() end
+					end
+
+					-- Create checkbox entry
+					local button = MenuUtil.CreateCheckbox(L["Tint unexplored areas"], IsSelected, SetSelected)
+
+					-- Add tooltip
+					-- local function OnTooltipShow(tooltipFrame, elementDescription)
+					-- 	GameTooltip_SetTitle(tooltipFrame, L["If checked, unexplored areas will be tinted."])
+					-- end
+					-- button:SetTooltip(OnTooltipShow)
+
+					-- Insert button to menu
+					Menu.ModifyMenu("MENU_WORLD_MAP_TRACKING", function(ownerRegion, rootDescription, contextData)
+						rootDescription:CreateDivider()
+						rootDescription:CreateTitle(L["Leatrix Maps"])
+						rootDescription:Insert(button)
+					end)
+
+				end
+
+			end
 
 		end
 
@@ -1535,7 +1607,7 @@
 			pTex:SetTexCoord(0, 1, 1, 0)
 
 			-- LeaMapsLC.DF: Block taint in 10.0.02 when closing keybindings panel
-			expTitle:SetText("Dragonflight")
+			expTitle:SetText("Dragonflight & The War Within")
 			local category = Settings.RegisterCanvasLayoutCategory(interPanel, "Leatrix Maps")
 			Settings.RegisterAddOnCategory(category)
 
@@ -1592,7 +1664,7 @@
 
 		-- Set frame parameters
 		Side:Hide()
-		Side:SetSize(470, 380)
+		Side:SetSize(470, 400)
 		Side:SetClampedToScreen(true)
 		Side:SetFrameStrata("FULLSCREEN_DIALOG")
 		Side:SetFrameLevel(20)
@@ -1872,6 +1944,7 @@
 		or	(LeaMapsLC["ShowIcons"] ~= LeaMapsDB["ShowIcons"])					-- Show additional icons
 		or	(LeaMapsLC["HideTownCity"] ~= LeaMapsDB["HideTownCity"])			-- Hide town and city icons
 		or	(LeaMapsLC["EnhanceBattleMap"] ~= LeaMapsDB["EnhanceBattleMap"])	-- Enhance battlefield map
+		or	(LeaMapsLC["NoFilterResetBtn"] ~= LeaMapsDB["NoFilterResetBtn"])	-- Hide filte reset button
 		then
 			-- Enable the reload button
 			LeaMapsLC:LockItem(LeaMapsCB["ReloadUIButton"], false)
@@ -2154,6 +2227,8 @@
 				LeaMapsDB["MaxMapScale"] = 0.9
 				LeaMapsDB["NoMapFade"] = "On"
 				LeaMapsDB["NoMapEmote"] = "On"
+				LeaMapsDB["NoFilterResetBtn"] = "On"
+
 				LeaMapsDB["MapPosA"] = "TOPLEFT"
 				LeaMapsDB["MapPosR"] = "TOPLEFT"
 				LeaMapsDB["MapPosX"] = 16
@@ -2253,6 +2328,7 @@
 			LeaMapsLC:LoadVarNum("MaxMapScale", 1.0, 0.5, 2)			-- Maximised map scale
 			LeaMapsLC:LoadVarChk("NoMapFade", "On")						-- Disable map fade
 			LeaMapsLC:LoadVarChk("NoMapEmote", "On")					-- Disable map emote
+			LeaMapsLC:LoadVarChk("NoFilterResetBtn", "On")				-- Hide filter reset button
 			LeaMapsLC:LoadVarAnc("MapPosA", "TOPLEFT")					-- Windowed map anchor
 			LeaMapsLC:LoadVarAnc("MapPosR", "TOPLEFT")					-- Windowed map relative
 			LeaMapsLC:LoadVarNum("MapPosX", 16, -5000, 5000)			-- Windowed map X
@@ -2314,6 +2390,8 @@
 
 			if LeaMapsLC.NewPatch then
 				LockDF("NoMapBorder", "Not currently available.")
+			else
+				LockDF("NoFilterResetBtn", "This is for The War Within.")
 			end
 
 		elseif event == "PLAYER_LOGIN" then
@@ -2332,6 +2410,7 @@
 			LeaMapsDB["MaxMapScale"] = LeaMapsLC["MaxMapScale"]
 			LeaMapsDB["NoMapFade"] = LeaMapsLC["NoMapFade"]
 			LeaMapsDB["NoMapEmote"] = LeaMapsLC["NoMapEmote"]
+			LeaMapsDB["NoFilterResetBtn"] = LeaMapsLC["NoFilterResetBtn"]
 			LeaMapsDB["MapPosA"] = LeaMapsLC["MapPosA"]
 			LeaMapsDB["MapPosR"] = LeaMapsLC["MapPosR"]
 			LeaMapsDB["MapPosX"] = LeaMapsLC["MapPosX"]
@@ -2390,7 +2469,7 @@
 
 	-- Set frame parameters
 	LeaMapsLC["PageF"] = PageF
-	PageF:SetSize(470, 380)
+	PageF:SetSize(470, 400)
 	PageF:Hide()
 	PageF:SetFrameStrata("FULLSCREEN_DIALOG")
 	PageF:SetFrameLevel(20)
@@ -2478,7 +2557,8 @@
 	LeaMapsLC:MakeCB(PageF, "EnhanceBattleMap", "Enhance battlefield map", 225, -212, true, "If checked, you will be able to customise the battlefield map.")
 	LeaMapsLC:MakeCB(PageF, "NoMapFade", "Disable map fade", 225, -232, false, "If checked, the map will not fade while your character is moving.")
 	LeaMapsLC:MakeCB(PageF, "NoMapEmote", "Disable reading emote", 225, -252, false, "If checked, your character will not perform the reading emote when you open the map.")
-	LeaMapsLC:MakeCB(PageF, "ShowMinimapIcon", "Show minimap button", 225, -272, false, "If checked, the minimap button will be shown.")
+	LeaMapsLC:MakeCB(PageF, "NoFilterResetBtn", "Hide filter reset button", 225, -272, true, "If checked, the world map filter reset button will be hidden.")
+	LeaMapsLC:MakeCB(PageF, "ShowMinimapIcon", "Show minimap button", 225, -292, false, "If checked, the minimap button will be shown.")
 
 	LeaMapsLC:CfgBtn("ScaleWorldMapBtn", LeaMapsCB["ScaleWorldMap"])
 	LeaMapsLC:CfgBtn("RevTintBtn", LeaMapsCB["RevealMap"])

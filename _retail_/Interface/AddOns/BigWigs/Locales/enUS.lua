@@ -1,5 +1,7 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "enUS")
 
+L.tempMessage = "Your bar positions have reset, but you can now Import/Export profiles."
+
 -- Core.lua
 L.berserk = "Berserk"
 L.berserk_desc = "Show a bar and timed warnings for when the boss will go berserk."
@@ -19,7 +21,6 @@ L.health = "Health"
 L.health_desc = "Enable functions for displaying various health information during the boss encounter."
 
 L.already_registered = "|cffff0000WARNING:|r |cff00ff00%s|r (|cffffff00%s|r) already exists as a module in BigWigs, but something is trying to register it again. This usually means you have two copies of this module in your addons folder due to some addon updater failure. It is recommended that you delete any BigWigs folders you have and then reinstall it from scratch."
-L.testNameplate = "Target detected, creating a test nameplate bar over target nameplate. |cFF33FF99This feature is rarely used, is usually just 1 bar, and is needed to keep track of cooldowns when fighting multiple bosses/ads that cast the same spell.|r"
 
 -- Loader / Options.lua
 L.officialRelease = "You are running an official release of BigWigs %s (%s)"
@@ -78,22 +79,17 @@ L.optionsKey = "ID: %s" -- The ID that messages/bars/options use
 L.raidBosses = "Raid Bosses"
 L.dungeonBosses = "Dungeon Bosses"
 L.introduction = "Welcome to BigWigs, where the boss encounters roam. Please fasten your seatbelt, eat peanuts and enjoy the ride. It will not eat your children, but it will assist you in preparing that new boss encounter as a 7-course dinner for your raid group."
-L.toggleAnchorsBtnShow = "Show Moving Anchors"
-L.toggleAnchorsBtnHide = "Hide Moving Anchors"
-L.toggleAnchorsBtnShow_desc = "Show all the moving anchors, allowing you to move the bars, messages, etc."
-L.toggleAnchorsBtnHide_desc = "Hide all the moving anchors, locking everything in place."
-L.testBarsBtn = "Create Test Bar"
-L.testBarsBtn_desc = "Creates a bar for you to test your current display settings with."
 L.sound = "Sound"
 L.minimapIcon = "Minimap icon"
 L.minimapToggle = "Toggle show/hide of the minimap icon."
 L.compartmentMenu = "No compartment icon"
 L.compartmentMenu_desc = "Turning this option off will make BigWigs show up in the addon compartment menu. We recommend leaving this option enabled."
 L.configure = "Configure"
-L.test = "Test"
 L.resetPositions = "Reset positions"
 L.colors = "Colors"
 L.selectEncounter = "Select encounter"
+L.privateAuraSounds = "Private Aura Sounds"
+L.privateAuraSounds_desc = "Private auras can't be tracked normally, but you can set a sound to be played when you are targeted with the ability."
 L.listAbilities = "List abilities in group chat"
 
 L.dbmFaker = "Pretend I'm using DBM"
@@ -161,7 +157,7 @@ L.ME_ONLY_EMPHASIZE_desc = "Enabling this will emphasize any messages associated
 L.NAMEPLATEBAR = "Nameplate Bars"
 L.NAMEPLATEBAR_desc = "Bars are sometimes attached to nameplates when more than one mob casts the same spell. If this ability is accompanied by a nameplate bar that you want to hide, disable this option."
 L.PRIVATE = "Private Aura"
-L.PRIVATE_desc = "Private auras can't be tracked normally, but the \"on you\" sound (Warning) can be set in the Sound tab."
+L.PRIVATE_desc = "These settings are for general cast alerts and bars only!\n\nYou can change the sound to play when you are targeted by this ability by selecting \"Private Aura Sounds\" in the \"Select encounter\" dropdown in the top right."
 
 L.advanced = "Advanced options"
 L.back = "<< Back"

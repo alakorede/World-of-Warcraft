@@ -46,6 +46,7 @@ L.general = "Общее" -- General settings, i.e. things that apply to normal, 
 L.door_open = "Дверь открыта" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Врата открыты" -- When a gate is open, usually after a speech from an NPC
 
+--L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s для %s сек" -- Spell for 10 seconds
 L.over = "%s завершается" -- Spell Over
 L.removed = "%s снято" -- Spell Removed
@@ -65,8 +66,10 @@ L.you_die_sec = "Умрёшь через %d сек" -- "You die in 15 sec" (sec 
 --L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "Помощник появился"
-L.adds_spawned = "Помощники появились"
+L.add_spawned = "Помощник появился" -- singular
+L.adds_spawned = "Помощники появились" -- plural
+--L.add_spawning = "Add spawning" -- singular
+--L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "Появление: %s"
 L.spawning = "%s появление"
 L.next_add = "Следующий помощник"

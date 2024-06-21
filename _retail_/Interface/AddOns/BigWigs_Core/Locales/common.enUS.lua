@@ -45,6 +45,7 @@ L.health_percent = "%d%% Health" -- "10% Health" The health percentage of an NPC
 L.door_open = "Door open" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Gate open" -- When a gate is open, usually after a speech from an NPC
 
+L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s for %s sec" -- Spell for 10 seconds
 L.over = "%s over" -- Spell over
 L.removed = "%s removed" -- Spell removed
@@ -64,8 +65,10 @@ L.you_die_sec = "You die in %d sec" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "Add spawned"
-L.adds_spawned = "Adds spawned"
+L.add_spawned = "Add spawned" -- singular
+L.adds_spawned = "Adds spawned" -- plural
+L.add_spawning = "Add spawning" -- singular
+L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s spawned"
 L.spawning = "%s spawning"
 L.next_add = "Next Add"

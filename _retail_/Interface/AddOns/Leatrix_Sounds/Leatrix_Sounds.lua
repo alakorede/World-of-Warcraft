@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- Leatrix Sounds 10.2.30 (5th June 2024)
+	-- Leatrix Sounds 10.2.35 (19th June 2024)
 	----------------------------------------------------------------------
 
 	--  Create global table
@@ -10,7 +10,7 @@
 	local LeaSoundsLC, LeaSoundsCB = {}, {}
 
 	-- Version
-	LeaSoundsLC["AddonVer"] = "10.2.30"
+	LeaSoundsLC["AddonVer"] = "10.2.35"
 
 	-- Get locale table
 	local void, Leatrix_Sounds = ...
@@ -993,7 +993,7 @@
 		pTex:SetTexCoord(0, 1, 1, 0)
 
 		-- Causes block taint in 10.0.2 (open options panel keybindings page then close)
-		expTitle:SetText("Dragonflight")
+		expTitle:SetText("Dragonflight & The War Within")
 		local category = Settings.RegisterCanvasLayoutCategory(interPanel, "Leatrix Sounds")
 		Settings.RegisterAddOnCategory(category)
 

@@ -2062,3 +2062,10 @@ Change Log:
 * Added TWW spells for The Stonevault
 * Added TWW spells for The Waterworks
 * Added TWW spells for Underkeep
+
+5.9.3
+* Added Dragonflight spells (world)
+* Added TWW spells for TWW Delves 
+* Added TWW spells for Darkflame Cleft
+* Combined all delves into one section
+* Added Pandaria spells for Temple of the Jade Serpent

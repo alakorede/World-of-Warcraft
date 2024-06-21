@@ -87,6 +87,12 @@ GTFO.SpellID["107053"] = {
 	sound = 3;
 };
 
+GTFO.SpellID["106079"] = {
+  --desc = "Water Bubble (Wise Mari)";
+  sound = 3;
+  alwaysAlert = true;
+};
+
 GTFO.SpellID["106334"] = {
 	--desc = "Wash Away (Wise Mari)";
 	sound = 3;

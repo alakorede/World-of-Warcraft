@@ -46,6 +46,7 @@ L.health_percent = "%d%% Salud" -- "10% Health" The health percentage of an NPC
 L.door_open = "Puerta abierta" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Puerta abierta" -- When a gate is open, usually after a speech from an NPC
 
+--L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s durante %s seg" -- Spell for 10 seconds
 L.over = "%s terminado" -- Spell Over
 L.removed = "%s eliminado" -- Spell Removed
@@ -65,8 +66,10 @@ L.you_die_sec = "Morirás en %d seg" -- "You die in 15 sec" (seg = seconds (segu
 L.next_ability = "Próxima habilidad" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "Esbirro apareció"
-L.adds_spawned = "Esbirros aparecieron"
+L.add_spawned = "Esbirro apareció" -- singular
+L.adds_spawned = "Esbirros aparecieron" -- plural
+--L.add_spawning = "Add spawning" -- singular
+--L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s apareció"
 L.spawning = "%s aparece"
 L.next_add = "Siguiente esbirro"

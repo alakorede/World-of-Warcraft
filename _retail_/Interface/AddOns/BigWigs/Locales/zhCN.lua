@@ -1,6 +1,8 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "zhCN")
 if not L then return end
 
+L.tempMessage = "您的计时条位置已重置，现在可以导入/导出配置文件。"
+
 -- Core.lua
 L.berserk = "狂暴"
 L.berserk_desc = "为首领狂暴显示计时器和警报。"
@@ -20,7 +22,6 @@ L.health = "血量"
 L.health_desc = "启用与首领战斗时显示血量变化信息。"
 
 L.already_registered = "|cffff0000警告：|r |cff00ff00%s|r（|cffffff00%s|r）在 BigWigs 中已经存在，但该模块仍试图重新注册。这可能是因为更新失败，导致您的插件文件夹中同时存在两份相同模块的拷贝。建议删除所有 BigWigs 文件夹并重新安装。"
-L.testNameplate = "检测到目标，在目标姓名板上创建一个测试计时条。 |cFF33FF99此功能很少用到，而且通常一次只存在一个计时条，用于追踪同时存在的多个目标的同个技能。|r"
 
 -- Loader / Options.lua
 L.officialRelease = "你所使用的 BigWigs %s 为官方正式版（%s）"
@@ -79,22 +80,17 @@ L.optionsKey = "ID: %s" -- The ID that messages/bars/options use
 L.raidBosses = "团队首领"
 L.dungeonBosses = "地下城首领"
 L.introduction = "欢迎使用 BigWigs 戏弄各个首领。请系好安全带，吃吃花生并享受这次旅行。它不会吃了你的孩子，但会协助你的团队与新的首领进行战斗就如同享受饕餮大餐一样。"
-L.toggleAnchorsBtnShow = "显示移动锚点"
-L.toggleAnchorsBtnHide = "隐藏移动锚点"
-L.toggleAnchorsBtnShow_desc = "显示全部移动锚点，允许移动计时条、信息等。"
-L.toggleAnchorsBtnHide_desc = "隐藏全部移动锚点，锁定一切就位。"
-L.testBarsBtn = "创建测试计时条"
-L.testBarsBtn_desc = "创建一个测试计时条以便于测试当前显示设置。"
 L.sound = "音效"
 L.minimapIcon = "小地图图标"
 L.minimapToggle = "打开或关闭小地图图标。"
 L.compartmentMenu = "隐藏暴雪插件收纳按钮"
 L.compartmentMenu_desc = "关闭此选项将会启用暴雪的小地图插件收纳功能。我们推荐你启用这个选项，隐藏暴雪插件收纳按钮。"
 L.configure = "配置"
-L.test = "测试"
 L.resetPositions = "重置位置"
 L.colors = "颜色"
 L.selectEncounter = "选择战斗"
+L.privateAuraSounds = "私有光环音效"
+L.privateAuraSounds_desc = "私有光环无法被正常追踪，但你可以设置一个音效，在你被技能锁定时播放。"
 L.listAbilities = "列出技能到团队聊天"
 
 L.dbmFaker = "伪装成 DBM 用户"

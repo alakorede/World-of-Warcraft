@@ -1,3 +1,4 @@
+local _, D4 = ...
 function D4:Trans(key, lang, t1, t2, t3)
     D4.trans = D4.trans or {}
     if lang == nil then
@@ -15,15 +16,15 @@ function D4:Trans(key, lang, t1, t2, t3)
     end
 
     if t1 and t2 and t3 then
-        result = format(result, t1, t2, t3)
+        result = string.format(result, t1, t2, t3)
     end
 
     if t1 and t2 then
-        result = format(result, t1, t2)
+        result = string.format(result, t1, t2)
     end
 
     if t1 then
-        result = format(result, t1)
+        result = string.format(result, t1)
     end
 
     return result or key
@@ -32,19 +33,19 @@ end
 function D4:AddTrans(lang, key, value)
     D4.trans = D4.trans or {}
     if lang == nil then
-        D4:msg("[D4:AddTrans] lang is nil")
+        D4:MSG("[D4:AddTrans] lang is nil")
 
         return false
     end
 
     if key == nil then
-        D4:msg("[D4:AddTrans] key is nil")
+        D4:MSG("[D4:AddTrans] key is nil")
 
         return false
     end
 
     if value == nil then
-        D4:msg("[D4:AddTrans] value is nil")
+        D4:MSG("[D4:AddTrans] value is nil")
 
         return false
     end

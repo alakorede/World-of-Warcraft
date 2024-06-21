@@ -47,6 +47,7 @@ L.general = "Général" -- General settings, i.e. things that apply to normal, h
 --L.door_open = "Door open" -- When a door is open, usually after a speech from an NPC
 --L.gate_open = "Gate open" -- When a gate is open, usually after a speech from an NPC
 
+--L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s pendant %s sec." -- Spell for 10 seconds
 L.over = "%s terminé" -- Spell Over
 L.removed = "%s enlevé" -- Spell Removed
@@ -66,8 +67,10 @@ L.you_die_sec = "Vous mourrez dans %d sec." -- "You die in 15 sec" (sec = second
 --L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "Add apparu"
---L.adds_spawned = "Adds apparu"
+L.add_spawned = "Add apparu" -- singular
+--L.adds_spawned = "Adds apparu" -- plural
+--L.add_spawning = "Add spawning" -- singular
+--L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s apparu"
 L.spawning = "Apparition |2 %s"
 L.next_add = "Prochain Add"
