@@ -2,7 +2,7 @@
 OmniCCDB = {
 ["global"] = {
 ["dbVersion"] = 6,
-["addonVersion"] = "10.2.7",
+["addonVersion"] = "10.2.9",
 },
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Default",
@@ -53,9 +53,9 @@ OmniCCDB = {
 ["Aishy - Nemesis"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
 ["Satishy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
-["Dishy - Nemesis"] = "Default",
 ["Keishy - Aerie Peak"] = "Default",
+["Dishy - Nemesis"] = "Default",
+["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
 ["Sharan - Goldrinn"] = "Default",
@@ -63,10 +63,10 @@ OmniCCDB = {
 ["Neshy - Nemesis"] = "Default",
 ["Trystam - Nemesis"] = "Default",
 ["Batezu - Nemesis"] = "Default",
-["Yashy - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
 ["Satishy - Nemesis"] = "Default",
 ["Melishy - Goldrinn"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
+["Yashy - Nemesis"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
 ["Aleshy - Goldrinn"] = "Default",
@@ -89,31 +89,31 @@ OmniCCDB = {
 ["themes"] = {
 ["Plater Nameplates Theme"] = {
 ["textStyles"] = {
+["seconds"] = {
+},
 ["soon"] = {
 },
 ["minutes"] = {
-},
-["seconds"] = {
 },
 },
 },
 ["Default"] = {
 ["textStyles"] = {
+["seconds"] = {
+},
 ["soon"] = {
 },
 ["minutes"] = {
-},
-["seconds"] = {
 },
 },
 },
 ["Padrão"] = {
 ["textStyles"] = {
+["soon"] = {
+},
 ["seconds"] = {
 },
 ["minutes"] = {
-},
-["soon"] = {
 },
 },
 },

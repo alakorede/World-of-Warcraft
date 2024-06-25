@@ -15,9 +15,9 @@ APR_DB = {
 ["HideVoid"] = true,
 ["HideUndercut"] = false,
 ["HideEquipTrade"] = true,
-["HideInnkeeper"] = true,
-["PrintStartupMessage"] = true,
 ["HideMail"] = true,
+["PrintStartupMessage"] = true,
+["HideInnkeeper"] = true,
 ["HideEquip"] = false,
 ["HideRefund"] = true,
 }

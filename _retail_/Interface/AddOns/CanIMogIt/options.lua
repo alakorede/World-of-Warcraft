@@ -36,7 +36,7 @@ end
 
 
 -- OptionsVersion: Keep this as an integer, so comparison is easy.
-CanIMogIt_OptionsVersion = "20"
+CanIMogIt_OptionsVersion = "23"
 
 
 CanIMogItOptions_Defaults = {
@@ -53,6 +53,9 @@ CanIMogItOptions_Defaults = {
         ["showSourceLocationTooltip"] = false,
         ["printDatabaseScan"] = true,
         ["iconLocation"] = "TOPRIGHT",
+        ["showToyItems"] = true,
+        ["showPetItems"] = true,
+        ["showMountItems"] = true,
     },
 }
 
@@ -87,7 +90,7 @@ CanIMogItOptions_DisplayData = {
         ["description"] = L["Shows a more detailed text for some of the tooltips."]
     },
     ["showSourceLocationTooltip"] = {
-        ["displayName"] = L["Show Source Location Tooltip"] .. " " .. CanIMogIt.YELLOW .. L["(Experimental)"],
+        ["displayName"] = L["Show Source Location Tooltip"],
         ["description"] = L["Shows a tooltip with the source locations of an appearance (ie. Quest, Vendor, World Drop). This only works on items your current class can learn."] .. "\n\n" .. L["Please note that this may not always be correct as Blizzard's information is incomplete."]
     },
     ["printDatabaseScan"] = {
@@ -97,6 +100,18 @@ CanIMogItOptions_DisplayData = {
     ["iconLocation"] = {
         ["displayName"] = L["Location: "],
         ["description"] = L["Move the icon to a different location on all frames."]
+    },
+    ["showToyItems"] = {
+        ["displayName"] = L["Show Toy Items"],
+        ["description"] = L["Show tooltips and overlays on toys (otherwise, shows as not transmoggable)."]
+    },
+    ["showPetItems"] = {
+        ["displayName"] = L["Show Pet Items"],
+        ["description"] = L["Show tooltips and overlays on pets (otherwise, shows as not transmoggable)."]
+    },
+    ["showMountItems"] = {
+        ["displayName"] = L["Show Mount Items"],
+        ["description"] = L["Show tooltips and overlays on mounts (otherwise, shows as not transmoggable)."]
     },
 }
 
@@ -110,9 +125,6 @@ local EVENTS = {
     "ADDON_LOADED",
     "TRANSMOG_COLLECTION_UPDATED",
     "PLAYER_LOGIN",
-    "AUCTION_HOUSE_SHOW",
-    "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED",
-    "AUCTION_HOUSE_NEW_RESULTS_RECEIVED",
     "GET_ITEM_INFO_RECEIVED",
     "BLACK_MARKET_OPEN",
     "BLACK_MARKET_ITEM_UPDATE",
@@ -135,11 +147,21 @@ local EVENTS = {
     "TRANSMOG_COLLECTION_SOURCE_ADDED",
     "TRANSMOG_COLLECTION_SOURCE_REMOVED",
     "TRANSMOG_SEARCH_UPDATED",
-    "PLAYERREAGENTBANKSLOTS_CHANGED",
     "LOADING_SCREEN_ENABLED",
     "LOADING_SCREEN_DISABLED",
     "TRADE_SKILL_SHOW",
+    "NEW_TOY_ADDED",
+    "NEW_MOUNT_ADDED",
 }
+
+if CanIMogIt.isRetail then
+    table.insert(EVENTS, "AUCTION_HOUSE_SHOW")
+    table.insert(EVENTS, "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED")
+    table.insert(EVENTS, "AUCTION_HOUSE_NEW_RESULTS_RECEIVED")
+    table.insert(EVENTS, "PLAYERREAGENTBANKSLOTS_CHANGED")
+    table.insert(EVENTS, "PET_JOURNAL_LIST_UPDATE")
+end
+
 
 for i, event in pairs(EVENTS) do
     CanIMogIt.frame:RegisterEvent(event);
@@ -435,6 +457,9 @@ local function createOptionsMenu()
     CanIMogIt.frame.showSourceLocationTooltip = newCheckbox(CanIMogIt.frame, "showSourceLocationTooltip")
     CanIMogIt.frame.printDatabaseScan = newCheckbox(CanIMogIt.frame, "printDatabaseScan")
     CanIMogIt.frame.iconLocation = newRadioGrid(CanIMogIt.frame, "iconLocation")
+    CanIMogIt.frame.showToyItems = newCheckbox(CanIMogIt.frame, "showToyItems")
+    CanIMogIt.frame.showPetItems = newCheckbox(CanIMogIt.frame, "showPetItems")
+    CanIMogIt.frame.showMountItems = newCheckbox(CanIMogIt.frame, "showMountItems")
 
     -- position the checkboxes
     CanIMogIt.frame.debug:SetPoint("TOPLEFT", 16, -16)
@@ -447,6 +472,9 @@ local function createOptionsMenu()
     CanIMogIt.frame.showSourceLocationTooltip:SetPoint("TOPLEFT", CanIMogIt.frame.showVerboseText, "BOTTOMLEFT")
     CanIMogIt.frame.printDatabaseScan:SetPoint("TOPLEFT", CanIMogIt.frame.showSourceLocationTooltip, "BOTTOMLEFT")
     CanIMogIt.frame.iconLocation:SetPoint("TOPLEFT", CanIMogIt.frame.printDatabaseScan, "BOTTOMLEFT")
+    CanIMogIt.frame.showToyItems:SetPoint("TOPLEFT", CanIMogIt.frame.iconLocation, "BOTTOMLEFT")
+    CanIMogIt.frame.showPetItems:SetPoint("TOPLEFT", CanIMogIt.frame.showToyItems, "BOTTOMLEFT")
+    CanIMogIt.frame.showMountItems:SetPoint("TOPLEFT", CanIMogIt.frame.showPetItems, "BOTTOMLEFT")
 
     changesSavedText()
 end
@@ -489,6 +517,9 @@ Can I Mog It? help:
     equiponly       Toggles showing overlay on non-equipable items.
     transmogonly    Toggles showing overlay on non-transmogable items.
     unknownonly     Toggles showing overlay on known items.
+    toyitems        Toggles showing overlay on toy items.
+    petitems        Toggles showing overlay on pet items.
+    mountitems      Toggles showing overlay on mount items.
     count           Shows how many appearances CIMI has recorded.
     printdb         Toggles printing database debug messages when learning apperances.
     PleaseDeleteMyDB    WARNING: Completely deletes the database (for all characters)!
@@ -511,6 +542,12 @@ function CanIMogIt:SlashCommands(input)
         CanIMogIt.frame.showTransmoggableOnly:Click()
     elseif input == 'unknownonly' then
         CanIMogIt.frame.showUnknownOnly:Click()
+    elseif input == 'toyitems' then
+        CanIMogIt.frame.showToyItems:Click()
+    elseif input == 'petitems' then
+        CanIMogIt.frame.showPetItems:Click()
+    elseif input == 'mountitems' then
+        CanIMogIt.frame.showMountItems:Click()
     elseif input == 'count' then
         self:Print(CanIMogIt.Utils.tablelength(CanIMogIt.db.global.appearances))
     elseif input == 'PleaseDeleteMyDB' then

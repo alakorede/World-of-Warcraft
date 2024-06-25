@@ -1,6 +1,6 @@
-## Interface: 100205
-## Title: BetterWardrobe (4.20)
-## Version: 4.20
+## Interface: 100207
+## Title: BetterWardrobe (4.22.3)
+## Version: 4.22.3
 ## Author: SLOKnightfall
 ## Notes: 
 ## OptionalDeps: MogIt, CanIMogIt, LegionWardrobe, WardrobeEnhanced, Rarity, TransmogOutfits, ExtendedSets, ElvUI, PetTracker, PetTrackerJournal
@@ -56,6 +56,7 @@ Data\LEATHER.lua
 Data\MAIL.lua
 Data\PLATE.lua
 Data\COSMETIC.lua
+Data\MISC.lua
 Data\SetOverrides.lua
 
 

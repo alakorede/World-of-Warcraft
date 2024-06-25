@@ -1,6 +1,22 @@
 
 Roth_UI_DB_CHAR = {
 ["HEALTH"] = {
+["bubbles"] = {
+["alpha"] = 1,
+},
+["highlight"] = {
+["alpha"] = 1,
+},
+["model"] = {
+["rotation"] = 0,
+["portraitZoom"] = 0,
+["displayInfo"] = 33853,
+["alpha"] = 0.2770000100135803,
+["enable"] = true,
+["pos_y"] = 0.1000003814697266,
+["camDistanceScale"] = 1.606000065803528,
+["pos_x"] = 0,
+},
 ["value"] = {
 ["top"] = {
 ["color"] = {
@@ -20,22 +36,6 @@ Roth_UI_DB_CHAR = {
 },
 ["hideOnFull"] = false,
 ["hideOnEmpty"] = true,
-["alpha"] = 1,
-},
-["spark"] = {
-["alpha"] = 1,
-},
-["model"] = {
-["rotation"] = 0,
-["portraitZoom"] = 0,
-["displayInfo"] = 33853,
-["alpha"] = 0.2770000100135803,
-["enable"] = true,
-["pos_y"] = 0.1000003814697266,
-["camDistanceScale"] = 1.606000065803528,
-["pos_x"] = 0,
-},
-["bubbles"] = {
 ["alpha"] = 1,
 },
 ["galaxies"] = {
@@ -50,11 +50,27 @@ Roth_UI_DB_CHAR = {
 ["colorAuto"] = false,
 ["texture"] = "Interface\\AddOns\\Roth_UI\\media\\orb_filling16",
 },
-["highlight"] = {
+["spark"] = {
 ["alpha"] = 1,
 },
 },
 ["POWER"] = {
+["bubbles"] = {
+["alpha"] = 0.300000011920929,
+},
+["highlight"] = {
+["alpha"] = 0.5,
+},
+["model"] = {
+["rotation"] = 0,
+["portraitZoom"] = 0,
+["displayInfo"] = 32368,
+["alpha"] = 1,
+["enable"] = false,
+["pos_y"] = 0.1000003814697266,
+["camDistanceScale"] = 0.9500000476837158,
+["pos_x"] = 0,
+},
 ["value"] = {
 ["top"] = {
 ["color"] = {
@@ -76,22 +92,6 @@ Roth_UI_DB_CHAR = {
 ["hideOnEmpty"] = true,
 ["alpha"] = 1,
 },
-["spark"] = {
-["alpha"] = 1,
-},
-["model"] = {
-["rotation"] = 0,
-["portraitZoom"] = 0,
-["displayInfo"] = 32368,
-["alpha"] = 1,
-["enable"] = false,
-["pos_y"] = 0.1000003814697266,
-["camDistanceScale"] = 0.9500000476837158,
-["pos_x"] = 0,
-},
-["bubbles"] = {
-["alpha"] = 0.300000011920929,
-},
 ["galaxies"] = {
 ["alpha"] = 1,
 },
@@ -104,8 +104,8 @@ Roth_UI_DB_CHAR = {
 ["colorAuto"] = true,
 ["texture"] = "Interface\\AddOns\\Roth_UI\\media\\orb_filling16",
 },
-["highlight"] = {
-["alpha"] = 0.5,
+["spark"] = {
+["alpha"] = 1,
 },
 },
 ["reload"] = false,

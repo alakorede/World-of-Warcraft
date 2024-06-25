@@ -45,9 +45,80 @@ local expansionID = 5;
 --1024 = Druid
 --2048 = Demon Hunter
 --4096 = Evoker
+local NOT_REMIX = -1;
 local IS_REMIX = 1;
 
+local ZoneList = {
+"Jade Forest",--1
+"Townlong Steppes",--2
+"Vale of Eternal Blossoms",--3
+"Valley of the Four Winds",--4
+"Dread Wastes",--5
+"Krasarang Wilds",--6
+"Kun-Lai Summit",--7
+"'Three Isles'",--8
+"Timeless Isle",--9
+"Isle of Thunder",--10
+"Scenarios (Normal)",--11
+"Scenarios (Heroic)",--12
+"Dungeons (Normal)",--13
+"Dungeons (Heroic)",--14
+"MsV, HoF, ToES (LFR)",--15
+"MsV, HoF, ToES (Normal)",--16
+"MsV, HoF, ToES (Heroic)",--17
+"Throne of Thunder (LFR)",--18
+"Throne of Thunder (Normal)",--19
+"Throne of Thunder (Heroic)",--20
+"Siege of Orgrimmar (LFR)",--21
+"Siege of Orgrimmar (Normal/Heroic)",--22
+"Siege of Orgrimmar (Mythic)",--23
+}
+
+local function Zone(...)
+  local arg = {...};
+  local out = "Zone: ";
+  for i=1,#arg do
+    out = out..ZoneList[arg[i]];
+    if i ~= #arg then
+      out = out..", ";
+    end
+  end
+  return out;
+end
+
 local db = {
+--Remix Duplicates
+{"Remix Duplicates","Old Looks, New IDs",nil,50500,nil,nil,{
+{1,196810,nil,Zone(18)},
+{6,198425,nil,Zone(18)},
+{6,198422,nil,Zone(18)},
+{10,198469,nil,Zone(18)},
+{10,198466,nil,Zone(18)},
+{15,197280,nil,Zone(17)},
+{15,197279,nil,Zone(16)},
+{15,197278,nil,Zone(15)},
+{16,197301,nil,Zone(16)},
+{16,197302,nil,Zone(17)},
+{6,196945,nil,Zone(15)},{6,196942,nil,Zone(15)},
+{12,198551,nil,Zone(15)},
+{10,197303,nil,Zone(15)},
+{16,197305,nil,Zone(4,5)},
+{16,197311,nil,Zone(12)},
+{8,197085,nil,Zone(8)},
+{9,198454,nil,Zone(18)},
+{10,198467,nil,Zone(19)},
+{9,198455,nil,Zone(19)},
+{5,196934,nil,Zone(20)},
+{1,196807,nil,Zone(20)},
+{9,198456,nil,Zone(20)},
+{8,198453,nil,Zone(20)},
+{6,196938,nil,Zone(21)},
+{16,193716,nil,Zone(21)},
+{16,197298,nil,Zone(22)},
+{6,196941,nil,Zone(23)},
+{16,197299,nil,Zone(23)},
+},nil,nil,2,nil,IS_REMIX},
+
 --Remix Class Arsenals
 {"Holy Avenger","Remix: Pandaria Class Sets",app.GetColoredClassNameString("Paladin"),100207,"i:217832:4:Arsenal Armaments of the Holy Avenger","Only usable by "..app.GetColoredClassNameString("Paladin"),{{12,200455},{9,200456},{8,200457},},nil,nil,2,2,IS_REMIX},
 {"Webbed Soulforged","Remix: Pandaria Class Sets",app.GetColoredClassNameString("Death Knight"),100207,"i:217824:4:Arsenal Webbed Soulforged Weaponfy","Only usable by "..app.GetColoredClassNameString("Death Knight"),{{2,200480},{14,200481},{15,200482},},nil,nil,2,32,IS_REMIX},
@@ -67,40 +138,41 @@ local db = {
 {"Temptation's Call","Remix: Pandaria Class Sets",app.GetColoredClassNameString("Warlock"),100207,"i:217826:4:Arsenal Instruments of Temptation's Call","Only usable by "..app.GetColoredClassNameString("Warlock"),{{5,200503},{10,200504},{13,200505},},nil,nil,2,256,IS_REMIX},
 
 --Remix Exclusive models
-{"Fearspeaker","Remix Exclusives (MoP)","Red",50000,nil,nil,{{5,196877},{4,196867},{13,197152},{13,100348},{13,197143},{13,198477},{12,198525},{10,196967},{8,197071},{8,197070},{6,196961},{5,196925},{3,196849},{1,196804},{2,196825},},nil,nil,2,nil,IS_REMIX},
-{"Fearspeaker","Remix Exclusives (MoP)","Blue",50000,nil,nil,{{15,197292},{13,197150},{13,197146},{13,197142},{13,198476},{12,198523},{10,196968},{8,197072},{8,197069},{6,196960},{5,196922},{3,196850},{1,196805},{2,196822},},nil,nil,2,nil,IS_REMIX},
-{"Fearspeaker","Remix Exclusives (MoP)","Purple",50000,nil,nil,{{5,196875},{15,197290},{13,197151},{13,197147},{13,197144},{13,198474},{12,198526},{10,100770},{8,197073},{8,197067},{2,196823},},nil,nil,2,nil,IS_REMIX},
-{"Fearspeaker","Remix Exclusives (MoP)","Yellow",50000,nil,nil,{{5,196876},{4,196866},{13,197153},{13,197148},{13,197145},{13,198475},{12,198524},{8,197068},{6,196959},{5,196924},{3,196851},{1,196806},{2,196824},{14,197206},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Red",50000,nil,nil,{{15,197291,nil,Zone(5)},{5,196877},{4,196867,nil,Zone(17)},{13,197152,nil,Zone(17)},{13,197149,NOT_REMIX},{13,197143,nil,Zone(16)},{13,198477},{12,198525,nil,Zone(9,10)},{12,198527,nil,Zone(2)},{10,196967,nil,Zone(2)},{8,197071,nil,Zone(5)},{8,197070,nil,Zone(8)},{6,196961,nil,Zone(3)},{5,196925,nil,Zone(12)},{3,196849,nil,Zone(3)},{1,196804,nil,Zone(3)},{2,196825,nil,Zone(8)},{8,197039,nil,Zone(15)},{9,197098,nil,Zone(20)},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Blue",50000,nil,nil,{{15,197292,nil,Zone(3)},{13,197150,nil,Zone(15)},{13,197146,nil,Zone(15)},{13,197142,nil,Zone(15)},{13,198476},{12,198523,nil,Zone(2,3)},{12,198529,nil,Zone(3)},{10,196968,nil,Zone(1,3)},{8,197072,nil,Zone(2)},{8,197069,nil,Zone(3)},{6,196960,nil,Zone(2)},{5,196922,nil,Zone(13)},{3,196850,nil,Zone(2)},{1,196805,nil,Zone(2)},{2,196822,nil,Zone(2)},{9,197097,nil,Zone(19)},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Purple",50000,nil,nil,{{5,196875},{15,197290,Zone(2)},{13,197151,nil,Zone(16)},{13,197147,nil,Zone(16)},{13,197144,nil,Zone(17)},{13,198474},{12,198526,nil,Zone(5)},{12,198530,nil,Zone(8)},{10,100770},{8,197073,nil,Zone(3)},{8,197067,nil,Zone(2)},{2,196823,nil,Zone(5)},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Yellow",50000,nil,nil,{{5,196876},{4,196866,nil,Zone(16)},{13,197153,nil,Zone(15)},{13,197148,nil,Zone(17)},{13,197145,nil,Zone(15)},{13,198475},{12,198524,nil,Zone(2)},{12,198528,nil,Zone(5)},{8,197068,nil,Zone(5)},{6,196959,nil,Zone(5)},{5,196924,nil,Zone(11)},{3,196851,nil,Zone(5)},{1,196806,nil,Zone(5)},{2,196824,nil,Zone(3)},{14,197206},{9,197096,nil,Zone(18)},},nil,nil,2,nil,IS_REMIX},
 
 --SoO Remix colors
-{"Boop","SoO Remix Colors","Siege of Orgrimmar",50400,nil,nil,{
-{1,196782},--SoO recolor
-{1,196786},--SoO recolor
-{1,196790},--SoO recolor
-{2,196811},--SoO recolor
-{3,196837},--SoO recolor
-{3,196832},--SoO recolor
-{4,196864},--SoO recolor
-{5,196890},--SoO recolor
-{5,196882},--SoO recolor
-{7,197000},--SoO recolor
-{8,197021},--SoO recolor
-{8,197027},--SoO recolor
-{8,67065},--SoO recolor (also drops from rare in WoD)
-{10,196973},--SoO recolor
-{10,196980},--SoO recolor
-{12,198547},--SoO recolor
-{13,197134},--SoO recolor
-{13,197138},{13,197139},--SoO recolor
-{13,197129},--SoO recolor
-{13,197124},--SoO recolor
-{13,197133},--SoO recolor
-{14,100384},{14,197218},--SoO recolors
-{14,197223},--SoO recolor
-{14,197225},--SoO recolor
-{14,197215},--SoO recolor
-{15,197274},--SoO recolor
-{16,197297},--SoO recolor
+{"Sha-Touched","SoO Remix Colors","Siege of Orgrimmar",50400,nil,nil,{
+{1,196782,nil,Zone(23)},
+{1,196786,nil,Zone(23)},
+{1,196790,nil,Zone(23)},
+{2,196811,nil,Zone(21)},
+{3,196837,nil,Zone(23)},
+{3,196832,nil,Zone(22)},
+{4,196864,nil,Zone(22)},
+{5,196890,nil,Zone(23)},
+{5,196882,nil,Zone(21)},
+{6,196939,nil,Zone(22)},
+{7,197000,nil,Zone(22)},
+{8,197021,nil,Zone(22)},
+{8,197027,nil,Zone(23)},
+{8,67065,NOT_REMIX},--SoO recolor (also drops from rare in WoD)
+{10,196973,nil,Zone(21)},
+{10,196980,nil,Zone(23)},
+{12,198547,nil,Zone(23)},
+{13,197134,nil,Zone(21)},
+{13,197138,nil,Zone(21)},{13,197139,nil,Zone(22)},
+{13,197129,nil,Zone(23)},
+{13,197124,nil,Zone(22)},
+{13,197133,nil,Zone(23)},
+{14,100384,NOT_REMIX},{14,197218,nil,Zone(22)},
+{14,197223,nil,Zone(23)},
+{14,197225,nil,Zone(22)},
+{14,197215,nil,Zone(23)},
+{15,197274,nil,Zone(21)},
+{16,197297,nil,Zone(22)},
 },nil,nil,2,nil,IS_REMIX};
 
 --Siege of Orgrimmar
@@ -114,36 +186,42 @@ local db = {
 {"Grievous","Season 14/15 (MoP 3/4)","Elite",50400,nil,nil,{{16,53367},{13,53363},{8,53331},{1,53329},{13,53431},{8,53427},{15,53327},{3,53337},{14,53613},{11,53528},{14,53333},{6,53607},{7,53425},{5,53605},{5,53361},{10,53357},{12,53359},{2,53323},{12,53625}},nil,true,true},
 
 --Throne of Thunder Remix Colors
-{"Boop","ToT Remix Colors","Throne of Thunder",50000,nil,nil,{
-{1,196809},--ToT recolor
-{1,197318},--ToT recolor
-{2,196827},--ToT recolor
-{3,196852},--ToT recolor
-{3,196860},{3,196857},--ToT recolor
-{4,196872},--ToT recolor
-{5,198434},{5,198435},--ToT recolor
-{5,196935},{5,196936},{5,196937},--ToT recolor
-{7,197019},--ToT recolor
-{8,198446},--ToT recolor
-{8,197075},{8,197076},{8,197077},--ToT Recolor
-{8,197083},--ToT recolor
-{8,197079},--ToT recolor
-{10,196997},--ToT recolor
-{11,197123},--ToT recolor
-{11,197109},--ToT recolor
-{11,197100},--ToT recolor
-{12,198588},{12,198589},--ToT recolor
-{12,198573},---ToT recolor
-{12,198520},--ToT recolor
-{13,197201},--ToT recolor
-{13,198488},--ToT recolor
-{13,197190},--ToT recolor
-{13,198479},--ToT recolor
-{14,197267},--ToT recolor
-{14,197268},{14,197269},--ToT recolor
-{14,197211},--ToT recolor
-{15,197273},--ToT recolor
-{16,197314},{16,100312},--ToT recolor
+{"Breaker","ToT Remix Colors","Throne of Thunder",50000,nil,nil,{
+{1,196809,nil,Zone(19)},
+{1,197318,nil,Zone(19)},
+{2,196827,nil,Zone(18)},
+{3,196852,nil,Zone(18)},
+{3,196860,nil,Zone(8)},{3,196857,nil,Zone(19)},
+{4,196872,nil,Zone(19)},
+{5,198434,nil,Zone(18)},{5,198435,nil,Zone(19)},
+{5,196935,nil,Zone(18)},{5,196936,nil,Zone(19)},{5,196937,nil,Zone(18)},
+{7,197019,nil,Zone(20)},
+{8,198446,nil,Zone(18)},
+{8,197075,nil,Zone(18)},{8,197076,nil,Zone(19)},{8,197077,nil,Zone(18)},
+{8,197083,nil,Zone(19)},
+{8,197079,nil,Zone(19)},
+{10,196997,nil,Zone(19)},
+{11,197123,nil,Zone(18)},
+{11,197109,nil,Zone(17)},
+{11,197100,nil,Zone(16)},
+{12,198588,nil,Zone(9,10)},{12,198589,nil,Zone(8)},
+{12,198573,nil,Zone(20)},
+{12,198520,nil,Zone(8)},
+{13,197201,nil,Zone(20)},
+{13,198488,nil,Zone(20)},
+{13,197190,nil,Zone(19)},
+{13,198479,nil,Zone(19)},
+{14,197267,nil,Zone(18)},
+{14,197268,nil,Zone(18)},{14,197269,nil,Zone(19)},
+{14,197211,nil,Zone(9,10)},
+{15,197273,nil,Zone(9,10)},
+{16,197314,nil,Zone(19)},{16,100312,NOT_REMIX},
+{9,198457,nil,Zone(18)},
+{13,198484,nil,Zone(19)},
+{5,198427,nil,Zone(19)},
+{12,198584,nil,Zone(19)},
+{6,196963,nil,Zone(19)},
+{6,198424,nil,Zone(20)},
 },nil,nil,2,nil,IS_REMIX};
 
 --Throne of Thunder all boss loot
@@ -162,11 +240,12 @@ local db = {
 {"Tyrannical","Season 13 (MoP 2)","Elite",50200,nil,nil,{{13,47438},{13,47506},{13,47481},{5,47680},{5,47436},{8,47406},{1,47404},{14,47688},{14,47408},{2,47398},{15,47402},{6,47686},{4,47444},{10,47432},{12,47434},{12,47700},},nil,true,true},
 
 --Terrace of Endless Spring Remix Colors
-{"Boop","ToES Remix Colors","Terrace of Endless Spring",50004,nil,nil,{
-{2,196816},--ToES recolor
-{7,197004},--ToES recolor
-{13,197160},
-{14,197236},--ToES recolor
+{"Fear incarnate","ToES Remix Colors","Terrace of Endless Spring",50004,nil,nil,{
+{2,196816,nil,Zone(16)},
+{7,197004,nil,Zone(17)},
+{13,197160,nil,Zone(15)},
+{14,197236,nil,Zone(17)},
+{5,196899,nil,Zone(17)},
 },nil,nil,2,nil,IS_REMIX};
 
 --Terrace of Endless Spring
@@ -175,8 +254,9 @@ local db = {
 {"The Waterspeaker","Terrace of Endless Spring","Heroic",50004,nil,nil,{{13,44988},{13,44998},{2,45002},{14,45000},{14,44993},{5,44836},{5,44995},{7,44996},}},
 
 --Heart of Fear Remix Colors
-{"Boop","HoF Remix Colors","Heart of Fear",50004,nil,nil,{
-{6,196946},--HoF recolor
+{"Fulminating","HoF Remix Colors","Heart of Fear",50004,nil,nil,{
+{6,196946,nil,Zone(15)},
+{5,196898,nil,Zone(15)},
 },nil,nil,2,nil,IS_REMIX};
 
 --Heart of Fear
@@ -185,12 +265,11 @@ local db = {
 {"The Swarm","Heart of Fear","Heroic",50004,nil,nil,{{6,44841},{8,44843},{14,44840},{5,44836},{10,44818},}},
 
 --Mogu'Shan Vaults Remix Recolors
-{"Boop","MsV Remix Colors","Mogu'shan Vaults",50004,nil,nil,{
-{3,196840},--Mogu'shan recolor
-{11,197107},--mogu'shan recolor
-{12,198555},--mogu'shan vault recolor (troll shield)
-{15,197279},--Mogu'shan recolor
-{16,10033},--Mogu'shan recolor
+{"Seven Stars","MsV Remix Colors","Mogu'shan Vaults",50004,nil,nil,{
+{3,196840,nil,Zone(17)},
+{11,197107,nil,Zone(15)},
+{12,198555,nil,Zone(15)},
+{5,196894,nil,Zone(15)},
 },nil,nil,2,nil,IS_REMIX};
 
 --Mogu'shan Vaults
@@ -208,20 +287,24 @@ local db = {
 --Appearance id duplicate:  (item id: ) shares appearance with  (item id: ).
 
 --MoP Dungeon Remix Colors
-{"Boop","Dungeon Remix Colors","",50004,nil,nil,{
-{7,45203},{7,197015},
-{8,197066},
-{10,45189},{10,196992},{10,196993},
-{11,45158},{11,197117},{11,197118},
-{12,47082},{12,60753},
-{13,53890},{13,49672},
-{6,196955},{6,196956},{6,196958},
-{15,197289},{15,197286},
-{3,196847},
+{"Yak-Herder's","Dungeon Remix Colors","",50004,nil,nil,{
+{5,196920,nil,Zone(11)},{5,196921,nil,Zone(12)},{5,196919,nil,Zone(13)},
+{5,196917,nil,Zone(11,12)},{5,196914,nil,Zone(13)},
+{7,197015,nil,Zone(11)},
+{8,197066,nil,Zone(12)},
+{10,196992,nil,Zone(13)},{10,196993,nil,Zone(14)},
+{11,197117,nil,Zone(11)},{11,197118,nil,Zone(12)},
+{12,47082,NOT_REMIX},{12,60753,NOT_REMIX},
+{12,198571,nil,Zone(11)},{12,198569,nil,Zone(13)},
+{13,197181,nil,Zone(14)},
+{6,196955,nil,Zone(13)},{6,196956,nil,Zone(14)},{6,196958,nil,Zone(12)},
+{15,197289,nil,Zone(12)},{15,197286,nil,Zone(14)},
+{3,196847,nil,Zone(11)},
+{9,197092,nil,Zone(13)},
 },nil,nil,2,nil,IS_REMIX};
 
 --Rares
-{"Dawnwatcher's","Rare Drops (MoP)","",50004,nil,nil,{{1,45231},{1,45228},{3,45200},{3,196847},{5,45199},{5,45223},{6,45224},{9,45156},{13,44333},{15,45161},}},
+{"Dawnwatcher's","Rare Drops (MoP)","",50004,nil,nil,{{11,45158},{1,45231},{1,45228},{3,45200},{3,196847},{5,45199},{5,45223},{6,45224},{9,45306},{9,45156},{13,44333},{15,45161},{7,45203},{13,49672},{10,45189},}},
 
 --MoP Dungeons
 {"Carapace","Dungeon (MoP)","Gate of the Setting Sun",50004,nil,nil,{{8,40767},{5,40768},{3,45246},{12,40968},{12,40766},}},
@@ -235,11 +318,11 @@ local db = {
 {"Firebelcher","Dungeon (MoP)","Temple of the Jade Serpent",50004,nil,nil,{{13,40887},{1,40712},{8,45244},{7,40711},}},
 
 --Leveling
-{"Barbarian","Leveling (MoP)","Green",50000,nil,nil,{{16,41417},{16,197309,IS_REMIX},{15,41281},{14,41277},{14,41793},{14,45198},{14,43102},{13,40670},{13,42415},{13,45157},{13,45155},{13,197168,IS_REMIX},{13,40668},{1,41175},{4,42051},{7,197012,IS_REMIX},{3,41173},{9,41530},{5,41744},{1,42419},{8,40677},{8,41422},{8,40675},{8,45227},{11,41790},{5,43110},{2,41419},{6,41431},{6,41535},{9,41274},{1,38583},{10,40211},{10,196988,IS_REMIX},{10,47038},{10,47021},{12,41429},{12,42797},{12,41180},}},
-{"Barbarian","Leveling (MoP)","Red",50000,nil,nil,{{16,41522},{16,197310,IS_REMIX},{15,41178},{14,42421},{14,43107},{14,41740},{14,40731},{13,41526},{13,42903},{13,41191},{13,40887},{13,41792},{13,41791},{1,41779},{2,41426},{5,41424},{5,41953},{1,41275},{4,41421},{8,41278},{8,41683},{8,40683},{6,42893},{6,41682},{3,41780},{11,41737},{7,41534},{8,45230},{1,197328,IS_REMIX},{10,38584},{10,46802},{10,47073},{10,47074},{12,41283},{12,42796},{12,40681},}},
-{"Barbarian","Leveling (MoP)","Blue",50000,nil,nil,{{16,41169},{16,45204},{15,40671},{14,43100},{14,40679},{14,41179},{13,40669},{13,41271},{13,45310},{13,40713},{13,41739},{13,197175,IS_REMIX},{5,40676},{5,41638},{1,41420},{2,40678},{8,42053},{7,41732},{6,41788},{5,41168},{3,41727},{1,40674},{4,40673},{11,41170},{8,41577},{8,197047,IS_REMIX},{1,197327,IS_REMIX},{10,198463,IS_REMIX},{8,45311},{10,47072},{10,46801},{10,183003},{10,47039},{12,42890},{12,40680},}},
-{"Barbarian","Leveling (MoP)","Purple",50000,nil,nil,{{14,43097},{14,42795},{14,45225},{14,42788},{13,41536},{13,45160},{13,41738},{8,41174},{11,41418},{5,41537},{5,42886},{5,41430},{7,41626},{6,41431},{1,40672},{9,45306},{1,197324,IS_REMIX},{10,198462,IS_REMIX},{10,47020},{10,196990,IS_REMIX},{12,43109},}},
-{"Barbarian","Leveling (MoP)","Yellow",50000,nil,nil,{{16,197304,IS_REMIX},{16,45201},{15,41171},{14,42052},{14,41427},{14,41172},{14,40991},{13,42046},{13,40771},{9,41786},{5,40682},{5,41182},{13,197174,IS_REMIX},{8,42884},{6,196954,IS_REMIX},{2,41541},{8,41425},{10,198465,IS_REMIX},{1,42050},{1,197325,IS_REMIX},{3,49674},{4,41276},{8,40733},{10,47075},{12,41428},{12,42891},}},
+{"Barbarian","Leveling (MoP)","Green",50000,nil,nil,{{16,41417},{16,197309,IS_REMIX,Zone(14)},{15,41281},{14,41277},{14,41793},{14,45198},{14,43102},{13,40670},{13,42415},{13,45157},{13,45155},{13,197168,IS_REMIX,Zone(3,6)},{13,40668},{1,41175},{4,42051},{7,197012,IS_REMIX,Zone(7,8)},{3,41173},{9,41530},{5,41744},{5,196912,IS_REMIX,Zone(3,6)},{1,42419},{8,40677},{8,41422},{8,40675},{8,45227},{11,41790},{5,43110},{2,41419},{6,41431},{6,41535},{9,41274},{1,38583},{10,40211},{10,196988,IS_REMIX,Zone(9,10)},{10,47038},{10,47021},{12,41429},{12,42797},{12,41180},}},
+{"Barbarian","Leveling (MoP)","Red",50000,nil,nil,{{16,41522},{16,197310,IS_REMIX,Zone(11)},{15,41178},{14,42421},{14,43107},{14,41740},{14,40731},{13,41526},{13,42903},{13,41191},{13,40887},{13,41792},{13,41791},{1,41779},{2,41426},{5,41424},{5,41953},{1,41275},{4,41421},{8,41278},{8,41683},{8,40683},{6,42893},{6,41682},{3,41780},{11,41737},{7,41534},{8,45230},{1,197328,IS_REMIX,Zone(4)},{10,38584},{10,46802},{10,47073},{10,47074},{12,41283},{12,42796},{12,40681},}},
+{"Barbarian","Leveling (MoP)","Blue",50000,nil,nil,{{16,41169},{16,45204},{15,40671},{14,43100},{14,40679},{14,41179},{13,40669},{13,41271},{13,45310},{13,197177,IS_REMIX,Zone(13)},{13,41739},{13,197175,IS_REMIX,Zone(3,6)},{5,40676},{5,41638},{1,41420},{2,40678},{8,42053},{7,41732},{6,41788},{5,41168},{3,41727},{1,40674},{4,40673},{11,41170},{8,41577},{8,197047,IS_REMIX,Zone(1,2)},{1,197327,IS_REMIX,Zone(1)},{10,198463,IS_REMIX,Zone(4)},{8,45311},{10,47072},{10,46801},{10,196989,IS_REMIX,Zone(1,2)},{10,47039},{12,42890},{12,40680},}},
+{"Barbarian","Leveling (MoP)","Purple",50000,nil,nil,{{14,43097},{14,42795},{14,45225},{14,42788},{13,41536},{13,45160},{13,41738},{8,41174},{11,41418},{5,41537},{5,42886},{5,41430},{7,41626},{6,41431},{1,40672},{9,45306},{1,197324,IS_REMIX,Zone(7)},{10,198462,IS_REMIX,Zone(1)},{10,47020},{10,196990,IS_REMIX,Zone(3)},{12,43109},}},
+{"Barbarian","Leveling (MoP)","Yellow",50000,nil,nil,{{16,197304,IS_REMIX,Zone(1,2)},{16,45201},{15,41171},{14,42052},{14,41427},{14,41172},{14,40991},{13,42046},{13,40771},{9,41786},{5,40682},{5,41182},{13,197174,IS_REMIX,Zone(1,2)},{8,42884},{6,196954,IS_REMIX,Zone(7,8)},{2,41541},{8,41425},{10,198465,IS_REMIX,Zone(7)},{1,42050},{1,197325,IS_REMIX,Zone(7)},{3,49674},{4,41276},{8,40733},{10,47075},{12,41428},{12,42891},}},
 
 --Profession Weapons
 {"Ghost-Forged","Profession (MoP)","Common",50004,nil,nil,{{1,42240},{2,42243},{5,42244},{7,39120},{8,42242},{10,40212},{12,42238},{12,42239},{13,40217},{13,40214},{14,42241},}},
@@ -247,10 +330,10 @@ local db = {
 {"Ghost-Forged","Profession (MoP)","Archeology",50004,nil,nil,{{10,46495},{11,46496},{14,50082},{7,50083},}},
 
 --Trainee's
-{"Pandaren","The Wandering Isle","Gold",50000,nil,nil,{{15,37532},{15,198500,IS_REMIX},{12,198531,IS_REMIX},{12,37510},{13,37536},{14,38085},{5,37505},{10,198459,IS_REMIX},{8,93247,},{4,37531},{13,46720},{14,197261,IS_REMIX},{13,197199,IS_REMIX},{5,196930,IS_REMIX},{5,196927,IS_REMIX},}},
-{"Pandaren","The Wandering Isle","Jade",50000,nil,nil,{{15,38083},{15,198502,IS_REMIX},{12,38081},{8,37504},{13,37506},{5,38084},{4,38082},{10,38585},{14,198496,IS_REMIX},{13,44351},{14,197262,IS_REMIX},{13,197197,IS_REMIX},{5,196932,IS_REMIX},{5,196928,IS_REMIX},}},
-{"Pandaren","The Wandering Isle","Silver",50000,nil,nil,{{15,37507},{12,198532,IS_REMIX},{13,38087},{4,37508},{5,37533},{10,198458,IS_REMIX},{8,198444,IS_REMIX},{14,198495,IS_REMIX},{13,46450},{14,197260,IS_REMIX},{13,197198,IS_REMIX},{5,196931,IS_REMIX},{5,196926,IS_REMIX},}},
-{"Pandaren","The Wandering Isle","Red",50000,nil,nil,{{12,37530},{5,37535},{14,38582},{10,198460,IS_REMIX},{4,198594,IS_REMIX},{13,46421},{14,197263,IS_REMIX},{13,197200,IS_REMIX},{5,196933,IS_REMIX},{5,196929,IS_REMIX},{13,198493,IS_REMIX},{8,37534},{8,198442,IS_REMIX},}},
+{"Pandaren","The Wandering Isle","Gold",50000,nil,nil,{{15,37532},{15,198500,IS_REMIX,Zone(4)},{12,198531,IS_REMIX,Zone(6)},{12,37510},{13,37536},{14,38085},{5,37505},{10,198459,IS_REMIX,Zone(6)},{8,93247,},{4,37531},{13,197193,IS_REMIX,Zone(2)},{14,197261,IS_REMIX,Zone(5)},{13,197199,IS_REMIX,Zone(3)},{5,196930,IS_REMIX,Zone(3)},{5,196927,IS_REMIX,Zone(5)},}},
+{"Pandaren","The Wandering Isle","Jade",50000,nil,nil,{{15,38083},{15,198502,IS_REMIX,Zone(7)},{12,38081},{8,37504},{13,37506},{5,38084},{4,38082},{10,38585},{14,198496,IS_REMIX,Zone(4)},{13,44351},{14,197262,IS_REMIX,Zone(3)},{13,197197,IS_REMIX,Zone(2)},{5,196932,IS_REMIX,Zone(5)},{5,196928,IS_REMIX,Zone(3)},}},
+{"Pandaren","The Wandering Isle","Silver",50000,nil,nil,{{15,37507},{12,198532,IS_REMIX,Zone(1)},{13,38087},{4,37508},{4,198591,IS_REMIX,Zone(1)},{5,37533},{10,198458,IS_REMIX,Zone(1)},{8,198444,IS_REMIX,Zone(1)},{14,198495,IS_REMIX,Zone(1)},{13,197196,IS_REMIX,Zone(8)},{14,197260,IS_REMIX,Zone(2)},{13,197198,IS_REMIX,Zone(5)},{5,196931,IS_REMIX,Zone(2)},{5,196926,IS_REMIX,Zone(2)},}},
+{"Pandaren","The Wandering Isle","Red",50000,nil,nil,{{12,37530},{5,37535},{14,38582},{10,198460,IS_REMIX,Zone(7)},{4,198594,IS_REMIX,Zone(7)},{13,46421,IS_REMIX,Zone(3)},{14,197263,IS_REMIX,Zone(8)},{13,197200,IS_REMIX,Zone(8)},{5,196933,IS_REMIX,Zone(8)},{5,196929,IS_REMIX,Zone(8)},{13,198493,IS_REMIX,Zone(7)},{8,37534},{8,198442,IS_REMIX,Zone(7)},}},
 };
 
 local function GetFormattedLabel(label)
@@ -263,11 +346,11 @@ local function GetFormattedLabel(label)
     return "Achievement: "..GetAchievementLink(labelTable[2]);
   elseif labelTable[1] == "i" then
     local itemID = labelTable[2];
-    local itemLink = select(2,GetItemInfo(itemID));
+    local itemLink = select(2,C_Item.GetItemInfo(itemID));
     if itemLink then
       return "Item: "..itemLink;
     else
-      local _,_,_,color = GetItemQualityColor(labelTable[3]);
+      local _,_,_,color = C_Item.GetItemQualityColor(labelTable[3]);
       local retLabel = "Item: \124c"..color.."\124Hitem:"..itemID;
       if labelTable[5] then
         retLabel = retLabel..":::::::::::"..labelTable[5];
@@ -285,7 +368,12 @@ local function GetFormattedLabel(label)
     return str;
   elseif labelTable[1] == "r" then
     local tier = tonumber(labelTable[2]);
-    local factionName = GetFactionInfoByID(labelTable[3]);
+    local factionName;
+    if select(4,GetBuildInfo()) >= 110000 then
+      factionName = C_Reputation.GetFactionDataByID(labelTable[3]).name;
+    else
+      factionName = GetFactionInfoByID(labelTable[3])
+    end
     local repStr = "";
     if tier == 1 then repStr = "Friendly with "
     elseif tier == 2 then repStr = "Honored with "
@@ -353,12 +441,15 @@ local function AddToCollection()
             end
           end
           
-          if db[i][12] == IS_REMIX then
+          if db[i][12] == IS_REMIX and data.sources[index][3] ~= NOT_REMIX then
             if not data.sources[index][3] and not db[i][5] then
               data.sources[index][3] = IS_REMIX;
             elseif not data.sources[index][4] and not db[i][6] then
               data.sources[index][4] = IS_REMIX;
             end
+          end
+          if data.sources[index][3] == NOT_REMIX then
+            data.sources[index][3] = nil;
           end
           
           if not data.sources[index][3] and db[i][5] then data.sources[index][3] = db[i][5]; end

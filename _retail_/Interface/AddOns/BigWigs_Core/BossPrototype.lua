@@ -68,9 +68,19 @@ do -- Update some data that may be called at the top of modules (prior to initia
 	local _, _, diff = GetInstanceInfo()
 	difficulty = diff
 	myGUID = UnitGUID("player")
+	local function update(_, role, position, player)
+		myGroupRolePositions[player] = position
+		myGroupRoles[player] = role
+		if player == pName then
+			myRole, myRolePosition = role, position
+			if #enabledModules > 0 then
+				UpdateDispelStatus()
+				UpdateInterruptStatus()
+			end
+		end
+	end
 	if LibSpec then
-		local _, role, position = LibSpec:MySpecialization()
-		myRole, myRolePosition = role, position
+		LibSpec:Register(loader, update)
 		LibSpec:RequestSpecialization()
 	end
 end
@@ -286,6 +296,15 @@ function boss:SetAllowWin(bool)
 	end
 end
 
+function boss:SetPrivateAuraSounds(opts)
+	for i = 1, #opts do
+		if type(opts[i]) ~= "table" then
+			opts[i] = { opts[i] }
+		end
+	end
+	self.privateAuraSoundOptions = opts
+end
+
 --- Check if a module option is enabled.
 -- This is a wrapper around the self.db.profile[key] table.
 -- @return boolean or number, depending on option type
@@ -364,7 +383,7 @@ function boss:Enable(isWipe)
 			self:RegisterEvent("ENCOUNTER_END", "EncounterEnd")
 		end
 		local _, class = UnitClass("player")
-		if class == "WARLOCK" or class == "HUNTER" then
+		if class == "WARLOCK" or (class == "HUNTER" and isClassic) then
 			petUtilityFrame:RegisterUnitEvent("UNIT_PET", "player")
 		end
 
@@ -424,10 +443,10 @@ function boss:Disable(isWipe)
 			end
 		end
 
-		-- Remove all private aura sounds
+		-- Unregister private aura sounds
 		if self.privateAuraSounds then
-			for _, id in next, self.privateAuraSounds do
-				C_UnitAuras.RemovePrivateAuraAppliedSound(id)
+			for i = 1, #self.privateAuraSounds do
+				C_UnitAuras.RemovePrivateAuraAppliedSound(self.privateAuraSounds[i])
 			end
 			self.privateAuraSounds = nil
 		end
@@ -1129,6 +1148,44 @@ do
 
 			self:Debug(":Engage", "noEngage:", noEngage, self:GetEncounterID(), self.moduleName)
 
+			if self.privateAuraSoundOptions and not self.privateAuraSounds then
+				self.privateAuraSounds = {}
+				local soundModule = core:GetPlugin("Sounds", true)
+				if soundModule then
+					for _, option in next, self.privateAuraSoundOptions do
+						local spellId = option[1]
+						local default = soundModule:GetDefaultSound("privateaura")
+
+						local key = ("pa_%d"):format(spellId)
+						local sound = soundModule:GetSoundFile(nil, nil, self.db.profile[key] or default)
+						if sound then
+							local privateAuraSoundId = C_UnitAuras.AddPrivateAuraAppliedSound({
+								spellID = spellId,
+								unitToken = "player",
+								soundFileName = sound,
+								outputChannel = "master",
+							})
+							if privateAuraSoundId then
+								self.privateAuraSounds[#self.privateAuraSounds + 1] = privateAuraSoundId
+							end
+							if option.extra then
+								for _, id in next, option.extra do
+									local privateAuraSoundId = C_UnitAuras.AddPrivateAuraAppliedSound({
+										spellID = spellId,
+										unitToken = "player",
+										soundFileName = sound,
+										outputChannel = "master",
+									})
+									if privateAuraSoundId then
+										self.privateAuraSounds[#self.privateAuraSounds + 1] = privateAuraSoundId
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+
 			if not noEngage or noEngage ~= "NoEngage" then
 				updateData(self)
 
@@ -1729,16 +1786,6 @@ end
 -- Role checking
 -- @section role
 
-do
-	local function update(_, role, position, player)
-		myGroupRolePositions[player] = position
-		myGroupRoles[player] = role
-	end
-	if LibSpec then
-		LibSpec:Register(loader, update)
-	end
-end
-
 --- Ask LibSpecialization to update the role positions of everyone in your group.
 function boss:UpdateRolePositions()
 	if LibSpec then
@@ -1945,11 +1992,13 @@ do
 			1766, -- Kick (Rogue)
 			6552, -- Pummel (Warrior)
 		}
+		local petSpellList = {
+			19647, -- Spell Lock (Warlock Felhunter)
+			26090, -- Pummel (Hunter Gorilla)
+			50318, -- Serenity Dust (Hunter Moth)
+			50479, -- Nether Shock (Hunter Nether Ray)
+		}
 		function UpdateInterruptStatus()
-			if IsSpellKnown(19647, true) then -- Spell Lock (Warlock Felhunter)
-				canInterrupt = 19647
-				return
-			end
 			canInterrupt = false
 			for i = 1, #spellList do
 				local spell = spellList[i]
@@ -1965,6 +2014,13 @@ do
 					else
 						canInterrupt = spell
 					end
+					return
+				end
+			end
+			for i = 1, #petSpellList do
+				local spell = petSpellList[i]
+				if IsSpellKnown(spell, true) then
+					canInterrupt = spell
 					return
 				end
 			end
@@ -3257,25 +3313,6 @@ end
 -- @string[opt] channel the channel the sound should play on, defaults to "Master"
 function boss:PlaySoundFile(sound, channel)
 	PlaySoundFile(sound, channel or "Master")
-end
-
---- Register a sound to be played when a Private Aura is applied to you.
--- @param key the option key
--- @number[opt] spellId the spell id of the Private Aura if different from the key
--- @string[opt] soundCategory the sound to play, defaults to "warning"
-function boss:SetPrivateAuraSound(key, spellId, soundCategory)
-	if checkFlag(self, key, C.SOUND) then
-		local soundsModule = core:GetPlugin("Sounds", true)
-		if soundsModule then
-			if not self.privateAuraSounds then self.privateAuraSounds = {} end
-			self.privateAuraSounds[#self.privateAuraSounds + 1] = C_UnitAuras.AddPrivateAuraAppliedSound({
-				spellID = spellId or key,
-				unitToken = "player",
-				soundFileName = soundsModule:GetSoundFile(self, key, soundCategory or "warning"),
-				outputChannel = "master",
-			})
-		end
-	end
 end
 
 do

@@ -47,6 +47,8 @@ L["Requires /reload to take effect."] = "적용하려면 /reload 가 필요합�
 L["Right"] = "오른쪽"
 L["Show Bag Icons"] = "가방 아이콘 표시"
 L["Show information on the tooltip about transmog sets."] = "툴팁에 형상변환 세트에 대한 정보를 표시합니다."
+--[[Translation missing --]]
+L["Show Mount Items"] = "Show Mount Items"
 L["Show Source Location Tooltip"] = "출처 위치 툴팁 표시"
 L["Show Transmog Set Info"] = "형상변환 세트 정보 표시"
 L["Shows a more detailed text for some of the tooltips."] = "툴팁에 상세 정보를 표시합니다."

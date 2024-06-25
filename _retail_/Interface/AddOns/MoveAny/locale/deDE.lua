@@ -212,9 +212,12 @@ function MoveAny:LangdeDE()
 		["LID_TARGETFRAMEDEBUFF1"] = "Zielfenster Debuff 1",
 		["LID_FOCUSFRAMEDEBUFF1"] = "Fokusfenster Debuff 1",
 		["LID_TARGETFRAMETOTBUFF1"] = "Ziel des Zielfenster Buff 1",
+		["LID_MINIMAPFLAG"] = "Minimap Flagge",
+		["LID_MiniMapInstanceDifficulty"] = "Minimap Flagge Instanz Schwierigkeit",
+		["LID_MiniMapChallengeMode"] = "Minimap Flagge Herausforderungsmodus",
 	}
 
-	if D4:GetWoWBuild() ~= "RETAIL" then
+	if MoveAny:GetWoWBuild() ~= "RETAIL" then
 		tab["LID_ACTIONBARS"] = "Aktionsleisten 1 + 5 + 6"
 		tab["LID_ACTIONBAR1"] = "Aktionsleiste 1 (Hauptleiste)"
 		tab["LID_ACTIONBAR2"] = "Aktionsleiste 2 (2. Seite von Aktionsleiste 1)"

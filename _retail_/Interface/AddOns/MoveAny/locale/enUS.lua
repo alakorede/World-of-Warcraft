@@ -218,9 +218,12 @@ function MoveAny:LangenUS()
 		["LID_TARGETFRAMEDEBUFF1"] = "Target Frame Debuff 1",
 		["LID_FOCUSFRAMEDEBUFF1"] = "Focus Frame Debuff 1",
 		["LID_TARGETFRAMETOTBUFF1"] = "Target of Target Frame Buff 1",
+		["LID_MINIMAPFLAG"] = "Minimap Flag",
+		["LID_MiniMapInstanceDifficulty"] = "Minimap Flag Instance Difficulty",
+		["LID_MiniMapChallengeMode"] = "Minimap Flag Challenge Mode",
 	}
 
-	if D4:GetWoWBuild() ~= "RETAIL" then
+	if MoveAny:GetWoWBuild() ~= "RETAIL" then
 		tab["LID_ACTIONBARS"] = "Actionbars 1 + 5 + 6"
 		tab["LID_ACTIONBAR1"] = "Actionbars 1 (Main Bar)"
 		tab["LID_ACTIONBAR2"] = "Actionbars 2 (2. Page of Actionbar 1)"

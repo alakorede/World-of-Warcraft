@@ -47,6 +47,8 @@ L["Requires /reload to take effect."] = "Для применения требу�
 L["Right"] = "Справа"
 L["Show Bag Icons"] = "Показывать значки на предметах в сумках"
 L["Show information on the tooltip about transmog sets."] = "Показывать в подсказках сведения о наборах предметов."
+--[[Translation missing --]]
+L["Show Mount Items"] = "Show Mount Items"
 L["Show Source Location Tooltip"] = "Сведения об источнике в подсказке"
 L["Show Transmog Set Info"] = "Показывать сведения о наборах предметов"
 L["Shows a more detailed text for some of the tooltips."] = "Показывать более подробный текст в некоторых подсказках."

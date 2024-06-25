@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.091,
+["LastVersion"] = 2.0911,
 ["LastPlayerFullName"] = "Córsega-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {

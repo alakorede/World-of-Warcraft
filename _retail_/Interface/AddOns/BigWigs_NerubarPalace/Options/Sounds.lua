@@ -48,7 +48,7 @@ BigWigs:AddSounds("Sikran, Captain of the Sureki", {
 
 BigWigs:AddSounds("Rasha'nan", {
 	[439776] = "underyou",
-	[439784] = {"alert","warning"},
+	[439784] = "alert",
 	[439785] = "alarm",
 	[439787] = "alarm",
 	[439789] = "alert",
@@ -58,7 +58,7 @@ BigWigs:AddSounds("Rasha'nan", {
 	[444687] = "info",
 	[452806] = "alarm",
 	[455287] = "alarm",
-	[455373] = {"alert","warning"},
+	[455373] = "alert",
 	[456853] = "info",
 	[457877] = "info",
 	[458067] = "alarm",
@@ -69,7 +69,7 @@ BigWigs:AddSounds("Eggtender Ovi'nax", {
 	[442250] = "alarm",
 	[442257] = "warning",
 	[442432] = "long",
-	[442526] = {"alert","warning"},
+	[442526] = "alert",
 	[442660] = "alarm",
 	[442799] = "alarm",
 	[446349] = "warning",
@@ -81,11 +81,10 @@ BigWigs:AddSounds("Eggtender Ovi'nax", {
 
 BigWigs:AddSounds("Nexus-Princess Ky'veza", {
 	[435405] = "long",
-	[435534] = "warning",
 	[436867] = "warning",
 	[437343] = "alarm",
 	[437620] = "alert",
-	[438245] = {"alert","warning"},
+	[438245] = "alert",
 	[439576] = "alarm",
 	[440377] = "alert",
 	[440576] = "warning",

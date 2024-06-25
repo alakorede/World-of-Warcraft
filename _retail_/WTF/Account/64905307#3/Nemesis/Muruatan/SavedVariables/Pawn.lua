@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0906,
+["LastVersion"] = 2.0911,
 ["LastPlayerFullName"] = "Muruatan-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
@@ -27,9 +27,9 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:214771::::::::22:73:::3:10921:10970:1523:2:9:21:28:2793:::::|h[Sunsoul Greatbelt]|h|r",
 },
 {
-["ID"] = 214768,
-["Level"] = 41,
-["Link"] = "|cff1eff00|Hitem:214768::::::::22:73::11:3:10602:10965:1512:2:9:19:28:2793:::::|h[Spiritguard's Legguards]|h|r",
+["ID"] = 214769,
+["Level"] = 54,
+["Link"] = "|cff1eff00|Hitem:214769::::::::24:73::11:3:10609:10971:1525:2:9:24:28:2793:::::|h[Sunsoul Legplates]|h|r",
 },
 {
 ["ID"] = 214763,
@@ -54,8 +54,8 @@ nil,
 },
 [15] = {
 ["ID"] = 210333,
-["Level"] = 57,
-["Link"] = "|cffe6cc80|Hitem:210333::::::::23:73::11:2:10984:1516:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
+["Level"] = 60,
+["Link"] = "|cffe6cc80|Hitem:210333::::::::24:73::11:2:10985:1519:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
 },
 [17] = {
 ["ID"] = 215639,

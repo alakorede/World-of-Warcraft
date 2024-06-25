@@ -1,8 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0908,
-["LastPlayerFullName"] = "Shamanjuba-Nemesis",
-["AutoSelectScales"] = true,
+["LastVersion"] = 2.0911,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -31,9 +29,9 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:197660::::::::66:104::26:1:7963:2:28:2152:9:65:::::|h[Teerai Watcher Belt]|h|r",
 },
 {
-["ID"] = 198015,
-["Level"] = 306,
-["Link"] = "|cff1eff00|Hitem:198015::::::::70:104::26:1:7963:2:28:2153:9:68:::::|h[Twisted Leather Breeches]|h|r",
+["ID"] = 193759,
+["Level"] = 316,
+["Link"] = "|cff0070dd|Hitem:193759::::::::67:264::17:4:7978:7975:6652:10864:2:28:2587:9:67:::::|h[Egg Tender's Leggings]|h|r",
 },
 {
 ["ID"] = 191991,
@@ -85,12 +83,15 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
 },
 {
-["ID"] = 159641,
-["Level"] = 182,
+["ID"] = 193687,
+["Level"] = 296,
 ["AlsoFitsIn"] = 16,
-["Link"] = "|cff0070dd|Hitem:159641::::::::57:264::1:2:6710:41:2:28:500:9:57:::::|h[G3T-00t]|h|r",
+["Link"] = "|cff0070dd|Hitem:193687::::::::65:264::17:3:7978:7975:6652:2:28:2587:9:65:::::|h[Koroleth's Crackling Dagger]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Shamanjuba-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "SHAMAN",

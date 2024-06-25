@@ -884,9 +884,9 @@ MATAB = {
 },
 ["CharacterFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 557,
+["PY"] = 313,
+["PX"] = 1117,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 825,
 },
 ["GroupLootHistoryFrame"] = {
 },
@@ -896,8 +896,8 @@ MATAB = {
 },
 ["StaticPopup1"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 983,
-["PX"] = 901,
+["PY"] = 980,
+["PX"] = 904,
 ["RE"] = "BOTTOMLEFT",
 },
 ["QuestFrame"] = {
@@ -914,9 +914,9 @@ MATAB = {
 },
 ["ProfessionsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 354,
+["PY"] = 379,
+["PX"] = 303,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 1080,
 },
 ["SettingsPanel"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -927,8 +927,8 @@ MATAB = {
 ["WardrobeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 434,
-["PX"] = 93,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 93,
 },
 ["SplashFrame"] = {
 },
@@ -940,9 +940,9 @@ MATAB = {
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 512,
+["PY"] = 514,
+["PX"] = 253,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 248,
 },
 ["ContainerFrameCombinedBags"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -962,9 +962,9 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 461,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 467,
+["PY"] = 457,
+["PX"] = 475,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -1041,6 +1041,10 @@ MATAB = {
 ["ModelPreviewFrame"] = {
 },
 ["ItemTextFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PX"] = 16,
+["PY"] = 660,
+["RE"] = "BOTTOMLEFT",
 },
 ["TaxiFrame"] = {
 },
@@ -1069,8 +1073,8 @@ MATAB = {
 ["MerchantFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 633,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 21,
+["RE"] = "BOTTOMLEFT",
 },
 ["CommunitiesFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1166,6 +1170,7 @@ MATAB = {
 ["InspectRecipeFrame"] = {
 },
 ["PVEFrame"] = {
+["SCALE"] = 0.994,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -1258,6 +1263,7 @@ MATAB = {
 ["ScriptErrorsFrame"] = {
 },
 ["OrderHallMissionFrame"] = {
+["SCALE"] = 1.132,
 },
 ["FlightMapFrame"] = {
 },
@@ -1905,15 +1911,18 @@ MATAB = {
 ["MIRRORTIMER1"] = {
 ["ENABLED"] = false,
 },
+["MINIMAPFLAG"] = {
+["ENABLED"] = false,
+},
 ["SHOWMINIMAPBUTTON"] = {
 ["ENABLED"] = true,
 },
-["CHATBUTTONFRAME10"] = {
+["CHAT7"] = {
 ["ENABLED"] = false,
 },
 ["MAKTB"] = {
 },
-["CHAT7"] = {
+["CHATBUTTONFRAME10"] = {
 ["ENABLED"] = false,
 },
 ["!KalielsTrackerButtons"] = {
@@ -2000,7 +2009,7 @@ MATAB = {
 ["COUNT"] = 12,
 ["ROWS"] = 1,
 },
-["ENDCAPS"] = {
+["FOCUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["QUEUESTATUSFRAME"] = {
@@ -2039,7 +2048,7 @@ MATAB = {
 ["FRAMESKEYDRAG"] = {
 ["ENABLED"] = false,
 },
-["FOCUSFRAMESPELLBAR"] = {
+["TICKETSTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["ARENAPREPFRAMES"] = {
@@ -2048,7 +2057,7 @@ MATAB = {
 ["DEBUFFS"] = {
 ["ENABLED"] = false,
 },
-["TICKETSTATUSFRAME"] = {
+["FOCUSFRAMESPELLBAR"] = {
 ["ENABLED"] = false,
 },
 ["UIWIDGETPOWERBAR"] = {
@@ -2065,7 +2074,7 @@ MATAB = {
 ["SAVEFRAMESCALE"] = {
 ["ENABLED"] = true,
 },
-["FOCUSFRAME"] = {
+["ENDCAPS"] = {
 ["ENABLED"] = false,
 },
 ["CASTINGBAR"] = {

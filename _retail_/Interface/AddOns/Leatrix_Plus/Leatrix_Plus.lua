@@ -1,5 +1,5 @@
 ﻿----------------------------------------------------------------------
--- 	Leatrix Plus 10.2.35 (19th June 2024)
+-- 	Leatrix Plus 10.2.36 (21st June 2024)
 ----------------------------------------------------------------------
 
 --	01:Functions 02:Locks,  03:Restart 40:Player
@@ -18,7 +18,7 @@
 	local void
 
 	-- Version
-	LeaPlusLC["AddonVer"] = "10.2.35"
+	LeaPlusLC["AddonVer"] = "10.2.36"
 
 	-- Get locale table
 	local void, Leatrix_Plus = ...
@@ -3523,6 +3523,7 @@
 			-- Exclude all grey gear checkbox lock
 			local NoGreyTransmogTipText = LeaPlusCB["AutoSellExcludeMyChar"].tiptext
 			local NoGreyTransmogCharTipText = LeaPlusCB["AutoSellExcludeMyAlts"].tiptext
+
 			local function SetTransmogLockFunc()
 				if LeaPlusLC["AutoSellNoGreyGear"] == "On" then
 					LeaPlusLC:LockItem(LeaPlusCB["AutoSellExcludeMyChar"], true)
@@ -3534,6 +3535,12 @@
 					LeaPlusCB["AutoSellExcludeMyChar"].tiptext = NoGreyTransmogTipText
 					LeaPlusLC:LockItem(LeaPlusCB["AutoSellExcludeMyAlts"], false)
 					LeaPlusCB["AutoSellExcludeMyAlts"].tiptext = NoGreyTransmogCharTipText
+				end
+				if LeaPlusLC.NewPatch then
+					LeaPlusLC:LockItem(LeaPlusCB["AutoSellExcludeMyChar"], true)
+					LeaPlusCB["AutoSellExcludeMyChar"].tiptext = NoGreyTransmogTipText .. "|n|n|cff00AAFF" .. L["This is for Dragonflight only.|n|nIn The War Within, all uncollected gear is collected automatically when sold regardless of whether it can be equipped or not."]
+					LeaPlusLC:LockItem(LeaPlusCB["AutoSellExcludeMyAlts"], true)
+					LeaPlusCB["AutoSellExcludeMyAlts"].tiptext = NoGreyTransmogCharTipText .. "|n|n|cff00AAFF" .. L["This is for Dragonflight only.|n|nIn The War Within, all uncollected gear is collected automatically when sold regardless of whether it can be equipped or not."]
 				end
 			end
 			LeaPlusCB["AutoSellNoGreyGear"]:HookScript("OnClick", SetTransmogLockFunc)
@@ -3873,23 +3880,29 @@
 										ItemPrice = 0
 									else
 										-- Exclude uncollected grey gear (exclude all grey gear is off)
-										if LeaPlusLC["AutoSellExcludeMyChar"] == "On" or LeaPlusLC["AutoSellExcludeMyAlts"] == "On" then
-											local appearanceID, sourceID = C_TransmogCollection.GetItemInfo(itemID)
-											if sourceID then
-												local void, void, void, void, isCollected = C_TransmogCollection.GetAppearanceSourceInfo(sourceID)
-												local hasItemData, canCollect = C_TransmogCollection.PlayerCanCollectSource(sourceID)
-												if not isCollected then
-													-- Item is not collected at all
-													if not canCollect then
-														if LeaPlusLC["AutoSellExcludeMyAlts"] == "On" then
-															-- Gear is designed for my alts and exclude gear designed for my alts is checked so do not sell
+										if LeaPlusLC.NewPatch then
+											-- This is for The War Within
+											-- Nothing here because all uncollected gear is collected automatically when sold regardless of whether it can be equipped or not
+										else
+											-- This is for Dragonflight
+											if LeaPlusLC["AutoSellExcludeMyChar"] == "On" or LeaPlusLC["AutoSellExcludeMyAlts"] == "On" then
+												local appearanceID, sourceID = C_TransmogCollection.GetItemInfo(itemID)
+												if sourceID then
+													local void, void, void, void, isCollected = C_TransmogCollection.GetAppearanceSourceInfo(sourceID)
+													local hasItemData, canCollect = C_TransmogCollection.PlayerCanCollectSource(sourceID)
+													if not isCollected then
+														-- Item is not collected at all
+														if not canCollect then
+															if LeaPlusLC["AutoSellExcludeMyAlts"] == "On" then
+																-- Gear is designed for my alts and exclude gear designed for my alts is checked so do not sell
+																Rarity = 20
+																ItemPrice = 0
+															end
+														elseif LeaPlusLC["AutoSellExcludeMyChar"] == "On" then
+															-- Gear is designed for my character and exclude gear designed for my character is checked so do not sell
 															Rarity = 20
 															ItemPrice = 0
 														end
-													elseif LeaPlusLC["AutoSellExcludeMyChar"] == "On" then
-														-- Gear is designed for my character and exclude gear designed for my character is checked so do not sell
-														Rarity = 20
-														ItemPrice = 0
 													end
 												end
 											end
@@ -11467,7 +11480,11 @@
 				end
 
 				if LeaPlusLC.NewPatch then
-					-- LockDF("CharAddonList", "Not currently available in The War Within.")
+					-- Combat plates - entering /run SetCVar("nameplateShowEnemies", 1) during combat
+					-- causes taint.  Entering the same command in Taelloch Mine (The Ringing Deeps) (66.2, 61.1)
+					-- during combat can crash the client.  Using Combat Plates and then starting combat in
+					-- this area can crash the client.  Quest involved is Controlled Demolition.
+					LockDF("CombatPlates", "Not currently available in The War Within.")
 				end
 
 				-- Run other startup items

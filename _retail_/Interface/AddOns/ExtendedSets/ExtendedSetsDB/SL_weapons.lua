@@ -271,11 +271,11 @@ local function GetFormattedLabel(label)
     return "Achievement: "..GetAchievementLink(labelTable[2]);
   elseif labelTable[1] == "i" then
     local itemID = labelTable[2];
-    local itemLink = select(2,GetItemInfo(itemID));
+    local itemLink = select(2,C_Item.GetItemInfo(itemID));
     if itemLink then
       return "Item: "..itemLink;
     else
-      local _,_,_,color = GetItemQualityColor(labelTable[3]);
+      local _,_,_,color = C_Item.GetItemQualityColor(labelTable[3]);
       local retLabel = "Item: \124c"..color.."\124Hitem:"..itemID;
       if labelTable[5] then
         retLabel = retLabel..":::::::::::"..labelTable[5];
@@ -293,7 +293,12 @@ local function GetFormattedLabel(label)
     return str;
   elseif labelTable[1] == "r" then
     local tier = tonumber(labelTable[2]);
-    local factionName = GetFactionInfoByID(labelTable[3]);
+    local factionName;
+    if select(4,GetBuildInfo()) >= 110000 then
+      factionName = C_Reputation.GetFactionDataByID(labelTable[3]).name;
+    else
+      factionName = GetFactionInfoByID(labelTable[3])
+    end
     local repStr = "";
     if tier == 1 then repStr = "Friendly with "
     elseif tier == 2 then repStr = "Honored with "

@@ -1,8 +1,8 @@
-## Interface: 100205
+## Interface: 100207
 ## Title: Can I Mog It?
 ## IconTexture: Interface\Addons\CanIMogIt\Icons\KNOWN
 ## Author: TorelTwiddler, Ami Yuy
-## Version: 10.2.5v1.54
+## Version: 10.2.7v1.58
 ## Notes: Adds tooltips to items showing if you have learned a transmog appearance.
 ## Notes-deDE: Fügt Gegenständen Tooltips hinzu, ob eine Transmogrifikationsvorlage bereits bekannt ist. 
 ## Notes-esES: Añade a la descripción del objeto si se conoce la apariencia.
@@ -32,5 +32,9 @@ code.lua
 tooltips.lua
 database.lua
 tooltipScanner.lua
+mounts.lua
+toys.lua
+pets.lua
+ensembles.lua
 Overlay\_overlays.xml
 Plugins\_plugins.xml

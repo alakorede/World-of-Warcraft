@@ -1,6 +1,7 @@
 local app = select(2,...);
 
 local LDD = LibStub('LibDropDown');
+local currToc = select(4,GetBuildInfo());
 
 --Name, (2,3,4,5)texleft, texright, textop, texbottom, (6)catID (for C_TransmogCollection.GetCategoryInfo), (7,8,9)default rotation, roll, pitch for weapon only, (10)default rotation for player,
 --      (11,12)camSqDist Max(default),Min(nearer), (13,14) camDist Max,Min, (15,16) default pan y,z, (17, filled in during init) true/false if char can use weapontype
@@ -412,12 +413,20 @@ local function SetButtonData(button, set)
     button.Label:SetText(set.label);
   end
   
-  button.IconCover:Show();
-  button.Icon:Show();
-  button.Icon:SetTexture(GetIconForSet(set.setID));
-  button.IconCover:SetShown(not setIsShown);
-  button.Icon:SetDesaturated(setInfo.topCollected == 0);
-  button.Favorite:SetShown(set.favoriteSetID);
+  if currToc >= 110000 then
+    button.IconFrame:Show();
+    button.IconFrame:SetIconTexture(GetIconForSet(set.setID));
+    button.IconFrame:SetIconCoverShown(not setIsShown);
+    button.IconFrame:SetIconDesaturation((setInfo.topCollected == 0) and 1 or 0);
+    button.IconFrame:SetFavoriteIconShown(set.favoriteSetID);
+  else
+    button.IconCover:Show();
+    button.Icon:Show();
+    button.Icon:SetTexture(GetIconForSet(set.setID));
+    button.IconCover:SetShown(not setIsShown);
+    button.Icon:SetDesaturated(setInfo.topCollected == 0);
+    button.Favorite:SetShown(set.favoriteSetID);
+  end
   button.Remix:SetShown(set.isRemix);
   
   --Setting if special apperance needed for newness or selectedness.
@@ -1172,8 +1181,8 @@ local function FillDetails(weaponSourceID, aSource)
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label:SetText(label);
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetText(WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][6]);
   
-  local isRemix = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][5] == "MoP Remix Exclusive" or
-                  WeaponSetsCollectionFrame.GetCurrentSet().isAllRemix;
+  local isRemix = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][5] == "MoP Remix Exclusive"-- or
+                 -- WeaponSetsCollectionFrame.GetCurrentSet().isAllRemix;
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetShown(isRemix);
   WeaponSetsCollectionFrame.RightFrame.RemixIcon:SetShown(isRemix);
 end
@@ -1504,7 +1513,14 @@ local function ExW_SetTab(self, tabID)
 		self.FilterButton:Show();
 		self.FilterButton:SetEnabled(enableSearchAndFilter);
     self.FilterButton:SetWidth(93);
+    if self.ClassDropdown then
+      self.ClassDropdown:Show();
+      self.ClassDropdown:ClearAllPoints();
+      self.ClassDropdown:SetPoint("TOPRIGHT", self.ItemsCollectionFrame.SlotsFrame, "TOPLEFT", -12, -2);
+      self:InitItemsFilterButton();
+    end
 	elseif tabID == 2 then --Sets
+    if self.ClassDropdown then self.ClassDropdown:Hide(); end
 		self.ItemsCollectionFrame:Hide();
 		self.WeaponSetsCollectionFrame:Hide();
 		self.SearchBox:ClearAllPoints();
@@ -1526,6 +1542,7 @@ local function ExW_SetTab(self, tabID)
 		self.SetsCollectionFrame:SetShown(not atTransmogrifier);
 		self.SetsTransmogFrame:SetShown(atTransmogrifier);
 	elseif tabID == 3 then --Weapons
+    if self.ClassDropdown then self.ClassDropdown:Hide(); end
 		self.ItemsCollectionFrame:Hide();
 		self.SetsCollectionFrame:Hide();
 		self.SetsTransmogFrame:Hide();
@@ -1962,9 +1979,13 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
       else
         WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:SetPoint("TOPLEFT", WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i-1], "BOTTOMLEFT", 0, 0);
       end
-      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Icon:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i], "LEFT", -38, 0);
-      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].IconCover:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i], "LEFT", -38, 0);
-      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].IconCover:SetColorTexture(0,0,0,.8);
+      if currToc >= 110000 then
+        WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].IconFrame:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i], "LEFT", -38, 0);
+      else
+        WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Icon:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i], "LEFT", -38, 0);
+        WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].IconCover:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i], "LEFT", -38, 0);
+        WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].IconCover:SetColorTexture(0,0,0,.8);
+      end
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].ProgressBar:SetWidth(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:GetWidth() - 5);
       SET_PROGRESS_BAR_MAX_WIDTH = WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].ProgressBar:GetWidth();
       
