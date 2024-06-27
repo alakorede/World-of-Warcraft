@@ -1,6 +1,8 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.0911,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 193641,
@@ -19,19 +21,19 @@ PawnOptions = {
 },
 nil,
 {
-["ID"] = 193720,
+["ID"] = 195500,
+["Level"] = 489,
+["Link"] = "|cffa335ee|Hitem:195500::::::::70:256::83:7:6652:10871:7982:10884:10344:1572:8767::::::|h[Compressed Cultist's Frock]|h|r",
+},
+{
+["ID"] = 193816,
 ["Level"] = 476,
-["Link"] = "|cff0070dd|Hitem:193720::::::::70:256::2:6:10308:9636:6652:10864:3155:8766:1:28:2156:::::|h[Bronze Challenger's Robe]|h|r",
+["Link"] = "|cff0070dd|Hitem:193816::::::::70:256::2:7:10308:9636:6652:10532:10864:3155:8766:1:28:2155:::::|h[Lost Hero's Waist Wrap]|h|r",
 },
 {
-["ID"] = 193780,
-["Level"] = 460,
-["Link"] = "|cff0070dd|Hitem:193780::::::::70:256::1:7:10323:7974:6652:10532:10864:3139:8766:1:28:2587:::::|h[Flare-Singed Strap]|h|r",
-},
-{
-["ID"] = 193799,
-["Level"] = 460,
-["Link"] = "|cff0070dd|Hitem:193799::::::::70:256::1:6:10323:7974:6652:10864:3139:8766:1:28:2155:::::|h[Crazed Traveler's Legwraps]|h|r",
+["ID"] = 207928,
+["Level"] = 476,
+["Link"] = "|cff0070dd|Hitem:207928::::::::70:256::2:6:10308:9636:6652:10864:1566:8766:1:28:2156:::::|h[Leggings of the New Dawn]|h|r",
 },
 {
 ["ID"] = 193806,
@@ -39,14 +41,14 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193806::::::::70:256::1:6:10323:7974:6652:10864:3139:8766:1:28:2587:::::|h[Ancient Crosswrapped Sandals]|h|r",
 },
 {
-["ID"] = 193635,
-["Level"] = 476,
-["Link"] = "|cff0070dd|Hitem:193635::::::::70:256::2:7:10308:9636:6652:10533:10864:3155:8766:1:28:2156:::::|h[Infused Elemental Bands]|h|r",
+["ID"] = 195508,
+["Level"] = 486,
+["Link"] = "|cffa335ee|Hitem:195508::::::::70:256::83:8:6652:10532:10871:7982:10884:10343:1569:8767::::::|h[Chilled Silken Restraints]|h|r",
 },
 {
-["ID"] = 193775,
-["Level"] = 460,
-["Link"] = "|cff0070dd|Hitem:193775::::::::70:256::1:6:10323:7974:6652:10864:3139:8766:1:28:2587:::::|h[Warlord's Cindermitts]|h|r",
+["ID"] = 193648,
+["Level"] = 486,
+["Link"] = "|cffa335ee|Hitem:193648::::::::70:256::2:6:9636:6652:10864:10311:3165:8767:1:28:2156:::::|h[Azureblade's Work Gloves]|h|r",
 },
 {
 ["ID"] = 193696,
@@ -61,10 +63,10 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193633::::::::70:256::1:6:10323:7974:6652:10532:3139:8766:1:28:2587:::::|h[Unstable Arcane Loop]|h|r",
 },
 {
-["ID"] = 207552,
-["Level"] = 476,
+["ID"] = 194304,
+["Level"] = 480,
 ["AlsoFitsIn"] = 14,
-["Link"] = "|cff0070dd|Hitem:207552::::::::70:256::2:5:10308:9636:6652:1527:8766:1:28:2156:::::|h[Echoing Tyrstone]|h|r",
+["Link"] = "|cffa335ee|Hitem:194304::::::::70:256::83:6:6652:7982:10341:10884:1563:8767::::::|h[Iceblood Deathsnare]|h|r",
 },
 {
 ["ID"] = 207581,
@@ -88,9 +90,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::1:5:10323:7974:6652:3139:8766:1:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,6 +143,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

@@ -1,5 +1,5 @@
 ﻿----------------------------------------------------------------------
--- 	Leatrix Plus 10.2.36 (21st June 2024)
+-- 	Leatrix Plus 10.2.37 (26th June 2024)
 ----------------------------------------------------------------------
 
 --	01:Functions 02:Locks,  03:Restart 40:Player
@@ -18,7 +18,7 @@
 	local void
 
 	-- Version
-	LeaPlusLC["AddonVer"] = "10.2.36"
+	LeaPlusLC["AddonVer"] = "10.2.37"
 
 	-- Get locale table
 	local void, Leatrix_Plus = ...
@@ -3872,8 +3872,9 @@
 							-- Exclude grey gear
 							if Rarity == 0 and classID and (classID == itemTypeWeapon or classID == itemTypeArmor) then -- Weapon or armor
 								local isSoulBound = C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(BagID, BagSlot))
+								-- local isWarboundUntilEquipped = C_Item.IsBoundToAccountUntilEquip(ItemLocation:CreateFromBagAndSlot(BagID, BagSlot))
 								if not isSoulBound then
-									-- Item is not soulbound (soulbound gear cannot be sold to others and will not have a learnable appearance)
+									-- Item is not soulbound (soulbound gear cannot be sold to others)
 									if LeaPlusLC["AutoSellNoGreyGear"] == "On" then
 										-- Exclude all grey gear is checked so do not sell
 										Rarity = 20
@@ -11480,11 +11481,15 @@
 				end
 
 				if LeaPlusLC.NewPatch then
-					-- Combat plates - entering /run SetCVar("nameplateShowEnemies", 1) during combat
-					-- causes taint.  Entering the same command in Taelloch Mine (The Ringing Deeps) (66.2, 61.1)
-					-- during combat can crash the client.  Using Combat Plates and then starting combat in
-					-- this area can crash the client.  Quest involved is Controlled Demolition.
-					LockDF("CombatPlates", "Not currently available in The War Within.")
+					-- Combat plates - using this in Taelloch Mine (The Ringing Deeps) (66.2, 61.1) during
+					-- combat crashes the client when combat starts.
+					-- Quest involved is Controlled Demolition.
+					-- Using Combat Plates in other areas is safe because it runs after
+					-- PLAYER_REGEN_DISABLED/ENABLED fires.
+					-- Entering /run SetCVar("nameplateShowEnemies", 1) manually during combat taints but
+					-- this is normal.
+					-- Update: Fixed by Blizzard
+					-- LockDF("CombatPlates", "Not currently available in The War Within.")
 				end
 
 				-- Run other startup items
@@ -15091,7 +15096,7 @@
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "ClassColFrames"			, 	"Class colored frames"			,	146, -132, 	true,	"If checked, class coloring will be used in the player frame, target frame and focus frame.")
 
 	LeaPlusLC:MakeTx(LeaPlusLC[pg], "Visibility"				, 	340, -72)
-	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoAlerts"					,	"Hide alerts"					, 	340, -92, 	true,	"If checked, alert frames will not be shown.")
+	LeaPlusLC:MakeCB(LeaPlusLC[pg], "NoAlerts"					,	"Hide alerts"					, 	340, -92, 	true,	"If checked, alert frames will not be shown.|n|nAlert frames are toast frames used for things like achievement earned, loot won, new recipe learned, new mount collected, etc.")
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "HideBodyguard"				, 	"Hide bodyguard gossip"			, 	340, -112, 	true,	"If checked, the gossip window will not be shown when you talk to an active garrison bodyguard.|n|nYou can hold the shift key down when you talk to a bodyguard to override this setting.")
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "HideTalkingFrame"			, 	"Hide talking frame"			, 	340, -132, 	true,	"If checked, the talking frame will not be shown.|n|nThe talking frame normally appears in the lower portion of the screen when certain NPCs communicate with you.")
 	LeaPlusLC:MakeCB(LeaPlusLC[pg], "HideCleanupBtns"			, 	"Hide clean-up buttons"			, 	340, -152, 	true,	"If checked, the backpack clean-up button and the bank frame clean-up button will not be shown.")

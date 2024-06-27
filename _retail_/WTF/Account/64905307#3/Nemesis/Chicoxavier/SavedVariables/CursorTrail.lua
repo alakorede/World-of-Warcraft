@@ -1,6 +1,6 @@
 
 CursorTrail_PlayerConfig = {
-["Strata"] = "HIGH",
+["FadeOut"] = true,
 ["UserShowMouseLook"] = false,
 ["ModelID"] = 165956,
 ["UserRotX"] = 0,
@@ -10,11 +10,11 @@ CursorTrail_PlayerConfig = {
 ["UserShadowAlpha"] = 0,
 ["UserRotY"] = 0,
 ["UserOfsY"] = 0,
-["UserOfsZ"] = 0,
+["UserRotZ"] = 0,
 ["ShapeColorG"] = 1,
 ["UserAlpha"] = 1,
 ["UserShowOnlyInCombat"] = false,
-["UserRotZ"] = 0,
+["Strata"] = "HIGH",
 ["ShapeColorR"] = 1,
-["FadeOut"] = true,
+["UserOfsZ"] = 0,
 }

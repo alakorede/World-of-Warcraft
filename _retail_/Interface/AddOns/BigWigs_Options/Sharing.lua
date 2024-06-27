@@ -14,12 +14,19 @@ local AceGUI = LibStub("AceGUI-3.0")
 --
 
 do
+	local function OnEditFocusGainedHighlight(frame)
+		AceGUI:SetFocus(frame.obj)
+		frame.obj:Fire("OnEditFocusGained")
+		frame.obj.editBox.obj:HighlightText()
+	end
+
 	local Type, Version = "NoAcceptMultiline", 1
 	local function Constructor()
 		local multiLineEditBox = AceGUI:Create("MultiLineEditBox")
 		multiLineEditBox.type = Type
 		multiLineEditBox.button:Hide()
 		multiLineEditBox.button.Show = function() end -- Prevent the button from being shown again
+		multiLineEditBox.editBox:SetScript("OnEditFocusGained", OnEditFocusGainedHighlight)
 		return multiLineEditBox
 	end
 	AceGUI:RegisterWidgetType(Type, Constructor, Version)
@@ -73,7 +80,6 @@ local barSettingsToExport = {
 	"fontName",
 	"fontSize",
 	"fontSizeEmph",
-	--"fontSizeNameplate",
 	"texture",
 	"monochrome",
 	"outline",
@@ -99,7 +105,8 @@ local barSettingsToExport = {
 	"spacing",
 	"visibleBarLimit",
 	"visibleBarLimitEmph",
-	-- "nameplateWidth", -- Do nameplate bars need their own export checkbox?
+	-- "fontSizeNameplate", -- Do nameplate bars need their own export checkbox?
+	-- "nameplateWidth",
 	-- "nameplateAutoWidth",
 	-- "nameplateHeight",
 	-- "nameplateAlpha",
@@ -343,8 +350,8 @@ do
 		-- We only want to modify the defaults with these imports right now.
 		local function importColorSettings(sharingOptionKey, dataKey, settingsToExport, plugin, message)
 			if sharingImportOptionsSettings[sharingOptionKey] and data[dataKey] then
-				for k in next, plugin.db.profile do
-					plugin.db.profile[k]["BigWigs_Plugins_Colors"]["default"] = nil -- Reset defaults only
+				for i = 1, #settingsToExport do
+					plugin.db.profile[settingsToExport[i]]["BigWigs_Plugins_Colors"]["default"] = nil -- Reset defaults only
 				end
 				for k, v in pairs(data[dataKey]) do
 					plugin.db.profile[k]["BigWigs_Plugins_Colors"]["default"] = v

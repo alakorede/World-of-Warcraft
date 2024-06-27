@@ -15,6 +15,20 @@ L.fontSizeDesc = "調整捲動軸以更改字型大小，或在輸入框輸入�
 L.disableDesc = "即將禁用「%s」的功能，但|cffff4411不建議|r這麼做。\n\n你確定要這麼做嗎？"
 L.transparency = "透明度"
 
+-- Anchor Points
+L.TOP = "上"
+L.RIGHT = "右"
+L.BOTTOM = "下"
+L.LEFT = "左"
+L.TOPRIGHT = "右上"
+L.TOPLEFT = "左上"
+L.BOTTOMRIGHT = "右下"
+L.BOTTOMLEFT = "左下"
+L.CENTER = "中"
+--L.customAnchorPoint = "Advanced: Custom anchor point"
+--L.sourcePoint = "Source Point"
+--L.destinationPoint = "Destination Point"
+
 -----------------------------------------------------------------------
 -- AltPower.lua
 --
