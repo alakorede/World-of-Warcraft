@@ -2,7 +2,7 @@
 ## Title: Extended Transmog Sets
 ## Notes: Extends the transmogrify and collection windows to show sets that you can transmog but that are not shown by default.
 ## Author: Mattsta
-## Version: 3.9.4
+## Version: 3.9.5
 ## SavedVariables: ExS_Settings, ExS_HiddenSets, ExS_Weapon_HiddenSets
 ## SavedVariablesPerCharacter: ExS_Favorites, ExS_Weapon_Favorites
 

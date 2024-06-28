@@ -33,17 +33,14 @@ BigWigs:AddColors("The Bloodbound Horror", {
 })
 
 BigWigs:AddColors("Sikran, Captain of the Sureki", {
-	[432969] = "purple",
-	[433517] = "blue",
+	[433517] = {"blue","cyan"},
 	[434860] = "blue",
-	[435401] = "purple",
-	[435410] = {"blue","cyan"},
+	[435410] = {"blue","purple"},
 	[438845] = {"blue","purple"},
 	[439511] = "cyan",
 	[439559] = "yellow",
 	[442428] = "yellow",
-	[456420] = "orange",
-	[458272] = "cyan",
+	[456420] = "red",
 	[459273] = "blue",
 })
 
@@ -93,7 +90,32 @@ BigWigs:AddColors("Nexus-Princess Ky'veza", {
 })
 
 BigWigs:AddColors("The Silken Court", {
-	["stages"] = "cyan",
+	[438200] = {"blue","purple"},
+	[438218] = "purple",
+	[438355] = "red",
+	[438656] = {"blue","orange"},
+	[438677] = {"blue","yellow"},
+	[438801] = "cyan",
+	[439838] = "yellow",
+	[440001] = "blue",
+	[440178] = {"green","red"},
+	[440179] = "green",
+	[440246] = {"blue","red","yellow"},
+	[440504] = "orange",
+	[441626] = "yellow",
+	[441772] = {"blue","purple"},
+	[441782] = "orange",
+	[442994] = "red",
+	[443092] = "orange",
+	[443598] = {"green","yellow"},
+	[449857] = "blue",
+	[450045] = "yellow",
+	[450129] = "orange",
+	[450483] = "yellow",
+	[450980] = {"cyan","green"},
+	[451277] = {"cyan","green"},
+	[451327] = "yellow",
+	[456235] = {"blue","green","red"},
 })
 
 BigWigs:AddColors("Queen Ansurek", {

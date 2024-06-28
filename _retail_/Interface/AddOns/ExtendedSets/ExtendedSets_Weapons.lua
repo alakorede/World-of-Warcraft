@@ -165,8 +165,8 @@ local function GetSetSourceCounts(setID, givenSources)
   return numSourcesCollected, numSourcesTotal, allUsableCollected;
 end
 
-local function GetSetData(baseSetID)
-  if TotalCounts[baseSetID] then
+local function GetSetData(baseSetID, forceUpdate)
+  if not forceUpdate and TotalCounts[baseSetID] then
     return TotalCounts[baseSetID];
   else
     local topPercent, topCollected, topTotal, numCompleted = 0, 0, 0, 0;
@@ -215,6 +215,31 @@ end
 
 local function GetCurrentSet()
   return GetSetByID(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet);
+end
+
+local function FindAndSetCollected(appID, xpacID, isCollected)
+  for a,b in pairs(AllSets) do
+    if b.expansionID == xpacID then
+      for i = 1, #b.sources do 
+        if b.sources[i][4] == appID then
+          if b.sources[i][3] ~= isCollected then
+            b.sources[i][3] = isCollected;
+            
+            GetSetData(GetBaseSetID(a), true);
+            for i=1,#WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons do
+              if WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:IsShown() and WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].setID == a then
+                WeaponSetsCollectionFrame.SetButtonData(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i], GetSetByID(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].setID));
+              end
+            end
+            
+            if a == WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet then
+              WeaponSetsCollectionFrame.SelectSet(a, true);
+            end
+          end
+        end
+      end
+    end
+  end
 end
 
 ----
@@ -448,8 +473,9 @@ local function SetButtonData(button, set)
     end
   end
 end
+WeaponSetsCollectionFrame.SetButtonData = SetButtonData;
 
-local function SelectSet(setID)
+local function SelectSet(setID, forceStayOnWeapon)
   WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet = setID;
   for i=1,#WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons do
     if WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:IsShown() then
@@ -495,7 +521,7 @@ local function SelectSet(setID)
     end
   end
   --Setting the appropriate weapon in the right side list
-  if ExS_Settings.stayOnWeaponType and not WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.preferredWeapon].disabled then
+  if (ExS_Settings.stayOnWeaponType or forceStayOnWeapon) and not WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.preferredWeapon].disabled then
     WeaponSetsCollectionFrame.RightFrame.activeWeapon = WeaponSetsCollectionFrame.RightFrame.preferredWeapon;
     WeaponSetsCollectionFrame.SelectWeapon();
   else
@@ -535,6 +561,7 @@ local function SelectSet(setID)
     WeaponSetsCollectionFrame.RightFrame.NoLongerObtainable:Hide();
   end
 end
+WeaponSetsCollectionFrame.SelectSet = SelectSet;
 
 --Used for opening the most complete variant set when selecting a set.
 local function GetPrimarySet(setID)
@@ -1181,8 +1208,7 @@ local function FillDetails(weaponSourceID, aSource)
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label:SetText(label);
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.Label2:SetText(WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][6]);
   
-  local isRemix = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][5] == "MoP Remix Exclusive"-- or
-                 -- WeaponSetsCollectionFrame.GetCurrentSet().isAllRemix;
+  local isRemix = WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].sources[aSource][5] == "MoP Remix Exclusive";
   WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame.RemixIcon:SetShown(isRemix);
   WeaponSetsCollectionFrame.RightFrame.RemixIcon:SetShown(isRemix);
 end
@@ -1782,7 +1808,7 @@ end
 -- The frame setup.
 ----
 WeaponSetsCollectionFrame:RegisterEvent("PLAYER_LOGIN");
-WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
+WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, arg2, arg3, arg4)
   if pEvent == "PLAYER_LOGIN" then
     if not C_AddOns.IsAddOnLoaded("Blizzard_Collections") then
       C_AddOns.LoadAddOn("Blizzard_Collections")
@@ -1814,6 +1840,8 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
           WeaponSetsCollectionFrame.UpdateProgressBar();
           WeaponSetsCollectionFrame:RegisterEvent("TRANSMOG_COLLECTION_ITEM_UPDATE");
           WeaponSetsCollectionFrame:RegisterEvent("UNIT_FORM_CHANGED");
+          WeaponSetsCollectionFrame:RegisterEvent("TRANSMOG_COLLECTION_SOURCE_ADDED");
+          WeaponSetsCollectionFrame:RegisterEvent("TRANSMOG_COLLECTION_SOURCE_REMOVED");
           if ExS_Settings.showHiddenSets then
             WeaponSetsCollectionFrame.RightFrame.HiddenSetsCount.Icon:SetTexCoord(.5,1,0,1);
           else
@@ -2828,5 +2856,32 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
   elseif ( pEvent == "UNIT_FORM_CHANGED" and pUnit == "player" ) then
     WeaponSetsCollectionFrame.RightFrame.Model:SetUnit("player", false, not select(2,C_PlayerInfo.GetAlternateFormInfo()));
     SelectWeapon();
+  elseif pEvent == "TRANSMOG_COLLECTION_SOURCE_ADDED" then
+    local sourceInfo = C_TransmogCollection.GetSourceInfo(pUnit)
+    local item = Item:CreateFromItemID(sourceInfo.itemID)
+    item.sourceID = pUnit;
+    item.appID = sourceInfo.visualID;
+    item:ContinueOnItemLoad(function()
+        FindAndSetCollected(item.appID, select(15,C_Item.GetItemInfo(C_TransmogCollection.GetSourceItemID(item.sourceID))) + 1, true)
+      end)
+  elseif pEvent == "TRANSMOG_COLLECTION_SOURCE_REMOVED" then
+    local sourceInfo = C_TransmogCollection.GetSourceInfo(pUnit)
+    local item = Item:CreateFromItemID(sourceInfo.itemID)
+    item.sourceID = pUnit;
+    item.appID = sourceInfo.visualID;
+    item:ContinueOnItemLoad(function()
+        local sources = C_TransmogCollection.GetAllAppearanceSources(item.appID);
+        local unlocked = false;
+        for i=1,#sources do
+          if C_TransmogCollection.GetSourceInfo(sources[i]).isCollected then
+            unlocked = true;
+            break;
+          end
+        end
+        
+        if not unlocked then 
+          FindAndSetCollected(item.appID, select(15,C_Item.GetItemInfo(C_TransmogCollection.GetSourceItemID(item.sourceID))) + 1, false)
+        end
+    end)
   end
 end)

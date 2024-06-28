@@ -32,17 +32,13 @@ BigWigs:AddSounds("The Bloodbound Horror", {
 })
 
 BigWigs:AddSounds("Sikran, Captain of the Sureki", {
-	[432969] = "alarm",
+	[432969] = "warning",
 	[433517] = "warning",
-	[434860] = "info",
-	[435401] = "alarm",
-	[435410] = "info",
-	[438845] = "warning",
-	[439511] = "info",
-	[439559] = "alert",
+	[434860] = "alarm",
+	[439511] = "alarm",
+	[439559] = "alarm",
 	[442428] = "alert",
-	[456420] = "alert",
-	[458272] = "info",
+	[456420] = "long",
 	[459273] = "alarm",
 })
 
@@ -92,6 +88,23 @@ BigWigs:AddSounds("Nexus-Princess Ky'veza", {
 })
 
 BigWigs:AddSounds("The Silken Court", {
+	[438355] = "long",
+	[438656] = "alarm",
+	[438677] = {"alert","info","warning"},
+	[438801] = "info",
+	[440001] = {"alarm","info"},
+	[440178] = {"alarm","info"},
+	[440179] = {"info","long"},
+	[440246] = "warning",
+	[440504] = "alert",
+	[441782] = "alert",
+	[442994] = "alarm",
+	[443092] = "alarm",
+	[443598] = {"alert","info"},
+	[449857] = "alarm",
+	[450980] = "long",
+	[451277] = "long",
+	[456235] = {"alarm","info","long"},
 })
 
 BigWigs:AddSounds("Queen Ansurek", {
