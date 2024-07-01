@@ -51,6 +51,9 @@ BigWigs:AddSounds("Maloriak", {
 	[77786] = "warning",
 	[77896] = "alert",
 	[77912] = "info",
+	[78194] = "underyou",
+	[78225] = "alarm",
+	[92754] = "info",
 	[92930] = "underyou",
 	["stages"] = "long",
 })

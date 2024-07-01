@@ -45,6 +45,7 @@ L.general = "일반" -- General settings, i.e. things that apply to normal, hero
 --L.health_percent = "%d%% Health" -- "10% Health" The health percentage of an NPC
 --L.door_open = "Door open" -- When a door is open, usually after a speech from an NPC
 --L.gate_open = "Gate open" -- When a gate is open, usually after a speech from an NPC
+L.threat = "위협 수준"
 
 --L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s %s초 남음" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.you_die_sec = "당신은 %d 초 후 죽습니다" -- "You die in 15 sec" (sec 
 -- Add related
 L.add_spawned = "추가 몹 생성" -- singular
 L.adds_spawned = "추가 몹들 생성" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 --L.add_spawning = "Add spawning" -- singular
 --L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s 생성"

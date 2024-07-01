@@ -46,6 +46,7 @@ L.general = "Général" -- General settings, i.e. things that apply to normal, h
 --L.health_percent = "%d%% Health" -- "10% Health" The health percentage of an NPC
 --L.door_open = "Door open" -- When a door is open, usually after a speech from an NPC
 --L.gate_open = "Gate open" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Menace"
 
 --L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s pendant %s sec." -- Spell for 10 seconds
@@ -69,6 +70,7 @@ L.you_die_sec = "Vous mourrez dans %d sec." -- "You die in 15 sec" (sec = second
 -- Add related
 L.add_spawned = "Add apparu" -- singular
 --L.adds_spawned = "Adds apparu" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 --L.add_spawning = "Add spawning" -- singular
 --L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s apparu"

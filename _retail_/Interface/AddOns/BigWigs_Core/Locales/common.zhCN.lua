@@ -45,6 +45,7 @@ L.health = "血量" -- The health of an NPC
 L.health_percent = "%d%% 血量" -- "10% Health" The health percentage of an NPC
 L.door_open = "门开了" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "门开了" -- When a gate is open, usually after a speech from an NPC
+L.threat = "威胁"
 
 L.remaining = "剩余：%d" -- 5 remaining
 L.duration = "%s持续 %s 秒" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.next_ability = "下个技能" -- We don't know what ability will be next, we o
 -- Add related
 L.add_spawned = "小怪已刷新" -- singular
 L.adds_spawned = "小怪已刷新" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 L.add_spawning = "小怪刷新" -- singular
 L.adds_spawning = "小怪刷新" -- plural
 L.spawned = "%s已刷新"

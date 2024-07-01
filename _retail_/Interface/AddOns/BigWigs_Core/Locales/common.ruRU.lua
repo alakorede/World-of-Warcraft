@@ -45,6 +45,7 @@ L.health = "Здоровья" -- The health of an NPC
 L.health_percent = "%d%% Здоровья" -- "10% Health" The health percentage of an NPC
 L.door_open = "Дверь открыта" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Врата открыты" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Угрозе"
 
 L.remaining = "Осталось: %d" -- 5 remaining
 L.duration = "%s для %s сек" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.next_ability = "Следующая способность" -- We don't know wh
 -- Add related
 L.add_spawned = "Помощник появился" -- singular
 L.adds_spawned = "Помощники появились" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 L.add_spawning = "Спаун Адда" -- singular
 L.adds_spawning = "Спаун Аддов" -- plural
 L.spawned = "Появление: %s"

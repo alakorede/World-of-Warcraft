@@ -45,6 +45,7 @@ L.health = "生命值" -- The health of an NPC
 L.health_percent = "%d%% 生命值" -- "10% Health" The health percentage of an NPC
 L.door_open = "開門" -- 小的門 When a door is open, usually after a speech from an NPC
 L.gate_open = "開門" -- 大的門 When a gate is open, usually after a speech from an NPC
+L.threat = "威脅"
 
 L.remaining = "剩餘 %d" -- 5 remaining
 L.duration = "%s持續 %s 秒" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.next_ability = "下個技能" -- We don't know what ability will be next, we o
 -- Add related
 L.add_spawned = "小怪出現" -- singular
 L.adds_spawned = "小怪出現" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 L.add_spawning = "小怪出現" -- singular 小怪正在出現/小怪出現/小怪已出現，中文沒有英文那麼明確的時態和單複數之別
 L.adds_spawning = "小怪出現" -- plural
 L.spawned = "%s已重生"

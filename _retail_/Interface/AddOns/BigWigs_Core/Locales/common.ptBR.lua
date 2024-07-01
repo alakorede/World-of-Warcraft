@@ -45,6 +45,7 @@ L.health = "Vida" -- The health of an NPC
 L.health_percent = "%d%% de Vida" -- "10% Health" The health percentage of an NPC
 L.door_open = "Porta Aberta" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Portão Aberto" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Ameaça"
 
 --L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s durante %s seg" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.next_ability = "Próxima Habilidade" -- We don't know what ability will be nex
 -- Add related
 L.add_spawned = "Add surgiu" -- singular
 L.adds_spawned = "Adds surgiram" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 --L.add_spawning = "Add spawning" -- singular
 --L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s surgiu"

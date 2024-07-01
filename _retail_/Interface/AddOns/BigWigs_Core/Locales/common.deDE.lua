@@ -45,6 +45,7 @@ L.health = "Gesundheit" -- The health of an NPC
 L.health_percent = "%d%% Gesundheit" -- "10% Health" The health percentage of an NPC
 L.door_open = "Tür offen" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Tor offen" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Bedrohung"
 
 L.remaining = "%d übrig" -- 5 remaining
 L.duration = "%s für %s Sek" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.next_ability = "Nächste Fähigkeit" -- We don't know what ability will be nex
 -- Add related
 L.add_spawned = "Add erschienen" -- singular
 L.adds_spawned = "Adds erschienen" -- plural
+L.adds_spawned_count = "%d |4Add:Adds; erschienen" -- 1 add spawned / 2 adds spawned
 L.add_spawning = "Add erscheint" -- singular
 L.adds_spawning = "Adds erscheinen" -- plural
 L.spawned = "%s erschienen"

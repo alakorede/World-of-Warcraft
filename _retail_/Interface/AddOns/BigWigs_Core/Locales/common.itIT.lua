@@ -45,6 +45,7 @@ L.general = "Generali" -- General settings, i.e. things that apply to normal, he
 --L.health_percent = "%d%% Health" -- "10% Health" The health percentage of an NPC
 L.door_open = "Porta aperta" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Cancello aperto" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Minaccia"
 
 --L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s per %s sec" -- Spell for 10 seconds
@@ -68,6 +69,7 @@ L.you_die_sec = "Morirai in %d sec" -- "You die in 15 sec" (sec = seconds)
 -- Add related
 L.add_spawned = "Add Apparso" -- singular
 L.adds_spawned = "Adds Apparso" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 --L.add_spawning = "Add spawning" -- singular
 --L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s Reinizializzato"
