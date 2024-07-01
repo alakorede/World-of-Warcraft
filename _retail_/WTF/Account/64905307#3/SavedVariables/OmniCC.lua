@@ -1,5 +1,9 @@
 
 OmniCCDB = {
+["global"] = {
+["dbVersion"] = 6,
+["addonVersion"] = "10.2.9",
+},
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Default",
 ["Mitráculo - Nemesis"] = "Default",
@@ -49,28 +53,24 @@ OmniCCDB = {
 ["Aishy - Nemesis"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
 ["Satishy - Goldrinn"] = "Default",
-["Radagashy - Goldrinn"] = "Default",
+["Keishy - Aerie Peak"] = "Default",
 ["Dishy - Nemesis"] = "Default",
 ["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
-["Kerrishy - Goldrinn"] = "Default",
-["Kuradis - Nemesis"] = "Default",
-["Trystam - Nemesis"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
-["Yashy - Nemesis"] = "Default",
-["Melishy - Goldrinn"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Sashy - Goldrinn"] = "Default",
 ["Sharan - Goldrinn"] = "Default",
-["Keishy - Aerie Peak"] = "Default",
-},
-["global"] = {
-["dbVersion"] = 6,
-["addonVersion"] = "10.2.9",
+["Sashy - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Trystam - Nemesis"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
+["Satishy - Nemesis"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Yashy - Nemesis"] = "Default",
+["Kuradis - Nemesis"] = "Default",
+["Kerrishy - Goldrinn"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
+["Radagashy - Goldrinn"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -89,9 +89,9 @@ OmniCCDB = {
 ["themes"] = {
 ["Plater Nameplates Theme"] = {
 ["textStyles"] = {
-["soon"] = {
-},
 ["seconds"] = {
+},
+["soon"] = {
 },
 ["minutes"] = {
 },
@@ -99,9 +99,9 @@ OmniCCDB = {
 },
 ["Default"] = {
 ["textStyles"] = {
-["soon"] = {
-},
 ["seconds"] = {
+},
+["soon"] = {
 },
 ["minutes"] = {
 },
@@ -109,9 +109,9 @@ OmniCCDB = {
 },
 ["Padrão"] = {
 ["textStyles"] = {
-["seconds"] = {
-},
 ["soon"] = {
+},
+["seconds"] = {
 },
 ["minutes"] = {
 },
@@ -120,18 +120,6 @@ OmniCCDB = {
 },
 },
 ["Padrão"] = {
-["themes"] = {
-["Padrão"] = {
-["textStyles"] = {
-["soon"] = {
-},
-["minutes"] = {
-},
-["seconds"] = {
-},
-},
-},
-},
 ["rules"] = {
 {
 ["id"] = "auras",
@@ -159,6 +147,18 @@ OmniCCDB = {
 },
 ["name"] = "Barras de ação",
 ["enabled"] = false,
+},
+},
+["themes"] = {
+["Padrão"] = {
+["textStyles"] = {
+["soon"] = {
+},
+["seconds"] = {
+},
+["minutes"] = {
+},
+},
 },
 },
 },

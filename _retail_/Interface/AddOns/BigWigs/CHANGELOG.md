@@ -1,10 +1,12 @@
 # BigWigs
 
-## [v339.3](https://github.com/BigWigsMods/BigWigs/tree/v339.3) (2024-06-27)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v339.2...v339.3) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v340.1](https://github.com/BigWigsMods/BigWigs/tree/v340.1) (2024-06-29)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v340...v340.1) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- Loader: Don't rely on Blizz for delivering popups  
-- NerubarPalace/TheSilkenCourt: Reset count for Spike Eruption  
-- NerubarPalace/Sikran: Show alt name for Captain's Flourish  
-- NerubarPalace/Sikran: Rework  
-- NerubarPalace/TheSilkenCourt: Drycode  
+- bump version  
+- NerubarPalace/TheSilkenCourt: Fix a lua error  
+- Update deDE (#1686)  
+- NerubarPalace/Ulgrax: Fix a wrong variable use  
+- NerubarPalace/Ovinax: Fix Fixate source ids  
+- NerubarPalace/Kyveza: Add a say countdown for Queens Bane  
+- Update zhCN (#1685)  

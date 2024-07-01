@@ -2,14 +2,15 @@
 BigWigs:AddSounds("Ulgrax the Devourer", {
 	[434697] = "alert",
 	[434705] = "warning",
-	[434803] = {"alert","info","warning"},
+	[434803] = {"info","warning"},
 	[435136] = "alert",
 	[435138] = "warning",
 	[436200] = {"long","warning"},
 	[438012] = "alert",
-	[438657] = "info",
+	[438657] = {"alert","info"},
 	[439037] = "alarm",
 	[439419] = "alarm",
+	[440177] = "info",
 	[440849] = "warning",
 	[441452] = "info",
 	[443842] = "alarm",
@@ -28,6 +29,7 @@ BigWigs:AddSounds("The Bloodbound Horror", {
 	[445570] = {"alarm","info"},
 	[445936] = "alert",
 	[451288] = "alarm",
+	[452237] = "alarm",
 	[459444] = "warning",
 })
 
@@ -37,7 +39,7 @@ BigWigs:AddSounds("Sikran, Captain of the Sureki", {
 	[434860] = "alarm",
 	[439511] = "alarm",
 	[439559] = "alarm",
-	[442428] = "alert",
+	[442428] = {"alert","warning"},
 	[456420] = "long",
 	[459273] = "alarm",
 })
@@ -97,14 +99,17 @@ BigWigs:AddSounds("The Silken Court", {
 	[440179] = {"info","long"},
 	[440246] = "warning",
 	[440504] = "alert",
+	[441626] = "alert",
 	[441782] = "alert",
 	[442994] = "alarm",
 	[443092] = "alarm",
 	[443598] = {"alert","info"},
 	[449857] = "alarm",
-	[450980] = "long",
-	[451277] = "long",
-	[456235] = {"alarm","info","long"},
+	[450129] = "warning",
+	[450980] = {"info","long"},
+	[451277] = {"info","long"},
+	[456245] = {"alarm","info","long"},
+	["stages"] = "long",
 })
 
 BigWigs:AddSounds("Queen Ansurek", {

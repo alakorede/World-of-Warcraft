@@ -12,7 +12,7 @@ local strfind = string.find
 -- Generate our version variables
 --
 
-local BIGWIGS_VERSION = 339
+local BIGWIGS_VERSION = 340
 local BIGWIGS_RELEASE_STRING, BIGWIGS_VERSION_STRING
 local versionQueryString, versionResponseString = "Q^%d^%s^%d^%s", "V^%d^%s^%d^%s"
 local customGuildName = false
@@ -37,7 +37,7 @@ do
 	local ALPHA = "ALPHA"
 
 	local releaseType
-	local myGitHash = "2fa25a2" -- The ZIP packager will replace this with the Git hash.
+	local myGitHash = "0ec5b8a" -- The ZIP packager will replace this with the Git hash.
 	local releaseString
 	--[=[@alpha@
 	-- The following code will only be present in alpha ZIPs.
@@ -610,9 +610,18 @@ local function loadAndEnableCore()
 	return loaded
 end
 
-local function loadCoreAndOpenOptions()
+local function loadCoreAndOptions()
 	loadAndEnableCore()
 	load(BigWigsOptions, "BigWigs_Options")
+end
+
+do
+	local _, tbl = ...
+	tbl.LoadCoreAndOptions = loadCoreAndOptions
+end
+
+local function loadCoreAndOpenOptions()
+	loadCoreAndOptions()
 	if BigWigsOptions then
 		BigWigsOptions:Open()
 	end
@@ -770,8 +779,7 @@ do
 					SlashCmdList[slashName] = function(text)
 						if strfind(name, "BigWigs", nil, true) then
 							-- Attempting to be smart. Only load core & config if it's a BW plugin.
-							loadAndEnableCore()
-							load(BigWigsOptions, "BigWigs_Options")
+							loadCoreAndOptions()
 						end
 						if load(nil, i) then -- Load the addon/plugin
 							-- Call the slash command again, which should have been set by the addon.
@@ -1428,9 +1436,9 @@ end
 --
 
 do
-	local DBMdotRevision = "20240622203012" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
-	local DBMdotDisplayVersion = "10.2.49" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
-	local DBMdotReleaseRevision = "20240622000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotRevision = "20240629082334" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
+	local DBMdotDisplayVersion = "10.2.50" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
+	local DBMdotReleaseRevision = "20240629000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
 	local protocol = 3
 	local versionPrefix = "V"
 	local PForceDisable = 12

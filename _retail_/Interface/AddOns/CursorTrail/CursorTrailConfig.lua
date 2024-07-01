@@ -477,15 +477,50 @@ function OptionsFrame_Create()
     OptionsFrame.OkayBtn:SetScript("OnClick", OptionsFrame_OnOkay)
 
     -- HELP BUTTON --
-    OptionsFrame.HelpBtn = CreateFrame("Button", nil, OptionsFrame, kButtonTemplate)
-    OptionsFrame.HelpBtn:SetText("Help")
-    OptionsFrame.HelpBtn:SetPoint("BOTTOMLEFT", OptionsFrame, "BOTTOMLEFT", kFrameMargin+4, kFrameMargin)
-    OptionsFrame.HelpBtn:SetSize(kBtnWidth-24, kBtnHeight)
-    OptionsFrame.HelpBtn:SetScript("OnClick", function()
-            PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK)
-            ----PlaySound(SOUNDKIT.TELL_MESSAGE)
-            ----printUsageMsg()
+    local function createHelpTexture(parent, alpha)
+        local tex = parent:CreateTexture(nil, "ARTWORK")
+        ----tex:SetTexture("Interface\\HELPFRAME\\HelpIcon-KnowledgeBase")
+        ----tex:SetTexCoord(0.20, 0.8, 0.2, 0.8)
+        ----tex:SetSize(20, 20)
+        tex:SetTexture("Interface\\MINIMAP\\TRACKING\\Profession")
+        tex:SetSize(32, 32)
+        if alpha then tex:SetAlpha(alpha) end
+        return tex
+    end
+
+    local normalTex, highlightTex, pushedTex
+    normalTex    = createHelpTexture(OptionsFrame, 0.7)
+    highlightTex = createHelpTexture(OptionsFrame, 0.4)
+    pushedTex    = createHelpTexture(OptionsFrame, 0.4)
+    OptionsFrame.HelpBtn = private.UDControls.CreateTextureButton(OptionsFrame, normalTex, highlightTex, pushedTex)
+
+    OptionsFrame.HelpBtn:SetPoint("BOTTOMLEFT", OptionsFrame, "BOTTOMLEFT", kFrameMargin-2, kFrameMargin-3)
+    OptionsFrame.HelpBtn:SetTooltip("Help", "ANCHOR_TOP")
+    OptionsFrame.HelpBtn:SetScript("OnClick", function(self)
+            PlaySound(private.kSound.ActionQuiet)
             CursorTrail_ShowHelp(OptionsFrame)
+        end)
+
+    -- CHANGELOG BUTTON (ICON) --
+    local function createChangelogTexture(parent, alpha)
+        local tex = parent:CreateTexture(nil, "ARTWORK")
+        tex:SetTexture("Interface\\COMMON\\help-i")
+        tex:SetTexCoord(0.25, 0.75, 0.25, 0.75)
+        tex:SetSize(20, 20)
+        if alpha then tex:SetAlpha(alpha) end
+        return tex
+    end
+
+    normalTex    = createChangelogTexture(OptionsFrame, 0.7)
+    highlightTex = createChangelogTexture(OptionsFrame, 0.4)
+    pushedTex    = createChangelogTexture(OptionsFrame, 0.4)
+    OptionsFrame.ChangelogBtn = private.UDControls.CreateTextureButton(OptionsFrame, normalTex, highlightTex, pushedTex)
+
+    OptionsFrame.ChangelogBtn:SetPoint("LEFT", OptionsFrame.HelpBtn, "RIGHT", 7, -0.5)
+    OptionsFrame.ChangelogBtn:SetTooltip("Changelog", "ANCHOR_TOP")
+    OptionsFrame.ChangelogBtn:SetScript("OnClick", function(self)
+            PlaySound(private.kSound.ActionQuiet)
+            CursorTrail_ShowChangelog(OptionsFrame)
         end)
 
     -- SHAPE --
@@ -512,10 +547,12 @@ function OptionsFrame_Create()
                 ----OptionsFrame:UpdatePreview()
             end)
 
-    -- Make right-clicks set the control's default value.
     OptionsFrame.ShapeColor:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     OptionsFrame.ShapeColor:SetScript("OnMouseUp", function(self, mouseButton)
+                PlaySound(private.kSound.ActionQuiet)
+
                 if mouseButton == "RightButton" then
+                    -- Right-clicks set the control's default value.
                     if ColorPickerFrame:IsShown() then
                         ColorPickerFrame:Hide()
                     end
@@ -665,6 +702,7 @@ function OptionsFrame_Create()
     OptionsFrame.TipText:SetPoint("TOPLEFT", OptionsFrame, "TOPLEFT", xPos-2, yPos)
     OptionsFrame.TipText:SetPoint("RIGHT", -kFrameMargin, 0)
     OptionsFrame.TipText:SetText("* TIP: You can use the mouse wheel or Up/Down keys to change values.")
+    OptionsFrame.TipText:SetJustifyH("LEFT")
 
     --------------------------------
     -- Set size of options window.
@@ -839,7 +877,7 @@ function OptionsFrame_HandleNewFeatures()
 
     if (bNewFeaturesShown == true) then
         print(kAddonAlertHeading.."New features have "..newFeatureIndicator.." near their name.  (Cleared at next reload.)")
-        PlaySound(1440, "MASTER") -- 1440=LevelUp, 171006=ReputationLevelUp
+        PlaySound(1440) -- 1440=LevelUp, 171006=ReputationLevelUp
     end
 end
 
@@ -876,6 +914,7 @@ function OptionsFrame_OnHide()
         CursorTrail_Hide()  -- Not in combat so hide the cursor effects.
     end
     CursorTrail_HideHelp()
+    CursorTrail_HideChangelog()
     OptionsFrame.OriginalConfig = nil  -- Free memory.
     EventFrame:UnregisterEvent("GLOBAL_MOUSE_DOWN")
     --|traceCfg("OUT OptionsFrame_OnHide().")
@@ -967,8 +1006,15 @@ function OptionsFrame_OnKeyDown(self, key)
     --|if not OptionsFrame:IsShown() then traceCfg("OUT OptionsFrame_OnKeyDown(), early 1."); return; end
     local bPassKeyToParent = false
 
-    if key == "TAB" then OptionsFrame_FocusNext()
-    elseif key == "ESCAPE" then OptionsFrame_OnCancel()
+    if key == "TAB" then
+        OptionsFrame_FocusNext()
+    elseif key == "ESCAPE" then
+        if not OptionsFrame.ProfilesUI:hideOptions()
+          and not CursorTrail_HideChangelog()
+          and not CursorTrail_HideHelp()
+          then
+            OptionsFrame_OnCancel()
+        end
     else bPassKeyToParent = true
     end
 
@@ -996,7 +1042,10 @@ end
 
 -------------------------------------------------------------------------------
 function OptionsFrame_DropDown_OnButtonUp(self, mouseButton)
+    PlaySound(private.kSound.ActionQuiet)
+
     if mouseButton == "RightButton" then
+        -- Right-clicks toggle between default value and previous selection.
         local dropdown = self:GetParent()
         dropdown:HideSelections()
         local current = dropdown:GetSelectedText()
@@ -1329,6 +1378,7 @@ function OptionsFrame_CreateEditBox(x, y, width, maxChars, bNumeric, defaultVal)
                         editboxFrame:SetText(defaultVal)
                         editboxFrame:HighlightText()
                         editboxFrame:GetScript("OnTextChanged")(editboxFrame, true)
+                        PlaySound(private.kSound.ActionQuiet)
                     end
                 end)
     end
@@ -1344,6 +1394,8 @@ function OptionsFrame_CreateCheckBox(labelText, x, y)
     checkbox:SetPoint("TOPLEFT", OptionsFrame, "TOPLEFT", x+kFrameMargin+kColumnWidth1-17, y+7)
 	checkbox:SetScript('OnClick', function(self)
                     --|traceCfg("IN checkbox:OnClick("..(self:GetName() or "nil")..").")
+                    if self:GetChecked() then PlaySound(856) else PlaySound(857) end -- IG_MAINMENU_OPTION_CHECKBOX_ON/OFF.
+
                     OptionsFrame.ProfilesUI:OnValueChanged()
                     OptionsFrame_SetModified(true)
                     OptionsFrame_ClearFocus()
@@ -1573,6 +1625,9 @@ function OptionsFrame_CreateStrataDropDown(x, y, width)
     ------ Make right-clicks set the control's default value (or revert to previous selection).
     ----dropdown.buttonFrame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     ----dropdown.buttonFrame:SetScript("OnMouseUp", OptionsFrame_DropDown_OnButtonUp)
+    dropdown.buttonFrame:SetScript("OnMouseUp", function(self, mouseButton)
+                PlaySound(private.kSound.ActionQuiet)
+            end)
 
     --|traceCfg("OUT OptionsFrame_CreateStrataDropDown().")
     return dropdown

@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.5.0-release
+-- Addon version: v21.0.0-release
 
 -- This file defines functions that let you hide a specific StaticPopup.
 

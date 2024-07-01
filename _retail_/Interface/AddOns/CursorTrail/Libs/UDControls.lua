@@ -1,4 +1,4 @@
-local CONTROLS_VERSION = "2024-06-11"  -- Version (date) of this file.  Stored as "UDControls.VERSION".
+local CONTROLS_VERSION = "2024-06-25"  -- Version (date) of this file.  Stored as "UDControls.VERSION".
 
 --[[---------------------------------------------------------------------------
 FILE:   UDControls.lua
@@ -16,6 +16,24 @@ REQUIREMENTS / DEPENDANCIES:
 USAGE:  See examples at end of this comment block.
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
 CHANGE HISTORY:
+    Jun 25, 2024
+        - Added CListBox.AddSeparator() and CDropDown.AddSeparator().
+        - Changed listbox tooltips so they can optionally appear for disabled lines.
+          To enable this behavior, set the listbox's "tooltipWhileDisabled" variable to true.
+        - Fixed listbox tooltip refreshing when scrolling with mouse wheel.  Tooltips for listbox lines now
+          refresh immediately when scrolling with the mouse wheel while hovering over a listbox line.
+        - Changed CListBox.ClearSelection() so it also hides the highlight frame.
+        - Renamed listbox's "lineHandler" variable to "createLineHandler".
+        - Updated listbox and dropdown examples.
+        - Changed dropdown's change handler so it also provides the selected item's text and index #.
+        - Added CDropDown.SelectNextOrPrevious().
+        - Consolidate all places that set tooltip info into one function, setTooltipInfo().
+        - Consolidate all places that showed tooltips into one function, showTooltip().
+        - Added SetTooltipTitleAndText() to controls in this file.
+        - Added CListBox.Line_SetTooltipTitleAndText() and CListBox.Line_SetTooltipTitleAndText(), for
+          implementing different tooltips for each line in a listbox.
+        - Added GameTooltip_SetTitleAndText() and Outline() functions.
+        - Added SetMouseWheelStepSpeed() and SetMouseWheelDefault() to TextScrollFrame.
     Jun 11, 2024
         - Moved many local functions into "class" tables to avoid hitting the "200 local variables" limit.
           This change has no effect on the exposed interfaces.
@@ -141,17 +159,16 @@ CHANGE HISTORY:
         Enable()
         GetChecked()
         SetChecked()
-        SetClickHandler( func )
+        SetClickHandler( function(isChecked) )
         SetLabel()
         SetTooltip()
+        SetTooltipTitleAndText()
 
     Callbacks:
-        clickHandler()      - Called when the checkbox is clicked.
+        clickHandler()      - Called when the checkbox is clicked.  See SetClickHandler().
 
     Variables:
         checkButton
-        checkButton.tooltip             - Text to show when mouse is over this control.
-        checkButton.tooltipAnchor       - Defaults to "ANCHOR_RIGHT".
         fontString
 
 ~~~~~~~~~~~~~~~~~~~
@@ -160,20 +177,19 @@ CHANGE HISTORY:
     * See AceGUIWidget-ColorPicker.lua for future enhancement ideas.
 
     Functions:
+        CloseColorPicker()
         Disable()
         Enable()
         GetColor()
         SetColor()
         SetColorChangedHandler()
         SetTooltip()
-        CloseColorPicker()
+        SetTooltipTitleAndText()
 
     Variables:
         borderTexture
         oldDisableHandler
         oldEnableHandler
-        tooltip             - Text to show when mouse is over this control.
-        tooltipAnchor       - Defaults to "ANCHOR_RIGHT".
 
 ~~~~~~~~~~~~~~~
    DropDown
@@ -195,19 +211,21 @@ CHANGE HISTORY:
         SelectID( ID )  - ID can be a number or string.
         SelectIndex( itemNum )  - itemNum starts at 1, not 0.
         SelectNext()
+        SelectNextOrPrevious( bNext )
         SelectPrevious()
         SelectText()
-        SetChangeHandler( func )
+        SetChangeHandler( function(thisDD, selectedID, selectedText, selectedIndex) )
         SetBackdropBorderColor()
         SetBackdropColor()
         SetLabel()
         SetListBoxHeight()
         SetListBoxWidth()
         SetTooltip()
+        SetTooltipTitleAndText()
         Sort()
 
     Callbacks:
-        changeHandler( ID )  - Called when one of the dropdown's options is selected.
+        changeHandler()     - Called when one of the dropdown's options is selected.  See SetChangeHandler().
 
     Variables:
         buttonFrame
@@ -217,8 +235,6 @@ CHANGE HISTORY:
         listboxHeight
         selectedItem        - Selected item's index #.
         setpointFunc
-        tooltip             - Text to show when mouse is over this control (excluding the popup list of choices).
-        tooltipAnchor       - Defaults to "ANCHOR_RIGHT".
 
 ~~~~~~~~~~~~~~~
    ListBox
@@ -236,13 +252,13 @@ CHANGE HISTORY:
         GetNumItems()
         GetNumLines()
         GetOffset()
-        GetSelectedItem()   - Returns selected item (text).
+        GetSelectedItem()       - Returns selected item (text).
         GetSelectedItemNumber() - Returns the selected line number.
         Refresh()
         RemoveItem()
-        SetClickHandler( func )
-        SetCreateLineHandler( func )
-        SetDisplayHandler( func )
+        SetClickHandler( function(thisLB, line, value, mouseButton, bDown) )
+        SetCreateLineHandler( function(thisLB) )
+        SetDisplayHandler( function(thisLB, line, value, isSelected) )
         SetDynamicWheelSpeed()
         SetOffset()
         SelectItem( itemNumber, bScrollIntoView )  - Selects the specified item number.
@@ -251,11 +267,12 @@ CHANGE HISTORY:
         SelectPreviousItem()
 
     Callbacks:
-        clickHandler()      - Called when a line in the listbox is clicked.
-        displayHandler()    - Called when a line is being displayed.
-        lineHandler()       - Called when a new line needs to be created.
+        clickHandler()      - Called when a line in the listbox is clicked.  See SetClickHandler().
+        displayHandler()    - Called when a line is being displayed.  See SetDisplayHandler().
+        createLineHandler() - Called when a new line needs to be created.  See SetCreateLineHandler().
 
     Variables:
+        disabledLineAlpha   - The alpha level for disabled lines.  (Default is 0.4)
         displayFrame        - Area where listbox contents is displayed.  (Excludes scrollbar.)
         sliderFrame         - Scrollbar for the listbox.
         upButton            - Scrollbar's up button.
@@ -263,9 +280,15 @@ CHANGE HISTORY:
         highlightFrame      - For highlighting the selected line.
         items               - All the data that can be displayed by the listbox.
         lines               - The data lines that are visible (within the height of the listbox).
+                              Each line can have its own tooltip.  (See listbox example below.)
+            lines[i]:SetTooltip(text, anchor)                    - Sets tooltip text for a line in the listbox.
+            lines[i]:SetTooltipTitleAndText(title, text, anchor) - Sets tooltip title and text for a line in the listbox.
         lineCache           - Contains lines that that will no longer fit on the page because the listbox
-                              height was reduced.  These lines get reused the next time a new line is "created".
+                              height was reduced.  These lines are reused the next time a new line is "created".
         selectedItem        - Selected item's index #.
+        separatorLeft       - Left side offset for separator lines.  (Typically a positive number.)
+        separatorRight      - Right side offset for separator lines.  (Typically a negative number.)
+        tooltipWhileDisabled - If true, shows tooltip even when the line is disabled.
 
 ~~~~~~~~~~~~~~~~~~~~~
     Option Button
@@ -273,12 +296,13 @@ CHANGE HISTORY:
 
     Functions:
         Configure()         - Sets the button's height, text, and optional tooltip.
-        SetClickHandler()
+        SetClickHandler( function(mouseButton, bDown) )
         SetLabel()          - Sets the button's text.
         SetTooltip()
+        SetTooltipTitleAndText()
 
-    Variables:
-        tooltipAnchor       - Defaults to "ANCHOR_RIGHT".
+    Callbacks:
+        clickHandler()      - Called when the button is clicked.  See SetClickHandler().
 
 ~~~~~~~~~~~~~~~
     Slider
@@ -288,7 +312,8 @@ CHANGE HISTORY:
         Configure()
         SetLabel()
         SetTooltip()
-        SetValueChangedHandler( func )
+        SetTooltipTitleAndText()
+        SetValueChangedHandler( function(value) )
         SetMinMaxValues()
         SetValueStep()
         GetValue()
@@ -297,7 +322,7 @@ CHANGE HISTORY:
         Disable()
 
     Callbacks:
-        valueChangedHandler()   - Called when the value of the slider is changed.
+        valueChangedHandler()   - Called when the value of the slider is changed.  See SetValueChangedHandler().
 
     Variables:
         sliderFrame
@@ -419,18 +444,21 @@ CHANGE HISTORY:
             end)
     --************************ END OPTIONAL ************************
 
-    local width = 200
-
     local dropdown = private.UDControls.CreateDropDown(YourOptionsFrame)
-    dropdown.listbox:SetScale( 0.95 )  -- (Optional) Shrinks the dropdown.
-    dropdown:SetBackdropBorderColor(0.7, 0.7, 0.0)  -- (Optional) Colorize the dropdown edges.
+    ----dropdown.listbox:SetScale( 0.95 )  -- (Optional) Shrinks the dropdown.
+    ----dropdown:SetBackdropBorderColor(0.7, 0.7, 0.0)  -- (Optional) Colorize the dropdown edges.
     dropdown:SetPoint("TOPLEFT", YourOptionsFrame, "TOPLEFT", 16, -16)
-    dropdown:Configure(width, "Color Names:", "")  -- (width, label, tooltip_text)
+    dropdown:Configure(200, "Color Names:", "")  -- (width, label, tooltip_text)
 
-    dropdown:SetChangeHandler( function(self, selectedID)
-            print( "Selected Item ==>  Index: " .. self:GetSelectedIndex()
+    -- (Optional) Reposition label to the left of the dropdown.
+    dropdown.labelFontString:ClearAllPoints()
+    dropdown.labelFontString:SetPoint("RIGHT", dropdown, "LEFT", -1, 0)
+    dropdown.labelFontString:SetJustifyH("RIGHT")
+
+    dropdown:SetChangeHandler( function(thisDD, selectedID, selectedText, selectedIndex)
+            print( "Selected Item ==>  Index: " .. (selectedIndex or "nil")
                    ..",  ID: " .. (selectedID or "nil")
-                   ..",  Text: " .. self:GetSelectedText() )
+                   ..",  Text: " .. (selectedText or "nil") )
         end)
 
     dropdown:AddItem("Red", 101)      -- or AddItem("Red") if not using ID#s.
@@ -499,10 +527,6 @@ CHANGE HISTORY:
     -- - - - - - - - - - - - - - - - - - - - - - - - - - --
     local function listboxCreateLine(thisLB)
         local line = CreateFrame("Button", nil, thisLB)
-        line.parentListBox = thisLB
-        line:RegisterForClicks("LeftButtonUp", "RightButtonUp")  -- Allow left and right mouse clicks.
-        line.tooltip = "Some useful info about this line."  -- Example of how to simulate CListBox.SetToolTip().
-        line.tooltipAnchor = "ANCHOR_LEFT"  -- (Optional)
 
         -- Text.
         line.fontString = line:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
@@ -521,8 +545,8 @@ CHANGE HISTORY:
         local rightInset = -3
         line.deleteBtn:SetHitRectInsets(0, rightInset, 0, 0)  -- (Left, Right, Top, Bottom)
         line.deleteBtn:SetPoint("RIGHT", line, "RIGHT", rightInset, 0)
-        line.deleteBtn:SetClickHandler( function(self)
-                local listboxLine = self:GetParent()
+        line.deleteBtn:SetClickHandler( function(thisBtn)
+                local listboxLine = thisBtn:GetParent()
                 local listbox = listboxLine.parentListBox
                 local itemNum = listboxLine.itemNumber
                 local itemText = listboxLine.fontString:GetText()
@@ -531,6 +555,12 @@ CHANGE HISTORY:
                 print("Deleted listbox item:", itemText)
             end)
 
+        -- (OPTIONAL) Symbolic Icon.
+        line.icon = line:CreateTexture(nil, "ARTWORK")
+        line.icon:SetTexture(nil)
+        line.icon:SetSize(16, 16)
+        line.icon:SetPoint("RIGHT", line.deleteBtn, "LEFT", -1, 0)
+
         return line
     end
     -- - - - - - - - - - - - - - - - - - - - - - - - - - --
@@ -538,18 +568,40 @@ CHANGE HISTORY:
         ----local color = isSelected and HIGHLIGHT_FONT_COLOR or NORMAL_FONT_COLOR
         ----line.fontString:SetTextColor(color.r, color.g, color.b)
         line.fontString:SetText(value)
+
+        -- Disable lines that contain the letter 'o'.
+        local disabled = value:find("o")  -- Disable lines containing the letter 'o'.
+        line:SetEnabled(not disabled)
+
+        -- (Optional) Completely hide icon buttons on disabled lines.
+        line.deleteBtn:SetShown(not disabled)
+        line.icon:SetShown(not disabled)
+
+        -- Update the line's tooltip.  (Example of how to simulate CListBox.SetToolTip().)
+        if disabled then
+            line:SetTooltip("Disabled because the line contains the letter 'o'.")
+        else
+            line:SetTooltip("Some useful info about this line.")
+        end
+
+        -- Show symbolic icon for lines containing the letter 'e'.
+        if value:find("e") then
+            line.icon:SetTexture("Interface\\COMMON\\FavoritesIcon")
+        else
+            line.icon:SetTexture(nil)
+        end
+
+        ----line.deleteBtn:SetShown(value ~= "Cat" and value ~= "Eagle") -- EXAMPLE of how to selectively hide listbox icon buttons.
     end
     -- - - - - - - - - - - - - - - - - - - - - - - - - - --
-    local function listboxOnClickLine(thisLB, line, value, mouseButton)
-        if mouseButton == "LeftButton" then
-            thisLB.SelectItem(value)
-            print("Selected listbox item:", value)
-        end
+    local function listboxOnClickLine(thisLB, line, value, mouseButton, bDown)
+        print("Selected listbox item:", value)
     end
     -- - - - - - - - - - - - - - - - - - - - - - - - - - --
 
     -- Create listbox.
     local listbox = private.UDControls.CreateListBox(YourOptionsFrame)
+    listbox.tooltipWhileDisabled = true  -- (Optional)
     listbox:Configure(listboxW, listboxH, listboxLineH)
 	listbox:SetPoint("TOPLEFT", YourOptionsFrame, "TOPLEFT", 18, -35)
 	listbox:SetCreateLineHandler( listboxCreateLine )
@@ -561,11 +613,15 @@ CHANGE HISTORY:
     listbox.label:SetText("Animals:")
     listbox.label:SetPoint("BOTTOMLEFT", listbox, "TOPLEFT", 4, 2)
 
-    -- Fill the listbox.
-    local animals = {"Dog","Cat","Horse","Cow","Elephant","Lion","Zebra","Eagle","Snake","Fish","Penguin"}
+    -- Fill the listbox.  (Empty string is used to add a separator line, just as an example.)
+    local animals = {"Dog","Cat","Horse","Cow","","Elephant","Lion","Zebra","Eagle","Snake","Fish","Penguin"}
 	listbox:Clear()
 	for index, value in pairs(animals) do
-		listbox:AddItem( value )
+        if value == "" then
+            listbox:AddSeparator()
+        else
+            listbox:AddItem( value )
+        end
 	end
     listbox:SelectItem(1)
 
@@ -588,7 +644,7 @@ CHANGE HISTORY:
     optionBtn.tooltipAnchor = "ANCHOR_TOP"  -- (Optional)
     optionBtn:SetPoint("TOPLEFT", YourOptionsFrame, "TOPLEFT", 10, 10)
     optionBtn:RegisterForClicks("AnyDown", "AnyUp")  -- (Optional)
-    optionBtn:SetClickHandler( function(self, mouseButton, bDown)
+    optionBtn:SetClickHandler( function(thisBtn, mouseButton, bDown)
             print("Option button clicked.  (", mouseButton, bDown and "DOWN" or "UP", ")")
         end)
 
@@ -696,6 +752,10 @@ local kButtonTemplate = ((kGameTocVersion >= 100000) and "UIPanelButtonTemplate"
 local kBoxTemplate = ((kGameTocVersion >= 100000) and "TooltipBorderBackdropTemplate") or "OptionsBoxTemplate"
 local kMinVer_10_2_5 = (kGameTocVersion >= 100205)  -- WoW 10.2.5 or newer?
 
+-- Other constants.
+local kSeparatorLine = "|-"
+----local kTitleLinePrefix = "|#"
+
 -- Backdrop table to be reused for sliders.
 local gSliderBackdrop
 
@@ -722,6 +782,8 @@ local gColorPaletteFrame
 -- Misc constants.
 local kTexture_White8x8 = "Interface\\Buttons\\WHITE8X8"
 local kScrollbarGlitchTime = 0.01 -- secs
+
+local CUtil = {}  -- Forward declaration.
 
 
 --#############################################################################
@@ -805,6 +867,32 @@ local function setPointTable(frame, pointTable)
 end
 
 
+-- ****************************************************************************
+-- Handles setting tooltip information for controls in this file.
+-- ****************************************************************************
+local function setTooltipInfo(frame, title, text, anchor)
+    frame.tooltipTitle = title
+    frame.tooltip = text
+    frame.tooltipAnchor = anchor
+end
+
+
+-- ****************************************************************************
+-- Handles showing the tooltips for controls in this file.
+-- ****************************************************************************
+local function showTooltip(frame, owner)  --DJUadded
+    owner = owner or frame
+    if (frame.tooltip) then
+        GameTooltip:SetOwner(owner, frame.tooltipAnchor or "ANCHOR_RIGHT")
+        if (frame.tooltipTitle) then
+            CUtil.GameTooltip_SetTitleAndText(frame.tooltipTitle, frame.tooltip, true)
+        else -- Tooltip doesn't have a title.
+            GameTooltip:SetText(frame.tooltip, nil, nil, nil, nil, true) -- (text, r, g, b, a, wrap)
+        end
+    end
+end
+
+
 --#############################################################################
 -------------------------------------------------------------------------------
 -- ListBox functions.
@@ -856,7 +944,7 @@ end
 -- Returns whether the listbox is fully configured.
 -- ****************************************************************************
 function CListBox.IsConfigured(thisLB)
-    return thisLB.configured and thisLB.lineHandler and thisLB.displayHandler
+    return thisLB.configured and thisLB.createLineHandler and thisLB.displayHandler
 end
 
 
@@ -892,23 +980,48 @@ function CListBox.Refresh(thisLB)
     -- Show or hide the correct lines depending on how many items there are and
     -- apply a highlight to the selected item.
     local selectedItem = thisLB.selectedItem
-    local isSelected
+    local isDropDownListBox = (gDropDownListBoxFrame and thisLB == gDropDownListBoxFrame.listbox)
     for lineNum, line in ipairs(thisLB.lines) do
         if (lineNum > #thisLB.items) then
             line:Hide()
+            line.invisibleLine:Hide()
         else
             line.itemNumber = lineNum + CListBox.GetOffset(thisLB)
             line:Show()
 
-            -- Move the highlight to the selected line and show it.
-            if (selectedItem == line.itemNumber) then
-                CListBox.ShowHighlight(thisLB, line)
-                isSelected = true
+            local value = thisLB.items[ line.itemNumber ]
+            local lineText
+            if isDropDownListBox then
+                -- Get the line's text from the dropdown variable (not the listbox variable).
+                lineText = gDropDownListBoxFrame.dropdown.items[ line.itemNumber ]
             else
-                isSelected = false
+                lineText = value
             end
 
-            if (thisLB.displayHandler) then thisLB:displayHandler(line, thisLB.items[line.itemNumber], isSelected) end
+            local isSeparator = (lineText == kSeparatorLine)
+            if isSeparator then
+                local thick = math.max(1, thisLB.lineHeight * 0.1)
+                line.separatorLine:SetThickness(thick)
+                line.tooltip = nil
+            end
+
+            line:SetEnabled( not isSeparator )
+            line.separatorLine:SetShown( isSeparator )
+            line:SetShown( not isSeparator )
+            ----print("CListBox.Refresh(): ", lineNum, line.lineNumber, line.fontString:GetText(), line.invisibleLine:IsShown() and " <COVERED>" or "") -- For debugging.
+
+            -- Move the highlight to the selected line and show it.
+            local isSelected = (selectedItem == line.itemNumber)
+            if isSelected then
+                CListBox.ShowHighlight(thisLB, line)
+            end
+
+            -- Call the display handler.
+            if (thisLB.displayHandler and not isSeparator) then
+                thisLB:displayHandler(line, value, isSelected)
+            end
+
+            line.invisibleLine:SetShown( not line:IsEnabled() )  -- Covers disabled lines so tooltips still work).
         end
     end
 
@@ -948,23 +1061,24 @@ end
 -- ****************************************************************************
 -- Called when one of the lines in the listbox is clicked.
 -- ****************************************************************************
-function CListBox.OnClickLine(thisLine, mouseButton)  --DJUchanged
-    local listbox = thisLine:GetParent():GetParent()
+function CListBox.OnClickLine(thisLine, mouseButton, bDown)  --DJUchanged
+    local listbox = thisLine.parentListBox
     listbox.selectedItem = thisLine.lineNumber + CListBox.GetOffset(listbox)
 
     CListBox.ShowHighlight(listbox, thisLine)
 
     if (listbox.clickHandler) then
-        listbox:clickHandler( thisLine, listbox.items[listbox.selectedItem], mouseButton )
+        listbox:clickHandler( thisLine, listbox.items[listbox.selectedItem], mouseButton, bDown )
     end
 end
 
 
 -- ****************************************************************************
--- Called when the mouse enters a line.
+-- Called when the mouse enters an enabled line.
 -- ****************************************************************************
 function CListBox.OnEnterLine(thisLine)
-    local listbox = thisLine:GetParent():GetParent()
+    ----print("CListBox.OnEnterLine(): ", thisLine.fontString:GetText(), thisLine:IsEnabled())
+    local listbox = thisLine.parentListBox
     if (thisLine.itemNumber ~= listbox.selectedItem) then
         gEmphasizeFrame:ClearAllPoints()
         gEmphasizeFrame:SetParent(thisLine)
@@ -973,18 +1087,38 @@ function CListBox.OnEnterLine(thisLine)
         gEmphasizeFrame:Show()
     end
 
-    if (thisLine.tooltip) then
-        GameTooltip:SetOwner(thisLine, thisLine.tooltipAnchor or "ANCHOR_RIGHT")
-        GameTooltip:SetText(thisLine.tooltip, nil, nil, nil, nil, 1)
+    if (thisLine.tooltip) then showTooltip(thisLine) end
+end
+
+
+-- ****************************************************************************
+-- Called when the mouse leaves an enabled line.
+-- ****************************************************************************
+function CListBox.OnLeaveLine(thisLine)
+    ----print("CListBox.OnLeaveLine(): ", thisLine.fontString:GetText())
+    gEmphasizeFrame:Hide()
+    GameTooltip:Hide()
+end
+
+
+-- ****************************************************************************
+-- Called when the mouse enters a disabled line.
+-- ****************************************************************************
+function CListBox.OnEnterInvisibleLine(thisLine)
+    ----print("CListBox.OnEnterInvisibleLine(): ", thisLine.relativeLine.fontString:GetText(), thisLine.relativeLine:IsEnabled())
+    local relativeLine = thisLine.relativeLine
+    local listbox = thisLine.parentListBox
+    if (listbox.tooltipWhileDisabled) then
+        if (relativeLine.tooltip) then showTooltip(relativeLine, thisLine) end
     end
 end
 
 
 -- ****************************************************************************
--- Called when the mouse leaves a line.
+-- Called when the mouse leaves a disabled line.
 -- ****************************************************************************
-function CListBox.OnLeaveLine(thisLine)
-    gEmphasizeFrame:Hide()
+function CListBox.OnLeaveInvisibleLine(thisLine)
+    ----print("CListBox.OnLeaveInvisibleLine(): ", thisLine.relativeLine.fontString:GetText())
     GameTooltip:Hide()
 end
 
@@ -992,8 +1126,10 @@ end
 -- ****************************************************************************
 -- Called when the scroll up button is pressed.
 -- ****************************************************************************
-function CListBox.OnClickUp(thisLine)
-    local listbox = thisLine:GetParent():GetParent()
+function CListBox.OnClickUp(thisBtn, mouseButton, bDown)
+    if mouseButton ~= "LeftButton" then return end  -- Only process left button.
+
+    local listbox = thisBtn:GetParent():GetParent()
     CListBox.ScrollUp(listbox)
     PlaySound(826)
 end
@@ -1002,10 +1138,35 @@ end
 -- ****************************************************************************
 -- Called when the scroll down button is pressed.
 -- ****************************************************************************
-function CListBox.OnClickDown(thisLine)
-    local listbox = thisLine:GetParent():GetParent()
+function CListBox.OnClickDown(thisBtn, mouseButton, bDown)
+    if mouseButton ~= "LeftButton" then return end  -- Only process left button.
+
+    local listbox = thisBtn:GetParent():GetParent()
     CListBox.ScrollDown(listbox)
     PlaySound(827)
+end
+
+
+-- ****************************************************************************
+-- Called when the listbox line is enabled.
+-- ****************************************************************************
+function CListBox.OnEnableLine(thisLine)
+    ----print("CListBox.OnEnableLine: ", thisLine.fontString:GetText())
+    thisLine:SetAlpha(1.0)
+    thisLine.invisibleLine:Hide()  -- Let 'thisLine' show tooltips.
+end
+
+
+-- ****************************************************************************
+-- Called when the listbox line is disabled.
+-- ****************************************************************************
+function CListBox.OnDisableLine(thisLine)
+    ----print("CListBox.OnDisableLine: ", thisLine.fontString:GetText())
+    local listbox = thisLine.parentListBox
+    thisLine:SetAlpha( listbox.disabledLineAlpha or 0.4 )
+    if listbox.tooltipWhileDisabled then
+        thisLine.invisibleLine:Show()  -- Let the invisible line show tooltips.
+    end
 end
 
 
@@ -1051,6 +1212,13 @@ function CListBox.OnMouseWheel(thisDisplay, delta)  --DJUchanged ...
         scrollAmt = 1
     end
 
+    local mouseFocus = GetMouseFocus()
+    if mouseFocus and mouseFocus.parentListBox and mouseFocus.parentListBox == listbox then
+        ----print("LINE OnLeave:", mouseFocus.fontString:GetText(), mouseFocus:IsEnabled())
+        mouseFocus:GetScript("OnLeave")(mouseFocus)  -- Calls CListBox.OnLeaveLine() .
+    end
+
+    -- Scroll.
     if (delta < 0) then
         for i = 1, scrollAmt do
             CListBox.ScrollDown(listbox)
@@ -1059,6 +1227,12 @@ function CListBox.OnMouseWheel(thisDisplay, delta)  --DJUchanged ...
         for i = 1, scrollAmt do
             CListBox.ScrollUp(listbox)
         end
+    end
+
+    mouseFocus = GetMouseFocus()
+    if mouseFocus and mouseFocus.parentListBox and mouseFocus.parentListBox == listbox then
+        ----print("LINE OnEnter:", mouseFocus.fontString:GetText(), mouseFocus:IsEnabled())
+        mouseFocus:GetScript("OnEnter")(mouseFocus)  -- Calls CListBox.OnEnterLine() .
     end
 end
 
@@ -1072,14 +1246,31 @@ end
 
 
 -- ****************************************************************************
+-- Sets tooltip text for a specific line in the listbox.
+-- ****************************************************************************
+function CListBox.Line_SetTooltip(thisLine, tooltipText, tooltipAnchor)
+    setTooltipInfo(thisLine, nil, tooltipText, tooltipAnchor)
+end
+
+
+-- ****************************************************************************
+-- Sets tooltip title and text for a specific line in the listbox.
+-- ****************************************************************************
+function CListBox.Line_SetTooltipTitleAndText(thisLine, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo(thisLine, tooltipTitle, tooltipText, tooltipAnchor)
+end
+
+
+-- ****************************************************************************
 -- Creates a new line using the register create line handler.
 -- ****************************************************************************
 function CListBox.CreateLine(thisLB)
     -- Get a line from end of cache, if there are any.  Otherwise, call the
     -- registered line handler to create a new line.
     local lineCache = thisLB.lineCache
-    local line = (#lineCache > 0) and table.remove(lineCache) or thisLB:lineHandler()
+    local line = (#lineCache > 0) and table.remove(lineCache) or thisLB:createLineHandler()
 
+    line.parentListBox = thisLB
     line:SetParent(thisLB.displayFrame)
     line:SetHeight(thisLB.lineHeight)
     line:ClearAllPoints()
@@ -1087,6 +1278,11 @@ function CListBox.CreateLine(thisLB)
     line:SetScript("OnClick", CListBox.OnClickLine)
     line:SetScript("OnEnter", CListBox.OnEnterLine)
     line:SetScript("OnLeave", CListBox.OnLeaveLine)
+    line:SetScript("OnEnable", CListBox.OnEnableLine)
+    line:SetScript("OnDisable", CListBox.OnDisableLine)
+
+    line.SetTooltip = CListBox.Line_SetTooltip
+    line.SetTooltipTitleAndText = CListBox.Line_SetTooltipTitleAndText
 
     local lines = thisLB.lines
     if (#lines == 0) then
@@ -1096,6 +1292,42 @@ function CListBox.CreateLine(thisLB)
         line:SetPoint("TOPLEFT", lines[#lines], "BOTTOMLEFT")
         line:SetPoint("TOPRIGHT", lines[#lines], "BOTTOMRIGHT")
     end
+
+    if not line.invisibleLine then
+        -- Create an invisible line over the line so we can still show tooltips while the line is disabled.
+        line.invisibleLine = CreateFrame("Button", nil, thisLB)
+        line.invisibleLine.parentListBox = thisLB
+        line.invisibleLine:SetFrameStrata( line:GetFrameStrata() )
+        line.invisibleLine:SetFrameLevel( line:GetFrameLevel()+10 )
+        line.invisibleLine:SetScript("OnEnter", CListBox.OnEnterInvisibleLine)
+        line.invisibleLine:SetScript("OnLeave", CListBox.OnLeaveInvisibleLine)
+
+--~         --vvvvvvvvvvvvvvvvvvvvvvvvvv[ FOR DEBUGGING ]vvvvvvvvvvvvvvvvvvvvvvvvvv
+--~         line.invisibleLine.bg = line.invisibleLine:CreateTexture()
+--~         line.invisibleLine.bg:SetAllPoints()
+--~         line.invisibleLine.bg:SetColorTexture(1, 0.4, 0.4,  0.2)
+--~         --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    end
+    line.invisibleLine.relativeLine = line
+    line.invisibleLine:ClearAllPoints()
+    line.invisibleLine:SetPoint("TOPLEFT", line, "TOPLEFT", 0, 0)
+    line.invisibleLine:SetPoint("BOTTOMRIGHT", line, "BOTTOMRIGHT", 0, 0)
+    if not thisLB.tooltipWhileDisabled then
+        line.invisibleLine:Hide()
+    end
+
+    if not line.separatorLine then
+        line.separatorLine = line.invisibleLine:CreateLine(nil, "BACKGROUND", nil, 0)
+        line.separatorLine:SetColorTexture(0.25, 0.25, 0.25, 0.5)
+        local left = (thisLB.separatorLeft or 0) + 4
+        local right = (thisLB.separatorRight or 0) - 4
+        line.separatorLine:SetStartPoint("LEFT", left, 0)
+        line.separatorLine:SetEndPoint("RIGHT", right, 0)
+        line.separatorLine:Hide()
+    end
+
+    ----private.UDControls.Outline(line.invisibleLine, {r=0, g=1, b=0, a=1, thickness=2})  -- For debugging.
+    ----private.UDControls.Outline(line, {r=1, g=0, b=0, a=1, thickness=1})  -- For debugging.
 
     lines[#lines+1] = line
     line.lineNumber = #lines
@@ -1177,18 +1409,18 @@ end
 
 
 -- ****************************************************************************
--- Set the function to be called when a new line needs to be created.  The
--- called function must return a "Button" frame.
+-- Set the function to be called when a listbox line needs to be created.
+-- The handler function must return a "Button" frame.
+--      handler = function(thisLB)
 -- ****************************************************************************
 function CListBox.SetCreateLineHandler(thisLB, handler)
-    thisLB.lineHandler = handler
+    thisLB.createLineHandler = handler
 end
 
 
 -- ****************************************************************************
 -- Set the function to be called when a line is being displayed.
--- It is passed the line frame to be populated, and the value associated
--- with that line.
+--      handler = function(thisLB, line, value, isSelected)
 -- ****************************************************************************
 function CListBox.SetDisplayHandler(thisLB, handler)
     thisLB.displayHandler = handler
@@ -1197,7 +1429,7 @@ end
 
 -- ****************************************************************************
 -- Set the function to be called when a line in the listbox is clicked.
--- It is passed the line frame, and the value associated with that line.
+--      handler = function(thisLB, line, value, mouseButton, bDown)
 -- ****************************************************************************
 function CListBox.SetClickHandler(thisLB, handler)
     thisLB.clickHandler = handler
@@ -1229,6 +1461,14 @@ function CListBox.AddItem(thisLB, newItem, bScrollIntoView)
     if (bScrollIntoView) then CListBox.SetOffset(thisLB, maxOffset) end
 
     CListBox.Refresh(thisLB)
+end
+
+
+-- ****************************************************************************
+-- Adds a separator line to the listbox.
+-- ****************************************************************************
+function CListBox.AddSeparator(thisLB)
+    CListBox.AddItem(thisLB, kSeparatorLine)
 end
 
 
@@ -1335,6 +1575,7 @@ end
 -- ****************************************************************************
 function CListBox.ClearSelection(thisLB)   --DJUadded
     CListBox.SelectItem(thisLB, 0)  -- Clears selection.
+    thisLB.highlightFrame:Hide()
 end
 
 
@@ -1524,15 +1765,19 @@ local function CreateListBox(parent, bHideBorder)  --DJUadded 'bHideBorder' to t
     ----local listbox = CreateFrame("Frame", nil, parent, bHideBorder or "ThinBorderTemplate") -- Nice rect frame.  Just add color!
     ----local listbox = CreateFrame("Frame", nil, parent, bHideBorder or "GlowBoxTemplate") -- Bright yellow border with black-to-yellow gradient background.
     ----local listbox = CreateFrame("Frame", nil, parent, bHideBorder or "BackdropTemplate") --DJUadded
-    ----listbox:SetBackdrop{  --DJUadded
-    ----    ----bgFile = kTexture_White8x8,
-    ----    bgFile ="Interface\\FrameGeneral\\UI-Background-Marble",
-    ----    edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-    ----    insets = {left=3, right=3, top=2, bottom=3},  edgeSize=16,
-    ----}
-    ----listbox:SetBackdropColor(0,0,0, 1)  --DJUadded
-    ----listbox:SetBackdropBorderColor(0.9, 0.9, 0.0)  -- (Optional) Colorize the edges.  --DJUadded
+    ----if not bHideBorder then
+    ----    listbox:SetBackdrop{  --DJUadded
+    ----        ----bgFile = kTexture_White8x8,
+    ----        bgFile ="Interface\\FrameGeneral\\UI-Background-Marble",
+    ----        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+    ----        insets = {left=3, right=3, top=2, bottom=3},  edgeSize=16,
+    ----    }
+    ----    ----listbox:SetBackdropColor(0,0,0, 1)  --DJUadded
+    ----    ----listbox:SetBackdropBorderColor(0.9, 0.9, 0.0)  -- (Optional) Colorize the edges.  --DJUadded
+    ----end
+
     listbox.bHideBorder = bHideBorder
+    listbox.creationTime = GetTime()  --DJUadded
 
     -- Highlight frame.
     local highlight = CreateFrame("Frame")
@@ -1633,6 +1878,7 @@ local function CreateListBox(parent, bHideBorder)  --DJUadded 'bHideBorder' to t
     listbox.GetOffset               = CListBox.GetOffset
     listbox.SetOffset               = CListBox.SetOffset
     listbox.AddItem                 = CListBox.AddItem
+    listbox.AddSeparator            = CListBox.AddSeparator  --DJUadded
     listbox.RemoveItem              = CListBox.RemoveItem
     listbox.GetItem                 = CListBox.GetItem
     listbox.GetSelectedItem         = CListBox.GetSelectedItem
@@ -1653,7 +1899,6 @@ local function CreateListBox(parent, bHideBorder)  --DJUadded 'bHideBorder' to t
     ----listbox.SetIndicators           = CListBox.SetIndicators  --DJUadded
 
     -- Track internal values.
-    listbox.creationTime = GetTime()  --DJUadded
     listbox.displayFrame = display
     listbox.sliderFrame = slider
     listbox.upButton = upButton
@@ -1692,10 +1937,7 @@ end
 -- Called when the mouse enters the internal CheckButton.
 -- ****************************************************************************
 function CCheckBox.OnEnter(thisCheckButton)
-    if thisCheckButton.tooltip then
-        GameTooltip:SetOwner( thisCheckButton, thisCheckButton.tooltipAnchor or "ANCHOR_RIGHT" )
-        GameTooltip:SetText( thisCheckButton.tooltip, nil, nil, nil, nil, 1 )
-    end
+    if (thisCheckButton.tooltip) then showTooltip(thisCheckButton) end
 end
 
 
@@ -1723,11 +1965,18 @@ end
 
 
 -- ****************************************************************************
--- Sets the tooltip for the checkbox.
+-- Sets the tooltip text for the checkbox.
 -- ****************************************************************************
-function CCheckBox.SetTooltip(thisCheckBox, tooltip, tooltipAnchor)
-    thisCheckBox.checkButton.tooltip = tooltip
-    thisCheckBox.checkButton.tooltipAnchor = tooltipAnchor
+function CCheckBox.SetTooltip(thisCheckBox, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisCheckBox.checkButton, nil, tooltipText, tooltipAnchor )
+end
+
+
+-- ****************************************************************************
+-- Sets the tooltip title and text for the checkbox.
+-- ****************************************************************************
+function CCheckBox.SetTooltipTitleAndText(thisCheckBox, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisCheckBox.checkButton, tooltipTitle, tooltipText, tooltipAnchor )
 end
 
 
@@ -1845,6 +2094,7 @@ local function CreateCheckBox(parent, fontTemplateName, dx, dy, bClickableText)
     checkbox.Configure          = CCheckBox.Configure
     checkbox.SetLabel           = CCheckBox.SetLabel
     checkbox.SetTooltip         = CCheckBox.SetTooltip
+    checkbox.SetTooltipTitleAndText = CCheckBox.SetTooltipTitleAndText
     checkbox.SetClickHandler    = CCheckBox.SetClickHandler
     checkbox.GetChecked         = CCheckBox.GetChecked
     checkbox.SetChecked         = CCheckBox.SetChecked
@@ -1882,10 +2132,7 @@ end
 -- Called when the mouse enters the button.
 -- ****************************************************************************
 function CButton.OnEnter(thisBtn)
-    if (thisBtn.tooltip) then
-        GameTooltip:SetOwner( thisBtn, thisBtn.tooltipAnchor or "ANCHOR_RIGHT" )
-        GameTooltip:SetText(thisBtn.tooltip, nil, nil, nil, nil, 1)
-    end
+    if (thisBtn.tooltip) then showTooltip(thisBtn) end
 end
 
 
@@ -1898,11 +2145,18 @@ end
 
 
 -- ****************************************************************************
--- Sets the tooltip for the button.
+-- Sets the tooltip text for the button.
 -- ****************************************************************************
-function CButton.SetTooltip(thisBtn, tooltip, tooltipAnchor)
-    thisBtn.tooltip = tooltip
-    thisBtn.tooltipAnchor = tooltipAnchor
+function CButton.SetTooltip(thisBtn, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisBtn, nil, tooltipText, tooltipAnchor )
+end
+
+
+-- ****************************************************************************
+-- Sets the tooltip title and text for the button.
+-- ****************************************************************************
+function CButton.SetTooltipTitleAndText(thisBtn, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisBtn, tooltipTitle, tooltipText, tooltipAnchor )
 end
 
 
@@ -1927,6 +2181,7 @@ local function CreateButton(parent)
     -- Extension functions.
     button.SetClickHandler  = CButton.SetClickHandler
     button.SetTooltip = CButton.SetTooltip
+    button.SetTooltipTitleAndText = CButton.SetTooltipTitleAndText
 
     return button
 end
@@ -2076,10 +2331,7 @@ end
 -- Called when the mouse enters the slider.
 -- ****************************************************************************
 function CSlider.OnEnter(thisSliderFrame)
-    if (thisSliderFrame.tooltip) then
-        GameTooltip:SetOwner( thisSliderFrame, thisSliderFrame.tooltipAnchor or "ANCHOR_RIGHT" )
-        GameTooltip:SetText( thisSliderFrame.tooltip, nil, nil, nil, nil, 1 )
-    end
+    if (thisSliderFrame.tooltip) then showTooltip(thisSliderFrame) end
 end
 
 
@@ -2105,11 +2357,18 @@ end
 
 
 -- ****************************************************************************
--- Sets the tooltip for the slider.
+-- Sets the tooltip text for the slider.
 -- ****************************************************************************
-function CSlider.SetTooltip(thisSlider, tooltip, tooltipAnchor)
-    thisSlider.sliderFrame.tooltip = tooltip
-    thisSlider.sliderFrame.tooltipAnchor = tooltipAnchor
+function CSlider.SetTooltip(thisSlider, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisSlider.sliderFrame, nil, tooltipText, tooltipAnchor )
+end
+
+
+-- ****************************************************************************
+-- Sets the tooltip title and text for the slider.
+-- ****************************************************************************
+function CSlider.SetTooltipTitleAndText(thisSlider, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisSlider.sliderFrame, tooltipTitle, tooltipText, tooltipAnchor )
 end
 
 
@@ -2125,7 +2384,7 @@ end
 
 -- ****************************************************************************
 -- Sets the function to be called when the value of the slider is changed.
--- It is passed the slider and the new value.
+--      handler = function(thisSlider, value)
 -- ****************************************************************************
 function CSlider.SetValueChangedHandler(thisSlider, handler)
     thisSlider.valueChangedHandler = handler
@@ -2221,6 +2480,7 @@ local function CreateSlider(parent)
     slider.Configure                = CSlider.Configure
     slider.SetLabel                 = CSlider.SetLabel
     slider.SetTooltip               = CSlider.SetTooltip
+    slider.SetTooltipTitleAndText   = CSlider.SetTooltipTitleAndText
     slider.SetValueChangedHandler   = CSlider.SetValueChangedHandler
     slider.SetMinMaxValues          = CSlider.SetMinMaxValues
     slider.SetValueStep             = CSlider.SetValueStep
@@ -2249,7 +2509,7 @@ local CDropDown = {}
 -- ****************************************************************************
 -- Hides the dropdown listbox frame that holds the selections.
 -- ****************************************************************************
-function CDropDown.HideSelections(thisDD)
+function CDropDown.HideSelections(thisDD)  -- [ Keywords: CDropDown.CloseDropDownMenu() ]
     if (gDropDownListBoxFrame:IsShown() and gDropDownListBoxFrame.dropdown == thisDD) then
         gDropDownListBoxFrame:Hide()
     end
@@ -2260,10 +2520,7 @@ end
 -- Called when the mouse enters the dropdown.
 -- ****************************************************************************
 function CDropDown.OnEnter(thisDD)
-    if (thisDD.tooltip) then
-        GameTooltip:SetOwner(thisDD, thisDD.tooltipAnchor or "ANCHOR_RIGHT")
-        GameTooltip:SetText(thisDD.tooltip, nil, nil, nil, nil, 1)
-    end
+    if (thisDD.tooltip) then showTooltip(thisDD) end
 end
 
 
@@ -2376,38 +2633,50 @@ end
 -- Called by listbox to create a line.
 -- ****************************************************************************
 function CDropDown.CreateLine(thisDD)
-    local frame = CreateFrame("Button", nil, thisDD)
-    local fontString = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    fontString:SetPoint("LEFT", frame, "LEFT", 4, 0)  --DJUadded X offset.
-    fontString:SetPoint("RIGHT", frame, "RIGHT")
-    fontString:SetJustifyH("LEFT")  --DJUadded
-
-    frame.fontString = fontString
-    return frame
+    local line = CreateFrame("Button", nil, thisDD)
+    line.fontString = line:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    line.fontString:SetPoint("LEFT", line, "LEFT", 4, 0)  --DJUadded X offset.
+    line.fontString:SetPoint("RIGHT", line, "RIGHT")
+    line.fontString:SetJustifyH("LEFT")  --DJUadded
+    return line
 end
 
 
 -- ****************************************************************************
 -- Called by listbox to display a line.
 -- ****************************************************************************
-function CDropDown.DisplayLine(thisDDLB, line, value, isSelected)
-    line.fontString:SetText(gDropDownListBoxFrame.dropdown.items[value])
-    local color = isSelected and HIGHLIGHT_FONT_COLOR or NORMAL_FONT_COLOR
+function CDropDown.DisplayLine(thisDDLB, line, value, isSelected) -- thisDDLB == gDropDownListBoxFrame.listbox
+    local dropdown = gDropDownListBoxFrame.dropdown
+    local lineText = dropdown.items[value]
+
+    line.fontString:SetText(lineText)
+    local color = (isSelected and HIGHLIGHT_FONT_COLOR) or NORMAL_FONT_COLOR
     line.fontString:SetTextColor(color.r, color.g, color.b)
+
+    ------ Call the display handler.
+    ----local isSeparator = (lineText == kSeparatorLine)
+    ----if (dropdown.displayHandler and not isSeparator) then
+    ----    dropdown:displayHandler(line, value, lineText, isSelected)  --DJUadded
+    ----end
+    --^^^WOULD NEED TO ADD CDropDown.SetDisplayHandler( func(thisDD, line, value, text, isSelected) )
 end
 
 
 -- ****************************************************************************
 -- Called when a line is clicked.
 -- ****************************************************************************
-function CDropDown.OnClickLine(thisDDLB, line, value)
+function CDropDown.OnClickLine(thisDDLB, line, value) -- thisDDLB == gDropDownListBoxFrame.listbox
     local dropdown = gDropDownListBoxFrame.dropdown
     dropdown.selectedFontString:SetText(dropdown.items[value])
     dropdown.selectedItem = value
     gDropDownListBoxFrame:Hide()
 
     -- Call the registered change handler for the dropdown.
-    if (dropdown.changeHandler) then dropdown:changeHandler(dropdown.itemIDs[value]) end
+    if (dropdown.changeHandler) then
+        dropdown:changeHandler( dropdown.itemIDs[value],  -- Item's ID.
+                                dropdown.items[value],  -- Item's displayed text.
+                                value )  -- Item's index number.
+    end
 end
 
 
@@ -2420,10 +2689,18 @@ end
 
 
 -- ****************************************************************************
--- Sets the tooltip for the dropdown.
+-- Sets the tooltip text for the dropdown.
 -- ****************************************************************************
-function CDropDown.SetTooltip(thisDD, tooltip)
-    thisDD.tooltip = tooltip
+function CDropDown.SetTooltip(thisDD, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisDD, nil, tooltipText, tooltipAnchor )
+end
+
+
+-- ****************************************************************************
+-- Sets the tooltip title and text for the dropdown.
+-- ****************************************************************************
+function CDropDown.SetTooltipTitleAndText(thisDD, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisDD, tooltipTitle, tooltipText, tooltipAnchor )
 end
 
 
@@ -2464,8 +2741,8 @@ end
 
 
 -- ****************************************************************************
--- Sets the function to be called when one of the dropdown's options is
--- selected. It is passed the ID for the selected item.
+-- Sets the function to be called when one of the dropdown's options is selected.
+--      handler = function(thisDD, selectedID, selectedText, selectedIndex)
 -- ****************************************************************************
 function CDropDown.SetChangeHandler(thisDD, handler)
     thisDD.changeHandler = handler
@@ -2497,6 +2774,14 @@ function CDropDown.AddItem(thisDD, text, id, bPreventDuplicate)
     -- New item, so add it.
     thisDD.items[ #thisDD.items+1 ] = text
     thisDD.itemIDs[ #thisDD.items ] = id
+end
+
+
+-- ****************************************************************************
+-- Adds a separator line to the dropdown.
+-- ****************************************************************************
+function CDropDown.AddSeparator(thisDD)
+    CDropDown.AddItem(thisDD, kSeparatorLine)
 end
 
 
@@ -2590,7 +2875,9 @@ function CDropDown.SelectIndex(thisDD, itemNum, bCallChangeHandler)  --DJUadded
 
     -- Call the registered change handler for the dropdown.
     if (bCallChangeHandler and thisDD.changeHandler) then
-        thisDD:changeHandler( thisDD.itemIDs[itemNum] )
+        thisDD:changeHandler( thisDD.itemIDs[itemNum],  -- Item's ID.
+                              thisDD.items[itemNum],  -- Item's displayed text.
+                              itemNum )  -- Item's index number.
     end
     return true
 end
@@ -2646,34 +2933,37 @@ end
 
 
 -- ****************************************************************************
--- Selects next item in the dropdown and invokes the change handler (if set).
+-- Selects next or previous item in the dropdown and invokes the change handler (if set).
 -- ****************************************************************************
-function CDropDown.SelectNext(thisDD)  --DJUadded
+function CDropDown.SelectNextOrPrevious(thisDD, bNext)  --DJUadded
     if gDropDownListBoxFrame:IsShown() then gDropDownListBoxFrame:Hide() end
+    local numItems = thisDD:GetNumItems()
     local itemNum = thisDD:GetSelectedIndex()
-    if (itemNum < thisDD:GetNumItems()) then
-        thisDD:SelectIndex( itemNum+1 )
-        if thisDD.changeHandler then
-            local selectedID = CDropDown.GetSelectedID(thisDD)
-            thisDD:changeHandler( thisDD.itemIDs[selectedID] )
+
+    -- Find next/previous line.  (Skip separator lines.)
+    local bFound = false
+    if bNext then
+        while not bFound and itemNum < numItems do  -- Find next line that is not a separator.
+            itemNum = itemNum + 1
+            local itemText = thisDD.items[itemNum]
+            bFound = (itemText ~= kSeparatorLine)
+        end
+    else -- Previous
+        while not bFound and itemNum > 1 do  -- Find previous line that is not a separator.
+            itemNum = itemNum - 1
+            local itemText = thisDD.items[itemNum]
+            bFound = (itemText ~= kSeparatorLine)
         end
     end
-end
 
-
--- ****************************************************************************
--- Selects previous item in the dropdown and invokes the change handler (if set).
--- ****************************************************************************
-function CDropDown.SelectPrevious(thisDD)  --DJUadded
-    if gDropDownListBoxFrame:IsShown() then gDropDownListBoxFrame:Hide() end
-    local itemNum = thisDD:GetSelectedIndex()
-    if (itemNum > 1) then
-        thisDD:SelectIndex( itemNum-1 )
-
-        -- Call the registered change handler for the dropdown.
+    -- Select the line we found.
+    if bFound then
+        thisDD:SelectIndex(itemNum)
         if thisDD.changeHandler then
-            local selectedID = CDropDown.GetSelectedID(thisDD)
-            thisDD:changeHandler( thisDD.itemIDs[selectedID] )
+            -- Call the registered change handler for the dropdown.
+            thisDD:changeHandler( thisDD.itemIDs[itemNum],  -- Item's ID.
+                                  thisDD.items[itemNum],  -- Item's displayed text.
+                                  itemNum )  -- Item's index number.
         end
     end
 end
@@ -2811,7 +3101,7 @@ end
 -- ****************************************************************************
 -- Creates and returns a dropdown object ready to be configured.
 -- ****************************************************************************
-local function CreateDropDown(parent)
+local function CreateDropDown(parent, bDisableWheelCycling)
     -- Create dropdown listbox if it hasn't already been.
     if (not gDropDownListBoxFrame) then CDropDown.CreateListBoxFrame(parent, true) end  --DJUchanged: Added true param.
 
@@ -2823,10 +3113,15 @@ local function CreateDropDown(parent)
     dropdown:SetScript("OnEnter", CDropDown.OnEnter)
     dropdown:SetScript("OnLeave", CDropDown.OnLeave)
     dropdown:SetScript("OnHide", CDropDown.OnHide)
-    dropdown:SetScript("OnMouseWheel", function(this, delta) --DJUadded
-            if (delta < 0) then CDropDown.SelectNext(this)
-            else CDropDown.SelectPrevious(this) end
-        end)
+    if bDisableWheelCycling then  --DJUadded...
+        dropdown:SetScript("OnMouseWheel", function() end)  -- Do nothing.
+    else
+        dropdown:SetScript("OnMouseWheel", function(thisDD, delta) --DJUadded
+                thisDD:HideSelections()  -- i.e. CloseDropDownMenu()
+                local bNext = (delta < 0) -- i.e. WheelDown?
+                CDropDown.SelectNextOrPrevious(thisDD, bNext)
+            end)
+    end
 
     -- Left border.
     local left = dropdown:CreateTexture(nil, "BACKGROUND")
@@ -2854,15 +3149,13 @@ local function CreateDropDown(parent)
     middle:SetTexCoord(0.1953125, 0.7890625, 0.28125, 0.671875)
 
     -- Label.
-    local label = dropdown:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    label:SetPoint("BOTTOMLEFT", left, "TOPLEFT", 2, 2)
-
+    local labelFontString = dropdown:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    labelFontString:SetPoint("BOTTOMLEFT", left, "TOPLEFT", 2, 2)
 
     -- DropDown button.
     local button = CreateFrame("Button", nil, dropdown)
-    button:SetWidth(24)
-    button:SetHeight(24)
-    button:SetPoint("BOTTOMRIGHT", 1, 1)
+    button:SetSize(22, 25)  -- Was 24,24
+    button:SetPoint("BOTTOMRIGHT", 1, 0)
     button:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollDown-Up")
     button:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollDown-Down")
     button:SetDisabledTexture("Interface\\ChatFrame\\UI-ChatIcon-ScrollDown-Disabled")
@@ -2885,6 +3178,7 @@ local function CreateDropDown(parent)
     dropdown.SetListBoxWidth    = CDropDown.SetListBoxWidth
     dropdown.SetLabel           = CDropDown.SetLabel
     dropdown.SetTooltip         = CDropDown.SetTooltip
+    dropdown.SetTooltipTitleAndText = CDropDown.SetTooltipTitleAndText
     dropdown.SetChangeHandler   = CDropDown.SetChangeHandler
     dropdown.HideSelections     = CDropDown.HideSelections
     dropdown.GetNumItems        = CDropDown.GetNumItems  --DJUadded
@@ -2902,16 +3196,18 @@ local function CreateDropDown(parent)
     dropdown.Disable            = CDropDown.Disable
     dropdown.Enable             = CDropDown.Enable
     dropdown.GetListBoxFrame    = CDropDown.GetListBoxFrame  --DJUadded
-    dropdown.SelectNext         = CDropDown.SelectNext  --DJUadded
-    dropdown.SelectPrevious     = CDropDown.SelectPrevious  --DJUadded
+    dropdown.SelectNextOrPrevious = CDropDown.SelectNextOrPrevious  --DJUadded
+    dropdown.SelectNext         = function(thisDD) thisDD:SelectNextOrPrevious(true) end  --DJUadded
+    dropdown.SelectPrevious     = function(thisDD) thisDD:SelectNextOrPrevious(false) end  --DJUadded
     dropdown.SetBackdropColor   = CDropDown.SetBackdropColor  --DJUadded
     dropdown.SetBackdropBorderColor = CDropDown.SetBackdropBorderColor  --DJUadded
     dropdown.SetDynamicWheelSpeed = CDropDown.SetDynamicWheelSpeed  --DJUadded
+    dropdown.AddSeparator       = CDropDown.AddSeparator  --DJUadded
 
     -- Track internal values.
     dropdown.selectedFontString = selected
     dropdown.buttonFrame = button
-    dropdown.labelFontString = label
+    dropdown.labelFontString = labelFontString
     dropdown.items = {}
     dropdown.itemIDs = {}
     dropdown.selectedItem = 0  -- index #
@@ -2968,10 +3264,7 @@ end
 -- Called when the mouse enters the editbox.
 -- ****************************************************************************
 function CEditBox.OnEnter(thisEditBoxFrame)
-    if (thisEditBoxFrame.tooltip) then
-        GameTooltip:SetOwner(thisEditBoxFrame, thisEditBoxFrame.tooltipAnchor or "ANCHOR_RIGHT")
-        GameTooltip:SetText(thisEditBoxFrame.tooltip, nil, nil, nil, nil, 1)
-    end
+    if (thisEditBoxFrame.tooltip) then showTooltip(thisEditBoxFrame) end
 end
 
 
@@ -2992,11 +3285,18 @@ end
 
 
 -- ****************************************************************************
--- Sets the tooltip for the editbox.
+-- Sets the tooltip text for the editbox.
 -- ****************************************************************************
-function CEditBox.SetTooltip(thisEB, tooltip, tooltipAnchor)
-    thisEB.editboxFrame.tooltip = tooltip
-    thisEB.editboxFrame.tooltipAnchor = tooltipAnchor
+function CEditBox.SetTooltip(thisEB, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisEB.editboxFrame, nil, tooltipText, tooltipAnchor )
+end
+
+
+-- ****************************************************************************
+-- Sets the tooltip title and text for the editbox.
+-- ****************************************************************************
+function CEditBox.SetTooltipTitleAndText(thisEB, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisEB.editboxFrame, tooltipTitle, tooltipText, tooltipAnchor )
 end
 
 
@@ -3031,6 +3331,7 @@ end
 
 -- ****************************************************************************
 -- Sets the handler to be called when the text in the editbox changes.
+--      handler = function(thisEB)
 -- ****************************************************************************
 function CEditBox.SetTextChangedHandler(thisEB, handler)
     thisEB.textChangedHandler = handler
@@ -3135,6 +3436,7 @@ local function CreateEditBox(parent)
     editbox.Configure               = CEditBox.Configure
     editbox.SetLabel                = CEditBox.SetLabel
     editbox.SetTooltip              = CEditBox.SetTooltip
+    editbox.SetTooltipTitleAndText  = CEditBox.SetTooltipTitleAndText
     editbox.SetEnterHandler         = CEditBox.SetEnterHandler
     editbox.SetEscapeHandler        = CEditBox.SetEscapeHandler
     editbox.SetTextChangedHandler   = CEditBox.SetTextChangedHandler
@@ -3510,11 +3812,7 @@ end
 -- Called when the mouse enters the color swatch.
 -- ****************************************************************************
 local function ColorSwatch_OnEnter(thisCS)
-    if (thisCS.tooltip) then
-        GameTooltip:SetOwner(thisCS, thisCS.tooltipAnchor or "ANCHOR_RIGHT")
-        GameTooltip:SetText(thisCS.tooltip, nil, nil, nil, nil, 1)
-    end
-
+    if (thisCS.tooltip) then showTooltip(thisCS) end
     ----thisCS.borderTexture:SetVertexColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
 end
 
@@ -3537,11 +3835,18 @@ end
 
 
 -- ****************************************************************************
--- Sets the tooltip for the color swatch.
+-- Sets the tooltip text for the color swatch.
 -- ****************************************************************************
-local function ColorSwatch_SetTooltip(thisCS, tooltip, tooltipAnchor)
-    thisCS.tooltip = tooltip
-    thisCS.tooltipAnchor = tooltipAnchor
+local function ColorSwatch_SetTooltip(thisCS, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisCS, nil, tooltipText, tooltipAnchor )
+end
+
+
+-- ****************************************************************************
+-- Sets the tooltip title and text for the color swatch.
+-- ****************************************************************************
+local function ColorSwatch_SetTooltipTitleAndText(thisCS, tooltipTitle, tooltipText, tooltipAnchor)
+    setTooltipInfo( thisCS, tooltipTitle, tooltipText, tooltipAnchor )
 end
 
 
@@ -3615,6 +3920,7 @@ local function CreateColorSwatch(parent, size)
     colorswatch.GetColor                = ColorSwatch_GetColor
     colorswatch.SetColorChangedHandler  = ColorSwatch_SetColorChangedHandler
     colorswatch.SetTooltip              = ColorSwatch_SetTooltip
+    colorswatch.SetTooltipTitleAndText  = ColorSwatch_SetTooltipTitleAndText
     colorswatch.Disable                 = ColorSwatch_Disable
     colorswatch.Enable                  = ColorSwatch_Enable
     colorswatch.CloseColorPicker        = ColorSwatch_CloseColorPicker
@@ -3627,6 +3933,8 @@ end
 --#############################################################################
 -------------------------------------------------------------------------------
 -- TextScrollFrame functions.
+-- (Based on Mayron's video, "Creating WoW AddOns - Episode 8 - Scroll Frames and More XML".)
+-- https://www.youtube.com/watch?v=1CQHKo1Pt2Q&list=PL3wt7cLYn4N-3D3PTTUZBM2t1exFmoA2G&index=10
 -------------------------------------------------------------------------------
 --#############################################################################
 
@@ -3734,14 +4042,29 @@ local function CreateTextScrollFrame(parent, title, width, height)  --DJUadded
     containerFrame.scrollFrame.ScrollBar.texture:SetPoint("BOTTOMRIGHT", -1, 5)
     containerFrame.scrollFrame.ScrollBar.texture:SetColorTexture(0.08, 0.08, 0.08, 0.5)
 
-    ----containerFrame.scrollFrame:SetScript("OnMouseWheel", function(self, delta)
-    ----        -- Customize mouse wheel scroll speed.
-    ----        local newValue = self:GetVerticalScroll() - (delta * 20) -- Larger delta multiplier speeds up scrolling.
-    ----        if (newValue < 0) then newValue = 0
-    ----        elseif (newValue > self:GetVerticalScrollRange()) then newValue = self:GetVerticalScrollRange()
-    ----        end
-    ----        self:SetVerticalScroll(newValue)
-    ----    end)
+    ----containerFrame.scrollFrame.ScrollBar:SetValueStep(0.0001)  <<< HAD NO EFFECT.
+
+    containerFrame.scrollFrame.defaultOnMouseWheel = containerFrame.scrollFrame:GetScript("OnMouseWheel")
+    containerFrame.scrollFrame:SetScript("OnMouseWheel", function(self, delta)  -- See Mayron's video (above) @ ~30 minutes.
+            -- Customize mouse wheel scroll speed.
+            if not self.lastWheelTime then self.lastWheelTime = 0 end
+            local t = GetTime()  -- seconds
+            local dt = t - self.lastWheelTime
+            self.lastWheelTime = t
+
+            -- Compute step size based on mousewheel speed.  (Call SetMouseWheelStepSpeed() to change these values.)
+            local step = delta * self.stepSize
+            if     dt <= 0.015 then step = step * self.stepMultSpeed3  -- Largest multipler.
+            elseif dt <= 0.025 then step = step * self.stepMultSpeed2
+            elseif dt <= 0.200 then step = step * self.stepMultSpeed1  -- Smallest multiplier.
+            end
+
+            local newValue = self:GetVerticalScroll() - step
+            if (newValue < 0) then newValue = 0
+            elseif (newValue > self:GetVerticalScrollRange()) then newValue = self:GetVerticalScrollRange()
+            end
+            self:SetVerticalScroll(newValue)
+        end)
 
     -- Create the scrolling child frame, set its width to fit, and give it an arbitrary minimum height of 1.
     containerFrame.scrollChild = CreateFrame("Frame", nil, containerFrame.scrollFrame)
@@ -3758,16 +4081,13 @@ local function CreateTextScrollFrame(parent, title, width, height)  --DJUadded
 
     -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
     -- AddText(text, dx, dy, fontName):
-    --      'dx' and 'dy' must be positive!
     --      Note: You can change color of text parts using the "|cAARRGGBB...|r" syntax.
     containerFrame.strings = {}
     containerFrame.nextVertPos = 0  -- # of pixels from the top to add the next text string.
     containerFrame.AddText = function(self, text, dx, dy, fontName)
             assert(type(self) == "table")  -- Fails if this function is called using a dot instead of a colon.
             dx = dx or 0
-            assert(dx >= 0)
             dy = dy or 1
-            assert(dy >= 0)
 
             local numStrings = #containerFrame.strings
             numStrings = numStrings + 1
@@ -3781,6 +4101,7 @@ local function CreateTextScrollFrame(parent, title, width, height)  --DJUadded
             if (numStrings > 1) then
                 str:SetPoint("TOP", self.strings[numStrings-1], "BOTTOM", 0, -dy)
             else -- It's the first string to be added.
+                dy = math.max(dy, 0)  -- Prevents a scrolling bug when thumb is dragged below bottom of scrollbar.
                 str:SetPoint("TOP", self.scrollChild, "TOP", 0, -dy)
             end
             str.verticalScrollPos = self.nextVertPos
@@ -3821,9 +4142,31 @@ local function CreateTextScrollFrame(parent, title, width, height)  --DJUadded
             self.scrollChild.bg:SetColorTexture(r, g, b, alpha)
         end
 
+    -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+    -- SetMouseWheelStepSpeed(stepSize, stepMultSpeed1, stepMultSpeed2, stepMultSpeed3):
+    --  stepSize: How far the text scrolls from a single mouse wheel click.
+    --  stepMultSpeed1: Smallest multiplier applied to stepSize when mouse wheel is scrolled faster than normal.
+    --  stepMultSpeed2: Medium multiplier applied to stepSize when mouse wheel is scrolled even faster.
+    --  stepMultSpeed3: Largest multiplier applied to stepSize when mouse wheel is scrolled even faster.
+    containerFrame.SetMouseWheelStepSpeed = function(self, stepSize, stepMultSpeed1, stepMultSpeed2, stepMultSpeed3)
+            local scrollFrame = self.scrollFrame
+            scrollFrame.stepSize = stepSize or 20
+            scrollFrame.stepMultSpeed1 = stepMultSpeed1 or 2.5
+            scrollFrame.stepMultSpeed2 = stepMultSpeed2 or 4
+            scrollFrame.stepMultSpeed3 = stepMultSpeed3 or 8
+        end
+
+    -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+    -- SetMouseWheelDefault():
+    -- Restores the default mouse wheel scrolling.  (One mouse wheel click scrolls half a page.)
+    containerFrame.SetMouseWheelDefault = function(self)
+            self.scrollFrame:SetScript("OnMouseWheel", self.scrollFrame.defaultOnMouseWheel)
+        end
+
     -----------
     -- Finish.
     -----------
+    containerFrame:SetMouseWheelStepSpeed()
     containerFrame.creationTime = GetTime()
     return containerFrame
 end
@@ -3940,8 +4283,6 @@ end
 -- Utility Functions.  --DJUadded--
 -------------------------------------------------------------------------------
 --#############################################################################
-
-local CUtil = {}
 
 
 -- ****************************************************************************
@@ -4167,6 +4508,56 @@ function CUtil.CloseDropDowns()
 end
 
 
+-- ****************************************************************************
+-- Creates a colored outline around the specified frame.  (Useful for debugging frame positions.)
+-- EXAMPLE:
+--      private.UDControls.Outline( yourFrame, {r=1, g=0, b=0, a=0.5, thickness=1} )
+-- ****************************************************************************
+function CUtil.Outline(frame, options)
+    local r = (options and options.r) or 1
+    local g = (options and options.g) or 1
+    local b = (options and options.b) or 1
+    local a = (options and options.a) or 1
+    local thickness = (options and options.thickness) or 1
+
+    if not frame._edges then
+        frame._edges = {}
+        for i = 1, 4 do
+            frame._edges[i] = frame:CreateLine(nil, "BACKGROUND", nil, 0)
+            local line = frame._edges[i]
+            line:SetThickness(thickness)
+            line:SetColorTexture(r, g, b, a)
+            if i == 1 then
+                line:SetStartPoint("TOPLEFT")
+                line:SetEndPoint("TOPRIGHT")
+            elseif i == 2 then
+                line:SetStartPoint("TOPRIGHT")
+                line:SetEndPoint("BOTTOMRIGHT")
+            elseif i == 3 then
+                line:SetStartPoint("BOTTOMRIGHT")
+                line:SetEndPoint("BOTTOMLEFT")
+            else
+                line:SetStartPoint("BOTTOMLEFT")
+                line:SetEndPoint("TOPLEFT")
+            end
+        end
+    end
+end
+
+
+-- ****************************************************************************
+-- Displays tooltips that has text and a title.
+-- ****************************************************************************
+function CUtil.GameTooltip_SetTitleAndText(title, text, wrapText)
+    GameTooltip:ClearLines()
+    local r, g, b = HIGHLIGHT_FONT_COLOR:GetRGB()
+    GameTooltip:AddLine(title, r, g, b, wrapText)
+    r, g, b = NORMAL_FONT_COLOR:GetRGB()
+    GameTooltip:AddLine(text, r, g, b, wrapText)
+    GameTooltip:Show()
+end
+
+
 --#############################################################################
 -------------------------------------------------------------------------------
 -- Module interface.
@@ -4177,25 +4568,27 @@ private.UDControls.VERSION = CONTROLS_VERSION
 
 
 -- Exposed Functions.
-private.UDControls.CreateListBox          = CreateListBox
 private.UDControls.CreateCheckBox         = CreateCheckBox
-private.UDControls.CreateIconButton       = CreateIconButton
-private.UDControls.CreateTextureButton    = CreateTextureButton  --DJUadded
-private.UDControls.CreateSlider           = CreateSlider
+private.UDControls.CreateColorSwatch      = CreateColorSwatch  --DJUadded
 private.UDControls.CreateDropDown         = CreateDropDown
 --~ private.UDControls.CreateEditBox          = CreateEditBox
-private.UDControls.CreateOptionButton     = CreateOptionButton
-private.UDControls.CreateColorSwatch      = CreateColorSwatch  --DJUadded
-private.UDControls.CreateTextScrollFrame  = CreateTextScrollFrame  --DJUadded
 private.UDControls.CreateGroupBox         = CreateGroupBox  --DJUadded
+private.UDControls.CreateIconButton       = CreateIconButton
+private.UDControls.CreateListBox          = CreateListBox
+private.UDControls.CreateOptionButton     = CreateOptionButton
+private.UDControls.CreateSlider           = CreateSlider
+private.UDControls.CreateTextScrollFrame  = CreateTextScrollFrame  --DJUadded
+private.UDControls.CreateTextureButton    = CreateTextureButton  --DJUadded
 
 -- Exposed Utility Functions.  --DJUadded--
-private.UDControls.handleGlobalMouseClick = CUtil.handleGlobalMouseClick
-private.UDControls.DisplayAllFonts        = CUtil.DisplayAllFonts
-private.UDControls.MsgBox                 = CUtil.MsgBox
-private.UDControls.CreateTexture_NEW      = CUtil.CreateTexture_NEW
-private.UDControls.CreateHorizontalDivider= CUtil.CreateHorizontalDivider
-private.UDControls.TextSize               = CUtil.TextSize
 private.UDControls.CloseDropDowns         = CUtil.CloseDropDowns
+private.UDControls.CreateHorizontalDivider= CUtil.CreateHorizontalDivider
+private.UDControls.CreateTexture_NEW      = CUtil.CreateTexture_NEW
+private.UDControls.DisplayAllFonts        = CUtil.DisplayAllFonts
+private.UDControls.GameTooltip_SetTitleAndText = CUtil.GameTooltip_SetTitleAndText  --DJUadded
+private.UDControls.handleGlobalMouseClick = CUtil.handleGlobalMouseClick
+private.UDControls.MsgBox                 = CUtil.MsgBox
+private.UDControls.Outline                = CUtil.Outline
+private.UDControls.TextSize               = CUtil.TextSize
 
 --- End of File ---

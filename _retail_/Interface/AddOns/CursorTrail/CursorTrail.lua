@@ -126,9 +126,13 @@ kScreenBottomFourthMult = 1.077
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
 kNewFeatures =  -- For flagging new features in the UI.
 {
-    -- Added in version 10.2.7.2 ...
-    {anchor="BOTTOM", relativeTo="ProfilesUI.mainFrame.title", relativeAnchor="TOP", x=0, y=0}, --(Profiles GroupBox)
-    {anchor="BOTTOM", relativeTo="DefaultsBtn", relativeAnchor="TOP", x=0, y=0},  --(Defaults Button)
+    -- Added in version 10.1.7.4 ...
+    {anchor="TOP", relativeTo="ChangelogBtn", relativeAnchor="BOTTOM", x=0, y=3},
+
+--~ Disabled this notification in 10.2.7.4 ...
+--~     -- Added in version 10.2.7.2 ...
+--~     {anchor="BOTTOM", relativeTo="ProfilesUI.mainFrame.title", relativeAnchor="TOP", x=0, y=0}, --(Profiles GroupBox)
+--~     {anchor="BOTTOM", relativeTo="DefaultsBtn", relativeAnchor="TOP", x=0, y=0},  --(Defaults Button)
 
 --~ Disabled this notification in 10.2.7.1 ...
 --~     -- Added in version 10.1.7.2 ...
@@ -149,12 +153,13 @@ kNewFeatures =  -- For flagging new features in the UI.
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
 kNewModels =  -- For flagging new models in the dropdown list.
 {
-    -- Added in version 10.2.7.3 ...
-    [667272]=1, [1414694]=1, [963808]=1, [667272]=1, [519019]=1, [1029302]=1,
-    [1366901]=1, [4497548]=1, [1513210]=1, [1513212]=1, [5149867]=1, [4507709]=1,
-    [165595]=1, [166029]=1, [1121854]=1, [166159]=1, [166294]=1, [166640]=1,
-    [166054]=1, [166594]=1, [166453]=1, [166316]=1, [166334]=1, [166338]=1,
-    [166543]=1, [166566]=1,
+--~ Disabled this notification in 10.2.7.4 ...
+--~     -- Added in version 10.2.7.3 ...
+--~     [667272]=1, [1414694]=1, [963808]=1, [667272]=1, [519019]=1, [1029302]=1,
+--~     [1366901]=1, [4497548]=1, [1513210]=1, [1513212]=1, [5149867]=1, [4507709]=1,
+--~     [165595]=1, [166029]=1, [1121854]=1, [166159]=1, [166294]=1, [166640]=1,
+--~     [166054]=1, [166594]=1, [166453]=1, [166316]=1, [166334]=1, [166338]=1,
+--~     [166543]=1, [166566]=1,
 }
 
 --:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -650,6 +655,7 @@ end
 --~     -- Eat this event so it doesn't mysteriously cause an
 --~     -- "addon tried to call protected function" error
 --~     -- in Blizzard's CompactuUnitFrame.lua file.
+--~     -- (Taint seems to be caused by using the standard UIDropDownMenu control.)
 --~ end
 
 --~ -------------------------------------------------------------------------------
@@ -658,7 +664,8 @@ end
 --~     ----dbg("GROUP_ROSTER_UPDATE")
 --~     -- Eat this event so it doesn't mysteriously cause an
 --~     -- "addon tried to call protected function" error
---~     -- in Blizzard's CompactRaidFrameContainer.lua file.
+--~     -- in Blizzard's CompactRaidFrameContainer.lua file.  (Taint)
+--~     -- (Taint seems to be caused by using the standard UIDropDownMenu control.)
 --~ end
 
 -------------------------------------------------------------------------------

@@ -3,49 +3,23 @@ BigWigs3DB = {
 ["namespaces"] = {
 ["BigWigs_Plugins_Victory"] = {
 },
-["BigWigs_Bosses_Terros"] = {
-},
-["BigWigs_Bosses_Sennarth, The Cold Breath"] = {
-},
 ["BigWigs_Plugins_Alt Power"] = {
 },
 ["BigWigs_Plugins_BossBlock"] = {
 },
 ["BigWigs_Plugins_Sounds"] = {
 },
+["BigWigs_Bosses_Fyrakk the Blazing"] = {
+},
 ["BigWigs_Plugins_AutoReply"] = {
 },
-["BigWigs_Bosses_Kurog Grimtotem"] = {
+["BigWigs_Bosses_Tindral Sageswift, Seer of the Flame"] = {
 },
-["BigWigs_Bosses_Raszageth the Storm-Eater"] = {
+["BigWigs_Plugins_Statistics"] = {
 },
 ["BigWigs_Plugins_Countdown"] = {
 },
 ["BigWigs_Plugins_AltPower"] = {
-},
-["BigWigs_Bosses_Nymue, Weaver of the Cycle"] = {
-},
-["BigWigs_Plugins_Colors"] = {
-},
-["BigWigs_Plugins_Raid Icons"] = {
-},
-["BigWigs_Plugins_InfoBox"] = {
-},
-["BigWigs_Plugins_Bars"] = {
-},
-["BigWigs_Bosses_Fyrakk the Blazing"] = {
-},
-["BigWigs_Plugins_Super Emphasize"] = {
-},
-["BigWigs_Bosses_Council of Dreams"] = {
-},
-["BigWigs_Bosses_Tindral Sageswift, Seer of the Flame"] = {
-},
-["LibDualSpec-1.0"] = {
-},
-["BigWigs_Plugins_Wipe"] = {
-},
-["BigWigs_Plugins_Messages"] = {
 },
 ["BigWigs_Plugins_Proximity"] = {
 ["profiles"] = {
@@ -55,10 +29,28 @@ BigWigs3DB = {
 },
 },
 },
+["BigWigs_Plugins_Raid Icons"] = {
+},
+["BigWigs_Plugins_InfoBox"] = {
+},
+["BigWigs_Plugins_Bars"] = {
+},
+["BigWigs_Plugins_Super Emphasize"] = {
+},
+["BigWigs_Plugins_Wipe"] = {
+},
+["LibDualSpec-1.0"] = {
+},
+["BigWigs_Plugins_Messages"] = {
+},
+["BigWigs_Plugins_Colors"] = {
+},
 ["BigWigs_Plugins_Pull"] = {
 },
-["BigWigs_Plugins_Statistics"] = {
 },
+["profileKeys"] = {
+["Chicoxavier - Nemesis"] = "Default",
+["Dishy - Goldrinn"] = "Default",
 },
 ["global"] = {
 ["watchedMovies"] = {
@@ -67,14 +59,10 @@ BigWigs3DB = {
 true,
 true,
 },
-[-1597] = true,
-[927] = true,
 [1003] = true,
+[927] = true,
+[-1597] = true,
 },
-},
-["profileKeys"] = {
-["Chicoxavier - Nemesis"] = "Default",
-["Dishy - Goldrinn"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -166,28 +154,28 @@ BigWigsStatsDB = {
 },
 },
 [2549] = {
+[2555] = {
+["LFR"] = {
+["best"] = 179.7260000000024,
+["kills"] = 1,
+},
+},
 [2556] = {
 ["LFR"] = {
 ["best"] = 233.974000000002,
 ["kills"] = 1,
 },
 },
+[2519] = {
+["LFR"] = {
+["best"] = 307.4820000000004,
+["kills"] = 2,
+},
+},
 [2565] = {
 ["LFR"] = {
 ["best"] = 259.6210000000065,
-["kills"] = 1,
-},
-},
-[2519] = {
-["LFR"] = {
-["best"] = 316.4259999999995,
-["kills"] = 1,
-},
-},
-[2555] = {
-["LFR"] = {
-["best"] = 179.7260000000024,
-["kills"] = 1,
+["kills"] = 2,
 },
 },
 },
@@ -204,29 +192,16 @@ BigWigsStatsDB = {
 ["kills"] = 1,
 },
 },
-[2491] = {
-["LFR"] = {
-["best"] = 243.5540000000037,
-["kills"] = 1,
-},
-},
 [2482] = {
 ["LFR"] = {
 ["best"] = 225.4559999999983,
 ["kills"] = 1,
 },
 },
-},
-[2164] = {
-[2349] = {
+[2491] = {
 ["LFR"] = {
-["best"] = 467.7509999999966,
+["best"] = 243.5540000000037,
 ["kills"] = 1,
-},
-},
-[2361] = {
-["LFR"] = {
-["wipes"] = 2,
 },
 },
 },
@@ -247,6 +222,19 @@ BigWigsStatsDB = {
 ["LFR"] = {
 ["best"] = 199.9959999999846,
 ["kills"] = 1,
+},
+},
+},
+[2164] = {
+[2349] = {
+["LFR"] = {
+["best"] = 467.7509999999966,
+["kills"] = 1,
+},
+},
+[2361] = {
+["LFR"] = {
+["wipes"] = 2,
 },
 },
 },

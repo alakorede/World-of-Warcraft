@@ -129,6 +129,7 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
 
     if not HelpFrame then
         HelpFrame = private.UDControls.CreateTextScrollFrame(parent, "*** "..kAddonFolderName.." Help ***", 750)
+        HelpFrame:Hide()
         HelpFrame.topicOffsets = {}
         scrollDelaySecs = 0.1  -- Required so this newly created window has its scrollbar update correctly.
 
@@ -222,6 +223,14 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
         HelpFrame:RegisterForDrag("LeftButton")
         HelpFrame:SetScript("OnDragStart", function() HelpFrame:StartMoving() end)
         HelpFrame:SetScript("OnDragStop", function() HelpFrame:StopMovingOrSizing() end)
+
+        -- EVENTS --
+        HelpFrame:SetScript("OnShow", function(self)
+                Globals.PlaySound(829)  -- IG_SPELLBOOK_OPEN
+            end)
+        HelpFrame:SetScript("OnHide", function(self) 
+                Globals.PlaySound(830)  -- IG_SPELLBOOK_CLOSE
+            end) 
     end
 
     -- Scroll to top, or to specified topic.
@@ -241,7 +250,11 @@ end
 
 -------------------------------------------------------------------------------
 function CursorTrail_HideHelp()
-    if HelpFrame then HelpFrame:Hide() end
+    if HelpFrame and HelpFrame:IsShown() then
+        HelpFrame:Hide()
+        return true
+    end
+    return false
 end
 
 --- End of File ---

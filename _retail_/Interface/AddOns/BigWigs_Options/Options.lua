@@ -1673,4 +1673,59 @@ function options:ConfigTableChange(_, appName)
 	end
 end
 
+do
+	local _, addonTable = ...
+	-- DO NOT USE THIS DIRECTLY. This code may not be loaded
+	-- Use BigWigsAPI:ImportProfileString(addonName, profileString)
+	function options:SaveImportStringDataFromAddOn(addonName, profileString, customProfileName)
+		if type(addonName) ~= "string" or #addonName < 3 then error("Invalid addon name for profile import.") end
+		if type(profileString) ~= "string" or #profileString < 3 then error("Invalid profile string for profile import.") end
+		if customProfileName and (type(customProfileName) ~= "string" or #customProfileName < 3) then error("Invalid custom profile name for the string you want to import.") end
+		-- All AceConfigDialog code, go there for original
+		local frame = acd.popup
+		frame:Show()
+		local profileName = BigWigs.db:GetCurrentProfile()
+		if not customProfileName or profileName == customProfileName then
+			customProfileName = nil
+			frame.text:SetText(L.confirm_import_addon:format(addonName, profileName))
+		else
+			local profiles = BigWigs.db:GetProfiles()
+			local found = false
+			for i = 1, #profiles do
+				local name = profiles[i]
+				if name == customProfileName then
+					found = true
+					break
+				end
+			end
+			if found then
+				frame.text:SetText(L.confirm_import_addon_edit_profile:format(addonName, customProfileName))
+			else
+				frame.text:SetText(L.confirm_import_addon_new_profile:format(addonName, customProfileName))
+			end
+		end
+		local height = 61 + frame.text:GetHeight()
+		frame:SetHeight(height)
+
+		frame.accept:ClearAllPoints()
+		frame.accept:SetPoint("BOTTOMRIGHT", frame, "BOTTOM", -6, 16)
+		frame.cancel:Show()
+
+		frame.accept:SetScript("OnClick", function(self)
+			frame:Hide()
+			self:SetScript("OnClick", nil)
+			frame.cancel:SetScript("OnClick", nil)
+			if customProfileName then
+				BigWigs.db:SetProfile(customProfileName)
+			end
+			addonTable.SaveImportStringDataFromAddOn(profileString)
+		end)
+		frame.cancel:SetScript("OnClick", function(self)
+			frame:Hide()
+			self:SetScript("OnClick", nil)
+			frame.accept:SetScript("OnClick", nil)
+		end)
+	end
+end
+
 BigWigsOptions = options -- Set global

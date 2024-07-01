@@ -384,8 +384,8 @@ local REQ_POINTER, DISABLED_TEXT = {1, 1}, "|cffa0a0a0" .. L"Disabled"
 local OPC_Options = {
 	{ "section", caption=L"Interaction" },
 		{"radio", "InteractionMode", {L"Quick", L"Relaxed", L"Mouse-less"}},
-		{"twof", tag="OnPrimaryPress", caption=L"On ring binding press:"},
-		{"twof", tag="OnPrimaryRelease", caption=L"On ring binding release:"},
+		{"twof", tag="OnPrimaryPress", caption=L"On ring binding press:", menuOption="RingAtMouse"},
+		{"twof", tag="OnPrimaryRelease", caption=L"On ring binding release:", menuOption="QuickActionOnRelease", depOn="InteractionMode", depValue=2},
 		{"twof", tag="OnLeft", caption=L"On left click:", depOn="InteractionMode", depValue=2, otherwise=DISABLED_TEXT},
 		{"twof", tag="OnRight", caption=L"On right click:"},
 		{"twof", "QuickAction", caption=L"Quick action repeat:", depOn="InteractionMode", depValueSet=REQ_POINTER, otherwise=DISABLED_TEXT},
@@ -532,7 +532,7 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 		s.lo:SetFormattedText(v.valueFormat or "%s", v[3])
 		s.hi:SetFormattedText(v.valueFormat or "%s", v[4])
 		v.text = s.text
-		return s, ofsY - 18, false, 0
+		return s, ofsY - 20, false, 0
 	end
 	function build.radio(v, ofsY, halfpoint, rowHeight, rframe)
 		local radio, opts = XU:Create("OPie:RadioSet", nil, controlContainer), v[3]
@@ -584,19 +584,24 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 	local cY, halfpoint, rframe, rowHeight, wj = 0, false, controlContainer
 	for _, vj in ipairs(OPC_Options) do
 		wj, cY, halfpoint, rowHeight = build[vj[1]](vj, cY, halfpoint, rowHeight, rframe)
-		widgetControl[wj], optionControl[vj[2] or vj.tag or 0] = vj, vj
+		widgetControl[wj], optionControl[vj[2] or 0], optionControl[vj.tag or 0] = vj, vj, vj
 		vj.widget = wj
 	end
 	optionControl[0] = nil
+	local beam = CreateFrame("Frame", nil, controlContainer)
+	beam:SetPoint("TOPLEFT")
+	beam:SetPoint("BOTTOMRIGHT", wj, 0, -1)
 	function OPC_UpdateViewport()
-		local ch, vh = controlContainer:GetTop()-wj:GetBottom()+2, controlViewport:GetHeight()
-		controlContainer:SetHeight(ch)
+		local ch, vh = beam:GetHeight(), controlViewport:GetHeight()
+		if not (vh and ch and vh > 0 and ch > 0) then return end
 		optionsScrollBar:SetShown(vh < ch)
 		optionsScrollBar:SetMinMaxValues(0, ch - vh)
 		optionsScrollBar:SetWindowRange(vh)
-		optionsScrollBar:SetStepsPerPage(vh/4/30)
+		optionsScrollBar:SetStepsPerPage(math.max(vh/4/30, 50))
 		OPC_IsViewDirty = false
 	end
+	beam:SetScript("OnSizeChanged", OPC_UpdateViewport)
+	beam:SetScript("OnShow", OPC_UpdateViewport)
 end
 do -- customized widgets
 	local offsetPanel, offsetControl = CreateFrame("Frame", nil, frame, "UIDropDownCustomMenuEntryTemplate"), {"panel", "IndicationOffset"} do
@@ -668,28 +673,28 @@ do -- customized widgets
 		end
 		offsetControl.widget, optionControl[offsetControl[2]], widgetControl[offsetPanel] = offsetPanel, offsetControl, offsetControl
 	end
-	local function onMenuOptionClick(_, option, owner, checked)
+	local function onMenuOptionToggle(_, option, owner, checked)
 		-- checked comes pre-toggled iff keepShownOnClick
 		OPC_AlterOption(widgetControl[owner], option, (not checked) == (not DropDownList1:IsShown()))
+	end
+	local function onMenuOptionSetClick(_, pref, owner)
+		local c = widgetControl[owner]
+		OPC_AlterOption(c, c.menuOption, pref)
 	end
 	function optionControl.InteractionMode:refresh(newval)
 		local widget = self.widget
 		widget:SetValue(newval)
 		local doNothingText = "|cffa0a0a0" .. L"Do nothing"
-		optionControl.OnPrimaryRelease.widget:Disable()
 		optionControl.OnRight.widget:Disable()
-		optionControl.OnPrimaryRelease.text:SetText(newval == 1 and L"Use slice and close ring" or doNothingText)
 		optionControl.OnRight.text:SetText(newval ~= 3 and "Close ring" or doNothingText)
+		optionControl.OnPrimaryRelease.otherwise = newval == 1 and L"Use slice and close ring" or doNothingText
 		optionControl.ClickPriority.widget:SetShown(newval ~= 3)
 		optionControl.SliceBinding.forced = newval == 3
 		OPC_IsViewDirty = true
 	end
-	local function onRingAtMouseOptionClick(_, pref, owner)
-		OPC_AlterOption(widgetControl[owner], "RingAtMouse", pref)
-	end
 	function optionControl.OnPrimaryPress.menuInitializer()
 		local c = optionControl.OnPrimaryPress
-		local info = {func=onRingAtMouseOptionClick, arg2=c.widget, minWidth=240}
+		local info = {func=onMenuOptionSetClick, arg2=c.widget, minWidth=240}
 		local atMouse = PC:GetOption("RingAtMouse", OR_CurrentOptionsDomain)
 		info.text, info.arg1, info.checked = L"Open ring at screen center", false, not atMouse
 		UIDropDownMenu_AddButton(info)
@@ -704,9 +709,23 @@ do -- customized widgets
 		local atMouse = PC:GetOption("RingAtMouse", OR_CurrentOptionsDomain)
 		self.text:SetText(atMouse and L"Open ring at mouse" or L"Open ring at screen center")
 	end
+	function optionControl.OnPrimaryRelease:refresh()
+		self.text:SetText(not self.widget:IsEnabled() and self.otherwise
+		                  or PC:GetOption("QuickActionOnRelease", OR_CurrentOptionsDomain) and L"Quick action if mouse remains still"
+		                  or L"Do nothing")
+	end
+	function optionControl.OnPrimaryRelease.menuInitializer()
+		local c = optionControl.OnPrimaryRelease
+		local info = {func=onMenuOptionSetClick, arg2=c.widget, minWidth=240}
+		local qaOnRelease = PC:GetOption("QuickActionOnRelease", OR_CurrentOptionsDomain)
+		info.text, info.arg1, info.checked = L"Quick action if mouse remains still", true, qaOnRelease
+		UIDropDownMenu_AddButton(info)
+		info.text, info.arg1, info.checked = L"Do nothing", false, not qaOnRelease
+		UIDropDownMenu_AddButton(info)
+	end
 	function optionControl.QuickAction.menuInitializer()
 		local c = optionControl.QuickAction
-		local info = {func=onMenuOptionClick, arg2=c.widget, minWidth=240, isNotRadio=true, keepShownOnClick=true}
+		local info = {func=onMenuOptionToggle, arg2=c.widget, minWidth=240, isNotRadio=true, keepShownOnClick=true}
 		info.text, info.arg1, info.checked = L"Quick action at ring center", "CenterAction", PC:GetOption("CenterAction", OR_CurrentOptionsDomain)
 		UIDropDownMenu_AddButton(info)
 		info.text, info.arg1, info.checked = L"Quick action if mouse remains still", "MotionAction", PC:GetOption("MotionAction", OR_CurrentOptionsDomain)
@@ -725,7 +744,7 @@ do -- customized widgets
 	end
 	function optionControl.OnLeft.menuInitializer()
 		local c = optionControl.OnLeft
-		local info = {func=onMenuOptionClick, arg2=c.widget, minWidth=240, isNotRadio=true}
+		local info = {func=onMenuOptionToggle, arg2=c.widget, minWidth=240, isNotRadio=true}
 		info.text, info.arg1, info.checked = L"Leave open after use", "NoClose", PC:GetOption("NoClose", OR_CurrentOptionsDomain)
 		UIDropDownMenu_AddButton(info)
 	end
@@ -1057,7 +1076,6 @@ function frame.refresh()
 		end
 	end
 	OPC_BlockInput = false
-	OPC_UpdateViewport()
 	config.checkSVState(frame)
 end
 local function resetView()

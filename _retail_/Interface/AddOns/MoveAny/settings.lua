@@ -311,6 +311,7 @@ end
 
 local function AddSlider(x, key, val, func, vmin, vmax, steps, tab)
 	if sls[key] == nil then
+		posy = posy - 10
 		sls[key] = CreateFrame("Slider", "sls[" .. key .. "]", MALock.SC, "OptionsSliderTemplate")
 		sls[key]:SetWidth(MALock.SC:GetWidth() - 30 - x)
 		sls[key]:SetPoint("TOPLEFT", MALock.SC, "TOPLEFT", x + 5, posy)
@@ -351,6 +352,7 @@ local function AddSlider(x, key, val, func, vmin, vmax, steps, tab)
 	sls[key]:ClearAllPoints()
 	if key == "EDITMODE" or strfind(strlower(key), strlower(searchStr)) or strfind(strlower(MoveAny:GT("LID_" .. key)), strlower(searchStr)) then
 		sls[key]:Show()
+		posy = posy - 10
 		sls[key]:SetPoint("TOPLEFT", MALock.SC, "TOPLEFT", x, posy)
 		posy = posy - 30
 	else
@@ -411,8 +413,8 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	MoveAny:SetVersion(AddonName, 135994, "1.6.220")
-	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.220"))
+	MoveAny:SetVersion(AddonName, 135994, "1.6.226")
+	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.226"))
 	MALock.CloseButton:SetScript(
 		"OnClick",
 		function()
@@ -457,11 +459,11 @@ function MoveAny:InitMALock()
 		AddCheckBox(4, "MOVEFRAMES", true)
 		AddCheckBox(24, "MOVESMALLBAGS", false)
 		AddCheckBox(24, "MOVELOOTFRAME", false)
+		AddSlider(26, "KEYBINDWINDOW", 1, MoveAny.UpdateFrameKeybind, 1, 3, 1, keybinds)
 		AddCheckBox(24, "SAVEFRAMEPOSITION", true)
+		AddCheckBox(40, "FRAMESKEYDRAG", false)
 		AddCheckBox(24, "SAVEFRAMESCALE", true)
-		AddSlider(24, "KEYBINDWINDOW", 1, MoveAny.UpdateFrameKeybind, 1, 3, 1, keybinds)
-		AddCheckBox(24, "FRAMESKEYDRAG", false)
-		AddCheckBox(24, "FRAMESKEYSCALE", false)
+		AddCheckBox(40, "FRAMESKEYSCALE", false)
 		AddCheckBox(24, "FRAMESKEYRESET", false)
 		MoveAny:UpdateFrameKeybindText()
 		AddCategory("BUILTIN")
@@ -1041,7 +1043,7 @@ function MoveAny:ShowProfiles()
 			end
 		)
 
-		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.220"))
+		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.226"))
 		MAProfiles.CloseButton:SetScript(
 			"OnClick",
 			function()
@@ -3472,6 +3474,36 @@ function MoveAny:LoadAddon()
 				end
 			}
 		)
+
+		MoveAny:RegisterWidget(
+			{
+				["name"] = "PlayerPowerBarAltCounterBar",
+				["lstr"] = "LID_POWERBARCOUNTERBAR",
+				["userplaced"] = true,
+				["setup"] = function()
+					if UIPARENT_MANAGED_FRAME_POSITIONS then
+						UIPARENT_MANAGED_FRAME_POSITIONS["PlayerPowerBarAltCounterBar"] = nil
+					end
+
+					PlayerPowerBarAltCounterBar.ignoreFramePositionManager = true
+				end
+			}
+		)
+
+		MoveAny:RegisterWidget(
+			{
+				["name"] = "BuffTimer1",
+				["lstr"] = "LID_BUFFTIMER1",
+				["userplaced"] = true,
+				["setup"] = function()
+					if UIPARENT_MANAGED_FRAME_POSITIONS then
+						UIPARENT_MANAGED_FRAME_POSITIONS["BuffTimer1"] = nil
+					end
+
+					BuffTimer1.ignoreFramePositionManager = true
+				end
+			}
+		)
 	end
 
 	if not MoveAny:IsAddOnLoaded("Dominos") then
@@ -3810,7 +3842,7 @@ function MoveAny:LoadAddon()
 	end
 
 	if MoveAny:IsEnabled("MINIMAPFLAG", false) then
-		local flags = {"MiniMapInstanceDifficulty", "MiniMapChallengeMode"}
+		local flags = {"MiniMapInstanceDifficulty", "MiniMapChallengeMode", "GuildInstanceDifficulty"}
 		for i, name in pairs(flags) do
 			local flag = _G[name]
 			if flag then

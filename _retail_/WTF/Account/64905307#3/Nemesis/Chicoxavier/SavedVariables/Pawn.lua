@@ -1,13 +1,11 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.0911,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
-["ID"] = 193641,
-["Level"] = 460,
-["Link"] = "|cff0070dd|Hitem:193641::::::::70:256::1:7:10323:7974:6652:10532:10864:3139:8766:1:28:2587:::::|h[Headwrap of the Abandoned]|h|r",
+["ID"] = 202579,
+["Level"] = 493,
+["Link"] = "|cffa335ee|Hitem:202579::::::::70:256::82:8:6652:10533:10872:7979:10313:10884:1550:8767:1:28:2474:::::|h[Attendant's Concocting Cover]|h|r",
 },
 {
 ["ID"] = 193647,
@@ -47,20 +45,20 @@ nil,
 },
 {
 ["ID"] = 193648,
-["Level"] = 486,
-["Link"] = "|cffa335ee|Hitem:193648::::::::70:256::2:6:9636:6652:10864:10311:3165:8767:1:28:2156:::::|h[Azureblade's Work Gloves]|h|r",
+["Level"] = 489,
+["Link"] = "|cffa335ee|Hitem:193648::::::::70:256::2:6:9636:6652:10864:10312:3168:8767:1:28:2156:::::|h[Azureblade's Work Gloves]|h|r",
 },
 {
-["ID"] = 193696,
-["Level"] = 460,
+["ID"] = 144139,
+["Level"] = 467,
 ["AlsoFitsIn"] = 12,
-["Link"] = "|cff0070dd|Hitem:193696::::::::70:256::1:5:10323:7974:10532:3139:8766:1:28:2587:::::|h[Thunderous Downburst Ring]|h|r",
+["Link"] = "|cff0070dd|Hitem:144139::::::::70:256::54:7:6652:8812:10305:7756:10532:9851:8766:1:28:2565:::::|h[Viscous Ring]|h|r",
 },
 {
-["ID"] = 193633,
-["Level"] = 460,
+["ID"] = 144135,
+["Level"] = 467,
 ["AlsoFitsIn"] = 11,
-["Link"] = "|cff0070dd|Hitem:193633::::::::70:256::1:6:10323:7974:6652:10532:3139:8766:1:28:2587:::::|h[Unstable Arcane Loop]|h|r",
+["Link"] = "|cff0070dd|Hitem:144135::::::::70:256::54:7:6652:8811:10305:7756:10533:9851:8766:1:28:2565:::::|h[Pulled Grenade Pin]|h|r",
 },
 {
 ["ID"] = 194304,
@@ -90,6 +88,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::1:5:10323:7974:6652:3139:8766:1:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -143,7 +144,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

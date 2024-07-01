@@ -174,7 +174,22 @@ function isInteger(val)  -- 'val' can be a number or string containing a number.
 end
 
 -------------------------------------------------------------------------------
-function str_split(str, delimiter)
+local function str_split_lines(str)  -- Splits string into lines. (Returns empty lines too.)
+    local lines = {}
+    ----for line in string.gmatch(str, "(.-)\n") do
+    for line in string.gmatch(str, "([^\n]*)\n?") do
+        table.insert(lines, line)
+    end
+
+    -- The loop above creates one extra line we don't want.  Remove it.
+    if #lines > 0 then
+        table.remove(lines, #lines)
+    end
+    return lines
+end
+
+-------------------------------------------------------------------------------
+function str_split(str, delimiter)  -- Note: Does not return empty lines.
     assert(delimiter)
     local parts = {}
     for part in string.gmatch(str, "([^"..delimiter.."]+)") do
@@ -189,10 +204,10 @@ function strContains(str, sub)  -- Based on kgriffs/string_util.lua on GitHub.
     return str:find(sub, 1, true) ~= nil
 end
 
---~ -------------------------------------------------------------------------------
---~ function strStartsWith(str, start)  -- Based on kgriffs/string_util.lua on GitHub.
---~     return str:sub(1, #start) == start
---~ end
+-------------------------------------------------------------------------------
+function strStartsWith(str, start)  -- Based on kgriffs/string_util.lua on GitHub.
+    return str:sub(1, #start) == start
+end
 
 --~ -------------------------------------------------------------------------------
 --~ function strEndsWith(str, ending)  -- Based on kgriffs/string_util.lua on GitHub.
@@ -483,26 +498,30 @@ function HandleToolSwitches(params)  --[ Keywords: Slash Commands ]
     --       Shift decrease the amount of change each arrow key press.
     --       Ctrl increase the amount of change each arrow key press.
     --       When done, type "/ct model" to dump all values (BEFORE CLOSING THE UI).
-    elseif (params:sub(1,5) == "box++") then CmdLineValue("BaseOfsX",  params:sub(6), "+")
-    elseif (params:sub(1,5) == "boy++") then CmdLineValue("BaseOfsY",  params:sub(6), "+")
-    elseif (params:sub(1,5) == "bsx++") then CmdLineValue("BaseStepX", params:sub(6), "+")
-    elseif (params:sub(1,5) == "bsy++") then CmdLineValue("BaseStepY", params:sub(6), "+")
-    elseif (params:sub(1,5) == "box--") then CmdLineValue("BaseOfsX",  params:sub(6), "-")
-    elseif (params:sub(1,5) == "boy--") then CmdLineValue("BaseOfsY",  params:sub(6), "-")
-    elseif (params:sub(1,5) == "bsx--") then CmdLineValue("BaseStepX", params:sub(6), "-")
-    elseif (params:sub(1,5) == "bsy--") then CmdLineValue("BaseStepY", params:sub(6), "-")
+    ----elseif (params:sub(1,5) == "box++") then CmdLineValue("BaseOfsX",  params:sub(6), "+")
+    ----elseif (params:sub(1,5) == "boy++") then CmdLineValue("BaseOfsY",  params:sub(6), "+")
+    ----elseif (params:sub(1,5) == "bsx++") then CmdLineValue("BaseStepX", params:sub(6), "+")
+    ----elseif (params:sub(1,5) == "bsy++") then CmdLineValue("BaseStepY", params:sub(6), "+")
+    ----elseif (params:sub(1,5) == "box--") then CmdLineValue("BaseOfsX",  params:sub(6), "-")
+    ----elseif (params:sub(1,5) == "boy--") then CmdLineValue("BaseOfsY",  params:sub(6), "-")
+    ----elseif (params:sub(1,5) == "bsx--") then CmdLineValue("BaseStepX", params:sub(6), "-")
+    ----elseif (params:sub(1,5) == "bsy--") then CmdLineValue("BaseStepY", params:sub(6), "-")
     elseif (params:sub(1,3) == "box")   then CmdLineValue("BaseOfsX",  params:sub(4))
     elseif (params:sub(1,3) == "boy")   then CmdLineValue("BaseOfsY",  params:sub(4))
+    elseif (params:sub(1,3) == "boz")   then CmdLineValue("BaseOfsZ",  params:sub(4))
+    elseif (params:sub(1,3) == "brx")   then CmdLineValue("BaseRotX",  params:sub(4))
+    elseif (params:sub(1,3) == "bry")   then CmdLineValue("BaseRotY",  params:sub(4))
+    elseif (params:sub(1,3) == "brz")   then CmdLineValue("BaseRotZ",  params:sub(4))
     elseif (params:sub(1,3) == "bsx")   then CmdLineValue("BaseStepX", params:sub(4))
     elseif (params:sub(1,3) == "bsy")   then CmdLineValue("BaseStepY", params:sub(4))
-    elseif (params:sub(1,4) == "bs++")  then CmdLineValue("BaseScale", params:sub(5), "+")
-    elseif (params:sub(1,4) == "bs--")  then CmdLineValue("BaseScale", params:sub(5), "-")
+    ----elseif (params:sub(1,4) == "bs++")  then CmdLineValue("BaseScale", params:sub(5), "+")
+    ----elseif (params:sub(1,4) == "bs--")  then CmdLineValue("BaseScale", params:sub(5), "-")
     elseif (params:sub(1,2) == "bs")    then CmdLineValue("BaseScale", params:sub(3))
-    elseif (params:sub(1,4) == "bf++")  then CmdLineValue("BaseFacing",params:sub(5), "+")
-    elseif (params:sub(1,4) == "bf--")  then CmdLineValue("BaseFacing",params:sub(5), "-")
+    ----elseif (params:sub(1,4) == "bf++")  then CmdLineValue("BaseFacing",params:sub(5), "+")
+    ----elseif (params:sub(1,4) == "bf--")  then CmdLineValue("BaseFacing",params:sub(5), "-")
     elseif (params:sub(1,2) == "bf")    then CmdLineValue("BaseFacing",params:sub(3))
-    elseif (params:sub(1,4) == "hs++")  then CmdLineValue("HorizontalSlope", params:sub(5), "+")
-    elseif (params:sub(1,4) == "hs--")  then CmdLineValue("HorizontalSlope", params:sub(5), "-")
+    ----elseif (params:sub(1,4) == "hs++")  then CmdLineValue("HorizontalSlope", params:sub(5), "+")
+    ----elseif (params:sub(1,4) == "hs--")  then CmdLineValue("HorizontalSlope", params:sub(5), "-")
     elseif (params:sub(1,2) == "hs")    then CmdLineValue("HorizontalSlope", params:sub(3))
     ----elseif (params == "mdl++")          then OptionsFrame_IncrDecrModel(1)
     ----elseif (params == "mdl--")          then OptionsFrame_IncrDecrModel(-1)

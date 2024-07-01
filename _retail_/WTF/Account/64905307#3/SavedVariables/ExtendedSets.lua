@@ -33,9 +33,9 @@ true,
 ["hideListDescription"] = false,
 ["showHiddenSets"] = false,
 ["hideTradingPost"] = false,
-["disableHideSetButton"] = false,
-["showDualWielding"] = false,
 ["hideShopsets"] = false,
+["showDualWielding"] = false,
+["disableHideSetButton"] = false,
 }
 ExS_HiddenSets = {
 {
