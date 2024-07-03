@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0911,
+["LastVersion"] = 2.0912,
 ["LastPlayerFullName"] = "Muruatan-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
@@ -17,9 +17,9 @@ nil,
 },
 nil,
 {
-["ID"] = 214761,
-["Level"] = 41,
-["Link"] = "|cff1eff00|Hitem:214761::::::::22:73::11:3:10601:10969:1512:2:9:19:28:2793:::::|h[Spiritguard's Breastplate]|h|r",
+["ID"] = 214776,
+["Level"] = 54,
+["Link"] = "|cff1eff00|Hitem:214776::::::::25:73::11:3:10608:10972:1525:2:9:25:28:2793:::::|h[Sunsoul Battleplate]|h|r",
 },
 {
 ["ID"] = 214771,
@@ -37,14 +37,14 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:214763::::::::22:73::11:3:10604:10965:1517:2:9:20:28:2793:::::|h[Spiritguard's Sabatons]|h|r",
 },
 {
-["ID"] = 214762,
-["Level"] = 44,
-["Link"] = "|cff1eff00|Hitem:214762::::::::22:73::11:3:10603:10970:1515:2:9:20:28:2793:::::|h[Spiritguard's Bracers]|h|r",
+["ID"] = 214775,
+["Level"] = 57,
+["Link"] = "|cff1eff00|Hitem:214775::::::::25:73::11:3:10610:10966:1528:2:9:25:28:2793:::::|h[Sunsoul Vambraces]|h|r",
 },
 {
 ["ID"] = 214772,
-["Level"] = 46,
-["Link"] = "|cff1eff00|Hitem:214772::::::::22:73::11:3:10606:10969:1517:2:9:22:28:2793:::::|h[Sunsoul Handguards]|h|r",
+["Level"] = 60,
+["Link"] = "|cff1eff00|Hitem:214772::::::::25:73::11:3:10613:10966:1531:2:9:25:28:2793:::::|h[Sunsoul Handguards]|h|r",
 },
 [16] = {
 ["ID"] = 215639,
@@ -54,8 +54,8 @@ nil,
 },
 [15] = {
 ["ID"] = 210333,
-["Level"] = 60,
-["Link"] = "|cffe6cc80|Hitem:210333::::::::24:73::11:2:10985:1519:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
+["Level"] = 63,
+["Link"] = "|cffe6cc80|Hitem:210333::::::::25:73::11:2:10986:1522:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
 },
 [17] = {
 ["ID"] = 215639,

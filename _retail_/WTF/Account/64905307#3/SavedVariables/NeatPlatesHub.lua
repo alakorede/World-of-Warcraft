@@ -410,13 +410,13 @@ NeatPlatesHubSettings = {
 ["WidgetResourceTimerFontSize"] = 8,
 ["StyleHeadlineNeutral"] = false,
 ["StyleEnemyBarsNoMinions"] = false,
-["CustomColorLookup"] = {
-},
 ["ColorLowHealth"] = {
 ["a"] = 0.9999977946281433,
 ["r"] = 0.9999977946281433,
 ["g"] = 0,
 ["b"] = 0,
+},
+["CustomColorLookup"] = {
 },
 ["TextHealthTextMode"] = 1,
 ["WidgetDebuffStyle"] = 1,
@@ -468,21 +468,14 @@ NeatPlatesHubSettings = {
 ["b"] = 0.1254899203777313,
 },
 ["EmphasizedUnique"] = true,
-["TextUnitNameArenaID"] = false,
 ["TextShowServerIndicator"] = true,
+["UnitSpotlightScale"] = 1.4,
 ["UnitSpotlightScaleEnable"] = true,
 ["ScaleIgnoreInactive"] = false,
 ["WidgetResourceMode"] = 1,
 ["WidgetRangeMode"] = 1,
 ["StatusTextLeftColor"] = true,
-["WidgetComboPointsScaleOptions"] = {
-["y"] = 1,
-["x"] = 1,
-["offset"] = {
-["y"] = 0,
-["x"] = 0,
-},
-},
+["StyleEnemyBarsOnPlayers"] = true,
 ["WidgetDebuffFilter"] = 2,
 ["Customization"] = {
 ["NameOnly"] = {
@@ -523,7 +516,14 @@ NeatPlatesHubSettings = {
 },
 ["ScaleStandard"] = 1,
 ["StyleFriendlyBarsNoMinions"] = false,
-["StyleEnemyBarsOnPlayers"] = true,
+["WidgetComboPointsScaleOptions"] = {
+["y"] = 1,
+["x"] = 1,
+["offset"] = {
+["y"] = 0,
+["x"] = 0,
+},
+},
 ["FriendlyAlphaSpotlightMode"] = "None",
 ["TextColorElite"] = {
 ["a"] = 0.5019596815109253,
@@ -537,7 +537,7 @@ NeatPlatesHubSettings = {
 ["g"] = 0.9999977946281433,
 ["b"] = 0,
 },
-["UnitSpotlightScale"] = 1.4,
+["TextUnitNameArenaID"] = false,
 ["FriendlyStatusTextMode"] = "HealthFunctionNone",
 ["CustomFocusColor"] = false,
 ["StyleFriendlyBarsInstanceMode"] = false,

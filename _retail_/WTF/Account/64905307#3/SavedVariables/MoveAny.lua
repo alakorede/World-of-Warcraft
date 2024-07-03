@@ -940,8 +940,9 @@ MATAB = {
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 255,
-["PY"] = 514,
+["PA"] = "UIParent",
+["PX"] = 256,
+["PY"] = 515,
 ["RE"] = "BOTTOMLEFT",
 },
 ["ContainerFrameCombinedBags"] = {
@@ -963,8 +964,8 @@ MATAB = {
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["RE"] = "BOTTOMLEFT",
-["PY"] = 453,
-["PX"] = 478,
+["PY"] = 452,
+["PX"] = 482,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -972,8 +973,8 @@ MATAB = {
 },
 ["MajorFactionRenownFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 16,
 ["PY"] = 504,
+["PX"] = 16,
 ["RE"] = "BOTTOMLEFT",
 },
 ["ReadyCheckFrame"] = {
@@ -1026,15 +1027,15 @@ MATAB = {
 },
 ["StaticPopup2"] = {
 },
+["HelpFrame"] = {
+},
 ["ProfessionsCustomerOrdersFrame"] = {
 },
-["WeeklyRewardsFrame"] = {
+["EncounterJournal"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 484,
-["PY"] = 427,
+["PY"] = 588,
 ["RE"] = "BOTTOMLEFT",
-},
-["HelpFrame"] = {
+["PX"] = 16,
 },
 ["ClassTrainerFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1048,25 +1049,25 @@ MATAB = {
 ["RE"] = "BOTTOMLEFT",
 ["PX"] = 338.7340087890625,
 },
-["EncounterJournal"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 588,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 16,
+["ChallengesKeystoneFrame"] = {
 },
 ["ContainerFrame8"] = {
 },
 ["ContainerFrame2"] = {
 },
-["ChallengesKeystoneFrame"] = {
-},
 ["ContainerFrame3"] = {
-},
-["ModelPreviewFrame"] = {
 },
 ["TaxiFrame"] = {
 },
+["ModelPreviewFrame"] = {
+},
 ["QuickKeybindFrame"] = {
+},
+["WeeklyRewardsFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 427,
+["PX"] = 484,
+["RE"] = "BOTTOMLEFT",
 },
 ["OpenMailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1134,8 +1135,8 @@ MATAB = {
 },
 ["ItemInteractionFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 15,
 ["PY"] = 794,
+["PX"] = 15,
 ["RE"] = "BOTTOMLEFT",
 },
 ["ChannelFrame"] = {
@@ -1232,31 +1233,31 @@ MATAB = {
 },
 ["StaticPopup2"] = {
 },
-["ProfessionsCustomerOrdersFrame"] = {
-},
-["WeeklyRewardsFrame"] = {
-},
 ["HelpFrame"] = {
 },
-["TaxiFrame"] = {
+["ProfessionsCustomerOrdersFrame"] = {
 },
 ["EncounterJournal"] = {
 },
-["InspectFrame"] = {
+["TaxiFrame"] = {
 },
 ["ItemUpgradeFrame"] = {
+},
+["InspectFrame"] = {
+},
+["ChallengesKeystoneFrame"] = {
 },
 ["ContainerFrame8"] = {
 },
 ["BankFrame"] = {
 },
-["ChallengesKeystoneFrame"] = {
-},
 ["ContainerFrame2"] = {
+},
+["CommunitiesFrame"] = {
 },
 ["ModelPreviewFrame"] = {
 },
-["CommunitiesFrame"] = {
+["WeeklyRewardsFrame"] = {
 },
 ["DressUpFrame"] = {
 },
@@ -1462,14 +1463,14 @@ MATAB = {
 },
 ["MACompactRaidFrameManager"] = {
 ["AN"] = "LEFT",
-["PX"] = 0,
 ["PY"] = -130,
+["PX"] = 0,
 ["RE"] = "LEFT",
 },
 ["MultiBarBottomLeft"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "TOPLEFT",
 },
 ["IAMoneyBar"] = {
@@ -1480,14 +1481,14 @@ MATAB = {
 },
 ["BNToastFrame"] = {
 ["AN"] = "LEFT",
-["RE"] = "LEFT",
 ["PY"] = -240,
+["RE"] = "LEFT",
 ["PX"] = 20,
 },
 ["ZoneAbilityFrame"] = {
 ["AN"] = "CENTER",
-["PX"] = -350,
 ["PY"] = 90,
+["PX"] = -350,
 ["RE"] = "CENTER",
 },
 ["StatusTrackingBarManager"] = {
@@ -1510,32 +1511,32 @@ MATAB = {
 },
 ["ZoneTextFrame"] = {
 ["AN"] = "CENTER",
-["PX"] = 0,
 ["PY"] = 220,
+["PX"] = 0,
 ["RE"] = "CENTER",
 },
 ["UIWidgetTopCenterContainerFrame"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 350,
 ["PY"] = -90,
+["PX"] = 350,
 ["RE"] = "TOPLEFT",
 },
 ["MultiBarLeft"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "TOPLEFT",
 },
 ["MainStatusTrackingBarContainer"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 1140,
 ["PY"] = 0,
+["PX"] = 1140,
 ["RE"] = "BOTTOMLEFT",
 },
 ["MultiBar7"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 960,
 ["PY"] = 340,
+["PX"] = 960,
 ["RE"] = "BOTTOMLEFT",
 },
 ["MABagBar"] = {
@@ -1546,14 +1547,14 @@ MATAB = {
 },
 ["MultiBarRight"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "TOPLEFT",
 },
 ["MultiBar5"] = {
 ["AN"] = "TOP",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "CENTER",
 },
 ["GroupLootFrame1"] = {
@@ -1564,26 +1565,26 @@ MATAB = {
 },
 ["BagsBar"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 1150,
 ["PY"] = 40,
+["PX"] = 1150,
 ["RE"] = "BOTTOMLEFT",
 },
 ["MAVehicleSeatIndicator"] = {
 ["AN"] = "RIGHT",
-["RE"] = "RIGHT",
 ["PY"] = 270,
+["RE"] = "RIGHT",
 ["PX"] = -420,
 },
 ["ObjectiveTrackerFrame"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 30,
 ["PY"] = -50,
+["PX"] = 30,
 ["RE"] = "TOPLEFT",
 },
 ["UIWidgetBelowMinimapContainerFrame"] = {
 ["AN"] = "LEFT",
-["PX"] = 260,
 ["PY"] = 200,
+["PX"] = 260,
 ["RE"] = "LEFT",
 },
 ["MAFPSFrame"] = {
@@ -1594,26 +1595,26 @@ MATAB = {
 },
 ["MainMenuBar"] = {
 ["AN"] = "BOTTOM",
-["PX"] = 0,
 ["PY"] = 50,
+["PX"] = 0,
 ["RE"] = "BOTTOM",
 },
 ["MAKTB"] = {
 ["AN"] = "CENTER",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "CENTER",
 },
 ["MAMenuBar"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 0,
+["RE"] = "BOTTOMLEFT",
 ["PX"] = 0,
 },
 ["QueueStatusButton"] = {
 ["AN"] = "TOPRIGHT",
-["PX"] = -235,
 ["PY"] = -175,
+["PX"] = -235,
 ["RE"] = "TOPRIGHT",
 },
 ["SecondaryStatusTrackingBarContainer"] = {
@@ -1624,38 +1625,38 @@ MATAB = {
 },
 ["MultiBar6"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 680,
 ["PY"] = 340,
+["PX"] = 680,
 ["RE"] = "BOTTOMLEFT",
 },
 ["MALock"] = {
 ["AN"] = "RIGHT",
-["PX"] = -380,
 ["PY"] = 130,
+["PX"] = -380,
 ["RE"] = "RIGHT",
 },
 ["MultiBarBottomRight"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "TOPLEFT",
 },
 ["GroupLootContainer"] = {
 ["AN"] = "CENTER",
-["PX"] = 0,
 ["PY"] = 0,
+["PX"] = 0,
 ["RE"] = "CENTER",
 },
 ["AlertFrame"] = {
 ["AN"] = "TOPLEFT",
-["PX"] = 350,
 ["PY"] = -230,
+["PX"] = 350,
 ["RE"] = "TOPLEFT",
 },
 ["DurabilityFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 2180,
 ["PY"] = 845,
+["PX"] = 2180,
 ["RE"] = "BOTTOMLEFT",
 },
 },
@@ -1948,11 +1949,11 @@ MATAB = {
 ["MINIMAPFLAG"] = {
 ["ENABLED"] = false,
 },
-["SHOWMINIMAPBUTTON"] = {
-["ENABLED"] = true,
-},
 ["CHAT7"] = {
 ["ENABLED"] = false,
+},
+["SHOWMINIMAPBUTTON"] = {
+["ENABLED"] = true,
 },
 ["MAKTB"] = {
 },
@@ -2057,10 +2058,10 @@ MATAB = {
 ["CHATEDITBOX"] = {
 ["ENABLED"] = false,
 },
-["CHAT4"] = {
+["CHAT9"] = {
 ["ENABLED"] = false,
 },
-["CHAT9"] = {
+["CHAT4"] = {
 ["ENABLED"] = false,
 },
 ["CHAT"] = {

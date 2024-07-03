@@ -9,25 +9,13 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Sounds"] = {
 },
-["BigWigs_Bosses_Fyrakk the Blazing"] = {
-},
 ["BigWigs_Plugins_AutoReply"] = {
-},
-["BigWigs_Bosses_Tindral Sageswift, Seer of the Flame"] = {
-},
-["BigWigs_Plugins_Statistics"] = {
 },
 ["BigWigs_Plugins_Countdown"] = {
 },
 ["BigWigs_Plugins_AltPower"] = {
 },
-["BigWigs_Plugins_Proximity"] = {
-["profiles"] = {
-["Default"] = {
-["width"] = 140.0001373291016,
-["height"] = 119.9999694824219,
-},
-},
+["BigWigs_Plugins_Colors"] = {
 },
 ["BigWigs_Plugins_Raid Icons"] = {
 },
@@ -37,15 +25,23 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Super Emphasize"] = {
 },
-["BigWigs_Plugins_Wipe"] = {
-},
 ["LibDualSpec-1.0"] = {
+},
+["BigWigs_Plugins_Proximity"] = {
+["profiles"] = {
+["Default"] = {
+["height"] = 119.9999694824219,
+["width"] = 140.0001373291016,
+},
+},
 },
 ["BigWigs_Plugins_Messages"] = {
 },
-["BigWigs_Plugins_Colors"] = {
+["BigWigs_Plugins_Wipe"] = {
 },
 ["BigWigs_Plugins_Pull"] = {
+},
+["BigWigs_Plugins_Statistics"] = {
 },
 },
 ["profileKeys"] = {
@@ -154,18 +150,6 @@ BigWigsStatsDB = {
 },
 },
 [2549] = {
-[2555] = {
-["LFR"] = {
-["best"] = 179.7260000000024,
-["kills"] = 1,
-},
-},
-[2556] = {
-["LFR"] = {
-["best"] = 233.974000000002,
-["kills"] = 1,
-},
-},
 [2519] = {
 ["LFR"] = {
 ["best"] = 307.4820000000004,
@@ -176,6 +160,18 @@ BigWigsStatsDB = {
 ["LFR"] = {
 ["best"] = 259.6210000000065,
 ["kills"] = 2,
+},
+},
+[2555] = {
+["LFR"] = {
+["best"] = 179.7260000000024,
+["kills"] = 1,
+},
+},
+[2556] = {
+["LFR"] = {
+["best"] = 233.974000000002,
+["kills"] = 1,
 },
 },
 },
