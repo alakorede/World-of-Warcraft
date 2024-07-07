@@ -25,7 +25,11 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Super Emphasize"] = {
 },
+["BigWigs_Plugins_Wipe"] = {
+},
 ["LibDualSpec-1.0"] = {
+},
+["BigWigs_Plugins_Messages"] = {
 },
 ["BigWigs_Plugins_Proximity"] = {
 ["profiles"] = {
@@ -34,10 +38,6 @@ BigWigs3DB = {
 ["width"] = 140.0001373291016,
 },
 },
-},
-["BigWigs_Plugins_Messages"] = {
-},
-["BigWigs_Plugins_Wipe"] = {
 },
 ["BigWigs_Plugins_Pull"] = {
 },
@@ -146,6 +146,26 @@ BigWigsStatsDB = {
 ["kills"] = 2,
 ["best"] = 386.695000000007,
 ["wipes"] = 1,
+},
+},
+},
+[2569] = {
+[2530] = {
+["LFR"] = {
+["best"] = 242.6290000000008,
+["kills"] = 1,
+},
+},
+[2529] = {
+["LFR"] = {
+["best"] = 158.5390000000043,
+["kills"] = 1,
+},
+},
+[2522] = {
+["LFR"] = {
+["best"] = 170.6800000000003,
+["kills"] = 1,
 },
 },
 },

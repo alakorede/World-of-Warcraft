@@ -17,6 +17,7 @@ true,
 ["hideNoLongerObtainable"] = false,
 ["displayOnlyMyClass"] = false,
 ["displayOtherFaction"] = false,
+["hideShopsets"] = false,
 ["progressBarByFilter"] = true,
 ["weaponExpansionToggles"] = {
 true,
@@ -33,9 +34,14 @@ true,
 ["hideListDescription"] = false,
 ["showHiddenSets"] = false,
 ["hideTradingPost"] = false,
-["hideShopsets"] = false,
 ["showDualWielding"] = false,
 ["disableHideSetButton"] = false,
+["extraButtonToggles"] = {
+true,
+true,
+true,
+true,
+},
 }
 ExS_HiddenSets = {
 {

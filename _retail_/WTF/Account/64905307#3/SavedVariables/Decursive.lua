@@ -2,7 +2,7 @@
 DecursiveDB = {
 ["global"] = {
 ["NoStartMessages"] = true,
-["LastVersionAnnounce"] = 1719880063,
+["LastVersionAnnounce"] = 1720405580,
 ["delayedDebuffOccurences"] = 3,
 ["delayedUnDebuffOccurences"] = 2,
 ["LastExpirationAlert"] = 1682619472,
@@ -122,6 +122,16 @@ nil,
 },
 ["PRIEST"] = {
 ["CureOrder-1"] = {
+2,
+3,
+nil,
+-14,
+[8] = -15,
+[16] = 1,
+[32] = -16,
+[64] = 7,
+},
+["CureOrder-3"] = {
 2,
 3,
 nil,

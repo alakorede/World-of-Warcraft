@@ -133,16 +133,17 @@ Bagnon_Sets = {
 "trade/recipe",
 "quest",
 "misc",
+"contain",
 },
-["point"] = "BOTTOMRIGHT",
+["point"] = "BOTTOMLEFT",
 ["hiddenBags"] = {
 },
 ["color"] = {
 },
 ["hiddenRules"] = {
 },
-["y"] = 415.5,
-["x"] = -835.200927734375,
+["y"] = 415.5000305175781,
+["x"] = 738.1323852539062,
 ["borderColor"] = {
 },
 ["lockedSlots"] = {

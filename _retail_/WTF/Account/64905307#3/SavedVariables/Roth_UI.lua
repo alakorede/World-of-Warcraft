@@ -78,7 +78,7 @@ Roth_UI_DB = {
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
 ["Eshy - Steamwheedle Cartel"] = "Eshy - Steamwheedle Cartel",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Batezu - Nemesis"] = "Batezu - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
 ["Bankshy - Thrall"] = "Bankshy - Thrall",
@@ -91,7 +91,7 @@ Roth_UI_DB = {
 ["Sashy - Goldrinn"] = "Sashy - Goldrinn",
 ["Sharashy - Nemesis"] = "Sharashy - Nemesis",
 ["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
 ["Melishy - Goldrinn"] = "Melishy - Goldrinn",
 ["Dishy - Nemesis"] = "Dishy - Goldrinn",
 ["Wishy - Nemesis"] = "Wishy - Nemesis",
@@ -103,7 +103,7 @@ Roth_UI_DB = {
 ["Goroshy - Nemesis"] = "Goroshy - Nemesis",
 ["Sharan - Nemesis"] = "Sharan - Nemesis",
 ["Yashy - Nemesis"] = "Yashy - Nemesis",
-["Batezu - Nemesis"] = "Batezu - Nemesis",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Satishy - Nemesis"] = "Satishy - Nemesis",
 ["Batezu - Goldrinn"] = "Batezu - Goldrinn",
 ["Kuradis - Nemesis"] = "Kuradis - Nemesis",
@@ -166,7 +166,7 @@ Roth_UI_DB = {
 },
 ["Elshy - Goldrinn"] = {
 },
-["Satishy - Goldrinn"] = {
+["Batezu - Nemesis"] = {
 },
 ["Onifade - Nemesis"] = {
 },
@@ -192,7 +192,7 @@ Roth_UI_DB = {
 },
 ["Chicoxavier - Nemesis"] = {
 },
-["Sharan - Goldrinn"] = {
+["Satishy - Goldrinn"] = {
 },
 ["Melishy - Goldrinn"] = {
 },
@@ -216,7 +216,7 @@ Roth_UI_DB = {
 },
 ["Yashy - Nemesis"] = {
 },
-["Batezu - Nemesis"] = {
+["Sharan - Goldrinn"] = {
 },
 ["Satishy - Nemesis"] = {
 },

@@ -26,6 +26,7 @@ L = BigWigs:NewBossLocale("Atramedes", "zhTW")
 if L then
 	--L.obnoxious_fiend = "Obnoxious Fiend" -- NPC ID 49740
 	L.air_phase_trigger = "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
+	--L.circles = "Circles"
 end
 
 L = BigWigs:NewBossLocale("Maloriak", "zhTW")
@@ -36,22 +37,8 @@ end
 
 L = BigWigs:NewBossLocale("Nefarian", "zhTW")
 if L then
-	L.phase = "階段"
-	L.phase_desc = "當進入不同階段時發出警報。"
-
-	L.discharge_bar = "閃電釋放"
-
-	L.phase_two_trigger = "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!"
-
-	L.phase_three_trigger = "我本來只想略盡地主之誼"
-
-	L.crackle_trigger = "響起了電流霹啪作響的聲音!"
-	L.crackle_message = "即將 電擊！"
-
-	L.shadowblaze_trigger = "化為灰燼吧!"
-	L.shadowblaze_message = ">你< 暗影炎！"
-
-	L.onyxia_power_message = "即將 電荷超載！"
-
-	L.chromatic_prototype = "炫彩原型體" -- 3 adds name
+	L.discharge = "閃電釋放"
+	L.stage3_yell_trigger = "我本來只想略盡地主之誼"
+	L.shadowblaze_yell_trigger = "化為灰燼吧!"
+	--L.too_close = "Dragons are too close"
 end

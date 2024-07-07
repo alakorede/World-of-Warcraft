@@ -12,7 +12,7 @@ local strfind = string.find
 -- Generate our version variables
 --
 
-local BIGWIGS_VERSION = 340
+local BIGWIGS_VERSION = 341
 local BIGWIGS_RELEASE_STRING, BIGWIGS_VERSION_STRING
 local versionQueryString, versionResponseString = "Q^%d^%s^%d^%s", "V^%d^%s^%d^%s"
 local customGuildName = false
@@ -37,7 +37,7 @@ do
 	local ALPHA = "ALPHA"
 
 	local releaseType
-	local myGitHash = "d2e5615" -- The ZIP packager will replace this with the Git hash.
+	local myGitHash = "0d8e87a" -- The ZIP packager will replace this with the Git hash.
 	local releaseString
 	--[=[@alpha@
 	-- The following code will only be present in alpha ZIPs.
@@ -107,13 +107,14 @@ public.GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpell
 public.GetSpellLink = C_Spell and C_Spell.GetSpellLink or GetSpellLink
 public.GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
 public.GetSpellTexture = C_Spell and C_Spell.GetSpellTexture or GetSpellTexture
-public.IsItemInRange = IsItemInRange
+public.IsItemInRange = C_Item and C_Item.IsItemInRange or IsItemInRange
 public.PlaySoundFile = PlaySoundFile
 public.RegisterAddonMessagePrefix = RegisterAddonMessagePrefix
 public.SendAddonMessage = SendAddonMessage
 public.SetRaidTarget = SetRaidTarget
 public.SendChatMessage = SendChatMessage
 public.UnitDetailedThreatSituation = UnitDetailedThreatSituation
+public.UnitThreatSituation = UnitThreatSituation
 public.UnitGUID = UnitGUID
 public.UnitHealth = UnitHealth
 public.UnitHealthMax = UnitHealthMax
@@ -1600,7 +1601,7 @@ do
 					local msg = L.warnSeveralReleases:format(diff)
 					sysprint(msg)
 					Popup(msg)
-					RaidNotice_AddMessage(RaidWarningFrame, msg, {r=1,g=1,b=1}, 60)
+					RaidNotice_AddMessage(RaidWarningFrame, msg, {r=1,g=1,b=1}, 40 + (diff * 10))
 				else
 					sysprint(L.warnOldBase:format(BIGWIGS_GUILD_VERSION, BIGWIGS_VERSION, diff))
 				end

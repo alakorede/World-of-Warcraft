@@ -20,6 +20,7 @@ local arcaneStormCount = 1
 local acidNovaCount = 1
 local scorchingBlastCounter = 1
 local UpdateInfoBoxList
+local bossGUID = nil
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -47,7 +48,7 @@ function mod:GetOptions()
 		{77569, "INFOBOX"}, -- Release Aberrations
 		"berserk",
 		-- Stage 2
-		78194, -- Magma Jets
+		{78194, "OFF"}, -- Magma Jets
 		78225, -- Acid Nova
 		78223, -- Absolute Zero
 		-- Blue
@@ -78,9 +79,6 @@ end
 
 function mod:OnBossEnable()
 	-- General
-	if self:Retail() then
-		self:RegisterEvent("PLAYER_REGEN_DISABLED", "CheckForEngage")
-	end
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", nil, "boss1")
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
 	self:Log("SPELL_AURA_APPLIED", "ShadowImbuedApplied", 92716)
@@ -125,17 +123,18 @@ function mod:OnEngage()
 	arcaneStormCount = 1
 	acidNovaCount = 1
 	scorchingBlastCounter = 1
+	bossGUID = nil
 	self:SetStage(1)
 	self:RegisterUnitEvent("UNIT_HEALTH", nil, "boss1")
 	if self:Heroic() then
-		self:Bar("stages", 16, self:SpellName(92837), 92716) -- Throw Black Bottle
+		self:CDBar("stages", 16, self:SpellName(92837), 92716) -- Throw Black Bottle
 		self:Berserk(720)
 	else
 		self:Berserk(420)
 	end
 	self:CDBar(77896, 12.4, CL.count:format(self:SpellName(77896), arcaneStormCount), 77896) -- Arcane Storm
 	self:CDBar(77569, 15, CL.adds, 77569) -- Release Aberrations
-	self:OpenInfo(77569, "BigWigs: ".. CL.adds) -- Release Aberrations
+	self:OpenInfo(77569, CL.other:format("BigWigs", CL.adds)) -- Release Aberrations
 	self:SetInfo(77569, 1, CL.remaining:format(addsRemaining))
 	self:SetInfoBar(77569, 1, 1)
 	self:SetInfo(77569, 3, CL.count:format(CL.active, addsActive))
@@ -150,6 +149,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, _, spellId)
 	if spellId == 77932 then -- Throw Blue Bottle
 		self:StopBar(CL.count:format(CL.breath, scorchingBlastCounter)) -- Scorching Blast
+		self:StopBar(CL.frontal_cone) -- Engulfing Darkness
+		self:StopBar(CL.cast:format(CL.frontal_cone)) -- Engulfing Darkness
 		self:CDBar(77699, 28) -- Flash Freeze
 		self:CDBar(77896, 19, CL.count:format(self:SpellName(77896), arcaneStormCount), 77896) -- Arcane Storm
 		if addsRemaining > 0 then
@@ -161,6 +162,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, _, spellId)
 	elseif spellId == 77937 then -- Throw Green Bottle
 		self:StopBar(CL.count:format(CL.breath, scorchingBlastCounter)) -- Scorching Blast
 		self:StopBar(77699) -- Flash Freeze
+		self:StopBar(CL.frontal_cone) -- Engulfing Darkness
+		self:StopBar(CL.cast:format(CL.frontal_cone)) -- Engulfing Darkness
 		self:CDBar(77896, 11, CL.count:format(self:SpellName(77896), arcaneStormCount), 77896) -- Arcane Storm
 		if addsRemaining > 0 then
 			self:CDBar(77569, 15, CL.adds, 77569) -- Release Aberrations
@@ -170,7 +173,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, _, spellId)
 		self:PlaySound("stages", "long")
 	elseif spellId == 77925 then -- Throw Red Bottle
 		self:StopBar(77699) -- Flash Freeze
-		self:CDBar(77679, 25, CL.count:format(CL.breath, scorchingBlastCounter)) -- Scorching Blast
+		self:StopBar(CL.frontal_cone) -- Engulfing Darkness
+		self:StopBar(CL.cast:format(CL.frontal_cone)) -- Engulfing Darkness
+		self:CDBar(77679, 21, CL.count:format(CL.breath, scorchingBlastCounter)) -- Scorching Blast
 		self:CDBar(77896, 19, CL.count:format(self:SpellName(77896), arcaneStormCount), 77896) -- Arcane Storm
 		if addsRemaining > 0 then
 			self:CDBar(77569, 15, CL.adds, 77569) -- Release Aberrations
@@ -185,6 +190,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 	if msg:find(L.dark_phase_emote_trigger, nil, true) then
 		self:StopBar(CL.count:format(self:SpellName(77896), arcaneStormCount)) -- Arcane Storm
 		self:StopBar(CL.adds) -- Release Aberrations
+		self:StopBar(92837) -- Throw Black Bottle
 		self:Message("stages", "cyan", self:SpellName(92837), 92716) -- Throw Black Bottle
 		self:PlaySound("stages", "long")
 	end
@@ -213,6 +219,7 @@ function mod:ReleaseAberrations(args)
 			self:StopBar(CL.adds) -- The cast wasn't interrupted and now no more adds can be summoned, stop the bar started in CAST_START
 		end
 		addsActive = addsActive + 3
+		bossGUID = args.sourceGUID
 		self:Message(args.spellId, "cyan", CL.extra:format(CL.adds_spawned, CL.remaining:format(addsRemaining)))
 		self:SetInfo(args.spellId, 1, CL.remaining:format(addsRemaining))
 		self:SetInfoBar(args.spellId, 1, addsRemaining / 18)
@@ -240,13 +247,16 @@ function UpdateInfoBoxList()
 	mod:SimpleTimer(UpdateInfoBoxList, 1)
 
 	local line = mod:GetStage() == 2 and 1 or 7
-	for unit in mod:IterateGroup() do
-		-- Top threat on something that isn't the boss
-		if UnitThreatSituation(unit) == 3 and not mod:TopThreat("boss1", unit) then
-			mod:SetInfo(77569, line, mod:ColorName(mod:UnitName(unit), true))
-			line = line + 2
-			if line == 11 then
-				return
+	local bossUnit = bossGUID and mod:GetUnitIdByGUID(bossGUID)
+	if bossUnit then
+		for unit in mod:IterateGroup() do
+			-- Unit is a threat target of something that isn't the boss
+			if mod:ThreatTarget(unit) and not mod:ThreatTarget(unit, bossUnit) then
+				mod:SetInfo(77569, line, mod:ColorName(mod:UnitName(unit), true))
+				line = line + 2
+				if line == 11 then
+					return
+				end
 			end
 		end
 	end
@@ -284,6 +294,7 @@ end
 
 -- Stage 2
 function mod:ReleaseAllMinions(args)
+	bossGUID = args.sourceGUID
 	self:SetStage(2)
 	self:StopBar(CL.count:format(CL.breath, scorchingBlastCounter)) -- Scorching Blast
 	self:StopBar(CL.count:format(self:SpellName(77896), arcaneStormCount)) -- Arcane Storm

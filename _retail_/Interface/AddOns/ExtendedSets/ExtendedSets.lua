@@ -36,15 +36,15 @@ local ClassMaskMap = {
     [1] = {1, 2, 32, 35, 0}, -- Plate Wearer
     [2] = {1, 2, 32, 35, 0}, -- Plate Wearer
     [3] = {4, 64, 68, 0, 4096, 4164},    -- Mail Wearer
-    [4] = {8, 512, 1024, 2048, 3592, 0}, -- Leather Wearer
+    [4] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
     [5] = {16, 128, 256, 400, 0}, -- Cloth Wearer
     [6] = {1, 2, 32, 35, 0}, -- Plate Wearer
     [7] = {4, 64, 68, 0, 4096, 4164},    -- Mail Wearer
     [8] = {16, 128, 256, 400, 0}, -- Cloth Wearer
     [9] = {16, 128, 256, 400, 0}, -- Cloth Wearer
-    [10] = {8, 512, 1024, 2048, 3592, 0}, -- Leather Wearer
-    [11] = {8, 512, 1024, 2048, 3592, 0}, -- Leather Wearer
-    [12] = {8, 512, 1024, 2048, 3592, 0}, -- Leather Wearer
+    [10] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
+    [11] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
+    [12] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
     [13] = {4, 64, 68, 0, 4096, 4164},    -- Mail Wearer
 }
 local ClassNameMask = {
@@ -1849,8 +1849,9 @@ local function DisplaySet(self, givenSetID, force)
 	local variantSets = GetVariantSets(setID)--GetBaseSetID(setID));
 	if ( #variantSets <= 1 )  then
 		WardrobeSetsCollectionVariantSetsButton:Hide();
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("TOPRIGHT", WardrobeSetsCollectionVariantSetsButton, "TOPRIGHT", 0, 0);
+    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
+    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("TOPRIGHT", WardrobeSetsCollectionVariantSetsButton, "TOPRIGHT", 0, 0);
+    SetsFrame.UpdateExtraButtons();
 	else
 		WardrobeSetsCollectionVariantSetsButton:Show();
     if description == nil then
@@ -1858,8 +1859,9 @@ local function DisplaySet(self, givenSetID, force)
     else
       WardrobeSetsCollectionVariantSetsButton:SetText(description);
     end
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
-    WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("RIGHT", WardrobeSetsCollectionVariantSetsButton, "LEFT", -4, 0);
+    SetsFrame.UpdateExtraButtons();
+    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
+    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("RIGHT", WardrobeSetsCollectionVariantSetsButton, "LEFT", -4, 0);
 	end
 end
 
@@ -2591,14 +2593,13 @@ local function HideSetsFromTransmogrify(setID)
                       [2298] = true, --Mage Tower Dup (Mage)
                       [2301] = true, --Mage Tower Dup (Priest)
                       [2304] = true, --Mage Tower Dup (Warlock)
+                      
+                      [3664] = true, --TWW Pre-patch Dup (plate)
+                      [3665] = true, --TWW Pre-patch Dup (cloth)
+                      [3666] = true, --TWW Pre-patch Dup (mail)
+                      [3667] = true, --TWW Pre-patch Dup (leather)
     };
   
-  --for i = 1, #setsToHide do
-  --  if setID == setsToHide[i] then
-  --    return true;
-  --  end
-  --end
-  --return false;
   return setsToHide[setID];
 end
 
@@ -3841,6 +3842,7 @@ local function CreateScrollbar(frame)
       WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount.Text:SetText(hiddenCount);
     end
   end);
+  WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetShown(ExS_Settings.extraButtonToggles[4]);
   
   -- Favorite Set Button --
   WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.FavoriteSetButton = CreateFrame("Frame", "ExS_FavoriteSetButton", WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame);
@@ -3872,6 +3874,7 @@ local function CreateScrollbar(frame)
       MarkSetAsFavorite(setID, not ExS_Favorites[setID]);
     end
   end);
+  WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.FavoriteSetButton:SetShown(ExS_Settings.extraButtonToggles[3]);
   
   -- Link Outfit Button --
   WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.LinkOutfitButton = CreateFrame("Frame", "ExS_LinkOutfitButton", WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame);
@@ -3897,6 +3900,7 @@ local function CreateScrollbar(frame)
     end
   end);
   ExS_AHButton:SetPoint("RIGHT", WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.LinkOutfitButton, "LEFT", -2, 0)
+  WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.FavoriteSetButton:SetShown(ExS_Settings.extraButtonToggles[2]);
   
   -- Hidden Set Count --
   WardrobeCollectionFrame.SetsCollectionFrame.HiddenSetsCount = CreateFrame("Frame", nil, WardrobeCollectionFrame.SetsCollectionFrame);
@@ -3964,6 +3968,38 @@ local function XpacPicker(self, button, index)
   ExS_Settings.expansionToggles[index] = not ExS_Settings.expansionToggles[index];
   ReInitSets(true, true);
   self:SetCheckedState(ExS_Settings.expansionToggles[index]);
+end
+
+local function UpdateExtraButtons()
+  local rightMostButton = nil;
+  local varSetButton;
+  if currToc >= 110000 then
+    varSetButton = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsDropdown;
+  else
+    varSetButton = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton;
+  end
+  if varSetButton:IsShown() then
+    rightMostButton = varSetButton;
+  end
+  
+  local buttons = {
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.AHButton,
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.LinkOutfitButton,
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.FavoriteSetButton,
+      WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton
+  }
+  
+  for i=#buttons,1,-1 do
+    buttons[i]:SetShown(ExS_Settings.extraButtonToggles[i]);
+    if ExS_Settings.extraButtonToggles[i] then
+      if rightMostButton then
+        buttons[i]:SetPoint("RIGHT", rightMostButton, "LEFT", -2, 0);
+      else
+        buttons[i]:SetPoint("RIGHT", varSetButton, "RIGHT", 0, 0);
+      end
+      rightMostButton = buttons[i];
+    end
+  end
 end
 
 local function ExS_FilterDropDown_Init(self, level, menuList)
@@ -4064,28 +4100,6 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ExS_Settings.displayOnlyMyClass end;
     SetsFrame.FilterDropDown:AddLine(info);
     
-    --Show/Hide CharCollectionIcons
-    info.text = "Show Character Collection Icons";
-    info.tooltipText = "Shows a Red X above items that are not collected and cannot be collected by the current character's class. Shows a Red O above items that are collected but cannot be used by the current character's class. Shows an Orange O above items that have a class-specific version collected that cannot be transmogged by the current character's class, but has a non-class-specific version that can be collected.";
-    info.tooltipOnButton = true;
-    info.func = function(self)
-            if (ExS_Settings.showCharCollectionIcons == true) then
-              ExS_Settings.showCharCollectionIcons = false;
-            else
-              ExS_Settings.showCharCollectionIcons = true;
-            end
-            
-            for itemFrame in WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.itemFramesPool:EnumerateActive() do
-              SetsFrame.HandleItemFrames(itemFrame, false);
-            end
-            self:SetCheckedState(ExS_Settings.showCharCollectionIcons);
-          end
-    info.checked = function() return ExS_Settings.showCharCollectionIcons end;
-    SetsFrame.FilterDropDown:AddLine(info);
-    
-    info.tooltipText = "";
-    info.tooltipOnButton = false;
-    
     --Show/Hide no longer obtainable sets
     info.text = "Hide No Longer Obtainable Sets";
     info.func = function(self)
@@ -4152,15 +4166,88 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ExS_Settings.disableHideSetButton end;
     SetsFrame.FilterDropDown:AddLine(info);
     
+    
+    info.text = "UI Visibility Toggles";
+    info.func = nil;
+    info.menu = {};
+    
+    --Show/Hide CharCollectionIcons
+    info.menu[1] = {};
+    info.menu[1].text = "Show Character Collection Icons";
+    info.menu[1].tooltipText = "Shows a Red X above items that are not collected and cannot be collected by the current character's class. Shows a Red O above items that are collected but cannot be used by the current character's class. Shows an Orange O above items that have a class-specific version collected that cannot be transmogged by the current character's class, but has a non-class-specific version that can be collected.";
+    info.menu[1].tooltipOnButton = true;
+    info.menu[1].func = function(self)
+            if (ExS_Settings.showCharCollectionIcons == true) then
+              ExS_Settings.showCharCollectionIcons = false;
+            else
+              ExS_Settings.showCharCollectionIcons = true;
+            end
+            
+            for itemFrame in WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.itemFramesPool:EnumerateActive() do
+              SetsFrame.HandleItemFrames(itemFrame, false);
+            end
+            self:SetCheckedState(ExS_Settings.showCharCollectionIcons);
+          end
+    info.menu[1].checked = function() return ExS_Settings.showCharCollectionIcons end;
+    info.menu[1].keepShown = true;
+    
     --Hide Description on left list
-    info.text = "Hide Description (2nd Line) in Left List";
-    info.func = function(self)
+    info.menu[2] = {};
+    info.menu[2].text = "Hide Description (2nd Line) in Left List";
+    info.menu[2].func = function(self)
             ExS_Settings.hideListDescription = not ExS_Settings.hideListDescription;
             self:SetCheckedState(ExS_Settings.hideListDescription);
 
             SetsFrame.ScrollToSet(ExS_ScrollFrame.selectedSetID);
           end
-    info.checked = function() return ExS_Settings.hideListDescription end;
+    info.menu[2].checked = function() return ExS_Settings.hideListDescription end;
+    info.menu[2].keepShown = true;
+    
+    info.menu[3] = {};
+    info.menu[3].text = "Show Auction House Button";
+    info.menu[3].func = function(self)
+            ExS_Settings.extraButtonToggles[1] = not ExS_Settings.extraButtonToggles[1];
+            self:SetCheckedState(ExS_Settings.extraButtonToggles[1]);
+            
+            app.AHSearchButton:SetShown(ExS_Settings.extraButtonToggles[1]);
+            UpdateExtraButtons();
+          end
+    info.menu[3].checked = function() return ExS_Settings.extraButtonToggles[1] end;
+    info.menu[3].keepShown = true;
+    
+    info.menu[4] = {};
+    info.menu[4].text = "Show Link Outfit Button";
+    info.menu[4].func = function(self)
+            ExS_Settings.extraButtonToggles[2] = not ExS_Settings.extraButtonToggles[2];
+            self:SetCheckedState(ExS_Settings.extraButtonToggles[2]);
+            
+            UpdateExtraButtons();
+          end
+    info.menu[4].checked = function() return ExS_Settings.extraButtonToggles[2] end;
+    info.menu[4].keepShown = true;
+    
+    info.menu[5] = {};
+    info.menu[5].text = "Show Favorite Button";
+    info.menu[5].func = function(self)
+            ExS_Settings.extraButtonToggles[3] = not ExS_Settings.extraButtonToggles[3];
+            self:SetCheckedState(ExS_Settings.extraButtonToggles[3]);
+            
+            UpdateExtraButtons();
+          end
+    info.menu[5].checked = function() return ExS_Settings.extraButtonToggles[3] end;
+    info.menu[5].keepShown = true;
+    
+    info.menu[6] = {};
+    info.menu[6].text = "Show Hide Set Button";
+    info.menu[6].func = function(self)
+            ExS_Settings.extraButtonToggles[4] = not ExS_Settings.extraButtonToggles[4];
+            self:SetCheckedState(ExS_Settings.extraButtonToggles[4]);
+            
+            UpdateExtraButtons();
+          end
+    info.menu[6].checked = function() return ExS_Settings.extraButtonToggles[4] end;
+    info.menu[6].keepShown = true;
+    
     SetsFrame.FilterDropDown:AddLine(info);
     
     SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
@@ -5008,6 +5095,13 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     if (ExS_HiddenSets[4] == nil) then
       ExS_HiddenSets[4] = {};
     end
+    if (ExS_Settings.extraButtonToggles == nil) then
+      ExS_Settings.extraButtonToggles = {};
+      ExS_Settings.extraButtonToggles[1] = true; --AH
+      ExS_Settings.extraButtonToggles[2] = true; --Link Outfit
+      ExS_Settings.extraButtonToggles[3] = true; --Favorite
+      ExS_Settings.extraButtonToggles[4] = true; --Hide Set
+    end
   
 		--WardrobeCollectionFrameScrollFrame:Hide();
     
@@ -5052,6 +5146,7 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     SetsFrame.IsForClass = IsForClass;
     SetsFrame.GetPlayerClassArmorType = GetPlayerClassArmorType;
     SetsFrame.MergeColors = MergeColors;
+    SetsFrame.UpdateExtraButtons = UpdateExtraButtons;
     
     SetsFrame.NewVisualIDs = {};
     

@@ -26,6 +26,7 @@ L = BigWigs:NewBossLocale("Atramedes", "deDE")
 if L then
 	L.obnoxious_fiend = "Nerviges Scheusal" -- NPC ID 49740
 	L.air_phase_trigger = "Ja, lauft! Jeder Schritt lässt Euer Herz stärker klopfen. Laut und heftig... ohrenbetäubend. Es gibt kein Entkommen!" -- check
+	--L.circles = "Circles"
 end
 
 L = BigWigs:NewBossLocale("Maloriak", "deDE")
@@ -36,22 +37,8 @@ end
 
 L = BigWigs:NewBossLocale("Nefarian", "deDE")
 if L then
-	L.phase = "Phasen"
-	L.phase_desc = "Warnt vor Phasenwechsel."
-
-	L.discharge_bar = "Blitzentladung"
-
-	L.phase_two_trigger = "Verfluchte Sterbliche! Ein solcher Umgang mit dem Eigentum anderer verlangt nach Gewalt!" -- check
-
-	L.phase_three_trigger = "Ich habe versucht, ein guter Gastgeber zu sein" -- check
-
-	L.crackle_trigger = "Elektrizität lässt die Luft knistern!" -- check
-	L.crackle_message = "Stromschlag bald!"
-
-	L.shadowblaze_trigger = "Fleisch wird zu Asche!" -- check
-	L.shadowblaze_message = "Feuer"
-
-	L.onyxia_power_message = "Überladung bald!"
-
-	L.chromatic_prototype = "Chromatischer Prototyp"
+	L.discharge = "Blitzentladung"
+	L.stage3_yell_trigger = "Ich habe versucht, ein guter Gastgeber zu sein" -- check
+	L.shadowblaze_yell_trigger = "Fleisch wird zu Asche!" -- check
+	--L.too_close = "Dragons are too close"
 end

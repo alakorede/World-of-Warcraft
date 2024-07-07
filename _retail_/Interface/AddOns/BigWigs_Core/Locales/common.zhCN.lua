@@ -46,6 +46,7 @@ L.health_percent = "%d%% 血量" -- "10% Health" The health percentage of an NPC
 L.door_open = "门开了" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "门开了" -- When a gate is open, usually after a speech from an NPC
 L.threat = "威胁"
+L.energy = "能量"
 
 L.remaining = "剩余：%d" -- 5 remaining
 L.duration = "%s持续 %s 秒" -- Spell for 10 seconds
@@ -67,13 +68,13 @@ L.you_die_sec = "你将在%d秒后死亡" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "下个技能" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
 
 -- Add related
-L.add_spawned = "小怪已刷新" -- singular
-L.adds_spawned = "小怪已刷新" -- plural
---L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
-L.add_spawning = "小怪刷新" -- singular
-L.adds_spawning = "小怪刷新" -- plural
+L.add_spawned = "小怪出现" -- singular
+L.adds_spawned = "小怪出现" -- plural
+L.adds_spawned_count = "%d 增援出现" -- 1 add spawned / 2 adds spawned
+L.add_spawning = "小怪出现" -- singular
+L.adds_spawning = "小怪出现" -- plural
 L.spawned = "%s已刷新"
-L.spawning = "%s刷新"
+L.spawning = "%s出现"
 L.next_add = "下一波小怪"
 L.add_killed = "小怪已击杀（%d/%d）"
 L.add_remaining = "小怪已击杀，剩余 %d"

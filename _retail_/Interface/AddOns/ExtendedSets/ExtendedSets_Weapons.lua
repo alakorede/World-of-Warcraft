@@ -475,6 +475,37 @@ local function SetButtonData(button, set)
 end
 WeaponSetsCollectionFrame.SetButtonData = SetButtonData;
 
+local function UpdateExtraButtons()
+  local leftMostButton = nil;
+  if WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton:IsShown() then
+    leftMostButton = WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton;
+  end
+  
+  local buttons = {
+      WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton,
+      WeaponSetsCollectionFrame.RightFrame.HiddenSetButton,
+      WeaponSetsCollectionFrame.RightFrame.AHButton
+  }
+  local buttonTogglesIndex = {
+      3,
+      4,
+      1
+  }
+  
+  for i=1,#buttons do
+    local ind = buttonTogglesIndex[i];
+    buttons[i]:SetShown(ExS_Settings.extraButtonToggles[ind]);
+    if ExS_Settings.extraButtonToggles[ind] then
+      if leftMostButton then
+        buttons[i]:SetPoint("LEFT", leftMostButton, "RIGHT", 2, 0);
+      else
+        buttons[i]:SetPoint("LEFT", WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, "LEFT", 0, 0);
+      end
+      leftMostButton = buttons[i];
+    end
+  end
+end
+
 local function SelectSet(setID, forceStayOnWeapon)
   WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet = setID;
   for i=1,#WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons do
@@ -534,15 +565,16 @@ local function SelectSet(setID, forceStayOnWeapon)
     end
   end
   --Showing/Hiding the variant drop down list
-  --And moving the AH button to the right place
   if #VariantSets[AllSets[setID].label] == 1 then
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton:Hide();
-    WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton:SetPoint("LEFT", WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, "LEFT", 0, 0);
+    --WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton:SetPoint("LEFT", WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, "LEFT", 0, 0);
   else
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton:Show();
-    WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton:SetPoint("LEFT", WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, "RIGHT", 2, 0);
+    --WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton:SetPoint("LEFT", WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton, "RIGHT", 2, 0);
     WeaponSetsCollectionFrame.RightFrame.VariantDropDownButton:SetText(AllSets[setID].difficulty or AllSets[setID].name);
   end
+  --Then move the extra buttons into place
+  UpdateExtraButtons();
   
   --Setting the appropriate shown/hidden button state
   if ExS_Weapon_HiddenSets[setID] then
@@ -1029,6 +1061,40 @@ local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
         end
   info.checked = function() return ExS_Settings.hideListDescription end;
   dropdown:AddLine(info);
+  
+    --Show Favorite Button
+  info.text = "Show Favorite Button";
+  info.func = function(self)
+          ExS_Settings.extraButtonToggles[3] = not ExS_Settings.extraButtonToggles[3];
+          self:SetCheckedState(ExS_Settings.extraButtonToggles[3]);
+
+          UpdateExtraButtons();
+        end
+  info.checked = function() return ExS_Settings.extraButtonToggles[3] end;
+  dropdown:AddLine(info);
+  
+    --Show Hide Sets Button
+  info.text = "Show Hide Sets Button";
+  info.func = function(self)
+          ExS_Settings.extraButtonToggles[4] = not ExS_Settings.extraButtonToggles[4];
+          self:SetCheckedState(ExS_Settings.extraButtonToggles[4]);
+
+          UpdateExtraButtons();
+        end
+  info.checked = function() return ExS_Settings.extraButtonToggles[4] end;
+  dropdown:AddLine(info);
+  
+    --Show Auction House Button
+  info.text = "Show Auction House Button";
+  info.func = function(self)
+          ExS_Settings.extraButtonToggles[1] = not ExS_Settings.extraButtonToggles[1];
+          self:SetCheckedState(ExS_Settings.extraButtonToggles[1]);
+
+          UpdateExtraButtons();
+        end
+  info.checked = function() return ExS_Settings.extraButtonToggles[1] end;
+  dropdown:AddLine(info);
+  
   
   dropdown:AddLine({isSpacer = true;});
   
@@ -2277,6 +2343,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
         MarkSetAsFavorite(setID, not ExS_Weapon_Favorites[setID]);
       end
     end);
+    WeaponSetsCollectionFrame.RightFrame.FavoriteSetButton:SetShown(ExS_Settings.extraButtonToggles[3]);
     
     -- Hidden Set Button --
     WeaponSetsCollectionFrame.RightFrame.HiddenSetButton = CreateFrame("Frame", "ExS_Weapon_HiddenSetButton", WeaponSetsCollectionFrame.RightFrame);
@@ -2313,6 +2380,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
         WeaponSetsCollectionFrame.RightFrame.HiddenSetsCount.Text:SetText(count);
       end
     end);
+    WeaponSetsCollectionFrame.RightFrame.HiddenSetButton:SetShown(ExS_Settings.extraButtonToggles[4]);
     
     -- No Longer Obtainable warning --
     WeaponSetsCollectionFrame.RightFrame.NoLongerObtainable = CreateFrame("Frame", "ExS_Weapon_NoLongerObtainable", WeaponSetsCollectionFrame.RightFrame);

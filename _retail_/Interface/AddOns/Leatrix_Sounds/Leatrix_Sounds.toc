@@ -1,9 +1,9 @@
-## Interface: 100207, 110000
+## Interface: 100207, 110002
 
 ## Title: Leatrix Sounds
 ## Notes: Massive collection of game sounds.
 
-## Version: 10.2.37
+## Version: 10.2.41
 ## Author: Leatrix
 ## SavedVariables: LeaSoundsDB
 ## AddonCompartmentFunc:LeaSoundsGlobalSlashFunc
@@ -14,4 +14,5 @@
 
 Leatrix_Sounds_Locale.lua
 Leatrix_Sounds_Files.lua
+Leatrix_Sounds_Files-TWW.lua
 Leatrix_Sounds.lua

@@ -889,6 +889,10 @@ MATAB = {
 ["RE"] = "BOTTOMLEFT",
 },
 ["GroupLootHistoryFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 413,
+["PX"] = 32,
+["RE"] = "BOTTOMLEFT",
 },
 ["ContainerFrame12"] = {
 },
@@ -941,7 +945,7 @@ MATAB = {
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PA"] = "UIParent",
-["PX"] = 256,
+["PX"] = 257,
 ["PY"] = 515,
 ["RE"] = "BOTTOMLEFT",
 },
@@ -960,11 +964,16 @@ MATAB = {
 ["TimeManagerFrame"] = {
 },
 ["GenericTraitFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["RE"] = "BOTTOMLEFT",
+["PY"] = 334,
+["PX"] = 19,
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
+["PA"] = "UIParent",
 ["RE"] = "BOTTOMLEFT",
-["PY"] = 452,
+["PY"] = 447,
 ["PX"] = 482,
 },
 ["PVPMatchScoreboard"] = {
@@ -991,9 +1000,10 @@ MATAB = {
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 262,
+["PA"] = "UIParent",
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 255,
+["PY"] = 263,
+["PX"] = 256,
 },
 ["MailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1065,7 +1075,7 @@ MATAB = {
 },
 ["WeeklyRewardsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 427,
+["PY"] = 428,
 ["PX"] = 484,
 ["RE"] = "BOTTOMLEFT",
 },
@@ -1163,7 +1173,7 @@ MATAB = {
 ["StaticPopup1"] = {
 },
 ["QuestFrame"] = {
-["SCALE"] = 1.066,
+["SCALE"] = 1.072,
 },
 ["TradeFrame"] = {
 },
@@ -1230,6 +1240,7 @@ MATAB = {
 ["ScrappingMachineFrame"] = {
 },
 ["SpellBookFrame"] = {
+["SCALE"] = 1.006,
 },
 ["StaticPopup2"] = {
 },

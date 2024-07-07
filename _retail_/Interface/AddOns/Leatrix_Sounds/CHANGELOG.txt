@@ -1,12 +1,9 @@
-﻿10.2.37 - 26th June 2024
-- Updated sounds to game version 11.0.0.55288 (Jun 23 2024) (110000).
-
-10.2.35 - 19th June 2024
-- Updated sounds to game version 11.0.0.55185 (Jun 16 2024) (110000).
-
-10.2.34 - 15th June 2024
-- Preliminary update for The War Within Beta.
-- Updated sounds to game version 11.0.0.55120 (Jun 11 2024) (110000).
+﻿10.2.41 - 6th July 2024
+- This is the last release that is compatible with both Dragonflight and The War Within.
+- Future releases will be for The War Within only.
+- Dragonflight: Updated sounds to game version 10.2.7.55261 (Jun 20 2024) (100207).
+- The War Within Beta: Updated sounds to game version 11.0.2.55399 (Jun 28 2024) (110002).
+- Republished due to an issue with CurseForge.
 
 10.2.30 - 5th June 2024
 - Updated sounds to game version 10.2.7.54988 (May 31 2024) (100207).

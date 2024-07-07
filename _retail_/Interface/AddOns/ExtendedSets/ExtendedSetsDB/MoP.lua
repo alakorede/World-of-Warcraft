@@ -87,11 +87,14 @@ local altAppearancesDB = {
 {196,43002,48776}, --Season 12, Plate/Paladin, Chest/Robe (Honor)
 {1060,43435,43434}, --Season 12, Plate/Paladin, Chest/Robe (Elite)
 
-{3372,41890,41825}, --MoP: World Cloth 1 (green)
+{3372,41890,41825}, --MoP: World Cloth 1 (green) (shirt tight cuffs)
+{3372,41890,220820}, --MoP: World Cloth 1 (green) (shirt loose cuffs)
 {3365,62542,41841}, --MoP:Dungeon Cloth (original)
 {3369,45298,41833}, --MoP:Dungeon Cloth (purple)
 {3408,45528,42736}, --Mop:world mail 1 (green/kilt)
 }
+
+--91045
 
 local altNoteDB = {
 [3440] = "Ensemble on <Normal Raid Apparel> Vendor",

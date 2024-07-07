@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- Leatrix Sounds 10.2.37 (26th June 2024)
+	-- Leatrix Sounds 10.2.41 (6th July 2024)
 	----------------------------------------------------------------------
 
 	--  Create global table
@@ -10,7 +10,7 @@
 	local LeaSoundsLC, LeaSoundsCB = {}, {}
 
 	-- Version
-	LeaSoundsLC["AddonVer"] = "10.2.37"
+	LeaSoundsLC["AddonVer"] = "10.2.41"
 
 	-- Get locale table
 	local void, Leatrix_Sounds = ...
@@ -22,7 +22,7 @@
 		if gametocversion and gametocversion < 100000 then
 			-- Game client is Wow Classic
 			C_Timer.After(2, function()
-				print(L["LEATRIX SOUNDS: THIS IS FOR DRAGONFLIGHT ONLY!"])
+				print(L["LEATRIX SOUNDS: THIS IS FOR THE WAR WITHIN ONLY!"])
 			end)
 			return
 		end
@@ -993,7 +993,7 @@
 		pTex:SetTexCoord(0, 1, 1, 0)
 
 		-- Causes block taint in 10.0.2 (open options panel keybindings page then close)
-		expTitle:SetText("Dragonflight & The War Within")
+		expTitle:SetText(L["The War Within"])
 		local category = Settings.RegisterCanvasLayoutCategory(interPanel, "Leatrix Sounds")
 		Settings.RegisterAddOnCategory(category)
 
