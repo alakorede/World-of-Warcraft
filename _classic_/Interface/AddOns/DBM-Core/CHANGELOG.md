@@ -1,53 +1,33 @@
 # DBM - Core
 
-## [10.2.46](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/10.2.46) (2024-05-30)
-[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/10.2.45...10.2.46) [Previous Releases](https://github.com/DeadlyBossMods/DeadlyBossMods/releases)
+## [10.2.50](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/10.2.50) (2024-06-29)
+[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/10.2.49...10.2.50) [Previous Releases](https://github.com/DeadlyBossMods/DeadlyBossMods/releases)
 
-- Ready the tag  
-- Fix bug causing all cata journal based spells in RAID to show invalid classic support message, make this a force update  
-    Also force update for retail since this core update also has the disconnect workaround for long character names on long realm names that blizzard has taken longer than a month to fix themselves  
-- Work around blizzard whisper disconnect bug (for the second time in recent years) with addon comms  
-- Tests: enforce minimum real FPS to avoid lags  
-    This also enables a "run as fast as possible" mode just by setting the  
-    factor to a very huge value.  
-- UI/Tests: small UI fixes  
-    Correctly handle tests named like "a/b/c" and "a/b" at the same time.  
-    (But please don't create tests named like that)  
-- UI/Tests: Add big "Run all" button  
-- Tests: clean up use of DBM.Options for timewarp setting  
-- UI/Tests: make time warp slider exponential  
-- Split tocs and cleanup tocs  
-- Add UI for tests  
-- Make UpdateReminder frame more flexible  
-    Automatically set height to allow for more than 3 lines of text and  
-    avoid odd frame size for short texts (e.g., URL copy frames).  
-    Also allow user to configure width and text alignment.  
-- Clean up combat state on DBM:Disable()  
-- Tests: simulate a consistent frame rate of 30 fps  
-    Previously the simulated frame rate was the same as the real frame rate,  
-    so if you set a high replay speed and your game got laggy you simulated  
-    fewer OnUpdate calls, which can make logs less deterministic.  
-    The diff in Diurna shows such a case; it now consistently unschedules  
-    the scheduled announce before the event gets processed.  
-- Tests: correctly hook OnUpdate of frames created during the test  
-- Tests: fix rewiring args.destName to real player name  
-- Diurna: update test with new feature  
-    GetTime() global is now overriden in mods when tests are running, no  
-    more ugly self:GetTime() :)  
-- Tests: add a way to acknowledge/ignore warnings  
-- Tests: report deltas between Show/Start calls  
-- Tests: track and report calls to :Schedule() properly  
-    Potential problem: recursive schedule calls will look a bit ugly in the  
-    test report, but so far I haven't seen a mod that uses this excessively.  
-- Tests: fix error on importing test results if you have other files in target dir  
-- Tests: Replay UNIT_* events without implying they are _UNFILTERED  
-- Tests: make it easier to inject mocks into mods by changing the mod's environment  
-- Tests: add mock for UnitGUID  
-- Fix some potential nil index errors  
-    Not a problem in every instance of this because usually there is some  
-    check on the Unit that would never pass if it doesn't exist.  
-- Scheduler: clean up  
-    I'm not sure why I wrote it that way 🤷‍♂️  
-    unpack() takes parameters to handle exactly this case.  
-- Fix https://github.com/DeadlyBossMods/DeadlyBossMods/issues/1109 by actually canceling seeds timer on intermission  
+- bump version  
+- more tweaks to silken court to reduce information overload  
+- tweak defaults and increase throttling in places to reduce spam on bloodbound horror  
+- Slightly shorten ass timers  
+- Fix bug causing tank combo timer to double increment  
+- Fix warning text on desolation  
+    Fix missing spike eruption alert  
+- Fixed a bug where stage wasn't set on engage  
+- Add support for silken court normal mode, which has radically different timers from heroic  
+- Fixed some timer bugs on kyveza  
+- Don't start web timer on normal Ovinax  
+- Update Ulgrax for both mythic and normal (and heroic too likely)  
+- bloodbound horror fixes for normal  
+- minor tweaks to last form normal mode  
+- Competely reework Sikran to how timers actually work and added mythic updates  
+- Finally push reworked Silken Court mod disabling stuff that blizzard didn't allow and having alternate warnings that fit what's available  
+    Added all real data timers for silken court as well, including auto detection of when boss skips casts  
+- fix icon clearning  
+- Fix double expose defense message  
+- update bloodbound horror for mythic  
+- Update Sikran from yesterday, so it's ready for mythic testing  
+- re-enable whisper syncs and whisper auto replies on long character-realm names now that https://github.com/Stanzilla/WoWUIBugs/issues/573 is fully fixed  
+- Preliminary drycode of Xal'atath's orb affix  
+- Update pull timer code to work agian with TWW beta  
+- Update localization.cn.lua (#1124)  
+- Fix  Dk backup spec being set wrong in cata if player is raiding unspecced. Doesn't explain why it even needs fallback, why are people raiding unspecced?  
+- Fix definition for "pullin" audio  
 - bump alpha  

@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2493, "DBM-Raids-Dragonflight", 3, 1200)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240521111455")
+mod:SetRevision("20240615122743")
 mod:SetCreatureID(190245)
 mod:SetEncounterID(2614)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
@@ -40,7 +40,7 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(25120))
 local warnEggsLeft								= mod:NewCountAnnounce(19873, 1)
 local warnGreatstaffsWrath						= mod:NewTargetNoFilterAnnounce(375889, 2)
 local warnClutchwatchersRage					= mod:NewStackAnnounce(375829, 2)
-local warnRapidIncubation						= mod:NewSpellAnnounce(376073, 3)
+local warnRapidIncubation						= mod:NewCountAnnounce(376073, 3)
 local warnMortalWounds							= mod:NewStackAnnounce(378782, 2, nil, "Tank|Healer")
 local warnDiurnasGaze							= mod:NewYouAnnounce(390561, 3)
 
@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerMortalStoneclawsCD:Stop()--Don't print cast refreshed before expired for a recast
 		end
-		local timer = ((self:IsEasy() or self:GetStage(1)) and 21.4 or 7.3)
+		local timer = ((self:IsEasy() or self:GetStage(1)) and 20.3 or 7.3)
 		timerMortalStoneclawsCD:Start(timer, self.vb.tankCombocount+1)
 		updateAllTimers(self, 2, true)
 	elseif spellId == 396269 then
