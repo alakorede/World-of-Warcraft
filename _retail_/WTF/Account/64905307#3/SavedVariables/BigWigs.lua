@@ -25,7 +25,7 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Super Emphasize"] = {
 },
-["BigWigs_Plugins_Wipe"] = {
+["BigWigs_Plugins_Statistics"] = {
 },
 ["LibDualSpec-1.0"] = {
 },
@@ -41,12 +41,8 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Pull"] = {
 },
-["BigWigs_Plugins_Statistics"] = {
+["BigWigs_Plugins_Wipe"] = {
 },
-},
-["profileKeys"] = {
-["Chicoxavier - Nemesis"] = "Default",
-["Dishy - Goldrinn"] = "Default",
 },
 ["global"] = {
 ["watchedMovies"] = {
@@ -55,10 +51,14 @@ BigWigs3DB = {
 true,
 true,
 },
-[1003] = true,
-[927] = true,
 [-1597] = true,
+[927] = true,
+[1003] = true,
 },
+},
+["profileKeys"] = {
+["Chicoxavier - Nemesis"] = "Default",
+["Dishy - Goldrinn"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -170,10 +170,10 @@ BigWigsStatsDB = {
 },
 },
 [2549] = {
-[2519] = {
+[2556] = {
 ["LFR"] = {
-["best"] = 307.4820000000004,
-["kills"] = 2,
+["best"] = 233.974000000002,
+["kills"] = 1,
 },
 },
 [2565] = {
@@ -182,15 +182,15 @@ BigWigsStatsDB = {
 ["kills"] = 2,
 },
 },
+[2519] = {
+["LFR"] = {
+["best"] = 307.4820000000004,
+["kills"] = 2,
+},
+},
 [2555] = {
 ["LFR"] = {
 ["best"] = 179.7260000000024,
-["kills"] = 1,
-},
-},
-[2556] = {
-["LFR"] = {
-["best"] = 233.974000000002,
 ["kills"] = 1,
 },
 },
@@ -208,16 +208,29 @@ BigWigsStatsDB = {
 ["kills"] = 1,
 },
 },
+[2491] = {
+["LFR"] = {
+["best"] = 243.5540000000037,
+["kills"] = 1,
+},
+},
 [2482] = {
 ["LFR"] = {
 ["best"] = 225.4559999999983,
 ["kills"] = 1,
 },
 },
-[2491] = {
+},
+[2164] = {
+[2349] = {
 ["LFR"] = {
-["best"] = 243.5540000000037,
+["best"] = 467.7509999999966,
 ["kills"] = 1,
+},
+},
+[2361] = {
+["LFR"] = {
+["wipes"] = 2,
 },
 },
 },
@@ -238,19 +251,6 @@ BigWigsStatsDB = {
 ["LFR"] = {
 ["best"] = 199.9959999999846,
 ["kills"] = 1,
-},
-},
-},
-[2164] = {
-[2349] = {
-["LFR"] = {
-["best"] = 467.7509999999966,
-["kills"] = 1,
-},
-},
-[2361] = {
-["LFR"] = {
-["wipes"] = 2,
 },
 },
 },

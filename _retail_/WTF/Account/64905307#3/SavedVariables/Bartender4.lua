@@ -5,8 +5,8 @@ Bartender4DB = {
 ["profiles"] = {
 ["Shamanjuba - Nemesis"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -15,8 +15,8 @@ Bartender4DB = {
 },
 },
 ["Onifade - Nemesis"] = {
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -25,8 +25,8 @@ Bartender4DB = {
 },
 },
 ["Muligan - Nemesis"] = {
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -36,8 +36,8 @@ Bartender4DB = {
 },
 ["Batezu - Goldrinn"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -47,8 +47,8 @@ Bartender4DB = {
 },
 ["Corsega - Nemesis"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["scale"] = 0.75,
 ["x"] = -304.1250762939453,
@@ -58,8 +58,8 @@ Bartender4DB = {
 },
 ["Molosso - Nemesis"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["scale"] = 0.75,
 ["x"] = -304.1250762939453,
@@ -69,8 +69,8 @@ Bartender4DB = {
 },
 ["Nostradamus - Goldrinn"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -80,8 +80,8 @@ Bartender4DB = {
 },
 ["Chicoxavier - Nemesis"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -91,8 +91,8 @@ Bartender4DB = {
 },
 ["Sharan - Goldrinn"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -102,8 +102,8 @@ Bartender4DB = {
 },
 ["Sharan - Nemesis"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -112,8 +112,8 @@ Bartender4DB = {
 },
 },
 ["Muligan - Goldrinn"] = {
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -123,8 +123,8 @@ Bartender4DB = {
 },
 ["Sifú - Goldrinn"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -134,8 +134,8 @@ Bartender4DB = {
 },
 ["Apinéia - Nemesis"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -154,19 +154,20 @@ Bartender4DB = {
 },
 ["version"] = 3,
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
+["enabled"] = true,
 ["alpha"] = 0.8500000000000001,
 ["version"] = 3,
 ["position"] = {
-["y"] = 15.75000143051148,
+["scale"] = 0.75,
 ["x"] = -304.1250762939453,
 ["point"] = "BOTTOM",
-["scale"] = 0.75,
+["y"] = 15.75000143051148,
 },
 },
 ["Mariamolambo - Goldrinn"] = {
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -176,8 +177,8 @@ Bartender4DB = {
 },
 ["Dishy - Goldrinn"] = {
 ["enabled"] = true,
-["version"] = 3,
 ["alpha"] = 0.8500000000000001,
+["version"] = 3,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -187,8 +188,8 @@ Bartender4DB = {
 },
 ["Trimegistos - Goldrinn"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["scale"] = 0.75,
 ["x"] = -304.1250762939453,
@@ -198,8 +199,8 @@ Bartender4DB = {
 },
 ["Default"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 21.74999856948853,
 ["x"] = -216.7499389648438,
@@ -209,8 +210,8 @@ Bartender4DB = {
 },
 ["Córsega - Nemesis"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -220,8 +221,8 @@ Bartender4DB = {
 },
 ["Kuradis - Nemesis"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -230,8 +231,8 @@ Bartender4DB = {
 },
 },
 ["Artheras - Goldrinn"] = {
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -239,21 +240,20 @@ Bartender4DB = {
 ["scale"] = 0.75,
 },
 },
-["Bearbull - Nemesis"] = {
-["enabled"] = true,
+["Batezu - Nemesis"] = {
 ["version"] = 3,
 ["alpha"] = 0.8500000000000001,
 ["position"] = {
-["scale"] = 0.75,
+["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
 ["point"] = "BOTTOM",
-["y"] = 15.75000143051148,
+["scale"] = 0.75,
 },
 },
 ["Muruatan - Nemesis"] = {
 ["enabled"] = true,
-["alpha"] = 0.8500000000000001,
 ["version"] = 3,
+["alpha"] = 0.8500000000000001,
 ["position"] = {
 ["y"] = 15.75000143051148,
 ["x"] = -304.1250762939453,
@@ -377,7 +377,7 @@ Bartender4DB = {
 },
 ["version"] = 3,
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
 ["y"] = -188.5736083984375,
@@ -441,7 +441,7 @@ Bartender4DB = {
 ["point"] = "TOPRIGHT",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
 ["y"] = -188.5736083984375,
@@ -465,58 +465,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["version"] = 3,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutdelay"] = 0,
+["WoW10Layout"] = true,
 ["fadeout"] = true,
-["fadeoutalpha"] = 0.2,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["custom"] = true,
-["nocombat"] = false,
-},
-["version"] = 3,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["fadeout"] = true,
-["fadeoutalpha"] = 0.2,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = false,
+["custom"] = true,
+["possess"] = true,
+},
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -526,43 +526,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
 ["fadeout"] = true,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["WoW10Layout"] = true,
+["padding"] = 0,
 ["visibility"] = {
 ["combat"] = false,
-["custom"] = true,
+["possess"] = true,
 ["always"] = false,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["nocombat"] = true,
-["possess"] = true,
+["custom"] = true,
 },
-["padding"] = 0,
-["WoW10Layout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -617,8 +617,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -633,58 +633,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeout"] = true,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutdelay"] = 0,
+["WoW10Layout"] = true,
 ["fadeoutalpha"] = 0.2,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["custom"] = true,
-["nocombat"] = false,
-},
-["fadeout"] = true,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["fadeoutalpha"] = 0.2,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = false,
+["custom"] = true,
+["possess"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -694,43 +694,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["always"] = false,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["always"] = false,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -785,8 +785,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -801,58 +801,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeout"] = true,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
+["WoW10Layout"] = true,
+["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
 },
 ["fadeoutdelay"] = 0,
-["fadeoutalpha"] = 0.2,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["nocombat"] = false,
-["custom"] = true,
-},
-["fadeout"] = true,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["fadeoutalpha"] = 0.2,
-["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutdelay"] = 0,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["custom"] = true,
+["nocombat"] = false,
+["possess"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -862,43 +862,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["fadeout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
+["WoW10Layout"] = true,
+["padding"] = 0,
 ["visibility"] = {
 ["combat"] = false,
-["custom"] = true,
+["possess"] = true,
 ["always"] = false,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["nocombat"] = true,
-["possess"] = true,
+["custom"] = true,
 },
-["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
 },
 {
 ["enabled"] = false,
@@ -953,8 +953,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -969,58 +969,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["version"] = 3,
+["buttons"] = 9,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["fadeout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["fadeoutalpha"] = 0.2,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeout"] = true,
+["fadeoutalpha"] = 0.2,
 ["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
-["custom"] = true,
-["possess"] = true,
-},
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["nocombat"] = false,
+["custom"] = true,
+},
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -1030,43 +1030,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["always"] = false,
+},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["visibility"] = {
-["combat"] = false,
-["possess"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["custom"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -1121,8 +1121,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["WoW10Layout"] = true,
 ["version"] = 3,
+["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -1137,58 +1137,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutdelay"] = 0,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
+["WoW10Layout"] = true,
+["version"] = 3,
+["fadeout"] = true,
 ["fadeoutalpha"] = 0.2,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["fadeout"] = true,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["custom"] = true,
-["nocombat"] = false,
-["possess"] = true,
-},
+["fadeoutdelay"] = 0,
+["WoW10Layout"] = true,
+["version"] = 3,
+["fadeoutalpha"] = 0.2,
 ["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+},
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
@@ -1198,43 +1198,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["fadeout"] = true,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["fadeout"] = true,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["version"] = 3,
+["fadeout"] = true,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["always"] = false,
+},
 ["skin"] = {
 ["Zoom"] = true,
 },
-["visibility"] = {
-["combat"] = false,
-["possess"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["custom"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -1289,8 +1289,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -1305,58 +1305,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutdelay"] = 0,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
+["WoW10Layout"] = true,
+["version"] = 3,
+["fadeout"] = true,
 ["fadeoutalpha"] = 0.2,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["fadeout"] = true,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["custom"] = true,
-["nocombat"] = false,
-["possess"] = true,
-},
+["fadeoutdelay"] = 0,
+["WoW10Layout"] = true,
+["version"] = 3,
+["fadeoutalpha"] = 0.2,
 ["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+},
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
@@ -1366,43 +1366,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["fadeout"] = true,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["fadeout"] = true,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["version"] = 3,
+["fadeout"] = true,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["custom"] = true,
+["always"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["possess"] = true,
+},
 ["skin"] = {
 ["Zoom"] = true,
 },
-["visibility"] = {
-["combat"] = false,
-["always"] = false,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["custom"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -1457,8 +1457,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -1473,58 +1473,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["fadeoutdelay"] = 0,
+["buttons"] = 9,
 ["rows"] = 3,
 ["mouseover"] = true,
-["WoW10Layout"] = true,
-["version"] = 3,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["fadeout"] = true,
+["fadeoutalpha"] = 0.2,
+["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["buttons"] = 9,
+["WoW10Layout"] = true,
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+},
+["fadeout"] = true,
+["fadeoutalpha"] = 0.2,
 ["version"] = 3,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["custom"] = true,
-["nocombat"] = false,
-["possess"] = true,
-},
-["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -1534,43 +1534,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["fadeout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["version"] = 3,
+["visibility"] = {
+["combat"] = false,
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["always"] = false,
+},
+["padding"] = 0,
+["WoW10Layout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["WoW10Layout"] = true,
-["padding"] = 0,
-["visibility"] = {
-["combat"] = false,
-["possess"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["custom"] = true,
-},
-["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -1625,8 +1625,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["WoW10Layout"] = true,
 ["version"] = 3,
+["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -1641,58 +1641,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeout"] = true,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
+["WoW10Layout"] = true,
+["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
 },
 ["fadeoutdelay"] = 0,
-["fadeoutalpha"] = 0.2,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["visibility"] = {
+["custom"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeout"] = true,
-["visibility"] = {
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
-["custom"] = true,
-},
-["fadeoutdelay"] = 0,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["version"] = 3,
-["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+},
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -1702,43 +1702,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["fadeout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["always"] = false,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["always"] = false,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -1793,8 +1793,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -1809,58 +1809,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutdelay"] = 0,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
+["WoW10Layout"] = true,
+["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
 },
 ["fadeout"] = true,
-["fadeoutalpha"] = 0.2,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["custom"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeout"] = true,
-["visibility"] = {
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
-["custom"] = true,
-},
-["fadeoutdelay"] = 0,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["version"] = 3,
-["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+},
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -1870,43 +1870,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["fadeout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["possess"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["possess"] = true,
+["always"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -1961,8 +1961,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -1977,58 +1977,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["version"] = 3,
+["buttons"] = 9,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["fadeout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["fadeoutalpha"] = 0.2,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeout"] = true,
+["fadeoutalpha"] = 0.2,
 ["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
-["custom"] = true,
-["possess"] = true,
-},
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["nocombat"] = false,
+["custom"] = true,
+},
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -2038,43 +2038,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["always"] = false,
+},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["visibility"] = {
-["combat"] = false,
-["possess"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["custom"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -2129,8 +2129,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["WoW10Layout"] = true,
 ["version"] = 3,
+["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -2145,58 +2145,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutalpha"] = 0.2,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
 },
 ["fadeout"] = true,
-["fadeoutdelay"] = 0,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutalpha"] = 0.2,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["nocombat"] = false,
-["custom"] = true,
-},
-["fadeoutdelay"] = 0,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["fadeoutalpha"] = 0.2,
-["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeout"] = true,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["custom"] = true,
+["nocombat"] = false,
+["possess"] = true,
+},
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -2206,43 +2206,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["fadeout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["always"] = false,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["always"] = false,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -2297,8 +2297,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -2313,58 +2313,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["fadeout"] = true,
+["buttons"] = 9,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeoutdelay"] = 0,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["fadeoutalpha"] = 0.2,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["custom"] = true,
-["nocombat"] = false,
-["possess"] = true,
-},
+["fadeout"] = true,
+["WoW10Layout"] = true,
+["version"] = 3,
+["fadeoutdelay"] = 0,
 ["fadeoutalpha"] = 0.2,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutdelay"] = 0,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+},
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
@@ -2374,43 +2374,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["fadeout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["version"] = 3,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["custom"] = true,
+["always"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["possess"] = true,
+},
 ["skin"] = {
 ["Zoom"] = true,
 },
-["visibility"] = {
-["combat"] = false,
-["always"] = false,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["custom"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -2465,8 +2465,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["WoW10Layout"] = true,
 ["version"] = 3,
+["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -2481,58 +2481,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutalpha"] = 0.2,
 ["rows"] = 3,
 ["mouseover"] = true,
-["WoW10Layout"] = true,
-["fadeout"] = true,
-["version"] = 3,
-["fadeoutdelay"] = 0,
-["skin"] = {
-["Zoom"] = true,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
 },
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["padding"] = 0,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
+["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
 },
-["fadeoutalpha"] = 0.2,
+["fadeoutdelay"] = 0,
+["padding"] = 0,
+["WoW10Layout"] = true,
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeout"] = true,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
-["fadeoutalpha"] = 0.2,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
+["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = false,
+["custom"] = true,
+["possess"] = true,
 },
+["fadeoutalpha"] = 0.2,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["padding"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["custom"] = true,
-["nocombat"] = false,
+["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
 },
-["buttons"] = 9,
+["version"] = 3,
+["padding"] = 0,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -2542,43 +2542,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
 ["fadeout"] = true,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["WoW10Layout"] = true,
-["padding"] = 0,
 ["visibility"] = {
 ["combat"] = false,
-["custom"] = true,
+["always"] = false,
 ["possess"] = true,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["nocombat"] = true,
-["always"] = false,
+["custom"] = true,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["padding"] = 0,
+["WoW10Layout"] = true,
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -2633,8 +2633,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -2657,7 +2657,14 @@ Bartender4DB = {
 ["buttons"] = 9,
 ["mouseover"] = true,
 ["fadeoutdelay"] = 0,
-["WoW10Layout"] = true,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
 ["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
@@ -2667,14 +2674,7 @@ Bartender4DB = {
 },
 ["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
+["WoW10Layout"] = true,
 },
 {
 ["showgrid"] = true,
@@ -2683,9 +2683,9 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
-["buttons"] = 9,
 ["fadeoutalpha"] = 0.2,
+["buttons"] = 9,
+["fadeout"] = true,
 ["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
@@ -2693,14 +2693,14 @@ Bartender4DB = {
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["WoW10Layout"] = true,
-["padding"] = 0,
 ["visibility"] = {
 ["custom"] = true,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["possess"] = true,
 ["nocombat"] = false,
 },
+["padding"] = 0,
+["WoW10Layout"] = true,
 },
 {
 ["showgrid"] = true,
@@ -2730,15 +2730,6 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["WoW10Layout"] = true,
-["version"] = 3,
-["position"] = {
-["y"] = 123.7000018432736,
-["x"] = 31.70885425769666,
-["point"] = "BOTTOM",
-["scale"] = 0.800000011920929,
-},
-["padding"] = 0,
 ["visibility"] = {
 ["combat"] = false,
 ["possess"] = true,
@@ -2747,6 +2738,15 @@ Bartender4DB = {
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["always"] = false,
 },
+["version"] = 3,
+["position"] = {
+["y"] = 123.7000018432736,
+["x"] = 31.70885425769666,
+["point"] = "BOTTOM",
+["scale"] = 0.800000011920929,
+},
+["padding"] = 0,
+["WoW10Layout"] = true,
 },
 {
 ["enabled"] = false,
@@ -2813,22 +2813,22 @@ Bartender4DB = {
 },
 },
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["version"] = 3,
 ["rows"] = 3,
 ["mouseover"] = true,
 ["WoW10Layout"] = true,
-["fadeout"] = true,
-["fadeoutalpha"] = 0.2,
 ["fadeoutdelay"] = 0,
+["fadeoutalpha"] = 0.2,
+["fadeout"] = true,
 ["position"] = {
-["y"] = 123.7000018432736,
+["scale"] = 0.800000011920929,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
-["scale"] = 0.800000011920929,
+["y"] = 123.7000018432736,
 },
 ["skin"] = {
 ["Zoom"] = true,
@@ -2836,27 +2836,27 @@ Bartender4DB = {
 ["padding"] = 0,
 ["visibility"] = {
 ["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["overridebar"] = true,
 ["nocombat"] = false,
 ["vehicleui"] = true,
 },
-["version"] = 3,
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
+["version"] = 3,
 ["WoW10Layout"] = true,
 ["fadeoutdelay"] = 0,
-["fadeoutalpha"] = 0.2,
 ["fadeout"] = true,
+["fadeoutalpha"] = 0.2,
 ["position"] = {
-["y"] = 123.7000018432736,
+["scale"] = 0.800000011920929,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
-["scale"] = 0.800000011920929,
+["y"] = 123.7000018432736,
 },
 ["skin"] = {
 ["Zoom"] = true,
@@ -2868,17 +2868,17 @@ Bartender4DB = {
 ["nocombat"] = false,
 ["custom"] = true,
 },
-["version"] = 3,
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
 ["showgrid"] = true,
 ["rows"] = 2,
-["fadeout"] = true,
+["version"] = 3,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["fadeout"] = true,
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
@@ -2894,12 +2894,7 @@ Bartender4DB = {
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["position"] = {
-["y"] = 123.7000018432736,
-["x"] = 31.70885425769666,
-["point"] = "BOTTOM",
-["scale"] = 0.800000011920929,
-},
+["fadeout"] = true,
 ["version"] = 3,
 ["skin"] = {
 ["Zoom"] = true,
@@ -2909,12 +2904,17 @@ Bartender4DB = {
 ["visibility"] = {
 ["combat"] = false,
 ["custom"] = true,
-["always"] = false,
+["possess"] = true,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["nocombat"] = true,
-["possess"] = true,
+["always"] = false,
 },
-["fadeout"] = true,
+["position"] = {
+["scale"] = 0.800000011920929,
+["x"] = 31.70885425769666,
+["point"] = "BOTTOM",
+["y"] = 123.7000018432736,
+},
 },
 {
 ["enabled"] = false,
@@ -2969,8 +2969,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -2985,58 +2985,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutalpha"] = 0.2,
 ["rows"] = 3,
 ["mouseover"] = true,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
 ["version"] = 3,
-["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutdelay"] = 0,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeout"] = true,
 ["padding"] = 0,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["custom"] = true,
+["nocombat"] = false,
+["possess"] = true,
+},
 ["fadeoutalpha"] = 0.2,
-["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeoutdelay"] = 0,
 ["padding"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["nocombat"] = false,
-["custom"] = true,
-},
-["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -3046,43 +3046,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["fadeout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
-["WoW10Layout"] = true,
-["padding"] = 0,
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["possess"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["visibility"] = {
+["combat"] = false,
+["possess"] = true,
+["always"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
+["padding"] = 0,
+["WoW10Layout"] = true,
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -3137,8 +3137,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -3153,43 +3153,40 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["fadeoutalpha"] = 0.2,
+["buttons"] = 9,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["version"] = 3,
+["fadeoutalpha"] = 0.2,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
-["custom"] = true,
-["possess"] = true,
-},
+["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["version"] = 3,
 ["fadeout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
@@ -3197,14 +3194,17 @@ Bartender4DB = {
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutalpha"] = 0.2,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["nocombat"] = false,
+["custom"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
@@ -3214,40 +3214,40 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
+["version"] = 3,
+["padding"] = 0,
+["visibility"] = {
+["always"] = true,
+["combat"] = true,
+["nocombat"] = true,
+},
 ["position"] = {
 ["y"] = -193.0587310791016,
 ["x"] = -113.9737243652344,
 ["point"] = "CENTER",
 },
-["padding"] = 0,
-["visibility"] = {
-["always"] = true,
-["combat"] = true,
-["nocombat"] = true,
-},
-["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["fadeout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
-["visibility"] = {
-["always"] = true,
-["combat"] = true,
-["nocombat"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["always"] = true,
+["combat"] = true,
+["nocombat"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -3311,58 +3311,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["version"] = 3,
+["buttons"] = 9,
 ["rows"] = 3,
 ["mouseover"] = true,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
 ["fadeoutalpha"] = 0.2,
-["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeout"] = true,
 ["padding"] = 0,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["WoW10Layout"] = true,
-["fadeoutdelay"] = 0,
+["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["custom"] = true,
+["nocombat"] = false,
+["possess"] = true,
+},
 ["fadeout"] = true,
-["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["nocombat"] = false,
-["custom"] = true,
-},
-["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -3372,43 +3372,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["fadeout"] = true,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeout"] = true,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
-["WoW10Layout"] = true,
-["padding"] = 0,
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["always"] = false,
-},
 ["position"] = {
 ["scale"] = 0.800000011920929,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["y"] = 123.7000018432736,
 },
+["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
+["visibility"] = {
+["combat"] = false,
+["always"] = false,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
+["padding"] = 0,
+["WoW10Layout"] = true,
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -3463,8 +3463,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -3479,58 +3479,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeout"] = true,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutdelay"] = 0,
+["WoW10Layout"] = true,
 ["fadeoutalpha"] = 0.2,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["custom"] = true,
-["nocombat"] = false,
-},
-["fadeoutalpha"] = 0.2,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["fadeout"] = true,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = false,
+["custom"] = true,
+["possess"] = true,
+},
+["fadeoutalpha"] = 0.2,
 },
 {
 ["enabled"] = false,
@@ -3540,32 +3540,26 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeout"] = true,
-["visibility"] = {
-["combat"] = true,
-["always"] = false,
-["overridebar"] = false,
-["nocombat"] = false,
-["custom"] = true,
-},
-["fadeoutdelay"] = 0,
+["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
 ["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
@@ -3576,8 +3570,14 @@ Bartender4DB = {
 ["scale"] = 0.800000011920929,
 },
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutalpha"] = 0.2,
+["visibility"] = {
+["combat"] = true,
+["always"] = false,
+["overridebar"] = false,
+["nocombat"] = false,
+["custom"] = true,
+},
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -3641,58 +3641,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["version"] = 3,
 ["rows"] = 3,
 ["mouseover"] = true,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
 ["fadeoutdelay"] = 0,
-["fadeoutalpha"] = 0.2,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeout"] = true,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["version"] = 3,
+["WoW10Layout"] = true,
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeoutdelay"] = 0,
-["WoW10Layout"] = true,
-["fadeout"] = true,
+["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["custom"] = true,
+["nocombat"] = false,
+["possess"] = true,
+},
 ["fadeoutalpha"] = 0.2,
-["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutdelay"] = 0,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["nocombat"] = false,
-["custom"] = true,
-},
-["buttons"] = 9,
+["WoW10Layout"] = true,
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -3702,43 +3702,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["version"] = 3,
-["fadeout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
-["WoW10Layout"] = true,
-["padding"] = 0,
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["possess"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["version"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
+["visibility"] = {
+["combat"] = false,
+["possess"] = true,
+["always"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
+["padding"] = 0,
+["WoW10Layout"] = true,
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -3793,8 +3793,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -3809,58 +3809,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["version"] = 3,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeoutdelay"] = 0,
+["WoW10Layout"] = true,
 ["fadeout"] = true,
-["fadeoutalpha"] = 0.2,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeout"] = true,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["custom"] = true,
-["nocombat"] = false,
-},
-["fadeoutdelay"] = 0,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["version"] = 3,
-["fadeoutalpha"] = 0.2,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = false,
+["custom"] = true,
+["possess"] = true,
+},
+["fadeoutdelay"] = 0,
 },
 {
 ["enabled"] = false,
@@ -3870,43 +3870,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeout"] = true,
+["WoW10Layout"] = true,
+["padding"] = 0,
+["visibility"] = {
+["combat"] = false,
+["possess"] = true,
+["always"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = true,
+["custom"] = true,
+},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["visibility"] = {
-["combat"] = false,
-["custom"] = true,
-["always"] = false,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = true,
-["possess"] = true,
-},
-["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -3961,8 +3961,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -3977,58 +3977,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["version"] = 3,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
 },
 ["fadeout"] = true,
-["fadeoutdelay"] = 0,
-["fadeoutalpha"] = 0.2,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeoutalpha"] = 0.2,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["version"] = 3,
+["visibility"] = {
+["custom"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["possess"] = true,
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
-["visibility"] = {
-["possess"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
-["custom"] = true,
+["fadeoutalpha"] = 0.2,
+["WoW10Layout"] = true,
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
 },
 ["fadeout"] = true,
-["fadeoutdelay"] = 0,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutalpha"] = 0.2,
+["visibility"] = {
+["possess"] = true,
+["custom"] = true,
+["nocombat"] = false,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+},
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
@@ -4038,41 +4038,41 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
+["showgrid"] = true,
+["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["padding"] = 0,
+["rows"] = 3,
 ["visibility"] = {
 ["combat"] = true,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["custom"] = true,
-["nocombat"] = true,
 ["always"] = true,
+["nocombat"] = true,
+["custom"] = true,
 },
-["version"] = 3,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["rows"] = 3,
-["padding"] = 0,
-["WoW10Layout"] = true,
-["showgrid"] = true,
 },
 {
 ["enabled"] = false,
@@ -4132,68 +4132,68 @@ Bartender4DB = {
 },
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["version"] = 3,
 ["rows"] = 3,
 ["mouseover"] = true,
 ["visibility"] = {
 ["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["overridebar"] = true,
 ["nocombat"] = false,
 ["vehicleui"] = true,
 },
-["fadeout"] = true,
-["position"] = {
-["scale"] = 0.800000011920929,
-["x"] = -184.2911489609542,
-["point"] = "BOTTOM",
-["y"] = 123.7000018432736,
-},
-["fadeoutdelay"] = 0,
+["fadeoutalpha"] = 0.2,
 ["skin"] = {
 ["Zoom"] = true,
 },
-["fadeoutalpha"] = 0.2,
+["fadeout"] = true,
+["position"] = {
+["y"] = 123.7000018432736,
+["x"] = -184.2911489609542,
+["point"] = "BOTTOM",
+["scale"] = 0.800000011920929,
+},
+["fadeoutdelay"] = 0,
 ["padding"] = 0,
 ["WoW10Layout"] = true,
-["version"] = 3,
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["buttons"] = 9,
+["version"] = 3,
 ["visibility"] = {
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["nocombat"] = false,
 ["custom"] = true,
+["nocombat"] = false,
 ["possess"] = true,
 },
 ["fadeoutalpha"] = 0.2,
-["position"] = {
-["scale"] = 0.800000011920929,
-["x"] = -76.29114735162875,
-["point"] = "BOTTOM",
-["y"] = 123.7000018432736,
-},
-["fadeoutdelay"] = 0,
 ["skin"] = {
 ["Zoom"] = true,
+},
+["fadeoutdelay"] = 0,
+["position"] = {
+["y"] = 123.7000018432736,
+["x"] = -76.29114735162875,
+["point"] = "BOTTOM",
+["scale"] = 0.800000011920929,
 },
 ["fadeout"] = true,
 ["padding"] = 0,
 ["WoW10Layout"] = true,
-["version"] = 3,
+["buttons"] = 9,
 },
 {
 ["enabled"] = false,
 ["showgrid"] = true,
 ["rows"] = 2,
-["version"] = 3,
+["fadeout"] = true,
 ["skin"] = {
 ["Zoom"] = true,
 },
@@ -4208,20 +4208,18 @@ Bartender4DB = {
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["fadeout"] = true,
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
+["fadeout"] = true,
 ["version"] = 3,
 ["position"] = {
-["scale"] = 0.800000011920929,
+["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
-["y"] = 123.7000018432736,
+["scale"] = 0.800000011920929,
 },
 ["visibility"] = {
 ["combat"] = false,
@@ -4233,7 +4231,9 @@ Bartender4DB = {
 },
 ["padding"] = 0,
 ["WoW10Layout"] = true,
-["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
 },
 {
 ["enabled"] = false,
@@ -4288,8 +4288,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -4304,58 +4304,58 @@ Bartender4DB = {
 ["actionbars"] = {
 {
 ["showgrid"] = true,
-["buttons"] = 9,
+["fadeoutalpha"] = 0.2,
 ["rows"] = 3,
 ["mouseover"] = true,
-["visibility"] = {
-["custom"] = true,
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["overridebar"] = true,
-["nocombat"] = false,
-["vehicleui"] = true,
-},
-["fadeout"] = true,
+["WoW10Layout"] = true,
 ["version"] = 3,
-["fadeoutdelay"] = 0,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -184.2911489609542,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeout"] = true,
+["skin"] = {
+["Zoom"] = true,
+},
+["fadeoutdelay"] = 0,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["fadeoutalpha"] = 0.2,
+["visibility"] = {
+["custom"] = true,
+["possess"] = true,
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["overridebar"] = true,
+["nocombat"] = false,
+["vehicleui"] = true,
+},
+["buttons"] = 9,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
-["fadeoutdelay"] = 0,
-["visibility"] = {
-["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
-["possess"] = true,
-["custom"] = true,
-["nocombat"] = false,
-},
-["fadeout"] = true,
+["buttons"] = 9,
+["WoW10Layout"] = true,
 ["fadeoutalpha"] = 0.2,
-["version"] = 3,
-["skin"] = {
-["Zoom"] = true,
-},
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = -76.29114735162875,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["fadeoutdelay"] = 0,
+["skin"] = {
+["Zoom"] = true,
+},
+["version"] = 3,
 ["padding"] = 0,
-["WoW10Layout"] = true,
-["buttons"] = 9,
+["visibility"] = {
+["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
+["nocombat"] = false,
+["custom"] = true,
+["possess"] = true,
+},
+["fadeout"] = true,
 },
 {
 ["enabled"] = false,
@@ -4365,43 +4365,43 @@ Bartender4DB = {
 ["skin"] = {
 ["Zoom"] = true,
 },
-["version"] = 3,
+["position"] = {
+["y"] = -193.0587310791016,
+["x"] = -113.9737243652344,
+["point"] = "CENTER",
+},
 ["padding"] = 0,
 ["visibility"] = {
 ["always"] = true,
 ["combat"] = true,
 ["nocombat"] = true,
 },
-["position"] = {
-["y"] = -193.0587310791016,
-["x"] = -113.9737243652344,
-["point"] = "CENTER",
-},
+["version"] = 3,
 },
 {
 ["showgrid"] = true,
 ["rows"] = 3,
+["skin"] = {
+["Zoom"] = true,
+},
 ["fadeout"] = true,
-["version"] = 3,
 ["position"] = {
 ["y"] = 123.7000018432736,
 ["x"] = 31.70885425769666,
 ["point"] = "BOTTOM",
 ["scale"] = 0.800000011920929,
 },
+["WoW10Layout"] = true,
+["padding"] = 0,
 ["visibility"] = {
 ["combat"] = false,
-["custom"] = true,
+["always"] = false,
 ["possess"] = true,
 ["customdata"] = "[petbattle]hide;[possessbar]hide;[overridebar]hide;[nocombat]fade;[vehicleui]hide;show",
 ["nocombat"] = true,
-["always"] = false,
+["custom"] = true,
 },
-["padding"] = 0,
-["WoW10Layout"] = true,
-["skin"] = {
-["Zoom"] = true,
-},
+["version"] = 3,
 },
 {
 ["enabled"] = false,
@@ -4456,8 +4456,8 @@ Bartender4DB = {
 },
 },
 [13] = {
-["version"] = 3,
 ["WoW10Layout"] = true,
+["version"] = 3,
 ["position"] = {
 ["y"] = -224,
 ["x"] = -284.5000305175781,
@@ -4586,7 +4586,7 @@ Bartender4DB = {
 },
 ["version"] = 3,
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
 ["y"] = 197.627685546875,
@@ -4650,7 +4650,7 @@ Bartender4DB = {
 ["point"] = "CENTER",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
 ["y"] = 197.627685546875,
@@ -4796,7 +4796,7 @@ Bartender4DB = {
 ["version"] = 3,
 ["padding"] = -2,
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["padding"] = -2,
 ["version"] = 3,
 ["position"] = {
@@ -4868,7 +4868,7 @@ Bartender4DB = {
 ["point"] = "TOPLEFT",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["padding"] = -2,
 ["version"] = 3,
 ["position"] = {
@@ -5016,7 +5016,7 @@ Bartender4DB = {
 ["point"] = "BOTTOMRIGHT",
 },
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
@@ -5088,7 +5088,7 @@ Bartender4DB = {
 ["point"] = "BOTTOMRIGHT",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
@@ -5222,7 +5222,7 @@ Bartender4DB = {
 },
 ["version"] = 3,
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
 ["y"] = 47,
@@ -5286,7 +5286,7 @@ Bartender4DB = {
 ["point"] = "BOTTOM",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
 ["y"] = 47,
@@ -5304,172 +5304,224 @@ Bartender4DB = {
 },
 },
 },
-["ZoneAbilityBar"] = {
+["StanceBar"] = {
 ["profiles"] = {
-["Eshy - Goldrinn"] = {
-["enabled"] = false,
+["Shamanjuba - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
-["PALADIN"] = {
+["Onifade - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223,
-["x"] = -31.49969482421875,
+["y"] = 130.6658935546875,
+["x"] = -478.0668640136719,
 ["point"] = "BOTTOM",
+["scale"] = 1,
 },
 },
-["Tamagoshy - Nemesis"] = {
+["Muligan - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223,
-["x"] = -31.49969482421875,
-["point"] = "BOTTOM",
+["y"] = 71.00001525878906,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
-["Chishy - Goldrinn"] = {
-["enabled"] = false,
+["Batezu - Goldrinn"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
-["Trystam - Goldrinn"] = {
-["enabled"] = false,
+["Corsega - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["scale"] = 1,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["y"] = 71.00001525878906,
 },
 },
-["Sashy - Goldrinn"] = {
-["enabled"] = false,
+["Molosso - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["scale"] = 1,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["y"] = 34.00000762939453,
 },
 },
-["Eshy - Nemesis"] = {
+["Nostradamus - Goldrinn"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
-["Satishy - Goldrinn"] = {
-["enabled"] = false,
+["Chicoxavier - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
-["Aleshy - Goldrinn"] = {
-["enabled"] = false,
+["Sharan - Goldrinn"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
-["Dishy - Nemesis"] = {
+["Sharan - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Muligan - Goldrinn"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Sifú - Goldrinn"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Apinéia - Nemesis"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Mitráculo - Nemesis"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Bearbull - Nemesis"] = {
+["version"] = 3,
+["position"] = {
+["scale"] = 1,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["y"] = 34.00000762939453,
+},
+},
+["Mariamolambo - Goldrinn"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
 ["Dishy - Goldrinn"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
+["y"] = 143,
+["x"] = -460,
 ["point"] = "BOTTOM",
+["scale"] = 1,
 },
 },
-["Lilishy - Goldrinn"] = {
-["enabled"] = false,
+["Trimegistos - Goldrinn"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
-},
-},
-["Akishy - Goldrinn"] = {
-["enabled"] = false,
-["version"] = 3,
-["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
-},
-},
-["Jeshy - Goldrinn"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 53.71353149414063,
-["x"] = -302.6778564453125,
-["point"] = "CENTER",
-},
-},
-["Natashy - Goldrinn"] = {
-["enabled"] = false,
-["version"] = 3,
-["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
-},
-},
-["Radagashy - Goldrinn"] = {
-["enabled"] = false,
-["version"] = 3,
-["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
-},
-},
-["Elshy - Goldrinn"] = {
-["enabled"] = false,
-["version"] = 3,
-["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
-["point"] = "BOTTOM",
+["scale"] = 1,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["y"] = 34.00000762939453,
 },
 },
 ["Default"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
+["y"] = 143,
+["x"] = -460,
 ["point"] = "BOTTOM",
+["scale"] = 1,
 },
 },
-["Melishy - Goldrinn"] = {
-["enabled"] = false,
+["Córsega - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 223.0000457763672,
-["x"] = -31.500244140625,
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Kuradis - Nemesis"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Artheras - Goldrinn"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 143,
+["x"] = -460,
 ["point"] = "BOTTOM",
+["scale"] = 1,
+},
+},
+["Batezu - Nemesis"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
+},
+},
+["Muruatan - Nemesis"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 34.00000762939453,
+["x"] = 508.933349609375,
+["point"] = "BOTTOMLEFT",
+["scale"] = 1,
 },
 },
 },
@@ -5602,7 +5654,7 @@ Bartender4DB = {
 },
 ["version"] = 3,
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
@@ -5674,7 +5726,7 @@ Bartender4DB = {
 ["point"] = "CENTER",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
@@ -5822,7 +5874,7 @@ Bartender4DB = {
 ["point"] = "CENTER",
 },
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["rows"] = 3,
 ["version"] = 3,
 ["position"] = {
@@ -5894,7 +5946,7 @@ Bartender4DB = {
 ["point"] = "CENTER",
 },
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["rows"] = 3,
 ["version"] = 3,
 ["position"] = {
@@ -5914,224 +5966,172 @@ Bartender4DB = {
 },
 },
 },
-["StanceBar"] = {
+["ZoneAbilityBar"] = {
 ["profiles"] = {
-["Shamanjuba - Nemesis"] = {
+["Eshy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Onifade - Nemesis"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 130.6658935546875,
-["x"] = -478.0668640136719,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
 ["point"] = "BOTTOM",
-["scale"] = 1,
 },
 },
-["Muligan - Nemesis"] = {
+["PALADIN"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 71.00001525878906,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223,
+["x"] = -31.49969482421875,
+["point"] = "BOTTOM",
 },
 },
-["Batezu - Goldrinn"] = {
+["Tamagoshy - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223,
+["x"] = -31.49969482421875,
+["point"] = "BOTTOM",
 },
 },
-["Corsega - Nemesis"] = {
+["Chishy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["scale"] = 1,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["y"] = 71.00001525878906,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Molosso - Nemesis"] = {
+["Trystam - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["scale"] = 1,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["y"] = 34.00000762939453,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Nostradamus - Goldrinn"] = {
+["Sashy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Chicoxavier - Nemesis"] = {
+["Eshy - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Sharan - Goldrinn"] = {
+["Satishy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Sharan - Nemesis"] = {
+["Aleshy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Muligan - Goldrinn"] = {
+["Dishy - Nemesis"] = {
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Sifú - Goldrinn"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Apinéia - Nemesis"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Mitráculo - Nemesis"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Batezu - Nemesis"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Mariamolambo - Goldrinn"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
 ["Dishy - Goldrinn"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 143,
-["x"] = -460,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
 ["point"] = "BOTTOM",
-["scale"] = 1,
 },
 },
-["Trimegistos - Goldrinn"] = {
+["Lilishy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["scale"] = 1,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["y"] = 34.00000762939453,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
+},
+},
+["Melishy - Goldrinn"] = {
+["enabled"] = false,
+["version"] = 3,
+["position"] = {
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
+},
+},
+["Jeshy - Goldrinn"] = {
+["version"] = 3,
+["position"] = {
+["y"] = 53.71353149414063,
+["x"] = -302.6778564453125,
+["point"] = "CENTER",
+},
+},
+["Natashy - Goldrinn"] = {
+["enabled"] = false,
+["version"] = 3,
+["position"] = {
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
 ["Default"] = {
 ["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 143,
-["x"] = -460,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
 ["point"] = "BOTTOM",
-["scale"] = 1,
 },
 },
-["Córsega - Nemesis"] = {
+["Elshy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Kuradis - Nemesis"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
-},
-},
-["Artheras - Goldrinn"] = {
-["version"] = 3,
-["position"] = {
-["y"] = 143,
-["x"] = -460,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
 ["point"] = "BOTTOM",
-["scale"] = 1,
 },
 },
-["Bearbull - Nemesis"] = {
+["Radagashy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["scale"] = 1,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["y"] = 34.00000762939453,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
-["Muruatan - Nemesis"] = {
+["Akishy - Goldrinn"] = {
+["enabled"] = false,
 ["version"] = 3,
 ["position"] = {
-["y"] = 34.00000762939453,
-["x"] = 508.933349609375,
-["point"] = "BOTTOMLEFT",
-["scale"] = 1,
+["y"] = 223.0000457763672,
+["x"] = -31.500244140625,
+["point"] = "BOTTOM",
 },
 },
 },
@@ -6147,7 +6147,7 @@ Bartender4DB = {
 ["Mitráculo - Nemesis"] = "Mitráculo - Nemesis",
 ["Molosso - Nemesis"] = "Molosso - Nemesis",
 ["Nostradamus - Goldrinn"] = "Nostradamus - Goldrinn",
-["Aishy - Nemesis"] = "Dishy - Goldrinn",
+["Bearbull - Nemesis"] = "Bearbull - Nemesis",
 ["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
 ["Sharan - Goldrinn"] = "Sharan - Goldrinn",
 ["Aleshy - Goldrinn"] = "Default",
@@ -6166,7 +6166,7 @@ Bartender4DB = {
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Kuradis - Nemesis"] = "Kuradis - Nemesis",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
-["Bearbull - Nemesis"] = "Bearbull - Nemesis",
+["Aishy - Nemesis"] = "Dishy - Goldrinn",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 },
 ["profiles"] = {
@@ -6316,15 +6316,15 @@ Bartender4DB = {
 ["Mitráculo - Nemesis"] = {
 ["selfcastrightclick"] = true,
 ["blizzardVehicle"] = true,
-["snapping"] = false,
-["buttonlock"] = false,
 ["focuscastmodifier"] = false,
+["buttonlock"] = false,
+["snapping"] = false,
 ["minimapIcon"] = {
 ["hide"] = true,
 },
 ["outofrange"] = "hotkey",
 },
-["Batezu - Nemesis"] = {
+["Bearbull - Nemesis"] = {
 ["focuscastmodifier"] = false,
 ["minimapIcon"] = {
 ["hide"] = true,
@@ -6410,7 +6410,7 @@ Bartender4DB = {
 ["focuscastmodifier"] = false,
 ["outofrange"] = "hotkey",
 },
-["Bearbull - Nemesis"] = {
+["Batezu - Nemesis"] = {
 ["focuscastmodifier"] = false,
 ["minimapIcon"] = {
 ["hide"] = true,

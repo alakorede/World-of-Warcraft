@@ -1,20 +1,46 @@
 
 Roth_UI_DB_GLOB = {
+	["TEMPLATE_LIST"] = {
+		{
+			["value"] = "pearl",
+			["keepShownOnClick"] = false,
+			["key"] = "pearl",
+			["notCheckable"] = true,
+		}, -- [1]
+	},
 	["pearl"] = {
+		["value"] = {
+			["top"] = {
+				["color"] = {
+					["b"] = 1,
+					["g"] = 1,
+					["r"] = 1,
+				},
+				["tag"] = "topdef",
+			},
+			["bottom"] = {
+				["color"] = {
+					["b"] = 0.8,
+					["g"] = 0.8,
+					["r"] = 0.8,
+				},
+				["tag"] = "botdef",
+			},
+			["hideOnFull"] = false,
+			["hideOnEmpty"] = true,
+			["alpha"] = 1,
+		},
 		["spark"] = {
 			["alpha"] = 0.9,
-		},
-		["highlight"] = {
-			["alpha"] = 0.3,
 		},
 		["model"] = {
 			["rotation"] = 0,
 			["portraitZoom"] = 0,
 			["displayInfo"] = 32368,
-			["camDistanceScale"] = 0.95,
+			["alpha"] = 1,
 			["enable"] = true,
 			["pos_y"] = 0.1,
-			["alpha"] = 1,
+			["camDistanceScale"] = 0.95,
 			["pos_x"] = 0,
 		},
 		["bubbles"] = {
@@ -25,42 +51,16 @@ Roth_UI_DB_GLOB = {
 		},
 		["filling"] = {
 			["color"] = {
-				["r"] = 0.8,
-				["g"] = 0.8,
 				["b"] = 1,
+				["g"] = 0.8,
+				["r"] = 0.8,
 			},
 			["colorAuto"] = false,
 			["texture"] = "Interface\\AddOns\\Roth_UI\\media\\orb_filling15",
 		},
-		["value"] = {
-			["top"] = {
-				["color"] = {
-					["r"] = 1,
-					["g"] = 1,
-					["b"] = 1,
-				},
-				["tag"] = "topdef",
-			},
-			["bottom"] = {
-				["color"] = {
-					["r"] = 0.8,
-					["g"] = 0.8,
-					["b"] = 0.8,
-				},
-				["tag"] = "botdef",
-			},
-			["hideOnFull"] = false,
-			["hideOnEmpty"] = true,
-			["alpha"] = 1,
+		["highlight"] = {
+			["alpha"] = 0.3,
 		},
-	},
-	["TEMPLATE_LIST"] = {
-		{
-			["value"] = "pearl",
-			["keepShownOnClick"] = false,
-			["key"] = "pearl",
-			["notCheckable"] = true,
-		}, -- [1]
 	},
 }
 ShinyBuffsDB = {
@@ -71,42 +71,42 @@ ShinyBuffsDB = {
 	["border"] = "RB border",
 	["bprow"] = 8,
 	["bgColor"] = {
-		["r"] = 0.32,
-		["g"] = 0.32,
 		["b"] = 0.32,
+		["g"] = 0.32,
+		["r"] = 0.32,
 	},
 	["posX"] = -205,
 	["bg"] = "Solid",
 	["anchor1"] = "TOPRIGHT",
 	["debuffOverlayAlpha"] = 0.4,
-	["posY"] = -13,
-	["classbor"] = false,
+	["debuffs"] = {
+		["size"] = 45,
+		["cfsize"] = 14,
+		["dfsize"] = 12,
+	},
+	["debuffTypeBor"] = false,
 	["borderWidth"] = 16,
 	["borColor"] = {
-		["r"] = 0.5,
-		["g"] = 0.5,
 		["b"] = 0.5,
+		["g"] = 0.5,
+		["r"] = 0.5,
 	},
 	["classbg"] = false,
 	["font"] = "Cracked",
 	["classbar"] = false,
 	["sbarColor"] = {
-		["r"] = 0,
-		["g"] = 1,
 		["b"] = 0,
+		["g"] = 1,
+		["r"] = 0,
 	},
 	["anchor2"] = "TOPRIGHT",
 	["buffs"] = {
-		["dfsize"] = 10,
-		["cfsize"] = 14,
 		["size"] = 40,
-	},
-	["debuffTypeBor"] = false,
-	["debuffs"] = {
-		["dfsize"] = 12,
 		["cfsize"] = 14,
-		["size"] = 45,
+		["dfsize"] = 10,
 	},
+	["classbor"] = false,
+	["posY"] = -13,
 }
 PhanxFontDB = nil
 Roth_UI_DB = {

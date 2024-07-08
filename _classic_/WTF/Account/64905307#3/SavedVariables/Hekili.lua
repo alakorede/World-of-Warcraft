@@ -22,9 +22,9 @@ HekiliDB = {
 					["x"] = -68.1478271484375,
 				},
 				["Primary"] = {
-					["rel"] = "CENTER",
 					["y"] = -68.55569458007812,
 					["x"] = -2.963318109512329,
+					["rel"] = "CENTER",
 				},
 				["AOE"] = {
 					["rel"] = "CENTER",
@@ -39,13 +39,13 @@ HekiliDB = {
 			},
 			["enabled"] = "enable",
 			["runOnce"] = {
-				["forceReloadClassDefaultOptions_20220306_11"] = true,
+				["forceReloadClassDefaultOptions_20220306_6"] = true,
 				["forceReloadAllDefaultPriorities_20220228"] = true,
 				["forceEnableAllClassesOnceDueToBug_20220225"] = true,
 				["forceEnableEnhancedRecheckBoomkin_20210712"] = true,
-				["updateMaxRefreshToNewSpecOptions_20220222"] = true,
 				["resetAberrantPackageDates_20190728_1"] = true,
-				["forceReloadClassDefaultOptions_20220306_6"] = true,
+				["updateMaxRefreshToNewSpecOptions_20220222"] = true,
+				["forceReloadClassDefaultOptions_20220306_11"] = true,
 			},
 			["specs"] = {
 				[11] = {
@@ -62,12 +62,12 @@ HekiliDB = {
 						["bear_form_mode"] = "tank",
 						["max_ff_energy"] = 15,
 						["flowerweaving_mode"] = "any",
-						["min_roar_offset"] = 24,
+						["bearweaving_instancetype"] = "raid",
 						["min_bite_sr_remains"] = 4,
 						["feral_dps"] = "Feral DPS (IV)",
 						["max_bite_energy"] = 25,
 						["lunar_cooldown_leeway"] = 14,
-						["bearweaving_instancetype"] = "raid",
+						["min_roar_offset"] = 24,
 						["bearweaving_bossonly"] = true,
 						["flowerweaving_mingroupsize"] = 10,
 						["rip_leeway"] = 3,
@@ -164,9 +164,9 @@ HekiliDB = {
 							}, -- [14]
 							{
 								["enabled"] = true,
+								["buff_name"] = "blood_tap",
 								["action"] = "cancel_buff",
 								["criteria"] = "cooldown.empower_rune_weapon.ready & blood_runes.current = 0 & frost_runes.current = 0 & unholy_runes.current = 0",
-								["buff_name"] = "blood_tap",
 							}, -- [15]
 							{
 								["enabled"] = true,
@@ -218,8 +218,8 @@ HekiliDB = {
 					},
 					["version"] = 20220926.3,
 					["warnings"] = "Imported 2 action lists.\n",
-					["profile"] = "## Unholy Death Knight (Icy Veins)\n## 2022-09-26\n\nactions.precombat+=/unholy_presence,if=buff.presence.down&cooldown.summon_gargoyle.ready\nactions.precombat+=/blood_presence,if=buff.presence.down&!cooldown.summon_gargoyle.ready\nactions.precombat+=/raise_dead,if=talent.master_of_ghouls.enabled\nactions.precombat+=/variable,name=diseases_ok,value=dot.frost_fever.ticking&dot.blood_plague.ticking||target.time_to_die<10||fight_remains<10\n\nactions+=/mind_freeze\nactions+=/plague_strike,if=!dot.blood_plague.ticking&target.time_to_die>=10&fight_remains>=10\nactions+=/icy_touch,if=!dot.frost_fever.ticking&target.time_to_die>=10&fight_remains>=10\nactions+=/pestilence,if=dot.frost_fever.ticking&dot.blood_plague.ticking&(active_dot.frost_fever<active_enemies||active_dot.blood_plague<active_enemies)\nactions+=/death_and_decay,if=active_enemies>1&!moving&fight_remains>8\nactions+=/blood_strike,if=dot.frost_fever.ticking&dot.blood_plague.ticking||fight_remains<8\nactions+=/scourge_strike\nactions+=/blood_tap,if=blood_runes.current=0\nactions+=/summon_gargoyle\nactions+=/ghoul_frenzy,if=pet.ghoul.up\nactions+=/use_items\nactions+=/death_coil,if=runic_power.deficit<=15\nactions+=/horn_of_winter,if=buff.horn_of_winter.down\nactions+=/blood_presence,if=!buff.blood_presence.up&action.summon_gargoyle.time_since<gcd*2&cooldown.blood_tap.remains\nactions+=/cancel_buff,name=blood_tap,if=cooldown.empower_rune_weapon.ready&blood_runes.current=0&frost_runes.current=0&unholy_runes.current=0\nactions+=/empower_rune_weapon,if=buff.blood_tap.down&(blood_runes.current+frost_runes.current+unholy_runes.current<3)\nactions+=/death_coil,if=runic_power.current>60\nactions+=/icy_touch\nactions+=/plague_strike\nactions+=/blood_strike",
 					["author"] = "Icy Veins",
+					["profile"] = "## Unholy Death Knight (Icy Veins)\n## 2022-09-26\n\nactions.precombat+=/unholy_presence,if=buff.presence.down&cooldown.summon_gargoyle.ready\nactions.precombat+=/blood_presence,if=buff.presence.down&!cooldown.summon_gargoyle.ready\nactions.precombat+=/raise_dead,if=talent.master_of_ghouls.enabled\nactions.precombat+=/variable,name=diseases_ok,value=dot.frost_fever.ticking&dot.blood_plague.ticking||target.time_to_die<10||fight_remains<10\n\nactions+=/mind_freeze\nactions+=/plague_strike,if=!dot.blood_plague.ticking&target.time_to_die>=10&fight_remains>=10\nactions+=/icy_touch,if=!dot.frost_fever.ticking&target.time_to_die>=10&fight_remains>=10\nactions+=/pestilence,if=dot.frost_fever.ticking&dot.blood_plague.ticking&(active_dot.frost_fever<active_enemies||active_dot.blood_plague<active_enemies)\nactions+=/death_and_decay,if=active_enemies>1&!moving&fight_remains>8\nactions+=/blood_strike,if=dot.frost_fever.ticking&dot.blood_plague.ticking||fight_remains<8\nactions+=/scourge_strike\nactions+=/blood_tap,if=blood_runes.current=0\nactions+=/summon_gargoyle\nactions+=/ghoul_frenzy,if=pet.ghoul.up\nactions+=/use_items\nactions+=/death_coil,if=runic_power.deficit<=15\nactions+=/horn_of_winter,if=buff.horn_of_winter.down\nactions+=/blood_presence,if=!buff.blood_presence.up&action.summon_gargoyle.time_since<gcd*2&cooldown.blood_tap.remains\nactions+=/cancel_buff,name=blood_tap,if=cooldown.empower_rune_weapon.ready&blood_runes.current=0&frost_runes.current=0&unholy_runes.current=0\nactions+=/empower_rune_weapon,if=buff.blood_tap.down&(blood_runes.current+frost_runes.current+unholy_runes.current<3)\nactions+=/death_coil,if=runic_power.current>60\nactions+=/icy_touch\nactions+=/plague_strike\nactions+=/blood_strike",
 				},
 				["Frost DK (IV)"] = {
 					["source"] = "https://www.icy-veins.com/wotlk-classic/frost-death-knight-dps-pve-rotation-cooldowns-abilities",
@@ -230,6 +230,7 @@ HekiliDB = {
 					["profile"] = "## Frost Death Knight (Icy Veins)\n## 2022-10-01\n\nactions.precombat+=/blood_presence\nactions.precombat+=/horn_of_winter,if=buff.horn_of_winter.down\n\nactions+=/mind_freeze\nactions+=/icy_touch,if=!dot.frost_fever.ticking\nactions+=/howling_blast,if=glyph.howling_blast.enabled&!dot.frost_fever.ticking\nactions+=/plague_strike,if=!dot.blood_plague.ticking\nactions+=/pestilence,if=dot.frost_fever.ticking&dot.blood_plague.ticking&active_dot.frost_fever+active_dot.blood_plague<2*true_active_enemies\nactions+=/unbreakable_armor\nactions+=/blood_tap,if=blood_runes.current<2\nactions+=/obliterate\nactions+=/pestilence,if=glyph.disease.enabled&dot.frost_fever.ticking&dot.blood_plague.ticking&(dot.frost_fever.refreshable||dot.blood_plague.refreshable)\nactions+=/empower_rune_weapon,if=blood_runes.current+frost_runes.current+unholy_runes.current<3\nactions+=/use_items\nactions+=/call_action_list,name=aoe,strict=1,if=active_enemies>1\nactions+=/frost_strike,if=buff.killing_machine.up\nactions+=/howling_blast,if=buff.freezing_fog.up\nactions+=/blood_strike\nactions+=/frost_strike\n\nactions.aoe+=/howling_blast\nactions.aoe+=/death_and_decay,if=!moving&fight_remains>8",
 					["version"] = 20221001,
 					["warnings"] = "Imported 3 action lists.\n",
+					["author"] = "Icy-Veins",
 					["lists"] = {
 						["aoe"] = {
 							{
@@ -332,7 +333,6 @@ HekiliDB = {
 							}, -- [2]
 						},
 					},
-					["author"] = "Icy-Veins",
 				},
 				["Feral Tank (IV)"] = {
 					["builtIn"] = true,
@@ -342,6 +342,8 @@ HekiliDB = {
 					["profile"] = "actions.precombat+=/mark_of_the_wild,if=!up&!buff.gift_of_the_wild.up\nactions.precombat+=/thorns,if=!up\nactions.precombat+=/dire_bear_form,if=!up\nactions.precombat+=/potion\n\nactions+=/call_action_list,name=init\nactions+=/use_items\nactions+=/potion\nactions+=/hyperspeed_acceleration,use_off_gcd=1\nactions+=/run_action_list,name=bear_aoe,if=buff.dire_bear_form.up&active_enemies>4\nactions+=/run_action_list,name=bear,if=buff.dire_bear_form.up\nactions+=/dire_bear_form,if=!up\n\nactions.init+=/variable,name=time_to_die,value=(debuff.training_dummy.up&300)||target.time_to_die\nactions.init+=/variable,name=build_lacerate,value=!debuff.lacerate.up||debuff.lacerate.stack<5\nactions.init+=/variable,name=build_lacerate_cost,op=setif,if=variable.build_lacerate,value=action.lacerate.spend*(5-debuff.lacerate.stack),value_else=0\nactions.init+=/variable,name=maintain_lacerate,value=!variable.build_lacerate&debuff.lacerate.remains<8&debuff.lacerate.remains<variable.time_to_die\nactions.init+=/variable,name=maintain_lacerate_cost,op=setif,if=variable.maintain_lacerate,value=action.lacerate.spend,value_else=0\nactions.init+=/variable,name=emergency_lacerate,value=debuff.lacerate.up&debuff.lacerate.remains<4.5&debuff.lacerate.remains<variable.time_to_die\n\nactions.bear+=/faerie_fire_feral,if=ff_procs_ooc&!buff.clearcasting.up\nactions.bear+=/enrage,use_off_gcd=1,if=time<10\nactions.bear+=/berserk\nactions.bear+=/maul,use_off_gcd=1,if=rage.current>action.maul.spend+variable.build_lacerate_cost+variable.maintain_lacerate_cost+action.mangle_bear.spend\nactions.bear+=/lacerate,if=variable.emergency_lacerate\nactions.bear+=/mangle_bear\nactions.bear+=/faerie_fire_feral\nactions.bear+=/lacerate,if=variable.build_lacerate||variable.maintain_lacerate\nactions.bear+=/swipe_bear,if=rage.current>60\n\nactions.bear_aoe+=/enrage,use_off_gcd=1,if=time<10\nactions.bear_aoe+=/berserk\nactions.bear_aoe+=/maul,cycle_targets=1,use_off_gcd=1,if=rage.current>60\nactions.bear_aoe+=/swipe_bear,cycle_targets=1",
 					["version"] = 20230613,
 					["warnings"] = "Imported 5 action lists.\n",
+					["author"] = "Defzach",
+					["basedOn"] = "Feral DPS (IV)",
 					["lists"] = {
 						["default"] = {
 							{
@@ -364,14 +366,14 @@ HekiliDB = {
 							}, -- [4]
 							{
 								["enabled"] = true,
-								["criteria"] = "buff.dire_bear_form.up & active_enemies > 4",
 								["action"] = "run_action_list",
+								["criteria"] = "buff.dire_bear_form.up & active_enemies > 4",
 								["list_name"] = "bear_aoe",
 							}, -- [5]
 							{
 								["enabled"] = true,
-								["criteria"] = "buff.dire_bear_form.up",
 								["action"] = "run_action_list",
+								["criteria"] = "buff.dire_bear_form.up",
 								["list_name"] = "bear",
 							}, -- [6]
 							{
@@ -400,9 +402,9 @@ HekiliDB = {
 								["op"] = "setif",
 								["action"] = "variable",
 								["var_name"] = "build_lacerate_cost",
-								["criteria"] = "variable.build_lacerate",
-								["value_else"] = "0",
 								["value"] = "action.lacerate.spend * ( 5 - debuff.lacerate.stack )",
+								["value_else"] = "0",
+								["criteria"] = "variable.build_lacerate",
 							}, -- [3]
 							{
 								["enabled"] = true,
@@ -416,9 +418,9 @@ HekiliDB = {
 								["op"] = "setif",
 								["action"] = "variable",
 								["var_name"] = "maintain_lacerate_cost",
-								["criteria"] = "variable.maintain_lacerate",
-								["value_else"] = "0",
 								["value"] = "action.lacerate.spend",
+								["value_else"] = "0",
+								["criteria"] = "variable.maintain_lacerate",
 							}, -- [5]
 							{
 								["enabled"] = true,
@@ -428,6 +430,51 @@ HekiliDB = {
 								["var_name"] = "emergency_lacerate",
 							}, -- [6]
 						},
+						["precombat"] = {
+							{
+								["enabled"] = true,
+								["criteria"] = "! up & ! buff.gift_of_the_wild.up",
+								["action"] = "mark_of_the_wild",
+							}, -- [1]
+							{
+								["enabled"] = true,
+								["criteria"] = "! up",
+								["action"] = "thorns",
+							}, -- [2]
+							{
+								["enabled"] = true,
+								["criteria"] = "! up",
+								["action"] = "dire_bear_form",
+							}, -- [3]
+							{
+								["action"] = "potion",
+								["enabled"] = true,
+							}, -- [4]
+						},
+						["bear_aoe"] = {
+							{
+								["enabled"] = true,
+								["use_off_gcd"] = 1,
+								["criteria"] = "time < 10",
+								["action"] = "enrage",
+							}, -- [1]
+							{
+								["action"] = "berserk",
+								["enabled"] = true,
+							}, -- [2]
+							{
+								["enabled"] = true,
+								["action"] = "maul",
+								["cycle_targets"] = 1,
+								["use_off_gcd"] = 1,
+								["criteria"] = "rage.current > 60",
+							}, -- [3]
+							{
+								["enabled"] = true,
+								["action"] = "swipe_bear",
+								["cycle_targets"] = 1,
+							}, -- [4]
+						},
 						["bear"] = {
 							{
 								["enabled"] = true,
@@ -436,9 +483,9 @@ HekiliDB = {
 							}, -- [1]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "time < 10",
 								["action"] = "enrage",
-								["use_off_gcd"] = 1,
 							}, -- [2]
 							{
 								["action"] = "berserk",
@@ -446,9 +493,9 @@ HekiliDB = {
 							}, -- [3]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "rage.current > action.maul.spend + variable.build_lacerate_cost + variable.maintain_lacerate_cost + action.mangle_bear.spend",
 								["action"] = "maul",
-								["use_off_gcd"] = 1,
 							}, -- [4]
 							{
 								["enabled"] = true,
@@ -474,54 +521,7 @@ HekiliDB = {
 								["action"] = "swipe_bear",
 							}, -- [9]
 						},
-						["bear_aoe"] = {
-							{
-								["enabled"] = true,
-								["criteria"] = "time < 10",
-								["action"] = "enrage",
-								["use_off_gcd"] = 1,
-							}, -- [1]
-							{
-								["action"] = "berserk",
-								["enabled"] = true,
-							}, -- [2]
-							{
-								["enabled"] = true,
-								["action"] = "maul",
-								["cycle_targets"] = 1,
-								["use_off_gcd"] = 1,
-								["criteria"] = "rage.current > 60",
-							}, -- [3]
-							{
-								["enabled"] = true,
-								["action"] = "swipe_bear",
-								["cycle_targets"] = 1,
-							}, -- [4]
-						},
-						["precombat"] = {
-							{
-								["enabled"] = true,
-								["criteria"] = "! up & ! buff.gift_of_the_wild.up",
-								["action"] = "mark_of_the_wild",
-							}, -- [1]
-							{
-								["enabled"] = true,
-								["criteria"] = "! up",
-								["action"] = "thorns",
-							}, -- [2]
-							{
-								["enabled"] = true,
-								["criteria"] = "! up",
-								["action"] = "dire_bear_form",
-							}, -- [3]
-							{
-								["action"] = "potion",
-								["enabled"] = true,
-							}, -- [4]
-						},
 					},
-					["basedOn"] = "Feral DPS (IV)",
-					["author"] = "Defzach",
 				},
 				["Feral DPS (IV)"] = {
 					["builtIn"] = true,
@@ -531,6 +531,8 @@ HekiliDB = {
 					["profile"] = "actions.precombat+=/mark_of_the_wild,if=!up&!buff.gift_of_the_wild.up\nactions.precombat+=/thorns,if=!up\nactions.precombat+=/cat_form,if=!up&!buff.dire_bear_form.up\nactions.precombat+=/potion\n\nactions+=/use_items\nactions+=/potion\nactions+=/hyperspeed_acceleration,use_off_gcd=1,if=set_bonus.tier7feral_4pc=1&(buff.tigers_fury.up||cooldown.tigers_fury.remains>=15)\nactions+=/run_action_list,name=bearweave,if=buff.dire_bear_form.up&bearweaving_enabled\nactions+=/run_action_list,name=bear_tank_aoe,if=buff.dire_bear_form.up&!bearweaving_enabled&active_enemies>4&bear_mode_tank_enabled\nactions+=/run_action_list,name=bear_tank,if=buff.dire_bear_form.up&!bearweaving_enabled&bear_mode_tank_enabled\nactions+=/run_action_list,name=cat_aoe,if=buff.cat_form.up&active_enemies>2\nactions+=/run_action_list,name=cat,if=buff.cat_form.up\nactions+=/cat_form,if=!up\n\nactions.cat+=/tigers_fury,use_off_gcd=1,if=energy.current<30-(buff.clearcasting.up&15||0)\nactions.cat+=/faerie_fire_feral,if=!glyph.omen_of_clarity.enabled&!debuff.armor_reduction.up&target.outside2\nactions.cat+=/faerie_fire_feral,if=glyph.omen_of_clarity.enabled&!buff.clearcasting.up&(target.outside2||buff.berserk.up&ff_during_berserk||!buff.berserk.up&energy.current<87)&(!rip_now||energy.current<action.rip.spend)&can_spend_ff\nactions.cat+=/berserk,if=!wait_for_tf&debuff.rip.up&!buff.clearcasting.up\nactions.cat+=/savage_roar,if=!buff.savage_roar.up\nactions.cat+=/savage_roar,if=debuff.rip.up&buff.savage_roar.up&buff.savage_roar.remains-(rip_maxremains+settings.rip_leeway)<=0&rip_maxremains+settings.min_roar_offset<=sr_new_duration&!buff.savage_roar.remains>=ttd\nactions.cat+=/rip,if=rip_now\nactions.cat+=/ferocious_bite,if=settings.ferociousbite_enabled&energy.current<67&!buff.clearcasting.up&(bite_at_end||bite_before_rip)&(!buff.berserk.up||bite_during_berserk)\nactions.cat+=/mangle_cat,if=!debuff.mangle.up&ttd>1&!wait_for_ff\nactions.cat+=/rake,if=buff.clearcasting.up&!debuff.bleed.up&ttd>9\nactions.cat+=/rake,if=!up&!buff.clearcasting.up&(should_rake||!debuff.bleed.up)&ttd>9&!wait_for_ff\nactions.cat+=/faerie_fire_feral,if=!glyph.omen_of_clarity.enabled&!debuff.armor_reduction.up&energy.current<=90\nactions.cat+=/dire_bear_form,if=should_bearweave\nactions.cat+=/gift_of_the_wild,if=should_flowerweave&mana.pct>settings.min_weave_mana&energy.current<42\nactions.cat+=/shred,if=!wait_for_ff&(excess_e>=action.shred.spend||buff.clearcasting.up||buff.berserk.up||(cooldown.faerie_fire_feral.remains<=1&energy.current>77||energy.current=100))\n\nactions.cat_aoe+=/faerie_fire_feral,if=glyph.omen_of_clarity.enabled&!buff.clearcasting.up&(buff.berserk.up&ff_during_berserk||!buff.berserk.up&energy.current<87)&can_spend_ff\nactions.cat_aoe+=/tigers_fury,use_off_gcd=1,if=energy.current<30-(buff.clearcasting.up&15||0)\nactions.cat_aoe+=/berserk,if=energy.current>60&cooldown.tigers_fury.remains>=15\nactions.cat_aoe+=/savage_roar,if=!up&ttd>1+latency\nactions.cat_aoe+=/mangle_cat,if=(set_bonus.idol_of_the_corruptor=1||set_bonus.idol_of_mutilation=1)&combo_points.current=0&buff.savage_roar.remains<=1\nactions.cat_aoe+=/shred,if=set_bonus.idol_of_mutilation=1&combo_points.current=0&buff.savage_roar.remains<=1&(ttd>buff.savage_roar.remains+1+latency)\nactions.cat_aoe+=/rake,if=!set_bonus.idol_of_mutilation=1&combo_points.current=0&buff.savage_roar.remains<=1&(ttd>buff.savage_roar.remains+1+latency)\nactions.cat_aoe+=/swipe_cat,if=excess_e>=action.swipe_cat.spend||buff.clearcasting.up\nactions.cat_aoe+=/gift_of_the_wild,if=should_flowerweave&mana.pct>settings.min_weave_mana&energy.current<45\nactions.cat_aoe+=/faerie_fire_feral,if=!glyph.omen_of_clarity.enabled&!debuff.armor_reduction.up\n\nactions.bearweave+=/faerie_fire_feral,if=glyph.omen_of_clarity.enabled&!buff.clearcasting.up\nactions.bearweave+=/cat_form,if=should_cat\nactions.bearweave+=/enrage,use_off_gcd=1,if=cooldown.mangle_bear.up\nactions.bearweave+=/maul,use_off_gcd=1,if=!up&!buff.clearcasting.up&rage.current>=action.maul.spend+(cooldown.mangle_bear.up&action.mangle_bear.spend||0)\nactions.bearweave+=/mangle_bear\n\nactions.bear_tank_init+=/variable,name=time_to_die,value=(debuff.training_dummy.up&300)||target.time_to_die\nactions.bear_tank_init+=/variable,name=build_lacerate,value=!debuff.lacerate.up||debuff.lacerate.stack<5\nactions.bear_tank_init+=/variable,name=build_lacerate_cost,op=setif,if=variable.build_lacerate,value=action.lacerate.spend*(5-debuff.lacerate.stack),value_else=0\nactions.bear_tank_init+=/variable,name=maintain_lacerate,value=!variable.build_lacerate&debuff.lacerate.remains<8&debuff.lacerate.remains<variable.time_to_die\nactions.bear_tank_init+=/variable,name=maintain_lacerate_cost,op=setif,if=variable.maintain_lacerate,value=action.lacerate.spend,value_else=0\nactions.bear_tank_init+=/variable,name=emergency_lacerate,value=debuff.lacerate.up&debuff.lacerate.remains<4.5&debuff.lacerate.remains<variable.time_to_die\n\nactions.bear_tank+=/call_action_list,name=bear_tank_init\nactions.bear_tank+=/faerie_fire_feral,if=glyph.omen_of_clarity.enabled&!buff.clearcasting.up\nactions.bear_tank+=/enrage,use_off_gcd=1,if=time<10\nactions.bear_tank+=/berserk\nactions.bear_tank+=/maul,use_off_gcd=1,if=rage.current>action.maul.spend+variable.build_lacerate_cost+variable.maintain_lacerate_cost+action.mangle_bear.spend\nactions.bear_tank+=/lacerate,if=variable.emergency_lacerate\nactions.bear_tank+=/mangle_bear\nactions.bear_tank+=/faerie_fire_feral\nactions.bear_tank+=/lacerate,if=variable.build_lacerate||variable.maintain_lacerate\nactions.bear_tank+=/swipe_bear,if=rage.current>60\n\nactions.bear_tank_aoe+=/enrage,use_off_gcd=1,if=time<10\nactions.bear_tank_aoe+=/berserk\nactions.bear_tank_aoe+=/maul,cycle_targets=1,use_off_gcd=1,if=rage.current>60\nactions.bear_tank_aoe+=/swipe_bear,cycle_targets=1",
 					["version"] = 20231026.2,
 					["warnings"] = "Imported 8 action lists.\n",
+					["author"] = "Defzach",
+					["basedOn"] = "Feral DPS (IV)",
 					["lists"] = {
 						["bear_tank"] = {
 							{
@@ -545,9 +547,9 @@ HekiliDB = {
 							}, -- [2]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "time < 10",
 								["action"] = "enrage",
-								["use_off_gcd"] = 1,
 							}, -- [3]
 							{
 								["action"] = "berserk",
@@ -555,9 +557,9 @@ HekiliDB = {
 							}, -- [4]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "rage.current > action.maul.spend + variable.build_lacerate_cost + variable.maintain_lacerate_cost + action.mangle_bear.spend",
 								["action"] = "maul",
-								["use_off_gcd"] = 1,
 							}, -- [5]
 							{
 								["enabled"] = true,
@@ -583,12 +585,33 @@ HekiliDB = {
 								["action"] = "swipe_bear",
 							}, -- [10]
 						},
+						["precombat"] = {
+							{
+								["enabled"] = true,
+								["criteria"] = "! up & ! buff.gift_of_the_wild.up",
+								["action"] = "mark_of_the_wild",
+							}, -- [1]
+							{
+								["enabled"] = true,
+								["criteria"] = "! up",
+								["action"] = "thorns",
+							}, -- [2]
+							{
+								["enabled"] = true,
+								["criteria"] = "! up & ! buff.dire_bear_form.up",
+								["action"] = "cat_form",
+							}, -- [3]
+							{
+								["action"] = "potion",
+								["enabled"] = true,
+							}, -- [4]
+						},
 						["cat"] = {
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "energy.current < 30 - ( buff.clearcasting.up & 15 || 0 )",
 								["action"] = "tigers_fury",
-								["use_off_gcd"] = 1,
 							}, -- [1]
 							{
 								["enabled"] = true,
@@ -661,57 +684,6 @@ HekiliDB = {
 								["action"] = "shred",
 							}, -- [15]
 						},
-						["default"] = {
-							{
-								["action"] = "use_items",
-								["enabled"] = true,
-							}, -- [1]
-							{
-								["action"] = "potion",
-								["enabled"] = true,
-							}, -- [2]
-							{
-								["enabled"] = true,
-								["criteria"] = "set_bonus.tier7feral_4pc = 1 & ( buff.tigers_fury.up || cooldown.tigers_fury.remains >= 15 )",
-								["action"] = "hyperspeed_acceleration",
-								["use_off_gcd"] = 1,
-							}, -- [3]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.dire_bear_form.up & bearweaving_enabled",
-								["action"] = "run_action_list",
-								["list_name"] = "bearweave",
-							}, -- [4]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.dire_bear_form.up & ! bearweaving_enabled & active_enemies > 4 & bear_mode_tank_enabled",
-								["action"] = "run_action_list",
-								["list_name"] = "bear_tank_aoe",
-							}, -- [5]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.dire_bear_form.up & ! bearweaving_enabled & bear_mode_tank_enabled",
-								["action"] = "run_action_list",
-								["list_name"] = "bear_tank",
-							}, -- [6]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.cat_form.up & active_enemies > 2",
-								["action"] = "run_action_list",
-								["list_name"] = "cat_aoe",
-							}, -- [7]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.cat_form.up",
-								["action"] = "run_action_list",
-								["list_name"] = "cat",
-							}, -- [8]
-							{
-								["enabled"] = true,
-								["criteria"] = "! up",
-								["action"] = "cat_form",
-							}, -- [9]
-						},
 						["bearweave"] = {
 							{
 								["enabled"] = true,
@@ -725,15 +697,15 @@ HekiliDB = {
 							}, -- [2]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "cooldown.mangle_bear.up",
 								["action"] = "enrage",
-								["use_off_gcd"] = 1,
 							}, -- [3]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "! up & ! buff.clearcasting.up & rage.current >= action.maul.spend + ( cooldown.mangle_bear.up & action.mangle_bear.spend || 0 )",
 								["action"] = "maul",
-								["use_off_gcd"] = 1,
 							}, -- [4]
 							{
 								["action"] = "mangle_bear",
@@ -748,9 +720,9 @@ HekiliDB = {
 							}, -- [1]
 							{
 								["enabled"] = true,
+								["use_off_gcd"] = 1,
 								["criteria"] = "energy.current < 30 - ( buff.clearcasting.up & 15 || 0 )",
 								["action"] = "tigers_fury",
-								["use_off_gcd"] = 1,
 							}, -- [2]
 							{
 								["enabled"] = true,
@@ -793,6 +765,30 @@ HekiliDB = {
 								["action"] = "faerie_fire_feral",
 							}, -- [10]
 						},
+						["bear_tank_aoe"] = {
+							{
+								["enabled"] = true,
+								["use_off_gcd"] = 1,
+								["criteria"] = "time < 10",
+								["action"] = "enrage",
+							}, -- [1]
+							{
+								["action"] = "berserk",
+								["enabled"] = true,
+							}, -- [2]
+							{
+								["enabled"] = true,
+								["action"] = "maul",
+								["cycle_targets"] = 1,
+								["use_off_gcd"] = 1,
+								["criteria"] = "rage.current > 60",
+							}, -- [3]
+							{
+								["enabled"] = true,
+								["action"] = "swipe_bear",
+								["cycle_targets"] = 1,
+							}, -- [4]
+						},
 						["bear_tank_init"] = {
 							{
 								["enabled"] = true,
@@ -813,9 +809,9 @@ HekiliDB = {
 								["op"] = "setif",
 								["action"] = "variable",
 								["var_name"] = "build_lacerate_cost",
-								["criteria"] = "variable.build_lacerate",
-								["value_else"] = "0",
 								["value"] = "action.lacerate.spend * ( 5 - debuff.lacerate.stack )",
+								["value_else"] = "0",
+								["criteria"] = "variable.build_lacerate",
 							}, -- [3]
 							{
 								["enabled"] = true,
@@ -829,9 +825,9 @@ HekiliDB = {
 								["op"] = "setif",
 								["action"] = "variable",
 								["var_name"] = "maintain_lacerate_cost",
-								["criteria"] = "variable.maintain_lacerate",
-								["value_else"] = "0",
 								["value"] = "action.lacerate.spend",
+								["value_else"] = "0",
+								["criteria"] = "variable.maintain_lacerate",
 							}, -- [5]
 							{
 								["enabled"] = true,
@@ -841,54 +837,58 @@ HekiliDB = {
 								["var_name"] = "emergency_lacerate",
 							}, -- [6]
 						},
-						["bear_tank_aoe"] = {
+						["default"] = {
 							{
+								["action"] = "use_items",
 								["enabled"] = true,
-								["criteria"] = "time < 10",
-								["action"] = "enrage",
-								["use_off_gcd"] = 1,
 							}, -- [1]
-							{
-								["action"] = "berserk",
-								["enabled"] = true,
-							}, -- [2]
-							{
-								["enabled"] = true,
-								["action"] = "maul",
-								["cycle_targets"] = 1,
-								["use_off_gcd"] = 1,
-								["criteria"] = "rage.current > 60",
-							}, -- [3]
-							{
-								["enabled"] = true,
-								["action"] = "swipe_bear",
-								["cycle_targets"] = 1,
-							}, -- [4]
-						},
-						["precombat"] = {
-							{
-								["enabled"] = true,
-								["criteria"] = "! up & ! buff.gift_of_the_wild.up",
-								["action"] = "mark_of_the_wild",
-							}, -- [1]
-							{
-								["enabled"] = true,
-								["criteria"] = "! up",
-								["action"] = "thorns",
-							}, -- [2]
-							{
-								["enabled"] = true,
-								["criteria"] = "! up & ! buff.dire_bear_form.up",
-								["action"] = "cat_form",
-							}, -- [3]
 							{
 								["action"] = "potion",
 								["enabled"] = true,
+							}, -- [2]
+							{
+								["enabled"] = true,
+								["use_off_gcd"] = 1,
+								["criteria"] = "set_bonus.tier7feral_4pc = 1 & ( buff.tigers_fury.up || cooldown.tigers_fury.remains >= 15 )",
+								["action"] = "hyperspeed_acceleration",
+							}, -- [3]
+							{
+								["enabled"] = true,
+								["action"] = "run_action_list",
+								["criteria"] = "buff.dire_bear_form.up & bearweaving_enabled",
+								["list_name"] = "bearweave",
 							}, -- [4]
+							{
+								["enabled"] = true,
+								["action"] = "run_action_list",
+								["criteria"] = "buff.dire_bear_form.up & ! bearweaving_enabled & active_enemies > 4 & bear_mode_tank_enabled",
+								["list_name"] = "bear_tank_aoe",
+							}, -- [5]
+							{
+								["enabled"] = true,
+								["action"] = "run_action_list",
+								["criteria"] = "buff.dire_bear_form.up & ! bearweaving_enabled & bear_mode_tank_enabled",
+								["list_name"] = "bear_tank",
+							}, -- [6]
+							{
+								["enabled"] = true,
+								["action"] = "run_action_list",
+								["criteria"] = "buff.cat_form.up & active_enemies > 2",
+								["list_name"] = "cat_aoe",
+							}, -- [7]
+							{
+								["enabled"] = true,
+								["action"] = "run_action_list",
+								["criteria"] = "buff.cat_form.up",
+								["list_name"] = "cat",
+							}, -- [8]
+							{
+								["enabled"] = true,
+								["criteria"] = "! up",
+								["action"] = "cat_form",
+							}, -- [9]
 						},
 					},
-					["basedOn"] = "Feral DPS (IV)",
-					["author"] = "Defzach",
 				},
 				["Blood (IV)"] = {
 					["source"] = "https://www.icy-veins.com/wotlk-classic/blood-death-knight-tank-pve-rotation-cooldowns-abilities",
@@ -909,14 +909,14 @@ HekiliDB = {
 							}, -- [2]
 							{
 								["enabled"] = true,
-								["action"] = "icy_touch",
 								["criteria"] = "! dot.frost_fever.ticking",
+								["action"] = "icy_touch",
 								["cycle_targets"] = 1,
 							}, -- [3]
 							{
 								["enabled"] = true,
-								["action"] = "plague_strike",
 								["criteria"] = "! dot.blood_plague.ticking",
+								["action"] = "plague_strike",
 								["cycle_targets"] = 1,
 							}, -- [4]
 							{
@@ -1033,8 +1033,8 @@ HekiliDB = {
 					},
 					["version"] = 20230411,
 					["warnings"] = "WARNING:  The import for 'aoe' required some automated changes.\nLine 5: Converted 'talent.X' to 'talent.X.enabled' (1x).\n\nImported 3 action lists.\n",
-					["author"] = "Icy Veins",
 					["profile"] = "## Blood Death Knight (Icy Veins)\n## 2023-04-11\n\nactions.precombat+=/frost_presence,if=buff.presence.down\n\nactions+=/mind_freeze\nactions+=/horn_of_winter,if=down\nactions+=/death_grip,if=time<2\nactions+=/death_strike,if=health.pct<=60\nactions+=/use_items\nactions+=/unholy_frenzy\nactions+=/run_action_list,name=aoe,strict=1,if=active_enemies>1\nactions+=/pestilence,if=dot.blood_plague.ticking&dot.blood_plague.refreshable||dot.frost_fever.ticking&dot.frost_fever.refreshable\nactions+=/icy_touch,if=!dot.frost_fever.ticking||frost_runes.time_to_max<gcd\nactions+=/plague_strike,if=!dot.blood_plague.ticking\nactions+=/blood_strike,if=blood_runes.time_to_max<gcd\nactions+=/death_strike,if=health.current+action.death_strike.healing<health.max&dot.frost_fever.ticking&dot.blood_plague.ticking\nactions+=/blood_tap,if=(glyph.blood_tap.enabled||health.pct>60)&blood_runes.current=0\nactions+=/rune_strike\nactions+=/heart_strike\nactions+=/death_coil,if=runic_power.deficit<20\nactions+=/blood_strike\n## TODO: Determine Death Rune situation.\n## actions+=/icy_touch,if=???\nactions+=/empower_rune_weapon,if=(blood_runes.current+frost_runes.current+unholy_runes.current)<2\n\nactions.aoe+=/death_and_decay\nactions.aoe+=/pestilence,if=dot.frost_fever.ticking&dot.blood_plague.ticking&(active_dot.frost_fever+active_dot.blood_plague<true_active_enemies*2)\nactions.aoe+=/icy_touch,cycle_targets=1,if=!dot.frost_fever.ticking\nactions.aoe+=/plague_strike,cycle_targets=1,if=!dot.blood_plague.ticking\nactions.aoe+=/blood_boil,if=health.pct>60&(active_enemies>2||!talent.heart_strike)\nactions.aoe+=/heart_strike,if=active_enemies<3\nactions.aoe+=/death_coil,if=runic_power.deficit<20",
+					["author"] = "Icy Veins",
 				},
 				["Balance (IV)"] = {
 					["builtIn"] = true,
@@ -1044,6 +1044,7 @@ HekiliDB = {
 					["profile"] = "actions.precombat+=/mark_of_the_wild,if=!up&!buff.gift_of_the_wild.up\nactions.precombat+=/thorns,if=!up\nactions.precombat+=/moonkin_form,if=!up\nactions.precombat+=/potion\n\nactions+=/call_action_list,name=init\nactions+=/run_action_list,name=aoe,if=active_enemies>3\nactions+=/run_action_list,name=spam,if=variable.spam_now\nactions+=/run_action_list,name=fish\n\nactions.init+=/variable,name=lunar_spam_now,value=buff.eclipse_lunar.up\nactions.init+=/variable,name=solar_spam_now,value=buff.eclipse_solar.up\nactions.init+=/variable,name=spam_now,value=variable.lunar_spam_now||variable.solar_spam_now\nactions.init+=/variable,name=fish_now,value=!variable.lunar_spam_now&!variable.solar_spam_now\nactions.init+=/variable,name=lunar_can_proc,value=buff.eclipse_lunar.last_applied=0||query_time-buff.eclipse_lunar.last_applied>=30\nactions.init+=/variable,name=solar_can_proc,value=buff.eclipse_solar.last_applied=0||query_time-buff.eclipse_solar.last_applied>=30\nactions.init+=/variable,name=lunar_fish_now,value=variable.fish_now&variable.lunar_can_proc\nactions.init+=/variable,name=solar_fish_now,value=variable.fish_now&(variable.solar_can_proc||!variable.lunar_can_proc)\n\nactions.fish+=/starfire,if=buff.elunes_wrath.up&(!variable.lunar_fish_now||buff.elunes_wrath.remains<action.starfire.gcd||moving)\nactions.fish+=/moonfire,if=!debuff.moonfire.up&moving\nactions.fish+=/force_of_nature\nactions.fish+=/starfall\nactions.fish+=/faerie_fire,if=!up&(talent.improved_faerie_fire.enabled||group_members>=5||moving)\nactions.fish+=/insect_swarm,if=!debuff.insect_swarm.up\nactions.fish+=/typhoon,if=moving&glyph.typhoon.enabled\nactions.fish+=/moonfire,if=!debuff.moonfire.up&variable.lunar_fish_now&debuff.moonfire.remains<3\nactions.fish+=/wrath,if=variable.lunar_fish_now\nactions.fish+=/starfire,if=variable.solar_fish_now\n\nactions.spam+=/hyperspeed_acceleration,use_off_gcd=1,if=buff.eclipse_lunar.up&buff.eclipse_lunar.remains>settings.lunar_cooldown_leeway\nactions.spam+=/potion,use_off_gcd=1,if=buff.eclipse_lunar.up&buff.eclipse_lunar.remains>settings.lunar_cooldown_leeway\nactions.spam+=/use_items,use_off_gcd=1,if=buff.eclipse_lunar.up&buff.eclipse_lunar.remains>settings.lunar_cooldown_leeway\nactions.spam+=/starfire,if=buff.elunes_wrath.up\nactions.spam+=/insect_swarm,if=!debuff.insect_swarm.up&(!buff.eclipse_lunar.up||buff.eclipse_lunar.remains>7)\nactions.spam+=/wrath,if=variable.solar_spam_now\nactions.spam+=/starfire,if=variable.lunar_spam_now\n\nactions.aoe+=/typhoon,if=glyph.typhoon.enabled\nactions.aoe+=/starfall\nactions.aoe+=/hurricane",
 					["version"] = 20230228,
 					["warnings"] = "Imported 6 action lists.\n",
+					["author"] = "Defzach",
 					["lists"] = {
 						["fish"] = {
 							{
@@ -1103,14 +1104,14 @@ HekiliDB = {
 							}, -- [1]
 							{
 								["enabled"] = true,
-								["criteria"] = "active_enemies > 3",
 								["action"] = "run_action_list",
+								["criteria"] = "active_enemies > 3",
 								["list_name"] = "aoe",
 							}, -- [2]
 							{
 								["enabled"] = true,
-								["criteria"] = "variable.spam_now",
 								["action"] = "run_action_list",
+								["criteria"] = "variable.spam_now",
 								["list_name"] = "spam",
 							}, -- [3]
 							{
@@ -1154,46 +1155,6 @@ HekiliDB = {
 								["action"] = "hurricane",
 								["enabled"] = true,
 							}, -- [3]
-						},
-						["spam"] = {
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.eclipse_lunar.up & buff.eclipse_lunar.remains > settings.lunar_cooldown_leeway",
-								["action"] = "hyperspeed_acceleration",
-								["use_off_gcd"] = 1,
-							}, -- [1]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.eclipse_lunar.up & buff.eclipse_lunar.remains > settings.lunar_cooldown_leeway",
-								["action"] = "potion",
-								["use_off_gcd"] = 1,
-							}, -- [2]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.eclipse_lunar.up & buff.eclipse_lunar.remains > settings.lunar_cooldown_leeway",
-								["action"] = "use_items",
-								["use_off_gcd"] = 1,
-							}, -- [3]
-							{
-								["enabled"] = true,
-								["criteria"] = "buff.elunes_wrath.up",
-								["action"] = "starfire",
-							}, -- [4]
-							{
-								["enabled"] = true,
-								["criteria"] = "! debuff.insect_swarm.up & ( ! buff.eclipse_lunar.up || buff.eclipse_lunar.remains > 7 )",
-								["action"] = "insect_swarm",
-							}, -- [5]
-							{
-								["enabled"] = true,
-								["criteria"] = "variable.solar_spam_now",
-								["action"] = "wrath",
-							}, -- [6]
-							{
-								["enabled"] = true,
-								["criteria"] = "variable.lunar_spam_now",
-								["action"] = "starfire",
-							}, -- [7]
 						},
 						["init"] = {
 							{
@@ -1253,8 +1214,47 @@ HekiliDB = {
 								["var_name"] = "solar_fish_now",
 							}, -- [8]
 						},
+						["spam"] = {
+							{
+								["enabled"] = true,
+								["use_off_gcd"] = 1,
+								["criteria"] = "buff.eclipse_lunar.up & buff.eclipse_lunar.remains > settings.lunar_cooldown_leeway",
+								["action"] = "hyperspeed_acceleration",
+							}, -- [1]
+							{
+								["enabled"] = true,
+								["use_off_gcd"] = 1,
+								["criteria"] = "buff.eclipse_lunar.up & buff.eclipse_lunar.remains > settings.lunar_cooldown_leeway",
+								["action"] = "potion",
+							}, -- [2]
+							{
+								["enabled"] = true,
+								["use_off_gcd"] = 1,
+								["criteria"] = "buff.eclipse_lunar.up & buff.eclipse_lunar.remains > settings.lunar_cooldown_leeway",
+								["action"] = "use_items",
+							}, -- [3]
+							{
+								["enabled"] = true,
+								["criteria"] = "buff.elunes_wrath.up",
+								["action"] = "starfire",
+							}, -- [4]
+							{
+								["enabled"] = true,
+								["criteria"] = "! debuff.insect_swarm.up & ( ! buff.eclipse_lunar.up || buff.eclipse_lunar.remains > 7 )",
+								["action"] = "insect_swarm",
+							}, -- [5]
+							{
+								["enabled"] = true,
+								["criteria"] = "variable.solar_spam_now",
+								["action"] = "wrath",
+							}, -- [6]
+							{
+								["enabled"] = true,
+								["criteria"] = "variable.lunar_spam_now",
+								["action"] = "starfire",
+							}, -- [7]
+						},
 					},
-					["author"] = "Defzach",
 				},
 				["Frost DK (wowtbc.gg)"] = {
 					["source"] = "https://wowtbc.gg/wotlk/class-guides/frost-death-knight/",
@@ -1369,8 +1369,8 @@ HekiliDB = {
 					},
 					["version"] = 20221003,
 					["warnings"] = "Imported 2 action lists.\n",
-					["author"] = "wowtbc.gg",
 					["profile"] = "## Frost Death Knight (wowtbc.gg)\n## 3 October 2022\n\nactions.precombat+=/potion,name=indestructible_potion\nactions.precombat+=/blood_presence,if=buff.presence.down\nactions.precombat+=/raise_dead\nactions.precombat+=/death_and_decay\nactions.precombat+=/army_of_the_dead\nactions.precombat+=/horn_of_winter,if=runic_power.deficit>10\nactions.precombat+=/potion\n\nactions+=/mind_freeze\nactions+=/icy_touch,if=!dot.frost_fever.ticking\nactions+=/plague_strike,if=!dot.blood_plague.ticking\nactions+=/unbreakable_armor\nactions+=/potion\nactions+=/use_items\nactions+=/blood_tap,if=blood_runes.current<2\nactions+=/obliterate\nactions+=/pestilence,if=dot.frost_fever.ticking&dot.blood_plague.ticking&(active_dot.frost_fever<active_enemies||active_dot.blood_plague<active_enemies||glyph.disease.enabled&(dot.frost_fever.remains<5||dot.blood_plague.remains<5))\nactions+=/empower_rune_weapon,if=blood_runes.current+frost_runes.current+unholy_runes.current<3\nactions+=/howling_blast,if=active_enemies>1&buff.killing_machine.up\nactions+=/frost_strike,if=active_enemies=1&buff.killing_machine.up\nactions+=/howling_blast,if=buff.rime.up\nactions+=/frost_strike\nactions+=/horn_of_winter",
+					["author"] = "wowtbc.gg",
 				},
 			},
 		},

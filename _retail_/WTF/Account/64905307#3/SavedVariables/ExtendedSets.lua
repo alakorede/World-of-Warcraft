@@ -16,8 +16,13 @@ true,
 },
 ["hideNoLongerObtainable"] = false,
 ["displayOnlyMyClass"] = false,
+["extraButtonToggles"] = {
+true,
+true,
+true,
+true,
+},
 ["displayOtherFaction"] = false,
-["hideShopsets"] = false,
 ["progressBarByFilter"] = true,
 ["weaponExpansionToggles"] = {
 true,
@@ -34,14 +39,9 @@ true,
 ["hideListDescription"] = false,
 ["showHiddenSets"] = false,
 ["hideTradingPost"] = false,
-["showDualWielding"] = false,
 ["disableHideSetButton"] = false,
-["extraButtonToggles"] = {
-true,
-true,
-true,
-true,
-},
+["showDualWielding"] = false,
+["hideShopsets"] = false,
 }
 ExS_HiddenSets = {
 {

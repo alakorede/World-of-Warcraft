@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0912,
+["LastVersion"] = 2.0913,
+["LastPlayerFullName"] = "Mitráculo-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 193800,
@@ -78,9 +80,10 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193629::::::::67:581::17:4:7978:7975:6652:10864:2:28:2587:9:66:::::|h[Cloak of Lost Devotion]|h|r",
 },
 {
-["ID"] = 198008,
-["Level"] = 319,
-["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
+["ID"] = 193688,
+["Level"] = 336,
+["AlsoFitsIn"] = 17,
+["Link"] = "|cff0070dd|Hitem:193688::::::::69:581::17:3:7978:7975:6652:2:28:2587:9:69:::::|h[Stormslash]|h|r",
 },
 {
 ["ID"] = 193688,
@@ -89,9 +92,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193688::::::::66:581::17:3:7978:7975:6652:2:28:2587:9:66:::::|h[Stormslash]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Mitráculo-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128832] = {
 ["Relics"] = {
@@ -159,6 +159,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DEMONHUNTER",

@@ -4,7 +4,7 @@ OPie_SavedData = {
 	["CharProfiles"] = {
 	},
 	["_GameVersion"] = "4.4.0",
-	["_OPieVersion"] = "Zeta 6 (4.122)",
+	["_OPieVersion"] = "Zeta 7b (4.123)",
 	["ProfileStorage"] = {
 		["default"] = {
 		},

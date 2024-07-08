@@ -8,9 +8,7 @@ Bartender4DB = {
 						{
 							["version"] = 3,
 							["showgrid"] = true,
-							["skin"] = {
-								["Zoom"] = true,
-							},
+							["rows"] = 4,
 							["padding"] = 0,
 							["position"] = {
 								["y"] = 102.9000196099278,
@@ -18,11 +16,13 @@ Bartender4DB = {
 								["point"] = "BOTTOM",
 								["scale"] = 0.699999988079071,
 							},
-							["rows"] = 4,
+							["skin"] = {
+								["Zoom"] = true,
+							},
 						}, -- [1]
 						{
-							["rows"] = 4,
 							["padding"] = 0,
+							["rows"] = 4,
 							["version"] = 3,
 							["position"] = {
 								["y"] = 102.9000196099278,
@@ -37,13 +37,13 @@ Bartender4DB = {
 								["Zoom"] = true,
 							},
 							["rows"] = 5,
+							["padding"] = 0,
 							["position"] = {
 								["y"] = 102.9000196099278,
 								["x"] = 0.1113884477963438,
 								["point"] = "BOTTOM",
 								["scale"] = 0.699999988079071,
 							},
-							["padding"] = 0,
 						}, -- [3]
 						{
 							["enabled"] = false,
@@ -59,9 +59,7 @@ Bartender4DB = {
 						{
 							["version"] = 3,
 							["showgrid"] = true,
-							["skin"] = {
-								["Zoom"] = true,
-							},
+							["rows"] = 4,
 							["padding"] = 0,
 							["position"] = {
 								["y"] = 102.9000196099278,
@@ -69,7 +67,9 @@ Bartender4DB = {
 								["point"] = "BOTTOM",
 								["scale"] = 0.699999988079071,
 							},
-							["rows"] = 4,
+							["skin"] = {
+								["Zoom"] = true,
+							},
 						}, -- [5]
 						{
 							["enabled"] = false,
@@ -287,6 +287,26 @@ Bartender4DB = {
 				},
 			},
 		},
+		["Vehicle"] = {
+			["profiles"] = {
+				["Dishy - Pagle"] = {
+					["version"] = 3,
+					["position"] = {
+						["y"] = 42.49996948242188,
+						["x"] = 104.5001220703125,
+						["point"] = "CENTER",
+					},
+				},
+				["Carniça - Pagle"] = {
+					["position"] = {
+						["y"] = 42.49996948242188,
+						["x"] = 104.5001220703125,
+						["point"] = "CENTER",
+					},
+					["version"] = 3,
+				},
+			},
+		},
 		["StanceBar"] = {
 			["profiles"] = {
 				["Dishy - Pagle"] = {
@@ -310,26 +330,6 @@ Bartender4DB = {
 						["point"] = "LEFT",
 						["scale"] = 1,
 					},
-				},
-			},
-		},
-		["Vehicle"] = {
-			["profiles"] = {
-				["Dishy - Pagle"] = {
-					["version"] = 3,
-					["position"] = {
-						["y"] = 42.49996948242188,
-						["x"] = 104.5001220703125,
-						["point"] = "CENTER",
-					},
-				},
-				["Carniça - Pagle"] = {
-					["position"] = {
-						["y"] = 42.49996948242188,
-						["x"] = 104.5001220703125,
-						["point"] = "CENTER",
-					},
-					["version"] = 3,
 				},
 			},
 		},

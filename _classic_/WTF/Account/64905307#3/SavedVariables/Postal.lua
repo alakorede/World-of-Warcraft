@@ -1,9 +1,5 @@
 
 Postal3DB = {
-	["profileKeys"] = {
-		["Dishy - Pagle"] = "Dishy - Pagle",
-		["Carniça - Pagle"] = "Carniça - Pagle",
-	},
 	["global"] = {
 		["BlackBook"] = {
 			["alts"] = {
@@ -11,6 +7,10 @@ Postal3DB = {
 				"Dishy|Pagle|Alliance|58|DRUID", -- [2]
 			},
 		},
+	},
+	["profileKeys"] = {
+		["Dishy - Pagle"] = "Dishy - Pagle",
+		["Carniça - Pagle"] = "Carniça - Pagle",
 	},
 	["profiles"] = {
 		["Dishy - Pagle"] = {
