@@ -66,6 +66,7 @@ L.cancelled = "%s取消" -- Spell Cancelled
 L.you_die = "你將死亡" -- You will die
 L.you_die_sec = "你將在%d秒後死亡" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "下個技能" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+--L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
 
 -- Add related
 L.add_spawned = "小怪出現" -- singular
@@ -178,6 +179,7 @@ L.charge = "衝鋒" -- When a boss select a new target and charges at it quickly
 L.full_energy = "滿能量" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "虛弱" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "免疫" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "昏迷" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "水池" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "水池" -- Plural of L.pool
 L.totem = "圖騰" -- A totem, usually summoned by a boss, the same thing that shamans summon

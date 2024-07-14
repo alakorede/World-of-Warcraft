@@ -1,8 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.091,
-["LastPlayerFullName"] = "Sharan-Nemesis",
-["AutoSelectScales"] = true,
+["LastVersion"] = 2.0913,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -85,12 +83,15 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
 },
 {
-["ID"] = 173549,
-["Level"] = 170,
+["ID"] = 200169,
+["Level"] = 246,
 ["AlsoFitsIn"] = 16,
-["Link"] = "|cff1eff00|Hitem:173549::::::::59:65::11:1:6416:2:9:59:28:500:::::|h[Justicar's Hammer]|h|r",
+["Link"] = "|cff0070dd|Hitem:200169::::::::62:65::17:2:9156:6652:2:28:2424:9:62:::::|h[Protector's Molten Cudgel]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Sharan-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128823] = {
 ["Relics"] = {
@@ -158,7 +159,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PALADIN",

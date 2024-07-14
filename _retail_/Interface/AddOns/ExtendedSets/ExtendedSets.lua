@@ -2447,13 +2447,6 @@ local function HideBlizzardSets(setID)
                       [3629] = true, --Shining Stormrider's Attire (unimplemented)(yellow)
                       [3630] = true, --Shining Stormrider's Attire (unimplemented)(shiny yellow)
     };
-  
-  --for i = 1, #setsToHide do
-  --  if setID == setsToHide[i] then
-  --    return true;
-  --  end
-  --end
-  --return false;
   return setsToHide[setID];
 end
 

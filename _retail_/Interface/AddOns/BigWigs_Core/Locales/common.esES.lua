@@ -66,6 +66,7 @@ L.cancelled = "%s cancelado" -- Spell Cancelled
 L.you_die = "Morirás" -- You will die
 L.you_die_sec = "Morirás en %d seg" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "Próxima habilidad" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+--L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
 
 -- Add related
 L.add_spawned = "Esbirro apareció" -- singular
@@ -178,6 +179,7 @@ L.charge = "Cargar" -- When a boss select a new target and charges at it quickly
 L.full_energy = "Energía Completa" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Debilitado" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Inmune" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Aturdido" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Charco" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Charcos" -- Plural of L.pool
 L.totem = "Tótem" -- A totem, usually summoned by a boss, the same thing that shamans summon

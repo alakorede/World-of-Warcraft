@@ -1,6 +1,7 @@
 # NeatPlates
 
-## [v441](https://github.com/Luxocracy/NeatPlates/tree/v441) (2024-06-09)
-[Full Changelog](https://github.com/Luxocracy/NeatPlates/compare/v440...v441) [Previous Releases](https://github.com/Luxocracy/NeatPlates/releases)
+## [v442](https://github.com/Luxocracy/NeatPlates/tree/v442) (2024-07-12)
+[Full Changelog](https://github.com/Luxocracy/NeatPlates/compare/v441...v442) [Previous Releases](https://github.com/Luxocracy/NeatPlates/releases)
 
-- Adjust automatic tank tracking of Death knights for Classic Cata  
+- Fixed an issue with the resource widget for fresh DKs if they have yet to pick a specialization.  
+    Fixed an issue where a units difficulty colors were sometimes empty  

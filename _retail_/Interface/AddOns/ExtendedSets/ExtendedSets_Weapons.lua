@@ -1393,6 +1393,7 @@ end
 
 local function SelectWeapon()
   RefreshWeaponTypeButtons();
+  --test white item box
   --WeaponSetsCollectionFrame.RightFrame.indexText:SetText(WeaponSetsCollectionFrame.RightFrame.weaponTypeArray[WeaponSetsCollectionFrame.RightFrame.activeWeapon].activeSource);
   RemoveWeapons();
   if WeaponSetsCollectionFrame.RightFrame.Model.isPlayer then
@@ -2470,7 +2471,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
                   elseif ( IsModifiedClick("DRESSUP") ) then
                     DressUpVisual(self.sourceID);
                   end
-                  --help for filling in weapon db
+                  --help for filling in weapon db test
                   --print(self.sourceID);
         end)
     WeaponSetsCollectionFrame.RightFrame.DetailsFrame:SetHyperlinksEnabled(true);
@@ -2527,12 +2528,12 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
     WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_large.tga]]);
     WeaponSetsCollectionFrame.RightFrame.RemixIcon.Icon:SetAlpha(0.2);
 
-    ----test temp
-    --WeaponSetsCollectionFrame.RightFrame.indexText = WeaponSetsCollectionFrame.RightFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-    --WeaponSetsCollectionFrame.RightFrame.indexText:SetPoint("RIGHT",WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame,"LEFT",-15,0);
-    --WeaponSetsCollectionFrame.RightFrame.indexText:SetSize(75, 10);
-    --WeaponSetsCollectionFrame.RightFrame.indexText:SetJustifyH("LEFT");
-    --WeaponSetsCollectionFrame.RightFrame.indexText:SetText("Hi");
+  --test temp
+  --WeaponSetsCollectionFrame.RightFrame.indexText = WeaponSetsCollectionFrame.RightFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+  --WeaponSetsCollectionFrame.RightFrame.indexText:SetPoint("RIGHT",WeaponSetsCollectionFrame.RightFrame.DetailsFrame.ItemFrame,"LEFT",-15,0);
+  --WeaponSetsCollectionFrame.RightFrame.indexText:SetSize(75, 10);
+  --WeaponSetsCollectionFrame.RightFrame.indexText:SetJustifyH("LEFT");
+  --WeaponSetsCollectionFrame.RightFrame.indexText:SetText("Hi");
   --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest = CreateFrame("Button", nil, WeaponSetsCollectionFrame.RightFrame);
   --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:SetPoint("BOTTOMRIGHT", WeaponSetsCollectionFrame.RightFrame, "BOTTOMRIGHT", -5, 50);
   --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:SetSize(26, 26);
@@ -2557,7 +2558,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
   --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest.tex = WeaponSetsCollectionFrame.RightFrame.itemTooltipTest:CreateTexture();
   --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest.tex:SetAllPoints(WeaponSetsCollectionFrame.RightFrame.itemTooltipTest);
   --  WeaponSetsCollectionFrame.RightFrame.itemTooltipTest.tex:SetColorTexture(1,1,1,1);
-    --end test
+  --end test
     
     
     WeaponSetsCollectionFrame.RightFrame.ResetRotation = CreateFrame("Button", nil, WeaponSetsCollectionFrame.RightFrame);
@@ -2800,6 +2801,7 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
       ExS_Settings.weaponExpansionToggles = {}
       for i = 1,ExpansionCount do ExS_Settings.weaponExpansionToggles[i] = true; end
     end
+    if ExS_Settings.weaponExpansionToggles[ExpansionCount] == nil then ExS_Settings.weaponExpansionToggles[ExpansionCount] = true; end
     if ExS_Settings.showDualWielding == nil then
       ExS_Settings.showDualWielding = false;
     end

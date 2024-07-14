@@ -52,6 +52,7 @@ function CursorTrail_ShowChangelog(parent)
         local GRAY = "|cff909090"
         local ORANGE = "|cffEE5500"
         local YELLOW = "|cffFFD200"
+        local CYAN = "|cff00FFFF"
 
         local bigFont = "GameFontNormalHuge" --"OptionsFontLarge" --"GameFontNormalLarge"
         local smallFont = "GameTooltipText"
@@ -124,6 +125,9 @@ function CursorTrail_ShowChangelog(parent)
 
             -- Add the text.
             if line then
+                line = line:gsub("TBD", CYAN .. "<<< TBD >>>|r")  -- Emphasize TBD's.
+                line = line:gsub("TODO", CYAN .. "<<< TODO >>>|r")  -- Emphasize TODO's.
+
                 ChangelogFrame:AddText(line, dx, dy, font)
                 dy = lineSpacing
             end

@@ -171,7 +171,7 @@ function UI_SetValues(config)  -- Copies config data into UI widgets.  If 'confi
     if config.UserShowOnlyInCombat == true or config.UserShowOnlyInCombat == false then  -- If nil, leave as-is.
         OptionsFrame_Value("combat", config.UserShowOnlyInCombat)
     end
-    if config.UserShowMouseLook == true or config.UserShowOnlyInCombat == false then  -- If nil, leave as-is.
+    if config.UserShowMouseLook == true or config.UserShowMouseLook == false then  -- If nil, leave as-is.
         OptionsFrame_Value("MouseLook", config.UserShowMouseLook)
     end
 

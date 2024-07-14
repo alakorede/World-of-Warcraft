@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0912,
+["LastVersion"] = 2.0913,
 ["LastPlayerFullName"] = "Chicoxavier-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
@@ -16,8 +16,8 @@ PawnOptions = {
 },
 {
 ["ID"] = 193788,
-["Level"] = 346,
-["Link"] = "|cff0070dd|Hitem:193788::::::::70:256::17:4:7978:7975:6652:10864:2:28:2587:9:70:::::|h[Molten Magma Mantle]|h|r",
+["Level"] = 476,
+["Link"] = "|cff0070dd|Hitem:193788::::::::70:256::2:6:10308:9636:6652:10864:3155:8766:1:28:2156:::::|h[Molten Magma Mantle]|h|r",
 },
 nil,
 {

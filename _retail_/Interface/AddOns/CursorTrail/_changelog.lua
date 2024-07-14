@@ -7,6 +7,23 @@ setfenv(1, _G.CursorTrail)  -- Everything after this uses our namespace rather t
 kChangelogText =
 [[
 =======================================
+RELEASE 10.2.7.5
+Released 2024-07-09
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+Version 10.2.7.5 for Retail WoW
+Version 4.4.0.6 for Classic Cataclysm
+Version 1.15.3.1 for Classic WoW
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+- Fixed the "/ct mouselook" slash command.
+- Eliminated the brief screen flash that occurred when selecting some models.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+Version 1.15.3.1 for Classic WoW
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+- Update for Classic WoW 1.15.3.
+
+=======================================
 RELEASE 10.2.7.4
 Released 2024-06-28
 

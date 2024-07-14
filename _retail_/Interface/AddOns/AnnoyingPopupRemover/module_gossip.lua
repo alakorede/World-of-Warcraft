@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2023-2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v21.0.0-release
+-- Addon version: v21.1.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -208,7 +208,8 @@ GossipIDList[40425] = "Madness of Deathwing"
 -- Start of various encounters in the Siege of Orgrimmar raid
 GossipIDList[42038] = "Norushen"
 GossipIDList[41620] = "Galakras"
-GossipIDList[41867] = "Spoils of Pandaria"
+GossipIDList[41867] = "Spoils of Pandaria - Horde"
+GossipIDList[41865] = "Spoils of Pandaria - Alliance"
 GossipIDList[110714] = "Skip to Garrosh"
 
 -- Myrrit digs
@@ -216,6 +217,12 @@ GossipIDList[109101] = "Starting a Myrrit dig with 1 map"
 GossipIDList[109604] = "Starting a Myrrit dig with 2 maps"
 GossipIDList[109603] = "Starting a Myrrit dig with 3 maps"
 GossipIDList[109815] = "Continuing a Myrrit dig"
+
+-- Start of encounters in Dragonflight raids
+-- @TODO: Implement after DF is no longer current
+-- GossipIDList[55981] = "Vault of the Incarnates - start event for first trash clear"
+-- I have this note in the same file as the Vault start, but I don't know what it's referring to.
+-- 79691 bronze to start 6/15/2024
 
 
 -- Now capture the events that this module has to handle

@@ -1,6 +1,6 @@
 ## Interface: 100207
-## Title: BetterWardrobe (4.22.3)
-## Version: 4.22.3
+## Title: BetterWardrobe (4.23.1)
+## Version: 4.23.1
 ## Author: SLOKnightfall
 ## Notes: 
 ## OptionalDeps: MogIt, CanIMogIt, LegionWardrobe, WardrobeEnhanced, Rarity, TransmogOutfits, ExtendedSets, ElvUI, PetTracker, PetTrackerJournal
@@ -67,7 +67,7 @@ Modules\SavedOutfits.xml
 Modules\DressingRoom.xml
 Modules\Wardrobe.xml
 Modules\ColorFilter.lua
-
+Modules\dropdown.xml
 #Modules\PreviewWindows.lua
 
 Modules\CollectionList.xml

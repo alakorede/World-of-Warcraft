@@ -144,36 +144,10 @@ local db = {
 {"Fearspeaker","Remix Exclusives (MoP)","Yellow",50000,nil,nil,{{5,196876},{4,196866,nil,Zone(16)},{13,197153,nil,Zone(15)},{13,197148,nil,Zone(17)},{13,197145,nil,Zone(15)},{13,198475},{12,198524,nil,Zone(2)},{12,198528,nil,Zone(5)},{8,197068,nil,Zone(5)},{6,196959,nil,Zone(5)},{5,196924,nil,Zone(11)},{3,196851,nil,Zone(5)},{1,196806,nil,Zone(5)},{2,196824,nil,Zone(3)},{14,197206},{9,197096,nil,Zone(18)},},nil,nil,2,nil,IS_REMIX},
 
 --SoO Remix colors
-{"Sha-Touched","SoO Remix Colors","Siege of Orgrimmar",50400,nil,nil,{
-{1,196782,nil,Zone(23)},
-{1,196786,nil,Zone(23)},
-{1,196790,nil,Zone(23)},
-{2,196811,nil,Zone(21)},
-{3,196837,nil,Zone(23)},
-{3,196832,nil,Zone(22)},
-{4,196864,nil,Zone(22)},
-{5,196890,nil,Zone(23)},
-{5,196882,nil,Zone(21)},
-{6,196939,nil,Zone(22)},
-{7,197000,nil,Zone(22)},
-{8,197021,nil,Zone(22)},
-{8,197027,nil,Zone(23)},
-{8,67065,NOT_REMIX},--SoO recolor (also drops from rare in WoD)
-{10,196973,nil,Zone(21)},
-{10,196980,nil,Zone(23)},
-{12,198547,nil,Zone(23)},
-{13,197134,nil,Zone(21)},
-{13,197138,nil,Zone(21)},{13,197139,nil,Zone(22)},
-{13,197129,nil,Zone(23)},
-{13,197124,nil,Zone(22)},
-{13,197133,nil,Zone(23)},
-{14,100384,NOT_REMIX},{14,197218,nil,Zone(22)},
-{14,197223,nil,Zone(23)},
-{14,197225,nil,Zone(22)},
-{14,197215,nil,Zone(23)},
-{15,197274,nil,Zone(21)},
-{16,197297,nil,Zone(22)},
-},nil,nil,2,nil,IS_REMIX};
+{"Sha-Touched","SoO Remix Colors","Mythic",50400,nil,nil,{{1,196782,nil,Zone(23)},{1,196786,nil,Zone(23)},{1,196790,nil,Zone(23)},{3,196837,nil,Zone(23)},{5,196890,nil,Zone(23)},{8,197027,nil,Zone(23)},{10,196980,nil,Zone(23)},{12,198547,nil,Zone(23)},{13,197129,nil,Zone(23)},{13,197133,nil,Zone(23)},{14,197223,nil,Zone(23)},{14,197215,nil,Zone(23)},},nil,nil,2,nil,IS_REMIX};
+{"Sha-Touched","SoO Remix Colors","Normal/Heroic",50400,nil,nil,{{3,196832,nil,Zone(22)},{4,196864,nil,Zone(22)},{6,196939,nil,Zone(22)},{7,197000,nil,Zone(22)},{8,197021,nil,Zone(22)},{13,197139,nil,Zone(22)},{13,197124,nil,Zone(22)},{14,197218,nil,Zone(22)},{14,197225,nil,Zone(22)},{16,197297,nil,Zone(22)},},nil,nil,2,nil,IS_REMIX};
+{"Sha-Touched","SoO Remix Colors","Raid Finder",50400,nil,nil,{{2,196811,nil,Zone(21)},{5,196882,nil,Zone(21)},{10,196973,nil,Zone(21)},{13,197134,nil,Zone(21)},{13,197138,nil,Zone(21)},{15,197274,nil,Zone(21)},{14,100384,NOT_REMIX},},nil,nil,2,nil,IS_REMIX};
+--{8,67065,NOT_REMIX},--SoO recolor (also drops from rare in WoD)
 
 --Siege of Orgrimmar
 {"Pride's Fall","Siege of Orgrimmar","Raid Finder",50400,nil,nil,{{11,56612},{13,56522},{9,56569},{13,56503},{15,56507},{11,56210},{13,56628},{13,56614},{13,56447},{2,56638},{14,56564},{8,56456},{14,56589},{1,56553},{8,56641},{5,56562},{8,56556},{14,56627},{1,56621},{1,56579},{5,56484},{5,56623},{8,56527},{6,56467},{14,56492},{3,56509},{4,56466},{3,56620},{16,56600},{7,56572},{12,55820},{12,56570},{12,55842},{12,56508},{10,56610},{10,56541},{10,56478},{10,56642},}},
@@ -186,43 +160,13 @@ local db = {
 {"Grievous","Season 14/15 (MoP 3/4)","Elite",50400,nil,nil,{{16,53367},{13,53363},{8,53331},{1,53329},{13,53431},{8,53427},{15,53327},{3,53337},{14,53613},{11,53528},{14,53333},{6,53607},{7,53425},{5,53605},{5,53361},{10,53357},{12,53359},{2,53323},{12,53625}},nil,true,true},
 
 --Throne of Thunder Remix Colors
-{"Breaker","ToT Remix Colors","Throne of Thunder",50000,nil,nil,{
-{1,196809,nil,Zone(19)},
-{1,197318,nil,Zone(19)},
-{2,196827,nil,Zone(18)},
-{3,196852,nil,Zone(18)},
-{3,196860,nil,Zone(8)},{3,196857,nil,Zone(19)},
-{4,196872,nil,Zone(19)},
-{5,198434,nil,Zone(18)},{5,198435,nil,Zone(19)},
-{5,196935,nil,Zone(18)},{5,196936,nil,Zone(19)},{5,196937,nil,Zone(18)},
-{7,197019,nil,Zone(20)},
-{8,198446,nil,Zone(18)},
-{8,197075,nil,Zone(18)},{8,197076,nil,Zone(19)},{8,197077,nil,Zone(18)},
-{8,197083,nil,Zone(19)},
-{8,197079,nil,Zone(19)},
-{10,196997,nil,Zone(19)},
-{11,197123,nil,Zone(18)},
-{11,197109,nil,Zone(17)},
-{11,197100,nil,Zone(16)},
-{12,198588,nil,Zone(9,10)},{12,198589,nil,Zone(8)},
-{12,198573,nil,Zone(20)},
-{12,198520,nil,Zone(8)},
-{13,197201,nil,Zone(20)},
-{13,198488,nil,Zone(20)},
-{13,197190,nil,Zone(19)},
-{13,198479,nil,Zone(19)},
-{14,197267,nil,Zone(18)},
-{14,197268,nil,Zone(18)},{14,197269,nil,Zone(19)},
-{14,197211,nil,Zone(9,10)},
-{15,197273,nil,Zone(9,10)},
-{16,197314,nil,Zone(19)},{16,100312,NOT_REMIX},
-{9,198457,nil,Zone(18)},
-{13,198484,nil,Zone(19)},
-{5,198427,nil,Zone(19)},
-{12,198584,nil,Zone(19)},
-{6,196963,nil,Zone(19)},
-{6,198424,nil,Zone(20)},
-},nil,nil,2,nil,IS_REMIX};
+{"Breaker","ToT Remix Colors","Raid Finder",50000,nil,nil,{{2,196827,nil,Zone(18)},{3,196852,nil,Zone(18)},{5,198434,nil,Zone(18)},{5,196935,nil,Zone(18)},{5,196937,nil,Zone(18)},{8,198446,nil,Zone(18)},{8,197075,nil,Zone(18)},{8,197077,nil,Zone(18)},{11,197123,nil,Zone(18)},{14,197267,nil,Zone(18)},{14,197268,nil,Zone(18)},{9,198457,nil,Zone(18)},},nil,nil,2,nil,IS_REMIX};
+{"Breaker","ToT Remix Colors","Normal",50000,nil,nil,{{1,196809,nil,Zone(19)},{1,197318,nil,Zone(19)},{3,196857,nil,Zone(19)},{4,196872,nil,Zone(19)},{5,198435,nil,Zone(19)},{5,196936,nil,Zone(19)},{8,197076,nil,Zone(19)},{8,197083,nil,Zone(19)},{8,197079,nil,Zone(19)},{10,196997,nil,Zone(19)},{13,197190,nil,Zone(19)},{13,198479,nil,Zone(19)},{14,197269,nil,Zone(19)},{16,197314,nil,Zone(19)},{13,198484,nil,Zone(19)},{5,198427,nil,Zone(19)},{12,198584,nil,Zone(19)},{6,196963,nil,Zone(19)},},nil,nil,2,nil,IS_REMIX};
+{"Breaker","ToT Remix Colors","Heroic",50000,nil,nil,{{7,197019,nil,Zone(20)},{12,198573,nil,Zone(20)},{13,197201,nil,Zone(20)},{13,198488,nil,Zone(20)},{6,198424,nil,Zone(20)},},nil,nil,2,nil,IS_REMIX};
+{"Breaker","ToT Remix Colors","Isle of Thunder",50000,nil,nil,{{3,196860,nil,Zone(8)},{12,198588,nil,Zone(9,10)},{12,198589,nil,Zone(8)},{12,198520,nil,Zone(8)},{14,197211,nil,Zone(9,10)},{15,197273,nil,Zone(9,10)},},nil,nil,2,nil,IS_REMIX};
+{"Breaker","ToT Remix Colors","Tier 14 LFR",50000,nil,nil,{{11,197109,nil,Zone(17)},},nil,nil,2,nil,IS_REMIX};
+{"Breaker","ToT Remix Colors","Tier 14 Heroic",50000,nil,nil,{{11,197100,nil,Zone(16)},},nil,nil,2,nil,IS_REMIX};
+--{16,100312,NOT_REMIX},--also from island expeditions
 
 --Throne of Thunder all boss loot
 {"Mind's Eye","ToT Common Drops","Raid Finder",50200,nil,nil,{{8,50359},{13,50354},{5,50120},{9,50350},{14,50368},{15,50367},{11,50369},{8,50353},{6,51415},{3,50351},{12,50370},}},
@@ -240,37 +184,19 @@ local db = {
 {"Tyrannical","Season 13 (MoP 2)","Elite",50200,nil,nil,{{13,47438},{13,47506},{13,47481},{5,47680},{5,47436},{8,47406},{1,47404},{14,47688},{14,47408},{2,47398},{15,47402},{6,47686},{4,47444},{10,47432},{12,47434},{12,47700},},nil,true,true},
 
 --Terrace of Endless Spring Remix Colors
-{"Fear incarnate","ToES Remix Colors","Terrace of Endless Spring",50004,nil,nil,{
-{2,196816,nil,Zone(16)},
-{7,197004,nil,Zone(17)},
-{13,197160,nil,Zone(15)},
-{14,197236,nil,Zone(17)},
-{5,196899,nil,Zone(17)},
-},nil,nil,2,nil,IS_REMIX};
+{"Fear incarnate","Tier 14 Remix Colors","Raid Finder",50004,nil,nil,{{13,197160,nil,Zone(15)},{6,196946,nil,Zone(15)},{5,196898,nil,Zone(15)},{11,197107,nil,Zone(15)},{12,198555,nil,Zone(15)},{5,196894,nil,Zone(15)},},nil,nil,2,nil,IS_REMIX};
+{"Fear incarnate","Tier 14 Remix Colors","Normal",50004,nil,nil,{{2,196816,nil,Zone(16)},},nil,nil,2,nil,IS_REMIX};
+{"Fear incarnate","Tier 14 Remix Colors","Heroic",50004,nil,nil,{{7,197004,nil,Zone(17)},{14,197236,nil,Zone(17)},{5,196899,nil,Zone(17)},{3,196840,nil,Zone(17)},},nil,nil,2,nil,IS_REMIX};
 
 --Terrace of Endless Spring
 {"The Waterspeaker","Terrace of Endless Spring","Raid Finder",50004,nil,nil,{{13,44747},{13,44757},{2,44768},{14,44769},{14,44751},{5,44734},{5,44772},{7,44754},}},
 {"The Waterspeaker","Terrace of Endless Spring","Normal",50004,nil,nil,{{13,44374},{13,44384},{2,44395},{14,44396},{14,44378},{5,44350},{5,44399},{7,44381},}},
 {"The Waterspeaker","Terrace of Endless Spring","Heroic",50004,nil,nil,{{13,44988},{13,44998},{2,45002},{14,45000},{14,44993},{5,44836},{5,44995},{7,44996},}},
 
---Heart of Fear Remix Colors
-{"Fulminating","HoF Remix Colors","Heart of Fear",50004,nil,nil,{
-{6,196946,nil,Zone(15)},
-{5,196898,nil,Zone(15)},
-},nil,nil,2,nil,IS_REMIX};
-
 --Heart of Fear
 {"The Swarm","Heart of Fear","Raid Finder",50004,nil,nil,{{6,44736},{8,44737},{14,44735},{5,44734},{10,44706},}},
 {"The Swarm","Heart of Fear","Normal",50004,nil,nil,{{6,44358},{8,44359},{14,44352},{5,44350},{10,44310},}},
 {"The Swarm","Heart of Fear","Heroic",50004,nil,nil,{{6,44841},{8,44843},{14,44840},{5,44836},{10,44818},}},
-
---Mogu'Shan Vaults Remix Recolors
-{"Seven Stars","MsV Remix Colors","Mogu'shan Vaults",50004,nil,nil,{
-{3,196840,nil,Zone(17)},
-{11,197107,nil,Zone(15)},
-{12,198555,nil,Zone(15)},
-{5,196894,nil,Zone(15)},
-},nil,nil,2,nil,IS_REMIX};
 
 --Mogu'shan Vaults
 {"Sleeping Emperor","Mogu'shan Vaults","Raid Finder",50004,nil,nil,{{11,44665},{15,44683},{5,44638},{1,44676},{6,44657},{8,44688},{3,44685},{16,44680},{12,44659},{12,44666},{10,45190},}},
@@ -287,21 +213,10 @@ local db = {
 --Appearance id duplicate:  (item id: ) shares appearance with  (item id: ).
 
 --MoP Dungeon Remix Colors
-{"Yak-Herder's","Dungeon Remix Colors","",50004,nil,nil,{
-{5,196920,nil,Zone(11)},{5,196921,nil,Zone(12)},{5,196919,nil,Zone(13)},
-{5,196917,nil,Zone(11,12)},{5,196914,nil,Zone(13)},
-{7,197015,nil,Zone(11)},
-{8,197066,nil,Zone(12)},
-{10,196992,nil,Zone(13)},{10,196993,nil,Zone(14)},
-{11,197117,nil,Zone(11)},{11,197118,nil,Zone(12)},
-{12,47082,NOT_REMIX},{12,60753,NOT_REMIX},
-{12,198571,nil,Zone(11)},{12,198569,nil,Zone(13)},
-{13,197181,nil,Zone(14)},
-{6,196955,nil,Zone(13)},{6,196956,nil,Zone(14)},{6,196958,nil,Zone(12)},
-{15,197289,nil,Zone(12)},{15,197286,nil,Zone(14)},
-{3,196847,nil,Zone(11)},
-{9,197092,nil,Zone(13)},
-},nil,nil,2,nil,IS_REMIX};
+{"Yak-Herder's","Dungeon Remix Colors","Normal",50004,nil,nil,{{5,196919,nil,Zone(13)},{5,196914,nil,Zone(13)},{10,196992,nil,Zone(13)},{12,198569,nil,Zone(13)},{6,196955,nil,Zone(13)},{9,197092,nil,Zone(13)},{12,47082,NOT_REMIX},},nil,nil,2,nil,IS_REMIX};
+{"Yak-Herder's","Dungeon Remix Colors","Heroic",50004,nil,nil,{{10,196993,nil,Zone(14)},{13,197181,nil,Zone(14)},{6,196956,nil,Zone(14)},{15,197286,nil,Zone(14)},},nil,nil,2,nil,IS_REMIX};
+{"Yak-Herder's","Scenario Remix Colors","Normal",50004,nil,nil,{{5,196920,nil,Zone(11)},{5,196917,nil,Zone(11,12)},{7,197015,nil,Zone(11)},{11,197117,nil,Zone(11)},{12,198571,nil,Zone(11)},{3,196847,nil,Zone(11)},{12,60753,NOT_REMIX},},nil,nil,2,nil,IS_REMIX};
+{"Yak-Herder's","Scenario Remix Colors","Heroic",50004,nil,nil,{{5,196921,nil,Zone(12)},{5,196917,nil,Zone(11,12)},{8,197066,nil,Zone(12)},{11,197118,nil,Zone(12)},{6,196958,nil,Zone(12)},{15,197289,nil,Zone(12)},},nil,nil,2,nil,IS_REMIX};
 
 --Rares
 {"Dawnwatcher's","Rare Drops (MoP)","",50004,nil,nil,{{11,45158},{1,45231},{1,45228},{3,45200},{3,196847},{5,45199},{5,45223},{6,45224},{9,45306},{9,45156},{13,44333},{15,45161},{7,45203},{13,49672},{10,45189},}},

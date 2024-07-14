@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0911,
+["LastVersion"] = 2.0913,
 ["ItemLevels"] = {
 {
 ["ID"] = 198013,
@@ -49,16 +49,16 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193661::::::::67:104::17:4:7978:7975:6652:8813:2:28:2155:9:67:::::|h[Blightweaver's Clutches]|h|r",
 },
 {
-["ID"] = 200172,
-["Level"] = 306,
+["ID"] = 193768,
+["Level"] = 326,
 ["AlsoFitsIn"] = 12,
-["Link"] = "|cff0070dd|Hitem:200172::::::::68:104::17:3:9156:6652:7937:2:28:2424:9:68:::::|h[Zephyrdance Signet]|h|r",
+["Link"] = "|cff0070dd|Hitem:193768::::::::68:264::17:4:7978:7975:6652:10532:2:28:2587:9:68:::::|h[Scalebane Signet]|h|r",
 },
 {
-["ID"] = 200172,
-["Level"] = 306,
+["ID"] = 193768,
+["Level"] = 326,
 ["AlsoFitsIn"] = 11,
-["Link"] = "|cff0070dd|Hitem:200172::::::::68:104::17:3:9156:6652:7937:2:9:68:28:2424:::::|h[Zephyrdance Signet]|h|r",
+["Link"] = "|cff0070dd|Hitem:193768::::::::69:264::17:4:7978:7975:6652:10532:2:28:2587:9:68:::::|h[Scalebane Signet]|h|r",
 },
 {
 ["ID"] = 193689,
@@ -78,15 +78,15 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:200278::::::::66:104::26:1:7963:2:28:2262:9:65:::::|h[Drake Archaeologist's Shawl]|h|r",
 },
 {
-["ID"] = 198008,
-["Level"] = 319,
-["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
+["ID"] = 193803,
+["Level"] = 336,
+["Link"] = "|cff0070dd|Hitem:193803::::::::69:264::17:3:7978:7975:6652:2:28:2155:9:69:::::|h[Infinite Dragonspire]|h|r",
 },
 {
-["ID"] = 193687,
-["Level"] = 296,
+["ID"] = 193665,
+["Level"] = 326,
 ["AlsoFitsIn"] = 16,
-["Link"] = "|cff0070dd|Hitem:193687::::::::65:264::17:3:7978:7975:6652:2:28:2587:9:65:::::|h[Koroleth's Crackling Dagger]|h|r",
+["Link"] = "|cff0070dd|Hitem:193665::::::::68:264::17:3:7978:7975:6652:2:28:2155:9:68:::::|h[Decatriarch's Bone Pestle]|h|r",
 },
 },
 ["AutoSelectScales"] = true,

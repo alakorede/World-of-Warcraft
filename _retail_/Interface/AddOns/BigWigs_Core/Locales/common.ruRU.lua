@@ -66,6 +66,7 @@ L.cancelled = "%s отменено" -- Spell Cancelled
 L.you_die = "Умираешь" -- You will die
 L.you_die_sec = "Умрёшь через %d сек" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "Следующая способность" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+--L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
 
 -- Add related
 L.add_spawned = "Помощник появился" -- singular
@@ -178,6 +179,7 @@ L.charge = "Рывок" -- When a boss select a new target and charges at it qui
 L.full_energy = "Макс. энергя" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Ослабленный" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Невосприимчивость" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Оглушение" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Лужа" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Лужи" -- Plural of L.pool
 L.totem = "Тотем" -- A totem, usually summoned by a boss, the same thing that shamans summon

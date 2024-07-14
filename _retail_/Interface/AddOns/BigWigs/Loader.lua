@@ -12,7 +12,7 @@ local strfind = string.find
 -- Generate our version variables
 --
 
-local BIGWIGS_VERSION = 341
+local BIGWIGS_VERSION = 343
 local BIGWIGS_RELEASE_STRING, BIGWIGS_VERSION_STRING
 local versionQueryString, versionResponseString = "Q^%d^%s^%d^%s", "V^%d^%s^%d^%s"
 local customGuildName = false
@@ -27,6 +27,7 @@ do
 	public.isRetail = tbl.isRetail
 	public.isClassic = tbl.isClassic
 	public.isVanilla = tbl.isVanilla
+	public.isSeasonOfDiscovery = tbl.isSeasonOfDiscovery
 	public.isTBC = tbl.isTBC
 	public.isWrath = tbl.isWrath
 	public.isCata = tbl.isCata
@@ -37,7 +38,7 @@ do
 	local ALPHA = "ALPHA"
 
 	local releaseType
-	local myGitHash = "0d8e87a" -- The ZIP packager will replace this with the Git hash.
+	local myGitHash = "bc5448e" -- The ZIP packager will replace this with the Git hash.
 	local releaseString
 	--[=[@alpha@
 	-- The following code will only be present in alpha ZIPs.
@@ -120,7 +121,10 @@ public.UnitHealth = UnitHealth
 public.UnitHealthMax = UnitHealthMax
 public.UnitName = UnitName
 public.isTestBuild = GetCurrentRegion() == 72 -- PTR/beta
-public.isBeta = select(4, GetBuildInfo()) >= 110000 -- XXX remove when TWW launches
+do
+	local _, _, _, build = GetBuildInfo()
+	public.isBeta = build >= 110000
+end
 
 -- Version
 local usersHash = {}
@@ -355,6 +359,7 @@ do
 		--[349] = lw_c, -- Maraudon
 		--[389] = lw_c, -- Ragefire Chasm
 		--[429] = lw_c, -- Dire Maul
+		[2784] = public.isSeasonOfDiscovery and lw_c or nil, -- Demon Fall Canyon [Classic Season of Discovery Only]
 		--[[ LittleWigs: The Burning Crusade ]]--
 		[540] = lw_bc, -- Hellfire Citadel: The Shattered Halls
 		[542] = lw_bc, -- Hellfire Citadel: The Blood Furnace
@@ -1334,6 +1339,7 @@ do
 		--frFR = "French (frFR)",
 	}
 	local realms = {
+		--[542] = locales.frFR, -- frFR
 		--[3207] = locales.ptBR, [3208] = locales.ptBR, [3209] = locales.ptBR, [3210] = locales.ptBR, [3234] = locales.ptBR, -- ptBR
 		--[1425] = locales.esMX, [1427] = locales.esMX, [1428] = locales.esMX, -- esMX
 		--[1309] = locales.itIT, [1316] = locales.itIT, -- itIT
@@ -1437,12 +1443,12 @@ end
 --
 
 do
-	local DBMdotRevision = "20240629082334" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
-	local DBMdotDisplayVersion = "10.2.50" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
-	local DBMdotReleaseRevision = "20240629000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
+	local DBMdotRevision = "20240711100522" -- The changing version of the local client, changes with every new zip using the project-date-integer packager replacement.
+	local DBMdotDisplayVersion = "10.2.53" -- "N.N.N" for a release and "N.N.N alpha" for the alpha duration.
+	local DBMdotReleaseRevision = "20240711000000" -- Hardcoded time, manually changed every release, they use it to track the highest release version, a new DBM release is the only time it will change.
 	local protocol = 3
 	local versionPrefix = "V"
-	local PForceDisable = 12
+	local PForceDisable = public.isVanilla and 13 or public.isWrath and 13 or 12
 
 	local timer = nil
 	local function sendDBMMsg()

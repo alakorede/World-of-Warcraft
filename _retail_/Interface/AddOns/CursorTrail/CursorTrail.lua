@@ -1096,7 +1096,7 @@ function CursorTrail_Load(config)
         CursorModel_ST:SetScript("OnHide", CursorModel_OnHide)
     end
 
-    CursorModel_Init()
+    CursorModel_Init() -- Clear old model.
     if kModelConstants[config.ModelID].UseSetTransform then  -- Fix for BUG_20240603.1.
         ----print("[CT] Using CursorModel_ST", config.ModelID)
         CursorModel = CursorModel_ST
@@ -1104,6 +1104,15 @@ function CursorTrail_Load(config)
         ----print("[CT] Using CursorModel_FPR", config.ModelID)
         CursorModel = CursorModel_FPR
     end
+    CursorModel_Init() -- Init new model.
+
+    if   config.ModelID == 166694  -- "Trail - Swirling, Nature"
+      or config.ModelID == 167229  -- "Trail - Ghost"
+      or config.ModelID == 165693  -- "Trail - Freedom"
+      then
+        CursorModel_MoveOffScreen()  -- Prevents the brief screen flash when this model is selected.
+    end
+
     CursorModel_SetModel(config.ModelID)
     CursorModel:SetCustomCamera(1) -- Very important! (Note: CursorModel:SetCamera(1) doesn't work here.)
     CursorTrail_ApplyModelSettings(config)
@@ -1295,6 +1304,10 @@ function CursorModel_Init()
         CursorModel:SetRoll(0)
         CursorModel:SetAlpha(1)
         ----CursorModel:SetKeepModelOnHide(true)  -- TODO: See if this eliminates the need to recreate CursorModel in OnShow().
+        if CursorModel == CursorModel_ST then  -- Using the "SetTransform" model?
+            -- NOTE: Don't do this for CursorModel_FPR.  Model "Trail - Electric, Blue (Long)" won't show up if you do!
+            CursorModel_MoveOffScreen()  -- Prevents the brief screen flash when a very large model is selected.
+        end
 
         CursorModel.Constants = nil
         CursorModel.OfsX = nil
@@ -1352,6 +1365,11 @@ function CursorModel_ClearTransform()  -- Undoes changes made by SetTransform().
     ----CursorModel.OfsX = 0; CursorModel.OfsY = 0; CursorModel.OfsZ = 0
     ----CursorModel.RotX = 0; CursorModel.RotY = 0; CursorModel.RotZ = 0
     ----CursorModel.Scale = 1
+end
+
+-------------------------------------------------------------------------------
+function CursorModel_MoveOffScreen()
+    CursorModel:SetPosition(0, 111, 111)  -- Prevents the brief screen flash when a very large model is selected.
 end
 
 -------------------------------------------------------------------------------

@@ -66,6 +66,7 @@ L.cancelled = "%s 취소됨" -- Spell Cancelled
 L.you_die = "당신은 죽습니다" -- You will die
 L.you_die_sec = "당신은 %d 초 후 죽습니다" -- "You die in 15 sec" (sec = seconds)
 --L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+--L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
 
 -- Add related
 L.add_spawned = "추가 몹 생성" -- singular
@@ -178,6 +179,7 @@ L.charge = "돌진" -- When a boss select a new target and charges at it quickly
 L.full_energy = "기력 최대" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "약화" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "면역" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "기절함" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "바닥" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "바닥" -- Plural of L.pool
 L.totem = "토템" -- A totem, usually summoned by a boss, the same thing that shamans summon

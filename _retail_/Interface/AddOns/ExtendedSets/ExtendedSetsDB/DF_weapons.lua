@@ -62,6 +62,8 @@ local db = {
 --BMAH
 {"Gilded","Dragonflight Black Market",nil,100200,nil,nil,{{12,193989},{7,193986},{11,194086},{2,193987},{12,194006},{14,194088,"i:211300:4:Arsenal Whispering Temple Blades"},{14,194089,"i:211300:4:Arsenal Whispering Temple Blades"},}},
 
+{"Grand Design","Cosmic Weapons",nil,110000,nil,nil,{{5,190160},{14,190162},{13,190159},{14,190158},{15,190163},},2},
+
 --Time Rifts
 {"Plague-Touched","Time Rifts",nil,100105,"Purchased from Baron Silver",nil,{{4,188495},{2,188500},{3,188501},{8,188510},{13,188514},{13,188519},{14,188520},}},
 {"Clockwork","Time Rifts",nil,100105,"Purchased from Gill the Drill",nil,{{5,188513},{8,188521},{14,188523},{16,188494},{7,188497},{15,188502},{12,188496},}},

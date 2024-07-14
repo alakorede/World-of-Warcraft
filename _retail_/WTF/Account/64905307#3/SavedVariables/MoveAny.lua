@@ -873,26 +873,26 @@ MATAB = {
 ["AddonList"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 605.9999389648438,
-["PX"] = 871.9868774414062,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 871.9868774414062,
 },
 ["GameMenuFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 545,
-["PX"] = 958,
 ["RE"] = "BOTTOMLEFT",
+["PY"] = 544,
+["PX"] = 960,
 },
 ["CharacterFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 464,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 1607,
+["RE"] = "BOTTOMLEFT",
 },
 ["GroupLootHistoryFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 413,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 32,
+["RE"] = "BOTTOMLEFT",
 },
 ["ContainerFrame12"] = {
 },
@@ -900,15 +900,15 @@ MATAB = {
 },
 ["StaticPopup1"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 980,
-["PX"] = 904,
+["PY"] = 975,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 907,
 },
 ["QuestFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 496.9072875976563,
-["PX"] = 1080.507934570313,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 1080.507934570313,
 },
 ["TradeFrame"] = {
 },
@@ -919,60 +919,61 @@ MATAB = {
 ["ProfessionsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 379,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 303,
+["RE"] = "BOTTOMLEFT",
 },
 ["SettingsPanel"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 361,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 627,
+["RE"] = "BOTTOMLEFT",
 },
 ["WardrobeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 434,
-["PX"] = 93,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 93,
 },
 ["SplashFrame"] = {
 },
 ["FriendsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 659,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 13,
+["RE"] = "BOTTOMLEFT",
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 257,
-["PY"] = 515,
+["PY"] = 521,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 258,
 },
 ["ContainerFrameCombinedBags"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 271.4058227539063,
-["PX"] = 1773.534912109375,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 1773.534912109375,
 },
 ["DressUpFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 368.3330688476563,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 438.4993591308594,
+["RE"] = "BOTTOMLEFT",
 },
 ["TimeManagerFrame"] = {
 },
 ["GenericTraitFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 334,
-["PX"] = 19,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 19,
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
+["PA"] = "UIParent",
 ["RE"] = "BOTTOMLEFT",
-["PY"] = 447,
-["PX"] = 482,
+["PY"] = 323,
+["PX"] = 714,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -981,32 +982,32 @@ MATAB = {
 ["MajorFactionRenownFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 504,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 16,
+["RE"] = "BOTTOMLEFT",
 },
 ["ReadyCheckFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 540,
-["PX"] = 905,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 905,
 },
 ["ItemUpgradeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 545,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 16,
+["RE"] = "BOTTOMLEFT",
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
-["PY"] = 263,
+["PY"] = 264,
 ["PX"] = 256,
+["RE"] = "BOTTOMLEFT",
 },
 ["MailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 659,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 18,
+["RE"] = "BOTTOMLEFT",
 },
 ["MacroFrame"] = {
 },
@@ -1015,8 +1016,8 @@ MATAB = {
 ["AuctionHouseFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 546,
-["PX"] = 36,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 36,
 },
 ["ContainerFrame10"] = {
 },
@@ -1029,28 +1030,32 @@ MATAB = {
 ["SpellBookFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 563,
-["PX"] = 212,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 212,
 },
 ["StaticPopup2"] = {
 },
-["ChannelFrame"] = {
+["HelpFrame"] = {
 },
 ["ProfessionsCustomerOrdersFrame"] = {
 },
-["ContainerFrame7"] = {
+["EncounterJournal"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 588,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 16,
 },
 ["ClassTrainerFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 641.5385131835938,
-["PX"] = 16,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 16,
 },
 ["InspectFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 630.5794677734375,
-["PX"] = 338.7340087890625,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 338.7340087890625,
 },
 ["ChallengesKeystoneFrame"] = {
 },
@@ -1058,95 +1063,91 @@ MATAB = {
 },
 ["ContainerFrame2"] = {
 },
-["ItemTextFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 660,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 16,
+["ContainerFrame3"] = {
 },
-["CollectionsJournal"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 555,
-["PX"] = 1090,
-["RE"] = "BOTTOMLEFT",
+["TaxiFrame"] = {
 },
 ["ModelPreviewFrame"] = {
 },
-["AchievementFrame"] = {
-},
-["QuestLogPopupDetailFrame"] = {
-},
-["OpenMailFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 656,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 402,
-},
-["BankFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 669.0000610351562,
-["PX"] = 386,
-["RE"] = "BOTTOMLEFT",
-},
-["ContainerFrame5"] = {
-},
-["PetStableFrame"] = {
-},
-["WorldMapFrame"] = {
-},
-["MerchantFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 633,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 21,
-},
-["ContainerFrame11"] = {
-},
-["CommunitiesFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 556,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 718,
-},
-["ContainerFrame9"] = {
-},
-["LootFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 770.0000152587891,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 604.666748046875,
-},
-["PlayerChoiceFrame"] = {
+["QuickKeybindFrame"] = {
 },
 ["WeeklyRewardsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 428,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 484,
+["RE"] = "BOTTOMLEFT",
 },
-["QuickKeybindFrame"] = {
+["OpenMailFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 656,
+["PX"] = 402,
+["RE"] = "BOTTOMLEFT",
 },
-["TaxiFrame"] = {
+["BankFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 669.0000610351562,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 386,
 },
-["ContainerFrame3"] = {
+["LootFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 770.0000152587891,
+["PX"] = 604.666748046875,
+["RE"] = "BOTTOMLEFT",
+},
+["ContainerFrame9"] = {
+},
+["CommunitiesFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PX"] = 502,
+["PY"] = 657,
+["RE"] = "BOTTOMLEFT",
+},
+["MerchantFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 633,
+["PX"] = 21,
+["RE"] = "BOTTOMLEFT",
+},
+["ContainerFrame11"] = {
+},
+["WorldMapFrame"] = {
+},
+["PetStableFrame"] = {
+},
+["ContainerFrame5"] = {
+},
+["PlayerChoiceFrame"] = {
+},
+["QuestLogPopupDetailFrame"] = {
+},
+["AchievementFrame"] = {
+},
+["CollectionsJournal"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 277,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 244,
+},
+["ItemTextFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 660,
+["PX"] = 16,
+["RE"] = "BOTTOMLEFT",
 },
 ["OrderHallMissionFrame"] = {
 },
 ["FlightMapFrame"] = {
 },
-["EncounterJournal"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 588,
-["PX"] = 16,
-["RE"] = "BOTTOMLEFT",
+["ContainerFrame7"] = {
 },
 ["ItemInteractionFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 794,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 15,
+["RE"] = "BOTTOMLEFT",
 },
-["HelpFrame"] = {
+["ChannelFrame"] = {
 },
 },
 ["SIZES"] = {
@@ -1170,7 +1171,7 @@ MATAB = {
 ["StaticPopup1"] = {
 },
 ["QuestFrame"] = {
-["SCALE"] = 1.072,
+["SCALE"] = 0.988,
 },
 ["TradeFrame"] = {
 },
@@ -1207,6 +1208,7 @@ MATAB = {
 ["PVPMatchScoreboard"] = {
 },
 ["CovenantMissionFrame"] = {
+["SCALE"] = 0.928,
 },
 ["MajorFactionRenownFrame"] = {
 },
@@ -1241,11 +1243,11 @@ MATAB = {
 },
 ["StaticPopup2"] = {
 },
-["ChannelFrame"] = {
+["HelpFrame"] = {
 },
 ["ProfessionsCustomerOrdersFrame"] = {
 },
-["ContainerFrame7"] = {
+["EncounterJournal"] = {
 },
 ["TaxiFrame"] = {
 },
@@ -1253,419 +1255,420 @@ MATAB = {
 },
 ["InspectFrame"] = {
 },
-["ContainerFrame3"] = {
+["ChallengesKeystoneFrame"] = {
 },
 ["ContainerFrame8"] = {
 },
 ["BankFrame"] = {
 },
-["CharacterFrame"] = {
-["SCALE"] = 0.9940000352859497,
+["ContainerFrame2"] = {
 },
-["ScriptErrorsFrame"] = {
+["CommunitiesFrame"] = {
+["SCALE"] = 0.934,
 },
 ["ModelPreviewFrame"] = {
 },
-["LootFrame"] = {
+["WeeklyRewardsFrame"] = {
 },
 ["DressUpFrame"] = {
 },
 ["OpenMailFrame"] = {
 ["SCALE"] = 0.988,
 },
-["ContainerFrame9"] = {
+["QuestLogPopupDetailFrame"] = {
 },
-["QuickKeybindFrame"] = {
+["AuctionHouseFrame"] = {
 },
-["ContainerFrame5"] = {
+["WorldMapFrame"] = {
 },
-["ReadyCheckFrame"] = {
+["CalendarFrame"] = {
 },
 ["MerchantFrame"] = {
 ["SCALE"] = 0.994,
 },
-["CalendarFrame"] = {
+["ReadyCheckFrame"] = {
 },
-["WorldMapFrame"] = {
+["ContainerFrame5"] = {
 },
-["AuctionHouseFrame"] = {
+["QuickKeybindFrame"] = {
 },
-["QuestLogPopupDetailFrame"] = {
+["ContainerFrame9"] = {
 },
 ["PlayerChoiceFrame"] = {
 },
-["WeeklyRewardsFrame"] = {
+["LootFrame"] = {
 },
-["CommunitiesFrame"] = {
+["ScriptErrorsFrame"] = {
 },
-["ContainerFrame2"] = {
+["CharacterFrame"] = {
+["SCALE"] = 0.9940000352859497,
 },
-["ChallengesKeystoneFrame"] = {
+["ContainerFrame3"] = {
 },
 ["OrderHallMissionFrame"] = {
 ["SCALE"] = 1.132,
 },
 ["FlightMapFrame"] = {
 },
-["EncounterJournal"] = {
+["ContainerFrame7"] = {
 },
 ["ItemInteractionFrame"] = {
 },
-["HelpFrame"] = {
+["ChannelFrame"] = {
 },
 },
 },
 ["MMICON"] = {
 },
 ["ELES"] = {
+["SIZES"] = {
+["!KalielsTrackerButtons"] = {
+["SW"] = 40,
+["SH"] = 40,
+},
+["ExtraAbilityContainer"] = {
+["SW"] = 180.0000762939453,
+["SH"] = 100,
+},
+["MACompactRaidFrameManager"] = {
+["SW"] = 20,
+["SH"] = 135,
+},
+["MultiBarBottomLeft"] = {
+["SW"] = 334,
+["SH"] = 26,
+},
+["IAMoneyBar"] = {
+},
+["BNToastFrame"] = {
+["SH"] = 50,
+["SW"] = 250,
+},
+["ZoneAbilityFrame"] = {
+["SW"] = 256,
+["SH"] = 128,
+},
+["StatusTrackingBarManager"] = {
+["SW"] = 565,
+["SH"] = 26,
+},
+["UIWidgetPowerBarContainerFrame"] = {
+["SW"] = 216,
+["SH"] = 36,
+},
+["ChatFrame1"] = {
+["SW"] = 429.9999694824219,
+["SH"] = 120.0000152587891,
+},
+["ZoneTextFrame"] = {
+["SW"] = 128,
+["SH"] = 128,
+},
+["DurabilityFrame"] = {
+["SW"] = 58,
+["SH"] = 75,
+},
+["MainMenuBar"] = {
+["SW"] = 334,
+["SH"] = 26,
+},
+["IATokenBar"] = {
+},
+["MainStatusTrackingBarContainer"] = {
+["SH"] = 17,
+["SW"] = 571,
+},
+["MultiBar7"] = {
+["SW"] = 562,
+["SH"] = 45,
+},
+["MABagBar"] = {
+["SW"] = 208.0002136230469,
+["SH"] = 47.99999618530273,
+},
+["MultiBarRight"] = {
+["SW"] = 26,
+["SH"] = 334,
+},
+["SecondaryStatusTrackingBarContainer"] = {
+["SH"] = 17,
+["SW"] = 571,
+},
+["QueueStatusButton"] = {
+["SW"] = 45,
+["SH"] = 45,
+},
+["BagsBar"] = {
+["SH"] = 0,
+["SW"] = 0,
+},
+["MAVehicleSeatIndicator"] = {
+["SW"] = 100,
+["SH"] = 100,
+},
+["ObjectiveTrackerFrame"] = {
+["SW"] = 260,
+["SH"] = 800,
+},
+["UIWidgetBelowMinimapContainerFrame"] = {
+["SW"] = 180,
+["SH"] = 72,
+},
+["MAFPSFrame"] = {
+["SW"] = 100,
+["SH"] = 20.00001525878906,
+},
+["MultiBarLeft"] = {
+["SW"] = 26,
+["SH"] = 334,
+},
+["MAMenuBar"] = {
+["SW"] = 304,
+["SH"] = 32,
+},
+["MAKTB"] = {
+["SH"] = 96,
+["SW"] = 28,
+},
+["MultiBar5"] = {
+["SW"] = 562,
+["SH"] = 45,
+},
+["MultiBar6"] = {
+["SW"] = 562,
+["SH"] = 45,
+},
+["GroupLootFrame1"] = {
+["SW"] = 277,
+["SH"] = 67,
+},
+["MultiBarBottomRight"] = {
+["SW"] = 334,
+["SH"] = 26,
+},
+["GroupLootContainer"] = {
+["SW"] = 277,
+["SH"] = 67,
+},
+["AlertFrame"] = {
+["SW"] = 276,
+["SH"] = 68,
+},
+["UIWidgetTopCenterContainerFrame"] = {
+["SW"] = 180,
+["SH"] = 72,
+},
+},
 ["POINTS"] = {
 ["!KalielsTrackerButtons"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = 0,
-["PX"] = 0,
 ["RE"] = "TOPLEFT",
+["PX"] = 0,
 },
 ["ExtraAbilityContainer"] = {
 ["AN"] = "CENTER",
 ["PY"] = -30,
-["PX"] = 330,
 ["RE"] = "CENTER",
+["PX"] = 330,
 },
 ["MACompactRaidFrameManager"] = {
 ["AN"] = "LEFT",
 ["PY"] = -130,
-["RE"] = "LEFT",
 ["PX"] = 0,
+["RE"] = "LEFT",
 },
 ["MultiBarBottomLeft"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = 0,
-["RE"] = "TOPLEFT",
 ["PX"] = 0,
+["RE"] = "TOPLEFT",
 },
 ["IAMoneyBar"] = {
 ["AN"] = "CENTER",
 ["PY"] = -145,
-["PX"] = -30,
 ["RE"] = "CENTER",
+["PX"] = -30,
 },
 ["BNToastFrame"] = {
 ["AN"] = "LEFT",
 ["PY"] = -240,
-["PX"] = 20,
 ["RE"] = "LEFT",
+["PX"] = 20,
 },
 ["ZoneAbilityFrame"] = {
 ["AN"] = "CENTER",
 ["PY"] = 90,
-["RE"] = "CENTER",
 ["PX"] = -350,
+["RE"] = "CENTER",
 },
 ["StatusTrackingBarManager"] = {
 ["AN"] = "BOTTOM",
 ["PY"] = 0,
-["RE"] = "BOTTOM",
 ["PX"] = 25,
+["RE"] = "BOTTOM",
 },
 ["UIWidgetPowerBarContainerFrame"] = {
 ["AN"] = "CENTER",
 ["PY"] = -65,
-["PX"] = 5,
 ["RE"] = "CENTER",
+["PX"] = 5,
 },
 ["ChatFrame1"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 0,
-["PX"] = 40,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 40,
 },
 ["ZoneTextFrame"] = {
 ["AN"] = "CENTER",
 ["PY"] = 220,
-["RE"] = "CENTER",
 ["PX"] = 0,
+["RE"] = "CENTER",
 },
 ["UIWidgetTopCenterContainerFrame"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = -90,
-["RE"] = "TOPLEFT",
 ["PX"] = 350,
+["RE"] = "TOPLEFT",
 },
 ["MultiBarLeft"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = 0,
-["RE"] = "TOPLEFT",
 ["PX"] = 0,
+["RE"] = "TOPLEFT",
 },
 ["MainStatusTrackingBarContainer"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 0,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 1140,
+["RE"] = "BOTTOMLEFT",
 },
 ["MultiBar7"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 340,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 960,
+["RE"] = "BOTTOMLEFT",
 },
 ["MABagBar"] = {
 ["AN"] = "BOTTOMRIGHT",
 ["PY"] = 0,
-["RE"] = "BOTTOMRIGHT",
 ["PX"] = 0,
+["RE"] = "BOTTOMRIGHT",
 },
 ["MultiBarRight"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = 0,
-["RE"] = "TOPLEFT",
 ["PX"] = 0,
+["RE"] = "TOPLEFT",
 },
 ["MultiBar5"] = {
 ["AN"] = "TOP",
 ["PY"] = 0,
-["RE"] = "CENTER",
 ["PX"] = 0,
+["RE"] = "CENTER",
 },
 ["GroupLootFrame1"] = {
 ["AN"] = "CENTER",
 ["PY"] = -40,
-["RE"] = "CENTER",
 ["PX"] = -360,
+["RE"] = "CENTER",
 },
 ["BagsBar"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 40,
-["RE"] = "BOTTOMLEFT",
 ["PX"] = 1150,
+["RE"] = "BOTTOMLEFT",
 },
 ["MAVehicleSeatIndicator"] = {
 ["AN"] = "RIGHT",
 ["PY"] = 270,
-["PX"] = -420,
 ["RE"] = "RIGHT",
+["PX"] = -420,
 },
 ["ObjectiveTrackerFrame"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = -50,
-["RE"] = "TOPLEFT",
 ["PX"] = 30,
+["RE"] = "TOPLEFT",
 },
 ["UIWidgetBelowMinimapContainerFrame"] = {
 ["AN"] = "LEFT",
 ["PY"] = 200,
-["RE"] = "LEFT",
 ["PX"] = 260,
+["RE"] = "LEFT",
 },
 ["MAFPSFrame"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = 0,
-["PX"] = 0,
 ["RE"] = "TOPLEFT",
-},
-["DurabilityFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 845,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 2180,
-},
-["AlertFrame"] = {
-["AN"] = "TOPLEFT",
-["PY"] = -230,
-["RE"] = "TOPLEFT",
-["PX"] = 350,
-},
-["MAMenuBar"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 0,
-["PX"] = 0,
-["RE"] = "BOTTOMLEFT",
-},
-["QueueStatusButton"] = {
-["AN"] = "TOPRIGHT",
-["PY"] = -175,
-["RE"] = "TOPRIGHT",
-["PX"] = -235,
-},
-["SecondaryStatusTrackingBarContainer"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 20,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 1140,
-},
-["MultiBar6"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 340,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 680,
-},
-["MALock"] = {
-["AN"] = "RIGHT",
-["PY"] = 130,
-["RE"] = "RIGHT",
-["PX"] = -380,
-},
-["MultiBarBottomRight"] = {
-["AN"] = "TOPLEFT",
-["PY"] = 0,
-["RE"] = "TOPLEFT",
-["PX"] = 0,
-},
-["GroupLootContainer"] = {
-["AN"] = "CENTER",
-["PY"] = 0,
-["RE"] = "CENTER",
-["PX"] = 0,
-},
-["MAKTB"] = {
-["AN"] = "CENTER",
-["PY"] = 0,
-["RE"] = "CENTER",
 ["PX"] = 0,
 },
 ["MainMenuBar"] = {
 ["AN"] = "BOTTOM",
 ["PY"] = 50,
-["RE"] = "BOTTOM",
 ["PX"] = 0,
-},
-},
-["SIZES"] = {
-["!KalielsTrackerButtons"] = {
-["SH"] = 40,
-["SW"] = 40,
-},
-["ExtraAbilityContainer"] = {
-["SH"] = 100,
-["SW"] = 180.0000762939453,
-},
-["MACompactRaidFrameManager"] = {
-["SH"] = 135,
-["SW"] = 20,
-},
-["MultiBarBottomLeft"] = {
-["SH"] = 26,
-["SW"] = 334,
-},
-["IAMoneyBar"] = {
-},
-["BNToastFrame"] = {
-["SW"] = 250,
-["SH"] = 50,
-},
-["ZoneAbilityFrame"] = {
-["SH"] = 128,
-["SW"] = 256,
-},
-["StatusTrackingBarManager"] = {
-["SH"] = 26,
-["SW"] = 565,
-},
-["UIWidgetPowerBarContainerFrame"] = {
-["SH"] = 36,
-["SW"] = 216,
-},
-["ChatFrame1"] = {
-["SH"] = 120.0000152587891,
-["SW"] = 429.9999694824219,
-},
-["ZoneTextFrame"] = {
-["SH"] = 128,
-["SW"] = 128,
-},
-["DurabilityFrame"] = {
-["SH"] = 75,
-["SW"] = 58,
-},
-["MainMenuBar"] = {
-["SH"] = 26,
-["SW"] = 334,
-},
-["IATokenBar"] = {
-},
-["MainStatusTrackingBarContainer"] = {
-["SW"] = 571,
-["SH"] = 17,
-},
-["MultiBar7"] = {
-["SH"] = 45,
-["SW"] = 562,
-},
-["MABagBar"] = {
-["SH"] = 47.99999618530273,
-["SW"] = 208.0002136230469,
-},
-["MultiBarRight"] = {
-["SH"] = 334,
-["SW"] = 26,
-},
-["SecondaryStatusTrackingBarContainer"] = {
-["SW"] = 571,
-["SH"] = 17,
-},
-["QueueStatusButton"] = {
-["SH"] = 45,
-["SW"] = 45,
-},
-["BagsBar"] = {
-["SW"] = 0,
-["SH"] = 0,
-},
-["MAVehicleSeatIndicator"] = {
-["SH"] = 100,
-["SW"] = 100,
-},
-["ObjectiveTrackerFrame"] = {
-["SH"] = 800,
-["SW"] = 260,
-},
-["UIWidgetBelowMinimapContainerFrame"] = {
-["SH"] = 72,
-["SW"] = 180,
-},
-["MAFPSFrame"] = {
-["SH"] = 20.00001525878906,
-["SW"] = 100,
-},
-["UIWidgetTopCenterContainerFrame"] = {
-["SH"] = 72,
-["SW"] = 180,
-},
-["MAMenuBar"] = {
-["SH"] = 32,
-["SW"] = 304,
-},
-["AlertFrame"] = {
-["SH"] = 68,
-["SW"] = 276,
-},
-["MultiBar5"] = {
-["SH"] = 45,
-["SW"] = 562,
-},
-["MultiBar6"] = {
-["SH"] = 45,
-["SW"] = 562,
-},
-["GroupLootFrame1"] = {
-["SH"] = 67,
-["SW"] = 277,
-},
-["MultiBarBottomRight"] = {
-["SH"] = 26,
-["SW"] = 334,
-},
-["GroupLootContainer"] = {
-["SH"] = 67,
-["SW"] = 277,
+["RE"] = "BOTTOM",
 },
 ["MAKTB"] = {
-["SW"] = 28,
-["SH"] = 96,
+["AN"] = "CENTER",
+["PY"] = 0,
+["PX"] = 0,
+["RE"] = "CENTER",
 },
-["MultiBarLeft"] = {
-["SH"] = 334,
-["SW"] = 26,
+["MAMenuBar"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 0,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 0,
+},
+["QueueStatusButton"] = {
+["AN"] = "TOPRIGHT",
+["PY"] = -175,
+["PX"] = -235,
+["RE"] = "TOPRIGHT",
+},
+["SecondaryStatusTrackingBarContainer"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 20,
+["PX"] = 1140,
+["RE"] = "BOTTOMLEFT",
+},
+["MultiBar6"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 340,
+["PX"] = 680,
+["RE"] = "BOTTOMLEFT",
+},
+["MALock"] = {
+["AN"] = "RIGHT",
+["PY"] = 130,
+["PX"] = -380,
+["RE"] = "RIGHT",
+},
+["MultiBarBottomRight"] = {
+["AN"] = "TOPLEFT",
+["PY"] = 0,
+["PX"] = 0,
+["RE"] = "TOPLEFT",
+},
+["GroupLootContainer"] = {
+["AN"] = "CENTER",
+["PY"] = 0,
+["PX"] = 0,
+["RE"] = "CENTER",
+},
+["AlertFrame"] = {
+["AN"] = "TOPLEFT",
+["PY"] = -230,
+["PX"] = 350,
+["RE"] = "TOPLEFT",
+},
+["DurabilityFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 845,
+["PX"] = 2180,
+["RE"] = "BOTTOMLEFT",
 },
 },
 ["OPTIONS"] = {
@@ -1709,8 +1712,8 @@ MATAB = {
 ["ENABLED"] = false,
 },
 ["MICROMENU"] = {
-["ROWS"] = 1,
 ["ENABLED"] = true,
+["ROWS"] = 1,
 },
 ["BAGS"] = {
 ["ENABLED"] = true,
@@ -1844,8 +1847,8 @@ MATAB = {
 },
 ["MAMenuBar"] = {
 ["SPACING"] = 4,
-["FLIPPED"] = false,
 ["COUNT"] = 11,
+["FLIPPED"] = false,
 },
 ["CHATBUTTONFRAME4"] = {
 ["ENABLED"] = false,
@@ -1954,10 +1957,11 @@ MATAB = {
 ["MIRRORTIMER1"] = {
 ["ENABLED"] = false,
 },
-["CHATBUTTONFRAME8"] = {
+["MINIMAPFLAG"] = {
 ["ENABLED"] = false,
 },
-["GroupLootContainer"] = {
+["CHAT7"] = {
+["ENABLED"] = false,
 },
 ["SHOWMINIMAPBUTTON"] = {
 ["ENABLED"] = true,
@@ -1975,7 +1979,7 @@ MATAB = {
 },
 ["ExtraAbilityContainer"] = {
 },
-["CHATBUTTONFRAME6"] = {
+["CHAT3"] = {
 ["ENABLED"] = false,
 },
 ["MACompactRaidFrameManager"] = {
@@ -1986,13 +1990,13 @@ MATAB = {
 ["FRAMESKEYSCALE"] = {
 ["ENABLED"] = false,
 },
-["PLAYERLEVELTEXT"] = {
+["MAPETFRAME"] = {
 ["ENABLED"] = false,
 },
 ["BNToastFrame"] = {
 ["ENABLED"] = true,
 },
-["CASTINGBARTIMER"] = {
+["MINIMAP"] = {
 ["ENABLED"] = false,
 },
 ["ACTIONBAR7"] = {
@@ -2030,38 +2034,45 @@ MATAB = {
 ["READYCHECKLISTENERFRAME"] = {
 ["ENABLED"] = false,
 },
-["PETFRAME"] = {
+["CHAT2"] = {
 ["ENABLED"] = false,
 },
 ["COMPACTRAIDFRAMECONTAINER"] = {
 ["ENABLED"] = false,
 },
-["GHOSTFRAME"] = {
+["MultiBar7"] = {
+["FLIPPED"] = false,
+["SPACING"] = 2,
+["COUNT"] = 12,
+["ROWS"] = 1,
+},
+["MAPROFILES"] = {
 ["ENABLED"] = false,
 },
-["CASTINGBAR"] = {
-["ENABLED"] = false,
+["MultiBar6"] = {
+["FLIPPED"] = false,
+["SPACING"] = 2,
+["COUNT"] = 12,
+["ROWS"] = 1,
 },
-["ENDCAPS"] = {
+["FOCUSFRAME"] = {
 ["ENABLED"] = false,
 },
 ["QUEUESTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
-["FOCUSFRAME"] = {
-["ENABLED"] = false,
+["MABagBar"] = {
 },
 ["BUFFS"] = {
 ["ENABLED"] = false,
 },
-["MABagBar"] = {
-},
 ["CHATEDITBOX"] = {
 ["ENABLED"] = false,
 },
-["DurabilityFrame"] = {
-},
 ["CHAT9"] = {
+["ENABLED"] = false,
+},
+["CHAT4"] = {
 ["ENABLED"] = false,
 },
 ["CHAT"] = {
@@ -2077,22 +2088,22 @@ MATAB = {
 ["PLAYERFRAME"] = {
 ["ENABLED"] = false,
 },
-["FOCUSFRAMESPELLBAR"] = {
+["EventToastManagerFrame"] = {
 ["ENABLED"] = false,
 },
 ["FRAMESKEYDRAG"] = {
 ["ENABLED"] = false,
 },
-["ARENAPREPFRAMES"] = {
+["TICKETSTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
-["TICKETSTATUSFRAME"] = {
+["ARENAPREPFRAMES"] = {
 ["ENABLED"] = false,
 },
 ["DEBUFFS"] = {
 ["ENABLED"] = false,
 },
-["EventToastManagerFrame"] = {
+["FOCUSFRAMESPELLBAR"] = {
 ["ENABLED"] = false,
 },
 ["UIWIDGETPOWERBAR"] = {
@@ -2101,8 +2112,7 @@ MATAB = {
 ["QUEUESTATUSBUTTON"] = {
 ["ENABLED"] = true,
 },
-["CHAT4"] = {
-["ENABLED"] = false,
+["DurabilityFrame"] = {
 },
 ["OVERRIDEACTIONBAR"] = {
 ["ENABLED"] = false,
@@ -2110,22 +2120,16 @@ MATAB = {
 ["SAVEFRAMESCALE"] = {
 ["ENABLED"] = true,
 },
-["MultiBar6"] = {
-["FLIPPED"] = false,
-["SPACING"] = 2,
-["COUNT"] = 12,
-["ROWS"] = 1,
-},
-["MAPROFILES"] = {
+["ENDCAPS"] = {
 ["ENABLED"] = false,
 },
-["MultiBar7"] = {
-["FLIPPED"] = false,
-["SPACING"] = 2,
-["COUNT"] = 12,
-["ROWS"] = 1,
+["CASTINGBAR"] = {
+["ENABLED"] = false,
 },
-["CHAT2"] = {
+["GHOSTFRAME"] = {
+["ENABLED"] = false,
+},
+["PETFRAME"] = {
 ["ENABLED"] = false,
 },
 ["MOVELOOTFRAME"] = {
@@ -2134,16 +2138,16 @@ MATAB = {
 ["OBJECTIVETRACKERBONUSBANNERFRAME"] = {
 ["ENABLED"] = false,
 },
-["MINIMAP"] = {
+["CASTINGBARTIMER"] = {
 ["ENABLED"] = false,
 },
-["MAPETFRAME"] = {
+["PLAYERLEVELTEXT"] = {
 ["ENABLED"] = false,
 },
 ["ACTIONBAR1"] = {
 ["ENABLED"] = true,
 },
-["CHAT3"] = {
+["CHATBUTTONFRAME6"] = {
 ["ENABLED"] = false,
 },
 ["POSSESSBAR"] = {
@@ -2155,10 +2159,9 @@ MATAB = {
 ["COUNT"] = 12,
 ["ROWS"] = 1,
 },
-["CHAT7"] = {
-["ENABLED"] = false,
+["GroupLootContainer"] = {
 },
-["MINIMAPFLAG"] = {
+["CHATBUTTONFRAME8"] = {
 ["ENABLED"] = false,
 },
 ["POWERBAR"] = {
@@ -2168,78 +2171,72 @@ MATAB = {
 },
 },
 ["D4KiRsUi by MAI"] = {
-["FRAMES"] = {
-["POINTS"] = {
-},
-["SIZES"] = {
-},
-},
 ["ELES"] = {
-["SIZES"] = {
-["DurabilityFrame"] = {
-["SCALE"] = 1,
-},
-["UIWidgetBelowMinimapContainerFrame"] = {
-["SCALE"] = 1,
-},
-["ZoneAbilityFrame"] = {
-["SCALE"] = 1,
-},
-["GroupLootFrame1"] = {
-["SCALE"] = 1,
-},
-["UIWidgetTopCenterContainerFrame"] = {
-["SCALE"] = 1,
-},
-["AlertFrame"] = {
-["SCALE"] = 1,
-},
-["ChatFrame1"] = {
-["SCALE"] = 1,
-},
-},
 ["POINTS"] = {
 ["DurabilityFrame"] = {
 ["PX"] = -70,
 ["PY"] = 140,
-["AN"] = "BOTTOMRIGHT",
 ["RE"] = "BOTTOMRIGHT",
+["AN"] = "BOTTOMRIGHT",
 },
 ["UIWidgetBelowMinimapContainerFrame"] = {
 ["RE"] = "TOP",
 ["PY"] = -60,
-["PX"] = 170,
 ["AN"] = "TOP",
+["PX"] = 170,
 },
 ["ZoneAbilityFrame"] = {
 ["PX"] = 540,
 ["PY"] = 30,
-["RE"] = "CENTER",
 ["AN"] = "CENTER",
-},
-["GroupLootFrame1"] = {
-["PX"] = -440,
-["PY"] = -10,
 ["RE"] = "CENTER",
+},
+["AlertFrame"] = {
+["RE"] = "CENTER",
+["PY"] = -80,
+["PX"] = -440,
 ["AN"] = "CENTER",
 },
 ["UIWidgetTopCenterContainerFrame"] = {
 ["PX"] = 0,
 ["PY"] = -60,
-["AN"] = "TOP",
 ["RE"] = "TOP",
+["AN"] = "TOP",
 },
-["AlertFrame"] = {
-["RE"] = "CENTER",
-["PY"] = -80,
-["AN"] = "CENTER",
+["GroupLootFrame1"] = {
 ["PX"] = -440,
+["PY"] = -10,
+["AN"] = "CENTER",
+["RE"] = "CENTER",
 },
 ["ChatFrame1"] = {
 ["PX"] = 0,
 ["PY"] = 0,
-["RE"] = "BOTTOMLEFT",
 ["AN"] = "BOTTOMLEFT",
+["RE"] = "BOTTOMLEFT",
+},
+},
+["SIZES"] = {
+["DurabilityFrame"] = {
+["SCALE"] = 1,
+},
+["UIWidgetBelowMinimapContainerFrame"] = {
+["SCALE"] = 1,
+},
+["ZoneAbilityFrame"] = {
+["SCALE"] = 1,
+},
+["AlertFrame"] = {
+["SCALE"] = 1,
+},
+["UIWidgetTopCenterContainerFrame"] = {
+["SCALE"] = 1,
+},
+["GroupLootFrame1"] = {
+["SCALE"] = 1,
+},
+["ChatFrame1"] = {
+["SCALE"] = 1,
 },
 },
 ["OPTIONS"] = {
@@ -2247,22 +2244,28 @@ MATAB = {
 },
 },
 },
-},
-["DEFAULT by MAI"] = {
 ["FRAMES"] = {
 ["POINTS"] = {
 },
 ["SIZES"] = {
 },
 },
-["ELES"] = {
-["SIZES"] = {
 },
+["DEFAULT by MAI"] = {
+["ELES"] = {
 ["POINTS"] = {
+},
+["SIZES"] = {
 },
 ["OPTIONS"] = {
 ["ACTIONBARS"] = {
 },
+},
+},
+["FRAMES"] = {
+["POINTS"] = {
+},
+["SIZES"] = {
 },
 },
 },

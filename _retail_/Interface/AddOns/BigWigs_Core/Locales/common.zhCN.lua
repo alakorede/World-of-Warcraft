@@ -66,6 +66,7 @@ L.cancelled = "%s取消" -- Spell Cancelled
 L.you_die = "你将死亡" -- You will die
 L.you_die_sec = "你将在%d秒后死亡" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "下个技能" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.landing = "%s 正在着陆" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
 
 -- Add related
 L.add_spawned = "小怪出现" -- singular
@@ -178,6 +179,7 @@ L.charge = "冲锋" -- When a boss select a new target and charges at it quickly
 L.full_energy = "满能量" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "虚弱" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "免疫" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "昏迷" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "水池" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "水池" -- Plural of L.pool
 L.totem = "图腾" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -191,7 +193,7 @@ L.orbs = "宝珠" -- Plural for L.orb
 L.curse = "诅咒" -- Any curse-type dispellable debuff, or debuffs called "Curse of XYZ", etc.
 L.curses = "诅咒" -- Plural of L.curse
 L.disease = "疾病" -- Any disease-type dispellable debuff, or debuffs called "Disease of XYZ", etc.
-L.poison = "毒" -- Any poison-type dispellable debuff, or debuffs called "Poison of XYZ", etc.
+L.poison = "中毒" -- Any poison-type dispellable debuff, or debuffs called "Poison of XYZ", etc.
 L.spirit = "精魂" -- Sometimes a boss will summon spirits, similar to ghosts, but not exactly, although you might have the same word for both. e.g. "Spirits of X" or "Wild Spirits"
 L.spirits = "精魂" -- Plural of L.spirit
 L.tornado = "旋风" -- 'A tornado is a violently rotating column of air that is in contact with both the surface of the Earth and a cloud' - Wikipedia
