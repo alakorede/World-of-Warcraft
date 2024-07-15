@@ -878,8 +878,8 @@ MATAB = {
 },
 ["GameMenuFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 544,
+["RE"] = "BOTTOMLEFT",
 ["PX"] = 960,
 },
 ["CharacterFrame"] = {
@@ -944,9 +944,10 @@ MATAB = {
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
+["PA"] = "UIParent",
+["PX"] = 258,
 ["PY"] = 521,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 258,
 },
 ["ContainerFrameCombinedBags"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -970,10 +971,9 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PA"] = "UIParent",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 323,
 ["PX"] = 714,
+["RE"] = "BOTTOMLEFT",
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -999,9 +999,10 @@ MATAB = {
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 264,
-["PX"] = 256,
+["PA"] = "UIParent",
 ["RE"] = "BOTTOMLEFT",
+["PY"] = 264,
+["PX"] = 257,
 },
 ["MailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1099,8 +1100,8 @@ MATAB = {
 },
 ["CommunitiesFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PX"] = 502,
 ["PY"] = 657,
+["PX"] = 502,
 ["RE"] = "BOTTOMLEFT",
 },
 ["MerchantFrame"] = {
@@ -2069,10 +2070,10 @@ MATAB = {
 ["CHATEDITBOX"] = {
 ["ENABLED"] = false,
 },
-["CHAT9"] = {
+["CHAT4"] = {
 ["ENABLED"] = false,
 },
-["CHAT4"] = {
+["CHAT9"] = {
 ["ENABLED"] = false,
 },
 ["CHAT"] = {

@@ -1,8 +1,10 @@
 # BigWigs
 
-## [v343](https://github.com/BigWigsMods/BigWigs/tree/v343) (2024-07-13)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v342.2...v343) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v344](https://github.com/BigWigsMods/BigWigs/tree/v344) (2024-07-14)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v343...v344) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
 - bump version  
-- Loader: Add Demon Fall Canyon (#1694)  
-- Core: Add more common locale  
+- Update zhTW (#1696)  
+- Loader: Restrict SoD menus to SoD  
+- API: Allow addons importing profiles to specify a callback function  
+- Core: Fix journal API on classic era  
