@@ -13,14 +13,30 @@ if L then
 	L.goresplatter = "Courez"
 end
 
-L = BigWigs:NewBossLocale("Sikran, Captain of the Sureki", "frFR")
+L = BigWigs:NewBossLocale("Rasha'nan", "frFR")
 if L then
-	--L.custom_on_repeating_phase_blades = "Repeating Phase Blades Say"
-	--L.custom_on_repeating_phase_blades_desc = "Repeating say messages for the Phase Blades ability using '1{rt1}' or '22{rt2}' or '333{rt3}' or '4444{rt4}' to make it clear in what order you will be hit."
+	--L.rolling_acid = "Waves"
+	--L.spinnerets_strands = "Strands"
+	--L.enveloping_webs = "Webs"
+	--L.enveloping_web_say = "Web" -- Singular of Webs
+	--L.erosive_spray = "Spray"
+	--L.caustic_hail = "Next Position"
 end
 
-L = BigWigs:NewBossLocale("Eggtender Ovi'nax", "frFR")
+L = BigWigs:NewBossLocale("Broodtwister Ovi'nax", "frFR")
 if L then
-	L.unstable_web_say = "Toiles"
-	L.casting_infest_on_you = "Lance Infester sur vous !"
+	L.sticky_web_say = "Toiles"
+	L.infest_message = "Lance Infester sur vous !"
+	--L.infest_say = "Parasites"
+	--L.experimental_dosage_say = "Soak Egg"
+	--L.unstable_infusion = "Swirls"
+	--L.custom_on_experimental_dosage_marks = "Experimental Dosage assignments"
+	--L.custom_on_experimental_dosage_marks_desc = "Assign players affected by 'Experimental Dosage' to {rt6}{rt4}{rt3}{rt7} with a melee > ranged > healer priority. Affects Say and Target messages."
+end
+
+L = BigWigs:NewBossLocale("Nexus-Princess Ky'veza", "frFR")
+if L then
+	--L.assasination = "Phantoms"
+	--L.twiligt_massacre = "Dashes"
+	--L.nexus_daggers = "Daggers"
 end

@@ -13,14 +13,30 @@ if L then
 	L.goresplatter = "遠離"
 end
 
-L = BigWigs:NewBossLocale("Sikran, Captain of the Sureki", "zhTW")
+L = BigWigs:NewBossLocale("Rasha'nan", "zhTW")
 if L then
-	L.custom_on_repeating_phase_blades = "重覆相位之刃喊話"
-	L.custom_on_repeating_phase_blades_desc = "以 「1{rt1}」、「22{rt2}」、「333{rt3}」和「4444{rt4}」持續喊話，提示你被相位之刃擊中的順序。"
+	--L.rolling_acid = "Waves"
+	--L.spinnerets_strands = "Strands"
+	--L.enveloping_webs = "Webs"
+	--L.enveloping_web_say = "Web" -- Singular of Webs
+	--L.erosive_spray = "Spray"
+	--L.caustic_hail = "Next Position"
 end
 
-L = BigWigs:NewBossLocale("Eggtender Ovi'nax", "zhTW")
+L = BigWigs:NewBossLocale("Broodtwister Ovi'nax", "zhTW")
 if L then
-	L.unstable_web_say = "蛛網"
-	L.casting_infest_on_you = "正在對你施放寄生！"
+	L.sticky_web_say = "蛛網"
+	L.infest_message = "正在對你施放寄生！"
+	--L.infest_say = "Parasites"
+	--L.experimental_dosage_say = "Soak Egg"
+	--L.unstable_infusion = "Swirls"
+	--L.custom_on_experimental_dosage_marks = "Experimental Dosage assignments"
+	--L.custom_on_experimental_dosage_marks_desc = "Assign players affected by 'Experimental Dosage' to {rt6}{rt4}{rt3}{rt7} with a melee > ranged > healer priority. Affects Say and Target messages."
+end
+
+L = BigWigs:NewBossLocale("Nexus-Princess Ky'veza", "zhTW")
+if L then
+	--L.assasination = "Phantoms"
+	--L.twiligt_massacre = "Dashes"
+	--L.nexus_daggers = "Daggers"
 end

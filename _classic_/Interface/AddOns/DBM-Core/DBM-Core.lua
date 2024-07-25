@@ -75,15 +75,15 @@ end
 ---@class DBM
 local DBM = private:GetPrototype("DBM")
 _G.DBM = DBM
-DBM.Revision = parseCurseDate("20240713221730")
+DBM.Revision = parseCurseDate("20240723001246")
 
 local fakeBWVersion, fakeBWHash = 341, "51c5bf8"--341.1
 local bwVersionResponseString = "V^%d^%s"
 local PForceDisable
 -- The string that is shown as version
-DBM.DisplayVersion = "10.2.54"--Core version
+DBM.DisplayVersion = "11.0.0"--Core version
 DBM.classicSubVersion = 0
-DBM.ReleaseRevision = releaseDate(2024, 7, 13) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
+DBM.ReleaseRevision = releaseDate(2024, 7, 22) -- the date of the latest stable version that is available, optionally pass hours, minutes, and seconds for multiple releases in one day
 PForceDisable = (private.isWrath or private.isClassic) and 13 or 12--When this is incremented, trigger force disable regardless of major patch
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
 
@@ -436,7 +436,7 @@ local targetEventsRegistered, combatInitialized, healthCombatInitialized, watchF
 -- Nil variables
 local currentSpecID, currentSpecName, currentSpecGroup, loadOptions, checkWipe, checkBossHealth, checkCustomBossHealth, fireEvent, LastInstanceType, breakTimerStart, AddMsg, delayedFunction, handleSync, lastGroupLeader
 -- 0 variables
-local dbmToc, eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0, 0
+local eeSyncReceived, cSyncReceived, showConstantReminder, updateNotificationDisplayed, updateSubNotificationDisplayed = 0, 0, 0, 0, 0
 local LastInstanceMapID = -1
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod or discontinued). These mods will not be loaded by DBM (and they wont show up in the GUI)
@@ -1575,7 +1575,6 @@ do
 					DBM.classicSubVersion = tonumber(string.sub(version, 2, 4)) or 0
 				end
 			end
-			dbmToc = tonumber(C_AddOns.GetAddOnMetadata("DBM-Core", "X-Min-Interface")) or 0
 			isLoaded = true
 			for _, v in ipairs(onLoadCallbacks) do
 				xpcall(v, geterrorhandler())
@@ -4552,7 +4551,7 @@ do
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 					DBM:Debug("Newer version detected from " .. sender .. " : Rev - " .. revision .. ", Ver - " .. version .. ", Rev Diff - " .. (revision - DBM.Revision), 3)
-					if (dbmToc < private.wowTOC or forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
+					if (forceDisable > PForceDisable) and not checkEntry(forceDisablePerson, sender) then
 						forceDisablePerson[#forceDisablePerson + 1] = sender
 						DBM:Debug("Newer force disable detected from " .. sender .. " : Rev - " .. forceDisable, 3)
 					end
@@ -5759,7 +5758,7 @@ do
 				--show speed timer
 				if self.Options.AlwaysShowSpeedKillTimer2 and mod.stats and not mod.ignoreBestkill and not mod.noStatistics then
 					local bestTime
-					if difficulties.difficultyIndex == 8 then--Mythic+/Challenge Mode
+					if difficulties.difficultyIndex == 8 or difficulties.difficultyIndex == 208 then--Mythic+/Challenge Mode and Delves
 						local bestMPRank = mod.stats.challengeBestRank or 0
 						if bestMPRank == difficulties.difficultyModifier then
 							--Don't show speed kill timer if not our highest rank. DBM only stores highest rank
@@ -6057,7 +6056,7 @@ do
 					if bestTime and bestTime > 0 and bestTime < 1.5 then
 						mod.stats[statVarTable[usedDifficulty] .. "BestTime"] = thisTime
 					else
-						if usedDifficultyIndex == 8 then--Mythic+/Challenge Mode
+						if usedDifficultyIndex == 8 or usedDifficultyIndex == 208 then--Mythic+/Challenge Mode
 							if mod.stats.challengeBestRank > difficulties.difficultyModifier then--Don't save time stats at all
 								--DO nothing
 							elseif mod.stats.challengeBestRank < difficulties.difficultyModifier then--Update best time and best rank, even if best time is lower (for a lower rank)
@@ -7156,8 +7155,6 @@ do
 	function DBM:ForceDisableSpam()
 		if private.testBuild then
 			DBM:AddMsg(L.UPDATEREMINDER_DISABLETEST)
-		elseif dbmToc < private.wowTOC then
-			DBM:AddMsg(L.UPDATEREMINDER_MAJORPATCH)
 		else
 			DBM:AddMsg(L.UPDATEREMINDER_DISABLE)
 		end
@@ -7837,8 +7834,8 @@ end
 bossModPrototype.IsHealer = DBM.IsHealer
 
 ---@param self DBMModOrDBM
----@param playerUnitID string? unitID of requested unit. this or isName must be provided
----@param enemyUnitID string? unitID of tanked unit we're checking. This or enemyGUID must be provided
+---@param playerUnitID playerUUIDs|targetUIDs? unitID of requested unit. this or isName must be provided
+---@param enemyUnitID enemyUIDs|targetUIDs? unitID of tanked unit we're checking. This or enemyGUID must be provided
 ---@param isName string? name of the requested unit. This or playerUnitID must be provided
 ---@param onlyRequested boolean? true if tight search, false if loose search that will return ALL tank specs
 ---@param enemyGUID string? guid of tanked unit we're checking. This or enemyUnitID must be provided
@@ -8981,7 +8978,7 @@ function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	end
 end
 
----@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "20240713221730" to be auto set by packager
+---@param revision number|string Either a number in the format "202101010000" (year, month, day, hour, minute) or string "20240723001246" to be auto set by packager
 function bossModPrototype:SetRevision(revision)
 	revision = parseCurseDate(revision or "")
 	if not revision or type(revision) == "string" then

@@ -1,8 +1,8 @@
-## Interface: 100207
+## Interface: 110002
 ## Title: Can I Mog It?
 ## IconTexture: Interface\Addons\CanIMogIt\Icons\KNOWN
 ## Author: TorelTwiddler, Ami Yuy
-## Version: 10.2.7v1.58
+## Version: 11.0.2v2.0
 ## Notes: Adds tooltips to items showing if you have learned a transmog appearance.
 ## Notes-deDE: Fügt Gegenständen Tooltips hinzu, ob eine Transmogrifikationsvorlage bereits bekannt ist. 
 ## Notes-esES: Añade a la descripción del objeto si se conoce la apariencia.

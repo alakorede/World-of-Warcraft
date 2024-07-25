@@ -1,6 +1,7 @@
 # Prat 3.0
 
-## [3.9.53](https://github.com/Legacy-of-Sylvanaar/prat-3-0/tree/3.9.53) (2024-05-08)
-[Full Changelog](https://github.com/Legacy-of-Sylvanaar/prat-3-0/compare/3.9.52...3.9.53) [Previous Releases](https://github.com/Legacy-of-Sylvanaar/prat-3-0/releases)
+## [3.9.55](https://github.com/Legacy-of-Sylvanaar/prat-3-0/tree/3.9.55) (2024-07-23)
+[Full Changelog](https://github.com/Legacy-of-Sylvanaar/prat-3-0/compare/3.9.54...3.9.55) [Previous Releases](https://github.com/Legacy-of-Sylvanaar/prat-3-0/releases)
 
-- Update toc for 10.2.7  
+- Update toc for TWW pre-patch  
+- Use C\_Item for item info APIs ready for The War Within  

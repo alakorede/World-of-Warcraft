@@ -1,9 +1,21 @@
 
 ExS_Settings = {
-["stayOnWeaponType"] = false,
-["showCharCollectionIcons"] = true,
 ["expansionToggles"] = {
 true,
+true,
+true,
+true,
+true,
+true,
+true,
+true,
+true,
+true,
+true,
+},
+["stayOnWeaponType"] = false,
+["showCharCollectionIcons"] = true,
+["toggleSlotPreview"] = {
 true,
 true,
 true,
@@ -16,15 +28,11 @@ true,
 },
 ["hideNoLongerObtainable"] = false,
 ["displayOnlyMyClass"] = false,
-["hideShopsets"] = false,
 ["displayOtherFaction"] = false,
-["extraButtonToggles"] = {
-true,
-true,
-true,
-true,
-},
+["hideShopsets"] = false,
+["progressBarByFilter"] = true,
 ["weaponExpansionToggles"] = {
+true,
 true,
 true,
 true,
@@ -40,8 +48,13 @@ true,
 ["showHiddenSets"] = false,
 ["hideTradingPost"] = false,
 ["showDualWielding"] = false,
+["extraButtonToggles"] = {
+true,
+true,
+true,
+true,
+},
 ["disableHideSetButton"] = false,
-["progressBarByFilter"] = true,
 }
 ExS_HiddenSets = {
 {

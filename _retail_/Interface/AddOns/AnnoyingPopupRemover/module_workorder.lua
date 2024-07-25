@@ -2,7 +2,7 @@
 -- Written by fuba (fuba82 on CurseForge) and KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2023 fuba and KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v21.1.0-release
+-- Addon version: v21.3.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 -- This module removes the confirmation popup when you are about to fill a crafting work order that includes some of your own reagents.
@@ -52,7 +52,6 @@ this.config = {
 APR.NextOrdering = APR.NextOrdering + 5
 
 -- These are the status strings that are printed to indicate whether it's off or on
--- @TODO: Remember to add these localized strings to the localization file!
 this.hidden_msg = L[ThisModule .. "_hidden"]
 this.shown_msg = L[ThisModule .. "_shown"]
 

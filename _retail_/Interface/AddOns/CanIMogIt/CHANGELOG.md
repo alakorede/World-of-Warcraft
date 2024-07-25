@@ -1,3 +1,12 @@
+11.0.2v2.0 - 2024/07/23
+
+Initial support for The War Within Prepatch and Warbands.
+
+* Warbound items have Pink icons!
+* Database is gone! Thank you Blizzard for letting us see all our transmogs across our account!
+
+*****
+
 10.2.7v1.58 - 2024/06/22
 
 * [#333](https://gitlab.com/toreltwiddler/CanIMogIt/issues/333) Fix bug with Ensembles and class restrictions.

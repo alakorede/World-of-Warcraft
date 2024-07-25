@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- Leatrix Sounds 10.2.41 (6th July 2024)
+	-- Leatrix Sounds 11.0.01 (24th July 2024)
 	----------------------------------------------------------------------
 
 	--  Create global table
@@ -10,7 +10,7 @@
 	local LeaSoundsLC, LeaSoundsCB = {}, {}
 
 	-- Version
-	LeaSoundsLC["AddonVer"] = "10.2.41"
+	LeaSoundsLC["AddonVer"] = "11.0.01"
 
 	-- Get locale table
 	local void, Leatrix_Sounds = ...
@@ -19,7 +19,7 @@
 	-- Check Wow version is valid
 	do
 		local gameversion, gamebuild, gamedate, gametocversion = GetBuildInfo()
-		if gametocversion and gametocversion < 100000 then
+		if gametocversion and gametocversion < 110000 then
 			-- Game client is Wow Classic
 			C_Timer.After(2, function()
 				print(L["LEATRIX SOUNDS: THIS IS FOR THE WAR WITHIN ONLY!"])

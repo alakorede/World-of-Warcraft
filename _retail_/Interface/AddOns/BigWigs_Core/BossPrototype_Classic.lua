@@ -43,7 +43,7 @@ end or isRetail and EJ_GetEncounterInfo or function(key)
 	return BigWigsAPI:GetLocale("BigWigs: Encounters")[key]
 end
 local SendChatMessage, GetInstanceInfo, Timer, SetRaidTarget = loader.SendChatMessage, loader.GetInstanceInfo, loader.CTimerAfter, loader.SetRaidTarget
-local UnitGUID, UnitHealth, UnitHealthMax, Ambiguate = loader.UnitGUID, loader.UnitHealth, loader.UnitHealthMax, loader.Ambiguate
+local UnitGUID, UnitHealth, UnitHealthMax = loader.UnitGUID, loader.UnitHealth, loader.UnitHealthMax
 local RegisterAddonMessagePrefix = loader.RegisterAddonMessagePrefix
 local format, find, gsub, band, tremove, twipe = string.format, string.find, string.gsub, bit.band, table.remove, table.wipe
 local select, type, next, tonumber = select, type, next, tonumber
@@ -57,7 +57,7 @@ local bossUtilityFrame = CreateFrame("Frame")
 local petUtilityFrame = CreateFrame("Frame")
 local enabledModules, unitTargetScans = {}, {}
 local allowedEvents = {}
-local difficulty
+local difficulty, maxPlayers
 local UpdateDispelStatus, UpdateInterruptStatus = nil, nil
 local myGUID, myRole, myRolePosition
 local myGroupGUIDs, myGroupRoles, myGroupRolePositions = {}, {}, {}
@@ -65,8 +65,8 @@ local solo = false
 local classColorMessages = true
 local englishSayMessages = false
 do -- Update some data that may be called at the top of modules (prior to initialization)
-	local _, _, diff = GetInstanceInfo()
-	difficulty = diff
+	local _, _, diff, _, currentMaxPlayers = GetInstanceInfo()
+	difficulty, maxPlayers = diff, currentMaxPlayers
 	myGUID = UnitGUID("player")
 	local function update(_, role, position, player)
 		myGroupRolePositions[player] = position
@@ -287,7 +287,6 @@ local bossNames = setmetatable({}, {__index =
 --- Register the module to enable on mob id.
 -- @number ... Any number of mob ids
 function boss:RegisterEnableMob(...)
-	self.enableMobs = {}
 	core:RegisterEnableMob(self, ...)
 end
 
@@ -659,11 +658,11 @@ function boss:AddAutoTalkOption(state, talkType, name)
 	if talkType == "boss" then
 		moduleLocale[option] = L.autotalk
 		moduleLocale[option.."_desc"] = L.autotalk_boss_desc
-		moduleLocale[option.."_icon"] = "ui_chat"
+		moduleLocale[option.."_icon"] = "Interface\\AddOns\\BigWigs\\Media\\Icons\\Menus\\Say"
 	elseif not talkType then
 		moduleLocale[option] = L.autotalk
 		moduleLocale[option.."_desc"] = L.autotalk_generic_desc
-		moduleLocale[option.."_icon"] = "ui_chat"
+		moduleLocale[option.."_icon"] = "Interface\\AddOns\\BigWigs\\Media\\Icons\\Menus\\Say"
 	else
 		core:Error("Invalid auto talk type: ".. tostring(talkType))
 	end
@@ -1397,7 +1396,7 @@ end
 function boss:EncounterEnd(_, id, name, diff, size, status)
 	if self:GetEncounterID() == id and self:IsEnabled() then
 		if status == 1 then
-			if self:GetJournalID() or self.allowWin then
+			if self:GetJournalID() or self:GetAllowWin() then
 				self:Win() -- Official boss module
 			else
 				self:Disable() -- Custom external boss module
@@ -1436,6 +1435,12 @@ do
 	function boss:TableToString(table, entries)
 		return tconcat(table, comma, 1, entries)
 	end
+end
+
+--- Get the max player count of the current instance.
+-- @return number
+function boss:GetMaxPlayers()
+	return maxPlayers
 end
 
 --- Get the current instance difficulty.
@@ -1542,6 +1547,18 @@ function boss:Me(guid)
 end
 
 do
+	local Ambiguate = loader.Ambiguate
+	--- Returns a version of a character-realm string suitable for use in a given context.
+	-- @string name character-realm for a character
+	-- @string context the context the name will be used in, one of: "all", "guild", "mail", "none", or "short"
+	-- @return newName the character name with the server appended if appropriate
+	function boss:Ambiguate(name, context)
+		local newName = Ambiguate(name, context)
+		return newName
+	end
+end
+
+do
 	local UnitName = loader.UnitName
 	--- Get the full name of a unit.
 	-- @string unit unit token or name
@@ -1554,6 +1571,19 @@ do
 			name = name .."-".. server
 		end
 		return name
+	end
+end
+
+do
+	local UnitSex = loader.UnitSex
+	--- Get the sex of a unit.
+	-- @string unit unit token or name
+	-- @return sex the sex of the unit
+	function boss:UnitSex(unit)
+		local sex = UnitSex(unit)
+		if sex then
+			return sex
+		end
 	end
 end
 
@@ -1617,6 +1647,17 @@ function boss:GetHealth(unit)
 		return maxHP
 	else
 		return UnitHealth(unit) / maxHP * 100
+	end
+end
+
+do
+	local GetPlayerAuraBySpellID = loader.GetPlayerAuraBySpellID
+	--- Get the aura info of the player using a spell ID.
+	-- @number spellId the spell ID of the aura
+	-- @return table the table full of aura info, or nil if not found
+	function boss:GetPlayerAura(spellId)
+		local tbl = GetPlayerAuraBySpellID(spellId)
+		return tbl
 	end
 end
 
@@ -1765,7 +1806,7 @@ function boss:RegisterWhisperEmoteComms(func)
 		if channel ~= "RAID" and channel ~= "PARTY" and channel ~= "INSTANCE_CHAT" then
 			return
 		elseif prefix == "Transcriptor" then
-			self[func](self, msg, Ambiguate(sender, "none"))
+			self[func](self, msg, self:Ambiguate(sender, "none"))
 		end
 	end)
 end
@@ -2436,15 +2477,10 @@ do
 	})
 	myNameWithColor = coloredNames[myName]
 
-	local mt = {
-		__newindex = function(self, key, value)
-			rawset(self, key, coloredNames[value])
-		end
-	}
-	--- Get a table that colors player names based on class.
+	--- Get a table that colors player names based on class. [DEPRECATED]
 	-- @return an empty table
 	function boss:NewTargetList()
-		return setmetatable({}, mt)
+		return {}
 	end
 
 	--- Color a player name based on class.

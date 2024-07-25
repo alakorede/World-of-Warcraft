@@ -1,4 +1,10 @@
-﻿10.2.40 - 4th July 2024
+﻿11.0.01 - 24th July 2024
+- Welcome to The War Within!
+- Added map reveal data for the Khaz Algar zones.
+- Removed the 'Remove map border' option.
+- Removed Dragonflight transitional code.
+
+10.2.40 - 4th July 2024
 - This is the last release that is compatible with both Dragonflight and The War Within.
 - Future releases will be for The War Within only.
 - Republished due to an issue with CurseForge.

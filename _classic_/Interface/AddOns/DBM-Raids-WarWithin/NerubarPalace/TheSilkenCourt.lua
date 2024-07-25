@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2608, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240713221531")
+mod:SetRevision("20240715014353")
 mod:SetCreatureID(217489, 217491)--Anub'arash, Skeinspinner Takazj
 mod:SetEncounterID(2921)
 mod:SetUsedIcons(6, 7, 8)
@@ -371,7 +371,7 @@ function mod:OnCombatStart(delay)
 	self.vb.cataCount = 0
 	--self.vb.rageCount = 0
 	if self:IsMythic() then
-		savedDifficulty = "heroic"--TEMP?
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal
@@ -404,7 +404,7 @@ end
 
 function mod:OnTimerRecovery()
 	if self:IsMythic() then
-		savedDifficulty = "heroic"--TEMP?
+		savedDifficulty = "mythic"
 	elseif self:IsHeroic() then
 		savedDifficulty = "heroic"
 	else--Combine LFR and Normal

@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2607, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240704050257")
+mod:SetRevision("20240717004514")
 mod:SetCreatureID(215657)--VERIFY
 mod:SetEncounterID(2902)
 --mod:SetUsedIcons(1, 2, 3)
@@ -198,6 +198,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 434705 then
 		if not args:IsPlayer() then
 			local uID = DBM:GetUnitIdFromGUID(args.destGUID)
+			---@diagnostic disable-next-line: param-type-mismatch
 			if self:IsTanking(uID, "boss1") then--Filter non tank spec numpties in front of boss for some reason
 				if not DBM:UnitDebuff("player", spellId) then--Double check player didn't also get hit
 					specWarnTenderized:Show(args.destName)
@@ -252,7 +253,7 @@ end
 function mod:OnTranscriptorSync(msg, targetName)
 	if msg:find("spell:434776") and self:AntiSpam(3, 2) then
 		if targetName ~= UnitName("player") then
-			specWarnBrutalLashingsTarget:Show(self.vb.lashingsCount)
+			specWarnBrutalLashingsTarget:Show()
 			specWarnBrutalLashingsTarget:Play("helpsoak")
 		end
 	end

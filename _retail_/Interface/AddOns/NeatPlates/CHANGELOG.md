@@ -1,7 +1,6 @@
 # NeatPlates
 
-## [v442](https://github.com/Luxocracy/NeatPlates/tree/v442) (2024-07-12)
-[Full Changelog](https://github.com/Luxocracy/NeatPlates/compare/v441...v442) [Previous Releases](https://github.com/Luxocracy/NeatPlates/releases)
+## [v444](https://github.com/Luxocracy/NeatPlates/tree/v444) (2024-07-24)
+[Full Changelog](https://github.com/Luxocracy/NeatPlates/compare/v443...v444) [Previous Releases](https://github.com/Luxocracy/NeatPlates/releases)
 
-- Fixed an issue with the resource widget for fresh DKs if they have yet to pick a specialization.  
-    Fixed an issue where a units difficulty colors were sometimes empty  
+- Fix the slash commands and some buttons not opening the interface menu  

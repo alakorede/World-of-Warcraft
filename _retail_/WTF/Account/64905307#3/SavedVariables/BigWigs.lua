@@ -25,6 +25,8 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Super Emphasize"] = {
 },
+["BigWigs_Bosses_Fyrakk the Blazing"] = {
+},
 ["BigWigs_Plugins_Wipe"] = {
 },
 ["LibDualSpec-1.0"] = {
@@ -34,8 +36,8 @@ BigWigs3DB = {
 ["BigWigs_Plugins_Proximity"] = {
 ["profiles"] = {
 ["Default"] = {
-["height"] = 119.9999694824219,
 ["width"] = 140.0001373291016,
+["height"] = 119.9999694824219,
 },
 },
 },
@@ -170,18 +172,6 @@ BigWigsStatsDB = {
 },
 },
 [2549] = {
-[2555] = {
-["LFR"] = {
-["best"] = 179.7260000000024,
-["kills"] = 1,
-},
-},
-[2556] = {
-["LFR"] = {
-["best"] = 233.974000000002,
-["kills"] = 1,
-},
-},
 [2519] = {
 ["LFR"] = {
 ["best"] = 307.4820000000004,
@@ -192,6 +182,18 @@ BigWigsStatsDB = {
 ["LFR"] = {
 ["best"] = 259.6210000000065,
 ["kills"] = 2,
+},
+},
+[2555] = {
+["LFR"] = {
+["best"] = 179.7260000000024,
+["kills"] = 1,
+},
+},
+[2556] = {
+["LFR"] = {
+["best"] = 233.974000000002,
+["kills"] = 1,
 },
 },
 },

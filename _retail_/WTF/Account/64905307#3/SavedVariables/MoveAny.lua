@@ -884,8 +884,8 @@ MATAB = {
 },
 ["CharacterFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 464,
-["PX"] = 1607,
+["PY"] = 458,
+["PX"] = 1325,
 ["RE"] = "BOTTOMLEFT",
 },
 ["GroupLootHistoryFrame"] = {
@@ -900,15 +900,16 @@ MATAB = {
 },
 ["StaticPopup1"] = {
 ["AN"] = "BOTTOMLEFT",
+["PA"] = "UIParent",
+["PX"] = 908,
 ["PY"] = 975,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 907,
 },
 ["QuestFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 496.9072875976563,
+["PY"] = 497,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 1080.507934570313,
+["PX"] = 1081,
 },
 ["TradeFrame"] = {
 },
@@ -944,10 +945,9 @@ MATAB = {
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PA"] = "UIParent",
-["PX"] = 258,
 ["PY"] = 521,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 258,
 },
 ["ContainerFrameCombinedBags"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -963,6 +963,8 @@ MATAB = {
 },
 ["TimeManagerFrame"] = {
 },
+["PlayerSpellsFrame"] = {
+},
 ["GenericTraitFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 334,
@@ -971,8 +973,8 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 323,
-["PX"] = 714,
+["PY"] = 319,
+["PX"] = 719,
 ["RE"] = "BOTTOMLEFT",
 },
 ["PVPMatchScoreboard"] = {
@@ -993,16 +995,16 @@ MATAB = {
 },
 ["ItemUpgradeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
+["PA"] = "UIParent",
+["RE"] = "BOTTOMLEFT",
 ["PY"] = 545,
 ["PX"] = 16,
-["RE"] = "BOTTOMLEFT",
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PA"] = "UIParent",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 264,
 ["PX"] = 257,
+["RE"] = "BOTTOMLEFT",
 },
 ["MailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1030,7 +1032,7 @@ MATAB = {
 },
 ["SpellBookFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 563,
+["PY"] = 562,
 ["RE"] = "BOTTOMLEFT",
 ["PX"] = 212,
 },
@@ -1172,7 +1174,7 @@ MATAB = {
 ["StaticPopup1"] = {
 },
 ["QuestFrame"] = {
-["SCALE"] = 0.988,
+["SCALE"] = 0.892,
 },
 ["TradeFrame"] = {
 },
@@ -1198,6 +1200,8 @@ MATAB = {
 ["ContainerFrame11"] = {
 },
 ["TimeManagerFrame"] = {
+},
+["PlayerSpellsFrame"] = {
 },
 ["GenericTraitFrame"] = {
 },
@@ -2070,10 +2074,10 @@ MATAB = {
 ["CHATEDITBOX"] = {
 ["ENABLED"] = false,
 },
-["CHAT4"] = {
+["CHAT9"] = {
 ["ENABLED"] = false,
 },
-["CHAT9"] = {
+["CHAT4"] = {
 ["ENABLED"] = false,
 },
 ["CHAT"] = {

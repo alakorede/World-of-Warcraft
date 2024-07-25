@@ -6,23 +6,23 @@ local currToc = select(4,GetBuildInfo());
 --Name, (2,3,4,5)texleft, texright, textop, texbottom, (6)catID (for C_TransmogCollection.GetCategoryInfo), (7,8,9)default rotation, roll, pitch for weapon only, (10)default rotation for player,
 --      (11,12)camSqDist Max(default),Min(nearer), (13,14) camDist Max,Min, (15,16) default pan y,z, (17, filled in during init) true/false if char can use weapontype
 local weaponType = {
-        {"Axe",         0,50/256,0,50/256,               13,  3.14159,1.65332,1.17932,   0.83756,   9.8,3,     0,0,  0.0125,-0.0292},--
-        {"2-Hand Axe",  150/256,200/256,50/256,100/256,  20,  0.02999,4.80124,1.91959,   0.83756,   8.3,2.5,   0,0,  -0.0125,-0.0458},--
-        {"Bow",         50/256,100/256,0,50/256,         25,  3.19337,1.78959,1.18131,   4.90207,   10.75,2,   0,0,  -0.1292,-0.0583},--
-        {"Crossbow",    100/256,150/256,0,50/256,        27,  0.44089,6.27829,6.26204,   0.83756,   6,1.5,     0,0,  -0.0292,-0.3500},--
-        {"Dagger",      150/256,200/256,0,50/256,        16,  0.02999,4.80124,1.91959,   0.83756,   8.5,1.5,   0,0,  -0.0542,-0.0167},--
-        {"Fist",        0,50/256,50/256,100/256,         17,  1.60859,0.49721,0,         1.20734,   5.5,1,     0,0,  -0.0083,-0.0333},--
-        {"Gun",         50/256,100/256,50/256,100/256,   26,  1.51614,0.36139,0.02974,   0.83756,   10,2.5,    0,0,  0.0083,-0.0417},--
-        {"Mace",        100/256,150/256,50/256,100/256,  15,  0.03400,1.49480,1.99144,   0.83756,   8.5,1.5,   0,0,  0.0667,0.1458},--
-        {"2-Hand Mace", 100/256,150/256,150/256,200/256, 22,  PI,1.72046,1.17676,        0.83756,   10,2,      0,0,  -0.0542,-0.0375},--
-        {"Off-hand",    0,50/256,150/256,200/256,        19,  1.55363,0.36428,0.03324,   4.90207,   3.5,1.5,   0,0,  -0.0083,-0.0042},--
-        {"Polearm",     0,50/256,100/256,150/256,        24,  3.16159,1.56622,1.18920,   0.83756,   25,3,      0,0,  0.0125,-0.0875},--
-        {"Shield",      200/256,250/256,0,50/256,        18,  3.55800,5.08359,1.12371,   4.68874,   9,2,       0,0,  0.0417,-0.0708},--
-        {"Staff",       50/256,100/256,100/256,150/256,  23,  0,1.62987,1.99370,         0.83756,   19,2,      0,0,  -0.0208,0.0458},--
-        {"Sword",       100/256,150/256,100/256,150/256, 14,  0.02134,4.79049,1.89257,   0.83756,   9.2,1.5,   0,0,  -0.0167,-0.0625},--
-        {"2-Hand Sword",150/256,200/256,100/256,150/256, 21,  PI,4.77407,1.06717,        0.83756,   19,2,      0,0,  -0.0958,0.1875},--
-        {"Wand",        50/256,100/256,150/256,200/256,  12,  3.20711,1.68403,1.18196,   0.83756,   5,1,       0,0,  0.0458,-0.0458},--
-        {"Warglaive",   150/256,200/256,150/256,200/256, 28,  1.55045,0.49080,0.02431,   1.20734,   22,2,      0,0,  0.0083,0.0792},--
+        {"Axe",         0,50/256,0,50/256,               13,  3.14159,1.65332,1.17932,   --[[0.83756]]"rotMain",          9.8,3,     0,0,  0.0125,-0.0292 , nil},--, 0.83756},--
+        {"2-Hand Axe",  150/256,200/256,50/256,100/256,  20,  0.02999,4.80124,1.91959,   --[[0.83756]]"rotMain",          8.3,2.5,   0,0,  -0.0125,-0.0458, nil},--, 0.83756},--
+        {"Bow",         50/256,100/256,0,50/256,         25,  3.19337,1.78959,1.18131,   --[[4.90207]]"rotBowOffShield",  10.75,2,   0,0,  -0.1292,-0.0583, nil},--, 4.90207},--
+        {"Crossbow",    100/256,150/256,0,50/256,        27,  0.44089,6.27829,6.26204,   --[[0.83756]]"rotXbow",          6,1.5,     0,0,  -0.0292,-0.3500, nil},--, 0.83756},--
+        {"Dagger",      150/256,200/256,0,50/256,        16,  0.02999,4.80124,1.91959,   --[[0.83756]]"rotMain",          8.5,1.5,   0,0,  -0.0542,-0.0167, nil},--, 0.83756},--
+        {"Fist",        0,50/256,50/256,100/256,         17,  1.60859,0.49721,0,         --[[1.20734]]"rotFistGlaive",    5.5,1,     0,0,  -0.0083,-0.0333, nil},--, 1.20734},--
+        {"Gun",         50/256,100/256,50/256,100/256,   26,  1.51614,0.36139,0.02974,   --[[0.83756]]"rotMain",          10,2.5,    0,0,  0.0083,-0.0417 , nil},--, 0.83756},--
+        {"Mace",        100/256,150/256,50/256,100/256,  15,  0.03400,1.49480,1.99144,   --[[0.83756]]"rotMain",          8.5,1.5,   0,0,  0.0667,0.1458  , nil},--, 0.83756},--
+        {"2-Hand Mace", 100/256,150/256,150/256,200/256, 22,  PI,1.72046,1.17676,        --[[0.83756]]"rotMain",          10,2,      0,0,  -0.0542,-0.0375, nil},--, 0.83756},--
+        {"Off-hand",    0,50/256,150/256,200/256,        19,  1.55363,0.36428,0.03324,   --[[4.90207]]"rotBowOffShield",  3.5,1.5,   0,0,  -0.0083,-0.0042, nil},--, 4.90207},--
+        {"Polearm",     0,50/256,100/256,150/256,        24,  3.16159,1.56622,1.18920,   --[[0.83756]]"rotMain",          25,3,      0,0,  0.0125,-0.0875 , nil},--, 0.83756},--
+        {"Shield",      200/256,250/256,0,50/256,        18,  3.55800,5.08359,1.12371,   --[[4.68874]]"rotBowOffShield",  9,2,       0,0,  0.0417,-0.0708 , nil},--, 4.68874},--
+        {"Staff",       50/256,100/256,100/256,150/256,  23,  0,1.62987,1.99370,         --[[0.83756]]"rotMain",          19,2,      0,0,  -0.0208,0.0458 , nil},--, 0.83756},--
+        {"Sword",       100/256,150/256,100/256,150/256, 14,  0.02134,4.79049,1.89257,   --[[0.83756]]"rotMain",          9.2,1.5,   0,0,  -0.0167,-0.0625, nil},--, 0.83756},--
+        {"2-Hand Sword",150/256,200/256,100/256,150/256, 21,  PI,4.77407,1.06717,        --[[0.83756]]"rotMain",          19,2,      0,0,  -0.0958,0.1875 , nil},--, 0.83756},--
+        {"Wand",        50/256,100/256,150/256,200/256,  12,  3.20711,1.68403,1.18196,   --[[0.83756]]"rotMain",          5,1,       0,0,  0.0458,-0.0458 , nil},--, 0.83756},--
+        {"Warglaive",   150/256,200/256,150/256,200/256, 28,  1.55045,0.49080,0.02431,   --[[1.20734]]"rotFistGlaive",    22,2,      0,0,  0.0083,0.0792  , nil},--, 1.20734},--
   }
 
 local WeaponSetsCollectionFrame = CreateFrame("Frame", WeaponSetsCollectionFrame);
@@ -45,13 +45,6 @@ local colors = {  GREEN_FONT_COLOR = CreateColor(0.251, 0.753, 0.251),
 local SET_PROGRESS_BAR_MAX_WIDTH;
 
 local expectingTransmogInfoUpdate = false;
-
-local raceAddRotate = {
-  ["NightElfFemale"] = true,
-  ["WorgenFemaleAlt"] = true,
-  ["ZandalariTrollFemale"] = true,
-  ["KulTiranMale"] = true,
-}
 
 --------------------------------------------------
 -- LOCAL CONSTANTS AND DATA ----COPIED FROM BLIZZARD CUZ THEY USED A LOCAL VARIABLE IN THE MIDDLE OF ONUPDATE WITH NOT GETTOR TO GET IT ARGHHHHH!!!
@@ -76,58 +69,58 @@ local ModelSettings = {
 	[16] = { panMaxLeft = -0.3,  panMaxRight = 0.3,  panMaxTop = 0.7, panMaxBottom = -0.7, panValue = 40 },--Wand
 	[17] = { panMaxLeft = -1.0,  panMaxRight = 1.0,  panMaxTop = 0.7, panMaxBottom = -0.7, panValue = 50 },--Warglaive
   
-	["HumanMale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38 },
-	["HumanFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45 },
-	["OrcMale"] = { panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30 },
-	["OrcFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37 },
-	["DwarfMale"] = { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44 },
-	["DwarfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47 },
-	["NightElfMale"] = { panMaxLeft = -0.5, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 30 },
-	["NightElfFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 33 },
-	["ScourgeMale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 35 },
-	["ScourgeFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 36 },
-	["TaurenMale"] = { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31 },
-	["TaurenFemale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32 },
-	["GnomeMale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52 },
-	["GnomeFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60 },
-	["TrollMale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 27 },
-	["TrollFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31 },
-	["GoblinMale"] = { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 0.7, panMaxBottom = -0.2, panValue = 43 },
-	["GoblinFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.7, panMaxBottom = -0.3, panValue = 43 },
-	["BloodElfMale"] = { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36 },
-	["BloodElfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38 },
-	["DraeneiMale"] = { panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28 },
-	["DraeneiFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = -0.3, panValue = 31 },
-	["WorgenMale"] = { panMaxLeft = -0.6, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.4, panValue = 25 },
-	["WorgenMaleAlt"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 37 },
-	["WorgenFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 25 },
-	["WorgenFemaleAlt"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45 },
-	["PandarenMale"] = { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31 },
-	["PandarenFemale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32 },	
-	["NightborneMale"] = { panMaxLeft = -0.5, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 30 },
-	["NightborneFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 33 },
-	["HighmountainTaurenMale"] = { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31 },
-	["HighmountainTaurenFemale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32 },
-	["VoidElfMale"] = { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36 },
-	["VoidElfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38 },
-	["LightforgedDraeneiMale"] = { panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28 },
-	["LightforgedDraeneiFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = -0.3, panValue = 31 },
-	["MagharOrcMale"] = { panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30 },
-	["MagharOrcFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37 },
-	["DarkIronDwarfMale"] = { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44 },
-	["DarkIronDwarfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47 },
-	["KulTiranMale"] = { panMaxLeft = -0.6, panMaxRight = 0.7, panMaxTop = 1.5, panMaxBottom = -0.6, panValue = 38 },
-	["KulTiranFemale"] = { panMaxLeft = -0.6, panMaxRight = 0.7, panMaxTop = 1.5, panMaxBottom = -0.6, panValue = 38 },
-	["ZandalariTrollMale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 27 },
-	["ZandalariTrollFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31 },
-	["VulperaMale"] = { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 0.7, panMaxBottom = -0.2, panValue = 43 },
-	["VulperaFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.7, panMaxBottom = -0.3, panValue = 43 },
-	["MechagnomeMale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52 },
-	["MechagnomeFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60 },
-	["DracthyrMale"] = { panMaxLeft = 0, panMaxRight = 0, panMaxTop = 0, panMaxBottom = 0, panValue = 52 },
-	["DracthyrFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60 },
-	["DracthyrMaleAlt"] = { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36 },
-	["DracthyrFemaleAlt"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45 },
+	["HumanMale"] =       { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38, rotMain = 1.15, rotBowOffShield = 4.95, rotXbow = 0.82, rotFistGlaive = 1.32 },
+	["HumanFemale"] =     { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45, rotMain = 1.18, rotBowOffShield = 4.84, rotXbow = 1.01, rotFistGlaive = 1.47 },
+	["OrcMale"] =         { panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30, rotMain = 0.90, rotBowOffShield = 4.72, rotXbow = 0.86, rotFistGlaive = 1.20 },
+	["OrcFemale"] =       { panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37, rotMain = 1.02, rotBowOffShield = 4.73, rotXbow = 0.83, rotFistGlaive = 1.24 },
+	["DwarfMale"] =       { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44, rotMain = 1.10, rotBowOffShield = 4.90, rotXbow = 1.03, rotFistGlaive = 1.30 },
+	["DwarfFemale"] =     { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47, rotMain = 1.12, rotBowOffShield = 4.80, rotXbow = 1.06, rotFistGlaive = 1.45 },
+	["NightElfMale"] =    { panMaxLeft = -0.5, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 30, rotMain = 1.27, rotBowOffShield = 4.84, rotXbow = 1.12, rotFistGlaive = 1.52 },
+	["NightElfFemale"] =  { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 33, rotMain = 1.38, rotBowOffShield = 4.82, rotXbow = 1.23, rotFistGlaive = 1.53 },
+	["ScourgeMale"] =     { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 35, rotMain = 1.47, rotBowOffShield = 5.34, rotXbow = 1.33, rotFistGlaive = 1.73 },
+	["ScourgeFemale"] =   { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 1.1, panMaxBottom = -0.3, panValue = 36, rotMain = 1.15, rotBowOffShield = 4.92, rotXbow = 1.07, rotFistGlaive = 1.42 },
+	["TaurenMale"] =      { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31, rotMain = 1.01, rotBowOffShield = 4.98, rotXbow = 0.98, rotFistGlaive = 1.30 },
+	["TaurenFemale"] =    { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32, rotMain = 1.00, rotBowOffShield = 5.05, rotXbow = 0.85, rotFistGlaive = 1.31 },
+	["GnomeMale"] =       { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52, rotMain = 1.18, rotBowOffShield = 4.82, rotXbow = 0.99, rotFistGlaive = 1.41 },
+	["GnomeFemale"] =     { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60, rotMain = 1.02, rotBowOffShield = 4.89, rotXbow = 0.85, rotFistGlaive = 1.35 },
+	["TrollMale"] =       { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 27, rotMain = 1.05, rotBowOffShield = 4.90, rotXbow = 0.94, rotFistGlaive = 1.37 },
+	["TrollFemale"] =     { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31, rotMain = 1.08, rotBowOffShield = 4.90, rotXbow = 0.95, rotFistGlaive = 1.38 },
+	["GoblinMale"] =      { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 0.7, panMaxBottom = -0.2, panValue = 43, rotMain = 1.42, rotBowOffShield = 4.80, rotXbow = 1.27, rotFistGlaive = 1.59 },
+	["GoblinFemale"] =    { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.7, panMaxBottom = -0.3, panValue = 43, rotMain = 1.15, rotBowOffShield = 5.05, rotXbow = 0.97, rotFistGlaive = 1.52 },
+	["BloodElfMale"] =    { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36, rotMain = 1.39, rotBowOffShield = 5.05, rotXbow = 1.29, rotFistGlaive = 1.61 },
+	["BloodElfFemale"] =  { panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38, rotMain = 1.05, rotBowOffShield = 4.66, rotXbow = 0.82, rotFistGlaive = 1.30 },
+	["DraeneiMale"] =     { panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28, rotMain = 1.01, rotBowOffShield = 4.83, rotXbow = 0.97, rotFistGlaive = 1.27 },
+	["DraeneiFemale"] =   { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = -0.3, panValue = 31, rotMain = 1.22, rotBowOffShield = 5.03, rotXbow = 1.07, rotFistGlaive = 1.52 },
+	["WorgenMale"] =      { panMaxLeft = -0.6, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.4, panValue = 25, rotMain = 1.14, rotBowOffShield = 4.82, rotXbow = 1.10, rotFistGlaive = 1.34 },
+	["WorgenMaleAlt"] =   { panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 37, rotMain = 1.10, rotBowOffShield = 4.88, rotXbow = 0.85, rotFistGlaive = 1.34 },
+	["WorgenFemale"] =    { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 25, rotMain = 1.67, rotBowOffShield = 5.00, rotXbow = 1.46, rotFistGlaive = 1.77 },
+	["WorgenFemaleAlt"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45, rotMain = 1.12, rotBowOffShield = 4.85, rotXbow = 1.14, rotFistGlaive = 1.45 },
+	["PandarenMale"] =    { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31, rotMain = 1.03, rotBowOffShield = 4.82, rotXbow = 0.97, rotFistGlaive = 1.32 },
+	["PandarenFemale"] =  { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32, rotMain = 1.12, rotBowOffShield = 5.18, rotXbow = 0.95, rotFistGlaive = 1.52 },	
+	["NightborneMale"] =  { panMaxLeft = -0.5, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 30, rotMain = 1.18, rotBowOffShield = 4.82, rotXbow = 1.04, rotFistGlaive = 1.44 },
+	["NightborneFemale"] ={ panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 33, rotMain = 1.55, rotBowOffShield = 4.80, rotXbow = 1.42, rotFistGlaive = 1.85 },
+	["HighmountainTaurenMale"] =   { panMaxLeft = -0.7, panMaxRight = 0.9, panMaxTop = 1.1, panMaxBottom = -0.5, panValue = 31, rotMain = 1.05, rotBowOffShield = 4.86, rotXbow = 0.95, rotFistGlaive = 1.32 },
+	["HighmountainTaurenFemale"] = { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 32, rotMain = 1.02, rotBowOffShield = 5.00, rotXbow = 0.88, rotFistGlaive = 1.27 },
+	["VoidElfMale"] =     { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36, rotMain = 1.42, rotBowOffShield = 5.05, rotXbow = 1.30, rotFistGlaive = 1.60 },
+	["VoidElfFemale"] =   { panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38, rotMain = 0.95, rotBowOffShield = 4.80, rotXbow = 1.07, rotFistGlaive = 1.47 },
+	["LightforgedDraeneiMale"] =   { panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28, rotMain = 1.10, rotBowOffShield = 4.78, rotXbow = 0.94, rotFistGlaive = 1.27 },
+	["LightforgedDraeneiFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = -0.3, panValue = 31, rotMain = 1.27, rotBowOffShield = 4.93, rotXbow = 1.12, rotFistGlaive = 1.49 },
+	["MagharOrcMale"] =   { panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30, rotMain = 0.97, rotBowOffShield = 4.53, rotXbow = 0.87, rotFistGlaive = 1.20 },
+	["MagharOrcFemale"] = { panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37, rotMain = 1.04, rotBowOffShield = 4.74, rotXbow = 0.80, rotFistGlaive = 1.20 },
+	["DarkIronDwarfMale"] =   { panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44, rotMain = 0.96, rotBowOffShield = 4.85, rotXbow = 0.94, rotFistGlaive = 1.28 },
+	["DarkIronDwarfFemale"] = { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47, rotMain = 1.25, rotBowOffShield = 4.70, rotXbow = 1.01, rotFistGlaive = 1.53 },
+	["KulTiranMale"] =    { panMaxLeft = -0.6, panMaxRight = 0.7, panMaxTop = 1.5, panMaxBottom = -0.6, panValue = 38, rotMain = 1.39, rotBowOffShield = 5.23, rotXbow = 1.42, rotFistGlaive = 1.62 },
+	["KulTiranFemale"] =  { panMaxLeft = -0.6, panMaxRight = 0.7, panMaxTop = 1.5, panMaxBottom = -0.6, panValue = 38, rotMain = 1.15, rotBowOffShield = 4.90, rotXbow = 1.21, rotFistGlaive = 1.44 },
+	["ZandalariTrollMale"] =  { panMaxLeft = -0.5, panMaxRight = 0.6, panMaxTop = 1.3, panMaxBottom = -0.4, panValue = 27, rotMain = 1.42, rotBowOffShield = 5.22, rotXbow = 1.36, rotFistGlaive = 1.67 },
+	["ZandalariTrollFemale"] ={ panMaxLeft = -0.4, panMaxRight = 0.5, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31, rotMain = 1.60, rotBowOffShield = 4.91, rotXbow = 5.11, rotFistGlaive = 1.90 },
+	["VulperaMale"] =     { panMaxLeft = -0.3, panMaxRight = 0.4, panMaxTop = 0.7, panMaxBottom = -0.2, panValue = 43, rotMain = 1.21, rotBowOffShield = 5.10, rotXbow = 1.11, rotFistGlaive = 1.42 },
+	["VulperaFemale"] =   { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.7, panMaxBottom = -0.3, panValue = 43, rotMain = 1.25, rotBowOffShield = 5.02, rotXbow = 1.04, rotFistGlaive = 1.50 },
+	["MechagnomeMale"] =  { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52, rotMain = 1.10, rotBowOffShield = 4.85, rotXbow = 0.91, rotFistGlaive = 1.42 },
+	["MechagnomeFemale"] ={ panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60, rotMain = 0.95, rotBowOffShield = 4.90, rotXbow = 0.83, rotFistGlaive = 1.42 },
+	["DracthyrMale"] =    { panMaxLeft = 0, panMaxRight = 0, panMaxTop = 0, panMaxBottom = 0, panValue = 52, rotMain = 0.98, rotBowOffShield = 5.14, rotXbow = 0.78, rotFistGlaive = 1.07 },
+	["DracthyrFemale"] =  { panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60, rotMain = 0.87, rotBowOffShield = 4.96, rotXbow = 0.93, rotFistGlaive = 1.15 },
+	["DracthyrMaleAlt"] = { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36, rotMain = 1.40, rotBowOffShield = 4.92, rotXbow = 1.43, rotFistGlaive = 1.65 },
+	["DracthyrFemaleAlt"]={ panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45, rotMain = 1.17, rotBowOffShield = 4.68, rotXbow = 1.06, rotFistGlaive = 1.47 },
 }
 local playerRaceSex;
 if ( not IsOnGlueScreen() ) then
@@ -453,6 +446,7 @@ local function SetButtonData(button, set)
     button.Favorite:SetShown(set.favoriteSetID);
   end
   button.Remix:SetShown(set.isRemix);
+  button.TradingPost:SetShown(set.tp);
   
   --Setting if special apperance needed for newness or selectedness.
   
@@ -1216,10 +1210,13 @@ end
 
 --Resets the player's rotation, pitch and roll
 local function ResetPlayerRotations(resetAll)
-  local rotationAmt = weaponType[WeaponSetsCollectionFrame.RightFrame.activeWeapon][10];
-  if raceAddRotate[playerRaceSex] and not (WeaponSetsCollectionFrame.RightFrame.activeWeapon == 3 or WeaponSetsCollectionFrame.RightFrame.activeWeapon == 10 or WeaponSetsCollectionFrame.RightFrame.activeWeapon == 12) then
-    rotationAmt = rotationAmt + 0.6;
-  end
+  local pRS = playerRaceSex;
+  local hasAlt, inAlt = C_PlayerInfo.GetAlternateFormInfo();
+  if hasAlt and inAlt then pRS = pRS.."Alt"; end
+  local rotationAmt = ModelSettings[pRS][weaponType[WeaponSetsCollectionFrame.RightFrame.activeWeapon][10]];
+  --if not rotationAmt then
+  --  rotationAmt = weaponType[WeaponSetsCollectionFrame.RightFrame.activeWeapon][18];
+  --end
   WeaponSetsCollectionFrame.RightFrame.Model:SetRotation(rotationAmt);
   WeaponSetsCollectionFrame.RightFrame.Model.rotation = rotationAmt;
   WeaponSetsCollectionFrame.RightFrame.Model:SetPosition(0,0,0);
@@ -2119,6 +2116,17 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetSize(20,20);
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon.tga]]);
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].Remix.icon:SetVertexColor(1,1,1,.3);
+      
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost = CreateFrame("Frame", nil, WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost:SetAllPoints();
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon = WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost:CreateTexture(nil, "BACKGROUND");
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetPoint("BOTTOMRIGHT",WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost, "BOTTOMRIGHT", -1,1);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetSize(12,12);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetTexture(4696085);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetDesaturation(.4);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetVertexColor(.9,.85,.1,.45);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetTexCoord(.2,.95,.1,.9);
+      WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i].TradingPost.icon:SetRotation(math.pi);
     
       WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.buttons[i]:Show();
       

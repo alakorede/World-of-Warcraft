@@ -1,13 +1,13 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0912,
+["LastVersion"] = 2.0913,
 ["LastPlayerFullName"] = "Muruatan-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 214773,
-["Level"] = 49,
-["Link"] = "|cff1eff00|Hitem:214773::::::::22:73:::3:10605:10970:1520:2:9:21:28:2793:::::|h[Sunsoul Greathelm]|h|r",
+["Level"] = 63,
+["Link"] = "|cff1eff00|Hitem:214773::::::::27:73:::3:10612:10969:1534:2:28:2793:9:26:::::|h[Sunsoul Greathelm]|h|r",
 },
 nil,
 {
@@ -32,9 +32,9 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:214769::::::::24:73::11:3:10609:10971:1525:2:9:24:28:2793:::::|h[Sunsoul Legplates]|h|r",
 },
 {
-["ID"] = 214763,
-["Level"] = 46,
-["Link"] = "|cff1eff00|Hitem:214763::::::::22:73::11:3:10604:10965:1517:2:9:20:28:2793:::::|h[Spiritguard's Sabatons]|h|r",
+["ID"] = 214774,
+["Level"] = 60,
+["Link"] = "|cff1eff00|Hitem:214774::::::::26:73::11:3:10611:10971:1531:2:9:26:28:2793:::::|h[Sunsoul Warboots]|h|r",
 },
 {
 ["ID"] = 214775,
@@ -54,8 +54,8 @@ nil,
 },
 [15] = {
 ["ID"] = 210333,
-["Level"] = 63,
-["Link"] = "|cffe6cc80|Hitem:210333::::::::25:73::11:2:10986:1522:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
+["Level"] = 69,
+["Link"] = "|cffe6cc80|Hitem:210333::::::::27:73::11:2:10988:1528:1:28:2905:::::|h[Cloak of Infinite Potential]|h|r",
 },
 [17] = {
 ["ID"] = 215639,

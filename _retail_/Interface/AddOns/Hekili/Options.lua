@@ -11,6 +11,8 @@ local state = Hekili.State
 local format, lower, match = string.format, string.lower, string.match
 local insert, remove, sort, wipe = table.insert, table.remove, table.sort, table.wipe
 
+local UnitBuff, UnitDebuff = ns.UnitBuff, ns.UnitDebuff
+
 local callHook = ns.callHook
 
 local SpaceOut = ns.SpaceOut
@@ -34,6 +36,47 @@ local RedX = "Interface\\AddOns\\Hekili\\Textures\\RedX"
 local BlizzBlue = "|cFF00B4FF"
 local Bullet = AtlasToString( "characterupdate_arrow-bullet-point" )
 local ClassColor = C_ClassColor.GetClassColor( class.file )
+
+local IsPassiveSpell = C_Spell and C_Spell.IsSpellPassive or _G.IsPassiveSpell
+local IsHarmfulSpell = C_Spell and C_Spell.IsSpellHarmful or _G.IsHarmfulSpell
+local IsHelpfulSpell = C_Spell and C_Spell.IsSpellHelpful or _G.IsHelpfulSpell
+local IsPressHoldReleaseSpell = C_Spell and C_Spell.IsPressHoldReleaseSpell or _G.IsPressHoldReleaseSpell
+
+local GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines;
+
+local GetSpellTabInfo = function(index)
+    local skillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo(index);
+    if skillLineInfo then
+        return	skillLineInfo.name, 
+                skillLineInfo.iconID, 
+                skillLineInfo.itemIndexOffset, 
+                skillLineInfo.numSpellBookItems, 
+                skillLineInfo.isGuild, 
+                skillLineInfo.offSpecID,
+                skillLineInfo.shouldHide,
+                skillLineInfo.specID;
+    end
+end
+
+local GetSpellInfo = function(spellID)
+    if not spellID then
+        return nil;
+    end
+
+    local spellInfo = C_Spell.GetSpellInfo(spellID);
+    if spellInfo then
+        return spellInfo.name, nil, spellInfo.iconID, spellInfo.castTime, spellInfo.minRange, spellInfo.maxRange, spellInfo.spellID, spellInfo.originalIconID;
+    end
+end
+
+local GetSpellDescription = C_Spell.GetSpellDescription
+
+local GetSpellCharges = function(spellID)
+    local spellChargeInfo = C_Spell.GetSpellCharges(spellID);
+    if spellChargeInfo then
+        return spellChargeInfo.currentCharges, spellChargeInfo.maxCharges, spellChargeInfo.cooldownStartTime, spellChargeInfo.cooldownDuration, spellChargeInfo.chargeModRate;
+    end
+end
 
 
 -- One Time Fixes
@@ -7637,7 +7680,8 @@ do
                                                             }
                                                             local aName = bypass[ a ] or class.abilities[ a ].name
                                                             local bName = bypass[ b ] or class.abilities[ b ].name
-
+                                                            if aName ~= nil and type( aName.name ) == "string" then aName = aName.name end
+                                                            if bName ~= nil and type( bName.name ) == "string" then bName = bName.name end
                                                             return aName < bName
                                                         end )
 
@@ -8765,8 +8809,8 @@ do
                             type = "toggle",
                             name = format( "%s Filter M+ Interrupts (DF Season 4)", NewFeature ),
                             desc = format( "If checked, low-priority enemy casts will be ignored when your target may use an ability that should be interrupted.\n\n"
-                                .. "Example:  In Everbloom, Earthshaper Telu's |W%s|w will be ignored and |W%s|w will be interrupted.", ( GetSpellInfo( 168040 ) or "Nature's Wrath" ),
-                                ( GetSpellInfo( 427459 ) or "Toxic Bloom" ) ),
+                                .. "Example:  In Everbloom, Earthshaper Telu's |W%s|w will be ignored and |W%s|w will be interrupted.", ( GetSpellInfo( 168040 ).name or "Nature's Wrath" ),
+                                ( GetSpellInfo( 427459 ).name or "Toxic Bloom" ) ),
                             width = 2,
                             order = 4
                         },
@@ -9272,7 +9316,7 @@ do
 
             local cost, min_cost, max_cost, spendPerSec, cost_percent, resource
 
-            local costs = GetSpellPowerCost( spellID )
+            local costs = C_Spell.GetSpellPowerCost( spellID )
 
             if costs then
                 for k, v in pairs( costs ) do
@@ -9311,7 +9355,7 @@ do
             end
 
             local selfbuff = SpellIsSelfBuff( spellID )
-            talent = talent or IsTalentSpell( spellID )
+            talent = talent or ( C_Spell and C_Spell.IsClassTalentSpell( spellID ) )
 
             if selfbuff or passive then
                 auras[ token ] = auras[ token ] or {}
@@ -9408,40 +9452,60 @@ do
                 end
             end
 
+
+            -- TODO: Rewrite to be a little clearer.
+            -- Modified by Wyste in July 2024 to try and fix skeleton building the talents better. 
+            -- It could probably be written better
             wipe( talents )
             local configID = C_ClassTalents.GetActiveConfigID() or -1
             local configInfo = C_Traits.GetConfigInfo( configID )
+            local specializationName = configInfo.name
+            local classCurID = nil
+            local specCurID = nil
+            local subTrees = C_ClassTalents.GetHeroTalentSpecsForClassSpec ( configID )
             for _, treeID in ipairs( configInfo.treeIDs ) do
+                local treeCurrencyInfo = C_Traits.GetTreeCurrencyInfo( configID, treeID, false )
+                -- 1st key is class points, 2nd key is spec points
+                -- per ref: https://wowpedia.fandom.com/wiki/API_C_Traits.GetTreeCurrencyInfo
+                classCurID = treeCurrencyInfo[1].traitCurrencyID
+                specCurID = treeCurrencyInfo[2].traitCurrencyID
                 local nodes = C_Traits.GetTreeNodes( treeID )
                 for _, nodeID in ipairs( nodes ) do
                     local node = C_Traits.GetNodeInfo( configID, nodeID )
 
-                    local isSpec = false
-                    for _, cond in ipairs( node.conditionIDs ) do
-                        local c = C_Traits.GetConditionInfo( configID, cond )
-                        if c.specSetID then isSpec = true; break end
+                    local isHeroSpec = false
+                    local isSpecSpec = false
+
+                    if type(C_Traits.GetNodeCost(configID, nodeID)) == "table" then
+                        for i, traitCurrencyCost in ipairs (C_Traits.GetNodeCost(configID, nodeID)) do
+                            if traitCurrencyCost.ID == specCurID then isSpecSpec = true end
+                            if traitCurrencyCost.ID == classCurID then isSpecSpec = false end
+                        end
+                    end
+
+                    if (node.subTreeID ~= nil ) then
+                        specializationName = C_Traits.GetSubTreeInfo( configID, node.subTreeID ).name
+                        isHeroSpec = true
+                        isSpecSpec = false
                     end
 
                     if node.maxRanks > 0 then
                         for _, entryID in ipairs( node.entryIDs ) do
                             local entryInfo = C_Traits.GetEntryInfo( configID, entryID )
-                            local definitionInfo = C_Traits.GetDefinitionInfo( entryInfo.definitionID )
+                            if entryInfo.definitionID then -- Not a subTree (hero talent hidden node)
+                                local definitionInfo = C_Traits.GetDefinitionInfo( entryInfo.definitionID )
 
-                            local spellID = definitionInfo.spellID
-                            local name = definitionInfo.overrideName or GetSpellInfo( spellID )
-                            local subtext = GetSpellSubtext( spellID )
+                                local spellID = definitionInfo.spellID
+                                local name = definitionInfo.overrideName or GetSpellInfo( spellID )
+                                local subtext = C_Spell.GetSpellSubtext( spellID )
 
-                            if subtext then
-                                local rank = subtext:match( "^Rank (%d+)$" )
-                                if rank then name = name .. "_" .. rank end
-                            end
-
-                            local token = key( name )
-
-                            insert( talents, { name = token, talent = nodeID, specialization = isSpec, definition = entryInfo.definitionID, spell = spellID, ranks = node.maxRanks } )
-
-                            if not IsPassiveSpell( spellID ) then
-                                EmbedSpellData( spellID, token, true )
+                                if subtext then
+                                    local rank = subtext:match( "^Rank (%d+)$" )
+                                    if rank then name = name .. "_" .. rank end
+                                end
+                                local token = key( name )
+                                insert( talents, { name = token, talent = nodeID, isSpec = isSpecSpec, isHero = isHeroSpec, specName = specializationName, definition = entryInfo.definitionID, spell = spellID, ranks = node.maxRanks } )
+                                if not IsPassiveSpell( spellID ) then EmbedSpellData( spellID, token, true ) end
                             end
                         end
                     end
@@ -9619,14 +9683,7 @@ do
                                 append( "spec:RegisterResource( Enum.PowerType." .. k .. " )" )
                             end
 
-                            append( "" )
-                            append( "-- Talents" )
-                            append( "spec:RegisterTalents( {" )
-                            increaseIndent()
-                            append( "-- " .. playerClass )
-
                             table.sort( talents, function( a, b )
-                                if a.specialization ~= b.specialization then return b.specialization end
                                 return a.name < b.name
                             end )
 
@@ -9637,20 +9694,69 @@ do
                                 if chars > max_talent_length then max_talent_length = chars end
                             end
 
+                            local classTalents = {}
+                            local specTalents = {}
+                            local hero1Talents = {}
+                            local hero2Talents = {}
+                            local specName = nil
+                            local firstHeroSpec = nil
+                            local secondHeroSpec = nil
+
+                            for i, tal in ipairs( talents) do
+                                if ( tal.isSpec == false and tal.isHero == false ) then
+                                    insert( classTalents, tal )
+                                end
+                                if ( tal.isSpec == true and tal.isHero == false ) then
+                                    if ( specName == nil ) then specName = tal.specName end
+                                    insert( specTalents, tal )
+                                end
+                                if (tal.isSpec == false and tal.isHero == true ) then
+                                    if ( firstHeroSpec == nil ) then 
+                                        firstHeroSpec = tal.specName 
+                                    end
+
+                                    if ( tal.specName == firstHeroSpec ) then
+                                        insert( hero1Talents, tal )
+                                    else
+                                        if ( secondHeroSpec == nil ) then secondHeroSpec = tal.specName end
+                                        insert( hero2Talents, tal )
+                                    end
+                                end
+                            end
+
+                            append( "" )
+                            append( "-- Talents" )
+                            append( "spec:RegisterTalents( {" )
+                            increaseIndent()
                             local formatStr = "%-" .. max_talent_length .. "s = { %5d, %-6d, %d }, -- %s"
 
-                            local classes = true
-
-                            for i, tal in ipairs( talents ) do
-                                if classes and tal.specialization then
-                                    classes = false
-                                    append( "" )
-                                    append( "-- " .. playerSpec )
-                                end
+                            -- Write Class Talents
+                            append( "-- " .. playerClass )
+                            for i, tal in ipairs( classTalents ) do
                                 local line = format( formatStr, tal.name, tal.talent, tal.spell, tal.ranks or 0, GetSpellDescription( tal.spell ):gsub( "\n", " " ):gsub( "\r", " " ):gsub( "%s%s+", " " ) )
                                 append( line )
                             end
 
+                            -- Write Spec Talents
+                            append( "-- " .. specName )
+                            for i, tal in ipairs( specTalents ) do
+                                local line = format( formatStr, tal.name, tal.talent, tal.spell, tal.ranks or 0, GetSpellDescription( tal.spell ):gsub( "\n", " " ):gsub( "\r", " " ):gsub( "%s%s+", " " ) )
+                                append( line )
+                            end
+                            
+                            -- Write Hero1 Talents
+                            append( "-- " .. firstHeroSpec )
+                            for i, tal in ipairs( hero1Talents ) do
+                                local line = format( formatStr, tal.name, tal.talent, tal.spell, tal.ranks or 0, GetSpellDescription( tal.spell ):gsub( "\n", " " ):gsub( "\r", " " ):gsub( "%s%s+", " " ) )
+                                append( line )
+                            end
+
+                            -- Write Hero2 Talents
+                            append( "-- " .. secondHeroSpec )
+                            for i, tal in ipairs( hero2Talents ) do
+                                local line = format( formatStr, tal.name, tal.talent, tal.spell, tal.ranks or 0, GetSpellDescription( tal.spell ):gsub( "\n", " " ):gsub( "\r", " " ):gsub( "%s%s+", " " ) )
+                                append( line )
+                            end
                             decreaseIndent()
                             append( "} )\n\n" )
 
@@ -10089,7 +10195,7 @@ do
                     supporters = {
                         type = "description",
                         name = function ()
-                            return "|cFF00CCFFTHANK YOU TO OUR SUPPORTERS!|r\n\n" .. ns.Patrons .. ".\n\n" ..
+                            return "|cFF00CCFFTHANK YOU TO OUR SUPPORTERS!|r\n\n" .. ns.Patrons .. "\n\n" ..
                                 "Please see the |cFFFFD100Issue Reports|r link for information about reporting bugs.\n\n"
                         end,
                         fontSize = "medium",
@@ -10126,11 +10232,19 @@ do
                         set = function() end,
                         dialogControl = "SFX-Info-URL"
                     },
-
+                    faq = {
+                        type = "input",
+                        name = "FAQ / Help",
+                        order = 13,
+                        width = "full",
+                        get = function() return "https://github.com/Hekili/hekili/wiki/Frequently-Asked-Questions" end,
+                        set = function() end,
+                        dialogControl = "SFX-Info-URL"
+                    },
                     simulationcraft = {
                         type = "input",
                         name = "SimC",
-                        order = 13,
+                        order = 14,
                         get = function () return "https://github.com/simulationcraft/simc/wiki" end,
                         set = function () end,
                         width = "full",
@@ -10217,6 +10331,7 @@ do
             abilities = {
                 type = "group",
                 name = "Abilities",
+                desc = "Edit specific abilities, such as disabling, assigning to a toggle, overriding the keybind text or icon and more.",
                 order = 80,
                 childGroups = "select",
                 args = {
@@ -10239,6 +10354,7 @@ do
             items = {
                 type = "group",
                 name = "Gear and Items",
+                desc = "Edit specific items, such as disabling, assigning to a toggle, overriding the keybind text and more.",
                 order = 81,
                 childGroups = "select",
                 args = {
@@ -10261,6 +10377,7 @@ do
             snapshots = {
                 type = "group",
                 name = "Issue Reporting (Snapshots)",
+                desc = "Learn how to report an issue with the addon, such as incorrect recommendations or bugs.",
                 order = 86,
                 args = {
                     autoSnapshot = {

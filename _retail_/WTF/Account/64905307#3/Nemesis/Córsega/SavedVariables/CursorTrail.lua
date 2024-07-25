@@ -13,9 +13,9 @@ CursorTrail_PlayerConfig = {
 ["UserOfsZ"] = 0,
 ["ShapeColorG"] = 1,
 ["UserAlpha"] = 1,
-["ShapeSparkle"] = false,
+["UserRotZ"] = 0,
 ["UserShowOnlyInCombat"] = false,
 ["FadeOut"] = false,
 ["ShapeColorR"] = 1,
-["UserRotZ"] = 0,
+["ShapeSparkle"] = false,
 }

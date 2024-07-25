@@ -1,5 +1,5 @@
 -- State.lua
--- June 2014
+-- July 2024
 
 local addon, ns = ...
 local Hekili = _G[ addon ]
@@ -16,9 +16,22 @@ local round, roundUp, roundDown = ns.round, ns.roundUp, ns.roundDown
 local safeMin, safeMax = ns.safeMin, ns.safeMax
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+local GetItemSpell = C_Item.GetItemSpell
+local GetItemCooldown = C_Item.GetItemCooldown
+local IsUsableItem = C_Item.IsUsableItem
+local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown
+local UnitBuff, UnitDebuff = ns.UnitBuff, ns.UnitDebuff
+
+local GetSpellCharges = function(spellID)
+    local spellChargeInfo = C_Spell.GetSpellCharges(spellID);
+    if spellChargeInfo then
+        return spellChargeInfo.currentCharges, spellChargeInfo.maxCharges, spellChargeInfo.cooldownStartTime, spellChargeInfo.cooldownDuration, spellChargeInfo.chargeModRate;
+    end
+end
 local FindPlayerAuraByID, IsAbilityDisabled, IsDisabledCovenantSpell = ns.FindPlayerAuraByID, ns.IsAbilityDisabled, ns.IsDisabledCovenantSpell
 
 -- Clean up table_x later.
+---@diagnostic disable-next-line: deprecated
 local insert, remove, sort, tcopy, unpack, wipe = table.insert, table.remove, table.sort, ns.tableCopy, table.unpack, table.wipe
 local format = string.format
 
@@ -110,6 +123,8 @@ state.off_hand = {
 }
 
 state.gcd = {}
+
+state.hero_tree = setmetatable( {}, { __index = function( t, k ) return false end } ) -- TODO: Update hero tree detection for 11.0 launch.
 
 state.history = {
     casts = {},
@@ -581,16 +596,16 @@ state.GetActiveLossOfControlData = C_LossOfControl.GetActiveLossOfControlData
 state.GetActiveLossOfControlDataCount = C_LossOfControl.GetActiveLossOfControlDataCount
 state.GetNumGroupMembers = GetNumGroupMembers
 -- state.GetItemCooldown = GetItemCooldown
-state.GetItemCount = GetItemCount
+state.GetItemCount = C_Item.GetItemCount
 state.GetItemGem = GetItemGem
 state.GetItemInfo = GetItemInfo
 state.GetPlayerAuraBySpellID = GetPlayerAuraBySpellID
 state.GetShapeshiftForm = GetShapeshiftForm
 state.GetShapeshiftFormInfo = GetShapeshiftFormInfo
-state.GetSpellCount = GetSpellCount
+state.GetSpellCount = C_Spell.GetSpellCastCount
 state.GetSpellInfo = GetSpellInfo
 state.GetSpellLink = GetSpellLink
-state.GetSpellTexture = GetSpellTexture
+state.GetSpellTexture = C_Spell.GetSpellTexture
 state.GetStablePetInfo = GetStablePetInfo
 state.GetTime = GetTime
 state.GetTotemInfo = GetTotemInfo
@@ -599,10 +614,10 @@ state.IsActiveSpell = ns.IsActiveSpell
 state.IsPlayerSpell = IsPlayerSpell
 state.IsSpellKnown = IsSpellKnown
 state.IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
-state.IsUsableItem = IsUsableItem
-state.IsUsableSpell = IsUsableSpell
+state.IsUsableItem = C_Item.IsUsableItem
+state.IsUsableSpell = C_Spell.IsSpellUsable
 state.UnitAura = UnitAura
-state.UnitAuraSlots = UnitAuraSlots
+state.UnitAuraSlots = C_UnitAuras.GetAuraSlots
 state.UnitBuff = UnitBuff
 state.UnitCanAttack = UnitCanAttack
 state.UnitCastingInfo = UnitCastingInfo
@@ -2040,7 +2055,7 @@ do
                 t[k] = t.encounterID > 0 or UnitCanAttack( "player", "target" ) and ( UnitClassification( "target" ) == "worldboss" or UnitLevel( "target" ) == -1 )
             elseif k == "encounter" then t[k] = t.encounterID > 0
             elseif k == "group" then t[k] = t.group_members > 1
-            elseif k == "group_members" then t[k] = max( 1, GetNumGroupMembers() )
+            elseif k == "group_members" or k == "active_allies" then t[k] = max( 1, GetNumGroupMembers() )
             elseif k == "level" then t[k] = UnitEffectiveLevel("player") or MAX_PLAYER_LEVEL
             elseif k == "mounted" or k == "is_mounted" then t[k] = IsMounted()
             elseif k == "moving" then t[k] = ( GetUnitSpeed("player") > 0 )
@@ -3001,7 +3016,12 @@ do
         __index = function( t, k )
             local ability = rawget( t, "key" ) and class.abilities[ t.key ] or class.abilities.null_cooldown
 
-            local GetCooldown = _G.GetSpellCooldown
+            local GetCooldown = function(spellID)
+                local spellCooldownInfo = C_Spell.GetSpellCooldown(spellID);
+                if spellCooldownInfo then
+                    return spellCooldownInfo.startTime, spellCooldownInfo.duration, spellCooldownInfo.isEnabled, spellCooldownInfo.modRate;
+                end
+            end
             local profile = Hekili.DB.profile
             local id = ability.id
 
@@ -3014,7 +3034,7 @@ do
                     GetCooldown = ability.funcs.cooldown_special
                     id = 999999
                 elseif ability.item then
-                    GetCooldown = _G.GetItemCooldown
+                    GetCooldown = GetItemCooldown
                     id = ability.itemCd or ability.item
                 end
             end
@@ -3041,7 +3061,7 @@ do
                 if id > 0 then
                     start, duration = GetCooldown( id )
                     local lossStart, lossDuration = GetSpellLossOfControlCooldown( id )
-                    if lossStart + lossDuration > start + duration then
+                    if lossStart and lossStart + lossDuration > start + duration then
                         start = lossStart
                         duration = lossDuration
                     end
@@ -4720,6 +4740,8 @@ ns.metatables.mt_equipped = mt_equipped
 
 -- Aliases let a single buff name refer to any of multiple buffs.
 -- Developed mainly for RtB; it will also report "stack" or "count" as the sum of stacks of multiple buffs.
+local mt_alias_debuff
+
 do
     local autoReset = setmetatable( {
         applied = 1,
@@ -5460,7 +5482,7 @@ local all = class.specs[ 0 ]
 -- 04072017: Let's go ahead and cache aura information to reduce overhead.
 local autoAuraKey = setmetatable( {}, {
     __index = function( t, k )
-        local aura_name = GetSpellInfo( k )
+        local aura_name = C_Spell.GetSpellInfo( k ).name
 
         if not aura_name then return end
 

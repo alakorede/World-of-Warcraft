@@ -1,8 +1,6 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.0913,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 202579,
@@ -51,33 +49,33 @@ nil,
 ["Link"] = "|cffa335ee|Hitem:193648::::::::70:256::2:6:9636:6652:10864:10312:3168:8767:1:28:2156:::::|h[Azureblade's Work Gloves]|h|r",
 },
 {
-["ID"] = 144139,
-["Level"] = 467,
+["ID"] = 193633,
+["Level"] = 489,
 ["AlsoFitsIn"] = 12,
-["Link"] = "|cff0070dd|Hitem:144139::::::::70:256::54:7:6652:8812:10305:7756:10532:9851:8766:1:28:2565:::::|h[Viscous Ring]|h|r",
+["Link"] = "|cffa335ee|Hitem:193633::::::::70:256::102:7:10344:9636:6652:10533:9144:3168:8767::::::|h[Unstable Arcane Loop]|h|r",
 },
 {
-["ID"] = 144135,
-["Level"] = 467,
+["ID"] = 193804,
+["Level"] = 480,
 ["AlsoFitsIn"] = 11,
-["Link"] = "|cff0070dd|Hitem:144135::::::::70:256::54:7:6652:8811:10305:7756:10533:9851:8766:1:28:2565:::::|h[Pulled Grenade Pin]|h|r",
+["Link"] = "|cffa335ee|Hitem:193804::::::::70:256::2:6:9636:6652:10533:10309:3159:8767:1:28:2156:::::|h[Eternal Sentry's Ring]|h|r",
 },
 {
-["ID"] = 194304,
-["Level"] = 480,
+["ID"] = 193769,
+["Level"] = 489,
 ["AlsoFitsIn"] = 14,
-["Link"] = "|cffa335ee|Hitem:194304::::::::70:256::83:6:6652:7982:10341:10884:1563:8767::::::|h[Iceblood Deathsnare]|h|r",
+["Link"] = "|cffa335ee|Hitem:193769::::::::70:256::102:6:10344:9636:6652:9144:3168:8767::::::|h[Erupting Spear Fragment]|h|r",
 },
 {
-["ID"] = 194304,
-["Level"] = 480,
+["ID"] = 212685,
+["Level"] = 489,
 ["AlsoFitsIn"] = 13,
-["Link"] = "|cffa335ee|Hitem:194304::::::::70:258::83:6:6652:7982:10341:10884:1563:8767::::::|h[Iceblood Deathsnare]|h|r",
+["Link"] = "|cffa335ee|Hitem:212685::::::::70:256::102:5:10344:9636:9144:3168:8767::::::|h[Tome of Unstable Power]|h|r",
 },
 {
-["ID"] = 193629,
-["Level"] = 476,
-["Link"] = "|cff0070dd|Hitem:193629::::::::70:256::2:6:10308:9636:6652:10864:3155:8766:1:28:2156:::::|h[Cloak of Lost Devotion]|h|r",
+["ID"] = 193763,
+["Level"] = 489,
+["Link"] = "|cffa335ee|Hitem:193763::::::::70:256::2:6:9636:6652:10864:10312:3168:8767:1:28:2156:::::|h[Fireproof Drape]|h|r",
 },
 {
 ["ID"] = 193707,
@@ -90,6 +88,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::1:5:10323:7974:6652:3139:8766:1:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -143,7 +144,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

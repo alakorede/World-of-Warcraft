@@ -340,35 +340,7 @@ local function GetAlternateBaseSourceID(set, sourceID)
   end
 end
 
-local function SwapToNextSourceCombo(set)--GetNextAltBaseSourceIDForSet(set)
-  --local firstSID;
-  --local i = 1;
-  --for a,b in pairs(set.altSources) do
-  --  if not firstSID then firstSID = a end
-  --  
-  --  if i == set.altNumber then
-  --    if #b == set.altSourceNumbers[a] then
-  --      set.altSourceNumbers[a] = 1;
-  --      set.altNumber = set.altNumber + 1;
-  --    else
-  --      --set.altSourceNumbers[a] = set.altSourceNumbers[a] + 1;
-  --      return a;
-  --    end
-  --  end
-  --  
-  --  i = i + 1;
-  --  --if not sID and #b == set.altSourceNumbers[a] then
-  --  --  sID = a;
-  --  --elseif #b < set.altSourceNumbers[a] then
-  --  --  set.altSourceNumbers[a] = set.altSourceNumbers[a] + 1;
-  --  --  sID = a;
-  --  --  break;
-  --  --end
-  --end
-  --if set.altNumber == i then set.altNumber = 1; end
-  --return firstSID;
-  
-  
+local function SwapToNextSourceCombo(set)
   local altSourceBaseIDs = {}
   for a,b in pairs(set.altSources) do
     tinsert(altSourceBaseIDs, a);
@@ -406,6 +378,14 @@ local function HasAlternateSources(setID, sourceID)
   return GetAlternateBaseSourceID(GetSetByID(setID), sourceID) ~= nil;
 end
 
+local function GetAltSourceList(setID, sourceID)
+  local set = GetSetByID(setID);
+  if set and set.altSources then
+    local baseSourceID = GetAlternateBaseSourceID(set, sourceID);
+    return set.altSources[baseSourceID];
+  end
+end
+
 local function GetAlternateSourceID(set, sourceID)
   if set and set.altSources ~= nil then
     local baseSourceID = GetAlternateBaseSourceID(set, sourceID);
@@ -437,6 +417,16 @@ local function SwapAlternateSourceID(setID, sourceID, givenSet)
       set.sources[newSourceID] = C_TransmogCollection.GetSourceInfo(newSourceID).isCollected;
       if not C_Transmog.IsAtTransmogNPC() then WardrobeCollectionFrame.SetsCollectionFrame:DisplaySet(nil, setID, true); end
     end
+  end
+end
+
+local function SetAlternateSourceByIndex(setID, baseSourceID, currSourceID, index)
+print("setID: ",setID,"  baseSID: ",baseSourceID,"  currSID: ",currSourceID,"  index: ",index);
+  local set = GetSetByID(setID);
+  if currSourceID ~= set.altSources[baseSourceID][index] then
+    set.sources[currSourceID] = nil;
+    set.sources[set.altSources[baseSourceID][index]] = C_TransmogCollection.GetSourceInfo(set.altSources[baseSourceID][index]).isCollected;
+    if not C_Transmog.IsAtTransmogNPC() then WardrobeCollectionFrame.SetsCollectionFrame:DisplaySet(nil, setID, true); end
   end
 end
 
@@ -1626,8 +1616,6 @@ local function HandleItemFrames(itemFrame, forceItemFrameDataUpdate)
       itemFrame.CollectionIcon:SetShown(false);
     end
   end
-  
-  itemFrame.RemixIcon:SetShown(itemFrame.isRemix);
 end
 
 local function DisplaySet(self, givenSetID, force)
@@ -1724,6 +1712,20 @@ local function DisplaySet(self, givenSetID, force)
   else
     WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetShown(false);
   end
+  
+  local invTypeToSlotSettings = {[2] = 1,--head
+                                 [4] = 2,--shoulders
+                                 [5] = 4,--chest
+                                 [6] = 4,--chest
+                                 [21] = 4,--chest
+                                 [20] = 5,--tabard
+                                 [7] =  8,--waist
+                                 [8] =  9,--legs
+                                 [9] =  10,--feet
+                                 [10] = 6,--wrist
+                                 [11] = 7,--hands
+                                 [17] = 3,--back
+    };
 
 	for i = 1, #sortedSources do
 		local itemFrame = WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.itemFramesPool:Acquire();
@@ -1763,30 +1765,57 @@ local function DisplaySet(self, givenSetID, force)
           end);
     end
     
-    if itemFrame.RemixIcon == nil then
-      itemFrame.RemixIcon = CreateFrame("frame", nil, itemFrame);
-      itemFrame.RemixIcon:SetPoint("CENTER",itemFrame,"BOTTOM",-1,-4);
-      itemFrame.RemixIcon:SetSize(25,25);
-      itemFrame.RemixIcon.Icon = itemFrame.RemixIcon:CreateTexture(nil, "OVERLAY");
-      itemFrame.RemixIcon.Icon:SetAllPoints();
-      itemFrame.RemixIcon.Icon:SetDrawLayer("OVERLAY", 2);
-      itemFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_vert.tga]]);
-      itemFrame.RemixIcon.Icon:SetAlpha(0.9);
-      itemFrame.RemixIcon.Icon:SetDesaturation(.4);
-      itemFrame.RemixIcon.Text = "MoP Remix Exclusive";
-      
-      itemFrame.RemixIcon:SetScript("OnEnter", function(self)
-                GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-                GameTooltip_SetTitle(GameTooltip, self.Text, NORMAL_FONT_COLOR, true);
-                GameTooltip:Show();
-          end);
-      itemFrame.RemixIcon:SetScript("OnLeave", function(self)
-                GameTooltip:Hide();
-          end);
+    if itemFrame.isRemix then
+      if itemFrame.RemixIcon == nil then
+        itemFrame.RemixIcon = CreateFrame("frame", nil, itemFrame);
+        itemFrame.RemixIcon:SetPoint("CENTER",itemFrame,"BOTTOM",-1,-4);
+        itemFrame.RemixIcon:SetSize(25,25);
+        itemFrame.RemixIcon.Icon = itemFrame.RemixIcon:CreateTexture(nil, "OVERLAY");
+        itemFrame.RemixIcon.Icon:SetAllPoints();
+        itemFrame.RemixIcon.Icon:SetDrawLayer("OVERLAY", 2);
+        itemFrame.RemixIcon.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\Remix_icon_vert.tga]]);
+        itemFrame.RemixIcon.Icon:SetAlpha(0.9);
+        itemFrame.RemixIcon.Icon:SetDesaturation(.4);
+        itemFrame.RemixIcon.Text = "MoP Remix Exclusive";
+        
+        itemFrame.RemixIcon:SetScript("OnEnter", function(self)
+                  GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                  GameTooltip_SetTitle(GameTooltip, self.Text, NORMAL_FONT_COLOR, true);
+                  GameTooltip:Show();
+            end);
+        itemFrame.RemixIcon:SetScript("OnLeave", function(self)
+                  GameTooltip:Hide();
+            end);
+      end
+      itemFrame.RemixIcon:SetShown(true);
+    elseif itemFrame.RemixIcon then
       itemFrame.RemixIcon:SetShown(false);
     end
     
+    if itemFrame.HiddenSlot == nil and not ExS_Settings.toggleSlotPreview[invTypeToSlotSettings[itemFrame.invType]] then
+      itemFrame.HiddenSlot = CreateFrame("frame", nil, itemFrame);
+      itemFrame.HiddenSlot:SetPoint("CENTER",itemFrame,"CENTER");
+      itemFrame.HiddenSlot:SetSize(25,25);
+      itemFrame.HiddenSlot.Icon = itemFrame.HiddenSlot:CreateTexture(nil, "OVERLAY");
+      itemFrame.HiddenSlot.Icon:SetAllPoints();
+      itemFrame.HiddenSlot.Icon:SetDrawLayer("OVERLAY", 2);
+      itemFrame.HiddenSlot.Icon:SetTexture([[Interface\Addons\ExtendedSets\textures\ShowHideIcons.tga]]);
+      itemFrame.HiddenSlot.Icon:SetTexCoord(0,.5,0,1);
+      itemFrame.HiddenSlot.Icon:SetAlpha(0.9);
+      itemFrame.HiddenSlot.Icon:SetDesaturation(.4);
+      
+      --itemFrame.HiddenSlot:SetScript("OnEnter", function(self)
+      --          GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+      --          GameTooltip_SetTitle(GameTooltip, self.Text, NORMAL_FONT_COLOR, true);
+      --          GameTooltip:Show();
+      --    end);
+      --itemFrame.HiddenSlot:SetScript("OnLeave", function(self)
+      --          GameTooltip:Hide();
+      --    end);
+      itemFrame.HiddenSlot:SetShown(false);
+    end
     
+    itemFrame.hasAlt = nil;
     if HasAlternateSources(setID, itemFrame.sourceID) then
       if itemFrame.AltAppBorder == nil then
         itemFrame.AltAppBorder = itemFrame:CreateTexture(nil, "OVERLAY");
@@ -1798,6 +1827,7 @@ local function DisplaySet(self, givenSetID, force)
       end
       
       itemFrame.AltAppBorder:Show();
+      itemFrame.hasAlt = true;
     elseif itemFrame.AltAppBorder then
       itemFrame.AltAppBorder:Hide();
     end
@@ -1835,7 +1865,15 @@ local function DisplaySet(self, givenSetID, force)
 		itemFrame:SetPoint("TOP", WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame, "TOP", buttonSizing[2] + (i - 1) * buttonSizing[1], -94);
 		itemFrame:Show();
     
-		WardrobeCollectionFrame.SetsCollectionFrame.Model:TryOn(itemFrame.sourceID);
+    
+    if ExS_Settings.toggleSlotPreview[invTypeToSlotSettings[itemFrame.invType]] then
+      WardrobeCollectionFrame.SetsCollectionFrame.Model:TryOn(itemFrame.sourceID);
+      if itemFrame.HiddenSlot then itemFrame.HiddenSlot:Hide() end
+    else
+      itemFrame.HiddenSlot:Show();
+      itemFrame.Icon:SetDesaturated(true);
+      itemFrame.Icon:SetAlpha(0.3);
+    end
 	end
 
   local WardrobeSetsCollectionVariantSetsButton;
@@ -1846,11 +1884,9 @@ local function DisplaySet(self, givenSetID, force)
   end
 
 	-- variant sets
-	local variantSets = GetVariantSets(setID)--GetBaseSetID(setID));
+	local variantSets = GetVariantSets(setID)
 	if ( #variantSets <= 1 )  then
 		WardrobeSetsCollectionVariantSetsButton:Hide();
-    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
-    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("TOPRIGHT", WardrobeSetsCollectionVariantSetsButton, "TOPRIGHT", 0, 0);
     SetsFrame.UpdateExtraButtons();
 	else
 		WardrobeSetsCollectionVariantSetsButton:Show();
@@ -1860,8 +1896,6 @@ local function DisplaySet(self, givenSetID, force)
       WardrobeSetsCollectionVariantSetsButton:SetText(description);
     end
     SetsFrame.UpdateExtraButtons();
-    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:ClearAllPoints();
-    --WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.HiddenSetButton:SetPoint("RIGHT", WardrobeSetsCollectionVariantSetsButton, "LEFT", -4, 0);
 	end
 end
 
@@ -3538,7 +3572,8 @@ local function FavoriteDropDown_Init(button)
   end
   
   if (setID ~= _FavoriteDropDown.setID) then
-    if _FavoriteDropDown:IsShown() then _FavoriteDropDown:Toggle() end
+    --if _FavoriteDropDown:IsShown() then _FavoriteDropDown:Toggle() end
+    --_FavoriteDropDown:SetCheckAlignment("RIGHT");
     _FavoriteDropDown:ClearLines();
   
     local variantSets, anyHidden = SetsFrame.GetVariantSets(baseButtonSetID, true);
@@ -3550,6 +3585,7 @@ local function FavoriteDropDown_Init(button)
     local info = {}
     info.notCheckable = true;
     info.disabled = nil;
+    info.isRadio = false;
 
     --Link outfit option on list right click
     info.text = LINK_TRANSMOG_OUTFIT
@@ -4147,6 +4183,30 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ExS_Settings.showHiddenSets end;
     SetsFrame.FilterDropDown:AddLine(info);
     
+    info.text = "Armor Slot Preview Toggles";
+    info.tooltipText = "Toggles displaying individual slots on the preview model.";
+    info.func = nil;
+    info.menu = {};
+    
+    local slotNames = { "Helm", "Shoulders", "Back", "Chest", "Tabard", "Wrists", "Gloves", "Waist", "Pants", "Boots" };
+    for i=1,#slotNames do
+      info.menu[i] = {};
+      info.menu[i].text = slotNames[i];
+      info.menu[i].tooltipText = "Toggles displaying the "..slotNames[i].." on the preview model.";
+      info.menu[i].tooltipOnButton = true;
+      info.menu[i].func = function(self)
+              ExS_Settings.toggleSlotPreview[i] = not ExS_Settings.toggleSlotPreview[i];
+              self:SetCheckedState(ExS_Settings.toggleSlotPreview[i]);
+              
+              DisplaySet(nil,nil,true);
+            end
+      info.menu[i].checked = function() return ExS_Settings.toggleSlotPreview[i] end;
+      info.menu[i].keepShown = true;
+    end
+    
+    SetsFrame.FilterDropDown:AddLine(info);
+    info.tooltipText = nil;
+    
     SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
     
     --Disable Show/Hide hidden sets button
@@ -4470,11 +4530,41 @@ local function RefreshAppearanceTooltip()
   WardrobeCollectionFrame.tooltipSourceIndex, WardrobeCollectionFrame.tooltipCycle = CollectionWardrobeUtil.SetAppearanceTooltip(GameTooltip, sources, self.tooltipPrimarySourceID, WardrobeCollectionFrame.tooltipSourceIndex, true)
 end
 
+local function HandleAltRightClickMenu(button)
+  _FavoriteDropDown.setID = nil;
+  _FavoriteDropDown:ClearLines();
+  _FavoriteDropDown:SetAnchor("TOPLEFT", button, "TOPRIGHT", 7, -8);
+  --_FavoriteDropDown:SetCheckAlignment("LEFT");
+  
+  local info = {}
+  info.disabled = nil;
+  info.isRadio = true;
+  
+  local baseSourceID = GetAlternateBaseSourceID(GetSetByID(button.setID), button.sourceID);
+  local altSources = GetAltSourceList(button.setID, button.sourceID);
+  for i=1,#altSources do
+    local sourceInfo = C_TransmogCollection.GetSourceInfo(altSources[i]);
+    info.text = sourceInfo.name or " ";
+    info.checked = function() return button.sourceID == altSources[i] end;
+    info.func = function(self) SetAlternateSourceByIndex(button.setID, baseSourceID, button.sourceID, i); self:SetCheckedState(button.sourceID == altSources[i]); end
+    _FavoriteDropDown:AddLine(info);
+  end
+  
+  _FavoriteDropDown:AddLine({isSpacer = true;});
+  info.notCheckable = true;
+  info.func = nil;
+  info.checked = nil;
+  info.isRadio = false;
+  info.text = CANCEL;
+  _FavoriteDropDown:AddLine(info);
+  _FavoriteDropDown:Toggle();
+end
+
 --Handles Mouse click in the SetSources row.
 --if Shift+Left Click, puts link in open chat
 --if Ctrl+Left Click, preview in DressUp model
 --else swaps appearance if multiple appearances for that slot
-local function ExS_SetSources_OnMouseDown(button)
+local function ExS_SetSources_OnMouseDown(button, mouseButton)
 	if ( IsModifiedClick("CHATLINK") ) then
     --local sources = GetSetSourcesForSlot(button.setID, WardrobeCollectionFrame.SetsCollectionFrame.tooltipTransmogSlot);
 		--if ( #sources == 0 ) then
@@ -4511,10 +4601,21 @@ local function ExS_SetSources_OnMouseDown(button)
 		--end
     
 		DressUpVisual(button.sourceID);
-  else
-    SwapAlternateSourceID(button.setID, button.sourceID);
-    ----For help filling in alt appearance db.
-    --print(button.setID,"  setID--sourceID  ",button.sourceID,"    baseSet: ",GetSetByID(button.setID).baseSetID);
+  elseif button.hasAlt then
+    --if right click, open the list of alternate sources to pick
+    if mouseButton == "RightButton" then
+      local altSources = GetAltSourceList(button.setID, button.sourceID);
+      for i=1,#altSources do
+        local sourceInfo = C_TransmogCollection.GetSourceInfo(altSources[i]);
+      end
+      
+      C_Timer.After(0, function() HandleAltRightClickMenu(button) end)
+    else
+      SwapAlternateSourceID(button.setID, button.sourceID);
+    end
+  ----For help filling in alt appearance db.
+  --else
+  --  print(button.setID,"  setID--sourceID  ",button.sourceID,"    baseSet: ",GetSetByID(button.setID).baseSetID);
 	end
 end
 
@@ -5094,6 +5195,9 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
       ExS_Settings.extraButtonToggles[2] = true; --Link Outfit
       ExS_Settings.extraButtonToggles[3] = true; --Favorite
       ExS_Settings.extraButtonToggles[4] = true; --Hide Set
+    end
+    if (ExS_Settings.toggleSlotPreview == nil) then
+      ExS_Settings.toggleSlotPreview = {true, true, true, true, true, true, true, true, true};
     end
   
 		--WardrobeCollectionFrameScrollFrame:Hide();
