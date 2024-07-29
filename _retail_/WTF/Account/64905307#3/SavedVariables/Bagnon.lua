@@ -31,6 +31,11 @@ Bagnon_Sets = {
 ["version"] = "10.2.2",
 ["display"] = {
 },
+["latest"] = {
+["cooldown"] = 1715387840,
+},
+["fridgeColor"] = {
+},
 ["global"] = {
 ["inventory"] = {
 ["rules"] = {
@@ -68,11 +73,11 @@ Bagnon_Sets = {
 ["x"] = -729.8519287109375,
 ["borderColor"] = {
 },
-["showBags"] = true,
-["columns"] = 13,
+["brokerObject"] = "Atlas",
 ["lockedSlots"] = {
 },
-["brokerObject"] = "Atlas",
+["columns"] = 13,
+["showBags"] = true,
 },
 ["vault"] = {
 ["rules"] = {
@@ -185,14 +190,9 @@ Bagnon_Sets = {
 ["x"] = 53.88884735107422,
 ["borderColor"] = {
 },
-["showBags"] = true,
 ["lockedSlots"] = {
 },
+["showBags"] = true,
 },
-},
-["fridgeColor"] = {
-},
-["latest"] = {
-["cooldown"] = 1715387840,
 },
 }

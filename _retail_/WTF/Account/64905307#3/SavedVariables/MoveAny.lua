@@ -900,10 +900,9 @@ MATAB = {
 },
 ["StaticPopup1"] = {
 ["AN"] = "BOTTOMLEFT",
-["PA"] = "UIParent",
-["PX"] = 908,
-["PY"] = 975,
+["PY"] = 974,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 909,
 },
 ["QuestFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -931,9 +930,9 @@ MATAB = {
 },
 ["WardrobeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 434,
+["PY"] = 276,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 93,
+["PX"] = 97,
 },
 ["SplashFrame"] = {
 },
@@ -945,7 +944,7 @@ MATAB = {
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 521,
+["PY"] = 523,
 ["RE"] = "BOTTOMLEFT",
 ["PX"] = 258,
 },
@@ -973,8 +972,8 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 319,
-["PX"] = 719,
+["PY"] = 320,
+["PX"] = 721,
 ["RE"] = "BOTTOMLEFT",
 },
 ["PVPMatchScoreboard"] = {
@@ -995,10 +994,9 @@ MATAB = {
 },
 ["ItemUpgradeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PA"] = "UIParent",
-["RE"] = "BOTTOMLEFT",
 ["PY"] = 545,
 ["PX"] = 16,
+["RE"] = "BOTTOMLEFT",
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1076,8 +1074,9 @@ MATAB = {
 },
 ["WeeklyRewardsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 428,
+["PA"] = "UIParent",
 ["PX"] = 484,
+["PY"] = 430,
 ["RE"] = "BOTTOMLEFT",
 },
 ["OpenMailFrame"] = {
@@ -1174,7 +1173,7 @@ MATAB = {
 ["StaticPopup1"] = {
 },
 ["QuestFrame"] = {
-["SCALE"] = 0.892,
+["SCALE"] = 1.03,
 },
 ["TradeFrame"] = {
 },
@@ -1208,7 +1207,7 @@ MATAB = {
 ["InspectRecipeFrame"] = {
 },
 ["PVEFrame"] = {
-["SCALE"] = 0.994,
+["SCALE"] = 1.06,
 },
 ["PVPMatchScoreboard"] = {
 },

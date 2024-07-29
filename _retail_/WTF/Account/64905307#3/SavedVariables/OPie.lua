@@ -1045,8 +1045,8 @@ OPie_SavedData = {
 460,
 ["sliceToken"] = "ABuemPIIVo1",
 },
-["name"] = "Chicoxavier",
 ["save"] = true,
+["name"] = "Chicoxavier",
 ["limit"] = "Chicoxavier-Nemesis",
 },
 ["riamolambo"] = {
@@ -1517,8 +1517,8 @@ OPie_SavedData = {
 6948,
 ["sliceToken"] = "ABuemA2Zmi1",
 },
-["save"] = true,
 ["name"] = "Mitraculo",
+["save"] = true,
 ["limit"] = "Mitráculo-Nemesis",
 },
 ["Muligan"] = {

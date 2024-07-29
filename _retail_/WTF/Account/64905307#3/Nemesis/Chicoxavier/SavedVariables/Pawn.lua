@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0913,
+["LastVersion"] = 2.0914,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 202579,
@@ -8,9 +10,9 @@ PawnOptions = {
 ["Link"] = "|cffa335ee|Hitem:202579::::::::70:256::82:8:6652:10533:10872:7979:10313:10884:1550:8767:1:28:2474:::::|h[Attendant's Concocting Cover]|h|r",
 },
 {
-["ID"] = 193647,
-["Level"] = 476,
-["Link"] = "|cff0070dd|Hitem:193647::::::::70:256::2:7:10308:9636:6652:8783:10244:3155:8766:1:28:2156:::::|h[Custodian's Medallion of Delusion]|h|r",
+["ID"] = 144127,
+["Level"] = 489,
+["Link"] = "|cffa335ee|Hitem:144127::::::::70:256::54:7:6652:7756:10245:8784:10312:9893:8767:1:28:2565:::::|h[Cloudstrike Pendant]|h|r",
 },
 {
 ["ID"] = 193788,
@@ -88,9 +90,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::1:5:10323:7974:6652:3139:8766:1:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,6 +143,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

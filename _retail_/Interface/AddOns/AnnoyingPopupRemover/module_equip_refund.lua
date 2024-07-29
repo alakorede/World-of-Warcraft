@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2021-2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v21.3.0-release
+-- Addon version: v21.5.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -96,10 +96,11 @@ end -- HidePopup()
 
 if not APR.IsClassic or this.WorksInClassic then
 	-- Equipping a vendor-refundable item triggers this event.
-	function APR.Events:EQUIP_BIND_REFUNDABLE_CONFIRM(slot)
+	function APR.Events:EQUIP_BIND_REFUNDABLE_CONFIRM(slot, itemLocation)
 
 		DebugPrint("In APR.Events:EQUIP_BIND_REFUNDABLE_CONFIRM")
 		DebugPrint("Slot is ", slot)
+		DebugPrint("itemLocation is ", itemLocation and "not nil" or "nil")
 
 
 		-- If the user didn't ask us to hide this popup, just return.
@@ -113,13 +114,19 @@ if not APR.IsClassic or this.WorksInClassic then
 			return
 		end
 
+		-- in 11.0.0, Blizz changed the functions in this static dialog to expect a data table with a slot element, not just the slot number.
+		local data = {
+			slot = slot,
+			itemLocation = itemLocation
+		}
+
 		-- Note that if we hide the dialog, the OnHide function is called, which cancels the pending equip request. 
 		-- So, we have to accept first, then hide.
 
-		StaticPopupDialogs["EQUIP_BIND_REFUNDABLE"]:OnAccept(slot)
+		StaticPopupDialogs["EQUIP_BIND_REFUNDABLE"]:OnAccept(data)
 		-- note that due to the way Blizz does the dialogs, you can't do dialog:OnAccept() - it doesn't exist. The StaticPopup_OnClick function actually references the static version.
 
-		APR:Hide_StaticPopup("EQUIP_BIND_REFUNDABLE", slot)
+		APR:Hide_StaticPopup("EQUIP_BIND_REFUNDABLE")
 
 	end -- APR.Events:EQUIP_BIND_REFUNDABLE_CONFIRM()
 end -- WoW Classic check

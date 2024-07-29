@@ -2,7 +2,7 @@
 -- Written by fuba (fuba82 on CurseForge) and updated by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2020 fuba and KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v21.3.0-release
+-- Addon version: v21.5.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -119,6 +119,9 @@ if not APR.IsClassic or this.WorksInClassic then
 			DebugPrint("HideEquip off, not auto confirming")
 			return
 		end
+
+		-- Note that while EquipPendingItem() still takes a slot, the dialog's OnAccept handler now expects a data table, similar to the other equip modules.
+		-- If I ever revise this, I also need to create a data table and pass it in.
 
 		if slot then
 			DebugPrint("Slot is valid.")

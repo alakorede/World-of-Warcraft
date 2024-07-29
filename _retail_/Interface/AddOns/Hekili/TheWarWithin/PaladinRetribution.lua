@@ -196,9 +196,13 @@ spec:RegisterAuras( {
     -- Talent: $?$w2>0&$w4>0[Damage, healing and critical strike chance increased by $w2%.]?$w4==0&$w2>0[Damage and healing increased by $w2%.]?$w2==0&$w4>0[Critical strike chance increased by $w4%.][]$?a53376[ ][]$?a53376&a137029[Holy Shock's cooldown reduced by $w6%.]?a53376&a137028[Judgment generates $53376s3 additional Holy Power.]?a53376[Each Holy Power spent deals $326731s1 Holy damage to nearby enemies.][]
     -- https://wowhead.com/beta/spell=31884
     avenging_wrath = {
-        id = 31884,
-        duration = function() return talent.divine_wrath.enabled and 23 or 20 end,
-        max_stack = 1
+        id = function() return talent.radiant_glory.enabled and 454351 or 31884 end,
+        duration = function()
+            if talent.radiant_glory.enabled then return 8 end
+            return talent.divine_wrath.enabled and 23 or 20
+        end,
+        max_stack = 1,
+        copy = { 31884, 454351 }
     },
     avenging_wrath_autocrit = {
         id = 294027,
@@ -343,10 +347,14 @@ spec:RegisterAuras( {
         end
     },
     crusade = {
-        id = 231895,
-        duration = function() return 27 + 3 * talent.divine_wrath.rank end,
+        id = function() return talent.radiant_glory.enabled and 454373 or 231895 end,
+        duration = function()
+            if talent.radiant_glory.enabled then return 10 end
+            return 27 + 3 * talent.divine_wrath.rank
+        end,
         type = "Magic",
         max_stack = 10,
+        copy = { 231895, 454373 }
     },
     -- Mounted speed increased by $w1%.$?$w5>0[  Incoming fear duration reduced by $w5%.][]
     -- https://wowhead.com/beta/spell=32223
@@ -1961,7 +1969,7 @@ spec:RegisterAbilities( {
         end,
     },
 
-    -- Talent: Lash out at your enemies, dealing $s1 Radiant damage to all enemies within $a1 yd in front of you and reducing their movement speed by $s2% for $d. Damage reduced on secondary targets.    Demon and Undead enemies are also stunned for $255941d.    |cFFFFFFFFGenerates $s3 Holy Power.
+    --[[ Talent: Lash out at your enemies, dealing $s1 Radiant damage to all enemies within $a1 yd in front of you and reducing their movement speed by $s2% for $d. Damage reduced on secondary targets.    Demon and Undead enemies are also stunned for $255941d.    |cFFFFFFFFGenerates $s3 Holy Power.
     radiant_decree = {
         id = 383469,
         known = 255937,
@@ -1977,11 +1985,6 @@ spec:RegisterAbilities( {
         talent = "radiant_decree",
         startsCombat = true,
 
-        --[[ usable = function ()
-            if settings.check_wake_range and not ( target.exists and target.within12 ) then return false, "target is outside of 12 yards" end
-            return true
-        end, ]]
-
         handler = function ()
             removeDebuffStack( "target", "judgment" )
             removeDebuff( "target", "reckoning" )
@@ -1989,7 +1992,7 @@ spec:RegisterAbilities( {
             if talent.divine_judgment.enabled then addStack( "divine_judgment" ) end
             if talent.truths_wake.enabled or conduit.truths_wake.enabled then applyDebuff( "target", "truths_wake" ) end
         end,
-    },
+    }, ]]
 
     -- Interrupts spellcasting and prevents any spell in that school from being cast for $d.
     rebuke = {
@@ -2152,8 +2155,8 @@ spec:RegisterAbilities( {
     -- Unleashes a powerful weapon strike that deals $s1 $?s403664[Holystrike][Holy] damage to an enemy target,; Final Verdict has a $s2% chance to reset the cooldown of Hammer of Wrath and make it usable on any target, regardless of their health.
     templars_verdict = {
         id = function() return talent.final_verdict.enabled and 383328 or runeforge.final_verdict.enabled and 336872 or 85256 end,
-        known = 85256,
-        flash = { 85256, 336872, 383328 },
+        -- known = 85256,
+        -- flash = 85256,
         cast = 0,
         cooldown = 0,
         gcd = "spell",
@@ -2189,7 +2192,7 @@ spec:RegisterAbilities( {
             if talent.righteous_verdict.enabled then applyBuff( "righteous_verdict" ) end
         end,
 
-        copy = { "final_verdict", 336872, 383328 },
+        copy = { "final_verdict", 336872, 383328, 85256 },
     },
 
     -- Talent: The power of the Light compels an Undead, Aberration, or Demon target to flee for up to $d. Damage may break the effect. Lesser creatures have a chance to be destroyed. Only one target can be turned at a time.
@@ -2214,7 +2217,6 @@ spec:RegisterAbilities( {
     --- Lash out at your enemies, dealing $s1 Radiant damage to all enemies within $a1 yds in front of you, and applying $@spellname403695, burning the targets for an additional ${$403695s2*($403695d/$403695t+1)} damage over $403695d.; Demon and Undead enemies are also stunned for $255941d.; Generates $s2 Holy Power.
     wake_of_ashes = {
         id = 255937,
-        flash = { 383469, 255937 },
         cast = 0,
         cooldown = 15,
         gcd = "spell",
@@ -2224,13 +2226,12 @@ spec:RegisterAbilities( {
         spendType = "holy_power",
 
         talent = "wake_of_ashes",
-        notalent = "radiant_decree",
         startsCombat = true,
 
-        --[[ usable = function ()
+        usable = function ()
             if settings.check_wake_range and not ( target.exists and target.within12 ) then return false, "target is outside of 12 yards" end
             return true
-        end, ]]
+        end,
 
         handler = function ()
             if target.is_undead or target.is_demon then applyDebuff( "target", "wake_of_ashes" ) end
@@ -2296,12 +2297,12 @@ spec:RegisterOptions( {
 } )
 
 
---[[ spec:RegisterSetting( "check_wake_range", false, {
+spec:RegisterSetting( "check_wake_range", false, {
     name = "Check |T1112939:0|t Wake of Ashes Range",
     desc = "If checked, when your target is outside of |T1112939:0|t Wake of Ashes' range, it will not be recommended.",
     type = "toggle",
     width = "full",
-} ) ]]
+} )
 
 spec:RegisterSetting( "sov_damage", 20, {
     name = "|T236264:0|t Shield of Vengeance Damage Threshold",

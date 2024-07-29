@@ -2275,7 +2275,9 @@ do
             elseif k == "charges" then return cooldown.charges
             elseif k == "charges_fractional" then return cooldown.charges_fractional
             elseif k == "charges_max" or k == "max_charges" then return ability and ability.charges or 1
+            elseif k == "cooldown_duration" then return cooldown.duration
             elseif k == "cooldown_react" or k == "cooldown_up" then return cooldown.remains == 0
+            elseif k == "cooldown_remains" then return cooldown.remains
             elseif k == "cost" then
                 if not ability then return 0 end
 
@@ -3322,7 +3324,7 @@ local mt_gcd = {
             if gcd == "totem" then return 1 end
 
             if one_sec_gcd[ class.file ] or class.file == "DRUID" and UnitPowerType( "player" ) == Enum.PowerType.Energy then
-                return state.buff.adrenaline_rush.up and 0.8 or 1
+                return state.buff.adrenaline_rush.up and max( 0.75, state.haste ) or 1
             end
 
             return max( 1.5 * state.haste, state.buff.voidform.up and 0.67 or 0.75 )
@@ -3335,7 +3337,7 @@ local mt_gcd = {
 
         elseif k == "max" or k == "duration" then
             if one_sec_gcd[ class.file ] or class.file == "DRUID" and UnitPowerType( "player" ) == Enum.PowerType.Energy then
-                return state.buff.adrenaline_rush.up and 0.8 or 1
+                return state.buff.adrenaline_rush.up and max( 0.75, state.haste ) or 1
             end
 
             return max( 1.5 * state.haste, state.buff.voidform.up and 0.67 or 0.75 )
@@ -3896,7 +3898,7 @@ do
                 return t.applied <= state.query_time and max( 0, t.expires - state.query_time ) or 0
 
             elseif k == "duration" then
-                return aura.duration or ( t.remains > 0 and t.expires - t.applied ) or 15
+                return ( t.remains > 0 and t.expires - t.applied ) or aura.duration or 15
 
             elseif k == "refreshable" then
                 local tr = t.remains
@@ -4965,7 +4967,7 @@ do
                 return t.remains == 0
 
             elseif k == "duration" then
-                return aura.duration or ( t.remains > 0 and t.expires - t.applied ) or 30
+                return ( t.remains > 0 and t.expires - t.applied ) or aura.duration or 30
 
             elseif k == "remains" then
                 return t.applied <= state.query_time and max( 0, t.expires - state.query_time ) or 0

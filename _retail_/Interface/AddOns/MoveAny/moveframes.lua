@@ -377,14 +377,20 @@ function MoveAny:UpdateMoveFrames(force)
 
 					if MoveAny:GetFrameScale(name) and MoveAny:GetFrameScale(name) > 0 then
 						if frame:GetHeight() * MoveAny:GetFrameScale(name) > GetScreenHeight() then
-							if GetScreenHeight() / frame:GetHeight() > 0 then
-								MoveAny:SetFrameScale(name, GetScreenHeight() / frame:GetHeight())
-							end
-
 							frame:SetScale(MoveAny:GetFrameScale(name))
-						end
+							C_Timer.After(
+								4,
+								function()
+									if frame:GetHeight() * MoveAny:GetFrameScale(name) > GetScreenHeight() then
+										if GetScreenHeight() / frame:GetHeight() > 0 then
+											MoveAny:SetFrameScale(name, GetScreenHeight() / frame:GetHeight())
+										end
 
-						if MoveAny:GetFrameScale(name) and MoveAny:GetFrameScale(name) > 0 then
+										frame:SetScale(MoveAny:GetFrameScale(name))
+									end
+								end
+							)
+						elseif MoveAny:GetFrameScale(name) and MoveAny:GetFrameScale(name) > 0 then
 							frame:SetScale(MoveAny:GetFrameScale(name))
 						end
 					else

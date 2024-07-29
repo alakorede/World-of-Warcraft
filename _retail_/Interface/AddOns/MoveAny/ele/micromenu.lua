@@ -54,6 +54,30 @@ function MoveAny:InitMicroMenu()
 		end
 
 		MAMenuBar.btns = {}
+		hooksecurefunc(
+			MAMenuBar,
+			"SetParent",
+			function(sel, parent)
+				if parent == MAHIDDEN then
+					for i, mbname in pairs(MBTNS) do
+						local mb = _G[mbname]
+						if mb then
+							mb:SetAlpha(0)
+							mb:EnableMouse(false)
+						end
+					end
+				else
+					for i, mbname in pairs(MBTNS) do
+						local mb = _G[mbname]
+						if mb then
+							mb:SetAlpha(1)
+							mb:EnableMouse(true)
+						end
+					end
+				end
+			end
+		)
+
 		if MBTNS then
 			for i, mbname in pairs(MBTNS) do
 				local mb = _G[mbname]
@@ -110,7 +134,12 @@ function MoveAny:InitMicroMenu()
 							function(sel, scale)
 								if sel.ma_set_s then return end
 								sel.ma_set_s = true
-								mb:SetScale(MAMenuBar:GetScale())
+								if MoveAny:GetCVar("useUiScale") == "0" then
+									mb:SetScale(MAMenuBar:GetScale() / UIParent:GetScale())
+								else
+									mb:SetScale(MAMenuBar:GetScale())
+								end
+
 								sel.ma_set_s = false
 							end
 						)

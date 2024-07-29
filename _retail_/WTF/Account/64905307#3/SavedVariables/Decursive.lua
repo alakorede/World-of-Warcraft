@@ -423,7 +423,7 @@ nil,
 },
 ["global"] = {
 ["NoStartMessages"] = true,
-["LastVersionAnnounce"] = 1721872200,
+["LastVersionAnnounce"] = 1722223179,
 ["delayedDebuffOccurences"] = 3,
 ["delayedUnDebuffOccurences"] = 2,
 ["LastExpirationAlert"] = 1682619472,

@@ -10503,6 +10503,1146 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Apinéia:Nemesis:1",
 },
+["Uzetab:Nemesis:3"] = {
+{
+["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "GeneralCategory",
+},
+{
+["statKey"] = "HEALTH",
+},
+{
+["statKey"] = "DCS_POWER",
+},
+{
+["statKey"] = "DCS_ALTERNATEMANA",
+},
+{
+["statKey"] = "ITEMLEVEL",
+["hidden"] = true,
+},
+{
+["statKey"] = "MOVESPEED",
+},
+{
+["statKey"] = "DURABILITY_STAT",
+},
+{
+["statKey"] = "REPAIR_COST",
+},
+{
+["statKey"] = "AttributesCategory",
+},
+{
+["statKey"] = "STRENGTH",
+["hidden"] = true,
+},
+{
+["statKey"] = "AGILITY",
+["hidden"] = true,
+},
+{
+["statKey"] = "INTELLECT",
+},
+{
+["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
+},
+{
+["statKey"] = "OffenseCategory",
+},
+{
+["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
+},
+{
+["statKey"] = "ATTACK_AP",
+["hidden"] = true,
+},
+{
+["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
+},
+{
+["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
+},
+{
+["statKey"] = "SPELLPOWER",
+},
+{
+["statKey"] = "MANAREGEN",
+},
+{
+["statKey"] = "ENERGY_REGEN",
+},
+{
+["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
+},
+{
+["statKey"] = "FOCUS_REGEN",
+},
+{
+["statKey"] = "GCD",
+},
+{
+["statKey"] = "EnhancementsCategory",
+},
+{
+["statKey"] = "CRITCHANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HASTE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "VERSATILITY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "MASTERY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "LIFESTEAL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "AVOIDANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "DefenseCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "BLOCK",
+["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "RatingCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CRITCHANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HASTE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "VERSATILITY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "MASTERY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "LIFESTEAL_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "AVOIDANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "STAGGER",
+["hidden"] = true,
+["hideAt"] = 0,
+["roles"] = {
+"TANK",
+},
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Uzetab:Nemesis:3",
+},
+["Jeshy:Nemesis:5"] = {
+{
+["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "GeneralCategory",
+},
+{
+["statKey"] = "HEALTH",
+},
+{
+["statKey"] = "DCS_POWER",
+},
+{
+["statKey"] = "DCS_ALTERNATEMANA",
+},
+{
+["statKey"] = "ITEMLEVEL",
+["hidden"] = true,
+},
+{
+["statKey"] = "MOVESPEED",
+},
+{
+["statKey"] = "DURABILITY_STAT",
+},
+{
+["statKey"] = "REPAIR_COST",
+},
+{
+["statKey"] = "AttributesCategory",
+},
+{
+["statKey"] = "STRENGTH",
+["hidden"] = true,
+},
+{
+["statKey"] = "AGILITY",
+["hidden"] = true,
+},
+{
+["statKey"] = "INTELLECT",
+},
+{
+["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
+},
+{
+["statKey"] = "OffenseCategory",
+},
+{
+["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
+},
+{
+["statKey"] = "ATTACK_AP",
+["hidden"] = true,
+},
+{
+["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
+},
+{
+["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
+},
+{
+["statKey"] = "SPELLPOWER",
+},
+{
+["statKey"] = "MANAREGEN",
+},
+{
+["statKey"] = "ENERGY_REGEN",
+},
+{
+["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
+},
+{
+["statKey"] = "FOCUS_REGEN",
+},
+{
+["statKey"] = "GCD",
+},
+{
+["statKey"] = "EnhancementsCategory",
+},
+{
+["statKey"] = "CRITCHANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HASTE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "VERSATILITY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "MASTERY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "LIFESTEAL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "AVOIDANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "DefenseCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "BLOCK",
+["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "RatingCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CRITCHANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HASTE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "VERSATILITY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "MASTERY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "LIFESTEAL_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "AVOIDANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "STAGGER",
+["hidden"] = true,
+["hideAt"] = 0,
+["roles"] = {
+"TANK",
+},
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Jeshy:Nemesis:5",
+},
+["Alexshy:Goldrinn:1"] = {
+{
+["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "GeneralCategory",
+},
+{
+["statKey"] = "HEALTH",
+},
+{
+["statKey"] = "DCS_POWER",
+},
+{
+["statKey"] = "DCS_ALTERNATEMANA",
+},
+{
+["statKey"] = "ITEMLEVEL",
+["hidden"] = true,
+},
+{
+["statKey"] = "MOVESPEED",
+},
+{
+["statKey"] = "DURABILITY_STAT",
+},
+{
+["statKey"] = "REPAIR_COST",
+},
+{
+["statKey"] = "AttributesCategory",
+},
+{
+["statKey"] = "STRENGTH",
+["hidden"] = true,
+},
+{
+["statKey"] = "AGILITY",
+["hidden"] = true,
+},
+{
+["statKey"] = "INTELLECT",
+},
+{
+["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
+},
+{
+["statKey"] = "OffenseCategory",
+},
+{
+["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
+},
+{
+["statKey"] = "ATTACK_AP",
+["hidden"] = true,
+},
+{
+["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
+},
+{
+["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
+},
+{
+["statKey"] = "SPELLPOWER",
+},
+{
+["statKey"] = "MANAREGEN",
+},
+{
+["statKey"] = "ENERGY_REGEN",
+},
+{
+["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
+},
+{
+["statKey"] = "FOCUS_REGEN",
+},
+{
+["statKey"] = "GCD",
+},
+{
+["statKey"] = "EnhancementsCategory",
+},
+{
+["statKey"] = "CRITCHANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HASTE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "VERSATILITY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "MASTERY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "LIFESTEAL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "AVOIDANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "DefenseCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "BLOCK",
+["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "RatingCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CRITCHANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HASTE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "VERSATILITY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "MASTERY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "LIFESTEAL_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "AVOIDANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "STAGGER",
+["roles"] = {
+"TANK",
+},
+["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Alexshy:Goldrinn:1",
+},
+["Muligan:Nemesis:4"] = {
+{
+["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "GeneralCategory",
+},
+{
+["statKey"] = "HEALTH",
+},
+{
+["statKey"] = "DCS_POWER",
+},
+{
+["statKey"] = "DCS_ALTERNATEMANA",
+},
+{
+["statKey"] = "ITEMLEVEL",
+["hidden"] = true,
+},
+{
+["statKey"] = "MOVESPEED",
+},
+{
+["statKey"] = "DURABILITY_STAT",
+},
+{
+["statKey"] = "REPAIR_COST",
+},
+{
+["statKey"] = "AttributesCategory",
+},
+{
+["statKey"] = "STRENGTH",
+["hidden"] = true,
+},
+{
+["statKey"] = "AGILITY",
+["hidden"] = true,
+},
+{
+["statKey"] = "INTELLECT",
+},
+{
+["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
+},
+{
+["statKey"] = "OffenseCategory",
+},
+{
+["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
+},
+{
+["statKey"] = "ATTACK_AP",
+["hidden"] = true,
+},
+{
+["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
+},
+{
+["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
+},
+{
+["statKey"] = "SPELLPOWER",
+},
+{
+["statKey"] = "MANAREGEN",
+},
+{
+["statKey"] = "ENERGY_REGEN",
+},
+{
+["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
+},
+{
+["statKey"] = "FOCUS_REGEN",
+},
+{
+["statKey"] = "GCD",
+},
+{
+["statKey"] = "EnhancementsCategory",
+},
+{
+["statKey"] = "CRITCHANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HASTE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "VERSATILITY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "MASTERY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "LIFESTEAL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "AVOIDANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "DefenseCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "BLOCK",
+["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "RatingCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CRITCHANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HASTE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "VERSATILITY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "MASTERY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "LIFESTEAL_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "AVOIDANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "STAGGER",
+["roles"] = {
+"TANK",
+},
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Muligan:Nemesis:4",
+},
+["Falkoshy:Nemesis:1"] = {
+{
+["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "GeneralCategory",
+},
+{
+["statKey"] = "HEALTH",
+},
+{
+["statKey"] = "DCS_POWER",
+},
+{
+["statKey"] = "DCS_ALTERNATEMANA",
+},
+{
+["statKey"] = "ITEMLEVEL",
+["hidden"] = true,
+},
+{
+["statKey"] = "MOVESPEED",
+},
+{
+["statKey"] = "DURABILITY_STAT",
+},
+{
+["statKey"] = "REPAIR_COST",
+},
+{
+["statKey"] = "AttributesCategory",
+},
+{
+["statKey"] = "STRENGTH",
+["hidden"] = true,
+},
+{
+["statKey"] = "AGILITY",
+["hidden"] = true,
+},
+{
+["statKey"] = "INTELLECT",
+},
+{
+["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
+},
+{
+["statKey"] = "OffenseCategory",
+},
+{
+["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
+},
+{
+["statKey"] = "ATTACK_AP",
+["hidden"] = true,
+},
+{
+["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
+},
+{
+["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
+},
+{
+["statKey"] = "SPELLPOWER",
+},
+{
+["statKey"] = "MANAREGEN",
+},
+{
+["statKey"] = "ENERGY_REGEN",
+},
+{
+["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
+},
+{
+["statKey"] = "FOCUS_REGEN",
+},
+{
+["statKey"] = "GCD",
+},
+{
+["statKey"] = "EnhancementsCategory",
+},
+{
+["statKey"] = "CRITCHANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HASTE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "VERSATILITY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "MASTERY",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "LIFESTEAL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "AVOIDANCE",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "DefenseCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "BLOCK",
+["hidden"] = true,
+["hideAt"] = 0,
+},
+{
+["statKey"] = "RatingCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CRITCHANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HASTE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "VERSATILITY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "MASTERY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "LIFESTEAL_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "AVOIDANCE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "DODGE_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "PARRY_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED_RATING",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "SPEED",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "STAGGER",
+["hideAt"] = 0,
+["hidden"] = true,
+["roles"] = {
+"TANK",
+},
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Falkoshy:Nemesis:1",
+},
 ["Dishy:Goldrinn:4"] = {
 {
 ["statKey"] = "ItemLevelFrame",
@@ -10749,1146 +11889,6 @@ DCS_ClassSpecDB = {
 ["statKey"] = "UserCat1",
 },
 ["uniqueKey"] = "Dishy:Goldrinn:4",
-},
-["Muligan:Nemesis:4"] = {
-{
-["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "GeneralCategory",
-},
-{
-["statKey"] = "HEALTH",
-},
-{
-["statKey"] = "DCS_POWER",
-},
-{
-["statKey"] = "DCS_ALTERNATEMANA",
-},
-{
-["statKey"] = "ITEMLEVEL",
-["hidden"] = true,
-},
-{
-["statKey"] = "MOVESPEED",
-},
-{
-["statKey"] = "DURABILITY_STAT",
-},
-{
-["statKey"] = "REPAIR_COST",
-},
-{
-["statKey"] = "AttributesCategory",
-},
-{
-["statKey"] = "STRENGTH",
-["hidden"] = true,
-},
-{
-["statKey"] = "AGILITY",
-["hidden"] = true,
-},
-{
-["statKey"] = "INTELLECT",
-},
-{
-["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
-},
-{
-["statKey"] = "OffenseCategory",
-},
-{
-["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
-},
-{
-["statKey"] = "ATTACK_AP",
-["hidden"] = true,
-},
-{
-["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
-},
-{
-["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
-},
-{
-["statKey"] = "SPELLPOWER",
-},
-{
-["statKey"] = "MANAREGEN",
-},
-{
-["statKey"] = "ENERGY_REGEN",
-},
-{
-["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
-},
-{
-["statKey"] = "FOCUS_REGEN",
-},
-{
-["statKey"] = "GCD",
-},
-{
-["statKey"] = "EnhancementsCategory",
-},
-{
-["statKey"] = "CRITCHANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HASTE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "VERSATILITY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "MASTERY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "LIFESTEAL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "AVOIDANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "DefenseCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "BLOCK",
-["hidden"] = true,
-["hideAt"] = 0,
-},
-{
-["statKey"] = "RatingCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CRITCHANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HASTE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "VERSATILITY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "MASTERY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "LIFESTEAL_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "AVOIDANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "STAGGER",
-["roles"] = {
-"TANK",
-},
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Muligan:Nemesis:4",
-},
-["Alexshy:Goldrinn:1"] = {
-{
-["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "GeneralCategory",
-},
-{
-["statKey"] = "HEALTH",
-},
-{
-["statKey"] = "DCS_POWER",
-},
-{
-["statKey"] = "DCS_ALTERNATEMANA",
-},
-{
-["statKey"] = "ITEMLEVEL",
-["hidden"] = true,
-},
-{
-["statKey"] = "MOVESPEED",
-},
-{
-["statKey"] = "DURABILITY_STAT",
-},
-{
-["statKey"] = "REPAIR_COST",
-},
-{
-["statKey"] = "AttributesCategory",
-},
-{
-["statKey"] = "STRENGTH",
-["hidden"] = true,
-},
-{
-["statKey"] = "AGILITY",
-["hidden"] = true,
-},
-{
-["statKey"] = "INTELLECT",
-},
-{
-["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
-},
-{
-["statKey"] = "OffenseCategory",
-},
-{
-["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
-},
-{
-["statKey"] = "ATTACK_AP",
-["hidden"] = true,
-},
-{
-["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
-},
-{
-["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
-},
-{
-["statKey"] = "SPELLPOWER",
-},
-{
-["statKey"] = "MANAREGEN",
-},
-{
-["statKey"] = "ENERGY_REGEN",
-},
-{
-["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
-},
-{
-["statKey"] = "FOCUS_REGEN",
-},
-{
-["statKey"] = "GCD",
-},
-{
-["statKey"] = "EnhancementsCategory",
-},
-{
-["statKey"] = "CRITCHANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HASTE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "VERSATILITY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "MASTERY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "LIFESTEAL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "AVOIDANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "DefenseCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "BLOCK",
-["hidden"] = true,
-["hideAt"] = 0,
-},
-{
-["statKey"] = "RatingCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CRITCHANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HASTE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "VERSATILITY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "MASTERY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "LIFESTEAL_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "AVOIDANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "STAGGER",
-["roles"] = {
-"TANK",
-},
-["hidden"] = true,
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Alexshy:Goldrinn:1",
-},
-["Jeshy:Nemesis:5"] = {
-{
-["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "GeneralCategory",
-},
-{
-["statKey"] = "HEALTH",
-},
-{
-["statKey"] = "DCS_POWER",
-},
-{
-["statKey"] = "DCS_ALTERNATEMANA",
-},
-{
-["statKey"] = "ITEMLEVEL",
-["hidden"] = true,
-},
-{
-["statKey"] = "MOVESPEED",
-},
-{
-["statKey"] = "DURABILITY_STAT",
-},
-{
-["statKey"] = "REPAIR_COST",
-},
-{
-["statKey"] = "AttributesCategory",
-},
-{
-["statKey"] = "STRENGTH",
-["hidden"] = true,
-},
-{
-["statKey"] = "AGILITY",
-["hidden"] = true,
-},
-{
-["statKey"] = "INTELLECT",
-},
-{
-["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
-},
-{
-["statKey"] = "OffenseCategory",
-},
-{
-["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
-},
-{
-["statKey"] = "ATTACK_AP",
-["hidden"] = true,
-},
-{
-["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
-},
-{
-["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
-},
-{
-["statKey"] = "SPELLPOWER",
-},
-{
-["statKey"] = "MANAREGEN",
-},
-{
-["statKey"] = "ENERGY_REGEN",
-},
-{
-["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
-},
-{
-["statKey"] = "FOCUS_REGEN",
-},
-{
-["statKey"] = "GCD",
-},
-{
-["statKey"] = "EnhancementsCategory",
-},
-{
-["statKey"] = "CRITCHANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HASTE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "VERSATILITY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "MASTERY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "LIFESTEAL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "AVOIDANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "DefenseCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "BLOCK",
-["hidden"] = true,
-["hideAt"] = 0,
-},
-{
-["statKey"] = "RatingCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CRITCHANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HASTE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "VERSATILITY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "MASTERY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "LIFESTEAL_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "AVOIDANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "STAGGER",
-["hidden"] = true,
-["hideAt"] = 0,
-["roles"] = {
-"TANK",
-},
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Jeshy:Nemesis:5",
-},
-["Falkoshy:Nemesis:1"] = {
-{
-["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "GeneralCategory",
-},
-{
-["statKey"] = "HEALTH",
-},
-{
-["statKey"] = "DCS_POWER",
-},
-{
-["statKey"] = "DCS_ALTERNATEMANA",
-},
-{
-["statKey"] = "ITEMLEVEL",
-["hidden"] = true,
-},
-{
-["statKey"] = "MOVESPEED",
-},
-{
-["statKey"] = "DURABILITY_STAT",
-},
-{
-["statKey"] = "REPAIR_COST",
-},
-{
-["statKey"] = "AttributesCategory",
-},
-{
-["statKey"] = "STRENGTH",
-["hidden"] = true,
-},
-{
-["statKey"] = "AGILITY",
-["hidden"] = true,
-},
-{
-["statKey"] = "INTELLECT",
-},
-{
-["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
-},
-{
-["statKey"] = "OffenseCategory",
-},
-{
-["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
-},
-{
-["statKey"] = "ATTACK_AP",
-["hidden"] = true,
-},
-{
-["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
-},
-{
-["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
-},
-{
-["statKey"] = "SPELLPOWER",
-},
-{
-["statKey"] = "MANAREGEN",
-},
-{
-["statKey"] = "ENERGY_REGEN",
-},
-{
-["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
-},
-{
-["statKey"] = "FOCUS_REGEN",
-},
-{
-["statKey"] = "GCD",
-},
-{
-["statKey"] = "EnhancementsCategory",
-},
-{
-["statKey"] = "CRITCHANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HASTE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "VERSATILITY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "MASTERY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "LIFESTEAL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "AVOIDANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "DefenseCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "BLOCK",
-["hidden"] = true,
-["hideAt"] = 0,
-},
-{
-["statKey"] = "RatingCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CRITCHANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HASTE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "VERSATILITY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "MASTERY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "LIFESTEAL_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "AVOIDANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "STAGGER",
-["hideAt"] = 0,
-["hidden"] = true,
-["roles"] = {
-"TANK",
-},
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Falkoshy:Nemesis:1",
-},
-["Uzetab:Nemesis:3"] = {
-{
-["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "GeneralCategory",
-},
-{
-["statKey"] = "HEALTH",
-},
-{
-["statKey"] = "DCS_POWER",
-},
-{
-["statKey"] = "DCS_ALTERNATEMANA",
-},
-{
-["statKey"] = "ITEMLEVEL",
-["hidden"] = true,
-},
-{
-["statKey"] = "MOVESPEED",
-},
-{
-["statKey"] = "DURABILITY_STAT",
-},
-{
-["statKey"] = "REPAIR_COST",
-},
-{
-["statKey"] = "AttributesCategory",
-},
-{
-["statKey"] = "STRENGTH",
-["hidden"] = true,
-},
-{
-["statKey"] = "AGILITY",
-["hidden"] = true,
-},
-{
-["statKey"] = "INTELLECT",
-},
-{
-["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
-},
-{
-["statKey"] = "OffenseCategory",
-},
-{
-["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
-},
-{
-["statKey"] = "ATTACK_AP",
-["hidden"] = true,
-},
-{
-["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
-},
-{
-["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
-},
-{
-["statKey"] = "SPELLPOWER",
-},
-{
-["statKey"] = "MANAREGEN",
-},
-{
-["statKey"] = "ENERGY_REGEN",
-},
-{
-["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
-},
-{
-["statKey"] = "FOCUS_REGEN",
-},
-{
-["statKey"] = "GCD",
-},
-{
-["statKey"] = "EnhancementsCategory",
-},
-{
-["statKey"] = "CRITCHANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HASTE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "VERSATILITY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "MASTERY",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "LIFESTEAL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "AVOIDANCE",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "DefenseCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "BLOCK",
-["hidden"] = true,
-["hideAt"] = 0,
-},
-{
-["statKey"] = "RatingCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CRITCHANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HASTE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "VERSATILITY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "MASTERY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "LIFESTEAL_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "AVOIDANCE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "DODGE_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "PARRY_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED_RATING",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "SPEED",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "STAGGER",
-["hidden"] = true,
-["hideAt"] = 0,
-["roles"] = {
-"TANK",
-},
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Uzetab:Nemesis:3",
 },
 ["Keishy:Aerie Peak:5"] = {
 {
@@ -18355,7 +18355,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Córsega:Nemesis:2",
 },
-["Nostradamus:Goldrinn:1"] = {
+["Onifade:Nemesis:3"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -18393,41 +18393,36 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "AGILITY",
-["hidden"] = true,
 },
 {
 ["statKey"] = "INTELLECT",
+["hidden"] = true,
 },
 {
 ["statKey"] = "STAMINA",
-},
-{
-["statKey"] = "ARMOR",
 },
 {
 ["statKey"] = "OffenseCategory",
 },
 {
 ["statKey"] = "ATTACK_DAMAGE",
-["hidden"] = true,
 },
 {
 ["statKey"] = "ATTACK_AP",
-["hidden"] = true,
 },
 {
 ["statKey"] = "DCS_ATTACK_ATTACKSPEED",
-["hidden"] = true,
 },
 {
 ["statKey"] = "WEAPON_DPS",
-["hidden"] = true,
 },
 {
 ["statKey"] = "SPELLPOWER",
+["hidden"] = true,
 },
 {
 ["statKey"] = "MANAREGEN",
+["hidden"] = true,
 },
 {
 ["statKey"] = "ENERGY_REGEN",
@@ -18471,22 +18466,29 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "DefenseCategory",
-["hidden"] = true,
+},
+{
+["statKey"] = "ARMOR",
 },
 {
 ["statKey"] = "DODGE",
 ["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "PARRY",
 ["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "BLOCK",
-["hidden"] = true,
 ["hideAt"] = 0,
+},
+{
+["statKey"] = "STAGGER",
+["hideAt"] = 0,
+["hidden"] = false,
+["roles"] = {
+"TANK",
+},
 },
 {
 ["statKey"] = "RatingCategory",
@@ -18543,14 +18545,6 @@ DCS_ClassSpecDB = {
 ["hidden"] = true,
 },
 {
-["statKey"] = "STAGGER",
-["roles"] = {
-"TANK",
-},
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
 ["statKey"] = "HonorCategory",
 },
 {
@@ -18581,7 +18575,7 @@ DCS_ClassSpecDB = {
 ["statKey"] = "UserCat5",
 ["hidden"] = true,
 },
-["uniqueKey"] = "Nostradamus:Goldrinn:1",
+["uniqueKey"] = "Onifade:Nemesis:3",
 },
 ["Muligan:Nemesis:5"] = {
 {
@@ -19264,63 +19258,9 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Alexshy:Goldrinn:5",
 },
-["Radagashy:Goldrinn:2"] = {
+["Migoshy:Goldrinn:5"] = {
 {
 ["statKey"] = "ItemLevelFrame",
-},
-{
-["statKey"] = "CorruptionCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "CR_CORRUPTION",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "CR_CORRUPTION_RESISTANCE",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "CR_TOTAL_CORRUPTION",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "ConquestCategory",
-["hidden"] = true,
-},
-{
-["statKey"] = "RATING_2V2",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "RATING_3V3",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "RATING_RBG",
-["hideAt"] = 0,
-["hidden"] = true,
-},
-{
-["statKey"] = "CONQUEST_PROGRESS",
-["hideAt"] = 0,
-["hidden"] = true,
 },
 {
 ["statKey"] = "GeneralCategory",
@@ -19352,10 +19292,10 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STRENGTH",
-["hidden"] = true,
 },
 {
 ["statKey"] = "AGILITY",
+["hidden"] = true,
 },
 {
 ["statKey"] = "INTELLECT",
@@ -19395,7 +19335,6 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "DCS_RUNEREGEN",
-["hidden"] = true,
 },
 {
 ["statKey"] = "FOCUS_REGEN",
@@ -19505,13 +19444,44 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAGGER",
+["hidden"] = true,
+["hideAt"] = 0,
 ["roles"] = {
 "TANK",
 },
-["hidden"] = true,
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
 ["hideAt"] = 0,
 },
-["uniqueKey"] = "Radagashy:Goldrinn:2",
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "UserCat1",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat2",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat3",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat4",
+["hidden"] = true,
+},
+{
+["statKey"] = "UserCat5",
+["hidden"] = true,
+},
+["uniqueKey"] = "Migoshy:Goldrinn:5",
 },
 ["Kuradis:Nemesis:1"] = {
 {
@@ -20907,9 +20877,63 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Eshy:Nemesis:1",
 },
-["Migoshy:Goldrinn:5"] = {
+["Radagashy:Goldrinn:2"] = {
 {
 ["statKey"] = "ItemLevelFrame",
+},
+{
+["statKey"] = "CorruptionCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "CR_CORRUPTION",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "CR_CORRUPTION_RESISTANCE",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "CR_TOTAL_CORRUPTION",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "HonorCategory",
+},
+{
+["statKey"] = "HONOR_PROGRESS",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "HONOR_LEVEL",
+["hideAt"] = 0,
+},
+{
+["statKey"] = "ConquestCategory",
+["hidden"] = true,
+},
+{
+["statKey"] = "RATING_2V2",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "RATING_3V3",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "RATING_RBG",
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
+["statKey"] = "CONQUEST_PROGRESS",
+["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "GeneralCategory",
@@ -20941,10 +20965,10 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STRENGTH",
+["hidden"] = true,
 },
 {
 ["statKey"] = "AGILITY",
-["hidden"] = true,
 },
 {
 ["statKey"] = "INTELLECT",
@@ -20984,6 +21008,7 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "DCS_RUNEREGEN",
+["hidden"] = true,
 },
 {
 ["statKey"] = "FOCUS_REGEN",
@@ -21093,44 +21118,13 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "STAGGER",
-["hidden"] = true,
-["hideAt"] = 0,
 ["roles"] = {
 "TANK",
 },
-},
-{
-["statKey"] = "HonorCategory",
-},
-{
-["statKey"] = "HONOR_PROGRESS",
+["hidden"] = true,
 ["hideAt"] = 0,
 },
-{
-["statKey"] = "HONOR_LEVEL",
-["hideAt"] = 0,
-},
-{
-["statKey"] = "UserCat1",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat2",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat3",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat4",
-["hidden"] = true,
-},
-{
-["statKey"] = "UserCat5",
-["hidden"] = true,
-},
-["uniqueKey"] = "Migoshy:Goldrinn:5",
+["uniqueKey"] = "Radagashy:Goldrinn:2",
 },
 ["Kirashy:Dentarg:1"] = {
 {
@@ -21641,7 +21635,7 @@ DCS_ClassSpecDB = {
 },
 ["uniqueKey"] = "Trystam:Goldrinn:1",
 },
-["Onifade:Nemesis:3"] = {
+["Nostradamus:Goldrinn:1"] = {
 {
 ["statKey"] = "ItemLevelFrame",
 },
@@ -21679,36 +21673,41 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "AGILITY",
-},
-{
-["statKey"] = "INTELLECT",
 ["hidden"] = true,
 },
 {
+["statKey"] = "INTELLECT",
+},
+{
 ["statKey"] = "STAMINA",
+},
+{
+["statKey"] = "ARMOR",
 },
 {
 ["statKey"] = "OffenseCategory",
 },
 {
 ["statKey"] = "ATTACK_DAMAGE",
+["hidden"] = true,
 },
 {
 ["statKey"] = "ATTACK_AP",
+["hidden"] = true,
 },
 {
 ["statKey"] = "DCS_ATTACK_ATTACKSPEED",
+["hidden"] = true,
 },
 {
 ["statKey"] = "WEAPON_DPS",
+["hidden"] = true,
 },
 {
 ["statKey"] = "SPELLPOWER",
-["hidden"] = true,
 },
 {
 ["statKey"] = "MANAREGEN",
-["hidden"] = true,
 },
 {
 ["statKey"] = "ENERGY_REGEN",
@@ -21752,29 +21751,22 @@ DCS_ClassSpecDB = {
 },
 {
 ["statKey"] = "DefenseCategory",
-},
-{
-["statKey"] = "ARMOR",
+["hidden"] = true,
 },
 {
 ["statKey"] = "DODGE",
 ["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "PARRY",
 ["hideAt"] = 0,
+["hidden"] = true,
 },
 {
 ["statKey"] = "BLOCK",
+["hidden"] = true,
 ["hideAt"] = 0,
-},
-{
-["statKey"] = "STAGGER",
-["hideAt"] = 0,
-["hidden"] = false,
-["roles"] = {
-"TANK",
-},
 },
 {
 ["statKey"] = "RatingCategory",
@@ -21831,6 +21823,14 @@ DCS_ClassSpecDB = {
 ["hidden"] = true,
 },
 {
+["statKey"] = "STAGGER",
+["roles"] = {
+"TANK",
+},
+["hideAt"] = 0,
+["hidden"] = true,
+},
+{
 ["statKey"] = "HonorCategory",
 },
 {
@@ -21861,7 +21861,7 @@ DCS_ClassSpecDB = {
 ["statKey"] = "UserCat5",
 ["hidden"] = true,
 },
-["uniqueKey"] = "Onifade:Nemesis:3",
+["uniqueKey"] = "Nostradamus:Goldrinn:1",
 },
 ["Akishy:Goldrinn:1"] = {
 {

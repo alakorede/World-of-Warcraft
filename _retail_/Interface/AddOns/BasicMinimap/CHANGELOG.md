@@ -1,6 +1,6 @@
 # BasicMinimap
 
-## [v10.2.9](https://github.com/funkydude/BasicMinimap/tree/v10.2.9) (2024-07-10)
-[Full Changelog](https://github.com/funkydude/BasicMinimap/compare/v10.2.8...v10.2.9) [Previous Releases](https://github.com/funkydude/BasicMinimap/releases)
+## [v11.0.1](https://github.com/funkydude/BasicMinimap/tree/v11.0.1) (2024-07-26)
+[Full Changelog](https://github.com/funkydude/BasicMinimap/compare/v11.0.0...v11.0.1) [Previous Releases](https://github.com/funkydude/BasicMinimap/releases)
 
-- Compat code for WoW 11  
+- Extra fix for the expansion button moving  

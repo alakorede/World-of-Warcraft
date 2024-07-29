@@ -66,10 +66,10 @@ PawnCommon = {
 ["\"MrRobot\":PRIEST1"] = {
 ["IconTexturePath"] = 135940,
 ["PerCharacterOptions"] = {
-["Chicoxavier-Nemesis"] = {
+["Nostradamus-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Nostradamus-Goldrinn"] = {
+["Chicoxavier-Nemesis"] = {
 ["Visible"] = true,
 },
 ["Molosso-Nemesis"] = {
@@ -425,10 +425,10 @@ PawnCommon = {
 ["Mitráculo-Nemesis"] = {
 ["Visible"] = true,
 },
-["Mariamolambo-Goldrinn"] = {
+["Eshy-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Eshy-Goldrinn"] = {
+["Mariamolambo-Goldrinn"] = {
 ["Visible"] = true,
 },
 },
@@ -760,6 +760,6 @@ PawnCommon = {
 ["ButtonPosition"] = 2,
 ["ShowLootUpgradeAdvisor"] = true,
 ["ShowQuestUpgradeAdvisor"] = true,
-["LastVersion"] = 2.0913,
+["LastVersion"] = 2.0914,
 ["Digits"] = 1,
 }

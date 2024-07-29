@@ -1,6 +1,6 @@
 # BigWigs [Cataclysm]
 
-## [v10.2.33](https://github.com/BigWigsMods/BigWigs_Cataclysm/tree/v10.2.33) (2024-07-22)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs_Cataclysm/compare/v10.2.32...v10.2.33) [Previous Releases](https://github.com/BigWigsMods/BigWigs_Cataclysm/releases)
+## [v11.0.0](https://github.com/BigWigsMods/BigWigs_Cataclysm/tree/v11.0.0) (2024-07-28)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs_Cataclysm/compare/v10.2.33...v11.0.0) [Previous Releases](https://github.com/BigWigsMods/BigWigs_Cataclysm/releases)
 
-- Updates and cleanups for classic  
+- Bastion/TwilightAscendants: Cleanup link implementation  

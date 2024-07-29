@@ -1,5 +1,5 @@
 ## Interface: 110000
-## Version: v11.0.0-0.9.0c
+## Version: v11.0.0-0.9.4a
 ## Title: Hekili
 ## Author: Hekili
 ## IconTexture: Interface\AddOns\Hekili\Textures\LOGO-ORANGE.blp
@@ -34,6 +34,8 @@ Shadowlands\Legendaries.lua
 Dragonflight\Items.lua
 Dragonflight\Classes.lua
 
+TheWarWithin\Items.lua
+
 TheWarWithin\DeathKnightBlood.lua
 TheWarWithin\DeathKnightFrost.lua
 TheWarWithin\DeathKnightUnholy.lua
@@ -52,18 +54,18 @@ TheWarWithin\HunterSurvival.lua
 # TheWarWithin\MageArcane.lua
 # TheWarWithin\MageFire.lua
 # TheWarWithin\MageFrost.lua
-# TheWarWithin\MonkBrewmaster.lua
+TheWarWithin\MonkBrewmaster.lua
 # TheWarWithin\MonkMistweaver.lua
-# TheWarWithin\MonkWindwalker.lua
+TheWarWithin\MonkWindwalker.lua
 # TheWarWithin\PaladinHoly.lua
 TheWarWithin\PaladinProtection.lua
 TheWarWithin\PaladinRetribution.lua
 # TheWarWithin\PriestDiscipline.lua
 # TheWarWithin\PriestHoly.lua
-# TheWarWithin\PriestShadow.lua
-# TheWarWithin\RogueAssassination.lua
-# TheWarWithin\RogueOutlaw.lua
-# TheWarWithin\RogueSubtlety.lua
+TheWarWithin\PriestShadow.lua
+TheWarWithin\RogueAssassination.lua
+TheWarWithin\RogueOutlaw.lua
+TheWarWithin\RogueSubtlety.lua
 TheWarWithin\ShamanElemental.lua
 TheWarWithin\ShamanEnhancement.lua
 # TheWarWithin\ShamanRestoration.lua
