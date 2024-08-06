@@ -1,8 +1,10 @@
 # QuestPointer
 
-## [v30](https://github.com/kemayo/wow-questpointer/tree/v30) (2023-11-21)
-[Full Changelog](https://github.com/kemayo/wow-questpointer/compare/v29...v30) [Previous Releases](https://github.com/kemayo/wow-questpointer/releases)
+## [v31](https://github.com/kemayo/wow-questpointer/tree/v31) (2024-08-05)
+[Full Changelog](https://github.com/kemayo/wow-questpointer/compare/v30...v31) [Previous Releases](https://github.com/kemayo/wow-questpointer/releases)
 
-- QuestPOI functions were removed in 10.1.5, so change what I'm using  
-- TOC for 10.2.0  
-    Also, add an icon for the addon list  
+- Fix icon for world quests  
+- Don't show the icon for the supertracked quest on the edge  
+- Fix 11.0.0 update so that quests in the log show properly  
+- remove erroring library  
+- Update for 11.0.0, probably needs more tweaking to be correct  

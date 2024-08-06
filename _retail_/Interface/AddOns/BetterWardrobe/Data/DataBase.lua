@@ -176,8 +176,9 @@ do
 		local playerFaction, _ = UnitFactionGroup('player')
 		local buildID = (select(4, GetBuildInfo()))
 		BuildBlizzSets()
-		--[==[@debug@ 
-		addon:AddTestSets()
+
+		--[==[@debug@
+			addon:AddTestSets()
 		--@end-debug@]==]
 		for armorType, data in pairs(addon.ArmorSets) do
 			ArmorDB[armorType] = {}
@@ -218,6 +219,8 @@ do
 
 
 					setData.itemData = setData.itemData or {}
+
+					setData.validForCharacter = true;
 
 
 					for slotID, itemData in pairs(setData.itemData) do
@@ -297,7 +300,7 @@ do
 							---local visualID, sourceID = addon.GetItemSource(baseItem)
 							--setData.itemAppearance = addon.ItemAppearance[visualID]
 						setData.uiOrder = UIID_Counter[setData.expansionID]
-						UIID_Counter[setData.expansionID] = UIID_Counter[setData.expansionID] + 1
+					--	UIID_Counter[setData.expansionID] = UIID_Counter[setData.expansionID] + 1
 						SET_INDEX[setData.setID] = setData
 						ArmorDB[armorType][setData.setID] = setData
 					end
@@ -400,6 +403,7 @@ end
 		------SET_INDEX[0] = hiddenSet
 		-----tinsert(SET_DATA, hiddenSet)
 		addon.BuildClassArtifactAppearanceList()
+		addon.GetSavedList()
 	end
 
 	function addon.Init:BuildAltDB()

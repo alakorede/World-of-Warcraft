@@ -32,6 +32,10 @@ local altNoteDB = {
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
+--test
+{3642,193880,222562},
+
+
 --DK 91493, helms 91641
 {3719,222558,222562},--Mythic Shoulders
 {3719,222551,222555},--Mythic Belt

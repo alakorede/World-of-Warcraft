@@ -417,8 +417,8 @@ function MoveAny:InitMALock()
 		end
 	)
 
-	MoveAny:SetVersion(AddonName, 135994, "1.6.242")
-	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.242"))
+	MoveAny:SetVersion(AddonName, 135994, "1.6.248")
+	MALock.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.248"))
 	MALock.CloseButton:SetScript(
 		"OnClick",
 		function()
@@ -455,7 +455,7 @@ function MoveAny:InitMALock()
 		-- AddCheckBox(x, key, val, func, id, editModeEnum, showReload)
 		AddCategory("GENERAL")
 		AddCheckBox(4, "SHOWTIPS", true)
-		AddCheckBox(4, "SHOWMINIMAPBUTTON", true, MoveAny.MinimapButtonCB, nil, nil, false)
+		AddCheckBox(4, "SHOWMINIMAPBUTTON", MoveAny:GetWoWBuild() ~= "RETAIL", MoveAny.MinimapButtonCB, nil, nil, false)
 		AddCheckBox(4, "HIDEHIDDENFRAMES", false, MoveAny.UpdateHiddenFrames, nil, nil, false)
 		AddSlider(8, "SNAPSIZE", 5, nil, 1, 50, 1)
 		AddSlider(8, "GRIDSIZE", 10, MoveAny.UpdateGrid, 1, 100, 1)
@@ -922,50 +922,58 @@ function MoveAny:InitMALock()
 	MALock.DISCORD:SetSize(160, 24)
 	MALock.DISCORD:SetPoint("TOPLEFT", MALock, "TOPLEFT", MALock:GetWidth() - 160 - 8, -MALock:GetHeight() + 24 + 4)
 	MALock.DISCORD:SetAutoFocus(false)
-	MAGridFrame = CreateFrame("Frame", "MAGridFrame", MoveAny:GetMainPanel())
-	MAGridFrame:SetScript(
-		"OnUpdate",
-		function(sel)
-			if MACurrentEle then
-				MAGridFrame:EnableMouse(true)
-			else
-				MAGridFrame:EnableMouse(false)
+	C_Timer.After(
+		0.1,
+		function()
+			MAGridFrame = CreateFrame("Frame", "MAGridFrame", MoveAny:GetMainPanel())
+			MAGridFrame:SetScript(
+				"OnUpdate",
+				function(sel)
+					if MACurrentEle then
+						MAGridFrame:EnableMouse(true)
+					else
+						MAGridFrame:EnableMouse(false)
+					end
+				end
+			)
+
+			MAGridFrame:HookScript(
+				"OnMouseDown",
+				function(sel, btn)
+					if MoveAny:IsEnabled("MOVEFRAMES", true) and btn == "LeftButton" then
+						MoveAny:ClearSelectEle()
+					end
+				end
+			)
+
+			MAGridFrame:SetSize(GetScreenWidth(), GetScreenHeight())
+			MAGridFrame:ClearAllPoints()
+			MAGridFrame:SetPoint("CENTER", MoveAny:GetMainPanel(), "CENTER", 0, 0)
+			MAGridFrame:SetFrameStrata("LOW")
+			MAGridFrame:SetFrameLevel(1)
+			MAGridFrame.hor = MAGridFrame:CreateTexture()
+			MAGridFrame.hor:SetPoint("CENTER", 0, -0.5)
+			MAGridFrame.hor:SetSize(MoveAny:GetMainPanel():GetWidth(), 1)
+			MAGridFrame.hor:SetColorTexture(1, 1, 1, 1)
+			MAGridFrame.ver = MAGridFrame:CreateTexture()
+			MAGridFrame.ver:SetPoint("CENTER", 0.5, 0)
+			MAGridFrame.ver:SetSize(1, MoveAny:GetMainPanel():GetHeight())
+			MAGridFrame.ver:SetColorTexture(1, 1, 1, 1)
+			MoveAny:UpdateGrid()
+			local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint("MALock")
+			if dbp1 and dbp3 then
+				MALock:ClearAllPoints()
+				MALock:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
 			end
+
+			MoveAny:HideMALock(true)
 		end
 	)
-
-	MAGridFrame:HookScript(
-		"OnMouseDown",
-		function(sel, btn)
-			if MoveAny:IsEnabled("MOVEFRAMES", true) and btn == "LeftButton" then
-				MoveAny:ClearSelectEle()
-			end
-		end
-	)
-
-	MAGridFrame:SetAllPoints(MoveAny:GetMainPanel())
-	MAGridFrame:SetFrameStrata("LOW")
-	MAGridFrame:SetFrameLevel(1)
-	MAGridFrame.hor = MAGridFrame:CreateTexture()
-	MAGridFrame.hor:SetPoint("CENTER", 0, -0.5)
-	MAGridFrame.hor:SetSize(MoveAny:GetMainPanel():GetWidth(), 1)
-	MAGridFrame.hor:SetColorTexture(1, 1, 1, 1)
-	MAGridFrame.ver = MAGridFrame:CreateTexture()
-	MAGridFrame.ver:SetPoint("CENTER", 0.5, 0)
-	MAGridFrame.ver:SetSize(1, MoveAny:GetMainPanel():GetHeight())
-	MAGridFrame.ver:SetColorTexture(1, 1, 1, 1)
-	MoveAny:UpdateGrid()
-	local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint("MALock")
-	if dbp1 and dbp3 then
-		MALock:ClearAllPoints()
-		MALock:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-	end
-
-	MoveAny:HideMALock(true)
 end
 
 function MoveAny:UpdateGrid()
 	local id = 0
+	if not MAGridFrame then return end
 	MAGridFrame.lines = MAGridFrame.lines or {}
 	for i, v in pairs(MAGridFrame.lines) do
 		v:Hide()
@@ -1051,7 +1059,7 @@ function MoveAny:ShowProfiles()
 			end
 		)
 
-		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.242"))
+		MAProfiles.TitleText:SetText(format("MoveAny |T135994:16:16:0:0|t v|cff3FC7EB%s", "1.6.248"))
 		MAProfiles.CloseButton:SetScript(
 			"OnClick",
 			function()
@@ -3084,8 +3092,7 @@ function MoveAny:LoadAddon()
 									end
 
 									sel:SetParent(ObjectiveTrackerFrame)
-									sel:ClearAllPoints()
-									sel:SetPoint("TOPLEFT", ObjectiveTrackerFrame, "TOPLEFT", 0, 0)
+									MoveAny:SetPoint(sel, "TOPLEFT", ObjectiveTrackerFrame, "TOPLEFT", 0, 0)
 									sel.qwfsetpoint = false
 								end
 							)
@@ -3114,8 +3121,7 @@ function MoveAny:LoadAddon()
 									end
 
 									sel:SetParent(ObjectiveTrackerFrame)
-									sel:ClearAllPoints()
-									sel:SetPoint("TOPLEFT", ObjectiveTrackerFrame, "TOPLEFT", 0, 0)
+									MoveAny:SetPoint(sel, "TOPLEFT", ObjectiveTrackerFrame, "TOPLEFT", 0, 0)
 									sel.wfsetpoint = false
 								end
 							)
@@ -3202,16 +3208,14 @@ function MoveAny:LoadAddon()
 			function(sel, ...)
 				if sel.ma_setpoint then return end
 				sel.ma_setpoint = true
-				PetFrame:SetParent(MAPetFrame)
-				PetFrame:ClearAllPoints()
-				PetFrame:SetPoint("CENTER", MAPetFrame, "CENTER", 0, 0)
+				sel:SetParent(MAPetFrame)
+				MoveAny:SetPoint(sel, "CENTER", MAPetFrame, "CENTER", 0, 0)
 				sel.ma_setpoint = false
 			end
 		)
 
 		PetFrame:SetParent(MAPetFrame)
-		PetFrame:ClearAllPoints()
-		PetFrame:SetPoint("CENTER", MAPetFrame, "CENTER", 0, 0)
+		MoveAny:SetPoint(PetFrame, "CENTER", MAPetFrame, "CENTER", 0, 0)
 		MoveAny:RegisterWidget(
 			{
 				["name"] = "MAPetFrame",
@@ -3318,8 +3322,7 @@ function MoveAny:LoadAddon()
 				end
 
 				if not InCombatLockdown() then
-					sel:ClearAllPoints()
-					sel:SetPoint("RIGHT", MACompactRaidFrameManager, "RIGHT", 0, 0)
+					MoveAny:SetPoint(sel, "RIGHT", MACompactRaidFrameManager, "RIGHT", 0, 0)
 				end
 
 				sel.crfmsetpoint = false
@@ -3372,8 +3375,7 @@ function MoveAny:LoadAddon()
 						function(sel, ...)
 							if sel.ma_ktb_setpoint then return end
 							sel.ma_ktb_setpoint = true
-							sel:ClearAllPoints()
-							sel:SetPoint("TOP", MAKTB, "TOP", 0, kbr)
+							MoveAny:SetPoint(sel, "TOP", MAKTB, "TOP", 0, kbr)
 							sel.ma_ktb_setpoint = false
 						end
 					)
@@ -3806,12 +3808,24 @@ function MoveAny:LoadAddon()
 				end
 			end
 
+			function MoveAny:BossCount()
+				local count = 0
+				for i = 1, 5 do
+					local frame = _G["Boss" .. i .. "TargetFrame"]
+					if frame and UnitExists("boss" .. i) then
+						count = count + 1
+					end
+				end
+
+				return count
+			end
+
 			function MoveAny:HandleBossFrames()
 				for i = 1, 6 do
 					local frame = _G["Boss" .. i .. "TargetFrame"]
 					local unit = "boss" .. i
 					if frame then
-						if UnitExists(unit) then
+						if UnitExists(unit) and MoveAny:BossCount() > 1 then
 							frame.ma_show = true
 							frame:SetAlpha(1)
 						else
@@ -4004,8 +4018,7 @@ function MoveAny:LoadAddon()
 					sel:SetUserPlaced(false)
 					if MoveAny:GameTooltipOnDefaultPosition() then
 						local p1, _, p3, _, _ = MAGameTooltip:GetPoint()
-						sel:ClearAllPoints()
-						sel:SetPoint(p1, MAGameTooltip, p3, 0, 0)
+						MoveAny:SetPoint(sel, p1, MAGameTooltip, p3, 0, 0)
 					end
 
 					sel.gtsetpoint = false
@@ -4027,8 +4040,7 @@ function MoveAny:LoadAddon()
 						mX = mX / scale
 						mY = mY / scale
 						GameTooltip.gtsetpoint = true
-						GameTooltip:ClearAllPoints()
-						GameTooltip:SetPoint("BOTTOMLEFT", MoveAny:GetMainPanel(), "BOTTOMLEFT", mX + 22, mY + 22)
+						MoveAny:SetPoint(GameTooltip, "BOTTOMLEFT", MoveAny:GetMainPanel(), "BOTTOMLEFT", mX + 22, mY + 22)
 						GameTooltip.gtsetpoint = false
 						GameTooltip.default = 1
 					end
@@ -4161,8 +4173,7 @@ function MoveAny:LoadAddon()
 								sel:SetUserPlaced(false)
 							end
 
-							sel:ClearAllPoints()
-							sel:SetPoint("BOTTOM", _G["GroupLootFrame" .. (x - 1)], "TOP", 0, 4)
+							MoveAny:SetPoint(sel, "BOTTOM", _G["GroupLootFrame" .. (x - 1)], "TOP", 0, 4)
 							sel.glfsetpoint = false
 						end
 					)
@@ -4495,8 +4506,7 @@ function MoveAny:LoadAddon()
 								function()
 									local ssw, _ = _G["ChatFrame" .. i .. "ButtonFrame"]:GetSize()
 									sel:SetSize(ssw, ssw * 6)
-									sel:ClearAllPoints()
-									sel:SetPoint("BOTTOM", _G["ChatFrame" .. 1 .. "ButtonFrame"], "BOTTOM", 0, 0)
+									MoveAny:SetPoint(sel, "BOTTOM", _G["ChatFrame" .. 1 .. "ButtonFrame"], "BOTTOM", 0, 0)
 									sel.cbfsetpoint = false
 								end
 							)
@@ -4551,8 +4561,7 @@ function MoveAny:LoadAddon()
 							sel.cebsetpoint = true
 							if _G["ChatFrame" .. 1 .. "EditBox"] then
 								sel:SetSize(_G["ChatFrame" .. 1 .. "EditBox"]:GetSize())
-								sel:ClearAllPoints()
-								sel:SetPoint("CENTER", _G["ChatFrame" .. 1 .. "EditBox"], "CENTER", 0, 0)
+								MoveAny:SetPoint(sel, "CENTER", _G["ChatFrame" .. 1 .. "EditBox"], "CENTER", 0, 0)
 							end
 
 							sel.cebsetpoint = false
@@ -4675,77 +4684,32 @@ function MoveAny:LoadAddon()
 			end
 		end
 
-		local MoveAnyMinimapIcon = LibStub("LibDataBroker-1.1"):NewDataObject(
-			"MoveAnyMinimapIcon",
-			{
-				type = "data source",
-				text = "MoveAnyMinimapIcon",
-				icon = 135994,
-				OnClick = function(sel, btnName)
-					if btnName == "LeftButton" then
-						MoveAny:ToggleMALock()
-					elseif IsShiftKeyDown() and btnName == "RightButton" then
-						MoveAny:HideMinimapButton()
-					end
-				end,
-				OnTooltipShow = function(tooltip)
-					if not tooltip or not tooltip.AddLine then return end
-					tooltip:AddLine("MoveAny")
-					tooltip:AddLine(MoveAny:GT("LID_MMBTNLEFT"))
-					tooltip:AddLine(MoveAny:GT("LID_MMBTNRIGHT"))
-				end,
-			}
-		)
+		C_Timer.After(
+			0,
+			function()
+				MoveAny:CreateMinimapButton(
+					{
+						["name"] = "MoveAny",
+						["icon"] = 135994,
+						["dbtab"] = CVTAB,
+						["vTT"] = {{"MoveAny |T135994:16:16:0:0|t", "v|cff3FC7EB1.6.248"}, {MoveAny:GT("LID_LEFTCLICK"), MoveAny:GT("LID_MMBTNLEFT")}, {MoveAny:GT("LID_RIGHTCLICK"), MoveAny:GT("LID_MMBTNRIGHT")}},
+						["funcL"] = function()
+							MoveAny:ToggleMALock()
+						end,
+						["funcR"] = function()
+							MoveAny:SetEnabled("SHOWMINIMAPBUTTON", false)
+							MoveAny:HideMMBtn("MoveAny")
+						end
+					}
+				)
 
-		if MoveAnyMinimapIcon then
-			MAMMBTN = LibStub("LibDBIcon-1.0", true)
-			if MoveAny:GetMinimapButton() then
-				MoveAny:GetMinimapButton():Register("MoveAnyMinimapIcon", MoveAnyMinimapIcon, MoveAny:GetMinimapTable())
-			end
-		end
-
-		function MoveAny:MinimapButtonCB(checked)
-			if checked then
-				MoveAny:ShowMinimapButton()
-			else
-				MoveAny:HideMinimapButton()
-			end
-		end
-
-		function MoveAny:HideMinimapButton()
-			if MoveAny:IsEnabled("SHOWMINIMAPBUTTON", true) then
-				MoveAny:SetEnabled("SHOWMINIMAPBUTTON", false)
-			end
-
-			if MoveAny:GetMinimapButton() then
-				MoveAny:GetMinimapButton():Hide("MoveAnyMinimapIcon")
-			end
-		end
-
-		function MoveAny:ShowMinimapButton()
-			if not MoveAny:IsEnabled("SHOWMINIMAPBUTTON", true) then
-				MoveAny:SetEnabled("SHOWMINIMAPBUTTON", true)
-			end
-
-			if MoveAny:GetMinimapButton() then
-				MoveAny:GetMinimapButton():Show("MoveAnyMinimapIcon")
-			end
-		end
-
-		function MoveAny:UpdateMinimapButton()
-			if MoveAny:GetMinimapButton() then
-				if MoveAny:IsEnabled("SHOWMINIMAPBUTTON", true) then
-					MoveAny:ShowMinimapButton()
+				if MoveAny:IsEnabled("SHOWMINIMAPBUTTON", MoveAny:GetWoWBuild() ~= "RETAIL") then
+					MoveAny:ShowMMBtn("MoveAny")
 				else
-					MoveAny:HideMinimapButton()
+					MoveAny:HideMMBtn("MoveAny")
 				end
 			end
-		end
-
-		function MoveAny:ToggleMinimapButton()
-			MoveAny:SetEnabled("SHOWMINIMAPBUTTON", not MoveAny:IsEnabled("SHOWMINIMAPBUTTON", true))
-			MoveAny:UpdateMinimapButton()
-		end
+		)
 
 		if MoveAny:IsEnabled("MALOCK", false) then
 			MoveAny:ShowMALock()
@@ -4754,15 +4718,6 @@ function MoveAny:LoadAddon()
 		if MoveAny:IsEnabled("MAPROFILES", false) then
 			MoveAny:ShowProfiles()
 		end
-
-		C_Timer.After(
-			0,
-			function()
-				if MoveAny:GetMinimapButton() then
-					MoveAny:UpdateMinimapButton()
-				end
-			end
-		)
 
 		C_Timer.After(
 			1,

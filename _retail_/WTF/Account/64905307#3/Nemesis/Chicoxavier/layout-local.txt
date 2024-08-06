@@ -16,8 +16,8 @@ H: 112
 Frame: Roth_UIRepBar
 FrameLevel: 0
 Anchor: BOTTOM
-X: -264
-Y: 80
+X: 2
+Y: 123
 W: 365
 H: 5
 Frame: Roth_UIExpBar

@@ -26,6 +26,7 @@ BigWigs:AddColors("Baron Geddon", {
 	[19695] = "red",
 	[20475] = {"blue","orange","red"},
 	[20478] = "orange",
+	[461103] = "blue",
 })
 
 BigWigs:AddColors("Shazzrah", {
@@ -55,8 +56,7 @@ BigWigs:AddColors("Majordomo Executus", {
 BigWigs:AddColors("Ragnaros Classic", {
 	[20566] = "red",
 	["adds"] = "green",
-	["emerge"] = {"orange","yellow"},
-	["submerge"] = {"cyan","orange","yellow"},
+	["stages"] = "cyan",
 })
 
 BigWigs:AddColors("The Molten Core", {
@@ -64,4 +64,5 @@ BigWigs:AddColors("The Molten Core", {
 	[460887] = "orange",
 	[460895] = {"blue","yellow"},
 	[460898] = {"blue","yellow"},
+	["adds"] = "cyan",
 })

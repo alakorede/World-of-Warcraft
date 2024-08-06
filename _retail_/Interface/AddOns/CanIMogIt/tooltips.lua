@@ -19,7 +19,7 @@ end
 -----------------------------
 
 
-local function printDebug(tooltip, itemLink, bag, slot)
+local function printDebug(tooltip, itemLink, tooltipData)
     -- Add debug statements to the tooltip, to make it easier to understand
     -- what may be going wrong.
 
@@ -59,7 +59,6 @@ local function printDebug(tooltip, itemLink, bag, slot)
     end
     addDoubleLine(tooltip, "Item ID:", tostring(itemID))
     local _, _, quality, _, _, itemClass, itemSubClass, _, equipSlot, _, _, _, _, _, expansion = C_Item.GetItemInfo(itemID)
-    addDoubleLine(tooltip, "Item quality:", tostring(quality))
     addDoubleLine(tooltip, "Item class:", tostring(itemClass))
     addDoubleLine(tooltip, "Item subClass:", tostring(itemSubClass))
     addDoubleLine(tooltip, "Item equipSlot:", tostring(equipSlot))
@@ -67,7 +66,6 @@ local function printDebug(tooltip, itemLink, bag, slot)
 
     local sourceID, sourceIDSource = CanIMogIt:GetSourceID(itemLink)
     addDoubleLine(tooltip, "Item sourceID:", tostring(sourceID))
-    addDoubleLine(tooltip, "Item sourceIDSource:", tostring(sourceIDSource))
     local appearanceID = CanIMogIt:GetAppearanceID(itemLink)
     addDoubleLine(tooltip, "Item appearanceID:", tostring(appearanceID))
 
@@ -76,8 +74,6 @@ local function printDebug(tooltip, itemLink, bag, slot)
 
     local baseSetID = setID ~= nil and setID ~= "nil" and C_TransmogSets.GetBaseSetID(setID) or "nil"
     addDoubleLine(tooltip, "Item baseSetID:", tostring(setID))
-
-    addDoubleLine(tooltip, "Bag, Slot:", tostring(bag) .. ", " .. tostring(slot))
 
     addLine(tooltip, '--------')
 
@@ -94,8 +90,6 @@ local function printDebug(tooltip, itemLink, bag, slot)
             addDoubleLine(tooltip, "BLIZZ PlayerCanCollectSource_2_CanCollect:", tostring(playerCanCollect))
         end
     end
-
-    addLine(tooltip, '--------')
 
     local playerHasTransmog = C_TransmogCollection.PlayerHasTransmog(itemID)
     if playerHasTransmog ~= nil then
@@ -117,9 +111,9 @@ local function printDebug(tooltip, itemLink, bag, slot)
         addDoubleLine(tooltip, "PlayerKnowsTransmogFromItem:", tostring(playerKnowsTransmogFromItem))
     end
 
-    local playerKnowsTrasmog = CanIMogIt:_PlayerKnowsTransmog(itemLink, appearanceID)
-    if playerKnowsTrasmog ~= nil then
-        addDoubleLine(tooltip, "PlayerKnowsTransmog:", tostring(playerKnowsTrasmog))
+    local playerKnowsTransmog = CanIMogIt:PlayerKnowsTransmog(itemLink)
+    if playerKnowsTransmog ~= nil then
+        addDoubleLine(tooltip, "PlayerKnowsTransmog:", tostring(playerKnowsTransmog))
     end
     local characterCanLearnTransmog = CanIMogIt:CharacterCanLearnTransmog(itemLink)
     if characterCanLearnTransmog ~= nil then
@@ -158,11 +152,8 @@ local function printDebug(tooltip, itemLink, bag, slot)
         end
     end
 
-    addLine(tooltip, '--------')
-
     addDoubleLine(tooltip, "IsItemSoulbound:", tostring(CanIMogIt:IsItemSoulbound(itemLink, bag, slot)))
     addDoubleLine(tooltip, "IsItemWarbound:", tostring(CanIMogIt:IsItemWarbound(itemLink, bag, slot)))
-    addDoubleLine(tooltip, "CharacterCanEquipItem:", tostring(CanIMogIt:CharacterCanEquipItem(itemLink)))
     addDoubleLine(tooltip, "IsValidAppearanceForCharacter:", tostring(CanIMogIt:IsValidAppearanceForCharacter(itemLink)))
     addDoubleLine(tooltip, "CharacterIsHighEnoughLevelForTransmog:", tostring(CanIMogIt:CharacterIsHighEnoughLevelForTransmog(itemLink)))
 
@@ -175,7 +166,7 @@ local function printDebug(tooltip, itemLink, bag, slot)
 
     addLine(tooltip, '--------')
 
-    local calculatedTooltipText = CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
+    local calculatedTooltipText = CanIMogIt:CalculateTooltipText(itemLink, nil, nil, tooltipData)
     if calculatedTooltipText ~= nil then
         addDoubleLine(tooltip, "Tooltip:", tostring(calculatedTooltipText))
     else
@@ -193,7 +184,7 @@ end
 
 local itemLinks = {}
 
-local function addToTooltip(tooltip, itemLink, bag, slot)
+local function addToTooltip(tooltip, itemLink, tooltipData)
     -- Does the calculations for determining what text to
     -- display on the tooltip.
     if tooltip.CIMI_tooltipWritten then return end
@@ -203,7 +194,7 @@ local function addToTooltip(tooltip, itemLink, bag, slot)
     end
 
     if CanIMogItOptions["debug"] then
-        printDebug(tooltip, itemLink, bag, slot)
+        printDebug(tooltip, itemLink, tooltipData)
         tooltip.CIMI_tooltipWritten = true
     end
 
@@ -216,7 +207,7 @@ local function addToTooltip(tooltip, itemLink, bag, slot)
     end
 
     local text;
-    text = CanIMogIt:GetTooltipText(itemLink, bag, slot)
+    text = CanIMogIt:GetTooltipText(itemLink, bag, slot, tooltipData)
     if text and text ~= "" then
         addDoubleLine(tooltip, " ", text)
         tooltip.CIMI_tooltipWritten = true
@@ -273,132 +264,16 @@ if CanIMogIt.isRetail then
     GameTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipCleared", TooltipCleared)
 end
 
--- TODO: This is conflicting with the bag tooltip. Need to figure out
--- how to have it run after the other call.
--- local function CanIMogIt_AttachItemTooltip(tooltip)
---     -- Hook for normal tooltips.
---     if tooltip.GetItem == nil then return end
---     local link = select(2, tooltip:GetItem())
---     if link then
---         addToTooltip(tooltip, link)
---         VVDebugPrint(tooltip, "OnTooltipSetItem")
---     end
--- end
 
-
--- TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, CanIMogIt_AttachItemTooltip)
-
-
-hooksecurefunc(GameTooltip, "SetMerchantItem",
-    function(tooltip, index)
-        addToTooltip(tooltip, GetMerchantItemLink(index))
-        VVDebugPrint(tooltip, "SetMerchantItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetBuybackItem",
-    function(tooltip, index)
-        addToTooltip(tooltip, GetBuybackItemLink(index))
-        VVDebugPrint(tooltip, "SetBuybackItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetBagItem",
-    function(tooltip, bag, slot)
-        addToTooltip(tooltip, C_Container.GetContainerItemLink(bag, slot), bag, slot)
-        VVDebugPrint(tooltip, "SetBagItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetLootItem",
-    function(tooltip, slot)
-        if LootSlotHasItem(slot) then
-            local link = GetLootSlotLink(slot)
-            addToTooltip(tooltip, link)
-            VVDebugPrint(tooltip, "SetLootItem")
-        end
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetLootRollItem",
-    function(tooltip, slot)
-        addToTooltip(tooltip, GetLootRollItemLink(slot))
-        VVDebugPrint(tooltip, "SetLootRollItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetInventoryItem",
-    function(tooltip, unit, slot)
-        addToTooltip(tooltip, GetInventoryItemLink(unit, slot))
-        VVDebugPrint(tooltip, "SetInventoryItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetGuildBankItem",
-    function(tooltip, tab, slot)
-        addToTooltip(tooltip, GetGuildBankItemLink(tab, slot))
-        VVDebugPrint(tooltip, "SetGuildBankItem")
-    end
-)
-
-
--- TODO DF: Make sure this hook in still needed. The crafting system got reworked.
--- hooksecurefunc(GameTooltip, "SetRecipeReagentItem",
---     function(tooltip, itemID, index)
---         addToTooltip(tooltip, C_TradeSkillUI.GetRecipeReagentItemLink(itemID, index))
---         VVDebugPrint(tooltip, "SetRecipeReagentItem")
---     end
--- )
-
-
-hooksecurefunc(GameTooltip, "SetTradeTargetItem",
-    function(tooltip, index)
-        addToTooltip(tooltip, GetTradeTargetItemLink(index))
-        VVDebugPrint(tooltip, "SetTradeTargetItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetQuestLogItem",
-    function(tooltip, type, index)
-        addToTooltip(tooltip, GetQuestLogItemLink(type, index))
-        VVDebugPrint(tooltip, "SetQuestLogItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetInboxItem",
-    function(tooltip, mailIndex, attachmentIndex)
-        addToTooltip(tooltip, GetInboxItemLink(mailIndex, attachmentIndex or 1))
-        VVDebugPrint(tooltip, "SetInboxItem")
-    end
-)
-
-
-hooksecurefunc(GameTooltip, "SetSendMailItem",
-    function(tooltip, index)
-        local name = GetSendMailItem(index)
-        local _, link = C_Item.GetItemInfo(name)
-        addToTooltip(tooltip, link)
-        VVDebugPrint(tooltip, "SetSendMailItem")
-    end
-)
-
-
-local function OnSetHyperlink(tooltip, link)
-    local type, id = string.match(link, ".*(item):(%d+).*")
-    if not type or not id then return end
-    if type == "item" then
-        addToTooltip(tooltip, link)
-        VVDebugPrint(tooltip, "SetHyperlink")
+local function CanIMogIt_AttachItemTooltip(tooltip, tooltipData)
+    -- Hook for normal tooltips.
+    if tooltip.GetItem == nil then return end
+    local link = select(2, tooltip:GetItem())
+    if link then
+        addToTooltip(tooltip, link, tooltipData)
+        VVDebugPrint(tooltip, "OnTooltipSetItem")
     end
 end
 
 
-hooksecurefunc(GameTooltip, "SetHyperlink", OnSetHyperlink)
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, CanIMogIt_AttachItemTooltip)

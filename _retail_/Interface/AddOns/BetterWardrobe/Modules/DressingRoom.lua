@@ -53,7 +53,7 @@ function BetterWardrobe:ToggleDressingRoom()
 end
 
 function addon.Init:DressingRoom()
-	DressUpFrameOutfitDropDown:Hide()
+	DressUpFrameOutfitDropdown:Hide()
 
 	Buttons = BW_DressingRoomFrame.PreviewButtonFrame.Slots
 	Profile = addon.Profile
@@ -80,7 +80,7 @@ function addon:DressingRoom_Enable()
 
 	if DressUpFrame.MaximizeMinimizeFrame then
 		DressUpFrame.MaximizeMinimizeFrame:SetOnMaximizedCallback(function(self)
-			DressUpFrameOutfitDropDown:Hide()
+			DressUpFrameOutfitDropdown:Hide()
 
 			if Profile.DR_ResizeWindow then
 				DressUpFrame.MaximizeMinimizeFrame:GetParent():SetSize(Profile.DR_Width, Profile.DR_Height) 
@@ -92,7 +92,7 @@ function addon:DressingRoom_Enable()
 			
 
 
-		addon:Hook(DressUpFrame.MaximizeMinimizeFrame, "minimizedCallback", function() DressUpFrameOutfitDropDown:Hide() end, true)
+	-----	addon:Hook(DressUpFrame.MaximizeMinimizeFrame, "minimizedCallback", function() DressUpFrameOutfitDropdown:Hide() end, true)
 
 
 	end
@@ -101,6 +101,8 @@ function addon:DressingRoom_Enable()
 	DressUpFrame:RegisterForDrag("LeftButton")
 	DressUpFrame:SetScript("OnDragStart", DressUpFrame.StartMoving)
 	DressUpFrame:SetScript("OnDragStop", DressUpFrame.StopMovingOrSizing)
+	hooksecurefunc("DressUpVisual", DressingRoom.Update);
+	hooksecurefunc("DressUpCollectionAppearance", DressingRoom.Update);
 end
 
 function addon:DressingRoom_Disable()
@@ -384,54 +386,87 @@ function DressingRoom:GetSource(mainHandEnchant, offHandEnchant)
 	end
 end
 
+local DefaultActorID = 1620;
+local ActorIDList = {
+	[4207724] = 1653, --Dracthyr
+	[4395382] = 1654, --Dracthyr Male Visage
+	[4220488] = 1654, --Dracthyr Female Visage
+	[307454] = 1626, --Worgen Male
+	[307453] = 1645, --Worgen Female
+};
+
 local isPlayer = false
 function DressingRoom:UpdateModel(unit)
-	local unit = unit or "player"
+	local unit = unit or "player";
 	if not UnitExists(unit) or not UnitIsPlayer(unit) or not CanInspect(unit, false) then
 		return
 	end
 
-	SetDressUpBackground(unit)
-	local actor = DressUpFrame.ModelScene:GetPlayerActor()
+	SetDressUpBackground(unit);
+	local actor = DressUpFrame.ModelScene:GetPlayerActor();
 
-	if not actor then return end
+	if not actor then return end;
 	
-	BW_DressingRoomFrame:RegisterEvent("INSPECT_READY")
-	NotifyInspect(unit)
+	local itemList;
+	if actor then
+		itemList = CopyTable(actor:GetItemitemList());
+	end
+	
+	if unit ~= "player" then
+		BW_DressingRoomFrame:RegisterEvent("INSPECT_READY")
+		NotifyInspect(unit);
+	end
 
-	UnitInfo.raceID = select(3, UnitRace(unit))
-	UnitInfo.classID = select(3, UnitClass(unit))
-	UnitInfo.genderID = UnitSex(unit)
+	UnitInfo.raceID = select(3, UnitRace(unit));
+	UnitInfo.classID = select(3, UnitClass(unit));
+	UnitInfo.genderID = UnitSex(unit);
 
-	local model, refresh
-	local sheatheWeapons = actor:GetSheathed() or false
+	local model, refresh;
+	local sheatheWeapons = actor:GetSheathed() or false;
 
 	if useTarget then
-		model = unit
-		isPlayer = false
-		actor:SetModelByUnit(model, sheatheWeapons, true, false, addon.useNativeForm )
-		refresh = true
+		model = unit;
+		isPlayer = false;
+		actor:SetModelByUnit(model, sheatheWeapons, true, false, addon.useNativeForm );
+		refresh = true;
 
 	else
-		model = "player"
+		model = "player";
 		if not isPlayer then
-			isPlayer = true
-			actor:SetModelByUnit(model, sheatheWeapons, true, false, addon.useNativeForm)
-			refresh = true
+			isPlayer = true;
+			actor:SetModelByUnit(model, sheatheWeapons, true, false, addon.useNativeForm);
+			refresh = true;
 		end
 	end
 
 	if refresh then
-		local modelInfo = C_ModelInfo.GetModelSceneActorInfoByID(483)
-		C_Timer.After(0.1, function() DressUpFrame.ModelScene:InitializeActor(actor, modelInfo) end)
+		C_Timer.After(0.1, function() 			
+			local fileID = actor:GetModelFileID();
+			local infoID;
+			if fileID and ActorIDList[fileID] then
+				infoID = ActorIDList[fileID];
+			else
+				infoID = DefaultActorID;
+			end
+			local modelInfo = C_ModelInfo.GetModelSceneActorInfoByID(infoID);
+
+			if modelInfo then
+				actor:ApplyFromModelSceneActorInfo(modelInfo);
+			end
+
+			if itemList then
+				for slotID, transmogInfo in ipairs(itemList) do
+					actor:SetItemTransmogInfo(transmogInfo, slotID);
+				end
+			end
+		 end)
 	end
 end
 
 BW_DressingRoomFrameMixin = {}
 function BW_DressingRoomFrameMixin:OnLoad()
-	self:RegisterEvent("ADDON_LOADED")
-	hooksecurefunc("DressUpVisual", DressingRoom.Update)
-	hooksecurefunc("DressUpCollectionAppearance", DressingRoom.Update)
+	self:RegisterEvent("ADDON_LOADED");
+
 --[[
 	DressUpFrame.LinkButton:ClearAllPoints()
 	DressUpFrame.LinkButton:SetPoint("LEFT",BW_DressingRoomFrame.BW_DressingRoomUndressButton, "RIGHT",-6,0)
@@ -457,36 +492,36 @@ function BW_DressingRoomFrameMixin:OnLoad()
 	highlight:SetPoint("BOTTOMRIGHT",DressUpFrame.LinkButton, "BOTTOMRIGHT",-8,5 )
 --]]
 	if IsAddOnLoaded("Narcissus") then
-		BW_DressingRoomFrame.BW_DressingRoomSwapFormButton:Hide()
+		BW_DressingRoomFrame.BW_DressingRoomSwapFormButton:Hide();
 	end
 end
 
 
 function BW_DressingRoomFrameMixin:OnShow()
-	itemhistory = {}
-	BW_DressingRoomFrame.BW_DressingRoomUndoButton:Hide()
-	addon:StoreItems()
+	itemhistory = {};
+	BW_DressingRoomFrame.BW_DressingRoomUndoButton:Hide();
+	addon:StoreItems();
 	if not Profile.DR_OptionsEnable then return end
 
-	BW_DressingRoomFrame.PreviewButtonFrame:SetShown(addon.Profile.DR_ShowItemButtons)
-	DressingRoom:UpdateBackground()	
-	HideArmorOnShow = addon.Profile.DR_StartUndressed
-	HideWeaponOnShow = addon.Profile.DR_HideWeapons
-	HideTabardOnShow = addon.Profile.DR_HideTabard
-	HideShirtOnShow = addon.Profile.DR_HideShirt
-	forceView = true
+	BW_DressingRoomFrame.PreviewButtonFrame:SetShown(addon.Profile.DR_ShowItemButtons);
+	DressingRoom:UpdateBackground();
+	HideArmorOnShow = addon.Profile.DR_StartUndressed;
+	HideWeaponOnShow = addon.Profile.DR_HideWeapons;
+	HideTabardOnShow = addon.Profile.DR_HideTabard;
+	HideShirtOnShow = addon.Profile.DR_HideShirt;
+	forceView = true;
 
 	if not GetCVarBool("transmogShouldersSeparately") then 
-		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonRightShoulder:Hide()
-		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonBack:ClearAllPoints()
+		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonRightShoulder:Hide();
+		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonBack:ClearAllPoints();
 		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonBack:SetPoint("TOPLEFT", BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonLeftShoulder,"BOTTOMLEFT")
 	else
-		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonRightShoulder:Show()
-		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonBack:ClearAllPoints()
+		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonRightShoulder:Show();
+		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonBack:ClearAllPoints();
 		BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonBack:SetPoint("TOPLEFT", BW_DressingRoomFrame.PreviewButtonFrame.PreviewButtonRightShoulder,"BOTTOMLEFT")
 	end
 
-	C_Timer.After(0, function() DressingRoom:GetSource() end)
+	C_Timer.After(0, function() DressingRoom:GetSource() end);
 end
 
 
@@ -513,94 +548,45 @@ function BW_DressingRoomFrameMixin:OnEvent(event, ...)
 	end
 end
 
-local ContextMenu = CreateFrame("Frame", addonName .. "ContextMenuFrame", UIParent, "BW_UIDropDownMenuTemplate")
-addon.ContextMenu = ContextMenu
 
 local function DressupSettingsButton_OnClick(self)
-	local Profile = addon.Profile
-	local contextMenuData = {
-		{
-			text = L["Display Options"], isTitle = true, notCheckable = true,
-		},
-		{
-			text = L["Show Item Buttons"],
-			func = function()
+	local function GeneratorFunction(owner, rootDescription)
+		local Profile = addon.Profile
+
+		rootDescription:CreateTitle(L["Display Options"]);
+		rootDescription:CreateCheckbox(L["Show Item Buttons"], function() return Profile.DR_ShowItemButtons end, function()
 				Profile.DR_ShowItemButtons = not Profile.DR_ShowItemButtons
 				BW_DressingRoomFrame.PreviewButtonFrame:SetShown(addon.Profile.DR_ShowItemButtons)
-			end,
-			isNotRadio = true,
-			checked = function() return Profile.DR_ShowItemButtons end,
-		},
-		{
-			text = L["Show DressingRoom Controls"],
-			func = function()
+			end);
+		rootDescription:CreateCheckbox(L["Show DressingRoom Controls"], function() return Profile.DR_ShowControls end, function()
 				Profile.DR_ShowControls = not Profile.DR_ShowControls
-				DressingRoom:ToggleControlPanel(Profile.DR_ShowControls)
-			end,
-			isNotRadio = true,
-			checked = function() return Profile.DR_ShowControls end,
-		},
-		{
-			text = L["Dim Backround Image"],
-			func = function()
+				--DressingRoom:ToggleControlPanel(Profile.DR_ShowControls)
+			end);
+		rootDescription:CreateCheckbox(L["Dim Backround Image"], function() return Profile.DR_DimBackground end, function()
 				Profile.DR_DimBackground = not Profile.DR_DimBackground
 				DressingRoom:UpdateBackground()
-			end,
-			checked = function() return Profile.DR_DimBackground end,
-			isNotRadio = true,
-		},
-		{
-			text = L["Hide Backround Image"],
-			func = function()
+			end);
+		rootDescription:CreateCheckbox(L["Hide Backround Image"], function() return Profile.DR_HideBackground end, function()
 				Profile.DR_HideBackground = not Profile.DR_HideBackground
 				DressingRoom:UpdateBackground()
-			end,
-			checked = function() return Profile.DR_HideBackground end,
-			isNotRadio = true,
-		},
-		{
-			text = L["Character Options"], isTitle = true, notCheckable = true,
-		},
-		{
-			text = L["Start Undressed"],
-			func = function() Profile.DR_StartUndressed = not Profile.DR_StartUndressed end,
-			checked = function() return Profile.DR_StartUndressed end,
-			isNotRadio = true,
-		},
-		{
-			text = L["Hide Tabard"],
-			func = function() Profile.DR_HideTabard = not Profile.DR_HideTabard end,
-			checked = function() return Profile.DR_HideTabard end,
-			isNotRadio = true,
-		},
-		{
-			text = L["Hide Weapons"],
-			func = function() Profile.DR_HideWeapons = not Profile.DR_HideWeapons end,
-			checked = function() return Profile.DR_HideWeapons end,
-			isNotRadio = true,
-		},
-		{
-			text = L["Hide Shirt"],
-			func = function() Profile.DR_HideShirt = not Profile.DR_HideShirt end,
-			checked = function() return Profile.DR_HideShirt end,
-			isNotRadio = true,
-		},
-	}
+			end);
+		rootDescription:CreateTitle(L["Character Options"]);
+		rootDescription:CreateCheckbox(L["Start Undressed"], function() return Profile.DR_StartUndressed end, function() Profile.DR_StartUndressed = not Profile.DR_StartUndressed end);
+		rootDescription:CreateCheckbox(L["Hide Tabard"], function() return Profile.DR_HideTabard end, function() Profile.DR_HideTabard = not Profile.DR_HideTabard end);
+		rootDescription:CreateCheckbox(L["Hide Weapons"], function() return Profile.DR_HideWeapons end, function() Profile.DR_HideWeapons = not Profile.DR_HideWeapons end);
+		rootDescription:CreateCheckbox(L["Hide Shirt"], function() return Profile.DR_HideShirt end, function() Profile.DR_HideShirt = not Profile.DR_HideShirt end);
+	end
 	
-	BW_UIDropDownMenu_SetAnchor(ContextMenu, 0, 0, "BOTTOMLEFT", self, "BOTTOMLEFT")
-	BW_EasyMenu(contextMenuData, ContextMenu, ContextMenu, 0, 0, "MENU",5)
+	MenuUtil.CreateContextMenu(parent, GeneratorFunction);
 end
 
 local function BW_DressingRoomImportButton_OnClick(self)
-	local Profile = addon.Profile
-	local name = addon.QueueList[3]
-	local contextMenuData = {
-		{
-			text = L["Import/Export Options"], isTitle = true, notCheckable = true,
-		},
-		{
-			text = L["Load Set: %s"]:format( name or L["None Selected"]),
-			func = function()
+
+	local function GeneratorFunction(owner, rootDescription)
+		local Profile = addon.Profile
+
+		rootDescription:CreateTitle(L["Import/Export Options"]);
+		rootDescription:CreateButton(L["Load Set: %s"]:format( name or L["None Selected"]), function()
 				local sources
 				local setType = addon.QueueList[1]
 				local setID = addon.QueueList[2]
@@ -627,38 +613,22 @@ local function BW_DressingRoomImportButton_OnClick(self)
 				--DressUpSources(sources)
 				import = false
 				DressingRoom:Update()
-			end,
-			isNotRadio = true,
-			notCheckable = true,
-		},
-		{
-			text = L["Import Item"],
-			func = function() BetterWardrobeOutfitFrameMixin:ShowPopup("BETTER_WARDROBE_IMPORT_ITEM_POPUP")	end,
-			isNotRadio = true,
-			notCheckable = true,
-		},
-		{
-			text = L["Import Set"],
-			func = function()BetterWardrobeOutfitFrameMixin:ShowPopup("BETTER_WARDROBE_IMPORT_SET_POPUP") end,
-			isNotRadio = true,
-			notCheckable = true,
-		},
-		{
-			text = L["Export Set"],
-			func = function() addon:ExportSet()	end,
-			notCheckable = true,
-			isNotRadio = true,
-		},
-		{
-			text = L["Create Dressing Room Command Link"],
-			func = function() addon:CreateChatLink() end,
-			notCheckable = true,
-			isNotRadio = true,
-		},
-	}
-	BW_UIDropDownMenu_SetAnchor(ContextMenu, 0, 0, "BOTTOMLEFT", self, "BOTTOMLEFT")
-	BW_EasyMenu(contextMenuData, ContextMenu, self, 0, 0, "MENU")
+			end);
+
+	
+		if  C_Transmog.IsAtTransmogNPC() then
+		
+		else
+					rootDescription:CreateButton(L["Import Item"], function() BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_ITEM_POPUP") end);
+		--rootDescription:CreateButton(L["Import Set"], function()BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_SET_POPUP") end);
+		--rootDescription:CreateButton(L["Create Dressing Room Command Link"], function() addon:CreateChatLink() end);
+		end
+
+		end
+	
+	MenuUtil.CreateContextMenu(parent, GeneratorFunction);
 end
+
 
 BW_DressingRoomButtonMixin = {}
 function BW_DressingRoomButtonMixin:OnMouseDown()
@@ -670,7 +640,6 @@ function BW_DressingRoomButtonMixin:OnMouseDown()
 
 	elseif button == "Import" then
 		BW_DressingRoomImportButton_OnClick(self)
-
 	elseif button == "Player" then
 		useTarget = false
 		DressingRoom:UpdateModel("player")
@@ -817,8 +786,7 @@ function BetterDressUpOutfitMixin:LoadOutfit(outfitID)
 	DressingRoom:Update()
 	import = true
 	local setType = addon.GetSetType(outfitID)
-	
-	if setType == "SavedBlizzard" then
+	if setType == "SavedBlizzard"  or (outfitID >= 5000 and outfitID <= 5020) then
 		local outfitID = addon:GetBlizzID(outfitID)
 		DressUpItemTransmogInfoList(C_TransmogCollection.GetOutfitItemTransmogInfoList(outfitID))
 	else

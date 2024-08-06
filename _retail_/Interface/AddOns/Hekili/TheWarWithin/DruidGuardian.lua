@@ -114,6 +114,7 @@ spec:RegisterTalents( {
     wellhoned_instincts           = { 82246, 377847, 1 }, -- When you fall below 40% health, you cast Frenzied Regeneration, up to once every 120 sec.
     wild_charge                   = { 82198, 102401, 1 }, -- Fly to a nearby ally's position.
     wild_growth                   = { 82241, 48438 , 1 }, -- Heals up to 5 injured allies within 30 yards of the target for 43,798 over 6.0 sec. Healing starts high and declines over the duration.
+
     -- Guardian
     after_the_wildfire            = { 82140, 371905, 1 }, -- Every 200 Rage you spend causes a burst of restorative energy, healing allies within 12 yds for 143,802.
     berserk_persistence           = { 82144, 50334 , 1 }, -- Go berserk for 15 sec, increasing your haste by 15%, reducing the cooldown of Frenzied Regeneration by 100%, Mangle, Thrash, and Growl by 50%, and reducing the cost of Maul and Ironfur by 50%.
@@ -162,6 +163,7 @@ spec:RegisterTalents( {
     ursocs_guidance               = { 82135, 393414, 1 }, --  Incarnation: Guardian of Ursoc: Every 25 Rage you spend reduces the cooldown of Incarnation: Guardian of Ursoc by 1 sec.  Convoke the Spirits: Convoke the Spirits' cooldown is reduced by 50% and its duration and number of spells cast is reduced by 25%. Convoke the Spirits has an increased chance to use an exceptional spell or ability.
     vicious_cycle                 = { 82158, 371999, 1 }, -- Mangle increases the damage of your next cast of Maul or Raze, and casting Maul or Raze increases the damage of your next Mangle by 15%. Stacks up to 3.
     vulnerable_flesh              = { 82159, 372618, 2 }, -- Maul and Raze have an additional 30% chance to critically strike.
+
     -- Druid of the Claw
     aggravate_wounds              = { 94616, 441829, 1 }, -- Every Maul, Raze, Mangle, Thrash, or Swipe you cast extends the duration of your Dreadful Wounds by 0.6 sec, up to 8 additional sec.
     bestial_strength              = { 94611, 441841, 1 }, -- Maul and Raze damage increased by 10%.
@@ -171,17 +173,18 @@ spec:RegisterTalents( {
     fount_of_strength             = { 94618, 441675, 1 }, -- Your maximum Energy and Rage are increased by 20. Frenzied Regeneration also increases your maximum health by 10%.
     killing_strikes               = { 94619, 441824, 1 }, -- Ravage increases your Agility by 5% and the armor granted by Ironfur by 20% for 8 sec. Your first Mangle after entering combat makes your next Maul become Ravage.
     packs_endurance               = { 94615, 441844, 1 }, -- Stampeding Roar's duration is increased by 25%.
-    ravage                        = { 94609, 441583, 1 }, -- Your auto-attacks have a chance to make your next Maul become Ravage. Ravage Slash through your target in a wide arc, dealing 86,493 Physical damage to your target and 43,683 to all other enemies in front of you.
+    ravage                        = { 94609, 441583, 1, "druid_of_the_claw" }, -- Your auto-attacks have a chance to make your next Maul become Ravage. Ravage Slash through your target in a wide arc, dealing 86,493 Physical damage to your target and 43,683 to all other enemies in front of you.
     ruthless_aggression           = { 94619, 441814, 1 }, -- Ravage increases your auto-attack speed by 20% for 6 sec.
     strike_for_the_heart          = { 94614, 441845, 1 }, -- Shred, Swipe, and Mangle's critical strike chance and critical strike damage are increased by 6%. Mangle heals you for 1% of maximum health.
     tear_down_the_mighty          = { 94614, 441846, 1 }, -- The cooldown of Pulverize is reduced by 5 sec.
     wildpower_surge               = { 94612, 441691, 1 }, -- Mangle grants Feline Potential. When you have 6 stacks, the next time you transform into Cat Form, gain 5 combo points and your next Ferocious Bite or Rip deals 100% increased damage for its full duration.
     wildshape_mastery             = { 94610, 441678, 1 }, -- Ironfur and Frenzied Regeneration persist in Cat Form. When transforming from Bear to Cat Form, you retain 80% of your Bear Form armor and health for 6 sec. For 6 sec after entering Bear Form, you heal for 10% of damage taken over 8 sec.
+
     -- Elune's Chosen
     arcane_affinity               = { 94586, 429540, 1 }, -- All Arcane damage from your spells and abilities is increased by 3%.
     astral_insight                = { 94585, 429536, 1 }, -- Incarnation: Guardian of Ursoc increase Arcane damage from spells and abilities by 10% while active. Increases the duration and number of spells cast by Convoke the Spirits by 25%.
     atmospheric_exposure          = { 94607, 429532, 1 }, -- Enemies damaged by Lunar Beam or Fury of Elune take 6% increased damage from you for 6 sec.
-    boundless_moonlight           = { 94608, 424058, 1 }, --  Lunar Beam Lunar Beam now causes you to leech life equal to 10% of all damage dealt to enemies within the beam.  Fury of Elune Fury of Elune now ends with a flash of energy, blasting nearby enemies for 73,265 Astral damage.
+    boundless_moonlight           = { 94608, 424058, 1, "elunes_chosen" }, --  Lunar Beam Lunar Beam now causes you to leech life equal to 10% of all damage dealt to enemies within the beam.  Fury of Elune Fury of Elune now ends with a flash of energy, blasting nearby enemies for 73,265 Astral damage.
     elunes_grace                  = { 94597, 443046, 1 }, -- Using Wild Charge while in Bear Form or Moonkin Form incurs a 3 sec shorter cooldown.
     glistening_fur                = { 94594, 429533, 1 }, -- Bear Form and Moonkin Form reduce Arcane damage taken by 6% and all other magic damage taken by 3%.
     lunar_amplification           = { 94596, 429529, 1 }, -- Each non-Arcane damaging ability you use increases the damage of your next Arcane damaging ability by 3%, stacking up to 3 times.
@@ -2274,4 +2277,4 @@ spec:RegisterSetting( "owlweave_bear", false, {
 } ) ]]
 
 
-spec:RegisterPack( "Guardian", 20240725, [[Hekili:fsvtVTnmm0FlffyydR1XXnPPROTh2om0EyxCb2nzlBtBlezjdj5e0Ic9BFu5tjNuSlgwKprr(i5JmL8kjTIAaYFsItMfVizEe(zwYCsQ5TEGK2tlxsBWFe0o87VhOQkgv4C8gxsRCbqlhuLOZwJPxF)Kjnmt7qruPSBIM1nWPgMuuQO1g35YjK0Ibg38SGuC2xp(gskDW0kvK0uw3VWiZQQGTWbDjj1b)64fxNCZ928xBbB(FPk8d(Wmm34mTrVP0GA6a3G)(NnLkT0LkK0bnKXmqNMKccAbhQi)KyW0Whetusvc62dbWUXhwbO0GA5iiZ8H0cuLjtwNzAHS1mE1iWZ9bJV4Gc0zRynm(iG36dSukwjxcBcQUNPyMXLZch8JwslrmGIr3KrCtBuFPXM)GnFrSn)l28VAZlgQRJQvG4DguLPGgqaQnCquLCTWM)Xh2CforeHClRKT9(j49)2Xm7S33Lq3fqCu1s9s2yY9h(y0dQvSvuEgtOnyd5KsCASp8(b(kSaFhgJkO77s)9DdnhGEqngFWGaFqqvzfaTBmSWbbfo2XzIMS6Htc4SpTvCXosNPKc8Ird9Fkj7nBUf8MqpFuO3JPtIyykW)Xua2B0ToSO53k544dv1aiVIBiUOD7NMOU4UcYWgAhd028NS5t9jvK1DbyHpN0HRFJPI7cbiA4N0UcMbmTkQU1X)Jz1KGMVEnRhodmdoxOaunQGEQsGdEwTu1n(o4TWrjTd0E1juwAnQiGDyCk85UEPYavyFXMVnA28ncpr2xWKPhkDtNZCpUSM5QXTO0rhYMV)4KdVV9f7l7aGMpiq5B0tqY38obiFtNi447mqGX3XzeuSVC5L7lpheTH21dvUHCLeLCh5UrjxheYZQeCfR(XJcqpSi(lF9)i78Xh(BdpKe)TacyNqIVTtfo89EqNW34zKf8DFufi4T9x6dAwB3qD16fJ2VpPA8V3(T2Rc2oFCQlqEBVHj(7GZD4c6ttdclUigE2T35BXBnlGipUv5wki)l]] )
+spec:RegisterPack( "Guardian", 20240730, [[Hekili:TwztVXPouy4FlrrAuQUnmazANKOKU4Exu1SOBOs3Dag4WG1y(q(JzuII8V9EmmFydmTDr3Ga7x)Eo2NJFioi(hXrfeje)9q)Wv(RVZ3Z)HW7d(uCK81oioQJKVLSbFPHuJp)QIWlOKgZeVYAjfgdeTkEoozLu2jEC5YnuzLkZlVTEPGwRyejTTjNtkLMVZxghLPOm53AIZMl6RxfhruYQwECueT()qJPffWGAqKhhzuFR)6BdV7rD6pQaD6)t44dmUum1yuHu0VZGsIIjXx)E)oLKBYemH3QySKmIOkocAizmOi(FJLyAyRsjGeQeQfJeDNTiAtoH3qg(Wr2kBzzaxa8TJK8jBjvaHltAltKvqYEkRyK4pBlgJOIdIKD0nu2iHRTfM32SRDl0BQOJYPYXBN7nYppsuoQb4usFgXKvED5sD6t601(NTLdnWEcZS(h(ZxVoDHo9gDAMQS0Re94nkuKWHnOB8(ZqVI29n603FxNYX2opScsZPdRpex)h6TqsA2sB2CoDM1ltYf4FXSBisOBZNMtIHqX3r3ryj0gHel74bPjab)1cqgHVvGd1BRtNyNITd98nyuPlWPv0CGDS)rWaOd4J170tYuneEsgqQhlZPVmJJxNyyMMuQMy4NV4U)W27yj)QdvDkVTb9Xt19RQYw3Vg03hS1xmyO7sAU7XPSIJxWn7VHvpUp)OU6wmcuoy7hhWokrLrlo8R5m8ceHVbWAossmUD5UEJV7GeSnSMccD6x0Pb2fjSkAin(2NX1iMAmkkWvqZg24YFOttI9(DKoN2eXEAhmJmj2NXbeANrMsmRXEZFbBk0L1HTvLT86X(JraBJfgrha(H4)z2J8tSWHyPVv31YLqb2eOthCtN2dZ90VyYU2sQ5qyykH3P09FEE54eu)YCQoLA6xojah(8)dSh9e)3EqlEV9Wh472dnHNBpPd)2EIz416xU(6JNh9zRKu3bfMBK8w8)EJMEdVDVJLhy1FKw(8zs0tifYsZSa0jRyXn)gY97VBFF(Pq)pS4ihW(4Ecj1ejZ6x4gUzw7ri5F(kobpDotMYkTN(mA0j22KqNMIbiLjNoKalU5Qr4UPhn2oyD514YvhOz2soYP(Odp65aJElEL7U8nWmTls6lbo2IOh3VnKMlKBovrloIOdYn)SDv)T84F(]] )

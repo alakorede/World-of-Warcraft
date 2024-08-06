@@ -478,7 +478,10 @@ end
 
 addon.RefreshFilter = true
 function addon:FilterSets(setList, setType)
-	if 	C_Transmog.IsAtTransmogNPC() then return setList end
+	if 	C_Transmog.IsAtTransmogNPC() then return setList 
+	else
+--return setList
+	end
 
 	local FilterSets = {}
 	local searchString = string.lower(WardrobeCollectionFrameSearchBox:GetText())
@@ -487,12 +490,12 @@ function addon:FilterSets(setList, setType)
 	local filterSelection = addon.Filters.Base.filterSelection
 	local xpacSelection = addon.Filters.Base.xpacSelection
 
-	if BetterWardrobeCollectionFrame:CheckTab(3) then
-		filterCollected = addon.Filters.Extra.filterCollected
-		missingSelection = addon.Filters.Extra.missingSelection
-		filterSelection = addon.Filters.Extra.filterSelection
-		xpacSelection = addon.Filters.Extra.xpacSelection
-	end
+	--if BetterWardrobeCollectionFrame:CheckTab(3) then
+		--filterCollected = addon.Filters.Extra.filterCollected
+		--missingSelection = addon.Filters.Extra.missingSelection
+		--filterSelection = addon.Filters.Extra.filterSelection
+		--xpacSelection = addon.Filters.Extra.xpacSelection
+	--end
 
 	setList = addon:SearchSets(setList)
 
@@ -511,7 +514,7 @@ function addon:FilterSets(setList, setType)
 		
 		local collected = count == total
 		if ((filterCollected[1] and collected) or (filterCollected[2] and not collected)) and
-			CheckMissingLocation(data) and
+			--CheckMissingLocation(data) and
 			xpacSelection[expansion] and
 			--not duplicate and
 			sourcefilter then
@@ -644,6 +647,7 @@ end]]
 --end
 
 function addon.Model_ApplyUICamera(self, uiCameraID)
+	--print(uiCameraID)
 	local posX, posY, posZ, yaw, pitch, roll, animId, animVariation, animFrame, centerModel = GetUICameraInfo(uiCameraID)
 	if posX and posY and posZ and yaw and pitch and roll then
 		self:MakeCurrentCameraCustom()

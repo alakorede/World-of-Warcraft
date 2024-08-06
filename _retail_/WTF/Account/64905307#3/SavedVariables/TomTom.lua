@@ -9,8 +9,10 @@ TomTomDB = {
 ["Nostradamus - Goldrinn"] = "Default",
 ["Eshy - Nemesis"] = "Default",
 ["Sifú - Goldrinn"] = "Default",
+["Hilarión - Azralon"] = "Default",
 ["Córsega - Nemesis"] = "Default",
 ["Vacalactika - Nemesis"] = "Default",
+["Apoena - Azralon"] = "Default",
 ["Eshy - Steamwheedle Cartel"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
 ["Bankshy - Thrall"] = "Default",
@@ -41,33 +43,37 @@ TomTomDB = {
 ["Jeshy - Goldrinn"] = "Default",
 ["Natashy - Goldrinn"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
+["Aiollos - Azralon"] = "Default",
 ["Jeshy - Nemesis"] = "Default",
 ["Onifade - Nemesis"] = "Default",
+["Anopheles - Azralon"] = "Default",
 ["Akishy - Goldrinn"] = "Default",
 ["Turoshy - Nemesis"] = "Default",
 ["Corsega - Nemesis"] = "Default",
 ["Arieshy - Goldrinn"] = "Default",
+["Radagashy - Goldrinn"] = "Default",
 ["Aishy - Nemesis"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
-["Sharan - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
+["Satishy - Goldrinn"] = "Default",
+["Verdessauro - Azralon"] = "Default",
 ["Dishy - Nemesis"] = "Default",
 ["Keishy - Aerie Peak"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Satishy - Goldrinn"] = "Default",
-["Sashy - Goldrinn"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Trystam - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Melishy - Goldrinn"] = "Default",
-["Yashy - Nemesis"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
-["Radagashy - Goldrinn"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Trystam - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
+["Yashy - Nemesis"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Satishy - Nemesis"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Wishy - Nemesis"] = "Default",
+["Sharan - Goldrinn"] = "Default",
+["Vedronys - Azralon"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -107,8 +113,10 @@ TomTomWaypointsM = {
 ["Nostradamus - Goldrinn"] = "Nostradamus - Goldrinn",
 ["Eshy - Nemesis"] = "Eshy - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
+["Hilarión - Azralon"] = "Hilarión - Azralon",
 ["Córsega - Nemesis"] = "Córsega - Nemesis",
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
+["Apoena - Azralon"] = "Apoena - Azralon",
 ["Eshy - Steamwheedle Cartel"] = "Eshy - Steamwheedle Cartel",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
 ["Bankshy - Thrall"] = "Bankshy - Thrall",
@@ -139,33 +147,37 @@ TomTomWaypointsM = {
 ["Jeshy - Goldrinn"] = "Jeshy - Goldrinn",
 ["Natashy - Goldrinn"] = "Natashy - Goldrinn",
 ["Artheras - Goldrinn"] = "Artheras - Goldrinn",
+["Aiollos - Azralon"] = "Aiollos - Azralon",
 ["Jeshy - Nemesis"] = "Jeshy - Nemesis",
 ["Onifade - Nemesis"] = "Onifade - Nemesis",
+["Anopheles - Azralon"] = "Anopheles - Azralon",
 ["Akishy - Goldrinn"] = "Akishy - Goldrinn",
 ["Turoshy - Nemesis"] = "Turoshy - Nemesis",
 ["Corsega - Nemesis"] = "Corsega - Nemesis",
 ["Arieshy - Goldrinn"] = "Arieshy - Goldrinn",
+["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
 ["Aishy - Nemesis"] = "Aishy - Nemesis",
+["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
 ["Chicoxavier - Nemesis"] = "Chicoxavier - Nemesis",
-["Sharan - Goldrinn"] = "Sharan - Goldrinn",
-["Wishy - Nemesis"] = "Wishy - Nemesis",
+["Satishy - Goldrinn"] = "Satishy - Goldrinn",
+["Verdessauro - Azralon"] = "Verdessauro - Azralon",
 ["Dishy - Nemesis"] = "Dishy - Nemesis",
 ["Keishy - Aerie Peak"] = "Keishy - Aerie Peak",
 ["Aenshy - Goldrinn"] = "Aenshy - Goldrinn",
 ["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
-["Satishy - Goldrinn"] = "Satishy - Goldrinn",
-["Sashy - Goldrinn"] = "Sashy - Goldrinn",
-["Neshy - Nemesis"] = "Neshy - Nemesis",
-["Trystam - Nemesis"] = "Trystam - Nemesis",
-["Batezu - Nemesis"] = "Batezu - Nemesis",
-["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
-["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Melishy - Goldrinn"] = "Melishy - Goldrinn",
-["Yashy - Nemesis"] = "Yashy - Nemesis",
 ["Kuradis - Nemesis"] = "Kuradis - Nemesis",
 ["Kerrishy - Goldrinn"] = "Kerrishy - Goldrinn",
-["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
-["Radagashy - Goldrinn"] = "Radagashy - Goldrinn",
+["Melishy - Goldrinn"] = "Melishy - Goldrinn",
+["Trystam - Nemesis"] = "Trystam - Nemesis",
+["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
+["Yashy - Nemesis"] = "Yashy - Nemesis",
+["Batezu - Nemesis"] = "Batezu - Nemesis",
+["Satishy - Nemesis"] = "Satishy - Nemesis",
+["Sashy - Goldrinn"] = "Sashy - Goldrinn",
+["Neshy - Nemesis"] = "Neshy - Nemesis",
+["Wishy - Nemesis"] = "Wishy - Nemesis",
+["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Vedronys - Azralon"] = "Vedronys - Azralon",
 },
 ["profiles"] = {
 ["Shamanjuba - Nemesis"] = {
@@ -184,9 +196,13 @@ TomTomWaypointsM = {
 },
 ["Sifú - Goldrinn"] = {
 },
+["Hilarión - Azralon"] = {
+},
 ["Córsega - Nemesis"] = {
 },
 ["Vacalactika - Nemesis"] = {
+},
+["Apoena - Azralon"] = {
 },
 ["Eshy - Steamwheedle Cartel"] = {
 },
@@ -248,9 +264,13 @@ TomTomWaypointsM = {
 },
 ["Artheras - Goldrinn"] = {
 },
+["Aiollos - Azralon"] = {
+},
 ["Jeshy - Nemesis"] = {
 },
 ["Onifade - Nemesis"] = {
+},
+["Anopheles - Azralon"] = {
 },
 ["Akishy - Goldrinn"] = {
 },
@@ -260,13 +280,17 @@ TomTomWaypointsM = {
 },
 ["Arieshy - Goldrinn"] = {
 },
+["Radagashy - Goldrinn"] = {
+},
 ["Aishy - Nemesis"] = {
+},
+["Aleshy - Goldrinn"] = {
 },
 ["Chicoxavier - Nemesis"] = {
 },
-["Sharan - Goldrinn"] = {
+["Satishy - Goldrinn"] = {
 },
-["Wishy - Nemesis"] = {
+["Verdessauro - Azralon"] = {
 },
 ["Dishy - Nemesis"] = {
 [862] = {
@@ -285,9 +309,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["minimap"] = true,
@@ -310,9 +334,9 @@ TomTomWaypointsM = {
 ["callbacks"] = {
 ["distance"] = {
 },
-["minimap"] = {
-},
 ["world"] = {
+},
+["minimap"] = {
 },
 },
 ["minimap"] = true,
@@ -326,31 +350,31 @@ TomTomWaypointsM = {
 },
 ["Skoshy - Goldrinn"] = {
 },
-["Satishy - Goldrinn"] = {
+["Kuradis - Nemesis"] = {
+},
+["Kerrishy - Goldrinn"] = {
+},
+["Melishy - Goldrinn"] = {
+},
+["Trystam - Nemesis"] = {
+},
+["Lilishy - Goldrinn"] = {
+},
+["Yashy - Nemesis"] = {
+},
+["Batezu - Nemesis"] = {
+},
+["Satishy - Nemesis"] = {
 },
 ["Sashy - Goldrinn"] = {
 },
 ["Neshy - Nemesis"] = {
 },
-["Trystam - Nemesis"] = {
+["Wishy - Nemesis"] = {
 },
-["Batezu - Nemesis"] = {
+["Sharan - Goldrinn"] = {
 },
-["Lilishy - Goldrinn"] = {
-},
-["Satishy - Nemesis"] = {
-},
-["Melishy - Goldrinn"] = {
-},
-["Yashy - Nemesis"] = {
-},
-["Kuradis - Nemesis"] = {
-},
-["Kerrishy - Goldrinn"] = {
-},
-["Aleshy - Goldrinn"] = {
-},
-["Radagashy - Goldrinn"] = {
+["Vedronys - Azralon"] = {
 },
 },
 }

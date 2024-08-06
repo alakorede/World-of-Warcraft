@@ -1,5 +1,5 @@
 local myname, ns = ...
-local myfullname = GetAddOnMetadata(myname, "Title")
+local myfullname = C_AddOns.GetAddOnMetadata(myname, "Title")
 local Debug = ns.Debug
 
 local HBD = LibStub("HereBeDragons-2.0")
@@ -33,8 +33,6 @@ function ns:ADDON_LOADED(event, addon)
 	local update = function() self:UpdatePOIs() end
 	hooksecurefunc(C_QuestLog, "AddQuestWatch", update)
 	hooksecurefunc(C_QuestLog, "RemoveQuestWatch", update)
-
-	LibStub("konfig-AboutPanel").new(myfullname, myname) -- Make first arg nil if no parent config panel
 
 	ns.poi_parent = CreateFrame("Frame", "QuestPointerPOIParent", nil, "POIButtonOwnerTemplate")
 	local onCreateFunc = nil
@@ -125,70 +123,117 @@ ns.ZONE_CHANGED_NEW_AREA = ns.UpdatePOIs
 ns.PLAYER_ENTERING_WORLD = ns.UpdatePOIs
 ns.QUEST_WATCH_LIST_CHANGED = ns.UpdatePOIs
 
-function ns:UpdateLogPOIs(mapid)
-	local cvar = GetCVarBool("questPOI")
-	SetCVar("questPOI", 1)
-	-- Interestingly, even if this isn't called, *some* POIs will show up. Not sure why.
-	QuestPOIUpdateIcons()
+if _G.GetQuestsForPlayerByMapIDCached then
+	-- 11.0.0+
+	function ns:UpdateLogPOIs(mapID)
+		local cvar = GetCVarBool("questPOI")
+		SetCVar("questPOI", 1)
+		-- Interestingly, even if this isn't called, *some* POIs will show up. Not sure why.
+		QuestPOIUpdateIcons()
 
-	local numNumericQuests = 0
-	local numCompletedQuests = 0
-	local numPois = QuestMapUpdateAllQuests()
-	local questPois = {}
-	Debug("Quests on map", numPois)
-	if ( numPois > 0 and GetCVarBool("questPOI") ) then
-		GetQuestPOIs(questPois)
-	end
-	for i, questId in ipairs(questPois) do
-		Debug("Quest", questId)
-		local _, posX, posY, objective = QuestPOIGetIconInfo(questId)
-		-- local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questId, startEvent, displayQuestId, isOnMap, hasLocalPOI, isTask, isBounty, isStory = GetQuestLogTitle(questLogIndex)
-		local isOnMap = C_QuestLog.IsOnMap(questId)
-		local isTask = C_QuestLog.IsQuestTask(questId)
-		-- IsQuestComplete seems to test for "is quest in a turnable-in state?", distinct from IsQuestFlaggedCompleted...
-		local isComplete = C_QuestLog.IsComplete(questId)
-		if not isTask then
-			self.Debug("Skipped POI", i, posX, posY)
-			if isComplete then
-				numCompletedQuests = numCompletedQuests + 1
-			else
-				numNumericQuests = numNumericQuests + 1
+		-- Fetches all the quests the player is on, *including* bonus-objective ones (IsQuestTask)
+		-- local taskInfo = GetQuestsForPlayerByMapIDCached(mapID)
+		local quests = C_QuestLog.GetQuestsOnMap(mapID)
+		if quests and #quests > 0 then
+			for i, info in ipairs(quests) do
+				local questId = info.questID
+				if
+					HaveQuestData(questId)
+					and not C_QuestLog.IsQuestTask(questId)
+					and (not self.db.watchedOnly or C_QuestLog.GetQuestWatchType(questId))
+				then
+					self.Debug("POI", questId, info.x, info.y)
+
+					-- poiButton won't be returned if C_QuestLog.IsQuestCalling(questId)
+					-- TODO: handle callings properly
+					local poiButton = ns.poi_parent:GetButtonForQuest(questId, POIButtonUtil.GetStyle(questId))
+					if poiButton then
+						local poi = self:GetPOI('QPL' .. i, poiButton)
+
+						poi.index = i
+						poi.questId = questId
+						poi.title = C_QuestLog.GetTitleForQuestID(questId)
+						poi.m = mapID
+						poi.x = info.x
+						poi.y = info.y
+						poi.active = true
+						poi.complete = C_QuestLog.IsComplete(questId)
+						-- print("Obtained quest POI", poi.questId, poi.title)
+
+						HBDPins:AddMinimapIconMap(self, poi, mapID, info.x, info.y, false, true)
+					end
+				end
 			end
 		end
-		if isOnMap and posX and posY and (not self.db.watchedOnly or C_QuestLog.GetQuestWatchType(questId)) and not isTask then
-			local title = C_QuestLog.GetTitleForQuestID(questId)
 
-			self.Debug("POI", questId, posX, posY, objective, title, isOnMap, isTask)
+		SetCVar("questPOI", cvar and 1 or 0)
+	end
+else
+	function ns:UpdateLogPOIs(mapid)
+		local cvar = GetCVarBool("questPOI")
+		SetCVar("questPOI", 1)
+		-- Interestingly, even if this isn't called, *some* POIs will show up. Not sure why.
+		QuestPOIUpdateIcons()
 
-			local poiButton
-			if isComplete then
-				self.Debug("Making with complete", i)
-				poiButton = ns.poi_parent:GetButtonForQuest(questId, POIButtonUtil.Style.QuestComplete, nil)
-			else
-				self.Debug("Making with numeric", i - numCompletedQuests)
-				poiButton = ns.poi_parent:GetButtonForQuest(questId, POIButtonUtil.Style.QuestNumeric, i - numCompletedQuests)
+		local numNumericQuests = 0
+		local numCompletedQuests = 0
+		local numPois = QuestMapUpdateAllQuests()
+		local questPois = {}
+		Debug("Quests on map", numPois)
+		if ( numPois > 0 and GetCVarBool("questPOI") ) then
+			GetQuestPOIs(questPois)
+		end
+		for i, questId in ipairs(questPois) do
+			Debug("Quest", questId)
+			local _, posX, posY, objective = QuestPOIGetIconInfo(questId)
+			-- local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questId, startEvent, displayQuestId, isOnMap, hasLocalPOI, isTask, isBounty, isStory = GetQuestLogTitle(questLogIndex)
+			local isOnMap = C_QuestLog.IsOnMap(questId)
+			local isTask = C_QuestLog.IsQuestTask(questId)
+			-- IsQuestComplete seems to test for "is quest in a turnable-in state?", distinct from IsQuestFlaggedCompleted...
+			local isComplete = C_QuestLog.IsComplete(questId)
+			if not isTask then
+				self.Debug("Skipped POI", i, posX, posY)
+				if isComplete then
+					numCompletedQuests = numCompletedQuests + 1
+				else
+					numNumericQuests = numNumericQuests + 1
+				end
 			end
+			if isOnMap and posX and posY and (not self.db.watchedOnly or C_QuestLog.GetQuestWatchType(questId)) and not isTask then
+				local title = C_QuestLog.GetTitleForQuestID(questId)
 
-			-- poiButton won't be returned if C_QuestLog.IsQuestCalling(questId)
-			-- TODO: handle callings properly
-			if poiButton then
-				local poi = self:GetPOI('QPL' .. i, poiButton)
+				self.Debug("POI", questId, posX, posY, objective, title, isOnMap, isTask)
 
-				poi.index = i
-				poi.questId = questId
-				poi.title = title
-				poi.m = mapid
-				poi.x = posX
-				poi.y = posY
-				poi.active = true
-				poi.complete = isComplete
+				local poiButton
+				if isComplete then
+					self.Debug("Making with complete", i)
+					poiButton = ns.poi_parent:GetButtonForQuest(questId, POIButtonUtil.Style.QuestComplete, nil)
+				else
+					self.Debug("Making with numeric", i - numCompletedQuests)
+					poiButton = ns.poi_parent:GetButtonForQuest(questId, POIButtonUtil.Style.QuestNumeric, i - numCompletedQuests)
+				end
 
-				HBDPins:AddMinimapIconMap(self, poi, mapid, posX, posY, false, true)
+				-- poiButton won't be returned if C_QuestLog.IsQuestCalling(questId)
+				-- TODO: handle callings properly
+				if poiButton then
+					local poi = self:GetPOI('QPL' .. i, poiButton)
+
+					poi.index = i
+					poi.questId = questId
+					poi.title = title
+					poi.m = mapid
+					poi.x = posX
+					poi.y = posY
+					poi.active = true
+					poi.complete = isComplete
+
+					HBDPins:AddMinimapIconMap(self, poi, mapid, posX, posY, false, true)
+				end
 			end
 		end
-	end
 
-	SetCVar("questPOI", cvar and 1 or 0)
+		SetCVar("questPOI", cvar and 1 or 0)
+	end
 end
 
 function ns:UpdateWorldPOIs(mapid)
@@ -201,8 +246,15 @@ function ns:UpdateWorldPOIs(mapid)
 	end
 	local taskIconIndex = 0
 	for i, info  in ipairs(taskInfo) do
-		if info.mapID == mapid and HaveQuestData(info.questId) and C_QuestLog.IsWorldQuest(info.questId) and (not ns.db.watchedOnly or self:WorldQuestIsWatched(info.questId)) then
-			local poiButton = ns.poi_parent:GetButtonForQuest(info.questId)
+		if
+			info.mapID == mapid
+			and HaveQuestData(info.questId)
+			and C_QuestLog.IsWorldQuest(info.questId)
+			and (not ns.db.watchedOnly or self:WorldQuestIsWatched(info.questId))
+		then
+			-- POIButtonUtil.GetStyle doesn't cope with world quests, sadly
+			-- (Blizzard_ObjectiveTrackerQuestPOIBlock also overrides it this way...)
+			local poiButton = ns.poi_parent:GetButtonForQuest(info.questId, POIButtonUtil.Style.WorldQuest)
 			Debug("WorldMapPOI", info.questId, poiButton)
 
 			if poiButton then
@@ -381,9 +433,13 @@ function ns:UpdateEdges()
 						poi.arrow:SetAlpha(ns.db.arrowAlpha)
 					end
 				else
-					poi.poiButton:Show()
-					poi.arrow:Hide()
-					poi.poiButton:SetAlpha(ns.db.iconAlpha * (ns.db.fadeEdge and 0.6 or 1))
+					if superTrackedQuestId == poi.questId then
+						poi.poiButton:Hide()
+					else
+						poi.poiButton:Show()
+						poi.arrow:Hide()
+						poi.poiButton:SetAlpha(ns.db.iconAlpha * (ns.db.fadeEdge and 0.6 or 1))
+					end
 				end
 			else
 				--hide completed POIs when close enough to see the ?

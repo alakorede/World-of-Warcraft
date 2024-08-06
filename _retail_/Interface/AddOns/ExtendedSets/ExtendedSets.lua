@@ -33,19 +33,19 @@ local factionNames = { playerFaction = "", opposingFaction = "" };
 local ClassName;
 local ClassIndex = nil;
 local ClassMaskMap = {
-    [1] = {1, 2, 32, 35, 0}, -- Plate Wearer
-    [2] = {1, 2, 32, 35, 0}, -- Plate Wearer
-    [3] = {4, 64, 68, 0, 4096, 4164},    -- Mail Wearer
-    [4] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
-    [5] = {16, 128, 256, 400, 0}, -- Cloth Wearer
-    [6] = {1, 2, 32, 35, 0}, -- Plate Wearer
-    [7] = {4, 64, 68, 0, 4096, 4164},    -- Mail Wearer
-    [8] = {16, 128, 256, 400, 0}, -- Cloth Wearer
-    [9] = {16, 128, 256, 400, 0}, -- Cloth Wearer
-    [10] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
-    [11] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
-    [12] = {8, 512, 1024, 2048, 3592, 0, 11784}, -- Leather Wearer
-    [13] = {4, 64, 68, 0, 4096, 4164},    -- Mail Wearer
+    [1] = {1, 2, 32, 35}, -- Plate Wearer
+    [2] = {1, 2, 32, 35}, -- Plate Wearer
+    [3] = {4, 64, 4096, 4164},    -- Mail Wearer
+    [4] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
+    [5] = {16, 128, 256, 400}, -- Cloth Wearer
+    [6] = {1, 2, 32, 35}, -- Plate Wearer
+    [7] = {4, 64, 4096, 4164},    -- Mail Wearer
+    [8] = {16, 128, 256, 400}, -- Cloth Wearer
+    [9] = {16, 128, 256, 400}, -- Cloth Wearer
+    [10] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
+    [11] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
+    [12] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
+    [13] = {4, 64, 4096, 4164},    -- Mail Wearer
 }
 local ClassNameMask = {
     [1] = "Warrior",
@@ -108,19 +108,19 @@ local ClassArmorType = {
     [13] = 3,
 }
 local ClassArmorMask = {
-    [1]  = {0, 1, 35},
-    [2]  = {0, 2, 35},
-    [3]  = {0, 4, 68, 4164},
-    [4]  = {0, 8, 3592},
-    [5]  = {0, 16, 400},
-    [6]  = {0, 32, 35},
-    [7]  = {0, 64, 68, 4164},
-    [8]  = {0, 128, 400},
-    [9]  = {0, 256, 400},
-    [10] = {0, 512, 3592},
-    [11] = {0, 1024, 3592},
-    [12] = {0, 2048, 3592},
-    [13] = {0, 4096, 68, 4164},
+    [1]  = {1, 35},
+    [2]  = {2, 35},
+    [3]  = {4, 4164},
+    [4]  = {8, 3592, 11784},
+    [5]  = {16, 400},
+    [6]  = {32, 35},
+    [7]  = {64, 4164},
+    [8]  = {128, 400},
+    [9]  = {256, 400},
+    [10] = {512, 3592, 11784},
+    [11] = {1024, 3592, 11784},
+    [12] = {2048, 3592, 11784},
+    [13] = {4096, 4164},
 }
 local ArmorTypeRadio = {};
 local pvpDescriptions = {
@@ -421,7 +421,7 @@ local function SwapAlternateSourceID(setID, sourceID, givenSet)
 end
 
 local function SetAlternateSourceByIndex(setID, baseSourceID, currSourceID, index)
-print("setID: ",setID,"  baseSID: ",baseSourceID,"  currSID: ",currSourceID,"  index: ",index);
+--print("setID: ",setID,"  baseSID: ",baseSourceID,"  currSID: ",currSourceID,"  index: ",index);
   local set = GetSetByID(setID);
   if currSourceID ~= set.altSources[baseSourceID][index] then
     set.sources[currSourceID] = nil;
@@ -868,7 +868,7 @@ local function GetSetSourceData(setID, givenSources, quick, forceUpdate)
 	end
   
 	local sourceData = SetsFrame.sourceData[setID];
-	if ( forceUpdate or not sourceData or sourceData.needsRefresh or (not quick and sourceData.numCollected == nil) or SetHasNewSources(setID, givenSources) or sourceData.numTotal == 0) then --need to check new for expanded sets.
+	if ( forceUpdate or not sourceData or sourceData.numTotal == 0 or (not quick and sourceData.numCollected == nil) or SetHasNewSources(setID, givenSources) or sourceData.numTotal == 0) then --need to check new for expanded sets.
 		local sources;
     if givenSources ~= nil then
       sources = givenSources;
@@ -925,7 +925,7 @@ local function GetSetSourceData(setID, givenSources, quick, forceUpdate)
       end
       numTotal = numTotal + 1;
 		end
-		sourceData = { numCollected = numCollected, numUsable = numUsable, numTotal = numTotal, sources = sources, collected = numCollected == numTotal, needsRefresh = numTotal == 0 };
+		sourceData = { numCollected = numCollected, numUsable = numUsable, numTotal = numTotal, sources = sources, collected = numCollected == numTotal };
 		SetsFrame.sourceData[setID] = sourceData;
 	end
 	return sourceData;
@@ -1819,11 +1819,12 @@ local function DisplaySet(self, givenSetID, force)
     if HasAlternateSources(setID, itemFrame.sourceID) then
       if itemFrame.AltAppBorder == nil then
         itemFrame.AltAppBorder = itemFrame:CreateTexture(nil, "OVERLAY");
-        itemFrame.AltAppBorder:SetPoint("BOTTOMLEFT", itemFrame, "BOTTOMLEFT", 0, 0);
-        itemFrame.AltAppBorder:SetSize(33,36);
+        itemFrame.AltAppBorder:SetPoint("CENTER");
+        itemFrame.AltAppBorder:SetSize(34,34);
         itemFrame.AltAppBorder:SetDrawLayer("OVERLAY", 2);
-        itemFrame.AltAppBorder:SetTexture([[Interface\Addons\ExtendedSets\textures\alt_vers_border.tga]]);
-        itemFrame.AltAppBorder:SetTexCoord(0,130/256,0,175/256);
+        --itemFrame.AltAppBorder:SetTexture([[Interface\Addons\ExtendedSets\textures\alt_vers_border.tga]]);
+        itemFrame.AltAppBorder:SetTexture([[Interface\Addons\ExtendedSets\textures\Alt_icon_corners.tga]]);
+        --itemFrame.AltAppBorder:SetTexCoord(0,130/256,0,175/256);
       end
       
       itemFrame.AltAppBorder:Show();
@@ -2473,13 +2474,6 @@ local function HideBlizzardSets(setID)
                       [2746] = true, --DF dup Primal Elements green set(leather)
                       [2744] = true, --DF dup Primal Elements green set(mail)
                       [2748] = true, --DF dup Primal Elements green set(plate)
-                      
-                      [3625] = true, --Deep Stormrider's Attire (unimplemented)(red)
-                      [3626] = true, --Frenzied Stormrider's Attire (unimplemented)(shiny red)
-                      [3627] = true, --Champion Stormrider's Attire (unimplemented)(purple)
-                      [3628] = true, --Sparking Stormrider's Attire (unimplemented)(shiny purple)
-                      [3629] = true, --Shining Stormrider's Attire (unimplemented)(yellow)
-                      [3630] = true, --Shining Stormrider's Attire (unimplemented)(shiny yellow)
     };
   return setsToHide[setID];
 end
@@ -2654,21 +2648,18 @@ local function UseSetForTransmogrify(data)
   --if data.expansionID > -1 and not ExS_Settings.expansionToggles[data.expansionID + 1] then return; end
   
   -- Check for correct class. (Or corect weight if displayOnlyMyClass is not checked).
-  local ClassArmors = ClassMaskMap[transmogrifyClass];
-  ----This would be if putting in a filter for not including class specific armors for the other classes in the player's weight.
-  --if ExS_Settings.displayOnlyMyClass then
-  --  if ClassIndex == nil or ClassIndex == select(3,UnitClass('player')) then
-  --    ClassArmors = ClassArmorMask[transmogrifyClass];
-  --  end
-  --end
-  local classCorrect = false;
-  for i = 1, #ClassArmors do
-    if data.classMask == ClassArmors[i] then
-      classCorrect = true;
-      break;
+  if not (data.classMask == 0 or data.classMask == 16383) then
+    local ClassArmors = ClassMaskMap[transmogrifyClass];
+    
+    local classCorrect = false;
+    for i = 1, #ClassArmors do
+      if data.classMask == ClassArmors[i] then
+        classCorrect = true;
+        break;
+      end
     end
+    if not classCorrect then return; end
   end
-  if not classCorrect then return; end
   
   data.sources = GetSetSources(data.setID, data);
   -- If we are here and the set is complete, it can be added to the transmogrify list.
@@ -2729,41 +2720,50 @@ local function UseSet(data)
   if (data.noLongerObtainable and ExS_Settings.hideNoLongerObtainable) then return false; end
   -- If we are hiding trading post sets, don't show it.
   if (data.tp and ExS_Settings.hideTradingPost) then return false; end
-  -- If we are shop sets, don't show it.
+  -- If we are hiding shop sets, don't show it.
   if (data.shop and ExS_Settings.hideShopsets) then return false; end
   
-  -- Show/Hide based on PvP/PvE filters.
-  if data.description ~= nil then
-    local dataDescription = data.description;
-    if (string.sub(data.description,1,1) == "|") then
-      dataDescription = string.sub(data.description, 12, -3)
-    end
-    local isPvP = pvpDescriptions[dataDescription] or false;    
-    
-    if not ((isPvP and C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP)) or
-       (not isPvP and C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE))) then
-        return false;
-    end
-  elseif not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE) then
-    return false;
-  end
   
   -- Check for correct class. (Or corect weight if displayOnlyMyClass is not checked).
-  local ClassArmors = ClassMaskMap[ClassIndex];
-  if ExS_Settings.displayOnlyMyClass then
-    if ClassIndex == nil or ClassIndex == select(3,UnitClass('player')) then
-      ClassArmors = ClassArmorMask[ClassIndex];
+  if not (data.classMask == 0 or data.classMask == 16383) then
+    local ClassArmors;
+    if ExS_Settings.displayOnlyMyClass then
+      --if ClassIndex == nil or ClassIndex == select(3,UnitClass('player')) then
+        ClassArmors = ClassArmorMask[ClassIndex];
+      --end
+    else
+      ClassArmors = ClassMaskMap[ClassIndex];
+    end
+    
+    local classCorrect = false;
+    for i = 1, #ClassArmors do
+      if data.classMask == ClassArmors[i] then
+        classCorrect = true;
+        break;
+      end
+    end
+    if not classCorrect then return false; end
+    --local bitTest = bit.band(data.classMask, ClassToMask[ClassIndex]) ~= 0
+    --if not (data.classMask == 0 or bitTest) then
+    --  return false;
+    --end
+    
+    -- Show/Hide based on PvP/PvE filters.
+    if data.description ~= nil then
+      local dataDescription = data.description;
+      if (string.sub(data.description,1,1) == "|") then
+        dataDescription = string.sub(data.description, 12, -3)
+      end
+      local isPvP = pvpDescriptions[dataDescription] or false;    
+      
+      if not ((isPvP and C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVP)) or
+         (not isPvP and C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE))) then
+          return false;
+      end
+    elseif not C_TransmogSets.GetBaseSetsFilter(LE_TRANSMOG_SET_FILTER_PVE) then
+      return false;
     end
   end
-  
-  local classCorrect = false;
-  for i = 1, #ClassArmors do
-    if data.classMask == ClassArmors[i] then
-      classCorrect = true;
-      break;
-    end
-  end
-  if not classCorrect then return false; end
   
   -- Show/Hide based on collection filters.
   local setSourceData = GetSetSourceData(data.setID, GetSetSources(data.setID, data), true)--GetSetSourceCounts(data.setID)

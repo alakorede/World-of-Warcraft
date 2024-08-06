@@ -4,7 +4,7 @@
 --]]
 
 local ADDON, Addon = ...
-local C = LibStub('C_Everywhere').Container
+local C = LibStub('C_Everywhere')
 local Bank = Addon.Frame:NewClass('Bank')
 Bank.Title = LibStub('AceLocale-3.0'):GetLocale(ADDON).TitleBank
 Bank.Bags = Addon.BankBags
@@ -17,17 +17,21 @@ function Bank:OnHide()
 	self:Super(Bank):OnHide()
 	LibStub('Sushi-3.2').Popup:Cancel(CONFIRM_BUY_REAGENTBANK_TAB)
 	LibStub('Sushi-3.2').Popup:Cancel(CONFIRM_BUY_BANK_SLOT)
-	CloseBankFrame()
+	C.Bank.CloseBankFrame()
 end
 
 function Bank:SortItems()
 	if Addon.sets.serverSort and C.SortBankBags then
-		C.SortBankBags()
+		C.Container.SortBankBags()
 
-		if REAGENTBANK_CONTAINER then
-			C_Timer.After(0.3, function()
-				C.SortReagentBankBags()
-				self:SendSignal('SORTING_STATUS')
+		if REAGENTBANK_CONTAINER then -- callback cascade of doom!
+			EventUtil.RegisterOnceFrameEventAndCallback('ITEM_UNLOCKED', function()
+				C.Timer.After(0, function()
+					C.Container.SortReagentBankBags()
+					EventUtil.RegisterOnceFrameEventAndCallback('ITEM_UNLOCKED', function()
+						C.Timer.After(0, function() self:SendSignal('SORTING_STATUS') end)
+					end)
+				end)
 			end)
 		end
 	else

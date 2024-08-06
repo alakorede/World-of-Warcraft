@@ -23,6 +23,7 @@ BigWigs:AddSounds("Baron Geddon", {
 	[19695] = "alarm",
 	[20475] = "warning",
 	[20478] = "long",
+	[461103] = "underyou",
 })
 
 BigWigs:AddSounds("Shazzrah", {
@@ -48,8 +49,7 @@ BigWigs:AddSounds("Majordomo Executus", {
 
 BigWigs:AddSounds("Ragnaros Classic", {
 	[20566] = "info",
-	["emerge"] = {"alarm","long"},
-	["submerge"] = {"alarm","long"},
+	["stages"] = "long",
 })
 
 BigWigs:AddSounds("The Molten Core", {
@@ -57,4 +57,5 @@ BigWigs:AddSounds("The Molten Core", {
 	[460887] = "alarm",
 	[460895] = "warning",
 	[460898] = "warning",
+	["adds"] = "info",
 })

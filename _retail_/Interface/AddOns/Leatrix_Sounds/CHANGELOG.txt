@@ -1,4 +1,7 @@
-﻿11.0.01 - 24th July 2024
+﻿11.0.02 - 31st July 2024
+- Updated sounds to game version 11.0.0.55933 (Jul 30 2024) (110000).
+
+11.0.01 - 24th July 2024
 - Welcome to The War Within!
 - Updated sounds to game version 11.0.0.55818 (Jul 23 2024) (110000).
 

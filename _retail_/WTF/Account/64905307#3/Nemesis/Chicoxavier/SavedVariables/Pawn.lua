@@ -1,8 +1,6 @@
 
 PawnOptions = {
 ["LastVersion"] = 2.0914,
-["LastPlayerFullName"] = "Chicoxavier-Nemesis",
-["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 202579,
@@ -15,15 +13,15 @@ PawnOptions = {
 ["Link"] = "|cffa335ee|Hitem:144127::::::::70:256::54:7:6652:7756:10245:8784:10312:9893:8767:1:28:2565:::::|h[Cloudstrike Pendant]|h|r",
 },
 {
-["ID"] = 193788,
-["Level"] = 476,
-["Link"] = "|cff0070dd|Hitem:193788::::::::70:256::2:6:10308:9636:6652:10864:3155:8766:1:28:2156:::::|h[Molten Magma Mantle]|h|r",
+["ID"] = 193667,
+["Level"] = 506,
+["Link"] = "|cffa335ee|Hitem:193667::::::::70:256::103:7:10329:9635:6652:10870:9144:3185:8767::::::|h[Boastful Stalker's Epaulets]|h|r",
 },
 nil,
 {
-["ID"] = 195500,
-["Level"] = 489,
-["Link"] = "|cffa335ee|Hitem:195500::::::::70:256::83:7:6652:10871:7982:10884:10344:1572:8767::::::|h[Compressed Cultist's Frock]|h|r",
+["ID"] = 193738,
+["Level"] = 493,
+["Link"] = "|cffa335ee|Hitem:193738::::::::70:256::23:6:10313:9635:40:10870:3172:8767:1:28:2157:::::|h[Robe of Plunging Depths]|h|r",
 },
 {
 ["ID"] = 202589,
@@ -41,9 +39,9 @@ nil,
 ["Link"] = "|cffa335ee|Hitem:195532::::::::70:256::83:7:6652:10871:7982:10344:10884:1563:8767::::::|h[Sandals of the Wild Sovereign]|h|r",
 },
 {
-["ID"] = 195508,
-["Level"] = 486,
-["Link"] = "|cffa335ee|Hitem:195508::::::::70:256::83:8:6652:10532:10871:7982:10884:10343:1569:8767::::::|h[Chilled Silken Restraints]|h|r",
+["ID"] = 193724,
+["Level"] = 493,
+["Link"] = "|cffa335ee|Hitem:193724::::::::70:256::23:7:10313:9635:6652:10532:10870:3172:8767:1:28:2157:::::|h[Lily-Laced Bracelets]|h|r",
 },
 {
 ["ID"] = 193648,
@@ -58,9 +56,9 @@ nil,
 },
 {
 ["ID"] = 193804,
-["Level"] = 480,
+["Level"] = 486,
 ["AlsoFitsIn"] = 11,
-["Link"] = "|cffa335ee|Hitem:193804::::::::70:256::2:6:9636:6652:10533:10309:3159:8767:1:28:2156:::::|h[Eternal Sentry's Ring]|h|r",
+["Link"] = "|cffa335ee|Hitem:193804::::::::70:256::2:6:9636:6652:10533:10311:3165:8767:1:28:2156:::::|h[Eternal Sentry's Ring]|h|r",
 },
 {
 ["ID"] = 193769,
@@ -90,6 +88,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193783::::::::70:256::1:5:10323:7974:6652:3139:8766:1:28:2587:::::|h[Irontorch Igniter]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Chicoxavier-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -143,7 +144,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "PRIEST",

@@ -226,7 +226,6 @@ local exceptionItems = {
         [112450] = CanIMogIt.NOT_TRANSMOGABLE, -- Illidari Blindfold (Horde)
         -- [150726] = CanIMogIt.NOT_TRANSMOGABLE, -- Illidari Blindfold (Alliance) - starting item
         -- [150716] = CanIMogIt.NOT_TRANSMOGABLE, -- Illidari Blindfold (Horde) - starting item
-        [130064] = CanIMogIt.NOT_TRANSMOGABLE, -- Deadeye Monocle
     },
     [SHOULDER] = {
         [119556] = CanIMogIt.NOT_TRANSMOGABLE, -- Trailseeker Spaulders - 100 Salvage Yard ilvl 610
@@ -871,39 +870,13 @@ function CanIMogIt:IsArmorAppropriateForPlayer(itemLink)
 end
 
 
-local function IsHeirloomRedText(redText, itemLink)
-    local itemID = CanIMogIt:GetItemID(itemLink)
-    if redText == _G["ITEM_SPELL_KNOWN"] and C_Heirloom.IsItemHeirloom(itemID) then
-        return true
-    end
-end
-
-
-local function IsLevelRequirementRedText(redText)
-    if string.match(redText, _G["ITEM_MIN_LEVEL"]) then
-        return true
-    end
-end
-
-
-function CanIMogIt:CharacterCanEquipItem(itemLink)
-    -- Can the character equip this item eventually? (excluding level)
-    if CanIMogIt:IsItemArmor(itemLink) and CanIMogIt:IsArmorCosmetic(itemLink) then
-        return true
-    end
-    local redText = CIMIScanTooltip:GetRedText(itemLink)
-    if redText == "" or redText == nil then
-        return true
-    end
-    if IsHeirloomRedText(redText, itemLink) then
-        -- Special case for heirloom items. They always have red text if it was learned.
-        return true
-    end
-    if IsLevelRequirementRedText(redText) then
-        -- We ignore the level, since it will be equipable eventually.
-        return true
-    end
-    return false
+function CanIMogIt:IsAppearanceUsable(itemLink)
+    if not itemLink then return end
+    local sourceID = CanIMogIt:GetSourceID(itemLink)
+    if not sourceID then return end
+    local appearanceInfo = C_TransmogCollection.GetAppearanceInfoBySource(sourceID)
+    if not appearanceInfo then return end
+    return appearanceInfo.appearanceIsUsable
 end
 
 
@@ -912,12 +885,8 @@ function CanIMogIt:IsValidAppearanceForCharacter(itemLink)
     if not CanIMogIt:CharacterIsHighEnoughLevelForTransmog(itemLink) then
         return false
     end
-    if CanIMogIt:CharacterCanEquipItem(itemLink) then
-        if CanIMogIt:IsItemArmor(itemLink) then
-            return CanIMogIt:IsArmorAppropriateForPlayer(itemLink)
-        else
-            return true
-        end
+    if CanIMogIt:IsAppearanceUsable(itemLink) then
+        return true
     else
         return false
     end
@@ -931,18 +900,13 @@ function CanIMogIt:CharacterIsHighEnoughLevelForTransmog(itemLink)
 end
 
 
-function CanIMogIt:IsItemSoulbound(itemLink, bag, slot)
-    return CIMIScanTooltip:IsItemSoulbound(itemLink, bag, slot)
+function CanIMogIt:IsItemSoulbound(itemLink, bag, slot, tooltipData)
+    return CIMIScanTooltip:IsItemSoulbound(itemLink, bag, slot, tooltipData)
 end
 
 
-function CanIMogIt:IsItemWarbound(itemLink, bag, slot)
-    return CIMIScanTooltip:IsItemWarbound(itemLink, bag, slot)
-end
-
-
-function CanIMogIt:IsItemBindOnEquip(itemLink, bag, slot)
-    return CIMIScanTooltip:IsItemBindOnEquip(itemLink, bag, slot)
+function CanIMogIt:IsItemWarbound(itemLink, bag, slot, tooltipData)
+    return CIMIScanTooltip:IsItemWarbound(itemLink, bag, slot, tooltipData)
 end
 
 
@@ -1052,28 +1016,25 @@ function CanIMogIt:GetAppearanceIDFromSourceID(sourceID)
 end
 
 
-function CanIMogIt:_PlayerKnowsTransmog(itemLink, appearanceID)
+function CanIMogIt:PlayerKnowsTransmog(itemLink)
     -- Internal logic for determining if the item is known or not.
     -- Does not use the CIMI database.
-    if itemLink == nil or appearanceID == nil then return end
-    local sources = C_TransmogCollection.GetAppearanceSources(appearanceID, 1, transmogLocation)
-    if sources then
-        for i, source in pairs(sources) do
-            local sourceItemLink = CanIMogIt:GetItemLinkFromSourceID(source.sourceID)
-            if CanIMogIt:IsItemSubClassIdentical(itemLink, sourceItemLink) and source.isCollected then
-                return true
+    if itemLink == nil then return end
+    local appearanceID = CanIMogIt:GetAppearanceID(itemLink)
+    if appearanceID == nil then return false end
+    local sourceIDs = C_TransmogCollection.GetAllAppearanceSources(appearanceID)
+    if sourceIDs then
+        for i, sourceID in pairs(sourceIDs) do
+            local hasSource = C_TransmogCollection.PlayerHasTransmogItemModifiedAppearance(sourceID)
+            if hasSource then
+                local sourceItemLink = CanIMogIt:GetItemLinkFromSourceID(sourceID)
+                if CanIMogIt:IsItemSubClassIdentical(itemLink, sourceItemLink) then
+                    return true
+                end
             end
         end
     end
     return false
-end
-
-
-function CanIMogIt:PlayerKnowsTransmog(itemLink)
-    -- Returns whether this item's appearance is already known by the player.
-    local appearanceID = CanIMogIt:GetAppearanceID(itemLink)
-    if appearanceID == nil then return false end
-    return CanIMogIt:_PlayerKnowsTransmog(itemLink, appearanceID)
 end
 
 
@@ -1198,7 +1159,7 @@ function CanIMogIt:PostLogicOptionsText(text, unmodifiedText)
 end
 
 
-function CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
+function CanIMogIt:CalculateTooltipText(itemLink, bag, slot, tooltipData)
     --[[
         Calculate the tooltip text.
         No caching is done here, so don't call this often!
@@ -1219,8 +1180,8 @@ function CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
     isItemToy = CanIMogIt:IsItemToy(itemLink)
     isItemPet = CanIMogIt:IsItemPet(itemLink)
     isItemEnsemble = CanIMogIt:IsItemEnsemble(itemLink)
-    isItemSoulbound = CanIMogIt:IsItemSoulbound(itemLink, bag, slot)
-    isItemWarbound = CanIMogIt:IsItemWarbound(itemLink, bag, slot)
+    isItemSoulbound = CanIMogIt:IsItemSoulbound(itemLink, bag, slot, tooltipData)
+    isItemWarbound = CanIMogIt:IsItemWarbound(itemLink, bag, slot, tooltipData)
     isItemEquippable = CanIMogIt:IsEquippable(itemLink)
 
     if not CanIMogIt:PreLogicOptionsContinue(
@@ -1380,12 +1341,15 @@ end
 local foundAnItemFromBags = false
 
 
-function CanIMogIt:GetTooltipText(itemLink, bag, slot)
+function CanIMogIt:GetTooltipText(itemLink, bag, slot, tooltipData)
     --[[
         Gets the text to display on the tooltip from the itemLink.
 
         If bag and slot are given, this will use the itemLink from
         bag and slot instead.
+
+        If tooltipData is given, it will be used to get TooltipScanner info,
+        instead of calculating it.
 
         Returns two things:
             the text to display.
@@ -1420,7 +1384,7 @@ function CanIMogIt:GetTooltipText(itemLink, bag, slot)
         return cachedText, cachedUnmodifiedText
     end
 
-    text, unmodifiedText = CanIMogIt:CalculateTooltipText(itemLink, bag, slot)
+    text, unmodifiedText = CanIMogIt:CalculateTooltipText(itemLink, bag, slot, tooltipData)
 
     text = CanIMogIt:PostLogicOptionsText(text, unmodifiedText)
 

@@ -1,9 +1,5 @@
 
 OmniCCDB = {
-["global"] = {
-["dbVersion"] = 6,
-["addonVersion"] = "10.2.9",
-},
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Default",
 ["Mitráculo - Nemesis"] = "Default",
@@ -13,8 +9,10 @@ OmniCCDB = {
 ["Nostradamus - Goldrinn"] = "Default",
 ["Eshy - Nemesis"] = "Default",
 ["Sifú - Goldrinn"] = "Default",
+["Hilarión - Azralon"] = "Default",
 ["Córsega - Nemesis"] = "Default",
 ["Vacalactika - Nemesis"] = "Default",
+["Apoena - Azralon"] = "Default",
 ["Eshy - Steamwheedle Cartel"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
 ["Bankshy - Thrall"] = "Default",
@@ -45,33 +43,41 @@ OmniCCDB = {
 ["Jeshy - Goldrinn"] = "Default",
 ["Natashy - Goldrinn"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
+["Aiollos - Azralon"] = "Default",
 ["Jeshy - Nemesis"] = "Default",
 ["Onifade - Nemesis"] = "Default",
+["Anopheles - Azralon"] = "Default",
 ["Akishy - Goldrinn"] = "Default",
 ["Turoshy - Nemesis"] = "Default",
 ["Corsega - Nemesis"] = "Default",
 ["Arieshy - Goldrinn"] = "Padrão",
+["Radagashy - Goldrinn"] = "Default",
 ["Aishy - Nemesis"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
-["Satishy - Goldrinn"] = "Default",
-["Wishy - Nemesis"] = "Default",
+["Sharan - Goldrinn"] = "Default",
+["Verdessauro - Azralon"] = "Default",
 ["Dishy - Nemesis"] = "Default",
 ["Keishy - Aerie Peak"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Sharan - Goldrinn"] = "Default",
-["Sashy - Goldrinn"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Trystam - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
-["Yashy - Nemesis"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Melishy - Goldrinn"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
-["Radagashy - Goldrinn"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Trystam - Nemesis"] = "Default",
+["Yashy - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Satishy - Nemesis"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Wishy - Nemesis"] = "Default",
+["Satishy - Goldrinn"] = "Default",
+["Vedronys - Azralon"] = "Default",
+},
+["global"] = {
+["dbVersion"] = 6,
+["addonVersion"] = "11.0.0",
 },
 ["profiles"] = {
 ["Default"] = {
@@ -92,9 +98,9 @@ OmniCCDB = {
 ["textStyles"] = {
 ["soon"] = {
 },
-["minutes"] = {
-},
 ["seconds"] = {
+},
+["minutes"] = {
 },
 },
 },
@@ -102,9 +108,9 @@ OmniCCDB = {
 ["textStyles"] = {
 ["soon"] = {
 },
-["minutes"] = {
-},
 ["seconds"] = {
+},
+["minutes"] = {
 },
 },
 },
@@ -112,15 +118,27 @@ OmniCCDB = {
 ["textStyles"] = {
 ["seconds"] = {
 },
-["minutes"] = {
-},
 ["soon"] = {
+},
+["minutes"] = {
 },
 },
 },
 },
 },
 ["Padrão"] = {
+["themes"] = {
+["Padrão"] = {
+["textStyles"] = {
+["soon"] = {
+},
+["minutes"] = {
+},
+["seconds"] = {
+},
+},
+},
+},
 ["rules"] = {
 {
 ["id"] = "auras",
@@ -148,18 +166,6 @@ OmniCCDB = {
 },
 ["name"] = "Barras de ação",
 ["enabled"] = false,
-},
-},
-["themes"] = {
-["Padrão"] = {
-["textStyles"] = {
-["soon"] = {
-},
-["seconds"] = {
-},
-["minutes"] = {
-},
-},
 },
 },
 },

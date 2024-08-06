@@ -2913,7 +2913,7 @@ GrailDatabase = {
 "121|55664|enUS|79321|A:213930",
 },
 },
-["delayEventsHandled"] = true,
+["delayEvents"] = true,
 ["Tracking"] = {
 "2020-09-26 16:57 Nemesis/Dishy/Horde/PALADIN/BloodElf/3/enUS/US/35662",
 "New quest completed 43449 Vignette: Oreth the Vile",
@@ -3061,7 +3061,7 @@ GrailDatabase = {
 "New quest completed 48651 UNKNOWN NAME",
 "New quest completed 48084 UNKNOWN NAME",
 },
-["delayEvents"] = true,
+["delayEventsHandled"] = true,
 },
 ["BadQuestData"] = {
 },

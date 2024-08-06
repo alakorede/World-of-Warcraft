@@ -187,7 +187,7 @@ function Cacher:ParseItem(link, count)
 	if link then
 		local id = tonumber(link:match('item:(%d+):')) -- check for profession window bug
 		if id == 0 and TradeSkillFrame then
-			local focus = GetMouseFocus():GetName()
+			local focus = (GetMouseFoci and GetMouseFoci()[1] or GetMouseFocus()):GetName()
 			if focus == 'TradeSkillSkillIcon' then
 				link = GetTradeSkillItemLink(TradeSkillFrame.selectedSkill)
 			else

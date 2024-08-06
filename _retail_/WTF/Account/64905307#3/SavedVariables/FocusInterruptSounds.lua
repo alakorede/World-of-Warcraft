@@ -9,8 +9,10 @@ FocusInterruptSoundsDB = {
 ["Nostradamus - Goldrinn"] = "PRIEST",
 ["Eshy - Nemesis"] = "DEATHKNIGHT",
 ["Sifú - Goldrinn"] = "SHAMAN",
+["Hilarión - Azralon"] = "PRIEST",
 ["Córsega - Nemesis"] = "PALADIN",
 ["Vacalactika - Nemesis"] = "DRUID",
+["Apoena - Azralon"] = "DRUID",
 ["Eshy - Steamwheedle Cartel"] = "WARRIOR",
 ["Eshy - Goldrinn"] = "DEMONHUNTER",
 ["Bankshy - Thrall"] = "MAGE",
@@ -41,32 +43,36 @@ FocusInterruptSoundsDB = {
 ["Jeshy - Goldrinn"] = "DEATHKNIGHT",
 ["Natashy - Goldrinn"] = "PRIEST",
 ["Artheras - Goldrinn"] = "DRUID",
+["Aiollos - Azralon"] = "WARRIOR",
 ["Jeshy - Nemesis"] = "MAGE",
 ["Onifade - Nemesis"] = "DRUID",
+["Anopheles - Azralon"] = "DEATHKNIGHT",
 ["Akishy - Goldrinn"] = "ROGUE",
 ["Turoshy - Nemesis"] = "WARRIOR",
 ["Corsega - Nemesis"] = "PALADIN",
 ["Arieshy - Goldrinn"] = "DEATHKNIGHT",
 ["Aishy - Nemesis"] = "ROGUE",
+["Radagashy - Goldrinn"] = "DRUID",
 ["Chicoxavier - Nemesis"] = "PRIEST",
 ["Sharan - Goldrinn"] = "PALADIN",
+["Verdessauro - Azralon"] = "SHAMAN",
 ["Dishy - Nemesis"] = "PALADIN",
 ["Keishy - Aerie Peak"] = "ROGUE",
 ["Aenshy - Goldrinn"] = "ROGUE",
 ["Skoshy - Goldrinn"] = "WARRIOR",
-["Wishy - Nemesis"] = "DRUID",
-["Sashy - Goldrinn"] = "MONK",
-["Batezu - Nemesis"] = "WARLOCK",
-["Trystam - Nemesis"] = "MONK",
-["Neshy - Nemesis"] = "PALADIN",
-["Yashy - Nemesis"] = "SHAMAN",
-["Kerrishy - Goldrinn"] = "ROGUE",
-["Satishy - Nemesis"] = "WARLOCK",
-["Melishy - Goldrinn"] = "WARLOCK",
+["Kirashy - Nemesis"] = "SHAMAN",
 ["Kuradis - Nemesis"] = "PALADIN",
 ["Satishy - Goldrinn"] = "HUNTER",
-["Kirashy - Nemesis"] = "SHAMAN",
-["Radagashy - Goldrinn"] = "DRUID",
+["Trystam - Nemesis"] = "MONK",
+["Satishy - Nemesis"] = "WARLOCK",
+["Yashy - Nemesis"] = "SHAMAN",
+["Kerrishy - Goldrinn"] = "ROGUE",
+["Melishy - Goldrinn"] = "WARLOCK",
+["Batezu - Nemesis"] = "WARLOCK",
+["Neshy - Nemesis"] = "PALADIN",
+["Sashy - Goldrinn"] = "MONK",
+["Wishy - Nemesis"] = "DRUID",
+["Vedronys - Azralon"] = "PALADIN",
 },
 ["profiles"] = {
 ["DEATHKNIGHT"] = {
@@ -79,9 +85,9 @@ FocusInterruptSoundsDB = {
 },
 ["PRIEST"] = {
 },
-["HUNTER"] = {
+["ROGUE"] = {
 },
-["EVOKER"] = {
+["MONK"] = {
 },
 ["WARLOCK"] = {
 },
@@ -91,9 +97,9 @@ FocusInterruptSoundsDB = {
 },
 ["DRUID"] = {
 },
-["MONK"] = {
+["EVOKER"] = {
 },
-["ROGUE"] = {
+["HUNTER"] = {
 },
 },
 }

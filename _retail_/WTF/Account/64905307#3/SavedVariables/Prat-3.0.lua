@@ -6,9 +6,9 @@ Prat3DB = {
 ["Default"] = {
 ["colors"] = {
 ["trade"] = {
-["r"] = 0.9529412388801575,
-["g"] = 0.9725490808486938,
 ["b"] = 1,
+["g"] = 0.9725490808486938,
+["r"] = 0.9529412388801575,
 },
 },
 },
@@ -55,22 +55,22 @@ Prat3DB = {
 ["editW"] = 448.8887710571289,
 ["attach"] = "FREE",
 ["editX"] = 27.67922210693359,
-["background"] = "None",
-["inset"] = 7,
+["border"] = "1 Pixel",
+["backgroundColor"] = {
+["a"] = 0,
+},
 ["font"] = "DorisPP",
 ["tileSize"] = 1,
 ["borderColor"] = {
 ["a"] = 0.7193723618984222,
-["b"] = 0,
-["g"] = 0,
 ["r"] = 0,
+["g"] = 0,
+["b"] = 0,
 },
 ["editY"] = 292.1662902832031,
 ["colorByChannel"] = false,
-["backgroundColor"] = {
-["a"] = 0,
-},
-["border"] = "1 Pixel",
+["inset"] = 7,
+["background"] = "None",
 },
 },
 },
@@ -91,23 +91,23 @@ Prat3DB = {
 },
 ["Prat_KeyBindings"] = {
 },
-["Prat_DebugModules"] = {
+["Prat_TellTarget"] = {
 },
 ["Prat_Bubbles"] = {
 },
-["Prat_Achievements"] = {
-},
 ["Prat_Paragraph"] = {
 },
-["Prat_NewcomersChat"] = {
+["Prat_Achievements"] = {
 },
 ["Prat_Alias"] = {
+},
+["Prat_NewcomersChat"] = {
 },
 ["Prat_OriginalButtons"] = {
 },
 ["Prat_Highlight"] = {
 },
-["Prat_Timestamps"] = {
+["Prat_ChannelNames"] = {
 },
 ["Prat_Sounds"] = {
 },
@@ -115,7 +115,7 @@ Prat3DB = {
 },
 ["Prat_LinkInfoIcons"] = {
 },
-["Prat_ChannelNames"] = {
+["Prat_Timestamps"] = {
 },
 ["Prat_ChatLog"] = {
 },
@@ -125,16 +125,16 @@ Prat3DB = {
 ["profiles"] = {
 ["Default"] = {
 ["showvoice"] = false,
-["showminimize"] = false,
+["showButtons"] = false,
 ["showchannel"] = false,
 ["showBnet"] = false,
-["showButtons"] = false,
-["showMenu"] = false,
 ["scrollReminder"] = false,
+["showMenu"] = false,
+["showminimize"] = false,
 },
 },
 },
-["Prat_TellTarget"] = {
+["Prat_DebugModules"] = {
 },
 ["Prat_HoverTips"] = {
 },
@@ -148,8 +148,10 @@ Prat3DB = {
 ["Nostradamus - Goldrinn"] = "Default",
 ["Eshy - Nemesis"] = "Default",
 ["Sifú - Goldrinn"] = "Default",
+["Hilarión - Azralon"] = "Default",
 ["Córsega - Nemesis"] = "Default",
 ["Vacalactika - Nemesis"] = "Default",
+["Apoena - Azralon"] = "Default",
 ["Eshy - Steamwheedle Cartel"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
 ["Bankshy - Thrall"] = "Default",
@@ -180,38 +182,42 @@ Prat3DB = {
 ["Jeshy - Goldrinn"] = "Default",
 ["Natashy - Goldrinn"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
+["Aiollos - Azralon"] = "Default",
 ["Jeshy - Nemesis"] = "Default",
 ["Onifade - Nemesis"] = "Default",
+["Anopheles - Azralon"] = "Default",
 ["Akishy - Goldrinn"] = "Default",
 ["Turoshy - Nemesis"] = "Default",
 ["Corsega - Nemesis"] = "Default",
 ["Arieshy - Goldrinn"] = "Default",
+["Radagashy - Goldrinn"] = "Default",
 ["Aishy - Nemesis"] = "Default",
+["Aleshy - Goldrinn"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
-["Keishy - Aerie Peak"] = "Default",
+["Satishy - Goldrinn"] = "Default",
+["Verdessauro - Azralon"] = "Default",
 ["Dishy - Nemesis"] = "Default",
 ["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Satishy - Goldrinn"] = "Default",
-["Sharan - Goldrinn"] = "Default",
-["Neshy - Nemesis"] = "Default",
-["Trystam - Nemesis"] = "Default",
-["Sashy - Goldrinn"] = "Default",
-["Yashy - Nemesis"] = "Default",
-["Melishy - Goldrinn"] = "Default",
-["Satishy - Nemesis"] = "Default",
-["Lilishy - Goldrinn"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
-["Aleshy - Goldrinn"] = "Default",
-["Radagashy - Goldrinn"] = "Default",
+["Satishy - Nemesis"] = "Default",
+["Trystam - Nemesis"] = "Default",
+["Yashy - Nemesis"] = "Default",
+["Lilishy - Goldrinn"] = "Default",
+["Sashy - Goldrinn"] = "Default",
+["Melishy - Goldrinn"] = "Default",
+["Sharan - Goldrinn"] = "Default",
+["Neshy - Nemesis"] = "Default",
+["Keishy - Aerie Peak"] = "Default",
+["Batezu - Nemesis"] = "Default",
+["Vedronys - Azralon"] = "Default",
 },
 ["profiles"] = {
 ["Default"] = {
 ["modules"] = {
-["Alias"] = 2,
+["ChatLog"] = 2,
 ["Mentions"] = 2,
 ["PopupMessage"] = 2,
 ["AltNames"] = 2,
@@ -221,7 +227,7 @@ Prat3DB = {
 ["LinkInfoIcons"] = 2,
 ["DebugModules"] = 2,
 ["OriginalButtons"] = 2,
-["ChatLog"] = 2,
+["Alias"] = 2,
 },
 },
 },
