@@ -44,6 +44,8 @@ L.health = "Health" -- The health of an NPC
 L.health_percent = "%d%% Health" -- "10% Health" The health percentage of an NPC
 L.door_open = "Door open" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Gate open" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Threat"
+L.energy = "Energy"
 
 L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s for %s sec" -- Spell for 10 seconds
@@ -63,10 +65,13 @@ L.cancelled = "%s cancelled" -- Spell cancelled
 L.you_die = "You die" -- You will die
 L.you_die_sec = "You die in %d sec" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
+L.flying_available = "You can fly now"
 
 -- Add related
 L.add_spawned = "Add spawned" -- singular
 L.adds_spawned = "Adds spawned" -- plural
+L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 L.add_spawning = "Add spawning" -- singular
 L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s spawned"
@@ -85,6 +90,18 @@ L.small_adds = "Small Adds" -- plural
 L.killed = "%s killed"
 L.mob_killed = "%s killed (%d/%d)"
 L.mob_remaining = "%s killed, %d remaining"
+
+-- NPCs for follower dungeons
+L.garrick = "Captain Garrick" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*Garrick"
+L.meredy = "Meredy Huntswell" -- AI mage dps (NPC 209059)
+L.meredy_short = "*Meredy"
+L.shuja = "Shuja Grimaxe" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*Shuja"
+L.crenna = "Crenna Earth-Daughter" -- AI druid healer (NPC 209072)
+L.crenna_short = "*Crenna"
+L.austin = "Austin Huxworth" -- AI hunter dps (NPC 209065)
+L.austin_short = "*Austin"
 
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
@@ -108,9 +125,12 @@ L.marker_npc_aura_desc = "Mark NPCs affected by '%s' with %s, requires promoted 
 L.link = "Link"
 L.link_with = "Linked with %s"
 L.link_with_icon = "Linked with |T13700%d:0|t%s"
-L.link_short = "Linked: %s"
-L.link_both = "%s linked with %s"
+L.link_with_rticon = "{rt%d}Linked with %s"
+L.link_both = "%s + %s are linked"
+L.link_both_icon = "|T13700%d:0|t%s + |T13700%d:0|t%s are linked"
 L.link_removed = "Link removed"
+L.link_say_option_name = "Repeating 'Linked' say messages"
+L.link_say_option_desc = "Repeating say messages in chat stating who you are linked with."
 
 -- Abbreviated numbers
 L.amount_one = "%dB" -- Billions 1,000,000,000
@@ -174,6 +194,7 @@ L.charge = "Charge" -- When a boss select a new target and charges at it quickly
 L.full_energy = "Full Energy" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Weakened" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Immune" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Stunned" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Pool" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Pools" -- Plural of L.pool
 L.totem = "Totem" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -203,3 +224,10 @@ L.soaks = "Soaks" -- Plural of L.soak
 L.spell_reflection = "Spell Reflection" -- Any ability that reflects spells
 L.parasite = "Parasite" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "Rooted" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+L.dodge = "Dodge" -- When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+L.health_drain = "Health Drain" -- Any ability that drains health from the player
+L.smash = "Smash" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+L.spike = "Spike" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+L.spikes = "Spikes" -- Plural of L.spike

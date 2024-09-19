@@ -1,6 +1,6 @@
-## Interface: 100207
-## Title: BetterWardrobe (4.21.2)
-## Version: 4.21.2
+## Interface: 100207, 110000, 110002
+## Title: BetterWardrobe (5.4)
+## Version: 5.4
 ## Author: SLOKnightfall
 ## Notes: 
 ## OptionalDeps: MogIt, CanIMogIt, LegionWardrobe, WardrobeEnhanced, Rarity, TransmogOutfits, ExtendedSets, ElvUI, PetTracker, PetTrackerJournal
@@ -26,9 +26,8 @@ Libs\LibArmorToken-1.0\lib.xml
 Libs\LibAppropriateitems-1.0\lib.xml
 #Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 #Libs\LibTextDump-1.0\LibTextDump-1.0.lua
-Libs\UIDropDownMenu\UIDropDownMenu.xml
 Libs\AceSerializer-3.0\AceSerializer-3.0.xml
-Libs\TaintLess\TaintLess.xml
+#Libs\TaintLess\TaintLess.xml
 
 #Locale
 Locale\enUS.lua
@@ -56,6 +55,7 @@ Data\LEATHER.lua
 Data\MAIL.lua
 Data\PLATE.lua
 Data\COSMETIC.lua
+Data\MISC.lua
 Data\SetOverrides.lua
 
 
@@ -66,7 +66,6 @@ Modules\SavedOutfits.xml
 Modules\DressingRoom.xml
 Modules\Wardrobe.xml
 Modules\ColorFilter.lua
-
 #Modules\PreviewWindows.lua
 
 Modules\CollectionList.xml
@@ -76,7 +75,6 @@ Modules\TransmogVendor.xml
 
 Modules\ImportExport.lua
 Modules\Tooltips.lua
-#Modules\UI.lua
 Modules\SortingFunctions.lua
 
 #3rd party addon compatability

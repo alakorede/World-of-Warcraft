@@ -2,11 +2,11 @@
 ## Notes: Allows alternative placement of minimap icons into an expanding bar that sits off the side of the screen.
 ## OptionalDeps: !Swatter
 ##
-## Interface: 100207
+## Interface: 110002, 40400, 11503
 ## LoadOnDemand: 0
 ## SavedVariables: SlideBarConfig
 ##
-## Version: <%version%> (<%codename%>)
+## Version: 11.x.BETA.4 (TheWarWithBlizzardAPIs)
 ## Revision: $Id$
 ## Author: Norganna's AddOns
 ## X-Part-Of: Libraries

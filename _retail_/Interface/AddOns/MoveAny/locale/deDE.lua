@@ -2,8 +2,10 @@
 local _, MoveAny = ...
 function MoveAny:LangdeDE()
 	local tab = {
-		["LID_MMBTNLEFT"] = "Linksklick => Sperren/Entsperren + Optionen",
-		["LID_MMBTNRIGHT"] = "Shift + Rechtsklick => Minimapknopf verstecken",
+		["LID_LEFTCLICK"] = "Linksklick",
+		["LID_RIGHTCLICK"] = "Rechtsklick",
+		["LID_MMBTNLEFT"] = "Sperren/Entsperren + Optionen",
+		["LID_MMBTNRIGHT"] = "Minimapknopf verstecken",
 		["LID_GENERAL"] = "Allgemein",
 		["LID_SHOWMINIMAPBUTTON"] = "Minimapknopf anzeigen",
 		["LID_GRIDSIZE"] = "Rastergröße (Grid)",
@@ -79,7 +81,7 @@ function MoveAny:LangdeDE()
 		["LID_CHATBUTTONFRAME9"] = "Chat Knöpfe für Tab 9",
 		["LID_CHATBUTTONFRAME10"] = "Chat Knöpfe für Tab 10",
 		["LID_CHATQUICKJOIN"] = "Chat Schnellbeitritt",
-		["LID_CHATEDITBOX"] = "Chat Eingabefeld",
+		["LID_CHATEDITBOX"] = "Chat Eingabefeld %s",
 		["LID_COMPACTRAIDFRAMEMANAGER"] = "SchlachzugsManager",
 		["LID_BNToastFrame"] = "Benachrichtigungen von Battlenet Freunden",
 		["LID_SPELLACTIVATIONOVERLAYFRAME"] = "Zauber-Aktivierungs-Overlay (Class Proc)",
@@ -166,7 +168,8 @@ function MoveAny:LangdeDE()
 		["LID_BLIZZARDACTIONBUTTONSART"] = "Aktionsleiste 1 Blizzard-Kunst",
 		["LID_OBJECTIVETRACKERBONUSBANNERFRAME"] = "Objektiv Tracker Fenster (World Quest Titel)",
 		["LID_MOVESMALLBAGS"] = "Bewegen/Skalieren von kleinen Taschen",
-		["LID_MOVELOOTFRAME"] = "Bewegen/Skalieren von Beutefenster (Loot)",
+		["LID_MOVELOOTFRAME"] = "Bewegen von Beutefenster (Loot)",
+		["LID_SCALELOOTFRAME"] = "Skalieren von Beutefenster (Loot)",
 		["LID_NEEDSARELOAD"] = "Braucht ein Neu laden",
 		["LID_RAIDBOSSEMOTEFRAME"] = "Raid Boss Emotionen Fenster",
 		["LID_STARTHELP"] = "Klicken Sie auf die MoveAny Minimap-Schaltfläche, um die Einstellungen zu öffnen",
@@ -212,6 +215,19 @@ function MoveAny:LangdeDE()
 		["LID_TARGETFRAMEDEBUFF1"] = "Zielfenster Debuff 1",
 		["LID_FOCUSFRAMEDEBUFF1"] = "Fokusfenster Debuff 1",
 		["LID_TARGETFRAMETOTBUFF1"] = "Ziel des Zielfenster Buff 1",
+		["LID_MINIMAPFLAG"] = "Minimap Flagge",
+		["LID_MiniMapInstanceDifficulty"] = "Minimap Flagge Instanz Schwierigkeit",
+		["LID_MiniMapChallengeMode"] = "Minimap Flagge Herausforderungsmodus",
+		["LID_GuildInstanceDifficulty"] = "Minimap Flagge Gilden-Instanz Schwierigkeit",
+		["LID_POWERBARCOUNTERBAR"] = "Machtleiste Gegenleiste",
+		["LID_BUFFTIMER1"] = "Stärkungszeit 1",
+		["LID_FRAMES"] = "Fenster",
+		["LID_SCALEFRAMES"] = "Fenster skalieren",
+		["LID_RESETFRAMES"] = "Fenster resetten",
+		["LID_MOVEANYINFO"] = "Wählen Sie die Dinge aus, die Sie ändern möchten",
+		["LID_PLEASESWITCHPROFILE1"] = "Bitte wechsel das LAYOUT im Bearbeitungsmodus (von Blizzard) zu einem BENUTZERDEFINIERTEN Layout.",
+		["LID_PLEASESWITCHPROFILE2"] = "MoveAny funktioniert nicht mit einem voreingestellten Layout, es ist meist schreibgeschützt.",
+		["LID_PLEASESWITCHPROFILE3"] = "ESC -> Bearbeitungsmodus -> Layout: [BENUTZERDEFINIERTES-LAYOUT] (Kein Voreingestelltes Layout)",
 	}
 
 	if MoveAny:GetWoWBuild() ~= "RETAIL" then

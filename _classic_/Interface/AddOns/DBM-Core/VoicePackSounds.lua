@@ -72,7 +72,7 @@
 ---|"cleave" 12
 ---|"cntnuemove"
 ---|"com_go"
----|"crowdcontrol"
+---|"crowdcontrol" 3
 ---|"crusher" 12
 ---|"debuffyou" 17
 ---|"defensive"
@@ -180,6 +180,7 @@
 ---|"lineapart"
 ---|"linegather"
 ---|"linesoon"
+---|"lineyou" 17
 ---|"lowsanity"
 ---|"markedfordeath" 12
 ---|"mblue"
@@ -237,15 +238,16 @@
 ---|"pthree"
 ---|"ptran"
 ---|"ptwo"
----|"pullin"
+---|"pullin" 12
 ---|"pulverize" 12
 ---|"purpleyou" 17
----|"pushbackincoming"
+---|"pushbackincoming" 13
 ---|"quake" 12
 ---|"rageyou" 17
 ---|"range5"
 ---|"readyrescue"
 ---|"redyou" 17
+---|"riftdispel" 17
 ---|"right"
 ---|"runaway" 2
 ---|"runin" 2
@@ -282,6 +284,7 @@
 ---|"stopatk" 2
 ---|"stopattack" 2
 ---|"stopcast" 2
+---|"stopchargewithline" 17
 ---|"stopmove"
 ---|"stunsoon"
 ---|"sunderhigh"

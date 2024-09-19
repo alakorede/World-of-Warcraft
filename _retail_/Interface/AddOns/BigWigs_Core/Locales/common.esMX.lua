@@ -45,6 +45,8 @@ L.health = "Salud" -- The health of an NPC
 L.health_percent = "%d%% Salud" -- "10% Health" The health percentage of an NPC
 L.door_open = "Puerta abierta" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Puerta abierta" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Amenaza"
+L.energy = "Energía"
 
 --L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s durante %s seg" -- Spell for 10 seconds
@@ -64,10 +66,13 @@ L.cancelled = "%s cancelado" -- Spell Cancelled
 L.you_die = "Morirás" -- You will die
 L.you_die_sec = "Morirás en %d seg" -- "You die in 15 sec" (seg = seconds (segundos))
 L.next_ability = "Próxima habilidad" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+--L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
+--L.flying_available = "You can fly now"
 
 -- Add related
 L.add_spawned = "Esbirro apareció" -- singular
 L.adds_spawned = "Esbirros aparecieron" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 --L.add_spawning = "Add spawning" -- singular
 --L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s apareció"
@@ -86,6 +91,18 @@ L.small_adds = "Esbirros pequeños" -- plural
 L.killed = "%s muerto"
 L.mob_killed = "%s muerto (%d/%d)"
 L.mob_remaining = "%s muerto, %d restantes"
+
+-- NPCs for follower dungeons
+L.garrick = "Capitana Garrick" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*Garrick"
+L.meredy = "Meredy Huntswell" -- AI mage dps (NPC 209059)
+L.meredy_short = "*Meredy"
+L.shuja = "Shuja Hacha Macabra" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*Shuja"
+L.crenna = "Crenna Hija de la Tierra" -- AI druid healer (NPC 209072)
+L.crenna_short = "*Crenna"
+L.austin = "Austin Huxworth" -- AI hunter dps (NPC 209065)
+L.austin_short = "*Austin"
 
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
@@ -109,9 +126,12 @@ L.marker_npc_desc = "Marca %s con %s, requiere ayudante o líder." -- Mark NPC_N
 L.link = "Enlace"
 L.link_with = "Enlazado con %s"
 L.link_with_icon = "Enlazado con |T13700%d:0|t%s"
-L.link_short = "Enlazado: %s"
-L.link_both = "%s enlazado con %s"
+L.link_with_rticon = "{rt%d}Enlazado con %s"
+L.link_both = "%s enlazado con %s" -- XXX needs updated
+L.link_both_icon = "|T13700%d:0|t%s enlazado con |T13700%d:0|t%s" -- XXX needs updated
 L.link_removed = "Enlace eliminado"
+--L.link_say_option_name = "Repeating 'Linked' say messages"
+--L.link_say_option_desc = "Repeating say messages in chat stating who you are linked with."
 
 -- Abbreviated numbers
 L.amount_one = "%dB" -- Miles de millones 1,000,000,000
@@ -175,6 +195,7 @@ L.charge = "Cargar" -- When a boss select a new target and charges at it quickly
 L.full_energy = "Energía al máximo" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Debilitado" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Inmune" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Aturdido" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Charco" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Charcos" -- Plural of L.pool
 L.totem = "Tótem" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -204,3 +225,10 @@ L.soaks = "Soaks" -- Plural of L.soak
 L.spell_reflection = "Reflejo de hechizos" -- Any ability that reflects spells
 L.parasite = "Parásito" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "Enraizado" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+--L.dodge = "Dodge" -- When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+L.health_drain = "Absorción de salud" -- Any ability that drains health from the player
+L.smash = "Machaque" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+L.spike = "Púa" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+L.spikes = "Púas" -- Plural of L.spike

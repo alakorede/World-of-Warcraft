@@ -263,6 +263,27 @@ if app.GameBuildVersion >= 40000 then	-- Transmog officially supported with Cata
 	end)
 	checkboxMainOnlyMode:SetATTTooltip(L.MAIN_ONLY_TOOLTIP)
 	checkboxMainOnlyMode:AlignBelow(checkboxTransmog, 1)
+
+	if app.IsClassic then
+		local checkboxQualityFilter = child:CreateCheckBox(L.ONLY_NOT_TRASH,
+		function(self)
+			self:SetChecked(settings:Get("Only:NotTrash"))
+			if not settings:Get("Thing:Transmog") and not app.MODE_DEBUG then
+				self:Disable()
+				self:SetAlpha(0.4)
+			else
+				self:Enable()
+				self:SetAlpha(1)
+			end
+		end,
+		function(self)
+			settings:Set("Only:NotTrash", self:GetChecked());
+			settings:UpdateMode(1);
+		end)
+		checkboxQualityFilter:SetATTTooltip(L.ONLY_NOT_TRASH_TOOLTIP)
+		checkboxQualityFilter:AlignAfter(checkboxMainOnlyMode)
+		checkboxQualityFilter:SetScale(0.8);
+	end
 else
 	local checkboxOnlyRWP = child:CreateCheckBox(L.ONLY_RWP,
 	function(self)
@@ -281,6 +302,26 @@ else
 	end)
 	checkboxOnlyRWP:SetATTTooltip(L.ONLY_RWP_TOOLTIP)
 	checkboxOnlyRWP:AlignAfter(checkboxTransmog)
+	checkboxOnlyRWP:SetScale(0.8);
+
+	local checkboxQualityFilter = child:CreateCheckBox(L.ONLY_NOT_TRASH,
+	function(self)
+		self:SetChecked(settings:Get("Only:NotTrash"))
+		if not settings:Get("Thing:Transmog") and not app.MODE_DEBUG then
+			self:Disable()
+			self:SetAlpha(0.4)
+		else
+			self:Enable()
+			self:SetAlpha(1)
+		end
+	end,
+	function(self)
+		settings:Set("Only:NotTrash", self:GetChecked());
+		settings:UpdateMode(1);
+	end)
+	checkboxQualityFilter:SetATTTooltip(L.ONLY_NOT_TRASH_TOOLTIP)
+	checkboxQualityFilter:AlignBelow(checkboxOnlyRWP)
+	checkboxQualityFilter:SetScale(0.8);
 end
 
 -- Heirlooms aren't in the game until late Wrath Classic.
@@ -374,7 +415,7 @@ child:CreateTrackingCheckbox("DEATHS", "Deaths", true)
 	:AlignAfter(accwideCheckboxDeaths)
 end
 
-accwideCheckboxExploration =
+local accwideCheckboxExploration =
 child:CreateAccountWideCheckbox("EXPLORATION", "Exploration")
 	:AlignBelow(accwideCheckboxDeaths or accwideCheckboxCharacterUnlocks or accwideCheckboxAchievements)
 local explorationCheckbox = child:CreateTrackingCheckbox("EXPLORATION", "Exploration", true)
@@ -689,12 +730,12 @@ if app.GameBuildVersion >= 60000 then
 				:AlignAfter(accwideCheckboxRunecarvingPowers)
 
 			if app.GameBuildVersion >= 90000 then
-				-- Drakewatcher Manuscripts (Dragonflight+)
-				local accwideCheckboxDrakewatcherManuscripts =
+				-- Mount Mods (Dragonflight+)
+				local accwideCheckboxMountMods =
 				child:CreateForcedAccountWideCheckbox()
 					:AlignBelow(accwideCheckboxRunecarvingPowers)
-				child:CreateTrackingCheckbox("DRAKEWATCHERMANUSCRIPTS", "DrakewatcherManuscripts", true)
-					:AlignAfter(accwideCheckboxDrakewatcherManuscripts)
+				child:CreateTrackingCheckbox("MOUNTMODS", "MountMods", true)
+					:AlignAfter(accwideCheckboxMountMods)
 			end
 		end
 	end

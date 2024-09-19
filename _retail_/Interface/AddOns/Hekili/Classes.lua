@@ -1,5 +1,5 @@
 -- Classes.lua
--- July 2014
+-- July 2024
 
 local addon, ns = ...
 local Hekili = _G[ addon ]
@@ -26,10 +26,14 @@ local insert, wipe = table.insert, table.wipe
 local mt_resource = ns.metatables.mt_resource
 
 local GetActiveLossOfControlData, GetActiveLossOfControlDataCount = C_LossOfControl.GetActiveLossOfControlData, C_LossOfControl.GetActiveLossOfControlDataCount
-local GetItemCooldown = _G.GetItemCooldown
-local GetSpellDescription, GetSpellTexture = _G.GetSpellDescription, _G.GetSpellTexture
+local GetItemCooldown = C_Item.GetItemCooldown
+local GetSpellDescription, GetSpellTexture = C_Spell.GetSpellDescription, C_Spell.GetSpellTexture
 local GetSpecialization, GetSpecializationInfo = _G.GetSpecialization, _G.GetSpecializationInfo
+local GetItemSpell, GetItemCount, IsUsableItem = C_Item.GetItemSpell, C_Item.GetItemCount, C_Item.IsUsableItem
+local GetSpellInfo = C_Spell.GetSpellInfo
+local GetSpellLink = C_Spell.GetSpellLink
 
+local UnitBuff, UnitDebuff = ns.UnitBuff, ns.UnitDebuff
 
 local specTemplate = {
     enabled = true,
@@ -217,6 +221,14 @@ local HekiliSpecMixin = {
         for talent, id in pairs( talents ) do
             self.talents[ talent ] = id
             CommitKey( talent )
+
+            local hero = id[ 4 ]
+
+            if hero then
+                self.talents[ hero ] = id
+                CommitKey( hero )
+                id[ 4 ] = nil
+            end
         end
     end,
 
@@ -280,7 +292,8 @@ local HekiliSpecMixin = {
             if a.id > 0 then
                 -- Hekili:ContinueOnSpellLoad( a.id, function( success )
                 a.onLoad = function( a )
-                    a.name = GetSpellInfo( a.id )
+                    local d = GetSpellInfo( a.id )
+                    a.name = d and d.name
 
                     if not a.name then
                         for k, v in pairs( class.auraList ) do
@@ -665,6 +678,7 @@ local HekiliSpecMixin = {
                 self.pseudoAbilities = self.pseudoAbilities + 1
                 data.id = -1000 * self.id - self.pseudoAbilities
             end
+            a.id = data.id
         end
 
         if data.id and type( data.id ) == "function" then
@@ -741,6 +755,7 @@ local HekiliSpecMixin = {
                     local link = actionItem:GetItemLink()
                     local texture = actionItem:GetItemIcon()
 
+                   
                     if name then
                         if not a.name or a.name == a.key then a.name = name end
                         if not a.link or a.link == a.key then a.link = link end
@@ -858,7 +873,16 @@ local HekiliSpecMixin = {
         if a.id and a.id > 0 then
             -- Hekili:ContinueOnSpellLoad( a.id, function( success )
             a.onLoad = function()
-                a.name = GetSpellInfo( a.id )
+                local spellInfo = GetSpellInfo( a.id )
+                
+                if spellInfo == nil then
+                    spellInfo = GetItemInfo( a.id )
+                end
+                if spellInfo then
+                    a.name = spellInfo.name
+                else
+                    a.name = nil
+                end
 
                 if not a.name then
                     for k, v in pairs( class.abilityList ) do
@@ -870,7 +894,7 @@ local HekiliSpecMixin = {
                     return
                 end
 
-                -- if not a.name then Hekili:Error( "Name info not available for " .. a.id .. "." ); return false end
+                if not a.name then Hekili:Error( "Name info not available for " .. a.id .. "." ); return false end
 
                 a.desc = GetSpellDescription( a.id ) -- was returning raw tooltip data.
 
@@ -892,7 +916,12 @@ local HekiliSpecMixin = {
                 if a.rangeSpell and type( a.rangeSpell ) == "number" then
                     Hekili:ContinueOnSpellLoad( a.rangeSpell, function( success )
                         if success then
-                            a.rangeSpell = GetSpellInfo( a.rangeSpell )
+                            local info = GetSpellInfo( a.rangeSpell )
+                            if info then
+                                a.rangeSpell = info.name
+                            else
+                                a.rangeSpell = nil
+                            end
                         else
                             a.rangeSpell = nil
                         end
@@ -1477,6 +1506,23 @@ all:RegisterAuras( {
         aliasType = "buff",
         aliasMode = "longest"
     },
+    -- Can always be seen and tracked by the Hunter.; Damage taken increased by $428402s4% while above $s3% health.
+    -- https://wowhead.com/beta/spell=257284
+    hunters_mark = {
+        id = 257284,
+        duration = 3600,
+        tick_time = 0.5,
+        type = "Magic",
+        max_stack = 1,
+        shared = "target"
+    },
+    chaos_brand = {
+        id = 1490,
+        duration = 3600,
+        type = "Magic",
+        max_stack = 1,
+        shared = "target"
+    },
     blessing_of_the_bronze_deathknight = {
         id = 381732,
         duration = 3600,
@@ -1560,14 +1606,25 @@ all:RegisterAuras( {
         id = 10060,
         duration = 20,
         max_stack = 1,
-        shared = "player"
+        shared = "player",
+        dot = "buff"
     },
 
     battle_shout = {
         id = 6673,
         duration = 3600,
         max_stack = 1,
-        shared = "player"
+        shared = "player",
+        dot = "buff"
+    },
+
+    -- Mastery increased by $w1% and auto attacks have a $h% chance to instantly strike again.
+    skyfury = {
+        id = 462854,
+        duration = 3600.0,
+        max_stack = 1,
+        shared = "player",
+        dot = "buff"
     },
 
     -- SL Season 3
@@ -2816,6 +2873,7 @@ all:RegisterAbilities( {
         name = "|cff00ccff[Null Cooldown]|r",
         listName = "|T136243:0|t |cff00ccff[Null Cooldown]|r",
         cast = 0,
+        cooldown = 0.001,
         gcd = "off",
 
         startsCombat = false,
@@ -4775,7 +4833,9 @@ do
         { "eternal_gladiators_medallion", 192298 },
         { "obsidian_combatants_medallion", 204164 },
         { "obsidian_aspirants_medallion", 205779 },
-        { "obsidian_gladiators_medallion", 205711 }
+        { "obsidian_gladiators_medallion", 205711 },
+        { "forged_aspirants_medallion", 218422 },
+        { "forged_gladiators_medallion", 218716 }
     }
 
     local pvp_medallions_copy = {}
@@ -4787,10 +4847,13 @@ do
     end
 
     all:RegisterAbility( "gladiators_medallion", {
-        name = function () return ( GetSpellInfo( 277179 ) ) end,
+        name = function ()
+            local data = GetSpellInfo( 277179 )
+            return data and data.name or "Gladiator's Medallion"
+        end,
         listName = function ()
-            local _, _, tex = GetSpellInfo( 277179 )
-            if tex then return "|T" .. tex .. ":0|t " .. ( GetSpellLink( 277179 ) ) end
+            local data = GetSpellInfo( 277179 )
+            if data and data.iconID then return "|T" .. data.iconID .. ":0|t " .. ( GetSpellLink( 277179 ) ) end
         end,
         link = function () return ( GetSpellLink( 277179 ) ) end,
         cast = 0,
@@ -4805,7 +4868,7 @@ do
             end
             return m
         end,
-        items = { 161674, 162897, 165055, 165220, 167377, 167525, 181333, 184052, 184055, 172666, 184058, 185309, 185304, 186966, 186869, 192412, 192298, 204164, 205779, 205711, 205779, 205711 },
+        items = { 161674, 162897, 165055, 165220, 167377, 167525, 181333, 184052, 184055, 172666, 184058, 185309, 185304, 186966, 186869, 192412, 192298, 204164, 205779, 205711, 205779, 205711, 218422, 218716 },
         toggle = "defensives",
 
         usable = function () return debuff.loss_of_control.up, "requires loss of control effect" end,
@@ -4848,7 +4911,9 @@ do
         { "obsidian_aspirants_badge_of_ferocity", 205778 },
         { "obsidian_gladiator_badge_of_ferocity", 205708 },
         { "verdant_aspirants_badge_of_ferocity", 209763 },
-        { "verdant_gladiators_badge_of_ferocity", 209343 }
+        { "verdant_gladiators_badge_of_ferocity", 209343 },
+        { "forged_aspirants_badge_of_ferocity", 218421 },
+        { "forged_gladiators_badge_of_ferocity", 218713 }
     }
 
     local pvp_badges_copy = {}
@@ -4860,17 +4925,20 @@ do
     end
 
     all:RegisterAbility( "gladiators_badge", {
-        name = function () return ( GetSpellInfo( 277185 ) ) end,
+        name = function ()
+            local data = GetSpellInfo( 277185 )
+            return data and data.name or "Gladiator's Badge"
+        end,
         listName = function ()
-            local _, _, tex = GetSpellInfo( 277185 )
-            if tex then return "|T" .. tex .. ":0|t " .. ( GetSpellLink( 277185 ) ) end
+            local data = GetSpellInfo( 277185 )
+            if data and data.iconID then return "|T" .. data.iconID .. ":0|t " .. ( GetSpellLink( 277185 ) ) end
         end,
         link = function () return ( GetSpellLink( 277185 ) ) end,
         cast = 0,
         cooldown = 120,
         gcd = "off",
 
-        items = { 162966, 161902, 165223, 165058, 167528, 167380, 172849, 172669, 175884, 175921, 185161, 185197, 186906, 186866, 192352, 192295, 201449, 201807, 205778, 205708, 209763, 209343 },
+        items = { 162966, 161902, 165223, 165058, 167528, 167380, 172849, 172669, 175884, 175921, 185161, 185197, 186906, 186866, 192352, 192295, 201449, 201807, 205778, 205708, 209763, 209343, 218421, 218713 },
         texture = 135884,
 
         toggle = "cooldowns",
@@ -4946,7 +5014,9 @@ do
         obsidian_gladiators_emblem = 205710,
         verdant_aspirants_emblem = 209766,
         verdant_combatants_emblem = 208309,
-        verdant_gladiators_emblem = 209345
+        verdant_gladiators_emblem = 209345,
+        algari_competitors_emblem = 219933,
+        forged_gladiators_emblem = 218715
     }
 
     local pvp_emblems_copy = {}
@@ -4959,10 +5029,13 @@ do
 
 
     all:RegisterAbility( "gladiators_emblem", {
-        name = function () return ( GetSpellInfo( 277187 ) ) end,
+        name = function ()
+            local data = GetSpellInfo( 277187 )
+            return data and data.name or "Gladiator's Emblem"
+        end,
         listName = function ()
-            local _, _, tex = GetSpellInfo( 277187 )
-            if tex then return "|T" .. tex .. ":0|t " .. ( GetSpellLink( 277187 ) ) end
+            local data = GetSpellInfo( 277187 )
+            if data and data.iconID then return "|T" .. data.iconID .. ":0|t " .. ( GetSpellLink( 277187 ) ) end
         end,
         link = function () return ( GetSpellLink( 277187 ) ) end,
         cast = 0,
@@ -4977,7 +5050,7 @@ do
             end
             return e
         end,
-        items = { 162898, 161675, 165221, 165056, 167378, 167526, 172667, 172847, 178334, 178447, 185242, 185282, 186946, 186868, 192392, 192297, 201452, 201809, 204166, 205781, 205710, 209766, 208309, 209345 },
+        items = { 162898, 161675, 165221, 165056, 167378, 167526, 172667, 172847, 178334, 178447, 185242, 185282, 186946, 186868, 192392, 192297, 201452, 201809, 204166, 205781, 205710, 209766, 208309, 209345, 219933, 218715 },
         toggle = "cooldowns",
 
         handler = function ()
@@ -6177,11 +6250,12 @@ function Hekili:SpecializationChanged()
     local currentID = GetSpecializationInfo( currentSpec )
 
     if currentID == nil then
-        Hekili.PendingSpecializationChange = true
+        self.PendingSpecializationChange = true
         return
     end
 
-    Hekili.PendingSpecializationChange = false
+    self.PendingSpecializationChange = false
+    self:ForceUpdate( "ACTIVE_PLAYER_SPECIALIZATION_CHANGED" )
 
     insert( self.SpecChangeHistory, {
         spec = currentID,
@@ -6416,11 +6490,11 @@ function Hekili:SpecializationChanged()
 
         if ability and ability.id > 0 then
             if not ability.texture or not ability.name then
-                local name, _, tex = GetSpellInfo( ability.id )
+                local data = GetSpellInfo( ability.id )
 
-                if name and tex then
-                    ability.name = ability.name or name
-                    class.abilityList[ k ] = "|T" .. tex .. ":0|t " .. ability.name
+                if data and data.name and data.iconID then
+                    ability.name = ability.name or data.name
+                    class.abilityList[ k ] = "|T" .. data.iconID .. ":0|t " .. ability.name
                 end
             else
                 class.abilityList[ k ] = "|T" .. ability.texture .. ":0|t " .. ability.name

@@ -59,8 +59,6 @@ local DEACTIVATED = 99			-- set during Deactivate for each file
 if status.filetrackerMain ~= LOAD_NEW then return end
 status.filetrackerMain = LOAD_START
 
-LibStub("LibRevision"):Set("$URL$","$Rev$","10.03.DEV.", 'auctioneer', 'libs')
-
 -- A string unique to this version to prevent frame name conflicts.
 local LIBSTRING = versions.LIBNAME.."_"..versions.MAJOR.."_"..versions.MINOR
 
@@ -1233,10 +1231,17 @@ do -- ExtraTip "class" definition
 	end
 
 	function class:MatchSize()
+		if self.inMatchSize then return end
+
+		-- Only proceed if we have a parent, and we are actually being used
 		local p = self.parent
 		if not p then return end
-		if self.inMatchSize then return end
+		local reg = lib.tooltipRegistry[p]
+		if not reg.extraTipUsed then return end
+
+		-- Block re-entry as our resizing below may trigger additional calls to this function. Ensure we clear this flag before exiting
 		self.inMatchSize = true
+
 		local pw = p:GetWidth()
 		local w = self:GetWidth()
 		local d = pw - w
@@ -1245,7 +1250,6 @@ do -- ExtraTip "class" definition
 			self:SetWidth(pw)	-- parent is wider, so we make child tip match
 			fixRight(self, pw)
 		elseif d < -.5 then
-			local reg = lib.tooltipRegistry[p]
 			if not reg.NoColumns then
 				p:SetWidth(w)	-- the parent is smaller than the child tip, make the parent wider
 				fixRight(p, w)	-- fix right aligned items in the game tooltip, not working currently as it shifts by the wrong amount

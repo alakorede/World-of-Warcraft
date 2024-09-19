@@ -68,23 +68,24 @@ function MoveAny:UpdateActionBar(frame)
 	local offset = opts["OFFSET"] or 0
 	local rows = opts["ROWS"] or 1
 	rows = tonumber(rows)
+	local parent = MicroMenu or MAMenuBar
 	if frame == MAMenuBar then
 		if MoveAny:GetWoWBuild() == "RETAIL" then
-			if rows == 3 or rows == 4 or rows == 12 then
+			if rows == 3 or rows == 4 or rows == 6 or rows == 7 or rows == 8 or rows == 9 or rows == 12 then
 				if HelpMicroButton then
-					HelpMicroButton:SetParent(MAMenuBar)
+					HelpMicroButton:SetParent(parent)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
-			elseif rows == 11 or rows == 6 or rows == 4 or rows == 3 or rows == 1 then
+			elseif rows == 11 or rows == 1 then
 				if HelpMicroButton then
 					HelpMicroButton:SetParent(MAHIDDEN)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			elseif rows == 10 or rows == 5 or rows == 2 then
 				if HelpMicroButton then
@@ -100,17 +101,17 @@ function MoveAny:UpdateActionBar(frame)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			end
 		elseif MoveAny:GetWoWBuild() == "CATA" then
 			if rows == 1 or rows == 2 or rows == 3 or rows == 4 or rows == 6 or rows == 7 or rows == 8 or rows == 9 or rows == 12 then
 				if HelpMicroButton then
-					HelpMicroButton:SetParent(MAMenuBar)
+					HelpMicroButton:SetParent(parent)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			elseif rows == 11 then
 				if HelpMicroButton then
@@ -118,7 +119,7 @@ function MoveAny:UpdateActionBar(frame)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			elseif rows == 10 or rows == 5 then
 				if HelpMicroButton then
@@ -134,17 +135,17 @@ function MoveAny:UpdateActionBar(frame)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			end
 		elseif MoveAny:GetWoWBuild() == "WRATH" then
 			if rows == 11 or rows == 9 or rows == 8 or rows == 7 or rows == 6 or rows == 4 or rows == 1 then
 				if HelpMicroButton then
-					HelpMicroButton:SetParent(MAMenuBar)
+					HelpMicroButton:SetParent(parent)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			elseif rows == 10 or rows == 5 or rows == 2 then
 				if HelpMicroButton then
@@ -152,7 +153,7 @@ function MoveAny:UpdateActionBar(frame)
 				end
 
 				if MainMenuMicroButton then
-					MainMenuMicroButton:SetParent(MAMenuBar)
+					MainMenuMicroButton:SetParent(parent)
 				end
 			else
 				if HelpMicroButton then
@@ -611,7 +612,12 @@ f:SetScript(
 				self:SetAttribute( "actionpage", newstate );
 			]])
 				if MoveAny:GetWoWBuild() ~= "RETAIL" then
-					local bars = "[overridebar]" .. GetOverrideBarIndex() .. ";[shapeshift]" .. GetTempShapeshiftBarIndex() .. ";[vehicleui]" .. GetVehicleBarIndex() .. ";[possessbar]16;[bonusbar:5,bar:2]2;[bonusbar:5]11;[bonusbar:4,bar:2]2;[bonusbar:4]10;[bonusbar:3,bar:2]2;[bonusbar:3]9;[bonusbar:2,bar:2]2;[bonusbar:2]8;[bonusbar:1,bar:2]2;[bonusbar:1]7;[bar:6]6;[bar:5]5;[bar:4]4;[bar:3]3;[bar:2]2;1"
+					local bars = "[overridebar]" .. GetOverrideBarIndex() .. ";[shapeshift]" .. GetTempShapeshiftBarIndex() .. ";[vehicleui]" .. GetVehicleBarIndex() .. ";[possessbar]16;"
+					for i = 6, 2, -1 do
+						bars = bars .. "[bonusbar:5,bar:" .. i .. "]" .. i .. ";[bonusbar:4,bar:" .. i .. "]" .. i .. ";[bonusbar:3,bar:" .. i .. "]" .. i .. ";[bonusbar:2,bar:" .. i .. "]" .. i .. ";[bonusbar:1,bar:" .. i .. "]" .. i .. ";"
+					end
+
+					bars = bars .. "[bonusbar:5]11;[bonusbar:4]10;[bonusbar:3]9;[bonusbar:2]8;[bonusbar:1]7;[bar:6]6;[bar:5]5;[bar:4]4;[bar:3]3;[bar:2]2;1"
 					RegisterStateDriver(frame, "page", bars)
 				else
 					MoveAny:MSG("MISSING EXPANSION")

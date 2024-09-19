@@ -150,7 +150,7 @@ if not cfg.embeds.rInfoStrings then return end
   local function rsiExpRep()
     local xp = ""
 
-    if not IsXPUserDisabled() and (UnitLevel("player")<MAX_PLAYER_LEVEL) then
+    if not IsXPUserDisabled() and (UnitLevel("player")<80) then
       xp = "|c00FA58F4"..numformat(UnitXP("player")).."/"..numformat(UnitXPMax("player")).." |r|c00ffb400("..numformat(GetXPExhaustion() or 0)..")|r|c00FA58F4 | "..string.format("%.0f", (UnitXP("player")/UnitXPMax("player")*100)).."%|r"
     else
       local _, _, minimum, maximum, value = GetWatchedFactionInfo()

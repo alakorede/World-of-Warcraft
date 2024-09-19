@@ -120,6 +120,7 @@ qcLocalize = {
 	HIDEINPROGRESSQUESTS = "진행중인 퀘스트 숨김", -- Needs review
 	HIDELOWLEVELQUESTS = "저레벨 퀘스트 숨김", -- Needs review
 	HIDENONACTIVESEASONALQUESTS = "진행중이지 않은 계절 축제 퀘스트 숨김", -- Needs review
+	HIDENORMALQUEST = "Hide Normal Quests",
 	HIDEOTHERFACTIONQUESTS = "상대진영 퀘스트 숨김", -- Needs review
 	HIDEOTHERPROFESSIONQUESTS = "다른 전문기술 퀘스트 숨김", -- Needs review
 	HIDEOTHERRACEANDCLASSQUESTS = "다른 종족 및 직업 퀘스트 숨김", -- Needs review
@@ -485,6 +486,7 @@ qcLocalize = {
 	ZERETHMORTIS = "Zereth Mortis",
 	ZERETHMORTISCAMPAIGN = "Zereth Mortis Campaign",
 -- Dragonflight Code
+	AZEROTHIANARCHIVES = "Azerothian Archives",
 	AZMERLOTH = "Azmerloh",
 	BRACKENHIDEWATERHOLE = "Brackenhide Waterhole",
 	DRAGONISLE = "Dragon Isle",
@@ -518,6 +520,24 @@ qcLocalize = {
 	ZARALEKCAVERN = "Zaralek Cavern",
 	EMERALDDREAM = "Emerald Dream",
 	KORRAKSREVENGE = "Korrak`s Revenge",
+	--TWW
+	TWW = "The War Within",
+	AWAKENINGTHEMACHINE = "Awakening the Machine",
+	AZJKAHET = "Azj-Kahet",
+	CITYOFTHREADS = "City of Threads",	
+	DEEPHAULRAVINE = "Deephaul Ravine",	
+	DHARBANDAR = "Dhar Bandar",	
+	DORNOGAL = "Dornogal", --2339
+	EARTHEN = "Earthen",
+	HALLOWFALL = "Hallowfall",
+	ISLEOFDORN = "Isle of Dorn", --2248
+	MOURNINGRISE = "Mourning Rise",
+	NERUBARPALACE = "Nerub-ar Palace",
+	NORTHRENDCUP = "Northrend Cup",
+	RAMBLESHIRE = "Rambleshire",
+	THERINGINGDEEPS = "The Ringing Deeps",	
+	UPGRADESYSTEM = "Upgrade System",
+	WARBANDS = "Warbands",
 	}
 
 end

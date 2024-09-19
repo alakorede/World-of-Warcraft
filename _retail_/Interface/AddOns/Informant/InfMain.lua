@@ -1,7 +1,7 @@
 --[[
 	Informant - An addon for World of Warcraft that shows pertinent information about
 	an item in a tooltip when you hover over the item in the game.
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://auctioneeraddon.com/dl/Informant/
 
@@ -34,7 +34,7 @@ if not Informant then return end
 
 Informant_RegisterRevision("$URL$","$Rev$")
 
-local VERSION = "9.1.BETA.5.15"
+local VERSION = "<%version%>"
 if VERSION:byte(1) == 60 then -- '<' character
 	VERSION = "6.1.DEV"
 end
@@ -1030,11 +1030,11 @@ local function setupStubby()
 			if (cmd == "load") then
 				if (param == "") then
 					Stubby.Print("Manually loading Informant...")
-					LoadAddOn("Informant")
+					C_AddOns.LoadAddOn("Informant")
 				elseif (param == "always") then
 					Stubby.Print("Setting Informant to always load for this character")
 					Stubby.SetConfig("Informant", "LoadType", param)
-					LoadAddOn("Informant")
+					C_AddOns.LoadAddOn("Informant")
 				elseif (param == "never") then
 					Stubby.Print("Setting Informant to never load automatically for this character (you may still load manually)")
 					Stubby.SetConfig("Informant", "LoadType", param)
@@ -1058,7 +1058,7 @@ local function setupStubby()
 	Stubby.RegisterBootCode("Informant", "Triggers", [[
 		local loadType = Stubby.GetConfig("Informant", "LoadType")
 		if (loadType == "always") then
-			LoadAddOn("Informant")
+			C_AddOns.LoadAddOn("Informant")
 		else
 			Stubby.Print("]].._TRANS('INF_Help_CmdLoadMsg')..[["); -- ### _TRANS
 		end

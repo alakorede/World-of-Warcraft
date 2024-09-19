@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("MPlusAffixes", "DBM-Affixes")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240508235014")
+mod:SetRevision("20240818091803")
 --mod:SetModelID(47785)
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)--Stays active in all zones for zone change handlers, but registers events based on dungeon ids
 
@@ -21,22 +21,26 @@ mod:RegisterEvents(
  or type = "dungeonencounterstart" or type = "dungeonencounterend"
  or (source.type = "NPC" and source.firstSeen = timestamp) and (source.name = "Afflicted Soul") or (target.type = "NPC" and target.firstSeen = timestamp) and (target.name = "Afflicted Soul")
 --]]
-local warnExplosion							= mod:NewCastAnnounce(240446, 4)
-local warnIncorporeal						= mod:NewCastAnnounce(408801, 4)
-local warnAfflictedCry						= mod:NewCastAnnounce(409492, 4, nil, nil, "Healer|RemoveMagic|RemoveCurse|RemoveDisease|RemovePoison", 2, nil, 14)--Flagged to only warn players who actually have literally any skill to deal with spirits, else alert is just extra noise to some rogue or warrior with no skills for mechanic
+local warnExplosion							= mod:NewCastAnnounce(240446, 4)--Not active ingame
+local warnIncorporeal						= mod:NewCastAnnounce(408801, 4)--Not active ingame
+--local warnAfflictedCry						= mod:NewCastAnnounce(409492, 4, nil, nil, "Healer|RemoveMagic|RemoveCurse|RemoveDisease|RemovePoison", 2, nil, 14)--Flagged to only warn players who actually have literally any skill to deal with spirits, else alert is just extra noise to some rogue or warrior with no skills for mechanic
 local warnDestabalize						= mod:NewCastAnnounce(408805, 4, nil, nil, false)
-local warnSpitefulFixate					= mod:NewYouAnnounce(350209, 4)
+local warnSpitefulFixate					= mod:NewYouAnnounce(350209, 4)--Not active ingame
+local warnXalatathsBargainUnstablePower		= mod:NewSpellAnnounce(461895, 3, nil, nil, nil, nil, nil, 2)
+local warnXalatathsBargainDevour			= mod:NewCastAnnounce(465051, 3)
 
-local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)
-local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, false, nil, 2, 1, 2)
+local specWarnQuake							= mod:NewSpecialWarningMoveAway(240447, nil, nil, nil, 1, 2)--Not active ingame
+local specWarnSpitefulFixate				= mod:NewSpecialWarningYou(350209, false, nil, 2, 1, 2)--Not active ingame
 local specWarnEntangled						= mod:NewSpecialWarningYou(408556, nil, nil, nil, 1, 14)
 
 local specWarnGTFO							= mod:NewSpecialWarningGTFO(209862, nil, nil, nil, 1, 8)--Volcanic and Sanguine
 
-local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)
+local timerQuakingCD						= mod:NewNextTimer(20, 240447, nil, nil, nil, 3)--Not active ingame
 local timerEntangledCD						= mod:NewCDTimer(30, 408556, nil, nil, nil, 3, 396347, nil, nil, 2, 3, nil, nil, nil, true)
-local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, 2, DBM_COMMON_L.HEALER_ICON, nil, mod:IsHealer() and 3 or nil, 3)--Timer is still on for all, cause knowing when they spawn still informs decisions like running ahead or pulling
-local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)
+--local timerAfflictedCD						= mod:NewCDTimer(30, 409492, nil, nil, nil, 5, 2, DBM_COMMON_L.HEALER_ICON, nil, mod:IsHealer() and 3 or nil, 3)--Timer is still on for all, cause knowing when they spawn still informs decisions like running ahead or pulling
+local timerIncorporealCD					= mod:NewCDTimer(45, 408801, nil, nil, nil, 5, nil, nil, nil, 3, 3)--Not active ingame
+local timerXalatathsBargainUnstablePowerCD	= mod:NewCDTimer(59.9, 461895, nil, nil, nil, 1)
+local timerXalatathsBargainDevourCD			= mod:NewCDTimer(59.9, 465051, nil, nil, nil, 2)
 
 mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
 
@@ -44,9 +48,14 @@ mod:AddNamePlateOption("NPSanguine", 226510, "Tank")
 
 local incorporealCounting = false
 local incorpDetected = false
-local afflictedCounting = false
-local afflictedDetected = false
+--local afflictedCounting = false
+--local afflictedDetected = false
+local unstableDetected = false
+local unstableCounting = false
+local devourDetected = false
+local devourCounting = false
 
+---@param self DBMMod
 local function checkEntangled(self)
 	if timerEntangledCD:GetRemaining() > 0 then
 		--Timer exists, do nothing
@@ -56,15 +65,17 @@ local function checkEntangled(self)
 	self:Schedule(30, checkEntangled, self)
 end
 
-local function checkAfflicted(self)
-	if timerAfflictedCD:GetRemaining() > 0 then
-		--Timer exists, do nothing
-		return
-	end
-	timerAfflictedCD:Start(20)
-	self:Schedule(30, checkAfflicted, self)
-end
+--@param self DBMMod
+--local function checkAfflicted(self)
+--	if timerAfflictedCD:GetRemaining() > 0 then
+--		--Timer exists, do nothing
+--		return
+--	end
+--	timerAfflictedCD:Start(20)
+--	self:Schedule(30, checkAfflicted, self)
+--end
 
+---@param self DBMMod
 local function checkIncorp(self)
 	if timerIncorporealCD:GetRemaining() > 0 then
 		--Timer exists, do nothing
@@ -96,20 +107,42 @@ local function checkForCombat(self)
 			self:Unschedule(checkIncorp)--Soon as a pause happens this can no longer be trusted
 		end
 	end
-	if afflictedDetected then
-		if combatFound and not afflictedCounting then
-			afflictedCounting = true
-			timerAfflictedCD:Resume()
-			local afflictRemaining = timerAfflictedCD:GetRemaining()
-			if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
-				self:Unschedule(checkAfflicted)
-				self:Schedule(afflictRemaining+10, checkAfflicted, self)
-				DBM:Debug("Experimental reschedule of checkAfflicted running")
-			end
-		elseif not combatFound and afflictedCounting then
-			afflictedCounting = false
-			timerAfflictedCD:Pause()
-			self:Unschedule(checkAfflicted)--Soon as a pause happens this can no longer be trusted
+	--if afflictedDetected then
+	--	if combatFound and not afflictedCounting then
+	--		afflictedCounting = true
+	--		timerAfflictedCD:Resume()
+	--		local afflictRemaining = timerAfflictedCD:GetRemaining()
+	--		if afflictRemaining and afflictRemaining > 0 then--Shouldn't be 0, unless a player clicked it off, in which case we can't reschedule
+	--			self:Unschedule(checkAfflicted)
+	--			self:Schedule(afflictRemaining+10, checkAfflicted, self)
+	--			DBM:Debug("Experimental reschedule of checkAfflicted running")
+	--		end
+	--	elseif not combatFound and afflictedCounting then
+	--		afflictedCounting = false
+	--		timerAfflictedCD:Pause()
+	--		self:Unschedule(checkAfflicted)--Soon as a pause happens this can no longer be trusted
+	--	end
+	--end
+	--Without transcriptor don't know if it works same as afflicted and incorp do, or same as thundering, so coding like thundering for now
+	--ie pauses out of combat, doesn't skip casts and reloop
+	if unstableDetected then
+		if combatFound and not unstableCounting then
+			unstableCounting = true
+			timerXalatathsBargainUnstablePowerCD:Resume()
+		elseif not combatFound and unstableCounting then
+			unstableCounting = false
+			timerXalatathsBargainUnstablePowerCD:Pause()
+		end
+	end
+	--Without transcriptor don't know if it works same as afflicted and incorp do, or same as thundering, so coding like thundering for now
+	--ie pauses out of combat, doesn't skip casts and reloop
+	if devourDetected then
+		if combatFound and not devourCounting then
+			devourCounting = true
+			timerXalatathsBargainDevourCD:Resume()
+		elseif not combatFound and devourCounting then
+			devourCounting = false
+			timerXalatathsBargainDevourCD:Pause()
 		end
 	end
 	self:Schedule(0.25, checkForCombat, self)
@@ -135,8 +168,8 @@ do
 		if not force and validZones[currentZone] and not eventsRegistered then
 			eventsRegistered = true
 			self:RegisterShortTermEvents(
-				"SPELL_CAST_START 240446 409492 408805",
-			--	"SPELL_CAST_SUCCESS",
+				"SPELL_CAST_START 240446 408805 465051",--409492
+				"SPELL_CAST_SUCCESS 461895",
 				"SPELL_AURA_APPLIED 240447 226510 226512 350209 408556 408801",
 			--	"SPELL_AURA_APPLIED_DOSE",
 				"SPELL_AURA_REMOVED 226510",
@@ -150,14 +183,18 @@ do
 			DBM:Debug("Registering M+ events")
 		elseif force or (not validZones[currentZone] and eventsRegistered) then
 			eventsRegistered = false
-			afflictedCounting = false
+			--afflictedDetected = false
+			--afflictedCounting = false
 			incorporealCounting = false
 			incorpDetected = false
-			afflictedDetected = false
+			unstableDetected = false
+			unstableCounting = false
+			devourDetected = false
+			devourCounting = false
 			self:UnregisterShortTermEvents()
 			self:Unschedule(checkForCombat)
 			self:Unschedule(checkEntangled)
-			self:Unschedule(checkAfflicted)
+			--self:Unschedule(checkAfflicted)
 			self:Stop()
 			if self.Options.NPSanguine then
 				DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
@@ -185,33 +222,54 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 240446 and self:AntiSpam(3, "aff1") then
 		warnExplosion:Show()
-	elseif spellId == 409492 and self:AntiSpam(3, "aff2") then
-		warnAfflictedCry:Show()
-		warnAfflictedCry:Play("helpspirit")
-		if not afflictedDetected then
-			afflictedDetected = true
-		end
-		--This one is interesting cause it runs every 30 seconds, sometimes skips a cast and goes 60, but also pauses out of combat
-		afflictedCounting = true
-		timerAfflictedCD:Start()
-		self:Unschedule(checkForCombat)
-		self:Unschedule(checkAfflicted)
-		checkForCombat(self)
-		self:Schedule(40, checkAfflicted, self)
+	--elseif spellId == 409492 and self:AntiSpam(3, "aff2") then
+	--	warnAfflictedCry:Show()
+	--	warnAfflictedCry:Play("helpspirit")
+	--	if not afflictedDetected then
+	--		afflictedDetected = true
+	--	end
+	--	--This one is interesting cause it runs every 30 seconds, sometimes skips a cast and goes 60, but also pauses out of combat
+	--	afflictedCounting = true
+	--	timerAfflictedCD:Start()
+	--	self:Unschedule(checkForCombat)
+	--	self:Unschedule(checkAfflicted)
+	--	checkForCombat(self)
+	--	self:Schedule(40, checkAfflicted, self)
 	elseif spellId == 408805 and self:AntiSpam(3, "aff3") then
 		warnDestabalize:Show()
+	elseif spellId == 465051 then
+		warnXalatathsBargainDevour:Show()
+		--Timer function limited to debugging for now until we know more about it
+		if DBM.Options.DebugMode then
+			if not devourDetected then
+				devourDetected = true
+			end
+			devourCounting = true
+			timerXalatathsBargainDevourCD:Start()
+			self:Unschedule(checkForCombat)
+			checkForCombat(self)
+		end
 	end
 end
 
---[[
 function mod:SPELL_CAST_SUCCESS(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
-	if spellId == 373370 then
-		timerNightmareCloudCD:Start(30.5, args.sourceGUID)
+	if spellId == 461895 and self:AntiSpam(5, "aff8") then--Takes a good 3-4 seconds for them all to spawn, so 5 second antispam is safe
+		warnXalatathsBargainUnstablePower:Show()
+		warnXalatathsBargainUnstablePower:Play("targetchange")--If this affix actually lasts til live, i'll give it a unique voice
+		--Timer function limited to debugging for now until we know more about it
+		if DBM.Options.DebugMode then
+			if not unstableDetected then
+				unstableDetected = true
+			end
+			unstableCounting = true
+			timerXalatathsBargainUnstablePowerCD:Start()
+			self:Unschedule(checkForCombat)
+			checkForCombat(self)
+		end
 	end
 end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
@@ -251,6 +309,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEntangled:Play("breakvine")--breakvine
 		end
 	elseif spellId == 408801 and self:AntiSpam(25, "aff7") then
+		warnIncorporeal:Show()
 		if not incorpDetected then
 			incorpDetected = true
 		end

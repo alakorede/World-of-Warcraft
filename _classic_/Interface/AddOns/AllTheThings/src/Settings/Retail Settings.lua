@@ -10,7 +10,7 @@ local Things = {
 	"CharacterUnlocks",
 	"Conduits",
 	"Deaths",
-	"DrakewatcherManuscripts",
+	"MountMods",
 	"Exploration",
 	"FlightPaths",
 	"Followers",
@@ -62,7 +62,7 @@ local GeneralSettingsBase = {
 		["Thing:BattlePets"] = true,
 		["Thing:CharacterUnlocks"] = app.IsRetail,	-- CRIEVE NOTE: This class might be up to the chopping block with a thing I have on my todo list. I'll leave it for now.
 		["Thing:Conduits"] = app.GameBuildVersion >= 100000,
-		["Thing:DrakewatcherManuscripts"] = app.GameBuildVersion >= 100000,
+		["Thing:MountMods"] = app.GameBuildVersion >= 100000,
 		["Thing:Exploration"] = app.IsClassic,	-- CRIEVE NOTE: For now, until Blizzard fixes their broken Retail version of the exploration API.
 		["Thing:FlightPaths"] = true,
 		["Thing:Followers"] = app.GameBuildVersion >= 60000,
@@ -235,9 +235,8 @@ settings.Initialize = function(self)
 	local colors = settings:Get("Window:CustomColors") or {}
 	-- make sure the table reference is actually assigned back to be saved
 	settings:Set("Window:CustomColors",colors)
-	setmetatable(colors, { __index = app.Colors });
-	-- replace the direct table with a metatable of the original colors
-	app.Colors = colors;
+	-- replace the direct table with a metatable of the user's colors & Default fallbacks
+	app.SetCustomColors(colors)
 
 	-- Assign the preset filters for your character class as the default states
 	if not AllTheThingsSettingsPerCharacter then AllTheThingsSettingsPerCharacter = {} end
@@ -305,6 +304,11 @@ settings.Initialize = function(self)
 	app._SettingsRefresh = GetTimePreciseSec()
 	settings._Initialize = true
 	app.DoRefreshAppearanceSources = settings:Get("Thing:Transmog")
+
+	-- setup settings refresh functionality now that we're done initializing
+	settings.Refresh = function()
+		app.CallbackEvent("OnRefreshSettings");
+	end
 	-- app.PrintDebug("settings.Initialize:Done")
 end
 -- dumb self-referencing...
@@ -504,7 +508,7 @@ settings.GetModeString = function(self)
 			mode = app.ClassName .. " " .. mode
 		end
 
-		local solo = true
+		local solo = not app.MODE_DEBUG_OR_ACCOUNT
 		local keyPrefix, thingName, thingActive
 		local insaneTotalCount, insaneCount = 0, 0;
 		local totalThingCount, thingCount, things = 0, 0, {};
@@ -572,7 +576,7 @@ settings.GetShortModeString = function(self)
 		local totalThingCount = 0
 		local keyPrefix, thingName, thingActive
 		local insaneTotalCount, insaneCount = 0, 0;
-		local solo = true
+		local solo = not app.MODE_DEBUG_OR_ACCOUNT
 		for key,_ in pairs(GeneralSettingsBase.__index) do
 			keyPrefix, thingName = (":"):split(key)
 			if keyPrefix == "Thing" then
@@ -692,11 +696,9 @@ settings.SetUnobtainableFilter = function(self, u, value)
 	self:UpdateMode(1);
 end
 
-local Callback = app.CallbackHandlers.Callback;
 settings.Objects = {};
-local function Refresh(self)
-	app.HandleEvent("OnSettingsRefreshed");
-	local objects = self.Objects
+local function Refresh()
+	local objects = settings.Objects
 	-- app.PrintDebug("Settings.Refresh",objects and #objects)
 	if objects then
 		for _,object in ipairs(objects) do
@@ -705,14 +707,9 @@ local function Refresh(self)
 		end
 	end
 	-- app.PrintDebug("Settings.Refresh:Done")
-	self.__Refreshing = nil
 end
-settings.Refresh = function(self)
-	-- apparently child components have the audacity to tell the parent it should refresh itself... so insubordinate
-	if self.__Refreshing then return end
-	self.__Refreshing = true
-	Callback(Refresh, self)
-end
+app.AddEventHandler("OnRefreshSettings", Refresh)
+settings.Refresh = app.EmptyFunction	-- Refresh triggers when Initializing Settings, which we don't want to do anything yet
 
 local function Mixin(o, mixin)
 	for k,v in pairs(mixin) do

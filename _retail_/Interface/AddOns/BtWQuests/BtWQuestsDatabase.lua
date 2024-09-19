@@ -29,6 +29,7 @@ if INTERFACE_NUMBER < 90000 then
     AddQuestWatch = AddQuestWatchForQuestID
     RemoveQuestWatch = RemoveQuestWatchForQuestID
 end
+local GetItemCount = C_Item and C_Item.GetItemCount or GetItemCount
 
 -- [[ Helper functions ]]
 function BtWQuestsItem_GetItems(item, character)
@@ -950,7 +951,7 @@ function ChainMixin:GetSubtext(character, small)
 end
 function ChainMixin:GetLink()
     if self.link == nil then
-        self.link = format("\124cffffff00\124Hbtwquests:chain:%s\124h[%s]\124h\124r", self:GetID(), self:GetName())
+        self.link = format("\124cffffff00\124Hgarrmission:btwquests:chain:%s\124h[%s]\124h\124r", self:GetID(), self:GetName())
     end
 
     return self.link
@@ -1125,7 +1126,7 @@ function CategoryMixin:GetParent()
 end
 function CategoryMixin:GetLink()
     if self.link == nil then
-        self.link = format("\124cffffff00\124Hbtwquests:category:%s\124h[%s]\124h\124r", self:GetID(), self:GetName())
+        self.link = format("\124cffffff00\124Hgarrmission:btwquests:category:%s\124h[%s]\124h\124r", self:GetID(), self:GetName())
     end
 
     return self.link
@@ -1290,7 +1291,7 @@ end
 local ExpansionMixin = CreateFromMixins(CategoryMixin);
 function ExpansionMixin:GetLink()
     if self.link == nil then
-        self.link = format("\124cffffff00\124Hbtwquests:expansion:%s\124h[%s]\124h\124r", self:GetID(), self:GetName())
+        self.link = format("\124cffffff00\124Hgarrmission:btwquests:expansion:%s\124h[%s]\124h\124r", self:GetID(), self:GetName())
     end
 
     return self.link
@@ -1381,8 +1382,10 @@ function ExpansionMixin:SetAutoLoad(value)
 end
 function ExpansionMixin:Load()
     wipe(self.database.questCache);
-    for addon in pairs(self.addons) do
-        LoadAddOn(addon)
+    if self.addons then
+        for addon in pairs(self.addons) do
+            LoadAddOn(addon)
+        end
     end
 end
 
@@ -2188,7 +2191,7 @@ function ExperienceItemMixin:GetName(database, item, character)
     return format(GAIN_EXPERIENCE, math.floor(amount * modifier + .5))
 end
 function ExperienceItemMixin:Visible(database, item, character)
-    return character:GetLevel() < MAX_PLAYER_LEVEL
+    return character:GetLevel() < GetMaxLevelForPlayerExpansion()
 end
 function ExperienceItemMixin:IsActive(database, item, character)
     return true
@@ -3404,15 +3407,32 @@ function Database:AddQuestItemsForChain(chainID, replace)
     while item do
         if item[1] ~= nil then
             for _,subitem in ipairs(item) do
-                local target = {
-                    type = "chain",
-                    id = chainID,
-                    restrictions = subitem.restrictions
-                }
-    
-                local ids = subitem.ids or {subitem.id}
-                for _,id in ipairs(ids) do
-                    self:AddQuestItem(id, target, replace)
+                if subitem.type == "quest" then
+                    local target = {
+                        type = "chain",
+                        id = chainID,
+                        restrictions = subitem.restrictions
+                    }
+        
+                    local ids = subitem.ids or {subitem.id}
+                    for _,id in ipairs(ids) do
+                        self:AddQuestItem(id, target, replace)
+                    end
+                end
+            end
+        elseif item.variations then
+            for _,variation in ipairs(item.variations) do
+                if variation.type == "quest" or (variation.type == nil and item.type == "quest") then
+                    local target = {
+                        type = "chain",
+                        id = chainID,
+                        restrictions = variation.restrictions or item.restrictions
+                    }
+        
+                    local ids = variation.ids or {variation.id}
+                    for _,id in ipairs(ids) do
+                        self:AddQuestItem(id, target, replace)
+                    end
                 end
             end
         elseif item.type == "quest" then
@@ -3441,7 +3461,7 @@ function Database:GetQuestItem(questID, character)
     end
 
     for i = 1,#item do
-        if self:IsValidForCharacter(item[i], character) then
+        if self:IsItemValidForCharacter(item[i], character) then
             return self:CreateItem(0, item[i]);
         end
     end

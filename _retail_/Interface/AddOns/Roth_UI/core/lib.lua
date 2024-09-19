@@ -792,12 +792,25 @@ func.createAuraWatch = function(self)
       c.SafeZone:SetPoint("BOTTOMRIGHT")
     end
 
+    if f.cfg.style == "player" then
+      c.PostUpdateStage = func.PostUpdateStage
+      c.cfg = f.cfg
+    end
     func.applyDragFunctionality(frame)
 
     f.Castbar = c
 
   end
 
+  func.PostUpdateStage = function(self, stage)
+    if (stage == 1) then
+      self:SetStatusBarColor(1, 0, 0)
+    elseif (stage == 2) then
+      self:SetStatusBarColor(0, 0, 1)
+    elseif (stage == 3) then
+      self:SetStatusBarColor(self.cfg.castbar.color.bar.r,self.cfg.castbar.color.bar.g,self.cfg.castbar.color.bar.b,self.cfg.castbar.color.bar.a)
+    end
+  end
 local LSM = LibStub("LibSharedMedia-3.0")
 
   --fontstring func

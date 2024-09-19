@@ -567,6 +567,13 @@
 --			Adds support group membership completion counts being exact (to support Dragon Isles Waygate quests).
 --		121 Changes Classic Wrath interface to 30401.
 --			Corrects problem where attempting to use modern achievement name in Classic causes crash.
+--		122	Updates some Quest/NPC information.
+--			Adds better support for The Ruby Feast quests.
+--			Adds better support for quest 70779.
+--			Changed retail interface to 100007.
+--		123 Adds initial support for The War Within.
+--			Switches TOC to have a single Interface that lists all supported versions.
+--			Changes the use of localized names to no longer be addons but to be included in the base Grail addon.
 --
 --	Known Issues
 --
@@ -614,7 +621,6 @@ local GetBuildInfo						= GetBuildInfo
 local GetContainerItemID				= GetContainerItemID
 local GetCurrentMapDungeonLevel			= GetCurrentMapDungeonLevel
 local GetCVar							= GetCVar
-local GetFactionInfoByID				= GetFactionInfoByID
 local GetInstanceInfo					= GetInstanceInfo
 local GetLocale							= GetLocale
 local GetMapContinents					= GetMapContinents
@@ -628,10 +634,8 @@ local GetQuestLogRewardFactionInfo		= GetQuestLogRewardFactionInfo
 local GetQuestLogSelection				= GetQuestLogSelection
 local GetQuestResetTime					= GetQuestResetTime
 local GetQuestsCompleted				= GetQuestsCompleted					-- GetQuestsCompleted is special because in modern environments we define it ourselves
-local GetSpellBookItemInfo				= GetSpellBookItemInfo
 local GetSpellBookItemName				= GetSpellBookItemName
 local GetSpellLink						= GetSpellLink
-local GetSpellTabInfo					= GetSpellTabInfo
 local GetText							= GetText
 local GetTime							= GetTime
 local GetTitleText						= GetTitleText
@@ -641,7 +645,6 @@ local QueryQuestsCompleted				= QueryQuestsCompleted					-- QueryQuestsCompleted
 local SelectQuestLogEntry				= SelectQuestLogEntry
 -- SendQuestChoiceResponse														-- we rewrite this to our own function
 -- SetAbandonQuest																-- we rewrite this to our own function
-local UnitAura							= UnitAura
 local UnitClass							= UnitClass
 local UnitFactionGroup					= UnitFactionGroup
 local UnitGUID							= UnitGUID
@@ -659,7 +662,8 @@ local REPUTATION						= REPUTATION
 local UIParent							= UIParent
 
 local directoryName, _ = ...
-local versionFromToc = GetAddOnMetadata(directoryName, "Version")
+local GetAddOnMetadata_API = GetAddOnMetadata or C_AddOns.GetAddOnMetadata
+local versionFromToc = GetAddOnMetadata_API(directoryName, "Version")
 local _, _, versionValueFromToc = strfind(versionFromToc, "(%d+)")
 local Grail_File_Version = tonumber(versionValueFromToc)
 
@@ -869,7 +873,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 			bitMaskRaceUnused5			=	0x00000100,
 			bitMaskRaceUnused6			=	0x00000200,
 			bitMaskRaceUnused7			=	0x00000400,
-			bitMaskRaceUnused8			=	0x00000800,
+		bitMaskEarthen					=	0x00000800,
 		bitMaskRaceDracthyr				=	0x00001000,
 		bitMaskRaceMechagnome			=	0x00002000,
 		bitMaskRaceVulpera				=	0x00004000,
@@ -891,7 +895,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 		bitMaskRaceLightforgedDraenei	=	0x40000000,
 		bitMaskKulTiran					=	0x80000000,
 		-- Convenience values
-		bitMaskRaceAll			=	0xfffff00f,
+		bitMaskRaceAll			=	0xfffff80f,
 
 		-- Enf of bit mask values
 
@@ -927,7 +931,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 			bitMaskQuestUnused6 =	0x08000000,
 			bitMaskQuestUnused7 =	0x10000000,
 			bitMaskQuestUnused8 =	0x20000000,
-			bitMaskQuestUnused9 =	0x40000000,
+		bitMaskQuestWarband		=	0x40000000,
 		bitMaskQuestSpecial		=	0x80000000,		-- quest is "special" and never appears in the quest log
 		-- End of bit mask values
 
@@ -1093,12 +1097,20 @@ experimental = false,	-- currently this implementation does not reduce memory si
 					self.portal = GetCVar("portal")
 					self.covenant = C_Covenants and C_Covenants.GetActiveCovenantID() or 0
 					self.renownLevel = C_CovenantSanctumUI and C_CovenantSanctumUI.GetRenownLevel() or 0
+					self.activeSeason = C_Seasons and C_Seasons.GetActiveSeason() or 0	-- 0 is NoSeason
+					self.timerunningSeason = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID() or 0
+					self.accountExpansionLevel = GetAccountExpansionLevel() or 0
+					self.expansionLevel = GetExpansionLevel() or 0
+					self.classicExpansionLevel = GetClassicExpansionLevel() or 0
+					self.serverExpansionLevel = GetServerExpansionLevel() or 0
+					self.isTrial = IsTrialAccount() or 0
+					self.isVeteranTrial = IsVeteranTrialAccount() or 0
 					self.environment = "_retail_"
 					if IsTestBuild() then
 						self.environment = "_ptr_"
 					end
 
-					self.existsClassic = self.existsClassicBasic or self.existsClassicWrathOfTheLichKing
+					self.existsClassic = self.existsClassicBasic or self.existsClassicWrathOfTheLichKing or self.existsClassicCataclysm
 
 					if self.existsClassic then
 						self.environment = "_classic_"
@@ -1112,12 +1124,12 @@ experimental = false,	-- currently this implementation does not reduce memory si
 					-- Now we set up some capabilities flags
 					self.capabilities = {}
 					self.capabilities.usesFriendshipReputation = not self.existsClassic
-					self.capabilities.usesAchievements = not self.existsClassic or self.existsClassicWrathOfTheLichKing
+					self.capabilities.usesAchievements = not self.existsClassic or self.existsClassicWrathOfTheLichKing or existsClassicCataclysm
 					self.capabilities.usesGarrisons = not self.existsClassic
 					self.capabilities.usesArtifacts = false --not self.existsClassic
 					self.capabilities.usesCampaignInfo = not self.existsClassic
 					self.capabilities.usesCalendar = not self.existsClassic
-					self.capabilities.usesAzerothAsCosmicMap = self.existsClassic and not self.existsClassicWrathOfTheLichKing
+					self.capabilities.usesAzerothAsCosmicMap = self.existsClassic and not self.existsClassicWrathOfTheLichKing or existsClassicCataclysm
 					self.capabilities.usesQuestHyperlink = not self.existsClassic
 					self.capabilities.usesFollowers = not self.existsClassic
 					self.capabilities.usesWorldEvents = not self.existsClassic
@@ -1139,11 +1151,9 @@ experimental = false,	-- currently this implementation does not reduce memory si
 					-- We have loaded GrailDatabase at this point, but we need to ensure the structure is set up for first-time players as we rely on at least an empty structure existing
 					GrailDatabasePlayer = GrailDatabasePlayer or {}
 
-					self.quest.name = {
-						[600000]=Grail:_GetMapNameByID(19)..' '..REQUIREMENTS,
-						[600001]=Grail:_GetMapNameByID(19)..' '..FACTION_ALLIANCE..' '..REQUIREMENTS,
-						[600002]=Grail:_GetMapNameByID(19)..' '..FACTION_HORDE..' '..REQUIREMENTS,
-						}
+					self.quest.name[600000]=Grail:_GetMapNameByID(19)..' '..REQUIREMENTS
+					self.quest.name[600001]=Grail:_GetMapNameByID(19)..' '..FACTION_ALLIANCE..' '..REQUIREMENTS
+					self.quest.name[600002]=Grail:_GetMapNameByID(19)..' '..FACTION_HORDE..' '..REQUIREMENTS
 
 					if self.existsClassic then	-- redefine races that are available
 						self.races = {
@@ -1162,7 +1172,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 							['U'] = { 'Scourge',  'Undead',    'Undead',    0x00400000 },
 							}
 						self.bitMaskRaceAll = 0x01e78000
-						if self.existsClassicWrathOfTheLichKing then
+						if self.existsClassicWrathOfTheLichKing or self.existsClassicCataclysm then
 							self.races['B'] = { 'BloodElf', 'Blood Elf', 'Blood Elf', 0x02000000 }
 							self.races['D'] = { 'Draenei',  'Draenei',   'Draenei',   0x00080000 }
 							self.bitMaskRaceAll = 0x03ef8000
@@ -1184,9 +1194,14 @@ experimental = false,	-- currently this implementation does not reduce memory si
 							[49]  = true, -- Redrige Mountains
 							[62]  = true,
 							[81]  = true, -- Silithus
+							[114] = true, -- Borean Tundra, WotLK
 							[371] = true, -- Jade Forest, MoP
-							[379] = true, -- Kun-Lai Summit ,MoP
+							[376] = true, -- Valley of the Four Winds, MoP
+							[379] = true, -- Kun-Lai Summit, MoP
+							[388] = true, -- Townlong Steppes, MoP
+							[389] = true, -- Townlong Steppes Nizuao Temple, MoP
 							[429] = true, -- Temple of the Jade Serpent, MoP
+							[433] = true, -- The Veiled Stairs, MoP
 							[525] = true,
 							[534] = true,
 							[535] = true,
@@ -1194,7 +1209,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 							[542] = true,
 							[543] = true,
 							[550] = true,
-							[554] = true,
+							[554] = true, -- Timeless Isle, MoP
 							[625] = true,
 							[630] = true,
 							[634] = true, -- Legion: Stormheim
@@ -1208,7 +1223,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 							[750] = true,
 							[790] = true,
 							[830] = true,
-							[882] = true,
+							[882] = true, -- Eredath
 							[885] = true,
 							-- the following are the BfA maps (the three in Zandalar and three in Kul Tiras)
 							[862] = true, -- Zuldazar (primarily horde)
@@ -1275,15 +1290,29 @@ experimental = false,	-- currently this implementation does not reduce memory si
 							[2082] = true, -- Dragon Isles: Halls of Infusion
 							[2119] = true, -- Dragon Isles: Gewölbe der Inkarnationen: Primalistenbollwerk
 							[2120] = true, -- Dragon Isles: Gewölbe der Inkarnationen: Elementarkonklave
+							[2121] = true, -- Dragon Isles: Gewölbe der Inkarnationen: Orkanhauchfels
+							[2122] = true, -- Dragon Isles: Gewölbe der Inkarnationen: Gewölbeannäherung
+							[2124] = true, -- Dragon Isles: Gewölbe der Inkarnationen: Urzeitliche Konvergenz
+							[2151] = true, -- Forbidden Reach (10.0.7)
+							[2133] = true, -- Zaralek Cavern (10.1)
+							[2200] = true, -- Emerald Dream (10.2)
+							-- The War Within
+							[2255] = true, -- Azj-Kahet
+							[2256] = true, -- Azj-Kahet - Lower
+							[2213] = true, -- City of Threads
+							[2216] = true, -- City of Threads - Lower
+							[2215] = true, -- HallowFall /Heilsturz
+							[2248] = true, -- Isle of Dorn
+							[2339] = true, -- Dornogal
+							[2214] = true, -- Ringing Deeps
 							}
-						self.quest.name = {
-							[51570]=Grail:_GetMapNameByID(862),	-- Zuldazar
-							[51571]=Grail:_GetMapNameByID(863),	-- Nazmir
-							[51572]=Grail:_GetMapNameByID(864),	-- Vol'dun
-							[600000]=Grail:_GetMapNameByID(17)..' '..REQUIREMENTS,
-							[600001]=Grail:_GetMapNameByID(17)..' '..FACTION_ALLIANCE..' '..REQUIREMENTS,
-							[600002]=Grail:_GetMapNameByID(17)..' '..FACTION_HORDE..' '..REQUIREMENTS,
-							}
+
+						self.quest.name[51570]=Grail:_GetMapNameByID(862)	-- Zuldazar
+						self.quest.name[51571]=Grail:_GetMapNameByID(863)	-- Nazmir
+						self.quest.name[51572]=Grail:_GetMapNameByID(864)	-- Vol'dun
+						self.quest.name[600000]=Grail:_GetMapNameByID(17)..' '..REQUIREMENTS
+						self.quest.name[600001]=Grail:_GetMapNameByID(17)..' '..FACTION_ALLIANCE..' '..REQUIREMENTS
+						self.quest.name[600002]=Grail:_GetMapNameByID(17)..' '..FACTION_HORDE..' '..REQUIREMENTS
 					end
 
 					--	For users prior to the release version 028, the GrailDatabase held personal quest information.  Now we move that information into the
@@ -1326,9 +1355,6 @@ experimental = false,	-- currently this implementation does not reduce memory si
 						self.invalidateControl[i] = {}
 					end
 
-					if self.forceLocalizedQuestNameLoad then
-						self:LoadLocalizedQuestNames()
-					end
 -- This was causing problems with ElvUI and is removed since we don't do this.
 --					if self.capabilities.usesArtifacts then
 --						self:LoadAddOn("Blizzard_ArtifactUI")
@@ -1344,6 +1370,11 @@ experimental = false,	-- currently this implementation does not reduce memory si
 					self.tooltipNPC = CreateFrame("GameTooltip", "com_mithrandir_grailTooltipNPC", UIParent, "GameTooltipTemplate")
 					self.tooltipNPC:SetFrameStrata("TOOLTIP")
 					self.tooltipNPC:Hide()
+
+					-- This needs to be done after the tooltipNPC is created because it uses NPC names for some quests.
+					if self.forceLocalizedQuestNameLoad then
+						self:LoadLocalizedQuestNames()
+					end
 
 					--
 					--	Set up the slash command
@@ -1422,6 +1453,8 @@ experimental = false,	-- currently this implementation does not reduce memory si
 						hooksecurefunc("SendQuestChoiceResponse", function(anId) self:_SendQuestChoiceResponse(anId) end)
 					elseif SendPlayerChoiceResponse then
 						hooksecurefunc("SendPlayerChoiceResponse", function(anId) self:_SendQuestChoiceResponse(anId) end)
+					elseif C_PlayerChoice and C_PlayerChoice.SendPlayerChoiceResponse then
+						hooksecurefunc(C_PlayerChoice, "SendPlayerChoiceResponse", function(anId) self:_SendQuestChoiceResponse(anId) end)
 					else
 						if self.GDE.debug then
 							print("Grail did not replace any SendQuestChoiceResponse")
@@ -1594,7 +1627,7 @@ experimental = false,	-- currently this implementation does not reduce memory si
 					local reputationIndex
 					for hexIndex, _ in pairs(self.reputationMapping) do
 						reputationIndex = tonumber(hexIndex, 16)
-						local name = GetFactionInfoByID(reputationIndex)
+						local name = self:GetFactionInfoByID(reputationIndex)
 						if nil == name and self.capabilities.usesFriendshipReputation then
 							local id, rep, maxRep, friendName, text, texture, reaction, threshold, nextThreshold = self:GetFriendshipReputation(reputationIndex)
 							if friendName == nil then
@@ -1617,12 +1650,12 @@ experimental = false,	-- currently this implementation does not reduce memory si
 
 					self:_LoadContinentData()
 
-					self:LoadAddOn("Grail-Quests")
+--					self:LoadAddOn("Grail-Quests")
 					local originalMem = gcinfo()
-					if self:LoadAddOn("Grail-NPCs") then
+--					if self:LoadAddOn("Grail-NPCs") then
 						self:_ProcessNPCs(originalMem)
-					end
-					self:LoadAddOn("Grail-NPCs-" .. self.playerLocale)
+--					end
+--					self:LoadAddOn("Grail-NPCs-" .. self.playerLocale)
 					self.npc.name[1] = ADVENTURE_JOURNAL
 
 					-- Now we need to update some information based on the server to which we are connected
@@ -1866,6 +1899,9 @@ frame:RegisterEvent("GOSSIP_ENTER_CODE")	-- gossipIndex
 						frame:RegisterEvent("UNIT_QUEST_LOG_CHANGED")	-- so we can know when a quest is complete or failed
 						frame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 					end
+					frame:RegisterEvent("UPDATE_EXPANSION_LEVEL")
+					frame:RegisterEvent("MAX_EXPANSION_LEVEL_UPDATED")
+					frame:RegisterEvent("MIN_EXPANSION_LEVEL_UPDATED")
 --					frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")	-- only to get the first time logging in so the GetQuestResetTime() actually returns a real value
 					self:_CleanDatabase()
 					self:_CleanDatabaseLearnedQuestName()
@@ -1938,12 +1974,12 @@ frame:RegisterEvent("GOSSIP_ENTER_CODE")	-- gossipIndex
 			end,
 
 			['COVENANT_CHOSEN'] = function(self, frame, ...)
+				local covenantId = ...
+				local message = strformat("Covenant chosen: %d", covenantId)
 				if self.GDE.debug or self.GDE.tracking then
-					local covenantId = ...
-					local message = strformat("Covenant chosen: %d", covenantId)
 					print(message)
-					self:_AddTrackingMessage(message)
 				end
+				self:_AddTrackingMessage(message)
 				-- If someone were to change covenants all the quests associated with covenant need to have their status refreshed.
 				self:_InvalidateStatusForQuestsWithTalentPrerequisites()
 				self:_StatusCodeInvalidate(self.invalidateControl[self.invalidateGroupRenownQuests])
@@ -1951,12 +1987,12 @@ frame:RegisterEvent("GOSSIP_ENTER_CODE")	-- gossipIndex
 			end,
 
 			['COVENANT_SANCTUM_RENOWN_LEVEL_CHANGED'] = function(self, frame, ...)
+				local newLevel, oldLevel = ...
+				local message = strformat("Renown level changed from %d to %d", oldLevel, newLevel)
 				if self.GDE.debug or self.GDE.tracking then
-					local newLevel, oldLevel = ...
-					local message = strformat("Renown level changed from %d to %d", oldLevel, newLevel)
 					print(message)
-					self:_AddTrackingMessage(message)
 				end
+				self:_AddTrackingMessage(message)
 				self:_StatusCodeInvalidate(self.invalidateControl[self.invalidateGroupRenownQuests])
 			end,
 
@@ -2038,11 +2074,11 @@ if self.GDE.debug then print("GARRISON_BUILDING_UPDATE ", buildingId) end
 				local questToComplete = self._ItemTextBeginList[npcId]
 				if nil ~= questToComplete then
 					self:_MarkQuestComplete(questToComplete, true)
+					local message = strformat("ITEM_TEXT_READY completes %d", questToComplete)
 					if self.GDE.debug then
-						local message = strformat("ITEM_TEXT_READY completes %d", questToComplete)
 						print(message)
-						self:_AddTrackingMessage(message)
 					end
+						self:_AddTrackingMessage(message)
 				end
 			end,
 
@@ -2129,6 +2165,12 @@ if self.GDE.debug then print("GARRISON_BUILDING_UPDATE ", buildingId) end
 						self:_HandleEventMajorFactionRenownLevelChanged(t[2], t[3], t[4])
 					elseif 'AREA_POIS_UPDATED' == type then
 						self:_HandleEventAreaPOIsUpdated()
+					elseif 'UPDATE_EXPANSION_LEVEL' == type then
+						self:_HandleEventUpdateExpansionLevel(t[2], t[3], t[4], t[5], t[6])
+					elseif 'MAX_EXPANSION_LEVEL_UPDATED' == type then
+						self:_HandleMaxExpansionLevelUpdated()
+					elseif 'MIN_EXPANSION_LEVEL_UPDATED' == type then
+						self:_HandleMinExpansionLevelUpdated()
 					end
 					tremove(self.delayedEvents, 1)
 					self.delayedEventsCount = self.delayedEventsCount - 1
@@ -2234,19 +2276,19 @@ end,
 			end,
 
 			['QUEST_AUTOCOMPLETE'] = function(self, frame, questId)
+				local message = strformat("QUEST_AUTOCOMPLETE completes %d", questId)
 				if self.GDE.debug then
-					local message = strformat("QUEST_AUTOCOMPLETE completes %d", questId)
 					print(message)
-					self:_AddTrackingMessage(message)
 				end
+				self:_AddTrackingMessage(message)
 			end,
 			
 			['WORLD_QUEST_COMPLETED_BY_SPELL'] = function(self, frame, questId)
+			local message = strformat("WORLD_QUEST_COMPLETED_BY_SPELL completes %d", questId)
 				if self.GDE.debug then
-					local message = strformat("WORLD_QUEST_COMPLETED_BY_SPELL completes %d", questId)
 					print(message)
-					self:_AddTrackingMessage(message)
 				end
+				self:_AddTrackingMessage(message)
 			end,
 
 			-- This is used solely to indicate to the system that the Blizzard quest log is available to be read properly.  Early in the startup
@@ -2310,8 +2352,9 @@ end,
 					self.spellsJustHandled = {}
 					local i = 1
 					while (true) do
-						local name,_,_,_,_,_,_,_,_,boaSpellId,spellId = UnitAura(arg1, i)
-						spellId = boaSpellId
+--						local name,_,_,_,_,_,_,_,_,boaSpellId,spellId = UnitAura(arg1, i)
+--						spellId = boaSpellId
+						local name, spellId = self:UnitAura(arg1, i)
 						if name then
 							spellId = tonumber(spellId)
 							self:_MarkQuestInDatabase(spellId, GrailDatabasePlayer["buffsExperienced"])
@@ -2389,10 +2432,32 @@ end,
 --			end,
 
 			},
+		-- WOW_PROJECT_ID can have the following values:
+		--		WOW_PROJECT_MAINLINE (1)
+		--		WOW_PROJECT_CLASSIC (2)
+		--		WOW_PROJECT_BURNING_CRUSADE_CLASSIC (5)
+		--		WOW_PROJECT_WRATH_CLASSIC (11)
+		-- LE_EXPANSION_LEVEL_CURRENT can have the following values:
+		--		LE_EXPANSION_CLASSIC (0)
+		--		LE_EXPANSION_BURNING_CRUSADE (1)
+		--		LE_EXPANSION_WRATH_OF_THE_LICH_KING (2)
+		--		LE_EXPANSION_CATACLYSM (3)
+		--		LE_EXPANSION_MISTS_OF_PANDARIA (4)
+		--		LE_EXPANSION_WARLORDS_OF_DRAENOR (5)
+		--		LE_EXPANSION_LEGION (6)
+		--		LE_EXPANSION_BATTLE_FOR_AZEROTH (7)
+		--		LE_EXPANSION_SHADOWLANDS (8)
+		--		LE_EXPANSION_DRAGONFLIGHT (9)
+		--	one of the LE_EXPANSION... values is returned from GetMaximumExpansionLevel() (which is from C_Expansion)
+		--	The maximum character level in any expansion is gotten from: maxLevel = GetMaxLevelForExpansionLevel(expansionLevel)
+		--	For Classic, we should be able to use GetClassicExpansionLevel()
+		--	calling GetClassicExpansionLevel() in Mainline returns 9 (because I am in Dragonflight)
+		--
 		existsClassicBasic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC),
 		-- I don't think we need to know about Classic Burning Crusade any more so am removing this...
 --		existsClassicBurningCrusade = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC),
 		existsClassicWrathOfTheLichKing = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC),
+		existsClassicCataclysm = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC),
 		factionMapping = { ['A'] = 'Alliance', ['H'] = 'Horde', },
 		followerMapping = {},
 		forceLocalizedQuestNameLoad = true,
@@ -2482,6 +2547,8 @@ end,
 			[-163] = { 163, 164 },
 			[-167] = { 167, 168 },
 		},
+		garrisonType6 = Enum.GarrisonType.Type_6_0 or Enum.GarrisonType.Type_6_0_Garrison or 2,
+		garrisonType9 = Enum.GarrisonType.Type_9_0 or Enum.GarrisonType.Type_9_0_Garrison or 111,
 		genderMapping = { ['M'] = 2, ['F'] = 3, },
 		gossipNPCs = {},
 		--
@@ -2595,6 +2662,12 @@ end,
 		mapAreaMaximumReputationChange = 699999,
 		mapAreasWithTreasures = {},	-- index is the mapId, and the value is a table of treasure questIds
 		memoryUsage = {},	-- see timings
+		nameTaleElders = "Tale of the Elders",
+		nameTaleMagmaPact = "Tale of the Magma Pact",
+		nameTaleOutsider = "Tale of the Outsider",
+		nameTaleSlumbering = "Tale of the Slumbering",
+		nameTaleWarlord = "Tale of the Warlord",
+		nameTaleWeakling = "Tale of the Weakling",
 		nonPatternExperiment = true,
 
 		--	The NPC database contains all we need to know about NPCs with data in specifc tables based on need.
@@ -2797,6 +2870,7 @@ end,
 			['U'] = { 'Scourge',  'Undead',    'Undead',    0x00400000 },
 			['V'] = { 'VoidElf',  'Void Elf',  'Void Elf',	0x20000000 },
 			['W'] = { 'Worgen',   'Worgen',    'Worgen',    0x00100000 },
+			['X'] = { 'EarthenDwarf',  'Earthen',   'Earthen',   0x00000800 },
 			['Y'] = { 'Dracthyr', 'Dracthyr',  'Dracthyr',	0x00001000 },
 			['Z'] = { 'ZandalariTroll', 'Zandalari Troll', 'Zandalari Troll', 0x10000000 },
 			},
@@ -2826,7 +2900,8 @@ end,
 			[7] = { 1815, 1828, 1833, 1859, 1860, 1862, 1883, 1888, 1894, 1899, 1900, 1919, 1947, 1948, 1975, 1984, 1989, 2018, 2045, 2097, 2098, 2099, 2100, 2101, 2102, 2135, 2165, 2170, },
 			[8] = { 2103, 2111, 2120, 2156, 2157, 2158, 2159, 2160, 2161, 2162, 2163, 2164, 2233, 2264, 2265, 2371, 2372, 2373, 2374, 2375, 2376, 2377, 2378, 2379, 2380, 2381, 2382, 2383, 2384, 2385, 2386, 2387, 2388, 2389, 2390, 2391, 2392, 2395, 2396, 2397, 2398, 2400, 2401, 2415, 2417, 2427, },
 			[9] = { 2407, 2410, 2413, 2432, 2439, 2445, 2446, 2447, 2448, 2449, 2450, 2451, 2452, 2453, 2454, 2455, 2456, 2457, 2458, 2459, 2460, 2461, 2462, 2463, 2464, 2465, 2469, 2470, 2472, 2478, },
-			[10] = { 2503, 2507, 2509, 2510, 2511, 2512, 2513, 2517, 2518, 2520, 2522, 2526, 2542, 2544, 2550, 2554, 2555, }
+			[10] = { 2503, 2507, 2509, 2510, 2511, 2512, 2513, 2517, 2518, 2520, 2522, 2523, 2524, 2526, 2542, 2544, 2550, 2553, 2554, 2555, 2557, 2564, 2568, 2574, 2593, 2615, },
+			[11] = { 2570, 2590, 2594, 2600, 2601, 2605, 2607, 2640, 2644, 2645, },
 			},
 
 		-- These reputations use the friendship names instead of normal reputation names
@@ -3160,12 +3235,31 @@ end,
             ["9D6"] = "Sabellian", -- 2518
             ["9D8"] = "Clan Nokhud", -- 2520
             ["9DA"] = "Clan Teerai", -- 2522
+            ["9DB"] = "Dark Talons", -- 2523
+            ["9DC"] = "Obsidian Warders", -- 2524
             ["9DE"] = "Winterpelt Furbolg", -- 2526
             ["9EE"] = "Clan Ukhel", -- 2542
             ["9F0"] = "Artisan's Consortium - Dragon Isles Branch", -- 2544
             ["9F6"] = "Cobalt Assembly", -- 2550
+            ["9F9"] = "Soridormi", -- 2553
             ["9FA"] = "Clan Toghus", -- 2554
             ["9FB"] = "Clan Kaighan", -- 2555
+            ["9FD"] = "XXX", -- 2557
+            ["A04"] = "Loamm Niffen", -- 2564
+            ["A08"] = "Glimmerogg Racer", -- 2568
+            ["A0A"] = "Hallowfall Arathi", -- 2570
+            ["A0E"] = "Dream Wardens", -- 2574
+            ["A1E"] = "Council of Dornogal", -- 2590
+            ["A21"] = "Keg Leg's Crew", -- 2593
+            ["A22"] = "The Assembly of the Deeps", -- 2594
+            ["A28"] = "The Severed Threads", -- 2600
+            ["A29"] = "The Weaver", -- 2601
+            ["A2D"] = "The General", -- 2605
+            ["A2F"] = "The Vizier", -- 2607
+            ["A37"] = "Azerothian Archives", -- 2615
+            ["A50"] = "Brann Bronzebeard", -- 2640
+            ["A54"] = "Delves: Season 1", -- 2644
+            ["A55"] = "Earthen", -- 2645
 			},
 
 		reputationMappingFaction = {
@@ -3443,12 +3537,31 @@ end,
             ["9D6"] = "Neutral", -- 2518    -- TODO: Determine faction
             ["9D8"] = "Neutral", -- 2520    -- TODO: Determine faction
             ["9DA"] = "Neutral", -- 2522    -- TODO: Determine faction
-            ["9DE"] = "Neutral", -- 2526    -- TODO: Determine faction
+            ["9DB"] = "Horde", -- 2523
+            ["9DC"] = "Alliance", -- 2524
+            ["9DE"] = "Neutral", -- 2526
             ["9EE"] = "Neutral", -- 2542    -- TODO: Determine faction
             ["9F0"] = "Neutral", -- 2544    -- TODO: Determine faction
             ["9F6"] = "Neutral", -- 2550    -- TODO: Determine faction
+            ["9F9"] = "Neutral", -- 2553    -- TODO: Determine faction
             ["9FA"] = "Neutral", -- 2554    -- TODO: Determine faction
             ["9FB"] = "Neutral", -- 2555    -- TODO: Determine faction
+            ["9FD"] = "Neutral", -- 2555    -- TODO: Determine faction
+            ["A04"] = "Neutral", -- 2564    -- TODO: Determine faction
+            ["A08"] = "Neutral", -- 2568    -- TODO: Determine faction
+            ["A0A"] = "Neutral", -- 2570    -- TODO: Determine faction
+            ["A0E"] = "Neutral", -- 2574    -- TODO: Determine faction
+            ["A1E"] = "Neutral", -- 2590    -- TODO: Determine faction
+            ["A21"] = "Neutral", -- 2593    -- TODO: Determine faction
+            ["A22"] = "Neutral", -- 2594    -- TODO: Determine faction
+            ["A28"] = "Neutral", -- 2600    -- TODO: Determine faction
+            ["A29"] = "Neutral", -- 2601    -- TODO: Determine faction
+            ["A2D"] = "Neutral", -- 2605    -- TODO: Determine faction
+            ["A2F"] = "Neutral", -- 2607    -- TODO: Determine faction
+            ["A37"] = "Neutral", -- 2615    -- TODO: Determine faction
+            ["A50"] = "Neutral", -- 2640    -- TODO: Determine faction
+            ["A54"] = "Neutral", -- 2644    -- TODO: Determine faction
+            ["A55"] = "Neutral", -- 2645    -- TODO: Determine faction
 			},
 
 		slashCommandOptions = {},
@@ -3782,7 +3895,7 @@ end,
 			self.GDE.Tracking = self.GDE.Tracking or {}
 			local weekday, month, day, year, hour, minute = self:CurrentDateTime()
 			if not self.trackingStarted then
-				tinsert(self.GDE.Tracking, strformat("%4d-%02d-%02d %02d:%02d %s/%s/%s/%s/%s/%s/%s/%s/%d/%d:%d", year, month, day, hour, minute, self.playerRealm, self.playerName, self.playerFaction, self.playerClass, self.playerRace, self.playerGender, self.playerLocale, self.portal, self.blizzardRelease, self.covenant, self.renownLevel))
+				tinsert(self.GDE.Tracking, strformat("%4d-%02d-%02d %02d:%02d %s/%s/%s/%s/%s/%s/%s/%s/%d/%d/%d/%d/%2d/%2d/%2d/%2d/%d/%d", year, month, day, hour, minute, self.playerRealm, self.playerName, self.playerFaction, self.playerClass, self.playerRace, self.playerGender, self.playerLocale, self.portal, self.blizzardRelease, self.covenant, self.renownLevel, self.activeSeason, self.timerunningSeason, self.accountExpansionLevel, self.expansionLevel, self.classicExpansionLevel, self.serverExpansionLevel, self.isTrial, self.isVeteranTrial))
 				self.trackingStarted = true
 			end
 			msg = strformat("%02d:%02d %s", hour, minute, msg)
@@ -3922,7 +4035,7 @@ end,
 			self.invalidateControl[self.invalidateGroupCurrentWorldQuests] = {}
 --			self.availableWorldQuests = {}
 
-			local mapIdsForWorldQuests = { 14, 62, 625, 627, 630, 634, 641, 646, 650, 680, 790, 830, 882, 885, 862, 863, 864, 895, 896, 942, 1161, 1355, 1462, 1525, 1527, 1530, 1533, 1536, 1543, 1565, 1970, 2022, 2023, 2024, 2025, 2085, 2112, }
+			local mapIdsForWorldQuests = { 14, 62, 625, 627, 630, 634, 641, 646, 650, 680, 790, 830, 882, 885, 862, 863, 864, 895, 896, 942, 1161, 1355, 1462, 1525, 1527, 1530, 1533, 1536, 1543, 1565, 1970, 2022, 2023, 2024, 2025, 2085, 2112, 2133, 2151, 2200, 2214 ,2215, 2248, 2255, 2256}
 
 			for _, mapId in pairs(mapIdsForWorldQuests) do
 				self:_PrepareWorldQuestSelfNPCs(mapId)
@@ -7453,6 +7566,55 @@ end
 			return (C_Container and C_Container.GetContainerNumSlots or GetContainerNumSlots)(bagSlot)
 		end,
 
+		-- Blizzard changed from using GetFactionInfoByID to C_Reputation.GetFactionDataByID and we will make use
+		-- of whichever is available to us, but return the data like that returned by GetFactionInfoByID.
+		GetFactionInfoByID = function(self, factionID)
+			if C_Reputation and C_Reputation.GetFactionDataByID then
+				local info = C_Reputation.GetFactionDataByID(factionID)
+				-- Note that we are not returning canSetInactive nor isAccountWide
+				if info == nil then return nil end
+				return
+					info.name,
+					info.description,
+					info.reaction,					-- standingID?
+					info.currentReactionThreshold,	-- barMin?
+					info.nextReactionThreshold, 	-- barMax?
+					info.currentStanding,			-- barValue?
+					info.atWarWith,
+					info.canToggleAtWar,
+					info.isHeader,
+					info.isCollapsed,
+					info.isHeaderWithRep,			-- hasRep
+					info.isWatched,
+					info.isChild,
+					info.id,
+					info.hasBonusRepGain
+					-- canBeLFGBonus
+			else
+				return GetFactionInfoByID(factionID)
+			end
+		end,
+
+		-- Blizzard changed from using GetSpellTabInfo to C_SpellBook.GetSpellBookSkillLineInfo and we will make
+		-- use of whichever is available to us, but return the data like that returned by GetSpellTabInfo.
+		GetSpellTabInfo = function(self, skillLineIndex)
+			if C_SpellBook and C_SpellBook.GetSpellBookSkillLineInfo then
+				local info = C_SpellBook.GetSpellBookSkillLineInfo(skillLineIndex)
+				return
+					info.name,
+					info.iconID,
+					info.itemIndexOffset,
+					info.numSpellBookItems,
+					info,isGuild,
+					-- shouldHide
+					-- specID
+					info.offSpecID
+			else
+				-- name, texture, offset, numSlots, isGuild, offspecID
+				return GetSpellTabInfo(skillLineIndex)
+			end
+		end,
+
 		-- Blizzard changed from using GetFriendshipReputation to C_GossipInfo.GetFriendshipReputation and we will
 		-- make use of whichever is available to us.
 		GetFriendshipReputation = function(self, factionIndex)
@@ -7728,20 +7890,20 @@ end
 		end,
 
 		_HandleEventMajorFactionUnlocked = function(self, factionId)
+			local message = "Major faction unlocked: " .. factionId
 			if self.GDE.debug then
-				local message = "Major faction unlocked: " .. factionId
 				print(message)
-				self:_AddTrackingMessage(message)
 			end
+			self:_AddTrackingMessage(message)
 			self:_StatusCodeInvalidate(self.invalidateControl[self.invalidateGroupMajorFactionQuests])
 		end,
 
 		_HandleEventMajorFactionRenownLevelChanged = function(self, factionId, newRenownLevel, oldRenownLevel)
+			local message = "Major faction: " .. factionId .. " renown changed from " .. oldRenownLevel .. " to " .. newRenownLevel
 			if self.GDE.debug then
-				local message = "Major faction: " .. factionId .. " renown changed from " .. oldRenownLevel .. " to " .. newRenownLevel
 				print(message)
-				self:_AddTrackingMessage(message)
 			end
+			self:_AddTrackingMessage(message)
 			self:_StatusCodeInvalidate(self.invalidateControl[self.invalidateGroupMajorFactionQuests])
 		end,
 
@@ -7813,11 +7975,11 @@ end
 						self:_LearnObjectName(guidParts[6], lootingNameToUse)
 					end
 				end
+				local message = "Looting from " .. (self.lootingGUID or "NO LOOTING GUID") .. " locale: " .. self.playerLocale .. " name: " .. lootingNameToUse
 				if self.GDE.debug then
-					local message = "Looting from " .. (self.lootingGUID or "NO LOOTING GUID") .. " locale: " .. self.playerLocale .. " name: " .. lootingNameToUse
 					print(message)
-					self:_AddTrackingMessage(message)
 				end
+				self:_AddTrackingMessage(message)
 			end
 			for _, questId in pairs(newlyCompleted) do
 				self:_MarkQuestComplete(questId, true)
@@ -7878,13 +8040,40 @@ end
 			self:_StatusCodeInvalidate(questsToInvalidate)
 		end,
 
+		_HandleEventUpdateExpansionLevel = function(self, unk1, unk2, oldExpansion, unk3, upgFromExpTrial)
+			local message = "UpdateExpansionLevel: unk1:" .. unk1 .. "unk2:" .. unk2 .. " from oldExpansion " .. oldExpansion .. "unk3:" .. unk3 .. "upgFromExpTrial:" .. upgFromExpTrial
+			if self.GDE.debug then
+				print(message)
+			end
+				self:_AddTrackingMessage(message)
+		end,
+
+		_HandleMinExpansionLevelUpdated = function(self)
+			local message = "MinEpansionLevel updated: ael:" .. self.accountExpansionLevel .. " el:" .. self.expansionLevel .. " cEL:" .. self.classicExpansionLevel .. " sEL:" .. serverExpansionLevel
+				self:_AddTrackingMessage(message)
+			if self.GDE.debug then
+				print(message)
+			end
+		end,
+
+		_HandleMaxExpansionLevelUpdated = function(self)
+			local message = "MaxEpansionLevel updated: ael:" .. self.accountExpansionLevel .. " el:" .. self.expansionLevel .. " cEL:" .. self.classicExpansionLevel .. " sEL:" .. serverExpansionLevel
+			if self.GDE.debug then
+				print(message)
+			end
+			self:_AddTrackingMessage(message)
+		end,
+
+
+
+
 		---
 		--	Checks whether the garrison has the specific buildingId, where a negative buildingId will mean
 		--	check whether any building of that type exists.
 		HasGarrisonBuilding = function(self, buildingId, ignoreIsBuildingRequirement)
 			local desiredBuildingTable = nil
 			local retval = false
-			local buildings = (self.blizzardRelease >= 22248) and C_Garrison.GetBuildings(Enum.GarrisonType.Type_6_0) or C_Garrison.GetBuildings()
+			local buildings = (self.blizzardRelease >= 22248) and C_Garrison.GetBuildings(self.garrisonType6) or C_Garrison.GetBuildings()
 			local building
 			local id, name, texPrefix, icon, rank, isBuilding, timeStart, buildTime, canActivate, canUpgrade, planExists
 			local foundPlot, foundBuildingId
@@ -7975,21 +8164,29 @@ end
 						end
 					end
 				else
-					local _, _, _, numberSpells1 = GetSpellTabInfo(1)
-					local _, _, _, numberSpells2 = GetSpellTabInfo(2)
-					for i = 1, numberSpells1 + numberSpells2, 1 do
-						local _, spellId = GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
-						if spellId and desiredSkillId == spellId then
-							retval = true
+					if GetSpellBookItemInfo then
+						-- name, texture, offset, numSlots, isGuild, offspecID
+						local _, _, _, numberSpells1 = self:GetSpellTabInfo(1)
+						local _, _, _, numberSpells2 = self:GetSpellTabInfo(2)
+						for i = 1, numberSpells1 + numberSpells2, 1 do
+							local spellType, spellId = GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
+							if spellId and desiredSkillId == spellId and spellType == "SPELL" then
+								retval = true
+							end
 						end
---					local name = GetSpellBookItemName(i, BOOKTYPE_SPELL)
---					local link = GetSpellLink(name)
---					if link then
---						local spellId = tonumber(link:match("^|c%x+|H(.+)|h%[.+%]"):match("(%d+)"))
---						if spellId and desiredSkillId == spellId then
---							retval = true
---						end
---					end
+					else
+						-- Blizzard has transitioned from GetSpellBookItemInfo to more modern API
+						for i = 1, C_SpellBook.GetNumSpellBookSkillLines() do
+							local skillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo(i)
+							local offset, numSlots = skillLineInfo.itemIndexOffset, skillLineInfo.numSpellBookItems
+							for j = offset + 1, offset + numSlots do
+								local spellBookItemInfo = C_SpellBook.GetSpellBookItemInfo(j, Enum.SpellBookSpellBank.Player)
+								-- ID must match and type must not be .FutureSpell because that means you do not have it yet
+								if desiredSkillId == spellBookItemInfo.actionID and spellBookItemInfo.itemType == Enum.SpellBookItemType.Spell then
+									retval = true
+								end
+							end
+						end
 					end
 				end
 			end
@@ -8596,7 +8793,8 @@ end
 			if reportFailureInBlizzardUI then
 				success = UIParentLoadAddOn(addonName)
 			else
-				success, failureReason = LoadAddOn(addonName)
+				local LoadAddOn_API = LoadAddOn or C_AddOns.LoadAddOn
+				success, failureReason = LoadAddOn_API(addonName)
 				if not success then
 					print(format("|cFFFF0000Grail|r "..ADDON_LOAD_FAILED, addonName, _G["ADDON_"..failureReason]))
 				end
@@ -8609,11 +8807,28 @@ end
 		--  @calls Grail:LoadAddOn()
 		--  @requires Grail.playerLocale
 		LoadLocalizedQuestNames = function(self)
-			self:LoadAddOn("Grail-Quests-" .. self.playerLocale)
+--			self:LoadAddOn("Grail-Quests-" .. self.playerLocale)
 			self.quest.name[62017]=SPELL_FAILED_CUSTOM_ERROR_523	-- Necrolord
 			self.quest.name[62019]=SPELL_FAILED_CUSTOM_ERROR_521	-- Night Fae
 			self.quest.name[62020]=SPELL_FAILED_CUSTOM_ERROR_520	-- Venthyr
 			self.quest.name[62023]=SPELL_FAILED_CUSTOM_ERROR_522	-- Kyrian
+-- TODO: Need to deal with the fact that self:ItemName(202081) is going to return "Retrieving some information" initially, so we will
+--		want to defer setting this name until we can actually get that information properly
+			self.quest.name[64764]="~ " .. self.accountUnlock .. " - " .. (self:NPCName(100202081) or "Dragon Isles Supply Bag") .. " ~"
+			self.quest.name[67030]="~ " .. (CHROMIE_TIME_CAMPAIGN_COMPLETE or "Campaign completed") .. " ~"
+			self.quest.name[72009]="~ " .. (self:QuestName(71238) or "The Ruby Feast") .. " ~"
+			self.quest.name[70767]="+ " .. self.nameTaleOutsider .. " +"	-- available to listen to
+			self.quest.name[70768]="- " .. self.nameTaleOutsider .. " -"	-- listened to
+			self.quest.name[70769]="- " .. self.nameTaleElders .. " -"		-- listened to
+			self.quest.name[70770]="+ " .. self.nameTaleElders .. " +"		-- availalble to listen to
+			self.quest.name[70771]="- " .. self.nameTaleWarlord .. " -"		-- listened to
+			self.quest.name[70772]="+ " .. self.nameTaleWarlord .. " +"		-- availalble to listen to
+			self.quest.name[70773]="- " .. self.nameTaleSlumbering .. " -"		-- listened to
+			self.quest.name[70774]="+ " .. self.nameTaleSlumbering .. " +"		-- availalble to listen to
+			self.quest.name[70775]="- " .. self.nameTaleMagmaPact .. " -"		-- listened to
+			self.quest.name[70776]="+ " .. self.nameTaleMagmaPact .. " +"		-- availalble to listen to
+			self.quest.name[70777]="- " .. self.nameTaleWeakling .. " -"		-- listened to
+			self.quest.name[70778]="+ " .. self.nameTaleWeakling .. " +"		-- availalble to listen to
 			self.quest.name[70872]="~ " .. (self:GetBasicAchievementInfo(16409) or "") .. " ~"	-- Let's Get Quacking
 		end,
 
@@ -9252,7 +9467,7 @@ end
 			talentId = tonumber(talentId)
 			if nil ~= talentId then
 				-- Note that we would normally try to use self.playerClassId as the second parameter, but that yields nil, and 0 returns them all.
-				local talentTreeIds = C_Garrison.GetTalentTreeIDsByClassID(Enum.GarrisonType.Type_9_0, 0)
+				local talentTreeIds = C_Garrison.GetTalentTreeIDsByClassID(self.garrisonType9, 0)
 				if nil ~= talentTreeIds then
 					for _, talentTreeId in pairs(talentTreeIds) do
 						local treeInfo = C_Garrison.GetTalentTreeInfo(talentTreeId)
@@ -9622,7 +9837,7 @@ end
 --			else
 --			if (not self.battleForAzeroth and (971 == phaseCode or 976 == phaseCode)) or (self.battleForAzeroth and (581 == phaseCode or 587 == phaseCode)) then
 			if 971 == phaseCode or 976 == phaseCode or 581 == phaseCode or 587 == phaseCode then
-				currentPhase = C_Garrison.GetGarrisonInfo(Enum.GarrisonType.Type_6_0) or 0	-- the API returns nil when there is no garrison
+				currentPhase = C_Garrison.GetGarrisonInfo(self.garrisonType6) or 0	-- the API returns nil when there is no garrison
 			end
 			--	We are using phaseCode 0 to mean the Classic Darkmoon Faire location.
 			--	We assume perfect swapping back and forth between locations with Elwynn being in odd months.
@@ -11501,7 +11716,7 @@ if self.GDE.debug then print("Marking OEC quest complete", oecCodes[i]) end
 			local factionId = reputationId and tonumber(reputationId, 16) or nil
 if factionId == nil then print("Rep nil issue:", reputationName, reputationId, reputationValue) end
 			if nil ~= factionId and nil ~= reputationValue then
-				local name, description, standingId, barMin, barMax, barValue = GetFactionInfoByID(factionId)
+				local name, description, standingId, barMin, barMax, barValue = self:GetFactionInfoByID(factionId)
 				if name then
 					actualEarnedValue = barValue + 42000	-- the reputationValue is stored with 42000 added to it so we do not have to deal with negative numbers, so we normalize here
                     if C_Reputation and C_Reputation.IsFactionParagon(factionId) then
@@ -11640,27 +11855,23 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 			-- Need to search the spell book for the Riding skill
 			local retval = self.NO_SKILL
 			local spellIdMapping = { [33388] = 75, [33391] = 150, [34090] = 225, [34091] = 300, [90265] = 375 }
-			local _, _, _, numberSpells = GetSpellTabInfo(1)
-			for i = 1, numberSpells, 1 do
-				local spellType, spellId = GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
-				if spellType == "SPELL" then	-- because FUTURESPELL means you do not have it yet
-					local newLevel = spellIdMapping[spellId]
-					if newLevel and newLevel > retval then
-						retval = newLevel
+			for spellId, ridingLevel in pairs(spellIdMapping) do
+				if self:_HasSkill(spellId) then
+					if ridingLevel > retval then
+						retval = ridingLevel
 					end
 				end
---				local name = GetSpellBookItemName(i, BOOKTYPE_SPELL)
---				local link = GetSpellLink(name)
---				if link then
---					local spellId = tonumber(link:match("^|c%x+|H(.+)|h%[.+%]"):match("(%d+)"))
---					if spellId then
---						local newLevel = spellIdMapping[spellId]
---						if newLevel and newLevel > retval then
---							retval = newLevel
---						end
+			end
+--			local _, _, _, numberSpells = self:GetSpellTabInfo(1)
+--			for i = 1, numberSpells, 1 do
+--				local spellType, spellId = self:GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
+--				if spellType == "SPELL" then	-- because FUTURESPELL means you do not have it yet
+--					local newLevel = spellIdMapping[spellId]
+--					if newLevel and newLevel > retval then
+--						retval = newLevel
 --					end
 --				end
-			end
+--			end
 			return retval
 		end,
 
@@ -11668,6 +11879,7 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 			[54] = 32259,	-- Isle of Thunder Horde PvE
 			[55] = 32258,	-- Isle of Thunder Horde PvP
 			[64] = 32260,	-- Isle of Thunder Alliance PvE
+--			[64] = XXX,	-- Choosing "Kraxxus's Bidding" in the Forbidden Reach -- does not complete a quest, but gives "Valdrakken's Favor"
 			[65] = 32261,	-- Isle of Thunder Alliance PvP
 			[85] = 34680,	-- Alliance Nagrand Workshop (Tanks)
 			[119] = 34560,	-- Artillery Tower Alliance Fort Wrynn -- 37301 37304
@@ -11797,13 +12009,16 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 			[667] = 44433,	-- Druid choosing Feral artifact
 			[670] = 44444,	-- Druid choosing Balance artifact
 			[738] = { 35283, 35290, 37313, 37315 },	-- choosing (Alliance) Brewery in Spires of Arak
+			[777] = { 64277, 66808 },	-- choosing "Loyalty to Sabellian"
 			[783] = 48602,	-- Choosing Void Elf
 			[784] = 48603,	-- Choosing Lightforged Draenei
 --			[956] = xxxxx,	-- Choosing Duskwood from Hero's Call Board in Stormwind -- causes acceptance of 28564
 			[1195] = 51570,	-- Choosing Zuldazar from Zandalar Mission Board on ship in Boralus
 			[1196] = 51572,	-- Choosing Vol'dun from Zandalar Mission Board on ship in Boralus
 			[1197] = 51571,	-- Choosing Nazmir from Zandalar Mission Board on ship in Boralus
+--			[1705] = XXX,	-- Choosing "Daela's Bidding" in the Forbidden Reach -- does not complete a quest, but gives "Dragonscale's Favor"
 			[1210] = 51802,	-- Choosing Stormsong Valley from Kul Tiras Mission Board on ship in Zuldazar
+			[1594] = { 64277, 66802 }, -- choosing "Loyalty to Wrathion"
 			[1650] = 40621,	-- Hunter choosing Beast Mastery artifact
 			[2186] = 57042,	-- Choosing Nazjatar Alliance companion Inowari
 			[2214] = {55404, 57041},	-- Choosing Nazjatar Alliance companion Ori
@@ -11812,7 +12027,11 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 			[4431] = { 62017, 62711, 62827, },	-- Choosing Necrolord covenant	[for a level 60 prebuild NE druid]
 			[4499] = { 62019, 62827, },	-- Choosing Night Fae covenant	[for a level 60 prebuild NE druid]
 			[4565] = { 62023, 62708, 62827, },	-- Choosing Kyrian covenant	[for a level 60 prebuild NE druid]
+--			[4626] = XXX,	-- Choosing "Turik's Bidding" in the Forbidden Reach -- does not complete a quest, but gives "Iskaara's Favor"
 			[8862] = { 62023, 62708, 62827, },	-- Choosing Kyrian covenant [NE demon hunter]
+--			[9667] = XXX,	-- Choosing "Ashekh's Bidding" in the Forbidden Reach -- does not complete a quest, but gives "Maruukai's Favor"
+--			[9893] = XXX,	-- Choosing "Daela's Bidding" in the Forbidden Reach -- does not complete a quest, but gives "Dragonscale's Favor" -- how does this differ from 1705 returned before?
+--			[11197] = XXX,	-- Choosing "Daela's Bidding" in the Forbidden Reach -- does not complete a quest, but gives "Dragonscale's Favor" -- how does this differ from 1705 returned before?
 			[15801] = {62020, 62827 }, 	-- Choosing Venthyr covenant (for NE druid played through storyline)
 --			[20920] = XXX, -- Choosing "Replay Storyline" in Choose Your Shadowlands Experience [note that there is no quest completed]
 			[20947] = {		 -- Choosing "The Threads of Fate"
@@ -11850,11 +12069,11 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 		--	system that the choice has been made without requiring the user to reload the UI.
 		_SendQuestChoiceResponse = function(self, anId)
 			local numericOption = tonumber(anId)
+			local message = strformat("_SendQuestChoiceResponse chooses: %d coords: %s", numericOption, self:Coordinates())
 			if self.GDE.debug then
-				local message = strformat("_SendQuestChoiceResponse chooses: %d coords: %s", numericOption, self:Coordinates())
 				print(message)
-				self:_AddTrackingMessage(message)
 			end
+			self:_AddTrackingMessage(message)
 			local questToComplete = self._SendQuestChoiceList[numericOption]
 			if nil ~= questToComplete then
 				if type(questToComplete) == "table" then
@@ -11900,10 +12119,11 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 			local retval = false
 			local i = 1
 			while (false == retval) do
-				local name,_,_,_,_,_,_,_,_,boaSpellId,spellId = UnitAura('player', i)
-				if self.battleForAzeroth then
-					spellId = boaSpellId
-				end
+--				local name,_,_,_,_,_,_,_,_,boaSpellId,spellId = UnitAura('player', i)
+--				if self.battleForAzeroth then
+--					spellId = boaSpellId
+--				end
+				local name, spellId = self:UnitAura('player', i)
 				if name then
 					if soughtSpellId == tonumber(spellId) then
 						retval = true
@@ -12067,6 +12287,14 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 			return t1
 		end,
 
+		_TableLength = function(self, t)
+			local count = 0
+			for key in pairs(t) do
+				count = count + 1
+			end
+			return count
+		end,
+
 		_TableAppend = function(self, t1, t2)
 			if nil ~= t1 and nil ~= t2 then
 				if type(t2) == "table" then
@@ -12173,6 +12401,25 @@ if factionId == nil then print("Rep nil issue:", reputationName, reputationId, r
 		_Tooltip_OnEvent = function(self, frame, event, ...)
 			if self.eventDispatch[event] then
 				self.eventDispatch[event](self, frame, ...)
+			end
+		end,
+
+		-- Blizzard has replaced UnitAura with C_UnitAuras.GetAuraDataByIndex so we do the right
+		-- thing here, but note that we only return the name and spellID.
+		UnitAura = function(self, unit, index)
+			if C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then
+				local info = C_UnitAuras.GetAuraDataByIndex(unit, index)
+				if info then
+					return info.name, info.spellId
+				else
+					return nil
+				end
+			else
+				local name,_,_,_,_,_,_,_,_,boaSpellId,spellId = UnitAura('player', i)
+				if self.battleForAzeroth then
+					spellId = boaSpellId
+				end
+				return name, spellId
 			end
 		end,
 
@@ -12338,6 +12585,13 @@ if locale == "deDE" then
 
 	me.holidayMapping = { ['A'] = 'Liebe liegt in der Luft', ['B'] = 'Braufest', ['C'] = "Kinderwoche", ['D'] = 'Tag der Toten', ['E'] = 'WoW Anniversary', ['F'] = 'Dunkelmond-Jahrmarkt', ['H'] = 'Erntedankfest', ['K'] = "Angelwettstreit der Kalu'ak", ['L'] = 'Mondfest', ['M'] = 'Sonnenwendfest', ['N'] = 'Nobelgarten', ['P'] = "Piratentag", ['U'] = 'Neujahr', ['V'] = 'Winterhauch', ['W'] = "Schlotternächte", ['X'] = 'Anglerwettbewerb im Schlingendorntal', ['Y'] = "Die Pilgerfreuden", ['Z'] = "Weihnachtswoche", ['a'] = 'Bonusereignis: Apexis', ['b'] = 'Bonusereignis: Arenascharmützel', ['c'] = 'Bonusereignis: Schlachtfelder', ['d'] = 'Bonusereignis: Draenordungeons', ['e'] = 'Bonusereignis: Haustierkämpfe', ['f'] = 'Bonusereignis: Zeitwanderungsdungeons', ['Q'] = "AQ", }
 
+	me.nameTaleElders = "Geschichte von den Ältesten"
+	me.nameTaleOutsider = "Geschichte vom Fremdling"
+	me.nameTaleWarlord = "Geschichte von der Kriegsfürstin"
+	me.nameTaleSlumbering = "Geschichte von den Schlummernden"
+	me.nameTaleMagmaPact = "Geschichte vom Magmapakt"
+	me.nameTaleWeakling = "Geschichte vom Schwächling"
+
 	me.professionMapping = { ['A'] = 'Alchemie', ['B'] = 'Schmiedekunst', ['C'] = 'Kochkunst', ['E'] = 'Verzauberkunst', ['F'] = 'Angeln', ['H'] = 'Kräuterkunde', ['I'] = 'Inschriftenkunde', ['J'] = 'Juwelenschleifen', ['L'] = 'Lederverarbeitung', ['M'] = 'Bergbau', ['N'] = 'Ingenieurskunst', ['R'] = 'Reiten', ['S'] = 'Kürschnerei', ['T'] = 'Schneiderei', ['X'] = 'Archäologie', ['Z'] = 'Erste Hilfe', }
 
 	local G = me.races
@@ -12397,6 +12651,13 @@ elseif locale == "esES" then
 	me.friendshipMawLevel = { 'Dubitativa', 'Aprensiva', 'Indecisa', 'Ambivalente', 'Cordial', 'Appreciative' }
 
 	me.holidayMapping = { ['A'] = 'Amor en el aire', ['B'] = 'Fiesta de la cerveza', ['C'] = "Semana de los Niños", ['D'] = 'Festividad de los Muertos', ['E'] = 'WoW Anniversary', ['F'] = 'Feria de la Luna Negra', ['H'] = 'Festival de la Cosecha', ['K'] = "Competición de pesca Kalu'ak", ['L'] = 'Festival Lunar', ['M'] = 'Festival de Fuego del Solsticio de Verano', ['N'] = 'Jardín Noble', ['P'] = "Día de los Piratas", ['U'] = 'Nochevieja', ['V'] = 'El festín del Festival del Invierno', ['W'] = "Halloween", ['X'] = 'Concurso de Pesca', ['Y'] = "Generosidad del Peregrino", ['Z'] = "Semana navideña", ['a'] = 'Evento de bonificación apexis', ['b'] ='Evento de bonificación de escaramuza de arena', ['c'] = 'Evento de bonificación de campo de batalla', ['d'] = 'Evento de mazmorra de Draenor', ['e'] = 'Evento de bonificación de duelo de mascotas', ['f'] = 'Evento de mazmorra de Paseo en el tiempo', ['Q'] = "AQ", }
+
+	me.nameTaleElders = "La historia de los ancianos"
+	me.nameTaleOutsider = "La historia del forastero"
+	me.nameTaleWarlord = "La historia de la señora de la guerra"
+	me.nameTaleSlumbering = "La historia de los durmientes"
+	me.nameTaleMagmaPact = "La historia del pacto de magma"
+	me.nameTaleWeakling = "La historia de la criatura débil"
 
 	me.professionMapping = { ['A'] = 'Alquimia', ['B'] = 'Herrería', ['C'] = 'Cocina', ['E'] = 'Encantamiento', ['F'] = 'Pesca', ['H'] = 'Hebalismo', ['I'] = 'Inscripción', ['J'] = 'Joyería', ['L'] = 'Peletería', ['M'] = 'Minería', ['N'] = 'Ingeniería', ['R'] = 'Equitación', ['S'] = 'Desuello', ['T'] = 'Sastrería', ['X'] = 'Arqueología', ['Z'] = 'Primeros auxilios', }
 
@@ -12458,6 +12719,13 @@ elseif locale == "esMX" then
 
  	me.holidayMapping = { ['A'] = 'Amor en el Aire', ['B'] = 'Fiesta de la Cerveza', ['C'] = "Semana de los Niños", ['D'] = 'Día de los Muertos', ['E'] = 'WoW Anniversary', ['F'] = 'Feria de la Luna Negra', ['H'] = 'Festival de la Cosecha', ['K'] = "Competición de pesca Kalu'ak", ['L'] = 'Festival Lunar', ['M'] = 'Festival de Fuego del Solsticio de Verano', ['N'] = 'Jardín Noble', ['P'] = "Día de los Piratas", ['U'] = 'Nochevieja', ['V'] = 'Festival del Invierno', ['W'] = "Halloween", ['X'] = 'Concurso de Pesca', ['Y'] = "Generosidad del Peregrino", ['Z'] = "Semana navideña", ['a'] = 'Evento de ápices con bonificación', ['b'] ='Evento de refriegas de arena con bonificación', ['c'] = 'Evento de campos de batalla con bonificación', ['d'] = 'Evento de calabozo de Draenor', ['e'] = 'Evento de duelo de mascotas con bonificación', ['f'] = 'Evento de calabozo de cronoviaje', ['Q'] = "AQ", }
 
+	me.nameTaleElders = "Historia de los ancianos"
+	me.nameTaleOutsider = "Historia del forastero"
+	me.nameTaleWarlord = "Historia de la señora de la guerra"
+	me.nameTaleSlumbering = "Historia del largo sueño"
+	me.nameTaleMagmaPact = "Historia del pacto de magma"
+	me.nameTaleWeakling = "Historia del patético ser"
+
 	me.professionMapping = { ['A'] = 'Alquimia', ['B'] = 'Herrería', ['C'] = 'Cocina', ['E'] = 'Encantamiento', ['F'] = 'Pesca', ['H'] = 'Hebalismo', ['I'] = 'Inscripción', ['J'] = 'Joyería', ['L'] = 'Peletería', ['M'] = 'Minería', ['N'] = 'Ingeniería', ['R'] = 'Equitación', ['S'] = 'Desuello', ['T'] = 'Sastrería', ['X'] = 'Arqueología', ['Z'] = 'Primeros auxilios', }
 
 	local G = me.races
@@ -12517,6 +12785,13 @@ elseif locale == "frFR" then
 	me.friendshipMawLevel = { 'Méfiance', 'Crainte', 'Hésitation', 'Incertitude', 'Bienveillance', 'Appreciative' }
 
 	me.holidayMapping = { ['A'] = "De l'amour dans l'air", ['B'] = 'Fête des Brasseurs', ['C'] = "Semaine des enfants", ['D'] = 'Jour des morts', ['E'] = 'WoW Anniversary', ['F'] = 'Foire de Sombrelune', ['H'] = 'Fête des moissons', ['K'] = "Tournoi de pêche kalu'ak", ['L'] = 'Fête lunaire', ['M'] = "Fête du Feu du solstice d'été", ['N'] = 'Le Jardin des nobles', ['P'] = "Jour des pirates", ['U'] = 'Nouvel an', ['V'] = "Voile d'hiver", ['W'] = "Sanssaint", ['X'] = 'Concours de pêche de Strangleronce', ['Y'] = "Bienfaits du pèlerin", ['Z'] = "Vacances de Noël", ['a'] = 'Évènement bonus Apogides', ['b'] ='Évènement bonus Escarmouches en arène', ['c'] = 'Évènement bonus Champs de bataille', ['d'] = 'Évènement Donjon de Draenor', ['e'] = 'Évènement bonus Combats de mascottes', ['f'] = 'Évènement Donjon des Marcheurs du temps', ['Q'] = "AQ", }
+
+	me.nameTaleElders = "Conte des anciens"
+	me.nameTaleOutsider = "Conte de l’étrangère"
+	me.nameTaleWarlord = "Conte de la dame de guerre"
+	me.nameTaleSlumbering = "Conte du sommeil"
+	me.nameTaleMagmaPact = "Conte du pacte magmatique"
+	me.nameTaleWeakling = "Conte de l’avorton"
 
 	me.professionMapping = { ['A'] = 'Alchimie', ['B'] = 'Forge', ['C'] = 'Cuisine', ['E'] = 'Enchantement', ['F'] = 'Pêche', ['H'] = 'Herboristerie', ['I'] = 'Calligraphie', ['J'] = 'Joaillerie', ['L'] = 'Travail du cuir', ['M'] = 'Minage', ['N'] = 'Ingénierie', ['R'] = 'Monte', ['S'] = 'Dépeçage', ['T'] = 'Couture', ['X'] = 'Archéologie', ['Z'] = 'Secourisme', }
 
@@ -12597,6 +12872,13 @@ me.holidayMapping = {
     ['Z'] = "Settimana di Natale",
 ['a'] = 'Evento bonus: Cristalli Apexis', ['b'] ='Evento bonus: schermaglie in arena', ['c'] = 'Evento bonus: campi di battaglia', ['d'] = 'Evento bonus: spedizioni di Draenor', ['e'] = 'Evento bonus: scontri tra mascotte', ['f'] = 'Evento bonus: Viaggi nel Tempo', ['Q'] = "AQ",     }
 
+	me.nameTaleElders = "Storia degli anziani"
+	me.nameTaleOutsider = "Storia dello straniero"
+	me.nameTaleWarlord = "Storia della Signora della Guerra"
+	me.nameTaleSlumbering = "Storia del torpore"
+	me.nameTaleMagmaPact = "Storia del patto di magma"
+	me.nameTaleWeakling = "Storia della debole creatura"
+
 me.professionMapping = {
     ['A'] = 'Alchimia',
     ['B'] = 'Forgiatura',
@@ -12674,6 +12956,13 @@ elseif locale == "koKR" then
 
 	me.holidayMapping = { ['A'] = '온누리에 사랑을', ['B'] = '가을 축제', ['C'] = "어린이 주간", ['D'] = '망자의 날', ['E'] = 'WoW Anniversary', ['F'] = '다크문 축제', ['H'] = '추수절', ['K'] = '칼루아크 낚시 대회', ['L'] = '달의 축제', ['M'] = '한여름 불꽃축제', ['N'] = '귀족의 정원', ['P'] = "해적의 날", ['U'] = '새해맞이 전야제', ['V'] = '겨울맞이 축제', ['W'] = "할로윈 축제", ['X'] = '가시덤불 골짜기 낚시왕 선발대회', ['Y'] = "순례자의 감사절", ['Z'] = "한겨울 축제 주간", ['a'] = '에펙시스 보너스 이벤트', ['b'] ='투기장 연습 전투 보너스 이벤트', ['c'] = '전장 보너스 이벤트', ['d'] = '드레노어 던전 이벤트', ['e'] = '애완동물 대전 보너스 이벤트', ['f'] = '시간여행 던전 이벤트', ['Q'] = "AQ", }
 
+	me.nameTaleElders = "장로 이야기"
+	me.nameTaleOutsider = "이방인 이야기"
+	me.nameTaleWarlord = "전쟁군주 이야기"
+	me.nameTaleSlumbering = "잠자는 자 이야기"
+	me.nameTaleMagmaPact = "용암의 서약 이야기"
+	me.nameTaleWeakling = "나약한 자 이야기"
+
 	me.professionMapping = { ['A'] = '연금술', ['B'] = '대장기술', ['C'] = '요리', ['E'] = '마법부여', ['F'] = '낚시', ['H'] = '약초채집', ['I'] = '주문각인', ['J'] = '보석세공', ['L'] = '가죽세공', ['M'] = '채광', ['N'] = '기계공학', ['R'] = '탈것 숙련', ['S'] = '무두질', ['T'] = '재봉술', ['X'] = '고고학', ['Z'] = '응급치료', }
 
 	local G = me.races
@@ -12733,6 +13022,13 @@ elseif locale == "ptBR" then
 	me.friendshipMawLevel = { 'Indecisão', 'Apreensão', 'Hesitação', 'Ambivalência', 'Cordialidade', 'Appreciative' }
 
 me.holidayMapping = { ['A'] = "O Amor Está No Ar", ['B'] = 'CervaFest', ['C'] = "Semana das Crianças", ['D'] = 'Dia dos Mortos', ['E'] = 'WoW Anniversary', ['F'] = 'Feira de Negraluna', ['H'] = 'Festival da Colheita', ['K'] = "Campeonato de Pesca dos Kalu'ak", ['L'] = 'Festival da Lua', ['M'] = "Festival do Fogo do Solsticio", ['N'] = 'Jardinova', ['P'] = "Dia dos Piratas", ['U'] = 'New Year', ['V'] = "Festa do Véu de Inverno", ['W'] = "Noturnália", ['X'] = 'Stranglethorn Fishing Extravaganza', ['Y'] = "Festa da Fartura", ['Z'] = "Semana Natalina", ['a'] = 'Evento Bônus de Apexis', ['b'] ='Evento Bônus de Escaramuças da Arena', ['c'] = 'Evento Bônus de Campos de Batalha', ['d'] = 'Evento das Masmorras de Draenor', ['e'] = 'Evento Bônus de Batalha de Mascotes', ['f'] = 'Evento das Masmorras de Caminhada Temporal', ['Q'] = "AQ", }
+
+	me.nameTaleElders = "Contos dos Anciãos"
+	me.nameTaleOutsider = "Contos do Forasteiro"
+	me.nameTaleWarlord = "Contos da Senhora da Guerra"
+	me.nameTaleSlumbering = "Contos do Adormecido"
+	me.nameTaleMagmaPact = "Contos do Pacto de Magma"
+	me.nameTaleWeakling = "Contos do Fraco"
 
 me.professionMapping = {
 	['A'] = 'Alquimia',
@@ -12811,6 +13107,13 @@ elseif locale == "ruRU" then
 
 	me.holidayMapping = { ['A'] = 'Любовная лихорадка', ['B'] = 'Хмельной фестиваль', ['C'] = "Детская неделя", ['D'] = 'День мертвых', ['E'] = 'WoW Anniversary', ['F'] = 'Ярмарка Новолуния', ['H'] = 'Неделя урожая', ['K'] = "Калуакское рыбоборье", ['L'] = 'Лунный фестиваль', ['M'] = 'Огненный солнцеворот', ['N'] = 'Сад чудес', ['P'] = "День пирата", ['U'] = 'Канун Нового Года', ['V'] = 'Зимний Покров', ['W'] = "Тыквовин", ['X'] = 'Рыбная феерия Тернистой долины', ['Y'] = "Пиршество странников", ['Z'] = "Рождественская неделя", ['a'] = 'Событие: бонус к апекситовым кристаллам', ['b'] ='Событие: бонус за стычки на арене', ['c'] = 'Событие: бонус на полях боя', ['d'] = 'Событие: подземелья Дренора', ['e'] = 'Событие: бонус за битвы питомцев', ['f'] = 'Событие: путешествие во времени по подземельям', ['Q'] = "AQ", }
 
+	me.nameTaleElders = "История о старейшинах"
+	me.nameTaleOutsider = "История о чужаке"
+	me.nameTaleWarlord = "История о вожде"
+	me.nameTaleSlumbering = "История о спящих"
+	me.nameTaleMagmaPact = "История о договоре Магмы"
+	me.nameTaleWeakling = "История о ничтожестве"
+
 	me.professionMapping = { ['A'] = 'Алхимия', ['B'] = 'Кузнечное дело', ['C'] = 'Кулинария', ['E'] = 'Наложение чар', ['F'] = 'Рыбная ловля', ['H'] = 'Травничество', ['I'] = 'Начертание', ['J'] = 'Ювелирное дело', ['L'] = 'Кожевничество', ['M'] = 'Горное дело', ['N'] = 'Механика', ['R'] = 'Верховая езда', ['S'] = 'Снятие шкур', ['T'] = 'Портняжное дело', ['X'] = 'Археология', ['Z'] = 'Первая помощь', }
 
 	local G = me.races
@@ -12869,6 +13172,13 @@ elseif locale == "zhCN" then
 	me.friendshipLevel = { 'Stranger', 'Acquaintance', 'Buddy', 'Friend', 'Good Friend', '挚友' }
 	me.friendshipMawLevel = { '猜忌', '防备', '犹豫', '纠结', '和善', 'Appreciative' }
 	me.holidayMapping = { ['A'] = '情人节', ['B'] = '美酒节', ['C'] = "儿童周", ['D'] = '死人节', ['E'] = 'WoW Anniversary', ['F'] = '暗月马戏团', ['H'] = '收获节', ['K'] = "Tournoi de pêche kalu'ak", ['L'] = '春节', ['M'] = '仲夏火焰节', ['N'] = '复活节', ['P'] = "海盗日", ['U'] = '除夕夜', ['V'] = '冬幕节', ['W'] = "万圣节", ['X'] = '荆棘谷钓鱼大赛', ['Y'] = "感恩节", ['Z'] = "圣诞周", ['a'] = '埃匹希斯假日活动', ['b'] ='竞技场练习赛假日活动', ['c'] = '战场假日活动', ['d'] = '德拉诺地下城活动', ['e'] = '宠物对战假日活动', ['f'] = '时空漫游地下城活动', ['Q'] = "AQ", }
+
+	me.nameTaleElders = "长老的故事"
+	me.nameTaleOutsider = "外来者的故事"
+	me.nameTaleWarlord = "督军的故事"
+	me.nameTaleSlumbering = "沉眠的故事"
+	me.nameTaleMagmaPact = "熔岩契约的故事"
+	me.nameTaleWeakling = "弱者的故事"
 
 	me.professionMapping = { ['A'] = '炼金术', ['B'] = '锻造', ['C'] = '烹饪', ['E'] = '附魔', ['F'] = '钓鱼', ['H'] = '草药学', ['I'] = '铭文', ['J'] = '珠宝加工', ['L'] = '制皮', ['M'] = '采矿', ['N'] = '工程学', ['R'] = '骑术', ['S'] = '剥皮', ['T'] = '裁缝', ['X'] = '考古学', ['Z'] = '急救', }
 
@@ -12929,6 +13239,13 @@ elseif locale == "zhTW" then
 	me.friendshipMawLevel = { '懷疑', '不安', '猶豫', '籠統', '友善', 'Appreciative' }
 
 	me.holidayMapping = { ['A'] = '愛就在身邊', ['B'] = '啤酒節', ['C'] = "兒童週", ['D'] = '亡者節', ['E'] = 'WoW Anniversary', ['F'] = '暗月馬戲團', ['H'] = '收穫節', ['K'] = "卡魯耶克釣魚大賽", ['L'] = '新年慶典', ['M'] = '仲夏火焰節慶', ['N'] = '貴族花園', ['P'] = "海賊日", ['U'] = '除夕夜', ['V'] = '冬幕節', ['W'] = "萬鬼節", ['X'] = '荊棘谷釣魚大賽', ['Y'] = "旅人豐年祭", ['Z'] = "聖誕週", ['a'] = '頂尖獎勵事件', ['b'] ='競技場練習戰獎勵事件', ['c'] = '戰場獎勵事件', ['d'] = '德拉諾地城事件', ['e'] = '寵物對戰獎勵事件', ['f'] = '時光漫遊地城事件', ['Q'] = "AQ", }
+
+	me.nameTaleElders = "長老的故事"
+	me.nameTaleOutsider = "外來者的故事"
+	me.nameTaleWarlord = "督軍的故事"
+	me.nameTaleSlumbering = "沉睡的故事"
+	me.nameTaleMagmaPact = "熔岩契約的故事"
+	me.nameTaleWeakling = "弱者的故事"
 
 	me.professionMapping = { ['A'] = '鍊金術', ['B'] = '鍛造', ['C'] = '烹飪', ['E'] = '附魔', ['F'] = '釣魚', ['H'] = '草藥學', ['I'] = '銘文學', ['J'] = '珠寶設計', ['L'] = '製皮', ['M'] = '採礦', ['N'] = '工程學', ['R'] = '騎術', ['S'] = '剝皮', ['T'] = '裁縫', ['X'] = '考古學', ['Z'] = '急救', }
 

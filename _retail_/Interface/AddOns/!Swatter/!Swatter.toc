@@ -3,10 +3,10 @@
 ##
 ## IconTexture: Interface/Addons/!Swatter/Textures/SwatterIcon.blp
 ##
-## Interface: 100207
+## Interface: 110002, 40400, 11503
 ## SavedVariables: SwatterData
 ##
-## Version: <%version%> (<%codename%>)
+## Version: 11.x.BETA.4 (TheWarWithBlizzardAPIs)
 ## Revision: $Id$
 ## Author: Norganna's AddOns
 ## X-Part-Of: Libraries

@@ -120,6 +120,7 @@ qcLocalize = {
 	HIDEINPROGRESSQUESTS = "Ocultar missões em andamento",
 	HIDELOWLEVELQUESTS = "Ocultar missões de nível baixo",
 	HIDENONACTIVESEASONALQUESTS = "Ocultar Missões de Eventos Mundiais não ativas",
+	HIDENORMALQUEST = "Hide Normal Quests",
 	HIDEOTHERFACTIONQUESTS = "Ocultar missões de outra facção",
 	HIDEOTHERPROFESSIONQUESTS = "Ocultar missões de outra profissão",
 	HIDEOTHERCOVENANTQUESTS = "Hide Other Covenant Quests",
@@ -485,6 +486,7 @@ qcLocalize = {
 	ZERETHMORTIS = "Zereth Mortis",
 	ZERETHMORTISCAMPAIGN = "Zereth Mortis Campaign",
 -- Dragonflight Code
+	AZEROTHIANARCHIVES = "Azerothian Archives",
 	AZMERLOTH = "Azmerloh",
 	BRACKENHIDEWATERHOLE = "Brackenhide Waterhole",
 	DRAGONISLE = "Dragon Isle",
@@ -518,6 +520,24 @@ qcLocalize = {
 	ZARALEKCAVERN = "Zaralek Cavern",
 	EMERALDDREAM = "Emerald Dream",
 	KORRAKSREVENGE = "Korrak`s Revenge",
+		--TWW
+	TWW = "The War Within",
+	AWAKENINGTHEMACHINE = "Awakening the Machine",
+	AZJKAHET = "Azj-Kahet",
+	CITYOFTHREADS = "City of Threads",	
+	DEEPHAULRAVINE = "Deephaul Ravine",	
+	DHARBANDAR = "Dhar Bandar",	
+	DORNOGAL = "Dornogal", --2339
+	EARTHEN = "Earthen",
+	HALLOWFALL = "Hallowfall",
+	ISLEOFDORN = "Isle of Dorn", --2248
+	MOURNINGRISE = "Mourning Rise",
+	NERUBARPALACE = "Nerub-ar Palace",
+	NORTHRENDCUP = "Northrend Cup",
+	RAMBLESHIRE = "Rambleshire",
+	THERINGINGDEEPS = "The Ringing Deeps",	
+	UPGRADESYSTEM = "Upgrade System",
+	WARBANDS = "Warbands",
 	}
 
 end

@@ -19,9 +19,10 @@ timeFormatter:Init(1, SecondsFormatter.Abbreviation.Truncate);
 
 -- App locals
 local GetRelativeValue, SearchForField, SearchForObject = app.GetRelativeValue, app.SearchForField, app.SearchForObject
+local distance = app.distance
 
--- Module locals (can be set via OnReady if they do not change during Session but are not yet defined)
-local SearchForLink
+-- Module locals (can be set via OnLoad if they do not change during Session but are not yet defined)
+local SearchForLink, GetPlayerPosition
 
 -- Object Name Lookups
 local objectNamesToIDs = {};
@@ -37,23 +38,9 @@ local function OnLoad_CacheObjectNames()
 		end
 	end
 end
-local function distance( x1, y1, x2, y2 )
-	return math_sqrt( (x2-x1)^2 + (y2-y1)^2 )
-end
-local function GetPlayerPosition()
-	local mapID = app.CurrentMapID;
-	if mapID and not IsInInstance() then
-		local pos = C_Map_GetPlayerMapPosition(mapID, "player");
-		if pos then
-			local px, py = pos:GetXY();
-			return mapID, px * 100, py * 100;
-		end
-	end
-	return mapID, 50, 50;
-end
-
 local GetBestObjectIDForName;
 if app.IsRetail then
+	local InGame = app.Modules.Filter.Filters.InGame
 	GetBestObjectIDForName = function(name)
 		-- Uses a provided 'name' and scans the ObjectDB to find potentially matching ObjectID's,
 		-- then correlate those search results by closest distance to the player's current position
@@ -73,45 +60,49 @@ if app.IsRetail then
 				if searchResults and #searchResults > 0 then
 					-- app.PrintDebug("Checking results",#searchResults,objectID)
 					for j,searchResult in ipairs(searchResults) do
-						searchCoord = searchResult.coord;
-						if searchCoord then
-							if searchCoord[3] == mapID then
-								dist = distance(px, py, searchCoord[1], searchCoord[2]);
-								if dist and dist < closestDistance then
-									closestDistance = dist;
-									closestObjectID = objectID;
-								end
-							end
-						elseif searchResult.coords then
-							for k,coord in ipairs(searchResult.coords) do
-								if coord[3] == mapID then
-									dist = distance(px, py, coord[1], coord[2]);
+						if InGame(searchResult) then
+							searchCoord = searchResult.coord;
+							if searchCoord then
+								if searchCoord[3] == mapID then
+									dist = distance(px, py, searchCoord[1], searchCoord[2]);
 									if dist and dist < closestDistance then
 										closestDistance = dist;
 										closestObjectID = objectID;
 									end
 								end
-							end
-						end
-						-- if we haven't found any object by coord-distance, we can check the hierarchy for matching Location-based mapID
-						if not closestObjectID then
-							-- check the parent hierarchy for a map or maps
-							local hierarchyMapID = app.GetRelativeValue(searchResult, "mapID")
-							-- app.PrintDebug("Check hierarchy map",app:SearchLink(searchResult),hierarchyMapID)
-							if hierarchyMapID == mapID then
-								-- app.PrintDebug("Object by hierarchy map",app:SearchLink(searchResult),hierarchyMapID)
-								mappedObjectID = objectID
-							else
-								local hierarchyMaps = app.GetRelativeValue(searchResult, "maps")
-								-- app.PrintDebug("Check hierarchy maps",app:SearchLink(searchResult),hierarchyMaps and #hierarchyMaps)
-								if hierarchyMaps and app.contains(hierarchyMaps, mapID) then
-									-- app.PrintDebug("Object by hierarchy maps",app:SearchLink(searchResult),hierarchyMapID)
-									mappedObjectID = objectID
+							elseif searchResult.coords then
+								for k,coord in ipairs(searchResult.coords) do
+									if coord[3] == mapID then
+										dist = distance(px, py, coord[1], coord[2]);
+										if dist and dist < closestDistance then
+											closestDistance = dist;
+											closestObjectID = objectID;
+										end
+									end
 								end
 							end
-							-- if we also haven't found any map-based object, then this object is unmapped
-							if not mappedObjectID then
-								unmappedObjectID = objectID
+							-- if we haven't found any object by coord-distance, we can check the hierarchy for matching Location-based mapID
+							if not closestObjectID and not mappedObjectID then
+								-- check the parent hierarchy for a map or maps
+								local hierarchyMaps
+								local hierarchyMapID = app.GetRelativeValue(searchResult, "mapID")
+								-- app.PrintDebug("Check hierarchy map",app:SearchLink(searchResult),hierarchyMapID)
+								if hierarchyMapID == mapID then
+									-- app.PrintDebug("Object by hierarchy map",app:SearchLink(searchResult),hierarchyMapID)
+									mappedObjectID = objectID
+								else
+									hierarchyMaps = app.GetRelativeValue(searchResult, "maps")
+									-- app.PrintDebug("Check hierarchy maps",app:SearchLink(searchResult),hierarchyMaps and #hierarchyMaps)
+									if hierarchyMaps and app.contains(hierarchyMaps, mapID) then
+										-- app.PrintDebug("Object by hierarchy maps",app:SearchLink(searchResult),hierarchyMapID)
+										mappedObjectID = objectID
+									end
+								end
+								-- if we also haven't found any map-based object, then this object is unmapped
+								-- but only save as unmapped if the checked object also has no known map relationship
+								if not hierarchyMaps and not hierarchyMapID then
+									unmappedObjectID = objectID
+								end
 							end
 						end
 					end
@@ -290,15 +281,15 @@ for i,guid in ipairs({
 	-- Darkal
 	"Player-3391-0A512DEB",	-- Claella-Silvermoon EU
 	"Player-3391-07DAA0FA",	-- Cresaida-Silvermoon EU
-	"Player-3391-0CA26A8E",	-- Darkaldh-Silvermoon EU
+	"Player-3391-0CF60215",	-- Darkaldh-Silvermoon EU
 	"Player-3391-07B0B708",	-- Darkas-Silvermoon EU
 	"Player-3391-07DB0DD7",	-- Darkgrip-Silvermoon EU
 	"Player-3391-08E7E3F5",	-- Delonna-Silvermoon EU
 	"Player-3391-09E34204",	-- Kinquin-Silvermoon EU
-	"Player-3391-0C5619B9",	-- Lynnan-Silvermoon EU
+	"Player-3391-0C5619B9",	-- Sarkoth-Silvermoon EU
 	"Player-3391-07568D56",	-- Maylesa-Silvermoon EU
 	"Player-3391-082E58AE",	-- Eliclia-Silvermoon EU
-	"Player-3391-0CC7EE6E",	-- Palach-Silvermoon EU
+	"Player-3391-0CF60219",	-- Palach-Silvermoon EU
 	"Player-3391-0757575C",	-- Sianor-Silvermoon EU
 	"Player-3391-08D25BFA",	-- Smesue-Silvermoon EU
 	-- Danny Donkey
@@ -708,11 +699,11 @@ local function ClearTooltip(tooltip)
 	tooltip.AllTheThingsProcessing = nil;
 	tooltip.ATT_AttachComplete = nil;
 end
-local HexToARGB = app.Modules.Color.HexToARGB
 local function AttachTooltipSearchResults(tooltip, lineNumber, method, ...)
 	-- app.PrintDebug("AttachTooltipSearchResults",...)
 	app.SetSkipLevel(1);
 	local status, group, working = pcall(app.GetCachedSearchResults, method, ...)
+	app.SetSkipLevel(0);
 	if status then
 		if group then
 			-- If nothing was put into the tooltip initially, mark the text of the source.
@@ -740,11 +731,10 @@ local function AttachTooltipSearchResults(tooltip, lineNumber, method, ...)
 			AttachTooltipInformation(tooltip, tooltipInfo);
 		end
 	else
-		print(status, group);
+		app.print(status, group);
 		app.PrintDebug("pcall tooltip failed",group)
 	end
 	tooltip.ATT_AttachComplete = not (working or (group and group.working));
-	app.SetSkipLevel(0);
 end
 
 -- Battle Pet Tooltips
@@ -1309,6 +1299,7 @@ api.AttachTooltipSearchResults = AttachTooltipSearchResults;
 api.GetBestObjectIDForName = GetBestObjectIDForName;
 app.AddEventHandler("OnLoad", function()
 	SearchForLink = app.SearchForLink;
+	GetPlayerPosition = app.GetPlayerPosition
 	OnLoad_CacheObjectNames();
 end);
 

@@ -198,9 +198,9 @@ function AddToCollection()
       for j=1,#db[i][6] do 
         if type(db[i][6][j]) == "table" then
           if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-        data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-        data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
-        data.altSourceNumbers[db[i][6][j][1]] = 1;
+          data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
+          data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+          data.altSourceNumbers[db[i][6][j][1]] = 1;
         else
           data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
         end

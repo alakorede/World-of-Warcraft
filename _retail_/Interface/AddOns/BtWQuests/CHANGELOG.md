@@ -1,3 +1,85 @@
+# v2.48.0
+
+- Added Honor Your Efforts questlines in Hallowfall
+- Added The Flame Within questlines in Hallowfall
+- Added Socialized Medicine questline in Azj-Kahet
+- Updated some prerequisites for Azj-Kahet questlines
+- Fixed issue where player level for alts could be lost and cause errors
+- Fixed error reading faction data
+
+# v2.47.1
+
+- Added A Light in the Dark campaign questline
+- Added Fractured Legacy of Anub'azal questline in Azj-Kahet
+- Fixed renown requirements for A Star of Dorn
+- Fixed missing uqest from A Star of Dorn
+
+# v2.47.0
+
+- Added an option to view the chain for a quest from the quest log and objective tracker context menus
+- Added A Star of Dorn questline to the Isle of Dorn
+- Added Dogged Pursuit questline to Azj-Kahet
+- Added The Beginning of Something Beautiful questline to Azj-Kahet
+- Fixed wait time for Striking Steel questline
+- Fixed an error showing detailed tooltips
+- Fixed an error checking item counts
+- Fixed an error reading faction data for a currently unknown faction
+- Removed Dragonflight data, it is now available as a separate addon BtWQuests: Dragonflight
+
+# v2.46.0
+
+- Added option to view chains as your Warband
+- Fixed active and completion checks for Saving private Spindle questline in Azj-Kahet
+- Fixed active check for Against the Current questline
+- Fixed active check for Gems are Forever questline in Isle of Dorn
+- Fixed active check for The Opalcreg questline in Isle of Dorn
+- Fixed completion check for Melody of Madness questline in Azj-Kahet
+- Fixed layout for The Weight of Duty questline in Hallowfall
+- Fixed showing incorrect quest in Introduction questline after unlocking adventure mode
+
+# v2.45.0
+
+- Temporarily readded Dragonflight data until after full release
+- Fixed a bug with the GetQuestItem database api
+
+# v2.44.1
+
+- Added The War Within
+- Removed The War Within Prologue
+- Removed Dragonflight
+
+# v2.44.0
+
+- Added The War Within Introduction questline
+- Added the Tyr's Return questline
+- Fixed restrictions and prerequisites for Reforging the Tyr's Hand questline
+- Fixed an issue with tooltips not displaying in the category view
+- Fixed an issue with the nav bar dropdown menu not working correctly
+
+# v2.43.1
+
+- Fixed an issue that prevented copying outfits from the Dressing Room and possibly other "Blocked by addon" issues
+
+# v2.43.0
+
+- Updated for 11.0.0
+
+# v2.42.1
+
+- Updated to use multiple interface numbers
+- Updated some faction and quest handling for The War Within api changes
+- Fixed an error loading expansion extensions
+- Fixed errors with frame pools in The War Within
+- Fixed quest markers not showing on the world map in The War Within
+
+# v2.42.0
+
+- Updated waypoints to auto remove when going within 10 yards
+- Updated hanlding reputations for The War Within
+- Updated handling professions for Cataclysm Classic
+- Fixed an error for map waypoints without names
+- Fixed an error for new characters on first login
+
 # v2.41.0
 
 - Added Hunt of the Harbinger questline

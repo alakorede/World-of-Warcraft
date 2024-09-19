@@ -1,13 +1,16 @@
 -- Hekili.lua
--- April 2014
+-- July 2024
 
 local addon, ns = ...
 Hekili = LibStub("AceAddon-3.0"):NewAddon( "Hekili", "AceConsole-3.0", "AceSerializer-3.0" )
-Hekili.Version = GetAddOnMetadata( "Hekili", "Version" )
-Hekili.Flavor = GetAddOnMetadata( "Hekili", "X-Flavor" ) or "Retail"
+Hekili.Version = C_AddOns.GetAddOnMetadata( "Hekili", "Version" )
+Hekili.Flavor = C_AddOns.GetAddOnMetadata( "Hekili", "X-Flavor" ) or "Retail"
 
 local format = string.format
 local insert, concat = table.insert, table.concat
+
+local GetBuffDataByIndex, GetDebuffDataByIndex = C_UnitAuras.GetBuffDataByIndex, C_UnitAuras.GetDebuffDataByIndex
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local buildStr, _, _, buildNum = GetBuildInfo()
 
@@ -36,11 +39,10 @@ Hekili.IsDragonflight = function()
     return buildNum >= 100000
 end
 
-Hekili.BuiltFor = 100205
+Hekili.BuiltFor = 110000
 Hekili.GameBuild = buildStr
 
-ns.PTR = buildNum > 100205
-
+ns.PTR = buildNum > 110000
 
 ns.Patrons = "|cFFFFD100Current Status|r\n\n"
     .. "All existing specializations are currently supported, though healer priorities are experimental and focused on rotational DPS only.\n\n"
@@ -254,6 +256,25 @@ function Hekili:SaveDebugSnapshot( dispName )
 				v.log[ i ] = nil
 			end
 
+            -- Store previous spell data.
+            local prevString = "\nprevious_spells:"
+            -- Skip over the actions in the "prev" table that were added to computed the next recommended ability in the queue.
+            local i, j = ( #state.predictions + 1 ), 1
+            local spell = state.prev[i].spell or "no_action"
+            if spell == "no_action" then
+                prevString = prevString .. "  no history available"
+            else
+                local numHistory = #state.prev.history
+                while i <= numHistory and spell ~= "no_action" do
+                    prevString = format( "%s\n   %d - %s", prevString, j, spell )
+                    i, j = i + 1, j + 1
+                    spell = state.prev[i].spell or "no_action"
+                end
+            end
+            prevString = prevString .. "\n\n"
+
+            insert( v.log, 1, prevString )
+
             -- Store aura data.
             local auraString = "\nplayer_buffs:"
             local now = GetTime()
@@ -261,7 +282,7 @@ function Hekili:SaveDebugSnapshot( dispName )
             local class = Hekili.Class
 
             for i = 1, 40 do
-                local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitBuff( "player", i )
+                local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnpackAuraData( GetBuffDataByIndex( "player", i ) )
 
                 if not name then break end
 
@@ -275,7 +296,7 @@ function Hekili:SaveDebugSnapshot( dispName )
             auraString = auraString .. "\n\nplayer_debuffs:"
 
             for i = 1, 40 do
-                local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitDebuff( "player", i )
+                local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnpackAuraData( GetDebuffDataByIndex( "player", i ) )
 
                 if not name then break end
 
@@ -293,7 +314,7 @@ function Hekili:SaveDebugSnapshot( dispName )
                 auraString = auraString .. "\n\ntarget_buffs:"
 
                 for i = 1, 40 do
-                    local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitBuff( "target", i )
+                    local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnpackAuraData( GetBuffDataByIndex( "target", i ) )
 
                     if not name then break end
 
@@ -307,7 +328,7 @@ function Hekili:SaveDebugSnapshot( dispName )
                 auraString = auraString .. "\n\ntarget_debuffs:"
 
                 for i = 1, 40 do
-                    local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitDebuff( "target", i, "PLAYER" )
+                    local name, _, count, debuffType, duration, expirationTime, source, _, _, spellId, canApplyAura, isBossDebuff, castByPlayer = UnpackAuraData( GetDebuffDataByIndex( "target", i, "PLAYER" ) )
 
                     if not name then break end
 
@@ -318,8 +339,6 @@ function Hekili:SaveDebugSnapshot( dispName )
                     auraString = format( "%s\n   %6d - %-40s - %3d - %-6.2f", auraString, spellId, key or ( "*" .. formatKey( name ) ), count > 0 and count or 1, expirationTime > 0 and ( expirationTime - now ) or 3600 )
                 end
             end
-
-            auraString = auraString .. "\n\n"
 
             insert( v.log, 1, auraString )
             insert( v.log, 1, "targets:  " .. ( Hekili.TargetDebug or "no data" ) )

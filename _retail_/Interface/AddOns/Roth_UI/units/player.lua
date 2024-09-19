@@ -78,7 +78,7 @@ local createActionBarBackground = function(self)
 			local actionbar
 			local levelbar
 			local repbar
-			
+			MainMenuBar.BorderArt:Hide()
 				--Determine ActionBar Status and report vehicle, 3, 2 or 1 depending on actionbars displayed
 				if ((HasVehicleActionBar() and UnitVehicleSkin("player") and UnitVehicleSkin("player") ~= "") or (HasOverrideActionBar() and GetOverrideBarSkin() and GetOverrideBarSkin() ~= "")) or UnitHasVehicleUI("player") then
 					bar = "vehicle"
@@ -100,7 +100,7 @@ local createActionBarBackground = function(self)
 				end
 		
 				--Determine if player is 'watching' a faction (show rep as exp bar)
-				if GetWatchedFactionInfo() and self.cfg.repbar.show then
+				if C_Reputation.GetWatchedFactionData() and self.cfg.repbar.show then
 					repbar = true
 					bar_count = bar_count+1
 				else

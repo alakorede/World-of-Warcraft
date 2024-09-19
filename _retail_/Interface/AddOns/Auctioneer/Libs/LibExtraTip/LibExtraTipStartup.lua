@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 local LIBNAME = "LibExtraTip"
 local VERSION_MAJOR = 1
-local VERSION_MINOR = 361
+local VERSION_MINOR = 362
 -- Minor Version should be updated manually with each (non-trivial) change to any LibExtraTip code file
 
 local lib = LibStub:NewLibrary(LIBNAME.."-"..VERSION_MAJOR, VERSION_MINOR)
@@ -124,6 +124,3 @@ end
 -- set status to permit other files to load
 status.filetrackerMain = LOAD_NEW
 status.filetrackerHandler = LOAD_NEW
-
-LibStub("LibRevision"):Set("$URL$","$Rev$","10.02.DEV.", 'auctioneer', 'libs')
-

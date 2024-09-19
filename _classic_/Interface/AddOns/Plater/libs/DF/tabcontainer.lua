@@ -9,7 +9,10 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local PixelUtil = PixelUtil
 
----@class df_tabinfotable : {name: string, text: string, createOnDemandFunc:function?}
+---@class df_tabinfotable : table
+---@field name string
+---@field text string
+---@field createOnDemandFunc function?
 
 ---@class df_tabcontainer : frame
 ---@field AllFrames df_tabcontainerframe[]
@@ -388,7 +391,7 @@ function detailsFramework:CreateTabContainer(parent, title, frameName, tabList, 
 	--order buttons
 	local x = buttonAnchorX
 	local y = buttonAnchorY
-	local spaceBetweenButtons = 3
+	local spaceBetweenButtons = 2
 
 	local allocatedSpaceForButtons = parentFrameWidth - ((#tabList - 2) * spaceBetweenButtons) - buttonAnchorX + containerWidthOffset
 	local amountButtonsPerRow = math.floor(allocatedSpaceForButtons / buttonWidth)

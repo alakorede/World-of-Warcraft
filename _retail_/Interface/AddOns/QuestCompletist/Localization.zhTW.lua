@@ -120,6 +120,7 @@ qcLocalize = {
 	HIDEINPROGRESSQUESTS = "隱藏進行中的任務", -- Needs review
 	HIDELOWLEVELQUESTS = "隱藏低等級的任務", -- Needs review
 	HIDENONACTIVESEASONALQUESTS = "隱藏尚未開始的季節性任務", -- Needs review
+	HIDENORMALQUEST = "Hide Normal Quests",
 	HIDEOTHERFACTIONQUESTS = "隱藏其他陣營的任務", -- Needs review
 	HIDEOTHERPROFESSIONQUESTS = "隱藏其他專業的任務", -- Needs review
 	HIDEOTHERRACEANDCLASSQUESTS = "隱藏其他種族和職業任務", -- Needs review
@@ -485,6 +486,7 @@ qcLocalize = {
 	ZERETHMORTIS = "Zereth Mortis",
 	ZERETHMORTISCAMPAIGN = "Zereth Mortis Campaign",
 -- Dragonflight Code
+	AZEROTHIANARCHIVES = "Azerothian Archives",
 	AZMERLOTH = "Azmerloh",
 	BRACKENHIDEWATERHOLE = "Brackenhide Waterhole",
 	DRAGONISLE = "Dragon Isle",
@@ -518,6 +520,24 @@ qcLocalize = {
 	ZARALEKCAVERN = "Zaralek Cavern",
 	EMERALDDREAM = "Emerald Dream",
 	KORRAKSREVENGE = "Korrak`s Revenge",
+		--TWW
+	TWW = "The War Within",
+	AWAKENINGTHEMACHINE = "Awakening the Machine",
+	AZJKAHET = "Azj-Kahet",
+	CITYOFTHREADS = "City of Threads",	
+	DEEPHAULRAVINE = "Deephaul Ravine",	
+	DHARBANDAR = "Dhar Bandar",	
+	DORNOGAL = "Dornogal", --2339
+	EARTHEN = "Earthen",
+	HALLOWFALL = "Hallowfall",
+	ISLEOFDORN = "Isle of Dorn", --2248
+	MOURNINGRISE = "Mourning Rise",
+	NERUBARPALACE = "Nerub-ar Palace",
+	NORTHRENDCUP = "Northrend Cup",
+	RAMBLESHIRE = "Rambleshire",
+	THERINGINGDEEPS = "The Ringing Deeps",	
+	UPGRADESYSTEM = "Upgrade System",
+	WARBANDS = "Warbands",
 	}
 
 end

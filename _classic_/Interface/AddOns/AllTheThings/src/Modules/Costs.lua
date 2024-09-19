@@ -15,7 +15,7 @@ local SearchForFieldContainer, ArrayAppend, GetRawField, GetRelativeByFunc, Sear
 local OneTimeQuests = app.EmptyTable
 
 -- Module locals
-local RecursiveGroupRequirementsFilter, GroupFilter, DGU, UpdateRunner, CheckCanBeCollected
+local RecursiveGroupRequirementsFilter, GroupFilter, DGU, UpdateRunner, CheckCanBeCollected, ExtraFilters
 -- If a Thing which has a cost is not a quest or not saved
 local function CanBeCollected(ref)
 	return not ref.questID or not ref.saved;
@@ -24,6 +24,15 @@ end
 local function CanBeAccountCollected(ref)
 	local questID = ref.questID
 	return not questID or not ref.saved or not OneTimeQuests[questID]
+end
+local function ToggleExtraFilters(active)
+	if not ExtraFilters then return end
+	local Set = app.Modules.Filter.Set
+	local Setter
+	for name,_ in pairs(ExtraFilters) do
+		Setter = Set[name]
+		if Setter then Setter(active) end
+	end
 end
 
 -- Function which returns if a Thing has a cost based on a given 'ref' Thing, which has been previously determined as a
@@ -67,7 +76,7 @@ local function SubCheckCollectible(ref)
 		local o;
 		for i=1,#g do
 			o = g[i];
-			if GroupFilter(o) and SubCheckCollectible(o) then
+			if GroupFilter(o, ExtraFilters) and SubCheckCollectible(o) then
 				-- app.PrintDebug("Purchase via sub-group Purchase",app:SearchLink(ref))
 				return true;
 			end
@@ -78,19 +87,19 @@ end
 local function CheckCollectible(ref)
 	-- app.PrintDebug("CheckCollectible",ref.hash,ref.__sourcePath)
 	-- don't include groups which don't meet the current filters
-	if RecursiveGroupRequirementsFilter(ref) then
+	if RecursiveGroupRequirementsFilter(ref, ExtraFilters) then
 		return SubCheckCollectible(ref);
 	end
 end
 app.CheckCollectible = CheckCollectible;
 local function CacheFilters()
 	-- Cache repeat-used functions/values
-	RecursiveGroupRequirementsFilter = app.RecursiveGroupRequirementsFilter;
-	GroupFilter = app.GroupFilter;
+	RecursiveGroupRequirementsFilter = app.RecursiveGroupRequirementsExtraFilter;
+	GroupFilter = app.GroupExtraFilter;
 	CheckCanBeCollected = app.MODE_DEBUG_OR_ACCOUNT and CanBeAccountCollected or CanBeCollected;
 end
 local function BlockedParent(group)
-	if group.questID and (group.saved or group.locked) or OneTimeQuests[group.questID] then
+	if group.questID and (group.saved or group.locked or OneTimeQuests[group.questID]) then
 		return group
 	end
 end
@@ -183,6 +192,7 @@ end
 
 local function UpdateCosts()
 	CacheFilters();
+	ExtraFilters = app.Settings:GetTooltipSetting("Filter:MiniList:Timerunning") and { Timerunning = true } or nil
 	local refresh = app._SettingsRefresh;
 	-- cancel all existing running cost updates
 	UpdateRunner.Reset()
@@ -314,10 +324,10 @@ app.AddEventHandler("OnLoad", function()
 	DGU = app.DirectGroupUpdate;
 	api.Runner = app.CreateRunner("costs");
 	UpdateRunner = api.Runner
-	CacheFilters();
 end)
-app.AddEventHandler("OnStartup", function()
-	OneTimeQuests = app.LocalizeGlobalIfAllowed("ATTAccountWideData", true).OneTimeQuests;
+app.AddEventHandler("OnSavedVariablesAvailable", function(currentCharacter, accountWideData)
+	OneTimeQuests = accountWideData.OneTimeQuests;
+	ExtraFilters = app.Settings:GetTooltipSetting("Filter:MiniList:Timerunning") and { Timerunning = true } or nil
 end)
 app.AddEventHandler("OnRecalculate_NewSettings", UpdateCosts)
 
@@ -404,7 +414,7 @@ do
 		local text = group.text
 		Collector.__text = text
 		group.text = (text or "").."  "..BLIZZARD_STORE_PROCESSING
-		group.OnUpdate = app.AlwaysShowUpdate
+		group.OnSetVisibility = app.ReturnTrue
 		-- app.PrintDebug("StartUpdating",group.text)
 		app.DirectGroupUpdate(group)
 	end
@@ -449,7 +459,7 @@ do
 			app.Sort(costItems, app.SortDefaults.Total)
 			app.AssignChildren(group)
 		else
-			group.OnUpdate = nil
+			group.OnSetVisibility = nil
 		end
 		app.DirectGroupUpdate(group)
 		Collector.Reset()

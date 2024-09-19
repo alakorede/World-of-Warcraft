@@ -157,6 +157,7 @@ local function BuildDruidAppearances(artifactID, table)
 				sourceInfo.artifact = true
 				sourceInfo.mod = i
 				sourceInfo.artifactID = itemID
+				sourceInfo.canDisplayOnPlayer = true
 
 				if 	addon.Globals.UNLOCK_DATA[data.unlock] then 
 					sourceInfo.unlock = addon.Globals.UNLOCK_DATA[data.unlock].unlock
@@ -204,7 +205,7 @@ function addon.BuildClassArtifactAppearanceList()
 						break
 					end
 				end
-
+				local GetItemInfoInstant = C_Item and C_Item.GetItemInfoInstant
 				local _, _, _, _, _, itemClassID, itemSubClassID = GetItemInfoInstant(itemID)
 				if (itemClassID == 2 or itemClassID == 4) and addon.Globals.CAMERAS[itemClassID][itemSubClassID] then 
 					appearanceCameraID = addon.Globals.CAMERAS[itemClassID][itemSubClassID]
@@ -246,6 +247,9 @@ function addon.BuildClassArtifactAppearanceList()
 				sourceInfo.artifact = true
 				sourceInfo.mod = index
 				sourceInfo.artifactID = itemID
+				   sourceInfo.isUsable=true
+    sourceInfo.canDisplayOnPlayer=true
+    sourceInfo.alwaysShowItem = true
 				if 	addon.Globals.UNLOCK_DATA[data.unlock] then 
 					sourceInfo.unlock = addon.Globals.UNLOCK_DATA[data.unlock].unlock
 					sourceInfo.unlockAch = addon.Globals.UNLOCK_DATA[data.unlock].ach

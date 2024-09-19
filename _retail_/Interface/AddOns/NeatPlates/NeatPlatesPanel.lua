@@ -10,6 +10,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local version = GetAddOnMetadata("NeatPlates", "version")
 local versionString = "|cFF666666"..version
 
@@ -22,13 +23,13 @@ NeatPlatesInterfacePanel.refresh = OnRefresh
 NeatPlatesInterfacePanel.OnCommit = NeatPlatesInterfacePanel.okay;
 NeatPlatesInterfacePanel.OnDefault = NeatPlatesInterfacePanel.default;
 NeatPlatesInterfacePanel.OnRefresh = NeatPlatesInterfacePanel.refresh;
-local category
+local category, layout
 if Settings and not NEATPLATES_IS_CLASSIC then
-	-- TODO: Figure out why the new, proper, method isn't working with subcategories
-	-- category = Settings.RegisterCanvasLayoutCategory(NeatPlatesInterfacePanel, NeatPlatesInterfacePanel.name, NeatPlatesInterfacePanel.name);
-	-- Settings.RegisterAddOnCategory(category);
-	category = InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
-	category.expanded = true -- Open by default
+	category, layout = Settings.RegisterCanvasLayoutCategory(NeatPlatesInterfacePanel, NeatPlatesInterfacePanel.name, NeatPlatesInterfacePanel.name);
+	category.expanded = true
+	Settings.RegisterAddOnCategory(category);
+	NeatPlatesPanel.Category = category
+	NeatPlatesPanel.Layout = layout -- Unused for now
 else
 	category = InterfaceOptions_AddCategory(NeatPlatesInterfacePanel);
 end
@@ -155,13 +156,17 @@ local function RemoveProfile(panel)
 			if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
 		end)
 	else
-		local category = Settings.GetCategory(panel.parent)
+		local category = NeatPlatesPanel.Category
 		table.foreach(category.subcategories, function(i, c)
 			if c.name == panel.name then
 				c:SetParentCategory(nil)
 				table.remove(category.subcategories, i)
 			end
 		end)
+
+		-- Bit of a hack to force a reload (There is probably a better way...)
+		Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
+		Settings.OpenToCategory(category.ID, "NeatPlates")
 	end
 
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
@@ -1167,7 +1172,11 @@ local function BuildInterfacePanel(panel)
 
 	-- Blizzard Nameplate Options Button
 	BlizzOptionsButton:SetScript("OnClick", function()
-		InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
+		if Settings and not NEATPLATES_IS_CLASSIC then
+			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
+		else
+			InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
+		end
 	end)
 
 	-- Reset Button

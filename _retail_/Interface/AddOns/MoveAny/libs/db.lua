@@ -220,17 +220,18 @@ function MoveAny:GetTab()
 	return MATAB["PROFILES"][MoveAny:GetCP()]
 end
 
-function MoveAny:GV(key, val)
+function MoveAny:MAGV(key, val)
 	MoveAny:CheckDB()
 	if MATAB[key] ~= nil then return MATAB[key] end
 
 	return val
 end
 
-function MoveAny:SV(key, val)
+function MoveAny:MASV(key, val)
+	local oldVal = MATAB[key]
 	MoveAny:CheckDB()
 	MATAB[key] = val
-	MoveAny:EnableSave("SV", key)
+	MoveAny:EnableSave("MASV", key, val, oldVal, true)
 end
 
 function MoveAny:FixTable(tab)
@@ -263,9 +264,10 @@ function MoveAny:SetEnabled(element, value)
 	end
 
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element] = MoveAny:GetTab()["ELES"]["OPTIONS"][element] or {}
+	local oldVal = MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"]
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"] = value
 	if element ~= "MALOCK" then
-		MoveAny:EnableSave("SetEnabled", element)
+		MoveAny:EnableSave("SetEnabled", element, value, oldVal, false)
 	end
 end
 
@@ -338,7 +340,7 @@ function MoveAny:SetEleOption(element, key, value)
 	MoveAny:GetTab()["ELES"]["OPTIONS"] = MoveAny:GetTab()["ELES"]["OPTIONS"] or {}
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element] = MoveAny:GetTab()["ELES"]["OPTIONS"][element] or {}
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element][key] = value
-	MoveAny:EnableSave("SetEleOption", key)
+	MoveAny:EnableSave("SetEleOption", key, true, false, false)
 end
 
 function MoveAny:GetElePoint(key)
@@ -347,7 +349,6 @@ function MoveAny:GetElePoint(key)
 		MoveAny:GetTab()["ELES"]["POINTS"][key] = MoveAny:GetTab()["ELES"]["POINTS"][key] or {}
 		local an = MoveAny:GetTab()["ELES"]["POINTS"][key]["AN"]
 		--local pa = MoveAny:GetTab()["ELES"]["POINTS"][key]["PA"]
-		MoveAny:GetTab()["ELES"]["POINTS"][key]["PA"] = nil
 		local re = MoveAny:GetTab()["ELES"]["POINTS"][key]["RE"]
 		local px = MoveAny:GetTab()["ELES"]["POINTS"][key]["PX"]
 		local py = MoveAny:GetTab()["ELES"]["POINTS"][key]["PY"]
@@ -364,7 +365,7 @@ function MoveAny:SetElePoint(key, p1, p2, p3, p4, p5)
 	MoveAny:CheckDB()
 	MoveAny:GetTab()["ELES"]["POINTS"][key] = MoveAny:GetTab()["ELES"]["POINTS"][key] or {}
 	MoveAny:GetTab()["ELES"]["POINTS"][key]["AN"] = p1
-	MoveAny:GetTab()["ELES"]["POINTS"][key]["PA"] = nil
+	MoveAny:GetTab()["ELES"]["POINTS"][key]["PA"] = p2
 	MoveAny:GetTab()["ELES"]["POINTS"][key]["RE"] = p3
 	MoveAny:GetTab()["ELES"]["POINTS"][key]["PX"] = p4
 	MoveAny:GetTab()["ELES"]["POINTS"][key]["PY"] = p5
@@ -410,7 +411,7 @@ function MoveAny:SetElePoint(key, p1, p2, p3, p4, p5)
 	end
 
 	if key ~= "MALock" then
-		MoveAny:EnableSave("SetElePoint", key)
+		MoveAny:EnableSave("SetElePoint", key, true, false, true)
 	end
 end
 
@@ -459,6 +460,8 @@ function MoveAny:GetEleScale(key)
 
 		return 1
 	end
+
+	return 1
 end
 
 function MoveAny:SetEleScale(key, scale)
@@ -481,44 +484,56 @@ function MoveAny:SetEleScale(key, scale)
 	end
 
 	if key ~= "MALock" then
-		MoveAny:EnableSave("SetEleScale", key)
+		MoveAny:EnableSave("SetEleScale", key, true, false, true)
 	end
 end
 
 function MoveAny:GetFramePoint(key)
 	MoveAny:CheckDB()
 	MoveAny:GetTab()["FRAMES"]["POINTS"][key] = MoveAny:GetTab()["FRAMES"]["POINTS"][key] or {}
-	local an = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["AN"]
-	--local pa = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PA"]
-	local re = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["RE"]
-	local px = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PX"]
-	local py = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PY"]
+	if MoveAny:IsEnabled("SAVEFRAMEPOSITION", true) then
+		local an = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["AN"]
+		--local pa = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PA"]
+		local re = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["RE"]
+		local px = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PX"]
+		local py = MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PY"]
 
-	return an, _, re, px, py
+		return an, _, re, px, py
+	end
+
+	return nil, nil, nil, nil, nil
 end
 
-function MoveAny:SetFramePoint(key, p1, p2, p3, p4, p5)
+function MoveAny:SaveFramePointToDB(key, p1, p2, p3, p4, p5)
 	MoveAny:CheckDB()
 	MoveAny:GetTab()["FRAMES"]["POINTS"][key] = MoveAny:GetTab()["FRAMES"]["POINTS"][key] or {}
-	MoveAny:GetTab()["FRAMES"]["POINTS"][key]["AN"] = p1
-	MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PA"] = nil
-	MoveAny:GetTab()["FRAMES"]["POINTS"][key]["RE"] = p3
-	MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PX"] = p4
-	MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PY"] = p5
+	if MoveAny:IsEnabled("SAVEFRAMEPOSITION", true) then
+		MoveAny:GetTab()["FRAMES"]["POINTS"][key]["AN"] = p1
+		MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PA"] = p2
+		MoveAny:GetTab()["FRAMES"]["POINTS"][key]["RE"] = p3
+		MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PX"] = p4
+		MoveAny:GetTab()["FRAMES"]["POINTS"][key]["PY"] = p5
+	end
 end
 
 function MoveAny:GetFrameScale(key)
 	MoveAny:CheckDB()
 	MoveAny:GetTab()["FRAMES"]["SIZES"][key] = MoveAny:GetTab()["FRAMES"]["SIZES"][key] or {}
-	local scale = MoveAny:GetTab()["FRAMES"]["SIZES"][key]["SCALE"]
+	if MoveAny:IsEnabled("SAVEFRAMESCALE", true) then
+		local scale = MoveAny:GetTab()["FRAMES"]["SIZES"][key]["SCALE"]
 
-	return scale
+		return scale
+	end
+
+	return nil
 end
 
 function MoveAny:SetFrameScale(key, scale)
 	MoveAny:CheckDB()
 	MoveAny:GetTab()["FRAMES"]["SIZES"][key] = MoveAny:GetTab()["FRAMES"]["SIZES"][key] or {}
-	MoveAny:GetTab()["FRAMES"]["SIZES"][key]["SCALE"] = scale
+	if MoveAny:IsEnabled("SAVEFRAMESCALE", true) then
+		MoveAny:GetTab()["FRAMES"]["SIZES"][key]["SCALE"] = scale
+	end
 end
 
 function MoveAny:GetMinimapTable()
@@ -529,15 +544,15 @@ function MoveAny:GetMinimapTable()
 end
 
 function MoveAny:GetGridSize()
-	return MoveAny:GV("GRIDSIZE", 10)
+	return MoveAny:MAGV("GRIDSIZE", 10)
 end
 
 function MoveAny:GetSnapSize()
-	return MoveAny:GV("GRIDSIZE", 10)
+	return MoveAny:MAGV("GRIDSIZE", 10)
 end
 
 function MoveAny:GetSnapWindowSize()
-	return MoveAny:GV("SNAPWINDOWSIZE", 1)
+	return MoveAny:MAGV("SNAPWINDOWSIZE", 1)
 end
 
 function MoveAny:InitDB()

@@ -45,6 +45,8 @@ L.health = "Vida" -- The health of an NPC
 L.health_percent = "%d%% de Vida" -- "10% Health" The health percentage of an NPC
 L.door_open = "Porta Aberta" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Portão Aberto" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Ameaça"
+L.energy = "Energia"
 
 --L.remaining = "%d remaining" -- 5 remaining
 L.duration = "%s durante %s seg" -- Spell for 10 seconds
@@ -64,10 +66,13 @@ L.cancelled = "%s Cancelado" -- Spell Cancelled
 L.you_die = "Você morrerá" -- You will die
 L.you_die_sec = "Você morrerá em %d seg" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "Próxima Habilidade" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+--L.landing = "%s is landing" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
+L.flying_available = "Pode voar agora"
 
 -- Add related
 L.add_spawned = "Add surgiu" -- singular
 L.adds_spawned = "Adds surgiram" -- plural
+--L.adds_spawned_count = "%d |4add:adds; spawned" -- 1 add spawned / 2 adds spawned
 --L.add_spawning = "Add spawning" -- singular
 --L.adds_spawning = "Adds spawning" -- plural
 L.spawned = "%s surgiu"
@@ -86,6 +91,18 @@ L.small_adds = "Adds Pequenos" -- plural
 L.killed = "%s morto"
 L.mob_killed = "%s morto (%d/%d)"
 L.mob_remaining = "%s morto, %d restando"
+
+-- NPCs for follower dungeons
+L.garrick = "Capitã Garrick" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*Garrick"
+L.meredy = "Mereida Caçaboa" -- AI mage dps (NPC 209059)
+L.meredy_short = "*Mereida"
+L.shuja = "Shuya Sinistracha" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*Shuya"
+L.crenna = "Crenna Filha da Terra" -- AI druid healer (NPC 209072)
+L.crenna_short = "*Crenna"
+L.austin = "Austin Huxworth" -- AI hunter dps (NPC 209065)
+L.austin_short = "*Austin"
 
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
@@ -109,9 +126,12 @@ L.marker_npc_desc = "Marca %s com %s, requer líder ou assistente." -- Mark NPC_
 L.link = "Ligação"
 L.link_with = "Ligado com %s"
 L.link_with_icon = "Ligado com |T13700%d:0|t%s"
-L.link_short = "Ligado: %s"
-L.link_both = "%s ligado com %s"
+L.link_with_rticon = "{rt%d}Ligado com %s"
+L.link_both = "%s ligado com %s" -- XXX needs updated
+L.link_both_icon = "|T13700%d:0|t%s ligado com |T13700%d:0|t%s" -- XXX needs updated
 L.link_removed = "Ligação removida"
+--L.link_say_option_name = "Repeating 'Linked' say messages"
+--L.link_say_option_desc = "Repeating say messages in chat stating who you are linked with."
 
 -- Abbreviated numbers
 L.amount_one = "%dB" -- Billions 1,000,000,000
@@ -175,6 +195,7 @@ L.charge = "Investida" -- When a boss select a new target and charges at it quic
 L.full_energy = "Energia Cheia" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Enfraquecido" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Imune" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Atordoado" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Poça" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Poças" -- Plural of L.pool
 L.totem = "Totem" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -204,3 +225,10 @@ L.soaks = "Soaks" -- Plural of L.soak
 L.spell_reflection = "Reflexão de Feitiço" -- Any ability that reflects spells
 L.parasite = "Parasita" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "Enraizado" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+--L.dodge = "Dodge" -- When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+L.health_drain = "Dreno de Vida" -- Any ability that drains health from the player
+--L.smash = "Esmagamento" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+L.spike = "Espeto" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+L.spikes = "Espetos" -- Plural of L.spike

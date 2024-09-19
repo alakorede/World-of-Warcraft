@@ -3,9 +3,9 @@
 ## Name: AllTheThings
 ## Notes: Addon for Tracking Collections & Account Completion
 ## Author: Crieve-Sargeras
-## Version: DF-3.12.6
-## Interface: 100207
-## X-Interface: 100207
+## Version: 4.0.14
+## Interface: 110002
+## X-Interface: 110002
 ## X-Wago-ID: yQKyY5K7
 ## X-Curse-Project-ID: 267285
 ## SavedVariables: ATTCharacterData, ATTAccountWideData, AllTheThingsSavedVariables, AllTheThingsSettings, AllTheThingsAD, AllTheThingsProfiles, AllTheThingsAuctionData, AllTheThingsDebugData, AllTheThingsArtifactsItems, AllTheThingsHarvestItems
@@ -18,7 +18,13 @@ lib\LibStub\LibStub.lua
 lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
 lib\LibDataBroker-1.1\LibDataBroker-1.1.lua
 src\WoW API Wrappers.lua
+
+# Raw DBs
 db\RaceDB.lua
+db\ReagentsDB.lua
+db\SkillDB.lua
+db\FlightPathDB.lua
+db\AccountWideQuestsDB.lua
 
 # Libs (no dependencies, only app assignment)
 lib\Debugging.lua
@@ -51,6 +57,7 @@ locales\ko.lua
 locales\pt.lua
 locales\ru.lua
 locales\cn.lua
+locales\tw.lua
 
 # Search Cache
 src\Cache.lua
@@ -64,25 +71,27 @@ src\Modules\Costs.lua
 src\Modules\Events.lua
 src\Modules\Filter.lua
 src\Modules\Inventory.lua
+src\Modules\Model.lua
 src\Modules\Social.lua
 src\Modules\Tooltip.lua
 src\Modules\Upgrade.lua
 src\Modules\Vignette.lua
+src\Modules\Contributor.lua
 
 # Expansion specific localization files
-db\Dragonflight\ExplorationDB.lua
-db\Dragonflight\LocalizationDB.lua
-db\Dragonflight\en_auto.lua
+db\Retail\ExplorationDB.lua
+db\Retail\LocalizationDB.lua
+db\Retail\en_auto.lua
 db\Presets.lua
-db\ReagentsDB.lua
-db\AccountWideQuestsDB.lua
 
 # Load object class templates
 src\Classes\base.lua
+src\Classes\Achievement.lua
 src\Classes\BattlePet.lua
 src\Classes\CharacterClass.lua
 src\Classes\Difficulty.lua
 src\Classes\Factions.lua
+src\Classes\FlightPath.lua
 src\Classes\Quests.lua
 src\Classes\Item.Retail.lua
 # src\Classes\Item.Classic.lua
@@ -91,6 +100,8 @@ src\Classes\Ensemble.lua
 src\Classes\Expansion.lua
 src\Classes\Maps.lua
 src\Classes\Mount.lua
+src\Classes\Header.lua
+src\Classes\NPC.lua
 src\Classes\Objects.lua
 src\Classes\Category.lua
 src\Classes\Deaths.lua
@@ -106,6 +117,7 @@ src\Classes\Spell.lua
 src\Classes\CharacterUnlock.lua
 
 # Item Sub-Classes
+src\Classes\Heirloom.lua
 src\Classes\Toys.lua
 
 # Expansion specific source files
@@ -129,7 +141,7 @@ src\UI\Shared Window Logic.lua
 src\UI\Retail Window Logic.lua
 
 # Load expansion specific category database.
-db\Dragonflight\Categories.lua
+db\Retail\Categories.lua
 
 # Window Definitions
 # src\UI\Windows\Windows.xml

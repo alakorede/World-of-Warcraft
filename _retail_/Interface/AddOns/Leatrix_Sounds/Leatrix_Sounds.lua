@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- Leatrix Sounds 10.2.35 (19th June 2024)
+	-- Leatrix Sounds 11.0.09 (18th September 2024)
 	----------------------------------------------------------------------
 
 	--  Create global table
@@ -10,7 +10,7 @@
 	local LeaSoundsLC, LeaSoundsCB = {}, {}
 
 	-- Version
-	LeaSoundsLC["AddonVer"] = "10.2.35"
+	LeaSoundsLC["AddonVer"] = "11.0.09"
 
 	-- Get locale table
 	local void, Leatrix_Sounds = ...
@@ -19,10 +19,10 @@
 	-- Check Wow version is valid
 	do
 		local gameversion, gamebuild, gamedate, gametocversion = GetBuildInfo()
-		if gametocversion and gametocversion < 100000 then
+		if gametocversion and gametocversion < 110000 then
 			-- Game client is Wow Classic
 			C_Timer.After(2, function()
-				print(L["LEATRIX SOUNDS: THIS IS FOR DRAGONFLIGHT ONLY!"])
+				print(L["LEATRIX SOUNDS: THIS IS FOR THE WAR WITHIN ONLY!"])
 			end)
 			return
 		end
@@ -967,22 +967,20 @@
 		subTitle:ClearAllPoints()
 		subTitle:SetPoint("BOTTOM", 0, 72)
 
-		local slashButton = CreateFrame("Button", nil, interPanel)
-		slashButton:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
-		slashButton:SetScript("OnClick", function() SlashCmdList["Leatrix_Sounds"]("") end)
-
-		local slashTitle = LeaSoundsLC:MakeTx(slashButton, "/lts", 0, 0)
+		local slashTitle = LeaSoundsLC:MakeTx(interPanel, "/lts", 0, 0)
 		slashTitle:SetFont(slashTitle:GetFont(), 72)
 		slashTitle:ClearAllPoints()
-		slashTitle:SetAllPoints()
-
-		slashButton:SetSize(slashTitle:GetSize())
-		slashButton:SetScript("OnEnter", function()
+		slashTitle:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
+		slashTitle:SetScript("OnMouseUp", function(self, button)
+			if button == "LeftButton" then
+				SlashCmdList["Leatrix_Sounds"]("")
+			end
+		end)
+		slashTitle:SetScript("OnEnter", function()
 			slashTitle.r,  slashTitle.g, slashTitle.b = slashTitle:GetTextColor()
 			slashTitle:SetTextColor(1, 1, 0)
 		end)
-
-		slashButton:SetScript("OnLeave", function()
+		slashTitle:SetScript("OnLeave", function()
 			slashTitle:SetTextColor(slashTitle.r, slashTitle.g, slashTitle.b)
 		end)
 
@@ -993,7 +991,7 @@
 		pTex:SetTexCoord(0, 1, 1, 0)
 
 		-- Causes block taint in 10.0.2 (open options panel keybindings page then close)
-		expTitle:SetText("Dragonflight & The War Within")
+		expTitle:SetText(L["The War Within"])
 		local category = Settings.RegisterCanvasLayoutCategory(interPanel, "Leatrix Sounds")
 		Settings.RegisterAddOnCategory(category)
 

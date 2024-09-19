@@ -1,14 +1,19 @@
-@Terciob:
-- Patch for S4 scripts.
-- Backend changes on performance units.
-- Maintenance on plugin handling.
-
 @cont1nuity:
-- Fixing pixel perfect aura borders and Masque support.
-- Addind default aura border color option.
-- Fixing pixel perfect aura borders and Masque support.
-- Workaround to support TWW beta.
-- Better pixel perfect implementation all around on borders.
-- Adding unit names to the unit script trigger lists and their zones and 3d model to tooltip (if available).
-- Fixing default mod code for 'Mod Option Changed' hook.
+- Fixing an error in profiling.
+- Validate imported profile data passed to import API.
+- Fixing manual buff tracking showing Buff Special auras on normal aura frames as well.
+- Level & Strata adjustment: levels can now be set with custom strata disabled and healthBar strata is set properly.
+- Improvements to aura borders.
+- Fixing issue with options tabs loading in twice sometimes.
+- Use reaction name coloring for 'name only' enemy NPCs instead of fixed color.
+- Adding glow support to DBM boss-mod timer icons and moving Boss-Mod options to their own options tab.
+- Glow API documentation.
+- Fixing issue with unit trigger tooltips not showing on entries as name.
+- Consolidating option to rename casts based on DMB or BigWigs renamed spells.
+
+@DakJaniels:
+- Fixing a lot of small code issues.
+
+@Linaori:
+- Allow setting a custom name color for interactable game objects.
 

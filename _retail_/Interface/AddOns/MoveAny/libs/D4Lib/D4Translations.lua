@@ -17,13 +17,9 @@ function D4:Trans(key, lang, t1, t2, t3)
 
     if t1 and t2 and t3 then
         result = string.format(result, t1, t2, t3)
-    end
-
-    if t1 and t2 then
+    elseif t1 and t2 then
         result = string.format(result, t1, t2)
-    end
-
-    if t1 then
+    elseif t1 then
         result = string.format(result, t1)
     end
 
@@ -39,13 +35,13 @@ function D4:AddTrans(lang, key, value)
     end
 
     if key == nil then
-        D4:MSG("[D4:AddTrans] key is nil")
+        D4:MSG("[D4][AddTrans] key is nil")
 
         return false
     end
 
     if value == nil then
-        D4:MSG("[D4:AddTrans] value is nil")
+        D4:MSG("[D4][AddTrans] value is nil")
 
         return false
     end

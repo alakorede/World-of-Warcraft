@@ -62,6 +62,8 @@ local db = {
 --BMAH
 {"Gilded","Dragonflight Black Market",nil,100200,nil,nil,{{12,193989},{7,193986},{11,194086},{2,193987},{12,194006},{14,194088,"i:211300:4:Arsenal Whispering Temple Blades"},{14,194089,"i:211300:4:Arsenal Whispering Temple Blades"},}},
 
+{"Grand Design","Cosmic Weapons",nil,110000,nil,nil,{{5,190160},{14,190162},{13,190159},{14,190158},{15,190163},},2},
+
 --Time Rifts
 {"Plague-Touched","Time Rifts",nil,100105,"Purchased from Baron Silver",nil,{{4,188495},{2,188500},{3,188501},{8,188510},{13,188514},{13,188519},{14,188520},}},
 {"Clockwork","Time Rifts",nil,100105,"Purchased from Gill the Drill",nil,{{5,188513},{8,188521},{14,188523},{16,188494},{7,188497},{15,188502},{12,188496},}},
@@ -216,9 +218,9 @@ local function GetFormattedLabel(label)
 end
 
 local function AddToCollection()
-  local patch = select(4,GetBuildInfo());
+  --local patch = select(4,GetBuildInfo());
   for i = 1, #db do
-    if (db[i][4] <= patch) then
+    --if (db[i][4] <= patch) then --check to make sure ptr stuff isn't used before a patch is out on retail
       local data = {};
       data.name = db[i][1];
       data.label = db[i][2];
@@ -264,7 +266,7 @@ local function AddToCollection()
       if #data.sources > 0 then
         app.AddWeaponSetToTables(data);
       end
-    end
+    --end
   end
 end
 

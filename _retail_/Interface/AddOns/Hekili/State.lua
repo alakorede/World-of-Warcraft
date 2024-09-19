@@ -1,5 +1,5 @@
 -- State.lua
--- June 2014
+-- July 2024
 
 local addon, ns = ...
 local Hekili = _G[ addon ]
@@ -16,9 +16,22 @@ local round, roundUp, roundDown = ns.round, ns.roundUp, ns.roundDown
 local safeMin, safeMax = ns.safeMin, ns.safeMax
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+local GetItemSpell = C_Item.GetItemSpell
+local GetItemCooldown = C_Item.GetItemCooldown
+local IsUsableItem = C_Item.IsUsableItem
+local GetSpellInfo, GetSpellCharges, GetSpellLossOfControlCooldown = ns.GetUnpackedSpellInfo, C_Spell.GetSpellCharges, C_Spell.GetSpellLossOfControlCooldown
+local UnitBuff, UnitDebuff = ns.UnitBuff, ns.UnitDebuff
+
+local GetSpellCharges = function(spellID)
+    local spellChargeInfo = GetSpellCharges(spellID);
+    if spellChargeInfo then
+        return spellChargeInfo.currentCharges, spellChargeInfo.maxCharges, spellChargeInfo.cooldownStartTime, spellChargeInfo.cooldownDuration, spellChargeInfo.chargeModRate;
+    end
+end
 local FindPlayerAuraByID, IsAbilityDisabled, IsDisabledCovenantSpell = ns.FindPlayerAuraByID, ns.IsAbilityDisabled, ns.IsDisabledCovenantSpell
 
 -- Clean up table_x later.
+---@diagnostic disable-next-line: deprecated
 local insert, remove, sort, tcopy, unpack, wipe = table.insert, table.remove, table.sort, ns.tableCopy, table.unpack, table.wipe
 local format = string.format
 
@@ -94,7 +107,14 @@ state.max_empower = 3
 state.empowering = {}
 
 state.health = {
+    current = 1,
     max = 1,
+    percent = 100,
+    timeTo = function( amount )
+        if state.health.current >= amount then return 0 end
+        return 3600
+    end,
+
     initialized = false
 }
 state.legendary = {}
@@ -110,6 +130,8 @@ state.off_hand = {
 }
 
 state.gcd = {}
+
+state.hero_tree = setmetatable( {}, { __index = function( t, k ) return state.talent[ k ].enabled end } ) -- TODO: Update hero tree detection for 11.0 launch.
 
 state.history = {
     casts = {},
@@ -493,17 +515,26 @@ setmetatable( state.trinket.main_hand.is, mt_trinket_is )
 setmetatable( state.trinket.t1.cooldown, mt_trinket_cooldown )
 setmetatable( state.trinket.t2.cooldown, mt_trinket_cooldown ) ]]
 
-
 local mt_trinket_has_stacking_stat = {
     __index = function( t, k )
-        local trinket = state.trinket[ t.slot ].id
+        local trinket = state.trinket[ t.slot ]
+        trinket = trinket and trinket.__ability
+        trinket = trinket and class.abilities[ trinket ]
 
-        if trinket == 0 then return false end
+        if not trinket then return false end
 
-        if k == "any" or k == "any_dps" then return class.trinkets[ trinket ].stacking_stat ~= nil end
-        if k == "ms" then k = "multistrike" end
+        local buff = trinket.self_buff
+        buff = buff and class.auras[ buff ]
 
-        return class.trinkets[ trinket ].stacking_stat == k
+        if not buff or buff.max_stack == 1 then return false end
+
+        if k == "any" then return true end
+
+        local proc = trinket.proc or "none"
+        if not proc then return false end
+
+        if k == "any_dps" then return not ( proc == "damage" or proc == "healing" or proc == "health" or proc == "absorb" or proc == "mana" or proc == "speed" or proc == "leech" or proc == "avoidance" ) end
+        return proc == k
     end
 }
 
@@ -514,14 +545,30 @@ setmetatable( state.trinket.main_hand.has_stacking_stat, mt_trinket_has_stacking
 
 local mt_trinket_has_stat = {
     __index = function( t, k )
-        local trinket = state.trinket[ t.slot ].id
+        local trinket = state.trinket[ t.slot ]
+        trinket = trinket and trinket.__ability
+        trinket = trinket and class.abilities[ trinket ]
 
-        if trinket == 0 then return false end
+        if not trinket then
+            return false
+        end
 
-        if k == "any" or k == "any_dps" then return class.trinkets[ trinket ].stat ~= nil end
-        if k == "ms" then k = "multistrike" end
+        local buff = trinket.self_buff
+        buff = buff and class.auras[ buff ]
 
-        return class.trinkets[ trinket ].stat == k
+        if not buff then
+            return false
+        end
+
+        if k == "any" then return true end
+
+        local proc = trinket.proc or "none"
+        if not proc then
+            return false
+        end
+
+        if k == "any_dps" then return not ( proc == "damage" or proc == "healing" or proc == "absorb" or proc == "mana" or proc == "speed" or proc == "leech" or proc == "avoidance" ) end
+        return proc == k
     end
 }
 
@@ -532,13 +579,7 @@ setmetatable( state.trinket.main_hand.has_stat, mt_trinket_has_stat )
 
 local mt_trinkets_has_stat = {
     __index = function( t, k )
-        if k == "ms" then k = "multistrike" end
-
-        if k == "any" then
-            return class.trinkets[ state.trinket.t1.id ].stat ~= nil or class.trinkets[ state.trinket.t2.id ].stat ~= nil
-        end
-
-        return class.trinkets[ state.trinket.t1.id ].stat == k or class.trinkets[ state.trinket.t2.id ].stat == k
+        return state.trinket.t1.has_stat[ k ] or state.trinket.t2.has_stat[ k ]
     end
 }
 
@@ -547,13 +588,7 @@ setmetatable( state.trinket.has_stat, mt_trinkets_has_stat )
 
 local mt_trinkets_has_stacking_stat = {
     __index = function( t, k )
-        if k == "ms" then k = "multistrike" end
-
-        if k == "any" then
-            return class.trinkets[ state.trinket.t1.id ].stacking_stat ~= nil or class.trinkets[ state.trinket.t2.id ].stacking_stat ~= nil
-        end
-
-        return class.trinkets[ state.trinket.t1.id ].stacking_stat == k or class.trinkets[ state.trinket.t2.id ].stacking_stat == k
+        return state.trinket.t1.has_stacking_stat[ k ] or state.trinket.t2.has_stacking_stat[ k ]
     end
 }
 
@@ -581,16 +616,16 @@ state.GetActiveLossOfControlData = C_LossOfControl.GetActiveLossOfControlData
 state.GetActiveLossOfControlDataCount = C_LossOfControl.GetActiveLossOfControlDataCount
 state.GetNumGroupMembers = GetNumGroupMembers
 -- state.GetItemCooldown = GetItemCooldown
-state.GetItemCount = GetItemCount
+state.GetItemCount = C_Item.GetItemCount
 state.GetItemGem = GetItemGem
 state.GetItemInfo = GetItemInfo
 state.GetPlayerAuraBySpellID = GetPlayerAuraBySpellID
 state.GetShapeshiftForm = GetShapeshiftForm
 state.GetShapeshiftFormInfo = GetShapeshiftFormInfo
-state.GetSpellCount = GetSpellCount
-state.GetSpellInfo = GetSpellInfo
+state.GetSpellCount = C_Spell.GetSpellCastCount
+state.GetSpellInfo = ns.GetUnpackedSpellInfo
 state.GetSpellLink = GetSpellLink
-state.GetSpellTexture = GetSpellTexture
+state.GetSpellTexture = C_Spell.GetSpellTexture
 state.GetStablePetInfo = GetStablePetInfo
 state.GetTime = GetTime
 state.GetTotemInfo = GetTotemInfo
@@ -599,10 +634,10 @@ state.IsActiveSpell = ns.IsActiveSpell
 state.IsPlayerSpell = IsPlayerSpell
 state.IsSpellKnown = IsSpellKnown
 state.IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
-state.IsUsableItem = IsUsableItem
-state.IsUsableSpell = IsUsableSpell
+state.IsUsableItem = C_Item.IsUsableItem
+state.IsUsableSpell = C_Spell.IsSpellUsable
 state.UnitAura = UnitAura
-state.UnitAuraSlots = UnitAuraSlots
+state.UnitAuraSlots = C_UnitAuras.GetAuraSlots
 state.UnitBuff = UnitBuff
 state.UnitCanAttack = UnitCanAttack
 state.UnitCastingInfo = UnitCastingInfo
@@ -2040,7 +2075,7 @@ do
                 t[k] = t.encounterID > 0 or UnitCanAttack( "player", "target" ) and ( UnitClassification( "target" ) == "worldboss" or UnitLevel( "target" ) == -1 )
             elseif k == "encounter" then t[k] = t.encounterID > 0
             elseif k == "group" then t[k] = t.group_members > 1
-            elseif k == "group_members" then t[k] = max( 1, GetNumGroupMembers() )
+            elseif k == "group_members" or k == "active_allies" then t[k] = max( 1, GetNumGroupMembers() )
             elseif k == "level" then t[k] = UnitEffectiveLevel("player") or MAX_PLAYER_LEVEL
             elseif k == "mounted" or k == "is_mounted" then t[k] = IsMounted()
             elseif k == "moving" then t[k] = ( GetUnitSpeed("player") > 0 )
@@ -2113,6 +2148,7 @@ do
             -- Stats (that refer to state.stat, generally)
             elseif k == "crit" or k == "spell_crit" or k == "attack_crit" then return ( t.stat.crit / 100 )
             elseif k == "haste" or k == "spell_haste" then return ( 1 / ( 1 + t.stat.spell_haste ) )
+            elseif k == "raw_haste_pct" then return t.stat.haste
             elseif k == "melee_haste" or k == "attack_haste" then return ( 1 / ( 1 + t.stat.melee_haste ) )
             elseif k == "mastery_value" then return t.stat.mastery_value
 
@@ -2260,7 +2296,9 @@ do
             elseif k == "charges" then return cooldown.charges
             elseif k == "charges_fractional" then return cooldown.charges_fractional
             elseif k == "charges_max" or k == "max_charges" then return ability and ability.charges or 1
+            elseif k == "cooldown_duration" then return cooldown.duration
             elseif k == "cooldown_react" or k == "cooldown_up" then return cooldown.remains == 0
+            elseif k == "cooldown_remains" then return cooldown.remains
             elseif k == "cost" then
                 if not ability then return 0 end
 
@@ -2536,7 +2574,7 @@ do
 
                 if totemIcon then
                     -- This is actually a totem; check them.
-                    local present, name, start, duration
+                    local present, name, start, duration, icon
 
                     for i = 1, 5 do
                         present, name, start, duration, icon = GetTotemInfo( i )
@@ -3001,7 +3039,12 @@ do
         __index = function( t, k )
             local ability = rawget( t, "key" ) and class.abilities[ t.key ] or class.abilities.null_cooldown
 
-            local GetCooldown = _G.GetSpellCooldown
+            local GetCooldown = function(spellID)
+                local spellCooldownInfo = C_Spell.GetSpellCooldown(spellID);
+                if spellCooldownInfo then
+                    return spellCooldownInfo.startTime, spellCooldownInfo.duration, spellCooldownInfo.isEnabled, spellCooldownInfo.modRate;
+                end
+            end
             local profile = Hekili.DB.profile
             local id = ability.id
 
@@ -3014,7 +3057,7 @@ do
                     GetCooldown = ability.funcs.cooldown_special
                     id = 999999
                 elseif ability.item then
-                    GetCooldown = _G.GetItemCooldown
+                    GetCooldown = GetItemCooldown
                     id = ability.itemCd or ability.item
                 end
             end
@@ -3041,7 +3084,7 @@ do
                 if id > 0 then
                     start, duration = GetCooldown( id )
                     local lossStart, lossDuration = GetSpellLossOfControlCooldown( id )
-                    if lossStart + lossDuration > start + duration then
+                    if lossStart and lossStart + lossDuration > start + duration then
                         start = lossStart
                         duration = lossDuration
                     end
@@ -3122,7 +3165,7 @@ do
                     if not state:IsKnown( t.key ) then return ability.charges or 1 end
                 end
 
-                return floor( t.charges_fractional )
+                return floor( t[ raw and "true_charges_fractional" or "charges_fractional" ] )
 
             elseif k == "charges_max" or k == "max_charges" then
                 return ability.charges or 1
@@ -3302,7 +3345,7 @@ local mt_gcd = {
             if gcd == "totem" then return 1 end
 
             if one_sec_gcd[ class.file ] or class.file == "DRUID" and UnitPowerType( "player" ) == Enum.PowerType.Energy then
-                return state.buff.adrenaline_rush.up and 0.8 or 1
+                return state.buff.adrenaline_rush.up and max( 0.75, state.haste ) or 1
             end
 
             return max( 1.5 * state.haste, state.buff.voidform.up and 0.67 or 0.75 )
@@ -3315,7 +3358,7 @@ local mt_gcd = {
 
         elseif k == "max" or k == "duration" then
             if one_sec_gcd[ class.file ] or class.file == "DRUID" and UnitPowerType( "player" ) == Enum.PowerType.Energy then
-                return state.buff.adrenaline_rush.up and 0.8 or 1
+                return state.buff.adrenaline_rush.up and max( 0.75, state.haste ) or 1
             end
 
             return max( 1.5 * state.haste, state.buff.voidform.up and 0.67 or 0.75 )
@@ -3876,7 +3919,7 @@ do
                 return t.applied <= state.query_time and max( 0, t.expires - state.query_time ) or 0
 
             elseif k == "duration" then
-                return aura.duration or ( t.remains > 0 and t.expires - t.applied ) or 15
+                return ( t.remains > 0 and t.expires - t.applied ) or aura.duration or 15
 
             elseif k == "refreshable" then
                 local tr = t.remains
@@ -4649,12 +4692,12 @@ do
                         end
 
                         -- Cache the value in case it is an intermediate value (i.e., multiple calculation steps).
-                        --[[ if debug then
+                        if debug then
                             conditions = format( "%s: %s", passed and "PASS" or "FAIL", scripts:GetConditionsAndValues( scriptID ) )
                             valueString = format( "%s: %s", state.args.value ~= nil and tostring( state.args.value ) or "nil", scripts:GetModifierValues( "value", scriptID ) )
 
                             Hekili:Debug( var .. " #" .. i .. " [" .. scriptID .. "]; conditions = " .. conditions .. "\n - value = " .. valueString )
-                        end ]]
+                        end
                         state.variable[ var ] = value
                         cache[ var ][ pathKey ] = value
                     end
@@ -4720,6 +4763,8 @@ ns.metatables.mt_equipped = mt_equipped
 
 -- Aliases let a single buff name refer to any of multiple buffs.
 -- Developed mainly for RtB; it will also report "stack" or "count" as the sum of stacks of multiple buffs.
+local mt_alias_debuff
+
 do
     local autoReset = setmetatable( {
         applied = 1,
@@ -4943,7 +4988,7 @@ do
                 return t.remains == 0
 
             elseif k == "duration" then
-                return aura.duration or ( t.remains > 0 and t.expires - t.applied ) or 30
+                return ( t.remains > 0 and t.expires - t.applied ) or aura.duration or 30
 
             elseif k == "remains" then
                 return t.applied <= state.query_time and max( 0, t.expires - state.query_time ) or 0
@@ -4964,8 +5009,10 @@ do
 
             elseif k == "stack_pct" then
                 if t.remains == 0 then return 0 end
-                if aura then aura.max_stack = max( aura.max_stack or 1, t.count ) end
-                return ( 100 * t.count / aura and aura.max_stack or t.count )
+                if aura then
+                    return ( 100 * t.count / max( aura and aura.max_stack or 1, t.count ) )
+                end
+                return 100
 
             elseif k == "value" then
                 if t.remains == 0 then return 0 end
@@ -5226,7 +5273,7 @@ local mt_default_action = {
             return false
 
         elseif k == "cooldown_react" then
-            return false
+            return state.cooldown[ t.action ].remains == 0
 
         elseif k == "cast_delay" then
             return 0
@@ -5892,7 +5939,7 @@ do
                 elseif type == "CHANNEL_START" then
                     time = start
 
-                elseif type == "CHANNEL_FINISH" or type == "CAST_FINISH" then
+                elseif not time and ( type == "CHANNEL_FINISH" or type == "CAST_FINISH" ) then
                     time = start + ability.cast
 
                 end
@@ -6171,6 +6218,8 @@ do
             -- Perform the action.
             self:RunHandler( action )
             self.hardcast = nil
+            self.whitelist = nil
+            self.removeBuff( "casting" ) -- TODO: Revisit for Casting while Casting scenarios; check Fire Mage.
 
             if wasCycling then
                 self.SetCycleInfo( expires, minTTD, maxTTD, aura )
@@ -6187,7 +6236,8 @@ do
 
         elseif e.type == "CHANNEL_FINISH" then
             if ability.finish then ability.finish() end
-            -- self.stopChanneling( false, ability.key )
+            self.whitelist = nil
+            self.removeBuff( "casting" )
 
         elseif e.type == "PROJECTILE_IMPACT" then
             local wasCycling = self.IsCycling( nil, true )
@@ -6534,6 +6584,7 @@ do
         if not state.health.initialized then
             state.health.resource = "health"
             state.health.meta = {}
+            state.health.percent = nil
             setmetatable( state.health, mt_resource )
             state.health.initialized = true
         end
@@ -6747,10 +6798,6 @@ end
 
 
 function state.advance( time )
-    if time <= 0 then
-        return
-    end
-
     if not state.resetting and not state.modified then
         state.modified = true
     end
@@ -6794,6 +6841,10 @@ function state.advance( time )
 
         eCount = eCount + 1
         if eCount == 10 then break end
+    end
+
+    if time <= 0 then
+        return
     end
 
     for k in pairs( class.resources ) do
@@ -7010,13 +7061,12 @@ function state:IsKnown( sID )
 
     if not sID then
         return false, "could not find valid ID" -- no ability
-
     end
 
     local ability = class.abilities[ sID ]
 
     if not ability then
-        Error( "IsKnown() - " .. sID .. " / " .. original .. " not found in abilities table.\n\n" .. debugstack() )
+        Error( "IsKnown() - " .. tostring( sID ) .. " / " .. original .. " not found in abilities table.\n\n" .. debugstack() )
         return false, format( "%s / %s not found in abilities table", tostring( original ), tostring( sID ) )
     end
 
@@ -7469,12 +7519,10 @@ function state:TimeToReady( action, pool )
         wait = z
     end
 
-    local line_cd = state.args.line_cd
-    if ( line_cd and type( line_cd ) == "number" ) then
-        if lastCast > self.combat then
-            if Hekili.ActiveDebug then Hekili:Debug( "Line CD is " .. line_cd .. ", last cast was " .. lastCast .. ", remaining CD: " .. max( 0, lastCast + line_cd - now ) ) end
-            wait = max( wait, lastCast + line_cd - now )
-        end
+    local line_cd = self.args.line_cd
+    if self.time > 0 and lastCast > max( self.combat, self.false_start ) and line_cd and type( line_cd ) == "number" then
+        if Hekili.ActiveDebug then Hekili:Debug( "Line CD is " .. line_cd .. ", last cast was " .. lastCast .. ", remaining CD: " .. max( 0, lastCast + line_cd - now ) ) end
+        wait = max( wait, lastCast + line_cd - now )
     end
 
     local sync = state.args.sync

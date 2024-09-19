@@ -2,7 +2,7 @@
 
 	The MIT License (MIT)
 
-	Copyright (c) 2023 Lars Norberg
+	Copyright (c) 2024 Lars Norberg
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,12 @@
 
 --]]
 local _, Private =  ...
+
+-- WoW 11.0.x
+local GetAddOnEnableState = GetAddOnEnableState or function(character, name) return C_AddOns.GetAddOnEnableState(name, character) end
+local GetAddOnInfo = GetAddOnInfo or C_AddOns.GetAddOnInfo
+local GetNumAddOns = GetNumAddOns or C_AddOns.GetNumAddOns
+
 for i = 1,GetNumAddOns() do
 	local name, _, _, loadable = GetAddOnInfo(i)
 	if (name == "Bagnon_ItemInfo") then

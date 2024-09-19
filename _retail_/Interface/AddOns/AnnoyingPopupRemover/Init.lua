@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2015-2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v20.5.0-release
+-- Addon version: v22.1.0-release
 
 
 -- This file initializes some settings for Annoying Popup Remover.
@@ -24,7 +24,7 @@ APR.StoredDialogs = {}
 APR.Modules = {}
 
 -- Set the current version so we can display it.
-APR.Version = "v20.5.0-release"
+APR.Version = "v22.1.0-release"
 
 --[=[@alpha@
 -- Enable debug mode for test only

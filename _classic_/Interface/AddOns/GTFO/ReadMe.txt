@@ -2062,3 +2062,77 @@ Change Log:
 * Added TWW spells for The Stonevault
 * Added TWW spells for The Waterworks
 * Added TWW spells for Underkeep
+
+5.9.3
+* Added Dragonflight spells (world)
+* Added Dragonflight spells for Aberrus, the Shadowed Crucible
+* Added TWW spells for TWW Delves 
+* Added TWW spells for Darkflame Cleft
+* Combined all delves into one section
+* Added Pandaria spells for Temple of the Jade Serpent
+
+5.10
+* Updated for patch 11.0
+* Added TWW spells for Darkflame Cleft
+* Added Dragonflight spells (world)
+* Added Shadowlands spells (world)
+
+5.11
+* Updated TOC for Classic 1.5.3
+* Fixed options menu opening incorrectly
+* Added Addon Compartment support (Thanks NoctusMirus)
+* Fixed BFA spells for Battle of Dazar'alor
+* Fixed Cataclysm spells for Blackwing Descent (Thanks Emuburger)
+
+5.11.1
+* Fixed issue with update notifications
+
+5.11.2
+* Updated for patch 11.0.2
+
+5.11.3
+* Updated for patch 11.0.2
+* Added The War Within spells (world)
+* Added TWW spells for The Rookery
+* Fixed TWW general environment debuff spells for TWW Delves to be less spammy
+
+5.11.4
+* Added The War Within spells (world)
+* Added TWW spells for The Rookery
+* Added TWW spells for TWW Delves 
+
+5.12
+* Improved internal scanner to assist with verifying alerts marked as "test"
+* Added The War Within spells (world)
+* Added TWW spells for The Rookery
+* Added TWW spells for The Stonevault
+* Added TWW spells for Darkflame Cleft
+* Added TWW spells for Priory of the Scared Flame
+* Added special ignore for "Smothering Shadows" (Darkflame Cleft - TWW)
+
+5.12.1
+* Added TWW spells for City of Threads
+* Added TWW spells for The Dawnbreaker
+* Added TWW spells for Cinderbrew Meadery
+
+5.12.2
+* Added The War Within spells (world)
+* Added TWW spells for Darkflame Cleft
+* Added TWW spells for Priory of the Scared Flame
+* Added TWW spells for TWW Delves 
+
+5.12.3
+* Added The War Within spells (world)
+* Added TWW spells for Nerub-ar Palace
+* Added TWW spells for City of Threads
+* Added TWW spells for Priory of the Scared Flame
+* Added Cataclysm spells for Grim Batol (Mythic)
+
+5.12.4
+* Added The War Within spells (world)
+* Added TWW spells for Nerub-ar Palace
+* Added TWW spells for Ara-Kara, City of Echoes
+* Added TWW spells for TWW Delves 
+* Added SL spells for Mists of Tirna Scithe
+* Added BFA spells for Siege of Boralus
+

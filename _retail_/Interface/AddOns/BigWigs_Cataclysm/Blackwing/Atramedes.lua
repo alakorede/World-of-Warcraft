@@ -26,7 +26,7 @@ local shieldCollector = {}
 local L = mod:GetLocale()
 if L then
 	L.obnoxious_fiend = "Obnoxious Fiend" -- NPC ID 49740
-	L.air_phase_trigger = "Yes, run! With every step your heart quickens."
+	L.circles = "Circles"
 end
 
 --------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ function mod:GetOptions()
 		-- Grounded Abilities
 		77840, -- Searing Flame
 		77612, -- Modulation
-		77672, -- Sonar Pulse
+		{77672, "OFF"}, -- Sonar Pulse
 		-- Heroic
 		{92685, "SAY"}, -- Pestered!
 		obnoxiousFiendMarker,
@@ -48,6 +48,7 @@ function mod:GetOptions()
 		{78075, "ICON", "SAY", "ME_ONLY_EMPHASIZE"}, -- Sonic Breath
 		{77611, "INFOBOX"}, -- Resonating Clash
 		78023, -- Roaring Flame
+		77717, -- Vertigo
 		"stages",
 		"altpower",
 	},{
@@ -55,10 +56,12 @@ function mod:GetOptions()
 		[92685] = "heroic",
 		[78075] = "general"
 	},{
+		[77672] = L.circles, -- Sonar Pulse (Circles)
 		[92685] = CL.add, -- Pestered! (Add)
 		[78075] = CL.breath, -- Sonic Breath (Breath)
 		[77611] = CL.shield, -- Resonating Clash (Shield)
 		[78023] = CL.underyou:format(CL.fire), -- Roaring Flame (Fire under YOU)
+		[77717] = CL.stunned, -- Vertigo (Stunned)
 	}
 end
 
@@ -83,6 +86,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "ResonatingClash", 77611, 78168) -- Stage 1, Stage 2
 	self:Log("SPELL_INSTAKILL", "SonicFlamesKill", 77782, 78945) -- Stage 1, Stage 2
 	self:Death("ShieldDies", 42954, 42960, 42949, 42947, 42956, 42951, 42958, 41445) -- 8 Ancient Dwarven Shield, there are 10, but 2 share the same ID...
+	self:Log("SPELL_AURA_APPLIED", "VertigoApplied", 77717)
 
 	self:Log("SPELL_CAST_SUCCESS", "PhaseShift", 92681)
 	self:Log("SPELL_AURA_APPLIED", "PesteredApplied", 92685)
@@ -99,15 +103,15 @@ function mod:OnEngage()
 	shieldCollector = {}
 	self:SetStage(1)
 	self:CDBar(77612, 11, CL.count:format(self:SpellName(77612), modulationCount)) -- Modulation
-	self:CDBar(77672, 11.3) -- Sonar Pulse
+	self:CDBar(77672, 11.3, L.circles) -- Sonar Pulse
 	self:CDBar(78075, 22, CL.breath) -- Sonic Breath
-	self:Bar(77840, 45, CL.count:format(self:SpellName(77840), searingFlameCount)) -- Searing Flame
+	self:CDBar(77840, 45, CL.count:format(self:SpellName(77840), searingFlameCount)) -- Searing Flame
 	self:Bar("stages", 91, CL.stage:format(2), "achievement_boss_nefarion")
 	if self:Heroic() then
 		self:Berserk(600)
 	end
 	self:OpenAltPower("altpower", self:SpellName(-3072)) -- "Sound"
-	self:OpenInfo(77611, "BigWigs: ".. CL.shield)
+	self:OpenInfo(77611, CL.other:format("BigWigs", CL.shield))
 	self:SetInfo(77611, 1, CL.remaining:format(10))
 	self:SetInfoBar(77611, 1, 1)
 end
@@ -121,10 +125,10 @@ do
 		self:SetStage(1)
 		self:Message("stages", "cyan", CL.stage:format(1), false)
 		self:Bar("stages", 85, CL.stage:format(2), "achievement_boss_nefarion")
-		self:CDBar(77672, 12.3) -- Sonar Pulse
+		self:CDBar(77672, 12.3, L.circles) -- Sonar Pulse
 		self:CDBar(77612, 14, CL.count:format(self:SpellName(77612), modulationCount)) -- Modulation
 		self:CDBar(78075, 23, CL.breath) -- Sonic Breath
-		self:Bar(77840, self:Classic() and 47 or 39, CL.count:format(self:SpellName(77840), searingFlameCount)) -- Searing Flame
+		self:CDBar(77840, self:Classic() and 47 or 39, CL.count:format(self:SpellName(77840), searingFlameCount)) -- Searing Flame
 		self:PlaySound("stages", "long")
 	end
 	function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, _, spellId)
@@ -132,7 +136,7 @@ do
 			local stage2Msg = CL.stage:format(2)
 			self:StopBar(stage2Msg)
 			self:StopBar(CL.breath) -- Sonic Breath
-			self:StopBar(77672) -- Sonar Pulse
+			self:StopBar(L.circles) -- Sonar Pulse
 			self:SetStage(2)
 			self:StopBar(CL.count:format(self:SpellName(77612), modulationCount)) -- Modulation
 			self:Message("stages", "cyan", stage2Msg, false)
@@ -161,7 +165,9 @@ function mod:SonicBreath(args)
 end
 
 function mod:SearingFlameApplied(args)
-	self:Message(args.spellId, "yellow", CL.count:format(args.spellName, searingFlameCount))
+	local msg = CL.count:format(args.spellName, searingFlameCount)
+	self:StopBar(msg)
+	self:Message(args.spellId, "yellow", msg)
 	searingFlameCount = searingFlameCount + 1
 	self:PlaySound(args.spellId, "warning")
 end
@@ -176,7 +182,7 @@ function mod:Modulation(args)
 end
 
 function mod:SonarPulse(args)
-	self:CDBar(args.spellId, 11.3)
+	self:CDBar(args.spellId, 11.3, L.circles)
 end
 
 do
@@ -186,7 +192,7 @@ do
 		if self:Player(args.sourceFlags) then -- The shield itself also casts it
 			prev = args.time
 			shieldCount = shieldCount + 1
-			local colorName = self:ColorName(args.sourceName)
+			local colorName = self:ColorName(args.sourceName, true)
 			table.insert(shieldClickers, 2, ("%d %s"):format(shieldCount, colorName))
 			self:Message(77611, "cyan", CL.other:format(CL.count:format(CL.shield, shieldCount), colorName), false)
 			self:SetInfo(77611, 1, CL.remaining:format(10-shieldCount))
@@ -196,7 +202,7 @@ do
 				self:SetInfo(77611, lineRef[i], shieldClickers[i] or "")
 			end
 			self:PlaySound(77611, "info")
-		elseif args.spellId == 77611 and (args.time - prev) > 0.1 then -- Rarely it seems like the player cast is missing in Stage 1
+		elseif args.spellId == 77611 and (args.time - prev) > 0.5 then -- Rarely it seems like the player cast is missing in Stage 1
 			shieldCount = shieldCount + 1
 			table.insert(shieldClickers, 2, ("%d ?"):format(shieldCount))
 			self:Message(77611, "cyan", CL.other:format(CL.count:format(CL.shield, shieldCount), "?"), false)
@@ -230,6 +236,10 @@ do
 	end
 end
 
+function mod:VertigoApplied(args)
+	self:Bar(args.spellId, 5, CL.stunned)
+end
+
 do
 	local addGUID = nil
 	function mod:ObnoxiousFiendMarking(_, unit, guid)
@@ -246,15 +256,13 @@ do
 	end
 end
 
-do
-	function mod:PesteredApplied(args)
-		if self:Player(args.destFlags) then -- The add itself also gains it
-			if self:Me(args.destGUID) then
-				self:Yell(args.spellId, CL.add, nil, "Add")
-			end
-			self:TargetMessage(args.spellId, "red", args.destName, CL.add)
-			self:PlaySound(args.spellId, "alarm", nil, args.destName)
+function mod:PesteredApplied(args)
+	if self:Player(args.destFlags) then -- The add itself also gains it
+		if self:Me(args.destGUID) then
+			self:Yell(args.spellId, CL.add, nil, "Add")
 		end
+		self:TargetMessage(args.spellId, "red", args.destName, CL.add)
+		self:PlaySound(args.spellId, "alarm", nil, args.destName)
 	end
 end
 

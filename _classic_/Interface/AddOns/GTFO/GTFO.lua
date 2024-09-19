@@ -26,13 +26,13 @@ GTFO = {
 		SoundOverrides = { "", "", "", "" }; -- Override table for GTFO sounds
 		IgnoreSpellList = { };
 	};
-	Version = "5.9.2"; -- Version number (text format)
+	Version = "5.12.4"; -- Version number (text format)
 	VersionNumber = 0; -- Numeric version number for checking out-of-date clients (placeholder until client is detected)
-	RetailVersionNumber = 50901; -- Numeric version number for checking out-of-date clients (retail)
-	ClassicVersionNumber = 50900; -- Numeric version number for checking out-of-date clients (Vanilla classic)
+	RetailVersionNumber = 51204; -- Numeric version number for checking out-of-date clients (retail)
+	ClassicVersionNumber = 51101; -- Numeric version number for checking out-of-date clients (Vanilla classic)
 	BurningCrusadeVersionNumber = 50000; -- Numeric version number for checking out-of-date clients (TBC classic)
 	WrathVersionNumber = 50503; -- Numeric version number for checking out-of-date clients (Wrath classic)
-	CataclysmVersionNumber = 50900; -- Numeric version number for checking out-of-date clients (Wrath classic)
+	CataclysmVersionNumber = 51101; -- Numeric version number for checking out-of-date clients (Wrath classic)
 	DataLogging = nil; -- Indicate whether or not the addon needs to run the datalogging function (for hooking)
 	DataCode = "4"; -- Saved Variable versioning, change this value to force a reset to default
 	CanTank = nil; -- The active character is capable of tanking
@@ -95,7 +95,7 @@ GTFOData = {};
 
 local buildNumber = select(4, GetBuildInfo());
 
-if (buildNumber >= 101000) then
+if (buildNumber >= 110100) then
 	GTFO.BetaMode = true;
 end
 if (buildNumber >= 100000) then
@@ -1160,13 +1160,12 @@ end
 
 -- Create Addon Menu options and interface
 function GTFO_RenderOptions()
-	if (GTFO.BetaMode) then
-		-- TODO: Rebuild configuration menus in new TWW format
+	if (GTFO.RetailMode) then
 		-- TWW version (TWW)
 		local ConfigurationPanel = CreateFrame("FRAME","GTFO_MainFrame");
 		ConfigurationPanel.name = "GTFO";
 		local category, layout = Settings.RegisterCanvasLayoutCategory(ConfigurationPanel, ConfigurationPanel.name);
-		Settings.RegisterCategory(category);
+		Settings.RegisterAddOnCategory(category);
 		GTFO.SettingsCategoryId = category:GetID();
 
 		local IntroMessageHeader = ConfigurationPanel:CreateFontString(nil, "ARTWORK","GameFontNormalLarge");
@@ -1336,7 +1335,7 @@ function GTFO_RenderOptions()
 		IgnoreOptionsPanel.name = GTFOLocal.UI_SpecialAlerts;
 		IgnoreOptionsPanel.parent = ConfigurationPanel.name;
 		local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, IgnoreOptionsPanel, IgnoreOptionsPanel.name);
-		Settings.RegisterCategory(subcategory);
+		Settings.RegisterAddOnCategory(subcategory);
 		GTFO.SettingsSpecialAlertsCategoryId = subcategory:GetID();
 
 		local IntroMessageHeader2 = IgnoreOptionsPanel:CreateFontString(nil, "ARTWORK","GameFontNormalLarge");
@@ -1361,7 +1360,7 @@ function GTFO_RenderOptions()
 
 		GTFOSpellTooltip:ClearLines();
 	elseif (GTFO.NewSettingsUIMode) then
-		-- Modern version (Dragonflight)
+		-- Dragonflight version
 		local ConfigurationPanel = CreateFrame("FRAME","GTFO_MainFrame");
 		ConfigurationPanel.name = "GTFO";
 		InterfaceOptions_AddCategory(ConfigurationPanel);
@@ -1775,6 +1774,26 @@ function GTFO_RenderOptions()
 			end
 	end
 
+	if (AddonCompartmentFrame) then
+		AddonCompartmentFrame:RegisterAddon({
+			text = "GTFO",
+			icon = "Interface\\Icons\\spell_fire_fire.blp",
+			notCheckable = true,
+			func = function(button, menuInputData, menu)
+				Settings.OpenToCategory(GTFO.SettingsCategoryId);
+			end,
+			funcOnEnter = function(button)
+				MenuUtil.ShowTooltip(button, function(tooltip)
+					tooltip:SetText("GTFO "..GTFO.Version);
+					tooltip:AddLine("|cFFFFFFFF"..GTFOLocal.Help_Options.."|r");
+				end)
+			end,
+			funcOnLeave = function(button)
+				MenuUtil.HideTooltip(button)
+			end,
+		});
+	end
+
 	GTFO.UIRendered = true;
 end
 
@@ -2087,7 +2106,7 @@ function GTFO_SendUpdateRequest()
 end
 
 function GTFO_Command_Options()
-	if (GTFO.BetaMode) then
+	if (GTFO.RetailMode) then
 		Settings.OpenToCategory(GTFO.SettingsCategoryId);
 		Settings.OpenToCategory(GTFO.SettingsCategoryId);
 		Settings.OpenToCategory(GTFO.SettingsCategoryId);
@@ -2744,9 +2763,29 @@ function GTFO_GetRealmName()
 end
 
 function GTFO_SpellScan(spellId, spellOrigin, spellDamage)
+	local test = false;
 	if (GTFO.Settings.ScanMode) then
 		local damage = tonumber(spellDamage) or 0;
-		if not (GTFO.Scans[spellId] or GTFO.SpellID[spellId] or GTFO.FFSpellID[spellId] or GTFO.IgnoreScan[spellId]) then
+		if (GTFO.Scans[spellId]) then
+			GTFO.Scans[spellId].Times = GTFO.Scans[spellId].Times + 1;
+			GTFO.Scans[spellId].Damage = GTFO.Scans[spellId].Damage + damage;
+			return true;
+		elseif (GTFO.IgnoreScan[spellId]) then
+			-- Ignored spell
+			return false;
+		else
+			if (GTFO.SpellID[spellId]) then 
+				test = GTFO.SpellID[spellId].test or false;
+				if not (test) then
+					return false;
+				end
+			elseif (GTFO.FFSpellID[spellId]) then
+				test = GTFO.FFSpellID[spellId].test or false;
+				if not (test) then
+					return false;
+				end
+			end
+
 			GTFO.Scans[spellId] = {
 				TimeAdded = GetTime();
 				Times = 1;
@@ -2756,17 +2795,15 @@ function GTFO_SpellScan(spellId, spellOrigin, spellDamage)
 				SpellOrigin = tostring(spellOrigin);
 				IsDebuff = (spellDamage == "DEBUFF");
 				Damage = damage;
+				IsTest = test;
 			};
-			return true;
-		elseif (GTFO.Scans[spellId]) then
-			GTFO.Scans[spellId].Times = GTFO.Scans[spellId].Times + 1;
-			GTFO.Scans[spellId].Damage = GTFO.Scans[spellId].Damage + damage;
 			return true;
 		end
 	end
 	return false;
 end
 
+-- For Vanilla Classic because SpellIDs are not available
 function GTFO_SpellScanName(spellName, spellOrigin, spellDamage)
 	if (GTFO.Settings.ScanMode) then
 		local damage = tonumber(spellDamage) or 0;
@@ -2821,6 +2858,9 @@ function GTFO_Command_Data()
 		if (data.IsDebuff) then
 			dataOutput = dataOutput.."  applicationOnly = true;\n";
 		end
+		if (data.IsTest) then
+			dataOutput = dataOutput.."  test = true;\n";
+		end
 		dataOutput = dataOutput.."  sound = 1;\n";
 		dataOutput = dataOutput.."};\n";
 		dataOutput = dataOutput.."\n";
@@ -2863,7 +2903,7 @@ function GTFO_GetCurrentSoundChannelId(sSoundChannel)
 end
 
 function GTFO_GetSpellName(spellId)
-	if (GTFO.BetaMode) then
+	if (GTFO.RetailMode) then
 		local spell = C_Spell.GetSpellInfo(spellId);
 		if (spell) then
 			return spell.name;
@@ -2874,7 +2914,7 @@ function GTFO_GetSpellName(spellId)
 end
 
 function GTFO_GetSpellLink(spellId)
-	if (GTFO.BetaMode) then
+	if (GTFO.RetailMode) then
 		return C_Spell.GetSpellLink(spellId);
 	else
 		return GetSpellLink(spellId);
@@ -2882,7 +2922,7 @@ function GTFO_GetSpellLink(spellId)
 end
 
 function GTFO_GetSpellDescription(spellId)
-	if (GTFO.BetaMode) then
+	if (GTFO.RetailMode) then
 		return C_Spell.GetSpellDescription(spellId);
 	else
 		return GetSpellDescription(spellId);

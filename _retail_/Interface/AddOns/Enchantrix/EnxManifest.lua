@@ -1,6 +1,6 @@
 --[[
 	Enchantrix Addon for World of Warcraft(tm).
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://enchantrix.org/
 
@@ -39,14 +39,7 @@ manifest.revs = { }
 manifest.dist = {
 --[[<%revisions%>]]}
 
-local libRevision = LibStub("LibRevision")
-function manifest.RegisterRevision(path, revision)
-	local detail, file, rev = libRevision:Set(path,revision,"5.1.DEV.", 'auctioneer', 'libs')
-	if not file then return end
-	manifest.revs[file] = rev
-	if (nLog) then
-		nLog.AddMessage("Enchantrix", "EnxRevision", N_INFO, "Loaded revisioned file", "Loaded", file, "revision", rev)
-	end
+function manifest.RegisterRevision() -- ### LibRevision removed
 end
 Enchantrix_RegisterRevision = manifest.RegisterRevision
 

@@ -7,8 +7,8 @@ local contains = app.contains;
 -- Global locals
 local coroutine, ipairs, pairs, pcall, rawset, tinsert, tremove, tonumber, math_floor, math_sqrt, math_random
 	= coroutine, ipairs, pairs, pcall, rawset, tinsert, tremove, tonumber, math.floor, math.sqrt, math.random;
-local CreateVector2D, GetRealZoneText, GetSubZoneText, InCombatLockdown
-	= CreateVector2D, GetRealZoneText, GetSubZoneText, InCombatLockdown;
+local CreateVector2D, GetInstanceInfo, GetRealZoneText, GetSubZoneText, InCombatLockdown
+	= CreateVector2D, GetInstanceInfo, GetRealZoneText, GetSubZoneText, InCombatLockdown;
 local C_Map_GetMapArtID = C_Map.GetMapArtID;
 local C_Map_GetMapLevels = C_Map.GetMapLevels;
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit;
@@ -61,6 +61,10 @@ local function GetCurrentMapID()
 		name = GetZoneText();
 		if name and name:len() > 0 then
 			zoneTexts[name] = 1;
+		end
+		local instanceName,instanceType = GetInstanceInfo();
+		if instanceType and instanceType ~= "none" then
+			zoneTexts[instanceName] = 1;
 		end
 
 		substitutions = remap.areaIDs;
@@ -141,6 +145,10 @@ local function GetCurrentMapID()
 		if name and name:len() > 0 then
 			zoneTexts[name] = 1;
 		end
+		local instanceName,instanceType = GetInstanceInfo();
+		if instanceType and instanceType ~= "none" then
+			zoneTexts[instanceName] = 1;
+		end
 		for mapID,remap in pairs(app.MapRemapping) do
 			substitutions = remap.areaIDs;
 			if substitutions then
@@ -176,6 +184,18 @@ local function GetMapName(mapID)
 		return "Map ID #???";
 	end
 end
+local function GetPlayerPosition()
+	local mapID = app.CurrentMapID;
+	if mapID then
+		local pos = C_Map_GetPlayerMapPosition(mapID, "player");
+		if pos then
+			local px, py = pos:GetXY();
+			return mapID, px * 100, py * 100;
+		end
+	end
+	return mapID, 50, 50;
+end
+app.GetPlayerPosition = GetPlayerPosition
 local UpdateLocation
 if app.GameBuildVersion < 30000 then
 	-- Before Wrath Classic we didn't have mapIDs in the world proper, so ATT had to make a guess.
@@ -200,8 +220,27 @@ if app.GameBuildVersion < 30000 then
 	UpdateLocation = function()
 		app:StartATTCoroutine("UpdateLocation", UpdateLocationCoroutine);
 	end
-else
-	local Callback, DelayedCallback = app.CallbackHandlers.Callback, app.CallbackHandlers.DelayedCallback
+elseif not app.IsRetail then
+	-- After Wrath Classic you don't need to wait for a bit before checking.
+	local UpdateLocationCoroutine = function()
+		-- Acquire the new map ID.
+		local mapID = GetCurrentMapID();
+		while not mapID do
+			coroutine.yield();
+			mapID = GetCurrentMapID();
+		end
+		if CurrentMapID ~= mapID then
+			CurrentMapID = mapID;
+			app.CurrentMapID = mapID;
+			app.CurrentMapInfo = C_Map_GetMapInfo(mapID);
+			app.HandleEvent("OnCurrentMapIDChanged");
+		end
+	end
+	UpdateLocation = function()
+		app:StartATTCoroutine("UpdateLocation", UpdateLocationCoroutine);
+	end
+else	-- Retail [please don't make this a coroutine... we need the logic to execute when it's expected to based on Events]
+	local Callback = app.CallbackHandlers.Callback
 	-- After Wrath Classic you don't need to wait for a bit before checking.
 	local function RawUpdateLocation()
 		-- Acquire the new map ID.
@@ -219,7 +258,7 @@ else
 	end
 	-- Some of these location events trigger tons of times all at once
 	UpdateLocation = function()
-		DelayedCallback(RawUpdateLocation, 0.25)
+		Callback(RawUpdateLocation)
 	end
 end
 app.AddEventHandler("OnReady", UpdateLocation);
@@ -364,12 +403,10 @@ app.CheckExplorationForCurrentLocation = CheckExplorationForCurrentLocation;
 
 -- Event Handling
 app.AddEventHandler("OnRecalculate", CheckExplorationForCurrentLocation);
-app.events.MAP_EXPLORATION_UPDATED = CheckExplorationForCurrentLocation;
-app.events.UI_INFO_MESSAGE = function(messageID)
+app.AddEventRegistration("MAP_EXPLORATION_UPDATED", CheckExplorationForCurrentLocation)
+app.AddEventRegistration("UI_INFO_MESSAGE", function(messageID)
 	if messageID == 372 then CheckExplorationForCurrentLocation(); end
-end
-app:RegisterEvent("MAP_EXPLORATION_UPDATED");
-app:RegisterEvent("UI_INFO_MESSAGE");
+end)
 
 -- Harvesting
 local MAXIMUM_COORDS_PER_AREA = 5;
@@ -587,7 +624,7 @@ local function HarvestExploration(simplify)
 							-- Make sure the exploration header has all the objects
 							for _,areaID in ipairs(areaIDs) do
 								if not byExplorationID[areaID] then
-									o = app.CreateExploration(areaID);
+									local o = app.CreateExploration(areaID);
 									o.mapID = mapID;
 									o.parent = explorationHeader;
 									tinsert(explorationHeader.g, o);
@@ -679,7 +716,7 @@ app.CreateMap = app.CreateClass("Map", "mapID", {
 		local position = C_Map_GetPlayerMapPosition(mapID, "player")
 		if position then
 			local x,y = position:GetXY()
-			return { math_floor(x * 1000) / 10, math_floor(y * 1000) / 10, mapID };
+			return { app.round(x * 100, 1), app.round(y * 100, 1), mapID };
 		end
 	end,
 	["isCurrentMap"] = function(t)
@@ -825,12 +862,16 @@ app.CreateInstance = app.CreateClass("Instance", "instanceID", instanceFields,
 		return L.HEADER_DESCRIPTIONS[t.headerID];
 	end,
 }, (function(t)
-	local creatureID = t.creatureID;
-	if creatureID and creatureID < 0 then
-		t.headerID = creatureID;
-		t.creatureID = nil;
-		t.npcID = nil;
+	if t.headerID then
 		return true;
+	else
+		local creatureID = t.creatureID or t.npcID;
+		if creatureID and creatureID < 0 then
+			t.headerID = creatureID;
+			t.creatureID = nil;
+			t.npcID = nil;
+			return true;
+		end
 	end
 end));
 
@@ -967,24 +1008,23 @@ local function RefreshSavesCallback()
 	-- Mark that we're done now.
 	app.HandleEvent("OnSavesUpdated");
 end
-app.events.LOOT_CLOSED = function()
+app.AddEventRegistration("LOOT_CLOSED", function()
 	-- Once the loot window closes after killing a boss, THEN trigger the update.
 	app:UnregisterEvent("LOOT_CLOSED");
-	app:UnregisterEvent("UPDATE_INSTANCE_INFO");
 	app:RegisterEvent("UPDATE_INSTANCE_INFO");
 	RequestRaidInfo();
-end
-app.events.UPDATE_INSTANCE_INFO = function()
+end)
+local function Event_UPDATE_INSTANCE_INFO()
 	app:UnregisterEvent("UPDATE_INSTANCE_INFO");
 	AfterCombatCallback(RefreshSavesCallback);
 end
-app.AddEventHandler("OnStartup", app.events.UPDATE_INSTANCE_INFO);
+app.AddEventRegistration("UPDATE_INSTANCE_INFO", Event_UPDATE_INSTANCE_INFO)
+app.AddEventHandler("OnStartup", Event_UPDATE_INSTANCE_INFO);
 app.AddEventRegistration("BOSS_KILL", function(id, name, ...)
 	-- This is so that when you kill a boss, you can trigger
 	-- an automatic update of your saved instance cache.
 	-- (It does lag a little, but you can disable this if you want.)
 	-- Waiting until the LOOT_CLOSED occurs will prevent the failed Auto Loot bug.
 	-- print("BOSS_KILL", id, name, ...);
-	app:UnregisterEvent("LOOT_CLOSED");
 	app:RegisterEvent("LOOT_CLOSED");
 end);

@@ -13,6 +13,8 @@ local bossModPrototype = private:GetPrototype("DBMMod")
 ---@class Difficulties
 local difficulties = private:GetPrototype("Difficulties")
 
+local test = private:GetPrototype("DBMTest")
+
 difficulties.savedDifficulty = nil
 difficulties.difficultyIndex = nil
 difficulties.difficultyText = nil
@@ -47,7 +49,7 @@ if private.isRetail then
 		[1861] = {50, 3}, [2070] = {50, 3}, [2096] = {50, 3}, [2164] = {50, 3}, [2217] = {50, 3},--BfA Raids
 		[2296] = {60, 3}, [2450] = {60, 3}, [2481] = {60, 3},--Shadowlands Raids (yes, only 3 kekw, seconded)
 		[2522] = {70, 3}, [2569] = {70, 3}, [2549] = {70, 3},--Dragonflight Raids
-		[2657] = {80, 3},--War Within Raids
+		[2657] = {80, 3}, [2792] = {70, 3},--War Within Raids
 		--Dungeons
 		[48] = {30, 2}, [230] = {30, 2}, [429] = {30, 2}, [389] = {30, 2}, [34] = {30, 2},--Classic Dungeons
 		[540] = {30, 2}, [558] = {30, 2}, [556] = {30, 2}, [555] = {30, 2}, [542] = {30, 2}, [546] = {30, 2}, [545] = {30, 2}, [547] = {30, 2}, [553] = {30, 2}, [554] = {30, 2}, [552] = {30, 2}, [557] = {30, 2}, [269] = {30, 2}, [560] = {30, 2}, [543] = {30, 2}, [585] = {30, 2},--BC Dungeons
@@ -110,6 +112,14 @@ else--TBC and Vanilla
 		instanceDifficultyBylevel[48] = {25, 3} -- Blackfathom deeps level up raid
 		instanceDifficultyBylevel[90] = {40, 3} -- Gnomeregan level up raid
 		instanceDifficultyBylevel[109] = {50, 3} -- Sunken Temple level up raid
+		instanceDifficultyBylevel[2784] = {60, 2} -- Demon Fall Canyon dungeon
+		instanceDifficultyBylevel[2789] = {60, 3} -- Lord kazzak
+		instanceDifficultyBylevel[2791] = {60, 3} -- Azuregos
+		instanceDifficultyBylevel[2784] = {60, 3} -- Azgaloth
+		instanceDifficultyBylevel[2804] = {60, 3} -- Prince Thunderaan
+		instanceDifficultyBylevel[2806] = {60, 2} -- Shadow Hold
+		instanceDifficultyBylevel[2807] = {60, 2} -- Burning of Andorhal
+		instanceDifficultyBylevel[2817] = {60, 2} -- Starfall Barrow Den
 	end
 end
 
@@ -130,7 +140,8 @@ function DBM:GetGroupSize()
 	return groupSize
 end
 
-function DBM:GetKeyStoneLevel()
+---Useful for M+, Delves, or tiered SoD raids when you specifically need to know modifier level
+function DBM:GetModifierLevel()
 	return difficulties.difficultyModifier
 end
 
@@ -140,6 +151,9 @@ end
 
 ---@param self DBM|DBMMod
 function DBM:IsTrivial(customLevel)
+	if test.testRunning then
+		return false
+	end
 	local lastInstanceMapId = DBM:GetCurrentArea()
 	--if timewalking or chromie time or challenge modes. it's always non trivial content
 	if C_PlayerInfo.IsPlayerInChromieTime and C_PlayerInfo.IsPlayerInChromieTime() or self:IsRemix() or difficulties.difficultyIndex == 24 or difficulties.difficultyIndex == 33 or difficulties.difficultyIndex == 8 then
@@ -230,7 +244,7 @@ end
 ---Pretty much ANYTHING that has a normal mode
 function bossModPrototype:IsNormal()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront"
+	return diff == "normal" or diff == "normal5" or diff == "normal10" or diff == "normal20" or diff == "normal25" or diff == "normal40" or diff == "normalisland" or diff == "normalwarfront" or diff == "follower"
 end
 
 ---Dungeons with AI "follower" npcs. 1-5 players
@@ -240,9 +254,10 @@ function bossModPrototype:IsFollower()
 end
 
 ---Dungeons designed for just the player. "quest dungeons"
-function bossModPrototype:IsQuest()
+---<br> NOT to be confused with follower, which are just normal dungeons with AI followers
+function bossModPrototype:IsStory()
 	local diff = difficulties.savedDifficulty or DBM:GetCurrentInstanceDifficulty()
-	return diff == "quest"
+	return diff == "quest" or diff == "story"
 end
 
 ---Pretty much ANYTHING that has a heroic mode
@@ -293,7 +308,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, _, _, _, _, instanceGroupSize = private.GetInstanceInfo()
 	if difficulty == 0 or difficulty == 172 or (difficulty == 1 and instanceType == "none") or (C_Garrison and C_Garrison:IsOnGarrisonMap()) then--draenor field returns 1, causing world boss mod bug.
 		return "worldboss", RAID_INFO_WORLD_BOSS .. " - ", difficulty, instanceGroupSize, 0
-	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid
+	elseif difficulty == 1 or difficulty == 173 or difficulty == 184 or difficulty == 150 or difficulty == 201 then--5 man Normal Dungeon / 201 is SoD 5 man ID for a dungeon that's also a 10/20 man SoD Raid.
 		return "normal5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 2 or difficulty == 174 then--5 man Heroic Dungeon
 		return "heroic5", difficultyName .. " - ", difficulty, instanceGroupSize, 0
@@ -310,8 +325,22 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 8 then--Dungeon, Mythic+ (Challenge modes in mists and wod)
 		local keystoneLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() or 0
 		return "challenge5", PLAYER_DIFFICULTY6 .. "+ (" .. keystoneLevel .. ") - ", difficulty, instanceGroupSize, keystoneLevel
-	elseif difficulty == 148 or difficulty == 185 or difficulty == 215 then--20 man classic raid
-		return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 148 or difficulty == 185 or difficulty == 215 or difficulty == 226 then--20 man classic raid / 226 is SoD 20
+		local modifierLevel = 0
+		if difficulty == 226 then--Molten Core SoD
+			if self:UnitDebuff("player", 458841) then--Sweltering Heat
+				modifierLevel = 1
+			elseif self:UnitDebuff("player", 458842) then--Blistering Heat
+				modifierLevel = 2
+			elseif self:UnitDebuff("player", 458843) then--Molten Heat
+				modifierLevel = 3
+			end
+		end
+		if modifierLevel == 0 then
+			return "normal20", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		else
+			return "normal20", difficultyName .. "(" .. modifierLevel .. ") - ", difficulty, instanceGroupSize, modifierLevel
+		end
 	elseif difficulty == 9 or difficulty == 186 then--Legacy 40 man raids, no longer returned as index 3 (normal 10man raids)
 		return "normal40", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 11 then--Heroic Scenario (mostly Mists of pandaria)
@@ -362,12 +391,27 @@ function DBM:GetCurrentInstanceDifficulty()
 --		return "delve1", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 205 then--Follower (Party Dungeon - Dragonflight 10.2.5+)
 		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+	elseif difficulty == 207 then--SoD 1 player dungeon? Assigning as follower for now but will sort it out later
+		return "follower", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 208 then--Delves (War Within 11.0.0+)
-		return "delves", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		local delveInfo = C_UIWidgetManager.GetScenarioHeaderDelvesWidgetVisualizationInfo(6183)
+		local delveTier = 0
+		if delveInfo and delveInfo and delveInfo.tierText then
+			if delveInfo.tierText == "?" then
+				return "normal", difficultyName .. "(?) - ", difficulty, instanceGroupSize
+			elseif delveInfo.tierText == "??" then
+				return "mythic", difficultyName .. "(??) - ", difficulty, instanceGroupSize
+			end
+			---@diagnostic disable-next-line: cast-local-type
+			delveTier = tonumber(delveInfo.tierText)
+		end
+		return "delves", difficultyName .. "(" .. delveTier .. ") - ", difficulty, instanceGroupSize, delveTier
+	elseif difficulty == 213 then--Infinite Dungeon (timewalking in sod?)
+		return "timewalker", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 216 then--Quest (Party Dungeon - War Within 11.0.0+)
 		return "quest", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	elseif difficulty == 220 then--Story (Raid Dungeon - War Within 11.0.0+)
-		return "delves", difficultyName .. " - ", difficulty, instanceGroupSize, 0
+		return "story", difficultyName .. " - ", difficulty, instanceGroupSize, 0
 	else--failsafe
 		return "normal", "", difficulty, instanceGroupSize, 0
 	end

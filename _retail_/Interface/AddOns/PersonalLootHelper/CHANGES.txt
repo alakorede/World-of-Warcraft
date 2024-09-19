@@ -1,10 +1,10 @@
-tag 98d49ce6cf57a7f04a65138cf886d7bc700d8091 v2.33
+tag 70ece49052959d9e86279e35bc70ca2c3325d5b7 v2.38
 Author:	Tim Milligan <tim@voidzonemedia.com>
-Date:	Tue Jan 23 14:39:12 2024 -0600
+Date:	Thu Aug 29 13:51:09 2024 -0500
 
-commit f752835c0b7bd4d3cf34ced9498abc27f16577a4
+commit b4ed69048a2725030173f95ff26c4fc429c84950
 Author: Tim Milligan <tim@voidzonemedia.com>
-Date:   Tue Jan 23 14:39:04 2024 -0600
+Date:   Thu Aug 29 13:51:03 2024 -0500
 
-    convert pkgmeta indentation to spaces
+    fix a bunch of constants that changed
 

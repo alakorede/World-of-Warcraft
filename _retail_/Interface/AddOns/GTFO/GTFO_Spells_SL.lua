@@ -239,6 +239,12 @@ GTFO.SpellID["360677"] = {
   sound = 1;
 };
 
+GTFO.SpellID["324283"] = {
+  --desc = "Fire (Ember Court)";
+  sound = 1;
+};
+
+
 
 --- **********************
 --- * Halls of Atonement *
@@ -404,6 +410,11 @@ GTFO.SpellID["326017"] = {
 
 GTFO.SpellID["326309"] = {
   --desc = "Decomposing Acid (Tred'ova)";
+  sound = 1;
+};
+
+GTFO.SpellID["463257"] = {
+  --desc = "Mist Ward (Mistveil Defender)";
   sound = 1;
 };
 

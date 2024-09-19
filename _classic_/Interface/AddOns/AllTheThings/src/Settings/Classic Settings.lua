@@ -10,7 +10,7 @@ local Things = {
 	"CharacterUnlocks",
 	"Conduits",
 	"Deaths",
-	"DrakewatcherManuscripts",
+	"MountMods",
 	"Exploration",
 	"FlightPaths",
 	"Followers",
@@ -62,7 +62,7 @@ local GeneralSettingsBase = {
 		["Thing:BattlePets"] = true,
 		["Thing:CharacterUnlocks"] = app.IsRetail,	-- CRIEVE NOTE: This class might be up to the chopping block with a thing I have on my todo list. I'll leave it for now.
 		["Thing:Conduits"] = app.GameBuildVersion >= 100000,
-		["Thing:DrakewatcherManuscripts"] = app.GameBuildVersion >= 100000,
+		["Thing:MountMods"] = app.GameBuildVersion >= 100000,
 		["Thing:Exploration"] = app.IsClassic,	-- CRIEVE NOTE: For now, until Blizzard fixes their broken Retail version of the exploration API.
 		["Thing:FlightPaths"] = true,
 		["Thing:Followers"] = app.GameBuildVersion >= 60000,
@@ -82,6 +82,7 @@ local GeneralSettingsBase = {
 		["Thing:Transmog"] = app.GameBuildVersion >= 40000,
 		["DeathTracker"] = app.GameBuildVersion < 40000,
 		["Only:RWP"] = app.GameBuildVersion < 40000,
+		["Only:NotTrash"] = app.GameBuildVersion <= 40000,
 		["Skip:AutoRefresh"] = false,
 		["Show:CompletedGroups"] = false,
 		["Show:CollectedThings"] = false,
@@ -150,12 +151,12 @@ local TooltipSettingsBase = {
 		["SummarizeThings"] = true,
 		["Warn:Removed"] = true,
 		["SocialProgress"] = true,
-		
+
 		-- Features: Reporting
 		["Report:Collected"] = true,
 		["Report:CompletedQuests"] = true,
 		["Report:UnsortedQuests"] = true,
-		
+
 		-- Nearby Content
 		["Nearby:ReportContent"] = false,
 		["Nearby:Type:npc"] = true,
@@ -166,10 +167,10 @@ local TooltipSettingsBase = {
 		["Nearby:IncludeUnknown"] = true,
 		["Nearby:FlashTheTaskbar"] = true,
 		["RareFind"] = true,
-		
+
 		-- Information Type Behaviours
 		["MaxTooltipTopLineLength"] = 999,
-		
+
 		-- Information Types
 		["description"] = true,
 		["playerCoord"] = true,
@@ -280,7 +281,7 @@ settings.Initialize = function(self)
 		GeneralSettingsBase.__index[accountWideThing] = true
 		settings.AccountWide[thing] = true
 	end
-	
+
 	if self.LocationsSlider then
 		self.LocationsSlider:SetValue(self:GetTooltipSetting("Locations"));
 		self.MainListScaleSlider:SetValue(self:GetTooltipSetting("MainListScale"));
@@ -295,11 +296,14 @@ settings.Initialize = function(self)
 		self.sliderPercentagePrecision:SetValue(self:GetTooltipSetting("Precision"))
 	end
 	self.sliderMinimapButtonSize:SetValue(self:GetTooltipSetting("MinimapSize"))
-	
+
 	app.SetWorldMapButtonSettings(self:GetTooltipSetting("WorldMapButton"));
 	app.SetMinimapButtonSettings(
 		self:GetTooltipSetting("MinimapButton"),
 		self:GetTooltipSetting("MinimapSize"));
+
+	app.DoRefreshAppearanceSources = settings:Get("Thing:Transmog")
+
 	self:UpdateMode();
 end
 settings.Get = function(self, setting)
@@ -469,7 +473,7 @@ settings.SetPersonal = function(self, setting, value)
 	self:Refresh();
 end
 settings.Refresh = function(self)
-	app.HandleEvent("OnSettingsRefreshed");
+	app.CallbackEvent("OnSettingsRefreshed");
 end
 
 
@@ -618,7 +622,7 @@ ATTSettingsPanelMixin = {
 		local text = opts.text
 		local width = opts.width or 150
 		local template = opts.template or "InputBoxTemplate"
-		
+
 		---@class ATTOptionsEditBox: EditBox
 		---@field AddLabel fun(self:any, label: string)
 		local editbox = CreateFrame("EditBox", name, self, template)
@@ -829,7 +833,7 @@ settings.CreateOptionsPage = function(self, text, parentCategory, isRootCategory
 	Mixin(subcategory, ATTSettingsPanelMixin);
 	self:RegisterObject(subcategory);
 	subcategory:SetAllPoints();
-	
+
 	if Settings and Settings.RegisterCanvasLayoutCategory then
 		local category;
 		if text == appName then
@@ -849,7 +853,7 @@ settings.CreateOptionsPage = function(self, text, parentCategory, isRootCategory
 		InterfaceOptions_AddCategory(subcategory);
 	end
 	Categories[text] = subcategory;
-	
+
 	-- Common Header
 	local logo = subcategory:CreateTexture(nil, "ARTWORK");
 	logo:SetPoint("TOPLEFT", subcategory, "TOPLEFT", 8, -2);
@@ -872,7 +876,7 @@ settings.CreateOptionsPage = function(self, text, parentCategory, isRootCategory
 	separator:SetColorTexture(1, 1, 1, 0.4);
 	separator:SetHeight(2);
 	subcategory.separator = separator;
-	
+
 	local checkboxSkipAutoRefresh = subcategory:CreateCheckBox(L.SKIP_AUTO_REFRESH,
 	function(self)
 		self:SetChecked(settings:Get("Skip:AutoRefresh"))
@@ -1056,7 +1060,7 @@ settings.UpdateMode = function(self, doRefresh)
 		filterSet.Group(true)
 		filterSet.DefaultGroup(true)
 		filterSet.DefaultThing(true)
-		
+
 		-- Check for any inactive unobtainable filters.
 		local anyFiltered = false
 		for u,v in pairs(L.AVAILABILITY_CONDITIONS) do
@@ -1102,7 +1106,7 @@ settings.UpdateMode = function(self, doRefresh)
 
 			settings:SetThingTracking()
 		end
-		
+
 		-- Old Filters
 		local accountWideSettings = self.AccountWide;
 		for key,value in pairs(accountWideSettings) do
@@ -1123,6 +1127,7 @@ settings.UpdateMode = function(self, doRefresh)
 			filterSet.Event()
 		end
 		self.OnlyRWP = self:Get("Only:RWP");
+		self.OnlyNotTrash = self:Get("Only:NotTrash");
 	end
 	app.MODE_DEBUG_OR_ACCOUNT = app.MODE_DEBUG or app.MODE_ACCOUNT;
 
@@ -1135,7 +1140,7 @@ settings.UpdateMode = function(self, doRefresh)
 	}) do
 		filters[filterID] = state;
 	end
-	
+
 	if self:Get("Show:CompletedGroups") then
 		filterSet.CompletedGroups()
 	else
@@ -1146,7 +1151,7 @@ settings.UpdateMode = function(self, doRefresh)
 	else
 		filterSet.CompletedThings(true)
 	end
-	
+
 	if self:Get("Hide:BoEs") then
 		filterSet.ItemUnbound()
 		filterSet.Bound(true)
@@ -1173,21 +1178,21 @@ settings.UpdateMode = function(self, doRefresh)
 	else
 		filterSet.Level()
 	end
-	
+
 	if self:Get("Filter:BySkillLevel") and not self:Get("DebugMode") then
 		filterSet.SkillLevel(true)
 	else
 		filterSet.SkillLevel()
 	end
 	self.Collectibles.Loot = self:Get("LootMode");
-	
+
 	app:UnregisterEvent("GOSSIP_SHOW");
 	app:UnregisterEvent("TAXIMAP_OPENED");
 	if self:Get("Thing:FlightPaths") or self:Get("DebugMode") then
 		app:RegisterEvent("GOSSIP_SHOW");
 		app:RegisterEvent("TAXIMAP_OPENED");
 	end
-	
+
 	-- FORCE = Force Update
 	-- 1 = Force Update IF NOT Skip
 	-- not = Soft Update

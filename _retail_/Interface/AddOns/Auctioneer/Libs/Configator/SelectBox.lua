@@ -30,8 +30,6 @@ local LIBRARY_VERSION_MINOR = 6
 local lib = LibStub:NewLibrary(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR)
 if not lib then return end
 
-LibStub("LibRevision"):Set("$URL$","$Rev$","5.1.DEV.", 'auctioneer', 'libs')
-
 local NUM_MENU_ITEMS = 15
 local SCROLLTIME = 0.2
 

@@ -887,8 +887,8 @@
     },
     --STANCE- + POSSESSBAR
     stancebar = {
-      enable          = false, --enable module
-      show            = false, --true/false
+      enable          = true, --enable module
+      show            = true, --true/false
       scale           = 0.6,
       padding         = 2, --frame padding
       buttons         = {
@@ -961,8 +961,8 @@
     },
     --BAGS
     bags = {
-      enable          = false, --enable module
-      show            = false, --true/false
+      enable          = true, --enable module
+      show            = true, --true/false
       scale           = .5,
       padding         = 15, --frame padding
       pos             = { a1 = "BOTTOM", a2 = "BOTTOM", af = "UIParent", x = 365, y = 207 },

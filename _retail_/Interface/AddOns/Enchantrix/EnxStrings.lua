@@ -1,11 +1,11 @@
-﻿--[[
+--[[
 	WARNING: This is a generated file.
 	If you wish to perform or update localizations, please go to our Localizer website at:
 	http://localizer.norganna.org/
 
 	AddOn: Enchantrix
 	Revision: $Id$
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 
 	License:
 		This program is free software; you can redistribute it and/or
@@ -955,6 +955,9 @@ EnchantrixLocalizations = {
 		["GuiMinimapButtonDist"]	= "Distance: %d";
 		["GuiMinimapOptions"]	= "Minimap display options";
 		["GuiMinimapShowButton"]	= "Display Minimap button";
+		["GuiAddOnsCompartmentOptions"]	= "Blizzard AddOns Compartment options";
+		["GuiAddOnsCompartmentWarning"]	= "This setting requires a UI reload to take effect";
+		["GuiAddOnsCompartmentEnable"] = "Display button in AddOns Compartment";
 		["GuiMinLessHSP"]	= "Minimum Percentage less than HSP: %d";
 		["GuiMinProfitMargin"]	= "Minimum Profit Margin:";
 		["GuiNewProfileName"]	= "New profile name:";

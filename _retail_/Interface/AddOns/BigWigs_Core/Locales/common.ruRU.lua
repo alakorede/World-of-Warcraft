@@ -10,8 +10,8 @@ L.other = "%s: %s"
 L.onboss = "%s на БОССЕ"
 L.buff_boss = "Бафф на БОССЕ: %s"
 L.buff_other = "Бафф на %s: %s"
---L.magic_buff_boss = "Magic buff on BOSS: %s" -- Magic buff on BOSS: SPELL_NAME
---L.magic_buff_other = "Magic buff on %s: %s" -- Magic buff on NPC_NAME: SPELL_NAME
+L.magic_buff_boss = "Магический бафф на боссе: %s" -- Magic buff on BOSS: SPELL_NAME
+L.magic_buff_other = "Магический бафф на %s: %s" -- Magic buff on NPC_NAME: SPELL_NAME
 L.on = "%s на %s"
 L.stack = "%dx %s на %s"
 L.stackyou = "%dx %s на ТЕБЕ"
@@ -31,8 +31,8 @@ L.extra = "%s (%s)" -- SPELL_NAME (short spell name or extra information)
 
 L.phase = "Фаза %d"
 L.stage = "Этап %d"
---L.wave = "Wave %d" -- e.g. "Wave 1" (Waves of adds)
---L.wave_count = "Wave %d of %d" -- Wave 1 of 3 (Usually waves of adds)
+L.wave = "Волна %d" -- e.g. "Wave 1" (Waves of adds)
+L.wave_count = "Волна %d из %d" -- Wave 1 of 3 (Usually waves of adds)
 L.normal = "Обычный режим"
 L.heroic = "Героический режим"
 L.mythic = "Эпохальный режим"
@@ -41,12 +41,14 @@ L.active = "Активен" -- When a boss becomes active, after speech finishes
 L.ready = "Готов" -- When a player is ready to do something
 L.dead = "Смерть" -- When a player is dead
 L.general = "Общее" -- General settings, i.e. things that apply to normal, heroic and mythic mode.
---L.health = "Health" -- The health of an NPC
---L.health_percent = "%d%% Health" -- "10% Health" The health percentage of an NPC
+L.health = "Здоровья" -- The health of an NPC
+L.health_percent = "%d%% Здоровья" -- "10% Health" The health percentage of an NPC
 L.door_open = "Дверь открыта" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Врата открыты" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Угрозе"
+L.energy = "Энергия"
 
---L.remaining = "%d remaining" -- 5 remaining
+L.remaining = "%d |4осталось:остались:осталось;" -- 5 remaining
 L.duration = "%s для %s сек" -- Spell for 10 seconds
 L.over = "%s завершается" -- Spell Over
 L.removed = "%s снято" -- Spell Removed
@@ -56,20 +58,23 @@ L.removed_after = "%s убран спустя %.1fс" -- "Spell removed after 1.
 L.incoming = "%s на подходе" -- Spell Incoming
 L.interrupted = "%s прервано" -- Spell Interrupted
 L.interrupted_by = "%s прерван %s" -- Spell interrupted by Player
---L.interruptible = "Interruptible" -- when a spell is interruptible
+L.interruptible = "Прерываемое" -- when a spell is interruptible
 L.no = "Нет %s" -- No Spell
 L.intermission = "Перерыв"
 L.percent = "%d%% - %s" -- 20% - Spell
 L.cancelled = "%s отменено" -- Spell Cancelled
 L.you_die = "Умираешь" -- You will die
 L.you_die_sec = "Умрёшь через %d сек" -- "You die in 15 sec" (sec = seconds)
---L.next_ability = "Next ability" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.next_ability = "Следующая способность" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.landing = "%s приземляется" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
+L.flying_available = "Можешь лететь"
 
 -- Add related
 L.add_spawned = "Помощник появился" -- singular
 L.adds_spawned = "Помощники появились" -- plural
---L.add_spawning = "Add spawning" -- singular
---L.adds_spawning = "Adds spawning" -- plural
+L.adds_spawned_count = "%d |4адд:аддов:адд; spawned" -- 1 add spawned / 2 adds spawned
+L.add_spawning = "Спаун Адда" -- singular
+L.adds_spawning = "Спаун Аддов" -- plural
 L.spawned = "Появление: %s"
 L.spawning = "%s появление"
 L.next_add = "Следующий помощник"
@@ -87,6 +92,18 @@ L.killed = "%s убит"
 L.mob_killed = "%s убит (%d/%d)"
 L.mob_remaining = "%s убит, %d осталось"
 
+-- NPCs for follower dungeons
+L.garrick = "Капитан Гэррик" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*Гэррик"
+L.meredy = "Мереди Крепкая Охота" -- AI mage dps (NPC 209059)
+L.meredy_short = "*Мереди"
+L.shuja = "Шуджа Люторез" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*Шуджа"
+L.crenna = "Кренна Дочь Земли" -- AI druid healer (NPC 209072)
+L.crenna_short = "*Кренна"
+L.austin = "Остин Хаксворт" -- AI hunter dps (NPC 209065)
+L.austin_short = "*Остин"
+
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
 L.custom_start = "%s вступает в бой - %s через %d мин"
@@ -103,15 +120,18 @@ L.affixes = "Аффикс" -- Seasonal affixes for raids and mythic+ dungeons
 L.marker = "Метка %s"
 L.marker_player_desc = "Отмечать игроков, затронутых %s меткой %s, требуется быть помощником или лидером рейда." -- Mark players affected by 'SPELL_NAME' with SKULL_ICON
 L.marker_npc_desc = "Отмечать %s меткой %s, требуется быть помощником или лидером рейда." -- Mark NPC_NAME with SKULL_ICON
---L.marker_npc_aura_desc = "Mark NPCs affected by '%s' with %s, requires promoted or leader." -- Mark NPCs affected by 'SPELL_NAME' with SKULL_ICON
+L.marker_npc_aura_desc = "Отмечает НПЦ под воздействием '%s' меткой %s, требуется быть помощником или лидером рейда." -- Mark NPCs affected by 'SPELL_NAME' with SKULL_ICON
 
 -- Ability where two players have to move close to each other
 L.link = "Связь"
 L.link_with = "Связан с %s"
 L.link_with_icon = "Связан с |T13700%d:0|t%s"
-L.link_short = "Связь: %s"
-L.link_both = "%s связан с %s"
+L.link_with_rticon = "{rt%d}Связан с %s"
+L.link_both = "%s + %s связанны"
+L.link_both_icon = "|T13700%d:0|t%s + |T13700%d:0|t%s связанны"
 L.link_removed = "Связь прервана"
+L.link_say_option_name = "Повторять 'Связан' сообщения в чат"
+L.link_say_option_desc = "Повторяет сообщения в чат с ником связанного игрока."
 
 -- Abbreviated numbers
 L.amount_one = "%dмлрд" -- Billions 1,000,000,000
@@ -144,9 +164,9 @@ L.nature = "Природа"
 L.arcane = "Тайная магия"
 
 -- Autotalk
---L.autotalk = "Automatic NPC interaction"
---L.autotalk_boss_desc = "Automatically select the NPC dialog options that cause the boss encounter to begin."
---L.autotalk_generic_desc = "Automatically select the NPC dialog options that cause you to progress to the next stage of the dungeon."
+L.autotalk = "Автоматическое взаимодействие с НПЦ"
+L.autotalk_boss_desc = "Автоматический выбирать вариант диалога с НПЦ для начала боя."
+L.autotalk_generic_desc = "Автоматический выбирать вариант диалога с НПЦ для продвижения по подземелью."
 
 -- Common ability name replacements
 L.absorb = "Поглoщ." -- Used for shield-like abilities that absorb damage or healing
@@ -175,6 +195,7 @@ L.charge = "Рывок" -- When a boss select a new target and charges at it qui
 L.full_energy = "Макс. энергя" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Ослабленный" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Невосприимчивость" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Оглушение" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Лужа" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Лужи" -- Plural of L.pool
 L.totem = "Тотем" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -199,8 +220,15 @@ L.mark = "Знак" -- Short name for abilites with "Mark" in the name, for exam
 L.marks = "Знаки" -- Plural of L.marks
 L.mind_control = "Контроль над разумом" -- Any kind of Mind Control ability, where a player loses control of their character
 L.mind_control_short = "КР" -- Short version of Mind Control, mainly for bars
-L.soak = "Сока" -- Abilities you have to stand in on purpose to soak the damage, like a sponge soaks water. Commonly for abilities that split damage between everyone standing in them.
+L.soak = "Соак" -- Abilities you have to stand in on purpose to soak the damage, like a sponge soaks water. Commonly for abilities that split damage between everyone standing in them.
 L.soaks = "Соки" -- Plural of L.soak
 L.spell_reflection = "Отражение заклинаний" -- Any ability that reflects spells
 L.parasite = "Паразит" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "Обездвиживание" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+--L.dodge = "Dodge" -- When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+L.health_drain = "Потеря здоровья" -- Any ability that drains health from the player
+--L.smash = "Удар" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+L.spike = "Шип" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+L.spikes = "Шипы" -- Plural of L.spike

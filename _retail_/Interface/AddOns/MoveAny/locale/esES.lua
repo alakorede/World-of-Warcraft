@@ -2,8 +2,10 @@
 local _, MoveAny = ...
 function MoveAny:LangesES()
 	local tab = {
-		["LID_MMBTNLEFT"] = "Clic izquierdo => Bloquear/Desbloquear + Opciones",
-		["LID_MMBTNRIGHT"] = "Mayúsculas + Clic derecho => Ocultar botón del minimapa",
+		["LID_LEFTCLICK"] = "Clic izquierdo",
+		["LID_RIGHTCLICK"] = "Clic derecho",
+		["LID_MMBTNLEFT"] = "Bloquear/Desbloquear + Opciones",
+		["LID_MMBTNRIGHT"] = "Ocultar botón del minimapa",
 		["LID_GENERAL"] = "General",
 		["LID_SHOWMINIMAPBUTTON"] = "Mostrar el botón del mapa mínimo",
 		["LID_GRIDSIZE"] = "Tamaño de la cuadrícula",
@@ -48,7 +50,7 @@ function MoveAny:LangesES()
 		["LID_CHAT"] = "Marco de chat %d",
 		["LID_CHATBUTTONFRAME"] = "Botones de chat",
 		["LID_CHATQUICKJOIN"] = "Chat Quick Join",
-		["LID_CHATEDITBOX"] = "Caja de entrada del chat",
+		["LID_CHATEDITBOX"] = "Caja de entrada del chat %s",
 		["LID_COMPACTRAIDFRAMEMANAGER"] = "Gestor de incursiones",
 		["LID_BNToastFrame"] = "Notificaciones de amigos de Battlenet",
 		["LID_ZONETEXTFRAME"] = "Texto de la zona",

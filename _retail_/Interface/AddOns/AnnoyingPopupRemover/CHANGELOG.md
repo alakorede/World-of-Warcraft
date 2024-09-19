@@ -1,6 +1,6 @@
 # Annoying Popup Remover
 
-## [v20.5.0-release](https://github.com/KyrosKrane/AnnoyingPopupRemover/tree/v20.5.0-release) (2024-06-08)
-[Full Changelog](https://github.com/KyrosKrane/AnnoyingPopupRemover/compare/v20.4.0-release...v20.5.0-release) [Previous Releases](https://github.com/KyrosKrane/AnnoyingPopupRemover/releases)
+## [v22.1.0-release](https://github.com/KyrosKrane/AnnoyingPopupRemover/tree/v22.1.0-release) (2024-08-27)
+[Full Changelog](https://github.com/KyrosKrane/AnnoyingPopupRemover/compare/v22.0.1-release...v22.1.0-release) [Previous Releases](https://github.com/KyrosKrane/AnnoyingPopupRemover/releases)
 
-- Add Spoils of Pandaria starter popup  
+- Add Wheat (Stable master from TWW)  

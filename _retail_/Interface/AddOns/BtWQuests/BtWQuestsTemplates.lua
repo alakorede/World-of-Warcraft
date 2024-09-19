@@ -29,7 +29,8 @@ end
 
 -- [[ Chain ]]
 function BtWQuestsChainItemPool_HideAndClearAnchors(framePool, frame)
-    FramePool_HideAndClearAnchors(framePool, frame)
+	frame:Hide();
+	frame:ClearAllPoints();
 
     frame.linePool:ReleaseAll()
 
@@ -1000,7 +1001,7 @@ function BtWQuestsNavBarDropDownMenuMixin:Initialize()
         for i, entry in ipairs(list) do
 			info.text = entry.text;
 			info.arg1 = entry.id;
-			info.arg2 = entry.func;
+			info.func = entry.func;
 			self:AddButton(info);
 		end
 	end
@@ -1568,6 +1569,14 @@ function BtWQuestsCharacterDropDownMixin:Initialize()
         info.checked = "-partysync" == current
         self:AddButton(info)
     end
+    if select(4, GetBuildInfo()) >= 110000 then
+        local info = self:CreateInfo();
+        info.text = BtWQuests.L["Warband"]
+        info.value = "-warband"
+        info.func = Select
+        info.checked = "-warband" == current
+        self:AddButton(info)
+    end
 
     local info = self:CreateInfo();
     info.text = RAID_CLASS_COLORS[select(2,UnitClass("player"))]:WrapTextInColorCode(player .. " (" .. UnitLevel("player") .. ")")
@@ -1883,6 +1892,9 @@ function BtWQuestsTooltipMixin:SetHyperlink(link, character)
     linkstring = linkstring or link
 
     local _, _, type, text = string.find(linkstring, "([^:]+):([^|]+)")
+    if type == "garrmission" then
+        _, _, type, text = string.find(text, "^([^:]*):(.*)")
+    end
 
     if type == "quest" then
         local _, _, id = string.find(text, "^(%d+)")

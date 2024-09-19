@@ -1,3 +1,59 @@
+11.0.2v2.4 - 2024/08/18
+
+Known issue: Sorting a large and full Warbank with CIMI enabled will cause you to lag.  We're working on a solution.  It happened even before adding the overlay to the Warbank.
+
+* [#365](https://gitlab.com/toreltwiddler/CanIMogIt/issues/365) Fix Warbound items not following not-transmogable rules.
+* [#344](https://gitlab.com/toreltwiddler/CanIMogIt/issues/344) Fix ArkInventory addon loading error.
+
+*****
+
+11.0.2v2.3 - 2024/08/15
+
+Known issue: Sorting a large and full Warbank with CIMI enabled will cause you to lag.  We're working on a solution.  It happened even before adding the overlay to the Warbank.
+
+* [#75](https://gitlab.com/toreltwiddler/CanIMogIt/issues/75) & [#357](https://gitlab.com/toreltwiddler/CanIMogIt/issues/357) Properly match cosmetic items.
+* [#136](https://gitlab.com/toreltwiddler/CanIMogIt/issues/136) & [#350](https://gitlab.com/toreltwiddler/CanIMogIt/issues/350) Refactor logic and fixing multiple long-standing bugs.
+* [#335](https://gitlab.com/toreltwiddler/CanIMogIt/issues/335) Add overlay to Warbank.
+* [#339](https://gitlab.com/toreltwiddler/CanIMogIt/issues/339) Fix warbound for other faction.
+* [#355](https://gitlab.com/toreltwiddler/CanIMogIt/issues/355) Remove level restriction code.
+
+*****
+
+11.0.0v2.2 - 2024/08/03
+
+* [#342](https://gitlab.com/toreltwiddler/CanIMogIt/issues/342) Improve tooltip hook code so it shows up everywhere again.
+* [#348](https://gitlab.com/toreltwiddler/CanIMogIt/issues/348) Fix Battle Pet Cages in Auction House.
+* [#349](https://gitlab.com/toreltwiddler/CanIMogIt/issues/349) Fix missing appearance logic.
+* [#350](https://gitlab.com/toreltwiddler/CanIMogIt/issues/350) Buying back a BoE item will now properly show Warbound pink colors.
+* [#351](https://gitlab.com/toreltwiddler/CanIMogIt/issues/351) Add Sources count for Ensembles that will show when Verbose Text is enabled.
+* [#353](https://gitlab.com/toreltwiddler/CanIMogIt/issues/353) Remove Deadeye Monocle from Exceptions List.
+* [#354](https://gitlab.com/toreltwiddler/CanIMogIt/issues/354) Properly consider class armor type.
+
+*****
+
+11.0.2v2.1 - 2024/07/24
+
+* [#343](https://gitlab.com/toreltwiddler/CanIMogIt/issues/343) Fix combined bags frame being empty.
+* [#345](https://gitlab.com/toreltwiddler/CanIMogIt/issues/345) Fix Overlay not updating when learning appearances.
+* [#346](https://gitlab.com/toreltwiddler/CanIMogIt/issues/346) Fix error from BattlePet cages.
+
+*****
+
+11.0.2v2.0 - 2024/07/23
+
+Initial support for The War Within Prepatch and Warbands.
+
+* Warbound items have Pink icons!
+* Database is gone! Thank you Blizzard for letting us see all our transmogs across our account!
+
+*****
+
+10.2.7v1.58 - 2024/06/22
+
+* [#333](https://gitlab.com/toreltwiddler/CanIMogIt/issues/333) Fix bug with Ensembles and class restrictions.
+
+*****
+
 10.2.7v1.57 - 2024/06/19
 
 * [#73](https://gitlab.com/toreltwiddler/CanIMogIt/issues/73) Fix error from Cataclysm with Ensembles.

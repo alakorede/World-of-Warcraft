@@ -1,8 +1,9 @@
 # QuestPointer
 
-## [v30](https://github.com/kemayo/wow-questpointer/tree/v30) (2023-11-21)
-[Full Changelog](https://github.com/kemayo/wow-questpointer/compare/v29...v30) [Previous Releases](https://github.com/kemayo/wow-questpointer/releases)
+## [v32](https://github.com/kemayo/wow-questpointer/tree/v32) (2024-08-18)
+[Full Changelog](https://github.com/kemayo/wow-questpointer/compare/v31...v32) [Previous Releases](https://github.com/kemayo/wow-questpointer/releases)
 
-- QuestPOI functions were removed in 10.1.5, so change what I'm using  
-- TOC for 10.2.0  
-    Also, add an icon for the addon list  
+- Fix tainting the item buttons on the objective tracker  
+    Turns out POIButtonUtil.GetStyle taints the tracker, so I wrote around  
+    needing to call that. Refactored a bit as well.  
+    Fixes #6  

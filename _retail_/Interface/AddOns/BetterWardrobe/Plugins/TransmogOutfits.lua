@@ -8,7 +8,7 @@ addon.TransmogOutfits = TransmogOutfits
 
 function TransmogOutfits.GetOutfits() return {} end
 
-if not IsAddOnLoaded("TransmogOutfits") then return end
+if not C_AddOns.IsAddOnLoaded("TransmogOutfits") then return end
 if true then return end -- TODO remove when updated
 
 function TransmogOutfits.GetOutfits() 
@@ -76,6 +76,7 @@ function TransmogOutfits.GetOutfits()
 
 					if not data.icon then
 						--local categoryID, visualID, canEnchant, icon, isCollected, itemLink, transmogLink, unknown1 = C_TransmogCollection.GetAppearanceSourceInfo(itemID)
+						local GetItemInfoInstant = C_Item and C_Item.GetItemInfoInstant
 						local _, _, _, _, icon, _, _ = GetItemInfoInstant(itemID) 
 						data.icon = icon
 					end

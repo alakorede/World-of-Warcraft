@@ -41,7 +41,7 @@ local UnitGUID = _G.UnitGUID
 local GetSpellInfo = GetSpellInfo or function(spellID) if not spellID then return nil end local si = C_Spell.GetSpellInfo(spellID) if si then return si.name, nil, si.iconID, si.castTime, si.minRange, si.maxRange, si.spellID, si.originalIconID end end
 local floor = _G.floor
 local UnitAuraBySlot = _G.UnitAuraBySlot or (C_UnitAuras and (function(...) local auraData = C_UnitAuras.GetAuraDataBySlot(...); if not auraData then return nil; end; return AuraUtil.UnpackAuraData(auraData); end))
-local UnitAura = _G.UnitAura or (C_UnitAuras and (function(...) local auraData = C_UnitAuras.GetAuraDataByIndex(unitToken, index, filter); if not auraData then return nil; end; return AuraUtil.UnpackAuraData(auraData); end))
+local UnitAura = _G.UnitAura or (C_UnitAuras and (function(...) local auraData = C_UnitAuras.GetAuraDataByIndex(...); if not auraData then return nil; end; return AuraUtil.UnpackAuraData(auraData); end))
 local GetAuraDataBySlot = _G.C_UnitAuras and _G.C_UnitAuras.GetAuraDataBySlot
 local GetAuraSlots = _G.C_UnitAuras and _G.C_UnitAuras.GetAuraSlots
 local GetAuraDataByAuraInstanceID = _G.C_UnitAuras and _G.C_UnitAuras.GetAuraDataByAuraInstanceID
@@ -692,7 +692,7 @@ local function getUnitAuras(unit, filter)
 	local unitCacheData = UnitAuraCacheData[unit]
 	--DevTool:AddData({unitCacheData, filter = filter, isFullUpdateHarm = unitCacheData.isFullUpdateHarm, isFullUpdateHelp = unitCacheData.isFullUpdateHelp, update = ((isHarmful and  not unitCacheData.isFullUpdateHarm) or (isHelpful and not unitCacheData.isFullUpdateHelp))}, "getUnitAuras - " .. unit)
 	
-	if unitCacheData and ((isHarmful and  not unitCacheData.isFullUpdateHarm) or (isHelpful and not unitCacheData.isFullUpdateHelp)) then --new aura event
+	if unitCacheData and ((isHarmful and not unitCacheData.isFullUpdateHarm) or (isHelpful and not unitCacheData.isFullUpdateHelp)) then --new aura event
 		Plater.StartLogPerformanceCore("Plater-Core", "Update", "UpdateAuras - getUnitAuras - short")
 		-- debuffs
 		if unitCacheData.debuffsChanged then
@@ -1288,7 +1288,7 @@ end
 		
 		-- switch to proper border, keep compatibility
 		newIcon.Border = DF:CreateFullBorder("$parentBorder", newIcon)
-		local iconOffset = -1 * newIcon:GetEffectiveScale() * (Plater.db.profile.use_ui_parent_just_enabled and Plater.db.profile.ui_parent_scale_tune or 1)
+		local iconOffset = -1 * UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
 		PixelUtil.SetPoint (newIcon.Border, "TOPLEFT", newIcon, "TOPLEFT", -iconOffset, iconOffset)
 		PixelUtil.SetPoint (newIcon.Border, "TOPRIGHT", newIcon, "TOPRIGHT", iconOffset, iconOffset)
 		PixelUtil.SetPoint (newIcon.Border, "BOTTOMLEFT", newIcon, "BOTTOMLEFT", -iconOffset, -iconOffset)
@@ -1297,7 +1297,7 @@ end
 			self.Border:SetVertexColor(r, g, b, a)
 		end
 		newIcon.Border.SetBorderSize = function(self, size)
-			local borderSize = (size or 1) * newIcon:GetEffectiveScale() * (Plater.db.profile.use_ui_parent_just_enabled and Plater.db.profile.ui_parent_scale_tune or 1)
+			local borderSize = (size or 1) * UIParent:GetEffectiveScale()-- * (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
 			self:SetBorderSizes(borderSize, 1, borderSize, 0)
 			self:UpdateSizes()
 		end
@@ -1321,7 +1321,7 @@ end
 		newIcon.Icon = newIcon:CreateTexture (nil, "artwork")
 		--newIcon.Icon:SetSize (18, 12)
 		--newIcon.Icon:SetPoint ("center")
-		iconOffset = -1 * newIcon:GetEffectiveScale() * (Plater.db.profile.use_ui_parent_just_enabled and Plater.db.profile.ui_parent_scale_tune or 1)
+		iconOffset = -1 * UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
 		PixelUtil.SetPoint (newIcon.Icon, "TOPLEFT", newIcon, "TOPLEFT", -iconOffset, iconOffset)
 		PixelUtil.SetPoint (newIcon.Icon, "TOPRIGHT", newIcon, "TOPRIGHT", iconOffset, iconOffset)
 		PixelUtil.SetPoint (newIcon.Icon, "BOTTOMLEFT", newIcon, "BOTTOMLEFT", -iconOffset, -iconOffset)
@@ -1473,21 +1473,25 @@ end
 			
 			--newFrameIcon:SetBackdrop ({edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
 			--newFrameIcon.Border:SetBorderSize (1)
-			newFrameIcon:SetBorderSize (1)
 			
 		
 			local auraWidth
 			local auraHeight
+			local borderThickness
 			if curBuffFrame == 2 then
 				auraWidth = Plater.db.profile.aura_width2
 				auraHeight = Plater.db.profile.aura_height2
+				borderThickness = Plater.db.profile.aura_border_thickness2
 			else
 				auraWidth = Plater.db.profile.aura_width
 			    auraHeight = Plater.db.profile.aura_height
+				borderThickness = Plater.db.profile.aura_border_thickness
 			end
-			newFrameIcon:SetSize (auraWidth, auraHeight)
-			--PixelUtil.SetSize(newFrameIcon, auraWidth, auraHeight)
+			newFrameIcon:SetBorderSize (borderThickness)
+			--newFrameIcon:SetSize (auraWidth, auraHeight)
 			--newFrameIcon.Icon:SetSize (auraWidth-2, auraHeight-2)
+			local sizeMod = 1 --UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
+			PixelUtil.SetSize(newFrameIcon, auraWidth * sizeMod, auraHeight * sizeMod)
 			
 			--mixin the meta functions for scripts
 			DF:Mixin (newFrameIcon, Plater.ScriptMetaFunctions)
@@ -1653,27 +1657,33 @@ end
 			auraIconFrame.RefreshID = PLATER_REFRESH_ID
 			
 			--icon size
+			local auraWidth
+			local auraHeight
+			local borderThickness
 			if (isPersonal) then
-				local auraWidth = profile.aura_width_personal
-				local auraHeight = profile.aura_height_personal
-				auraIconFrame:SetSize (auraWidth, auraHeight)
-				--PixelUtil.SetSize(auraIconFrame, auraWidth, auraHeight)
+				auraWidth = profile.aura_width_personal
+				auraHeight = profile.aura_height_personal
+				borderThickness = profile.aura_border_thickness_personal
+				--auraIconFrame:SetSize (auraWidth, auraHeight)
 				--auraIconFrame.Icon:SetSize (auraWidth-2, auraHeight-2)
 			else
 				if curBuffFrame == 2 then
-					local auraWidth = profile.aura_width2
-					local auraHeight = profile.aura_height2
-					auraIconFrame:SetSize (auraWidth, auraHeight)
-					--PixelUtil.SetSize(auraIconFrame, auraWidth, auraHeight)
+					auraWidth = profile.aura_width2
+					auraHeight = profile.aura_height2
+					borderThickness = profile.aura_border_thickness2
+					--auraIconFrame:SetSize (auraWidth, auraHeight)
 					--auraIconFrame.Icon:SetSize (auraWidth-2, auraHeight-2)
 				else
-					local auraWidth = profile.aura_width
-					local auraHeight = profile.aura_height
-					auraIconFrame:SetSize (auraWidth, auraHeight)
-					--PixelUtil.SetSize(auraIconFrame, auraWidth, auraHeight)
+					auraWidth = profile.aura_width
+					auraHeight = profile.aura_height
+					borderThickness = profile.aura_border_thickness
+					--auraIconFrame:SetSize (auraWidth, auraHeight)
 					--auraIconFrame.Icon:SetSize (auraWidth-2, auraHeight-2)
 				end
 			end
+			auraIconFrame:SetBorderSize (borderThickness)
+			local sizeMod = 1 --UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
+			PixelUtil.SetSize(auraIconFrame, auraWidth * sizeMod, auraHeight * sizeMod)
 			
 			auraIconFrame.Cooldown:SetEdgeTexture (profile.aura_cooldown_edge_texture)
 			auraIconFrame.Cooldown:SetReverse (profile.aura_cooldown_reverse)
@@ -1697,27 +1707,33 @@ end
 		--when it changes the isPersonal flag it change locally without increasing the refresh ID
 		--> update the icon size depending on where it is shown
 		if (auraIconFrame.IsPersonal ~= isPersonal or auraIconFrame.BuffFrame ~= curBuffFrame or auraIconFrame.IsGhostAura) then
+			local auraWidth
+			local auraHeight
+			local borderThickness
 			if (isPersonal) then
-				local auraWidth = profile.aura_width_personal
-				local auraHeight = profile.aura_height_personal
-				auraIconFrame:SetSize (auraWidth, auraHeight)
-				--PixelUtil.SetSize(auraIconFrame, auraWidth, auraHeight)
+				auraWidth = profile.aura_width_personal
+				auraHeight = profile.aura_height_personal
+				borderThickness = profile.aura_border_thickness_personal
+				--auraIconFrame:SetSize (auraWidth, auraHeight)
 				--auraIconFrame.Icon:SetSize (auraWidth-2, auraHeight-2)
 			else
 				if curBuffFrame == 2 then
-					local auraWidth = profile.aura_width2
-					local auraHeight = profile.aura_height2
-					auraIconFrame:SetSize (auraWidth, auraHeight)
-					--PixelUtil.SetSize(auraIconFrame, auraWidth, auraHeight)
+					auraWidth = profile.aura_width2
+					auraHeight = profile.aura_height2
+					borderThickness = profile.aura_border_thickness2
+					--auraIconFrame:SetSize (auraWidth, auraHeight)
 					--auraIconFrame.Icon:SetSize (auraWidth-2, auraHeight-2)
 				else
-					local auraWidth = profile.aura_width
-					local auraHeight = profile.aura_height
-					auraIconFrame:SetSize (auraWidth, auraHeight)
-					--PixelUtil.SetSize(auraIconFrame, auraWidth, auraHeight)
+					auraWidth = profile.aura_width
+					auraHeight = profile.aura_height
+					borderThickness = profile.aura_border_thickness
+					--auraIconFrame:SetSize (auraWidth, auraHeight)
 					--auraIconFrame.Icon:SetSize (auraWidth-2, auraHeight-2)
 				end
 			end
+			auraIconFrame:SetBorderSize (borderThickness)
+			local sizeMod = 1 --UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
+			PixelUtil.SetSize(auraIconFrame, auraWidth * sizeMod, auraHeight * sizeMod)
 			
 			Plater.UpdateIconAspecRatio (auraIconFrame)
 		end
@@ -2009,7 +2025,7 @@ end
 			iconFrame.Border:Hide()
 			
 			iconFrame.Border = DF:CreateFullBorder("$parentBorder", iconFrame)
-			local iconOffset = -1 * iconFrame:GetEffectiveScale() * (Plater.db.profile.use_ui_parent_just_enabled and Plater.db.profile.ui_parent_scale_tune or 1)
+			local iconOffset = -1 * UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
 			PixelUtil.SetPoint (iconFrame.Border, "TOPLEFT", iconFrame, "TOPLEFT", -iconOffset, iconOffset)
 			PixelUtil.SetPoint (iconFrame.Border, "TOPRIGHT", iconFrame, "TOPRIGHT", iconOffset, iconOffset)
 			PixelUtil.SetPoint (iconFrame.Border, "BOTTOMLEFT", iconFrame, "BOTTOMLEFT", -iconOffset, -iconOffset)
@@ -2018,7 +2034,7 @@ end
 				self.Border:SetVertexColor(r, g, b, a)
 			end
 			iconFrame.Border.SetBorderSize = function(self, size)
-				local borderSize = (size or 1) * iconFrame:GetEffectiveScale() * (Plater.db.profile.use_ui_parent_just_enabled and Plater.db.profile.ui_parent_scale_tune or 1)
+				local borderSize = (size or 1) * UIParent:GetEffectiveScale()-- * (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
 				self:SetBorderSizes(borderSize, 1, borderSize, 0)
 				self:UpdateSizes()
 			end
@@ -2033,9 +2049,14 @@ end
 				return self.Border:GetVertexColor()
 			end
 			
+			iconOffset = -1 * UIParent:GetEffectiveScale() --* (Plater.db.profile.use_ui_parent and (Plater.db.profile.ui_parent_scale_tune) or 1)
+			PixelUtil.SetPoint (iconFrame.Texture, "TOPLEFT", iconFrame, "TOPLEFT", -iconOffset, iconOffset)
+			PixelUtil.SetPoint (iconFrame.Texture, "TOPRIGHT", iconFrame, "TOPRIGHT", iconOffset, iconOffset)
+			PixelUtil.SetPoint (iconFrame.Texture, "BOTTOMLEFT", iconFrame, "BOTTOMLEFT", -iconOffset, -iconOffset)
+			PixelUtil.SetPoint (iconFrame.Texture, "BOTTOMRIGHT", iconFrame, "BOTTOMRIGHT", iconOffset, -iconOffset)
 			
 			iconFrame:SetBackdropBorderColor(DF:ParseColors(borderColor))
-			iconFrame:SetBorderSize(1)
+			iconFrame:SetBorderSize(profile.extra_icon_border_size or 1)
 			iconFrame.platerSkinned = true
 		end
 		
@@ -2147,11 +2168,7 @@ end
 				if ((show_buffs_personal and isPersonal) or not isPersonal) then
 				
 					local auraType = "BUFF"
-					--verify is this aura is in the table passed
-					if (aurasToCheck [name] or aurasToCheck [spellId]) then
-						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
-						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, false, false, isPersonal, dispelName, timeMod)
-					end
+					local isSpecial = false
 					
 					--> check if is a special aura
 					if (not noSpecial) then
@@ -2160,12 +2177,20 @@ end
 						--> in addition, we want to check if enrage tracking is enabled and show enrage effects
 						if (SPECIAL_AURAS_AUTO_ADDED [name] or SPECIAL_AURAS_AUTO_ADDED [spellId] or (DB_SHOW_PURGE_IN_EXTRA_ICONS and isStealable) or (DB_SHOW_ENRAGE_IN_EXTRA_ICONS and dispelName == AURA_TYPE_ENRAGE) or (DB_SHOW_MAGIC_IN_EXTRA_ICONS and dispelName == AURA_TYPE_MAGIC)) then
 							Plater.AddExtraIcon (self, name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, "HELPFUL", id, timeMod)
+							isSpecial = true
 						
 						--> check for special auras added by the user it self
 						elseif (((SPECIAL_AURAS_USER_LIST [name] or SPECIAL_AURAS_USER_LIST [spellId]) and not (SPECIAL_AURAS_USER_LIST_MINE [name] or SPECIAL_AURAS_USER_LIST_MINE [spellId])) or ((SPECIAL_AURAS_USER_LIST_MINE [name] or SPECIAL_AURAS_USER_LIST_MINE [spellId]) and sourceUnit and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet")))) then
 							Plater.AddExtraIcon (self, name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true,"HELPFUL", id, timeMod)
+							isSpecial = true
 							
 						end
+					end
+					
+					--verify is this aura is in the table passed
+					if (not isSpecial and (aurasToCheck [name] or aurasToCheck [spellId])) then
+						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
+						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, false, false, isPersonal, dispelName, timeMod)
 					end
 				end
 			end
@@ -2189,13 +2214,7 @@ end
 				if ((show_debuffs_personal and isPersonal) or not isPersonal) then
 				
 					local auraType = "DEBUFF"
-					--checking here if the debuff is placed by the player
-					--if (sourceUnit and aurasToCheck [name] and UnitIsUnit (sourceUnit, "player")) then --this doesn't track the pet, so auras like freeze from mage frost elemental won't show
-					if (sourceUnit and (aurasToCheck [name] or aurasToCheck [spellId]) and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet"))) then
-					--if (aurasToCheck [name]) then
-						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self)
-						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, false, false, false, isPersonal, dispelName, timeMod)
-					end
+					local isSpecial = false
 					
 					--> check if is a special aura
 					if (not noSpecial) then
@@ -2204,12 +2223,22 @@ end
 						--> in addition, we want to check if enrage tracking is enabled and show enrage effects
 						if (SPECIAL_AURAS_AUTO_ADDED [name] or SPECIAL_AURAS_AUTO_ADDED [spellId] or (DB_SHOW_PURGE_IN_EXTRA_ICONS and isStealable) or (DB_SHOW_ENRAGE_IN_EXTRA_ICONS and dispelName == AURA_TYPE_ENRAGE)) then
 							Plater.AddExtraIcon (self, name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, false, "HARMFUL", id, timeMod)
+							isSpecial = true
 						
 						--> check for special auras added by the user it self
 						elseif (((SPECIAL_AURAS_USER_LIST [name] or SPECIAL_AURAS_USER_LIST [spellId]) and not (SPECIAL_AURAS_USER_LIST_MINE [name] or SPECIAL_AURAS_USER_LIST_MINE [spellId])) or ((SPECIAL_AURAS_USER_LIST_MINE [name] or SPECIAL_AURAS_USER_LIST_MINE [spellId]) and sourceUnit and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet")))) then
 							Plater.AddExtraIcon (self, name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, false, "HARMFUL", id, timeMod)
+							isSpecial = true
 							
 						end
+					end
+					
+					--checking here if the debuff is placed by the player
+					--if (sourceUnit and aurasToCheck [name] and UnitIsUnit (sourceUnit, "player")) then --this doesn't track the pet, so auras like freeze from mage frost elemental won't show
+					if (not isSpecial and (sourceUnit and (aurasToCheck [name] or aurasToCheck [spellId]) and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet")))) then
+					--if (aurasToCheck [name]) then
+						local auraIconFrame, buffFrame = Plater.GetAuraIcon (self)
+						Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, false, false, false, isPersonal, dispelName, timeMod)
 					end
 				end
 			end
@@ -2287,17 +2316,19 @@ end
 							can_show_this_debuff = true
 						end
 					end
+					
+					local sourceIsPlayer = sourceUnit and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet") or Plater.PlayerPetCache[UnitGUID(sourceUnit)]) and true
 			
 					--> important aura
-					if (DB_AURA_SHOW_IMPORTANT and (nameplateShowAll or isBossAura)) then
+					if (DB_AURA_SHOW_IMPORTANT and (nameplateShowAll or isBossAura or (nameplateShowPersonal and sourceIsPlayer))) then
 						can_show_this_debuff = true
 					
 					--> is casted by the player
-					elseif (DB_AURA_SHOW_BYPLAYER and sourceUnit and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet") or Plater.PlayerPetCache[UnitGUID(sourceUnit)])) then
+					elseif (DB_AURA_SHOW_BYPLAYER and sourceIsPlayer) then
 						can_show_this_debuff = true
 						
 					--> is casted by other players
-					elseif (DB_AURA_SHOW_BYOTHERPLAYERS and isFromPlayerOrPlayerPet and sourceUnit and not UnitIsUnit (sourceUnit, "player")) then
+					elseif (DB_AURA_SHOW_BYOTHERPLAYERS and isFromPlayerOrPlayerPet and sourceUnit and not sourceIsPlayer) then
 						can_show_this_debuff = true	
 						
 					--> user added this buff to track in the buff tracking tab
@@ -2369,7 +2400,9 @@ end
 						Plater.AddExtraIcon (self, name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, "HELPFUL", id, timeMod)
 					else
 						--> important aura
-						if (DB_AURA_SHOW_IMPORTANT and (nameplateShowAll or isBossAura)) then
+						local sourceIsPlayer = sourceUnit and (UnitIsUnit (sourceUnit, "player") or UnitIsUnit (sourceUnit, "pet") or Plater.PlayerPetCache[UnitGUID(sourceUnit)]) and true
+						
+						if (DB_AURA_SHOW_IMPORTANT and (nameplateShowAll or isBossAura or (nameplateShowPersonal and sourceIsPlayer))) then
 							local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
 							Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, true, nil, nil, dispelName, timeMod)
 						
@@ -2399,12 +2432,12 @@ end
 							Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, nil, nil, nil, dispelName, timeMod)
 						
 						--> is casted by the player
-						elseif (DB_AURA_SHOW_BYPLAYER and sourceUnit and UnitIsUnit (sourceUnit, "player")) then
+						elseif (DB_AURA_SHOW_BYPLAYER and sourceIsPlayer) then
 							local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
 							Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, nil, nil, nil, dispelName, timeMod)
 							
 						--> is casted by other players
-						elseif (DB_AURA_SHOW_BYOTHERPLAYERS and isFromPlayerOrPlayerPet and sourceUnit and not UnitIsUnit (sourceUnit, "player")) then
+						elseif (DB_AURA_SHOW_BYOTHERPLAYERS and isFromPlayerOrPlayerPet and sourceUnit and not sourceIsPlayer) then
 							local auraIconFrame, buffFrame = Plater.GetAuraIcon (self, true)
 							Plater.AddAura (buffFrame, auraIconFrame, id, name, icon, applications, auraType, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, true, nil, nil, nil, dispelName, timeMod)
 							

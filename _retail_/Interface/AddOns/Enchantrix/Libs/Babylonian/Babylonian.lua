@@ -1,6 +1,6 @@
 --[[
 	Babylonian - A sub-addon that manages the locales for other addons.
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://auctioneeraddon.com/dl/
 
@@ -31,8 +31,6 @@ local LIBRARY_VERSION_MAJOR = "Babylonian"
 local LIBRARY_VERSION_MINOR = 3
 local lib = LibStub:NewLibrary(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR)
 if not lib then return end
-
-LibStub("LibRevision"):Set("$URL$","$Rev$","5.1.DEV.", 'auctioneer', 'libs')
 
 if not lib.private then
 	lib.private = {}

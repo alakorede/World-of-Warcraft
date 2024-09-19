@@ -1,6 +1,6 @@
 --[[
 	Enchantrix Addon for World of Warcraft(tm).
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://enchantrix.org/
 
@@ -62,8 +62,6 @@ Usage:
 	Enchantrix.Settings.SetSetting('TooltipShowValues', true );
 
 ]]
-
-Enchantrix_RegisterRevision("$URL$", "$Rev$")
 
 local lib = {}
 Enchantrix.Settings = lib
@@ -165,6 +163,10 @@ local settingDefaults = {
 	['export.aucadv'] = true, -- Send our price values to Auctioneer as stats
 	['ModTTShow'] = "always",
 	['AltChatlinkTooltip'] = false,
+
+	['miniicon.angle'] = 118,
+	['miniicon.distance'] = 12,
+	['miniicon.addcompartment'] = true,
 }
 
 local function getDefault(setting)
@@ -191,10 +193,6 @@ local function getDefault(setting)
 			return false
 		end
 	end
-
-	-- miniicon settings
-	if (setting == "miniicon.angle")          then return 118     end
-	if (setting == "miniicon.distance")       then return 12      end
 
 	-- lookup the simple settings
 	local result = settingDefaults[setting];
@@ -573,6 +571,12 @@ function lib.MakeGuiConfig()
 	gui:AddControl(id, "Checkbox",   0, 1, "miniicon.enable", _ENCH("GuiMinimapShowButton"))
 	gui:AddControl(id, "Slider",     0, 2, "miniicon.angle", 0, 360, 1, _ENCH("GuiMinimapButtonAngle"))
 	gui:AddControl(id, "Slider",     0, 2, "miniicon.distance", -80, 80, 1, _ENCH("GuiMinimapButtonDist"))
+
+	if AddonCompartmentFrame then
+		gui:AddControl(id, "Subhead",    0,    _ENCH("GuiAddOnsCompartmentOptions"))
+		gui:AddControl(id, "Checkbox",   0, 1, "miniicon.addcompartment", _ENCH("GuiAddOnsCompartmentEnable"))
+		gui:AddTip(id, _ENCH("GuiAddOnsCompartmentWarning"))
+	end
 
 	id = gui:AddTab(_ENCH("GuiAutoDeOptions"))
 	gui:AddControl(id, "Checkbox",   0, 1, "AutoDisenchantEnable", _ENCH("GuiAutoDeEnable"))

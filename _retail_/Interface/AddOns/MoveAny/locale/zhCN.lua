@@ -2,8 +2,10 @@
 local _, MoveAny = ...
 function MoveAny:LangzhCN()
     local tab = {
-        ["LID_MMBTNLEFT"] = "左键 => 锁定/解锁 + 选项",
-        ["LID_MMBTNRIGHT"] = "Shift + 右键 => 隐藏迷你地图按钮",
+        ["LID_LEFTCLICK"] = "左键",
+        ["LID_RIGHTCLICK"] = "右键",
+        ["LID_MMBTNLEFT"] = "锁定/解锁 + 选项",
+        ["LID_MMBTNRIGHT"] = "隐藏迷你地图按钮",
         ["LID_GENERAL"] = "一般",
         ["LID_SHOWMINIMAPBUTTON"] = "显示迷你地图按钮",
         ["LID_GRIDSIZE"] = "网格大小",
@@ -48,7 +50,7 @@ function MoveAny:LangzhCN()
         ["LID_CHAT"] = "Chatframe %d",
         ["LID_CHATBUTTONFRAME"] = "聊天按钮",
         ["LID_CHATQUICKJOIN"] = "聊天快速加入",
-        ["LID_CHATEDITBOX"] = "聊天输入框",
+        ["LID_CHATEDITBOX"] = "聊天输入框 %s",
         ["LID_COMPACTRAIDFRAMEMANAGER"] = "突击队经理",
         ["LID_BNToastFrame"] = "Battlenet朋友的通知",
         ["LID_ZONETEXTFRAME"] = "区域文本",

@@ -9,7 +9,7 @@
 	-- LeaMapsLC.NewPatch
 	local LeaMapsLC = {}
 	local gameversion, gamebuild, gamedate, gametocversion = GetBuildInfo()
-	if gametocversion and gametocversion == 110000 then -- 11.0.0
+	if gametocversion and gametocversion > 110000 then -- 11.0.0
 		LeaMapsLC.NewPatch = true
 	end
 
@@ -306,6 +306,15 @@
 			{"PortalN", 89.3, 38.7, L["Emerald Dream"], L["Portal"]},
 		},
 
+		----------------------------------------------------------------------
+		--	The War Within
+		----------------------------------------------------------------------
+
+		[2339] =  --[[Dornogal]] {
+			{"PortalA", 41.1, 22.7, L["Stormwind"], L["Portal"]},
+			{"PortalH", 38.2, 27.2, L["Orgrimmar"], L["Portal"]},
+		},
+
 	}
 
 	local frame = CreateFrame("FRAME")
@@ -323,7 +332,7 @@
 				end
 			end
 		else
-			local name, description, standingID = GetFactionInfoByID(989)
+			local name, description, standingID = C_Reputation.GetFactionDataByID(989)
 			if standingID and standingID >= 7 then
 				Leatrix_Maps["Icons"][111] = Leatrix_Maps["Icons"][111] or {}; tinsert(Leatrix_Maps["Icons"][111],
 					{"PortalN", 74.7, 31.4, L["Caverns of Time"], L["Portal from Zephyr"]}

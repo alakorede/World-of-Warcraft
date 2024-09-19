@@ -1,5 +1,22 @@
 # OmniCC Changelog
 
+## 11.0.1
+
+* Increase cooldown text frame level
+
+## 11.0.0
+
+* Fix an error when attempting to display the cooldown preview frame
+* Update TOCs
+
+## 10.2.9
+
+* Add an additional check for forbidden frames
+
+## 10.2.8
+
+* Update TOCs
+
 ## 10.2.7
 
 * Update TOCs

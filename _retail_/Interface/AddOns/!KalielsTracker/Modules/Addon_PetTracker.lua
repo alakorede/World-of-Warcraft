@@ -18,12 +18,16 @@ local PetTracker = PetTracker
 local header, content
 local filterButton
 
+-- TODO: Update the entire module
+M.isLoaded = KT:CheckAddOn("PetTracker", "10.2.7")
+if true then return end
+
 OBJECTIVE_TRACKER_UPDATE_MODULE_PETTRACKER = 0x1000000
 OBJECTIVE_TRACKER_UPDATE_PETTRACKER = 0x2000000
 PETTRACKER_TRACKER_MODULE = KT_ObjectiveTracker_GetModuleInfoTable("PETTRACKER_TRACKER_MODULE")
 
 M.Texts = {
-	TrackPets = GetSpellInfo(122026),
+	TrackPets = C_Spell.GetSpellName(122026),
 	CapturedPets = "Show Captured",
 	DisplayCondition = "Display Condition",
 	DisplayAlways = "Always",
@@ -101,11 +105,11 @@ local function SetHooks()
 	end
 
 	hooksecurefunc(PetTracker.ProgressBar, "SetProgress", function(self, progress)
-		if not self.KTskinned or KT.forcedUpdate then
+		if self.KTskinID ~= KT.skinID then
 			for _, bar in ipairs(self.Bars) do
 				bar:SetStatusBarTexture(LSM:Fetch("statusbar", db.progressBar))
 			end
-			self.KTskinned = true
+			self.KTskinID = KT.skinID
 		end
 	end)
 end
@@ -130,7 +134,7 @@ local function SetHooks_PetTracker_Journal()
 	else
 		PetTrackerTrackToggle:HookScript("OnClick", function()
 			if dbChar.collapsed and PetTracker.sets.zoneTracker then
-				KT:MinimizeButton_OnClick(true)
+				KT:MinimizeButton_OnClick()
 			end
 		end)
 	end

@@ -45,6 +45,8 @@ L.health = "Gesundheit" -- The health of an NPC
 L.health_percent = "%d%% Gesundheit" -- "10% Health" The health percentage of an NPC
 L.door_open = "Tür offen" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "Tor offen" -- When a gate is open, usually after a speech from an NPC
+L.threat = "Bedrohung"
+L.energy = "Energie"
 
 L.remaining = "%d übrig" -- 5 remaining
 L.duration = "%s für %s Sek" -- Spell for 10 seconds
@@ -64,10 +66,13 @@ L.cancelled = "%s abgebrochen" -- Spell Cancelled
 L.you_die = "Du stirbst" -- You will die
 L.you_die_sec = "Du stirbst in %d Sek" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "Nächste Fähigkeit" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.landing = "%s landet" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
+L.flying_available = "Du kannst jetzt fliegen"
 
 -- Add related
 L.add_spawned = "Add erschienen" -- singular
 L.adds_spawned = "Adds erschienen" -- plural
+L.adds_spawned_count = "%d |4Add:Adds; erschienen" -- 1 add spawned / 2 adds spawned
 L.add_spawning = "Add erscheint" -- singular
 L.adds_spawning = "Adds erscheinen" -- plural
 L.spawned = "%s erschienen"
@@ -86,6 +91,18 @@ L.small_adds = "Kleine Adds" -- plural
 L.killed = "%s getötet"
 L.mob_killed = "%s getötet (%d/%d)"
 L.mob_remaining = "%s getötet, noch %d übrig"
+
+-- NPCs for follower dungeons
+L.garrick = "Kapitänin Garrick" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*Garrick"
+L.meredy = "Meredy Weidmannsheil" -- AI mage dps (NPC 209059)
+L.meredy_short = "*Meredy"
+L.shuja = "Shuja Grimmaxt" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*Shuja"
+L.crenna = "Crenna Erdentochter" -- AI druid healer (NPC 209072)
+L.crenna_short = "*Crenna"
+L.austin = "Austin Haxwart" -- AI hunter dps (NPC 209065)
+L.austin_short = "*Austin"
 
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
@@ -109,9 +126,12 @@ L.marker_npc_aura_desc = "Von '%s' betroffene NPCs mit %s markieren. Benötigt L
 L.link = "Verbindung"
 L.link_with = "Verbunden mit %s"
 L.link_with_icon = "Verbunden mit |T13700%d:0|t%s"
-L.link_short = "Verbunden: %s"
-L.link_both = "%s verbunden mit %s"
+L.link_with_rticon = "{rt%d}Verbunden mit %s"
+L.link_both = "%s + %s sind verbunden"
+L.link_both_icon = "|T13700%d:0|t%s + |T13700%d:0|t%s sind verbunden"
 L.link_removed = "Verbindung entfernt"
+L.link_say_option_name = "Wiederholte 'Verbunden' Chatnachrichten"
+L.link_say_option_desc = "Wiederholt Nachrichten im Sprechen-Chat um mitzuteilen mit wem Du verbunden bist."
 
 -- Abbreviated numbers
 L.amount_one = "%dB" -- Billions 1,000,000,000
@@ -175,6 +195,7 @@ L.charge = "Ansturm" -- When a boss select a new target and charges at it quickl
 L.full_energy = "Volle Energie" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "Geschwächt" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "Immun" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "Betäubt" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "Pfütze" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "Pfützen" -- Plural of L.pool
 L.totem = "Totem" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -204,3 +225,10 @@ L.soaks = "Soaks" -- Plural of L.soak
 L.spell_reflection = "Zauberreflexion" -- Any ability that reflects spells
 L.parasite = "Parasit" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "Bewegungsunfähig" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+L.dodge = "Ausweichen" -- When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+L.health_drain = "Gesundheit entziehen" -- Any ability that drains health from the player
+L.smash = "Schmettern" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+L.spike = "Stachel" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+L.spikes = "Stacheln" -- Plural of L.spike

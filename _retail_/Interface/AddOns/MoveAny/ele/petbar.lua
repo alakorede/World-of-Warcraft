@@ -83,8 +83,7 @@ function MoveAny:InitPetBar()
 							bb:SetUserPlaced(false)
 						end
 
-						bb:ClearAllPoints()
-						bb:SetPoint("TOPLEFT", bar, "TOPLEFT", (i - 1) * btnsize, 0)
+						MoveAny:SetPoint(bb, "TOPLEFT", bar, "TOPLEFT", (i - 1) * btnsize, 0)
 					end
 				)
 
@@ -118,6 +117,26 @@ function MoveAny:InitPetBar()
 			)
 		else
 			MoveAny:MSG("MISSING ShowPetActionBar")
+		end
+
+		MoveAny:UpdatePetBar()
+	elseif PetActionBar then
+		PetActionBar.btns = {}
+		for i = 1, 12 do
+			local btn = _G["PetActionButton" .. i]
+			if btn then
+				tinsert(PetActionBar.btns, btn)
+			end
+		end
+
+		MoveAny:UpdatePetBar()
+	elseif PetActionBarFrame then
+		PetActionBarFrame.btns = {}
+		for i = 1, 12 do
+			local btn = _G["PetActionButton" .. i]
+			if btn then
+				tinsert(PetActionBarFrame.btns, btn)
+			end
 		end
 
 		MoveAny:UpdatePetBar()

@@ -645,7 +645,7 @@ local altAppearancesDB = {
 
 function AddToCollection()
   for i = 1, #db do
-    if (C_TransmogCollection.GetSourceInfo(db[i][6][1])) then --checks if this is an actual set. Only needed for checking sets that are only viewable on the ptr but not yet live.
+    --if (C_TransmogCollection.GetSourceInfo(db[i][6][1])) then --checks if this is an actual set. Only needed for checking sets that are only viewable on the ptr but not yet live.
       local data = {};
       data.classMask = db[i][4];
       data.note = db[i][2];
@@ -677,7 +677,7 @@ function AddToCollection()
       data.description = data.note; --remove this later
       
       app.SetsFrame.AddSetToTables(data);
-    end
+    --end
   end
   
   for i = 1, #altAppearancesDB do

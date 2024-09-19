@@ -28,6 +28,11 @@ local db = nil
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
 plugin.displayName = L.messages
 
+local validFramePoints = {
+	["TOPLEFT"] = L.TOPLEFT, ["TOPRIGHT"] = L.TOPRIGHT, ["BOTTOMLEFT"] = L.BOTTOMLEFT, ["BOTTOMRIGHT"] = L.BOTTOMRIGHT,
+	["TOP"] = L.TOP, ["BOTTOM"] = L.BOTTOM, ["LEFT"] = L.LEFT, ["RIGHT"] = L.RIGHT, ["CENTER"] = L.CENTER,
+}
+
 --------------------------------------------------------------------------------
 -- Profile
 --
@@ -41,7 +46,7 @@ plugin.defaultDB = {
 	emphOutline = "THICKOUTLINE",
 	align = "CENTER",
 	fontSize = 20,
-	emphFontSize = 48,
+	emphFontSize = 44,
 	chat = false,
 	useicons = true,
 	classcolor = true,
@@ -95,6 +100,40 @@ local function updateProfile()
 	end
 	if db.fadetime < 1 or db.fadetime > 10 then
 		db.fadetime = plugin.defaultDB.fadetime
+	end
+	if not media:IsValid(FONT, db.fontName) then
+		db.fontName = plugin:GetDefaultFont()
+	end
+	if not media:IsValid(FONT, db.emphFontName) then
+		db.emphFontName = plugin:GetDefaultFont()
+	end
+	if type(db.normalPosition[1]) ~= "string" or type(db.normalPosition[2]) ~= "string"
+	or type(db.normalPosition[3]) ~= "number" or type(db.normalPosition[4]) ~= "number"
+	or not validFramePoints[db.normalPosition[1]] or not validFramePoints[db.normalPosition[2]] then
+		db.normalPosition = plugin.defaultDB.normalPosition
+	else
+		local x = math.floor(db.normalPosition[3]+0.5)
+		if x ~= db.normalPosition[3] then
+			db.normalPosition[3] = x
+		end
+		local y = math.floor(db.normalPosition[4]+0.5)
+		if y ~= db.normalPosition[4] then
+			db.normalPosition[4] = y
+		end
+	end
+	if type(db.emphPosition[1]) ~= "string" or type(db.emphPosition[2]) ~= "string"
+	or type(db.emphPosition[3]) ~= "number" or type(db.emphPosition[4]) ~= "number"
+	or not validFramePoints[db.emphPosition[1]] or not validFramePoints[db.emphPosition[2]] then
+		db.emphPosition = plugin.defaultDB.emphPosition
+	else
+		local x = math.floor(db.emphPosition[3]+0.5)
+		if x ~= db.emphPosition[3] then
+			db.emphPosition[3] = x
+		end
+		local y = math.floor(db.emphPosition[4]+0.5)
+		if y ~= db.emphPosition[4] then
+			db.emphPosition[4] = y
+		end
 	end
 
 	local emphFlags = nil
@@ -166,8 +205,13 @@ do
 	local function OnDragStop(self)
 		self:StopMovingOrSizing()
 		local point, _, relPoint, x, y = self:GetPoint()
+		x = math.floor(x+0.5)
+		y = math.floor(y+0.5)
 		plugin.db.profile[self.position] = {point, relPoint, x, y}
-		plugin:UpdateGUI() -- Update X/Y if GUI is open.
+		self:RefixPosition()
+		if BigWigsOptions and BigWigsOptions:IsOpen() then
+			plugin:UpdateGUI() -- Update X/Y if GUI is open
+		end
 	end
 	local function RefixPosition(self)
 		self:ClearAllPoints()
@@ -214,7 +258,7 @@ do
 	end
 
 	normalMessageAnchor = createAnchor("normalPosition", L.messages, 12, 200, 20)
-	emphMessageAnchor = createAnchor("emphPosition", L.emphasizedMessages, 48, 650, 80, true)
+	emphMessageAnchor = createAnchor("emphPosition", L.emphasizedMessages, 44, 650, 80, true)
 
 	normalMessageFrame = CreateFrame("Frame", nil, UIParent)
 	normalMessageFrame:SetWidth(2000)
@@ -271,6 +315,11 @@ do
 	local testCount = 0
 	local colors = {"green", "red", "orange", "yellow", "cyan", "blue", "purple"}
 	local sounds = {"Long", "Warning", "Alert", "Alarm", "Info", "underyou", "Info"}
+	local testIcons = {
+		"Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_legacy.tga",
+		"Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid.tga",
+		"Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_party.tga",
+	}
 	plugin.pluginOptions = {
 		type = "group",
 		name = "|TInterface\\AddOns\\BigWigs\\Media\\Icons\\Menus\\Messages:20|t ".. L.messages,
@@ -317,7 +366,7 @@ do
 					local color = colors[testCount]
 					local sound = sounds[testCount]
 					local emphasized = testCount == 2
-					plugin:SendMessage("BigWigs_Message", plugin, nil, L[color], color, "Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid.tga", emphasized)
+					plugin:SendMessage("BigWigs_Message", plugin, nil, L[color], color, testIcons[(testCount%3)+1], emphasized)
 					plugin:SendMessage("BigWigs_Sound", plugin, nil, sound)
 					if testCount == 7 then testCount = 0 end
 				end,
@@ -459,7 +508,7 @@ do
 						type = "execute",
 						name = L.resetAll,
 						desc = L.resetMessagesDesc,
-						func = function() plugin.db:ResetProfile() end,
+						func = function() plugin.db:ResetProfile() updateProfile() end,
 						order = 15,
 					},
 				},
@@ -718,11 +767,13 @@ do
 		return old
 	end
 
-	function plugin:Print(_, text, r, g, b, _, _, _, _, _, icon)
+	function plugin:Print(_, text, r, g, b, _, _, _, _, _, icon, customDisplayTime)
 		normalMessageFrame:Show()
 
 		local slot = db.growUpwards and getNextSlotUp() or getNextSlotDown()
 		local slotIcon = slot.icon
+		slot.animFade:SetStartDelay(customDisplayTime or db.displaytime)
+		slotIcon.animFade:SetStartDelay(customDisplayTime or db.displaytime)
 		slot:SetText(text)
 		slot:SetTextColor(r, g, b, 1)
 
@@ -770,11 +821,12 @@ do
 	anim:SetDuration(1.2)
 	anim:SetStartDelay(1)
 
-	function plugin:EmphasizedPrint(_, text, r, g, b)
+	function plugin:EmphasizedPrint(_, text, r, g, b, _, _, _, _, _, _, customDisplayTime)
 		emphMessageAnchor.header:Hide() -- Hide the header, for config mode
 		emphMessageText:SetText(text)
 		emphMessageText:SetTextColor(r, g, b)
 		updater:Stop()
+		anim:SetStartDelay(customDisplayTime or 1)
 		emphMessageFrame:Show()
 		updater:Play()
 	end
@@ -783,7 +835,7 @@ end
 do
 	local unpack, type = unpack, type
 	local format, upper, gsub = string.format, string.upper, string.gsub
-	function plugin:BigWigs_Message(event, module, key, text, color, icon, emphasized)
+	function plugin:BigWigs_Message(event, module, key, text, color, icon, emphasized, customDisplayTime)
 		if not text then return end
 
 		local r, g, b = 1, 1, 1 -- Default to white.
@@ -804,9 +856,9 @@ do
 				text = upper(text)
 				text = gsub(text, "(:%d+|)T", "%1t") -- Fix texture paths that need to end in lowercase |t
 			end
-			self:EmphasizedPrint(nil, text, r, g, b)
+			self:EmphasizedPrint(nil, text, r, g, b, nil, nil, nil, nil, nil, nil, customDisplayTime)
 		elseif not db.disabled then
-			self:Print(nil, text, r, g, b, nil, nil, nil, nil, nil, icon)
+			self:Print(nil, text, r, g, b, nil, nil, nil, nil, nil, icon, customDisplayTime)
 		end
 		if db.chat then
 			-- http://www.wowpedia.org/UI_escape_sequences

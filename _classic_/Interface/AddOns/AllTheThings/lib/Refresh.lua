@@ -16,8 +16,8 @@ local IsRefreshing
 if app.IsRetail then
 -- CRIEVE NOTE: I really don't like the explicit listed data here
 -- I'd much rather have parser export these.
-local wipe, math_max, tonumber, type, select, pcall, ipairs, pairs =
-	  wipe, math.max, tonumber, type, select, pcall, ipairs, pairs;
+local math_max, tonumber, type, select, pcall, ipairs, pairs =
+	  math.max, tonumber, type, select, pcall, ipairs, pairs;
 local GetAchievementInfo =
 	  GetAchievementInfo;
 local ATTAccountWideData
@@ -155,9 +155,7 @@ local function CacheAccountWideMiscQuests(accountWideData)
 		-- etc.
 
 		-- Account Unlocks
-		70941,	-- Fishing Holes [DF Iskaaran Fishing]
 		74576,	-- Restored Hakkari Bijou [Zul'Gurub]
-		76390,	-- Inconvenience Fee [Naxxramas]
 
 	}) do
 		-- If this Character has the Quest completed and it is not marked as completed for Account or not for specific Character
@@ -230,21 +228,21 @@ end
 local function FixNonOneTimeQuests(accountWideData)
 	local oneTimeQuests = accountWideData.OneTimeQuests;
 
-	-- if we ever erroneously add an account-wide quest and find out it isn't (or Blizzard actually fixes it to give account-wide credit)
-	-- put it here so it reverts back to being handled as a normal quest
+	-- if we ever erroneously add an account-wide quest and find out it isn't put it here so it reverts back to being handled as a normal quest
+	-- quests in AccountWideQuestsDB will automatically be removed from OneTimeQuests
 	for _,questID in ipairs({
 		32008,	-- Audrey Burnhep (A)
 		32009,	-- Varzok (H)
-
 		62038,	-- Handful of Oats
 		62042,	-- Grooming Brush
 		62047,	-- Sturdy Horseshoe
 		62049,	-- Bucket of Clean Water
 		62048,	-- Comfortable Saddle Blanket
 		62050,	-- Dredhollow Apple
-
-		76307,	-- Makeshift Grappling Hook
 	}) do
+		oneTimeQuests[questID] = nil;
+	end
+	for questID,_ in pairs(app.AccountWideQuestsDB) do
 		oneTimeQuests[questID] = nil;
 	end
 end
@@ -272,7 +270,6 @@ end
 app.AddEventHandler("OnRefreshCollections", CacheAccountWideCompleteViaAchievement)
 app.AddEventHandler("OnRefreshCollections", CacheAccountWideMiscQuests)
 app.AddEventHandler("OnRefreshCollections", CacheAccountWideSharedQuests)
-app.AddEventHandler("OnRefreshCollections", FixNonOneTimeQuests)
 app.AddEventHandler("OnRefreshCollections", CheckOncePerAccountQuestsForCharacter)
 
 RefreshCollections = function()
@@ -284,8 +281,6 @@ RefreshCollections = function()
 	end
 
 	-- Execute the OnRefreshCollections handlers.
-	-- TODO: Take all the bulk of this function and make them use the event handler.
-	-- The function used in the Classic section is what I want to see when this is completed.
 	app.HandleEvent("OnRefreshCollections", ATTAccountWideData)
 end
 
@@ -307,15 +302,12 @@ app.AddEventHandler("OnRefreshCollectionsDone", function()
 	end
 	IsRefreshing = nil
 end)
-app.AddEventHandler("OnStartup", function()
-	ATTAccountWideData = app.LocalizeGlobalIfAllowed("ATTAccountWideData", true);
+app.AddEventHandler("OnSavedVariablesAvailable", function(currentCharacter, accountWideData)
+	ATTAccountWideData = accountWideData
+	FixNonOneTimeQuests(accountWideData)
 end)
 
-else
--- TODO: Once the Retail version of this function uses ALOT less things manually
--- and has successfully converted them to using event handlers, then this is what I'm
--- expecting the function to look like at the end. Probably also add an event handler
--- to proc when it's "done". Like OnRefreshCollectionsComplete or something?
+else	-- Classic
 RefreshCollections = function()
 	if InCombatLockdown() then
 		print(app.L.REFRESHING_COLLECTION,"(",COMBAT,")");
@@ -343,4 +335,10 @@ app.RefreshCollections = function()
 	IsRefreshing = true
 	app:StartATTCoroutine("RefreshingCollections", RefreshCollections)
 end
-app.AddEventHandler("OnInit", app.RefreshCollections)
+
+if app.IsRetail then
+	app.AddEventHandler("OnReady", app.RefreshCollections)
+else
+	-- TODO: test Classic with this as 'OnReady' and consolidate with Retail above
+	app.AddEventHandler("OnInit", app.RefreshCollections)
+end

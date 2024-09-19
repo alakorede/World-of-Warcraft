@@ -106,7 +106,10 @@ local function MAMoveButton(parent, name, ofsx, ofsy, x, y, texNor, texPus)
 		"OnClick",
 		function()
 			local p1, _, p3, p4, p5 = MoveAny:GetElePoint(name)
-			MoveAny:SetElePoint(name, p1, MoveAny:GetMainPanel(), p3, p4 + x, p5 + y)
+			if p1 and p3 and p4 and p5 then
+				MoveAny:SetElePoint(name, p1, MoveAny:GetMainPanel(), p3, p4 + x, p5 + y)
+			end
+
 			p1, _, p3, p4, p5 = MoveAny:GetElePoint(name)
 			parent.pos:SetText(format("Position X: %d Y:%d", p4, p5))
 		end
@@ -405,14 +408,16 @@ function MoveAny:MenuOptions(opt, frame)
 			local slides = {}
 			local items = {}
 			local function UpdateRowItems()
-				local maxBtns = getn(frame.btns)
-				if frame ~= MAMenuBar and frame ~= StanceBar and opts["COUNT"] and opts["COUNT"] > 0 then
-					maxBtns = opts["COUNT"]
-				end
+				if frame.btns then
+					local maxBtns = getn(frame.btns)
+					if frame ~= MAMenuBar and frame ~= StanceBar and opts["COUNT"] and opts["COUNT"] > 0 then
+						maxBtns = opts["COUNT"]
+					end
 
-				items = {}
-				for id = 1, maxBtns do
-					tinsert(items, id)
+					items = {}
+					for id = 1, maxBtns do
+						tinsert(items, id)
+					end
 				end
 			end
 
@@ -422,7 +427,13 @@ function MoveAny:MenuOptions(opt, frame)
 				vmin = 6
 			end
 
-			local max = getn(frame.btns)
+			local max = 1
+			if frame.btns then
+				max = getn(frame.btns)
+			else
+				max = 1
+			end
+
 			local count = opts["COUNT"] or max
 			local rows = opts["ROWS"] or 1
 			local offset = opts["OFFSET"] or 0
@@ -738,6 +749,43 @@ function MoveAny:MenuOptions(opt, frame)
 	end
 end
 
+function MoveAny:GetWindow(name)
+	local frame = _G[name]
+	if frame ~= nil and type(frame) == "table" then
+		return frame
+	elseif strfind(name, ".", 1, true) then
+		for i, v in pairs({strsplit(".", name)}) do
+			if i == 1 then
+				if type(_G[v]) == "table" then
+					frame = _G[v]
+				elseif i > 1 then
+					return nil
+				end
+			elseif frame then
+				if type(frame[v]) == "table" then
+					frame = frame[v]
+				elseif i > 1 then
+					return nil
+				end
+			else
+				return nil
+			end
+		end
+
+		if type(frame) == "table" then return frame end
+	elseif name:find("%[[0-9]+%]") then
+		local f = _G[name:gsub("%[[0-9]+%]", "")]
+		if f then
+			local regions = {f:GetRegions()}
+			local num = tonumber(name:match("[0-9]+"))
+
+			return regions[num]
+		end
+	end
+
+	return nil
+end
+
 function MoveAny:GetFrame(ele, name)
 	if ele == nil then return ele end
 	local _, e1 = strfind(name, ".", 1, true)
@@ -811,6 +859,86 @@ function MoveAny:UpdateHiddenFrames()
 	end
 end
 
+function MoveAny:IsPresetProfileActive()
+	if EditModeManagerFrame then
+		if not EditModeManagerFrame:IsInitialized() or EditModeManagerFrame.layoutApplyInProgress then return true end
+		local layoutInfo = EditModeManagerFrame:GetActiveLayoutInfo()
+		local isPresetLayout = layoutInfo.layoutType == Enum.EditModeLayoutType.Preset
+
+		return isPresetLayout
+	end
+
+	return true
+end
+
+--[[if MoveAny:GetWoWBuild() == "RETAIL" then
+	C_Timer.After(
+		1,
+		function()
+			local MA_HelpProfileFrame = CreateFrame("FRAME", "MoveAnyHelpFrame")
+			MA_HelpProfileFrame:SetParent(MoveAny:GetMainPanel())
+			MA_HelpProfileFrame:SetSize(1200, 200)
+			MA_HelpProfileFrame:ClearAllPoints()
+			MA_HelpProfileFrame:SetPoint("TOP", MoveAny:GetMainPanel(), "TOP", 0, -100)
+			MA_HelpProfileFrame:EnableMouse(false)
+			MA_HelpProfileFrame.t1 = MA_HelpProfileFrame:CreateFontString(nil, nil, "GameFontNormal")
+			MA_HelpProfileFrame.t1:SetPoint("CENTER", MA_HelpProfileFrame, "CENTER", 0, 0)
+			local font, _, fontFlags = MA_HelpProfileFrame.t1:GetFont()
+			MA_HelpProfileFrame.t1:SetFont(font, 32, fontFlags)
+			MA_HelpProfileFrame.t1:SetText(MoveAny:GT("LID_PLEASESWITCHPROFILE1"))
+			MA_HelpProfileFrame.t2 = MA_HelpProfileFrame:CreateFontString(nil, nil, "GameFontNormal")
+			MA_HelpProfileFrame.t2:SetPoint("CENTER", MA_HelpProfileFrame, "CENTER", 0, -40)
+			local font2, _, fontFlags2 = MA_HelpProfileFrame.t2:GetFont()
+			MA_HelpProfileFrame.t2:SetFont(font2, 24, fontFlags2)
+			MA_HelpProfileFrame.t2:SetText(MoveAny:GT("LID_PLEASESWITCHPROFILE2"))
+			MA_HelpProfileFrame.t3 = MA_HelpProfileFrame:CreateFontString(nil, nil, "GameFontNormal")
+			MA_HelpProfileFrame.t3:SetPoint("CENTER", MA_HelpProfileFrame, "CENTER", 0, -90)
+			local font3, _, fontFlags3 = MA_HelpProfileFrame.t3:GetFont()
+			MA_HelpProfileFrame.t3:SetFont(font3, 32, fontFlags3)
+			MA_HelpProfileFrame.t3:SetText(MoveAny:GT("LID_PLEASESWITCHPROFILE3"))
+			function MoveAny:ThinkHelpFrame()
+				if MoveAny:IsPresetProfileActive() then
+					MA_HelpProfileFrame:Show()
+					C_Timer.After(0.5, MoveAny.ThinkHelpFrame)
+				else
+					MA_HelpProfileFrame:Hide()
+					C_Timer.After(1.1, MoveAny.ThinkHelpFrame)
+				end
+			end
+
+			MoveAny:ThinkHelpFrame()
+		end
+	)
+end]]
+if MoveAny:GetWoWBuild() == "RETAIL" then
+	C_Timer.After(
+		1,
+		function()
+			local lastCheck = false
+			local wasPreset = MoveAny:IsPresetProfileActive()
+			function MoveAny:ThinkHelpFrame()
+				local isPreset = MoveAny:IsPresetProfileActive()
+				if lastCheck ~= isPreset then
+					lastCheck = isPreset
+					if isPreset then
+						MoveAny:MSG(MoveAny:GT("LID_PLEASESWITCHPROFILE1") .. " " .. MoveAny:GT("LID_PLEASESWITCHPROFILE2") .. " " .. MoveAny:GT("LID_PLEASESWITCHPROFILE3"))
+					elseif wasPreset then
+						MoveAny:MSG("ALL GOOD.")
+					end
+				end
+
+				if isPreset then
+					C_Timer.After(0.5, MoveAny.ThinkHelpFrame)
+				else
+					C_Timer.After(1.1, MoveAny.ThinkHelpFrame)
+				end
+			end
+
+			MoveAny:ThinkHelpFrame()
+		end
+	)
+end
+
 function MoveAny:RegisterWidget(tab)
 	local name = tab.name
 	local lstr = tab.lstr
@@ -837,18 +965,10 @@ function MoveAny:RegisterWidget(tab)
 	tab.delay = tab.delay or 0.2
 	local enabled1, forced1 = MoveAny:IsInEditModeEnabled(name)
 	local enabled2, forced2 = MoveAny:IsInEditModeEnabled(lstr)
-	if enabled1 or enabled2 then
-		if not MoveAny:IsEnabled("EDITMODE", MoveAny:GetWoWBuildNr() < 100000) then
-			MoveAny:MSG("YOU NEED EDITMODE IN MOVEANY ENABLED")
+	if (enabled1 or enabled2) and (not forced1 and not forced2) then
+		MoveAny:MSG(format(MoveAny:GT("LID_HELPTEXT"), lstr))
 
-			return
-		end
-
-		if not forced1 and not forced2 then
-			MoveAny:MSG(format(MoveAny:GT("LID_HELPTEXT"), lstr))
-
-			return
-		end
+		return
 	end
 
 	C_Timer.After(
@@ -856,18 +976,10 @@ function MoveAny:RegisterWidget(tab)
 		function()
 			enabled1, forced1 = MoveAny:IsInEditModeEnabled(name)
 			enabled2, forced2 = MoveAny:IsInEditModeEnabled(lstr)
-			if enabled1 or enabled2 then
-				if not MoveAny:IsEnabled("EDITMODE", MoveAny:GetWoWBuildNr() < 100000) then
-					MoveAny:MSG("YOU NEED EDITMODE IN MOVEANY ENABLED")
+			if (enabled1 or enabled2) and (not forced1 and not forced2) then
+				MoveAny:MSG(format(MoveAny:GT("LID_HELPTEXT"), lstr))
 
-					return
-				end
-
-				if not forced1 and not forced2 then
-					MoveAny:MSG(format(MoveAny:GT("LID_HELPTEXT"), lstr))
-
-					return
-				end
+				return
 			end
 		end
 	)
@@ -1311,39 +1423,14 @@ function MoveAny:RegisterWidget(tab)
 		MoveAny:SetEleSize(name, sw, sh)
 	end
 
+	local pointFunc = "SetPoint"
 	if frame.SetPointBase then
-		--frame.layoutApplyInProgress = true
-		function frame:MAUpdatePoint()
-			if frame.ma_retry_setpoint and not InCombatLockdown() then
-				local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint(name)
-				if not InCombatLockdown() and frame.SetPointBase then
-					frame:ClearAllPoints()
-					if noreparent then
-						frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
-					else
-						frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-					end
-				elseif not frame.SetPointBase then
-					frame:ClearAllPoints()
-					if noreparent then
-						frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
-					else
-						frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-					end
-				end
-
-				frame.ma_retry_setpoint = false
-			end
-
-			if frame.ma_retry_setpoint then
-				C_Timer.After(0.1, frame.MAUpdate)
-			end
-		end
+		pointFunc = "SetPointBase"
 	end
 
 	hooksecurefunc(
 		frame,
-		"SetPoint",
+		pointFunc,
 		function(sel, ...)
 			if sel.elesetpoint then return end
 			--sel.layoutApplyInProgress = true
@@ -1359,38 +1446,7 @@ function MoveAny:RegisterWidget(tab)
 				sel.elesetpoint = true
 				local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint(name)
 				if dbp1 and dbp3 then
-					if not InCombatLockdown() and sel.SetPointBase then
-						if noreparent then
-							sel:ClearAllPointsBase()
-							sel:SetPointBase(dbp1, sel:GetParent(), dbp3, dbp4, dbp5)
-						else
-							sel:ClearAllPointsBase()
-							sel:SetPointBase(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-						end
-					elseif not sel.SetPointBase then
-						if MoveAny:GetWoWBuild() ~= "RETAIL" and sel.OldSetPoint and sel.ClearAllPoints then
-							if not InCombatLockdown() then
-								if noreparent then
-									sel:OldClearAllPoints()
-									sel:OldSetPoint(dbp1, sel:GetParent(), dbp3, dbp4, dbp5)
-								else
-									sel:OldClearAllPoints()
-									sel:OldSetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-								end
-							end
-						else
-							if noreparent then
-								sel:ClearAllPoints()
-								sel:SetPoint(dbp1, sel:GetParent(), dbp3, dbp4, dbp5)
-							else
-								sel:ClearAllPoints()
-								sel:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-							end
-						end
-					elseif sel.ma_retry_setpoint == false then
-						sel.ma_retry_setpoint = true
-						frame:MAUpdatePoint()
-					end
+					MoveAny:SetPoint(sel, dbp1, nil, dbp3, dbp4, dbp5)
 				end
 
 				sel.elesetpoint = false
@@ -1402,15 +1458,9 @@ function MoveAny:RegisterWidget(tab)
 		local dbp1, _, dbp3, dbp4, dbp5 = MoveAny:GetElePoint(name)
 		if dbp1 and dbp3 then
 			if noreparent then
-				frame:ClearAllPoints()
-				frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
-				frame:ClearAllPoints()
-				frame:SetPoint(dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
+				MoveAny:SetPoint(frame, dbp1, frame:GetParent(), dbp3, dbp4, dbp5)
 			else
-				frame:ClearAllPoints()
-				frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
-				frame:ClearAllPoints()
-				frame:SetPoint(dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
+				MoveAny:SetPoint(frame, dbp1, MoveAny:GetMainPanel(), dbp3, dbp4, dbp5)
 			end
 		end
 	end
@@ -1445,7 +1495,10 @@ function MoveAny:RegisterWidget(tab)
 		function(sel, w, h)
 			local isToSmall = false
 			local df = _G[name .. "_MA_DRAG"]
-			df:SetSize(w, h)
+			if df.SetSize then
+				df:SetSize(w, h)
+			end
+
 			if w < sw then
 				w = sw
 				isToSmall = true
@@ -1457,8 +1510,13 @@ function MoveAny:RegisterWidget(tab)
 			end
 
 			if bToSmall and isToSmall then
-				df:SetSize(w, h)
-				sel:SetSize(w, h)
+				if df.SetSize then
+					df:SetSize(w, h)
+				end
+
+				if sel.SetSize then
+					sel:SetSize(w, h)
+				end
 			end
 		end
 	)
@@ -1490,6 +1548,8 @@ local invehicle = nil
 local incombat = nil
 local inpetbattle = nil
 local isstealthed = nil
+local ischatclosed = nil
+local lastchatab = nil
 local lastEle = nil
 local lastSize = 0
 local fullHP = false
@@ -1516,6 +1576,23 @@ function MoveAny:IsInPetBattle()
 	return inPetBattle
 end
 
+function MoveAny:IsChatClosed()
+	for i = 1, 12 do
+		if _G["ChatFrame" .. i .. "EditBox"] and _G["ChatFrame" .. i .. "EditBox"]:HasFocus() then return false end
+	end
+
+	return true
+end
+
+function MoveAny:CurrentChatTab()
+	for i = 1, 12 do
+		local ct = _G["ChatFrame" .. i .. "EditBox"]
+		if ct and ct:IsShown() then return i end
+	end
+
+	return 0
+end
+
 function MoveAny:CheckAlphas()
 	if incombat ~= InCombatLockdown() then
 		incombat = InCombatLockdown()
@@ -1537,6 +1614,14 @@ function MoveAny:CheckAlphas()
 		MoveAny:UpdateAlphas()
 	elseif IsStealthed and isstealthed ~= IsStealthed() then
 		isstealthed = IsStealthed()
+		MoveAny:UpdateAlphas()
+	elseif MoveAny.IsChatClosed and ischatclosed ~= MoveAny:IsChatClosed() then
+		ischatclosed = MoveAny:IsChatClosed()
+		if ischatclosed then
+			MoveAny:UpdateAlphas()
+		end
+	elseif MoveAny.CurrentChatTab and lastchatab ~= MoveAny:CurrentChatTab() then
+		lastchatab = MoveAny:CurrentChatTab()
 		MoveAny:UpdateAlphas()
 	end
 

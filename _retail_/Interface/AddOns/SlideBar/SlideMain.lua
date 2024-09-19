@@ -28,11 +28,9 @@
 ]]
 
 local LIBRARY_VERSION_MAJOR = "SlideBar"
-local LIBRARY_VERSION_MINOR = 19
+local LIBRARY_VERSION_MINOR = 20
 local lib = LibStub:NewLibrary(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR)
 if not lib then return end
-
-LibStub("LibRevision"):Set("$URL$","$Rev$","6.0.DEV.", 'auctioneer', 'libs')
 
 -- Autoconvert existing nSideBar instances to SlideBar
 if LibStub.libs.nSideBar then
@@ -62,9 +60,9 @@ if not LibDataBroker then
 	-- This should only occur in the Dev version of SlideBar, which does not come with the Libs embedded
 	-- We will look for the disembedded LibDataBroker AddOn from the Norganna Libs, and load it if found
 	local add = "LibDataBroker"
-	local _, _, _, _, reason = GetAddOnInfo(add)
+	local _, _, _, _, reason = C_AddOns.GetAddOnInfo(add)
 	if reason == "DEMAND_LOADED" then -- check that LibDataBroker exists and is the expected type
-		LoadAddOn(add)
+		C_AddOns.LoadAddOn(add)
 		LibDataBroker = LibStub("LibDataBroker-1.1", true) -- try again
 	end
 end
@@ -806,6 +804,30 @@ function private.GUI()
 
 		return button
 	end
+
+	--Current TWW workaround for deprecated InterfaceOptions function. Entire base panel may require recode in the future.
+	local InterfaceOptions_AddCategory = InterfaceOptions_AddCategory
+	if not InterfaceOptions_AddCategory then
+		InterfaceOptions_AddCategory = function(frame, addOn, position)
+			-- cancel is no longer a default option. May add menu extension for this.
+			frame.OnCommit = frame.okay;
+			frame.OnDefault = frame.default;
+			frame.OnRefresh = frame.refresh;
+
+			if frame.parent then
+				local category = Settings.GetCategory(frame.parent);
+				local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, frame, frame.name, frame.name);
+				subcategory.ID = frame.name;
+				return subcategory, category;
+			else
+				local category, layout = Settings.RegisterCanvasLayoutCategory(frame, frame.name, frame.name);
+				category.ID = frame.name;
+				Settings.RegisterAddOnCategory(category);
+				return category;
+			end
+		end
+	end
+	--End of current TWW workaround
 
 	--Set up the controls
 

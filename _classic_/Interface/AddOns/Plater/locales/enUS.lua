@@ -7,6 +7,9 @@ do
 
 L["OPTIONS_"] = ""
 
+    L["OPTIONS_AUDIOCUE_COOLDOWN"] = "Audio Cooldown"
+    L["OPTIONS_AUDIOCUE_COOLDOWN_DESC"] = "Amount of time in milliseconds to wait before playing the SAME audio again.\n\nPrevents loud sounds from playing when two or more casts are happening at the same time.\n\nSet to 0 to disable this feature."
+
     --on curseforge
     L["OPTIONS_CASTBAR_APPEARANCE"] = "Cast Bar Appearance"
     L["OPTIONS_CASTBAR_SPARK_SETTINGS"] = "Spark Settings"
@@ -24,6 +27,9 @@ L["OPTIONS_"] = ""
     L["OPTIONS_SHOWOPTIONS"] = "Show Options"
     L["OPTIONS_SHOWSCRIPTS"] = "Show Scripts"
     L["OPTIONS_CASTCOLORS_DISABLECOLORS"] = "Disable All Colors"
+    L["OPTIONS_CASTCOLORS_DISABLECOLORS_CONFIRM"] = "Confirm disable all cast colors?"
+    L["OPTIONS_CASTCOLORS_DISABLE_SOUNDS"] = "Remove All Sounds"
+    L["OPTIONS_CASTCOLORS_DISABLE_SOUNDS_CONFIRM"] = "Are you sure you want to remove all configured cast sounds?"
 
     L["OPTIONS_NOESSENTIAL_TITLE"] = "Skip Non Essential Script Patches"
     L["OPTIONS_NOESSENTIAL_NAME"] = "Disable non-essential script updates during Plater version upgrades."
@@ -190,6 +196,8 @@ L["OPTIONS_"] = ""
     L["OPTIONS_ICONROWSPACING"] = "Icon Row Spacing"
     L["OPTIONS_ICONSPACING"] = "Icon Spacing"
     L["OPTIONS_INDICATORS"] = "Indicators"
+    L["OPTIONS_INTERACT_OBJECT_NAME_COLOR"] = "Game object name color"
+    L["OPTIONS_INTERACT_OBJECT_NAME_COLOR_DESC"] = "Names on objects will get this color."
     L["OPTIONS_MINOR_SCALE_DESC"] = "Slightly adjust the size of nameplates when showing a minor unit (these units has a smaller nameplate by default)."
     L["OPTIONS_MINOR_SCALE_HEIGHT"] = "Minor Unit Height Scale"
     L["OPTIONS_MINOR_SCALE_WIDTH"] = "Minor Unit Width Scale"
@@ -276,6 +284,7 @@ L["OPTIONS_"] = ""
     Character specific setting!]=]
     L["OPTIONS_SCALE"] = "Scale"
     L["OPTIONS_SCRIPTING_REAPPLY"] = "Re-Apply Default Values"
+    L["OPTIONS_SCRIPTING_ADDOPTION"] = "Select which option to add"
     L["OPTIONS_SETTINGS_COPIED"] = "settings copied."
     L["OPTIONS_SETTINGS_FAIL_COPIED"] = "failed to get the settings for the current selected tab."
     L["OPTIONS_SHADOWCOLOR"] = "Shadow Color"
@@ -289,7 +298,7 @@ L["OPTIONS_"] = ""
     L["OPTIONS_STACK_AURATIME_DESC"] = "Show shortest time of stacked auras or the longes time, when disabled."
     L["OPTIONS_STACK_SIMILAR_AURAS"] = "Stack Similar Auras"
     L["OPTIONS_STACK_SIMILAR_AURAS_DESC"] = "Auras with the same name (e.g. warlock's unstable affliction debuff) get stacked together."
-    L["OPTIONS_STATUSBAR_TEXT"] = "You can now import profiles, mods, scripts, animations and color tables from |cFFFFAA00http://wago.io|r"
+    L["OPTIONS_STATUSBAR_TEXT"] = "Import profiles, mods, scripts, animations and color tables from |cFFFFAA00http://wago.io|r"
     L["OPTIONS_TABNAME_ADVANCED"] = "Advanced"
     L["OPTIONS_TABNAME_ANIMATIONS"] = "Spell Feedback"
     L["OPTIONS_TABNAME_AUTO"] = "Auto"
@@ -423,6 +432,12 @@ L["OPTIONS_ANCHOR_TARGET_SIDE"] = "Which side this widget is attach to."
 L["OPTIONS_ANCHOR_TOP"] = "Top"
 L["OPTIONS_ANCHOR_TOPLEFT"] = "Top Left"
 L["OPTIONS_ANCHOR_TOPRIGHT"] = "Top Right"
+L["OPTIONS_AUDIOCUE_COOLDOWN"] = "Audio Cooldown"
+L["OPTIONS_AUDIOCUE_COOLDOWN_DESC"] = [=[Amount of time in milliseconds to wait before playing the SAME audio again.
+
+Prevents loud sounds from playing when two or more casts are happening at the same time.
+
+Set to 0 to disable this feature.]=]
 L["OPTIONS_AURA_DEBUFF_HEIGHT"] = "Debuff's icon height."
 L["OPTIONS_AURA_DEBUFF_WITH"] = "Debuff's icon width."
 L["OPTIONS_AURA_HEIGHT"] = "Debuff's icon height."
@@ -632,6 +647,7 @@ Uses Blizzard default resources and disables Platers own resources.
 
 Character specific setting!]=]
 L["OPTIONS_SCALE"] = "Scale"
+L["OPTIONS_SCRIPTING_ADDOPTION"] = "Select which option to add"
 L["OPTIONS_SCRIPTING_REAPPLY"] = "Re-Apply Default Values"
 L["OPTIONS_SETTINGS_COPIED"] = "settings copied."
 L["OPTIONS_SETTINGS_FAIL_COPIED"] = "failed to get the settings for the current selected tab."
@@ -648,7 +664,7 @@ L["OPTIONS_STACK_AURATIME"] = "Show shortest time of stacked auras"
 L["OPTIONS_STACK_AURATIME_DESC"] = "Show shortest time of stacked auras or the longes time, when disabled."
 L["OPTIONS_STACK_SIMILAR_AURAS"] = "Stack Similar Auras"
 L["OPTIONS_STACK_SIMILAR_AURAS_DESC"] = "Auras with the same name (e.g. warlock's unstable affliction debuff) get stacked together."
-L["OPTIONS_STATUSBAR_TEXT"] = "You can now import profiles, mods, scripts, animations and color tables from |cFFFFAA00http://wago.io|r"
+L["OPTIONS_STATUSBAR_TEXT"] = "Import profiles, mods, scripts, animations and color tables from |cFFFFAA00http://wago.io|r"
 L["OPTIONS_TABNAME_ADVANCED"] = "Advanced"
 L["OPTIONS_TABNAME_ANIMATIONS"] = "Spell Feedback"
 L["OPTIONS_TABNAME_AUTO"] = "Auto"

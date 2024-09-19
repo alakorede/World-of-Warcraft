@@ -1,4 +1,4 @@
-local PROFILESUI_VERSION = "2024-06-06"  -- Version (date) of this file.  Stored as "ProfilesUI.VERSION".
+local PROFILESUI_VERSION = "2024-09-15"  -- Version (date) of this file.  Stored as "ProfilesUI.VERSION".
 
 --[[---------------------------------------------------------------------------
     FILE:   UDProfiles.lua
@@ -107,7 +107,7 @@ local PROFILESUI_VERSION = "2024-06-06"  -- Version (date) of this file.  Stored
                 profilesUI:setBackColor(r, g, b, alpha)
 
         - To change the color of the dropdown lists ...
-                profilesUI:setListBoxEdgeColor(r, g, b)  -- Sets edges and title frame color (no alpha).
+                profilesUI:setListBoxEdgeColor(r, g, b, alpha)  -- Sets edges and title frame color.
                 profilesUI:setListBoxBackColor(r, g, b, alpha)  -- Sets background color and opacity. (Default is 1,1,1,1.)
 
         - To disable tips about the mouse wheel (shown in the status line) ...
@@ -153,8 +153,39 @@ local PROFILESUI_VERSION = "2024-06-06"  -- Version (date) of this file.  Stored
             Example: To implement a SAVE button ...
                 YourOptionsFrame.SaveButton:SetScript("OnClick", function(self) profilesUI.menu.save(); end)
 
+        - ProfilesUI:setCallback_LoadProfile() and ProfilesUI:setCallback_LoadDefault() can be used
+          to specify a function to be called after a profile or default is loaded.
+          Those callback functions will be passed the name of the profile or default.
+
+          Example:
+            profilesUI:setCallback_LoadDefault( function(defaultNameLoaded)
+                            print("Default loaded:", defaultNameLoaded)
+                        end)
+
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
 CHANGE HISTORY:
+    Sep 15, 2024
+        - Moved setRegionsTextureColor() to be a member function of the "edges" table
+          created by enhanceFrameEdges(), named setColor().  (Implemented in UDControls.lua.)
+        - Added ProfilesUI:setCallback_LoadProfile() and ProfilesUI:setCallback_LoadDefault().
+        - Added kReasons constants as a second parameter to all UI_GetValues() and UI_SetValues() calls.
+        - Improved ProfilesUI:OnCancel() so it reloads the current profile in case its settings were altered
+          by the undoing saved profile changes.
+        - Fixed bug in defaultValuesAreLoaded().  It now ignores table addresses when
+          validating default values.
+        - Added ProfilesDB:makeBackupName().  It returns a default backup name based on
+          current date and time.  (Example: "Backup_2024-09-02_15:46:37")
+        - Added private.util.tGetSub(), private.ProfilesDB, private.util.enhanceFrameEdges().
+    Jun 25, 2024
+        - Replaced use of Blizzard's UIDropDownMenu with a custom dropdown control.  This was
+          necessary to fix taint problems that triggered ADDON_ACTION_BLOCKED errors.
+        - Updated to work with newest version of UDControls.lua.
+        - When using the mouse wheel over the profile name to cycle through profiles,
+          the "Menu" dropdown is now closed (if it was open).
+        - Fixed potential bug where main window is permanently disabled by blockerFrame.
+        - Added ProfilesUI:getListBoxBackColor(), ProfilesUI:showOptions(), and ProfilesUI:hideOptions().
+        - Added kSound constants to the "private" variable shared across files in this addon.
+
     Jun 06, 2024
         - Changed the rate the mousewheel scrolls through listbox items.
         - Updated comments.
@@ -181,8 +212,6 @@ local C_Timer = C_Timer
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 ----local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
-local DropDownList1 = DropDownList1
-local DropDownList1Backdrop = DropDownList1Backdrop
 local GameTooltip = GameTooltip
 local GetAddOnMetadata = GetAddOnMetadata or C_AddOns.GetAddOnMetadata
 ----local hooksecurefunc = hooksecurefunc
@@ -205,17 +234,6 @@ local tostringall = tostringall
 local type = type
 local UnitFullName = UnitFullName
 ----local unpack = unpack
-
-local UIDropDownMenu_AddSeparator = UIDropDownMenu_AddSeparator
-local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
-local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
-local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
-local UIDropDownMenu_SetText = UIDropDownMenu_SetText
-local UIDropDownMenu_SetWidth = UIDropDownMenu_SetWidth
-local UIDropDownMenu_SetButtonWidth = UIDropDownMenu_SetButtonWidth
-local UIDropDownMenuButton_GetChecked = UIDropDownMenuButton_GetChecked
-local UIDropDownMenu_JustifyText = UIDropDownMenu_JustifyText
-local CloseDropDownMenus = CloseDropDownMenus
 
 --*****************************************************************************
 --[[                        Development Switches                             ]]
@@ -278,20 +296,35 @@ local kDivider = "-"
 -- Sound constants.
 local kSound = {}
 kSound.Popup = SOUNDKIT.IG_MAINMENU_OPEN or 0
+kSound.Open = SOUNDKIT.IG_CHARACTER_INFO_OPEN
+kSound.Close = SOUNDKIT.IG_CHARACTER_INFO_CLOSE
 kSound.Success = SOUNDKIT.IG_CHARACTER_INFO_TAB or 0
 kSound.Failure = SOUNDKIT.IG_QUEST_LOG_ABANDON_QUEST or 0
 kSound.Delete = SOUNDKIT.IG_MAINMENU_CLOSE or 0  ----IG_BACKPACK_CLOSE, IG_ABILITY_ICON_DROP
 kSound.Info = SOUNDKIT.IG_CREATURE_AGGRO_SELECT or 0  ----TUTORIAL_POPUP, IG_MINIMAP_ZOOM_OUT, KEY_RING_CLOSE
 kSound.Alert = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT or 0  ----GS_LOGIN
 kSound.Action = SOUNDKIT.U_CHAT_SCROLL_BUTTON or 0  ----IG_CHAT_SCROLL_UP, IG_MINIMAP_ZOOM_OUT
+kSound.ActionQuiet = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or 0 -- (A quieter version of kSound.Action .)
 kSound.ProfileChange = kSound.Success  ----KEY_RING_CLOSE
 
 -- Dropdown constants.
-local kStdDropDownBorderScale = 0.6  -- Customize thickness of standard dropdown menu border.
-local kStdDropDownWidth = 68
 local kLoadDropDownBtnW = 22
 local kLoadDropDownBtnH = 28.2
 local kLoadDropDownBtnOfsX = -5
+local kActionsMenu = {lineHeight=17.5, width=84, leftPadding=6, rightPadding=6, bottomPadding=4, edgeW=4}
+
+-- Reason constants. (Used in calls to UI_GetValues() and UI_SetValues().
+local kReasons = {
+    CancelingChanges  = "CancelingChanges",
+    CheckingIfDefault = "CheckingIfDefault",
+    CopyingProfile    = "CopyingProfile",
+    LoadingDefault    = "LoadingDefault",
+    LoadingProfile    = "LoadingProfile",
+    OkayingChanges    = "OkayingChanges",
+    RefreshingUI      = "RefreshingUI",
+    SavingProfile     = "SavingProfile",
+    ShowingUI         = "ShowingUI",
+}
 
 --*****************************************************************************
 --[[                        Variables                                        ]]
@@ -308,9 +341,12 @@ local gLastUsedStaticPopup
 local ProfilesUI = {
     VERSION = PROFILESUI_VERSION,
     TABLE_ID = "ProfilesUI",  -- Used to protect against incorrectly passing 'self' to callback functions.
+    ListBoxColor = {r=0.24, g=0.48, b=0.6, alpha=1},
+    ListBoxBackColor = {r=0.5, g=1, b=1, alpha=0.95},  ----{r=1, g=1, b=1, alpha=1},
 }
 
 local ProfilesDB  -- Forward declaration.
+local actionMenuFuncs = {}  -- Forward declaration.
 
 --*****************************************************************************
 --[[                        Table Functions                                  ]]
@@ -370,6 +406,25 @@ local function tSet(tbl, key, val) -- Sets value of a key in a table, ignoring c
 end
 
 --=============================================================================
+local function tGetSub(tbl, key, i, j, bReturnMatchingName)
+-- Similar to tGet(), this function gets the value of a key in a table, ignoring case of key name.
+-- However, tGetSub() allows comparing a substring of the key name.  Refer to LUA string.sub() for more details.
+-- Returns the value and (optionally) the matching key name if successful, or nil if not.
+    assert(type(tbl) == "table")
+    assert(bReturnMatchingName == nil or bReturnMatchingName == true or bReturnMatchingName == false)
+
+    local subkeyLower = key:sub(i,j):lower()
+    for k, v in pairs(tbl) do
+        if subkeyLower == k:sub(i,j):lower() then
+            if bReturnMatchingName then
+                return v, k  -- Return value, and the case of the key name we found.
+            end
+            return v  -- Return value only.
+        end
+    end
+end
+
+--=============================================================================
 local function tEmpty(tbl) -- Returns true if table has no items, or false if it does.
     assert(type(tbl) == "table")
     return (next(tbl) == nil and true) or false
@@ -382,6 +437,51 @@ local function tCount(tbl) -- Returns the number of keys in the table.
     for k, v in pairs(tbl) do count=count+1 end
     return count
 end
+
+--~ --=============================================================================
+--~ local function tCompare(tbl1, tbl2, bNilEqualsFalse) -- Returns true if both tables have the same keys and values.
+--~ 	if tbl1 ~= tbl2 then  -- Parameters are different?
+--~         -- Verify both parameters are tables.
+--~         local badParam
+--~         if type(tbl1) ~= "table" then badParam = 1
+--~         elseif type(tbl2) ~= "table" then badParam = 2
+--~         end
+--~         if badParam then
+--~             ----print("tCompare()=FALSE.  Parameter", badParam, "is not a table.")  -- For debugging.
+--~             return false
+--~         end
+--~
+--~         -- Compare values in table 1 to those in table 2.
+--~         for key1, value1 in pairs(tbl1) do
+--~             local value2 = tbl2[key1]
+--~             if value2 == nil then  -- Table 2 is missing a value.
+--~                 ----print("tCompare()=FALSE.  '"..key1.."' differs. (", value1, "vs nil )")  -- For debugging.
+--~                 return false
+--~             end
+--~             if value1 ~= value2 then
+--~                 -- If values are tables, compare them.
+--~                 if type(value1) == "table" and type(value2) == "table" then
+--~                     if not tCompare(value1, value2) then
+--~                         return false  -- The tables do not match.
+--~                     end
+--~                 else -- Values are not tables, and are not equal.
+--~                     ----print("tCompare()=FALSE.  '"..key1.."' differs. (", value1, "vs", value2, ")")  -- For debugging.
+--~                     return false
+--~                 end
+--~             end
+--~         end
+
+--~         -- Verify table 2 doesn't have extra values not found in table 1.
+--~         for key2, value2 in pairs(tbl2) do
+--~             if tbl1[key2] == nil then
+--~                 ----print("tCompare()=FALSE.  '"..key2.."' differs. ( nil vs", value2, ")")  -- For debugging.
+--~                 return false
+--~             end
+--~         end
+--~     end
+
+--~     return true  -- The tables match.
+--~ end
 
 --*****************************************************************************
 --[[                        Helper Functions                                 ]]
@@ -462,31 +562,31 @@ local function msgBox(...)
     return gMBData.lastUsedFrame
 end
 
---=============================================================================
-local function msgBox_IsShown()
-    return gMBData.lastUsedFrame
-           and gMBData.lastUsedFrame:IsShown()
-           and gMBData.lastUsedFrame.which == gMBData.lastUsedID
-end
+--~ --=============================================================================
+--~ local function msgBox_IsShown()
+--~     return gMBData.lastUsedFrame
+--~            and gMBData.lastUsedFrame:IsShown()
+--~            and gMBData.lastUsedFrame.which == gMBData.lastUsedID
+--~ end
 
---=============================================================================
-local function debugMsgBox(msg, callstackLevel)  -- callstackLevel of 2 is a good start.
-    assert(callstackLevel == nil or type(callstackLevel) == "number")
-    msg = kAddonFolderName.."\n"..msg
-    if callstackLevel then
-        local stack = debugstack(callstackLevel, 7, 1) -- stackLevel, topCount, bottomCount
-        stack = stack:gsub('Interface/AddOns/', '')
-        stack = stack:gsub('Interface/', '')
-        stack = stack:gsub('>', '')
-        stack = stack:gsub('%[string "@', '\n"')
-        stack = stack:gsub('%]:', ' ')
-        stack = stack:gsub(': in', ', in')
-        msg = msg .."\n|cff808080"..stack
-    end
-    private.UDControls.MsgBox(msg, nil, nil, nil, nil,
-            nil, nil,  -- data1, data2
-            false, kSound.Failure, 0, kPopupPreferredIndex)
-end
+--~ --=============================================================================
+--~ local function debugMsgBox(msg, callstackLevel)  -- callstackLevel of 2 is a good start.
+--~     assert(callstackLevel == nil or type(callstackLevel) == "number")
+--~     msg = kAddonFolderName.."\n"..msg
+--~     if callstackLevel then
+--~         local stack = debugstack(callstackLevel, 7, 1) -- stackLevel, topCount, bottomCount
+--~         stack = stack:gsub('Interface/AddOns/', '')
+--~         stack = stack:gsub('Interface/', '')
+--~         stack = stack:gsub('>', '')
+--~         stack = stack:gsub('%[string "@', '\n"')
+--~         stack = stack:gsub('%]:', ' ')
+--~         stack = stack:gsub(': in', ', in')
+--~         msg = msg .."\n|cff808080"..stack
+--~     end
+--~     private.UDControls.MsgBox(msg, nil, nil, nil, nil,
+--~             nil, nil,  -- data1, data2
+--~             false, kSound.Failure, 0, kPopupPreferredIndex)
+--~ end
 
 --=============================================================================
 local function printProfilesMsg(...)
@@ -545,15 +645,26 @@ local function strMatchNoCase(str1, str2)
     return false
 end
 
+--~ --=============================================================================
+--~ local function formatTooltip(title, text)  -- Returns a colorized tooltip string containing title and text.
+--~     local highlightHexColor = "|c".. HIGHLIGHT_FONT_COLOR:GenerateHexColor()
+--~     local normalHexColor = "|c".. NORMAL_FONT_COLOR:GenerateHexColor()
+--~     local str = ""
+--~
+--~     if title then
+--~         str = highlightHexColor .. title
+--~     end
+--~     if text then
+--~         if str ~= "" then str = str .. "\n" end
+--~         str = str .. normalHexColor .. text
+--~     end
+--~
+--~     return str
+--~ end
+
 --=============================================================================
-local function gameTooltip_SetTitleAndText(title, text)
-    GameTooltip:ClearLines()
-    local r, g, b = HIGHLIGHT_FONT_COLOR:GetRGB()
-    GameTooltip:AddLine(title, r, g, b)
-    r, g, b = NORMAL_FONT_COLOR:GetRGB()
-    GameTooltip:AddLine(text, r, g, b)
-    GameTooltip:Show()
-end
+-- gameTooltip_SetTitleAndText(title, text):
+local gameTooltip_SetTitleAndText = private.UDControls.GameTooltip_SetTitleAndText
 
 --=============================================================================
 local function createBgTexture(frm, left, top, right, bottom)
@@ -568,21 +679,21 @@ local function createBgTexture(frm, left, top, right, bottom)
 end
 
 --=============================================================================
-local function setRegionsTextureColor(frm, r, g, b, alpha)
-    assert(type(frm) == "table") -- First param must be a table (frame).
-    r=r or 1; g=g or 1; b=b or 1; alpha=alpha or 1;
-	for i, region in ipairs({frm:GetRegions()}) do
-        if region.SetVertexColor then region:SetVertexColor(r, g, b, alpha); end
-    end
-end
-
---=============================================================================
 local function createTexture_DeleteX(parent)
     local tex = parent:CreateTexture(nil, "ARTWORK")
     tex:SetTexture("Interface\\BUTTONS\\UI-StopButton")
     tex:SetSize(11, 16)
     tex:SetVertexColor(1.0, 0.22, 0.22,  0.8)
     return tex
+end
+
+--=============================================================================
+local function enhanceFrameEdges(frame, x1, y1, x2, y2)
+    private.UDControls.EnhanceFrameEdges(frame, x1, y1, x2, y2)
+    local color = ProfilesUI.ListBoxColor
+    frame.edges:setColor(color.r, color.g, color.b, color.alpha)
+    ----frame.edges:setColor(0.8, 0, 0,  1)
+    ----frame.edges:setColor(0.3, 0.3, 0.3,  1)
 end
 
 --=============================================================================
@@ -649,6 +760,52 @@ local function stripUnsavedMarker(profileName)
 end
 
 --=============================================================================
+local function equivalentValues(value1, value2)
+    -- Treat nil, false, "", and 0 as being equal.
+    if value1 == value2
+        or (value1 == nil and (value2 == false or value2 == 0 or value2 == ""))
+        or (value2 == nil and (value1 == false or value1 == 0 or value1 == ""))
+      then
+        return true
+    end
+    return false
+end
+
+--=============================================================================
+local function compareProfiles(profile1, profile2) -- Returns true if both profiles are equivalent.
+-- (This function treats nil, false, "", and 0 as being equal.  Missing keys are ignored.)
+    ----vdt_dump(profile1, "profile1 in compareProfiles()")
+    ----vdt_dump(profile2, "profile2 in compareProfiles()")
+
+    -- Compare values in profile1 to those in profile2.
+    for key1, value1 in pairs(profile1) do
+        local value2 = profile2[key1]
+        if not equivalentValues(value1, value2) then
+            -- If values are tables, compare them.
+            if type(value1) == "table" and type(value2) == "table" then
+                if not compareProfiles(value1, value2) then
+                    return false
+                end
+            else -- Values are not tables, and are not equal.
+                ----print("compareProfiles()=FALSE.  '"..key1.."' differs. (", value1, "vs", value2, ")")  -- For debugging.
+                return false
+            end
+        end
+    end
+
+    -- Check profile2 for values not found in profile1.
+    for key2, value2 in pairs(profile2) do
+        local value1 = profile1[key2]
+        if value1 == nil and not equivalentValues(value1, value2) then
+            ----print("compareProfiles()=FALSE.  '"..key2.."' differs. (", value1, "vs", value2, ")")  -- For debugging.
+            return false
+        end
+    end
+
+    return true
+end
+
+--=============================================================================
 local function defaultValuesAreLoaded()  -- [ Keywords: isDefaultData() isUnsavedDefaults() ]
   -- Returns true if displayed UI values match the named default's values, or false if not.
 
@@ -662,14 +819,9 @@ local function defaultValuesAreLoaded()  -- [ Keywords: isDefaultData() isUnsave
     -- Compare current UI values to the named default values.
     -- NOTE: Won't detect a default if main UI changed any default values that were set by UI_SetValues().
     local displayedValues = {}
-    UI_GetValues(displayedValues)
-    for key, value in pairs(gDefaultsTable[name]) do
-        if value ~= displayedValues[key] then
-            ----print("defaultValuesAreLoaded()=FALSE.  '"..key.."' differs. (", value, "vs", displayedValues[key], ")")  -- For debugging.
-            return false
-        end
-    end
-    return true
+    UI_GetValues(displayedValues, kReasons.CheckingIfDefault)
+
+    return compareProfiles(displayedValues, gDefaultsTable[name])
 end
 
 --=============================================================================
@@ -732,7 +884,7 @@ local function UI_SetDefaults(name)
 
     -- Set UI values to defaults.
     local defaultConfig = CopyTable( gDefaultsTable[name] )
-    UI_SetValues(defaultConfig)  -- Copies defaultConfig into the UI.
+    UI_SetValues(defaultConfig, kReasons.LoadingDefault)  -- Copies defaultConfig into the UI.
     return true
 end
 
@@ -747,7 +899,7 @@ local function triggerMenuItem(itemText, bNotify)
         return  -- Done.
     end
 
-    gMainFrame.menuDropDown:onSelectItem(itemText)
+    actionMenuFuncs.onSelectItem(itemText)
     if bNotify then PlaySound(kSound.Action) end
 end
 
@@ -1241,6 +1393,17 @@ ProfilesDB = {  -- (Note: Declared as local at top of this file.)
         return str
     end,
     -------------------------------------------------------------------------------
+    makeBackupName = function(self, customTitle)  -- ProfilesDB:makeBackupName()
+        -- Returns a default backup name based on current date and time.  (e.g. "Backup_2024-08-17_15:46:37")
+        assert(self == ProfilesDB)  -- Fails if function called using '.' instead of ':'.
+        local backupName = L.BackupName_Prefix .. (customTitle or self:_getBackupTime())
+        if backupName:len() > kBackupNameMaxLetters then
+            backupName = backupName:sub(1, kBackupNameMaxLetters)
+        end
+        return backupName
+
+    end,
+    -------------------------------------------------------------------------------
     ----_getRecentTimestampedName = function(self)  -- ProfilesDB:_getRecentTimestampedName()
     ----    -- Returns most recent timestamped backup name, or "" on failure.
     ----    assert(self == ProfilesDB)  -- Fails if function called using '.' instead of ':'.
@@ -1369,9 +1532,10 @@ local function ProfileOptions_Show()
         -------------------------
         local spacing = 5
         local fontTemplateName = "GameFontNormal"
+        local bClickableText = true
 
         -- CHECKBOX: SAVE ON OKAY --
-        frm.saveOnOkayCB = private.UDControls.CreateCheckBox(frm, fontTemplateName)
+        frm.saveOnOkayCB = private.UDControls.CreateCheckBox(frm, fontTemplateName, nil, nil, bClickableText)
         frm.saveOnOkayCB:SetLabel(L.OptionSaveOnOkay)
         frm.saveOnOkayCB:SetPoint("TOPLEFT", frm.TitleText, "BOTTOMLEFT", 0, -10-spacing)
         frm.saveOnOkayCB:SetPoint("RIGHT", frm, "RIGHT", -5, 0)
@@ -1380,7 +1544,7 @@ local function ProfileOptions_Show()
                 end)
 
         -- CHECKBOX: CONFIRM COPYING PROFILES --
-        frm.confirmCopyCB = private.UDControls.CreateCheckBox(frm, fontTemplateName)
+        frm.confirmCopyCB = private.UDControls.CreateCheckBox(frm, fontTemplateName, nil, nil, bClickableText)
         frm.confirmCopyCB:SetLabel(L.OptionConfirmCopy)
         frm.confirmCopyCB:SetPoint("TOPLEFT", frm.saveOnOkayCB, "BOTTOMLEFT", 0, -spacing)
         frm.confirmCopyCB:SetPoint("RIGHT", frm, "RIGHT", -5, 0)
@@ -1389,7 +1553,7 @@ local function ProfileOptions_Show()
                 end)
 
         -- CHECKBOX: CONFIRM DELETING PROFILES --
-        frm.confirmDeleteCB = private.UDControls.CreateCheckBox(frm, fontTemplateName)
+        frm.confirmDeleteCB = private.UDControls.CreateCheckBox(frm, fontTemplateName, nil, nil, bClickableText)
         frm.confirmDeleteCB:SetLabel(L.OptionConfirmDelete)
         frm.confirmDeleteCB:SetPoint("TOPLEFT", frm.confirmCopyCB, "BOTTOMLEFT", 0, -spacing)
         frm.confirmDeleteCB:SetPoint("RIGHT", frm, "RIGHT", -5, 0)
@@ -1406,6 +1570,10 @@ local function ProfileOptions_Show()
                     self.saveOnOkayCB:SetChecked( options.bSaveOnOkay )
                     self.confirmDeleteCB:SetChecked( options.bConfirmDelete )
                     self.confirmCopyCB:SetChecked( options.bConfirmCopy )
+                    PlaySound(kSound.Open)
+                end)
+        frm:SetScript("OnHide", function(self)
+                    PlaySound(kSound.Close)
                 end)
     end
 
@@ -1414,36 +1582,16 @@ end
 
 --=============================================================================
 local function ProfileOptions_Hide()
-    if gMainFrame.optionsFrame then
+    if gMainFrame.optionsFrame and gMainFrame.optionsFrame:IsShown() then
         gMainFrame.optionsFrame:Hide()
+        return true
     end
+    return false
 end
 
 --*****************************************************************************
 --[[                        Menu Actions ListBox                             ]]
 --*****************************************************************************
-
---=============================================================================
-local function UIDropDownMenu_SetButtonWidth_Full(dropdown, extraWidth)
-    -- Makes clicking anywhere on the dropdown menu open it.
-    if (extraWidth == nil) then extraWidth=16 end
-
-    local frameName = dropdown:GetName()
-    local btnWidth = _G[frameName.."Button"]:GetWidth()
-    UIDropDownMenu_SetButtonWidth(dropdown, "TEXT")  -- (Excludes size of button.)
-    local textWidth = _G[frameName.."Text"]:GetWidth()
-    local fullWidth = textWidth + btnWidth + extraWidth
-    UIDropDownMenu_SetButtonWidth(dropdown, fullWidth)  -- (Includes size of button.)
-    ----print("textWidth:", textWidth, "  btnWidth:", btnWidth, "  fullWidth:", fullWidth)
-end
-
---=============================================================================
-local function UIDropDownMenu_SetDropDownBorderScale(scale)
-    local borderFrame = DropDownList1.Border or DropDownList1Backdrop  -- Retail, or Classic.
-    if borderFrame then
-        borderFrame:SetScale(scale or 1.0)
-    end
-end
 
 --=============================================================================
 local function LB_Actions_Load(thisLB, line, clickedName, mouseButton)  -- ListBox click handler.
@@ -1561,160 +1709,275 @@ end
 ----    end
 
 --=============================================================================
-local function createActionsDropDown(dropDownFrameName, parent)
-    local dropdown = CreateFrame("FRAME", dropDownFrameName, parent, "UIDropDownMenuTemplate")
-    ----dropdown:SetPoint("CENTER")
-    ----dropdown:SetPoint("TOPLEFT", parent, "TOPLEFT", -16, 8)
-    UIDropDownMenu_JustifyText(dropdown, "LEFT")
-    UIDropDownMenu_SetWidth(dropdown, kStdDropDownWidth)
-    UIDropDownMenu_SetText(dropdown, "|cffFFF4FF".. L.Menu)
-    UIDropDownMenu_SetButtonWidth_Full(dropdown)  -- Make clicking anywhere on the dropdown menu open it.
+function actionMenuFuncs.onSelectItem( selectedItem )
+    ----tracePUI("actionMenuFuncs.onSelectItem,", selectedItem)
+    local currentName = ProfilesUI:getCurrentName()
+    local menuX, menuY = -13, 6
 
-    -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
-    function dropdown:onSelectItem(selectedItemArg1) ----, selectedItemArg2)
-        ----tracePUI("dropdown:onSelectItem,", selectedItemArg1, ",", selectedItemArg2)
-        local currentName = ProfilesUI:getCurrentName()
-        local menuX, menuY = -16, 6
-
-        -- NEW --  [ Keywords: LB_Actions_New ]
-        if selectedItemArg1 == L.mNewProfile then
-            local name = ""
-            StaticPopup_Show(kAddonFolderName.."_NEW", nil, nil, name) -- (which, text1, text2, customData)
-        -- SAVE AS --  [ Keywords: LB_Actions_SaveAs ]
-        elseif selectedItemArg1 == L.mSaveAs then
-            local name = stripUnsavedMarker(currentName)
-            StaticPopup_Show(kAddonFolderName.."_SAVE_AS", name, nil, name) -- (which, text1, text2, customData)
-        -- RENAME --  [ Keywords: LB_Actions_Rename ]
-        elseif selectedItemArg1 == L.mRename then
-            local name = stripUnsavedMarker(currentName)
-            StaticPopup_Show(kAddonFolderName.."_RENAME", name, nil, name) -- (which, text1, text2, customData)
-        -- BACKUP --  [ Keywords: LB_Actions_Backup ]
-        elseif selectedItemArg1 == L.mBackup then
-            ----ProfilesUI:backupProfiles(nil, "c")  -- Prompt for confirmation, then create a timestamped backup.
-            local backupName = L.BackupName_Prefix .. ProfilesDB:_getBackupTime()
-            StaticPopup_Show(kAddonFolderName.."_BACKUP", nil, nil, backupName) -- (which, text1, text2, customData)
-        -- RESTORE --  [ Keywords: LB_Actions_Restore ]
-        elseif selectedItemArg1 == L.mRestore then
-            ProfilesUI:createBackupsListBox()   -- Creates "gMainFrame.backupsListBox", if necessary.
-            local backupsLB = gMainFrame.backupsListBox
-            backupsLB:loadBackupNames()
-            backupsLB:ClearSelection()
-            backupsLB:ClearAllPoints()
-            backupsLB:SetPoint("TOPLEFT", gMainFrame.menuDropDown.Button, "BOTTOMLEFT", menuX, menuY)
-            backupsLB:Show()
-        -- OPTIONS --  [ Keywords: LB_Actions_Options ]
-        elseif selectedItemArg1 == L.mOptions then
-            ProfileOptions_Show()
-        else -- ALL OTHER ACTIONS --
-            local profilesLB = gMainFrame.profilesListBox
-            profilesLB:ClearAllPoints()
-            profilesLB:SetPoint("TOPLEFT", gMainFrame.menuDropDown.Button, "BOTTOMLEFT", menuX, menuY)
-            profilesLB:showAction( selectedItemArg1 )
-        end
-
-        CloseDropDownMenus()  -- Close all dropdown menus/submenus.
+    -- NEW --  [ Keywords: LB_Actions_New ]
+    if selectedItem == L.mNewProfile then
+        local name = ""
+        StaticPopup_Show(kAddonFolderName.."_NEW", nil, nil, name) -- (which, text1, text2, customData)
+    -- SAVE AS --  [ Keywords: LB_Actions_SaveAs ]
+    elseif selectedItem == L.mSaveAs then
+        local name = stripUnsavedMarker(currentName)
+        StaticPopup_Show(kAddonFolderName.."_SAVE_AS", name, nil, name) -- (which, text1, text2, customData)
+    -- RENAME --  [ Keywords: LB_Actions_Rename ]
+    elseif selectedItem == L.mRename then
+        local name = stripUnsavedMarker(currentName)
+        StaticPopup_Show(kAddonFolderName.."_RENAME", name, nil, name) -- (which, text1, text2, customData)
+    -- BACKUP --  [ Keywords: LB_Actions_Backup ]
+    elseif selectedItem == L.mBackup then
+        ----ProfilesUI:backupProfiles(nil, "c")  -- Prompt for confirmation, then create a timestamped backup.
+        local backupName = ProfilesDB:makeBackupName()
+        StaticPopup_Show(kAddonFolderName.."_BACKUP", nil, nil, backupName) -- (which, text1, text2, customData)
+    -- RESTORE --  [ Keywords: LB_Actions_Restore ]
+    elseif selectedItem == L.mRestore then
+        ProfilesUI:createBackupsListBox()   -- Creates "gMainFrame.backupsListBox", if necessary.
+        local backupsLB = gMainFrame.backupsListBox
+        backupsLB:loadBackupNames()
+        backupsLB:ClearSelection()
+        backupsLB:ClearAllPoints()
+        backupsLB:SetPoint("TOPLEFT", gMainFrame.menuDropDown, "BOTTOMLEFT", menuX, menuY)
+        backupsLB:Show()
+    -- OPTIONS --  [ Keywords: LB_Actions_Options ]
+    elseif selectedItem == L.mOptions then
+        ProfileOptions_Show()
+    else -- ALL OTHER ACTIONS --
+        local profilesLB = gMainFrame.profilesListBox
+        profilesLB:ClearAllPoints()
+        profilesLB:SetPoint("TOPLEFT", gMainFrame.menuDropDown, "BOTTOMLEFT", menuX, menuY)
+        profilesLB:showAction( selectedItem )
     end
-    -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
-    UIDropDownMenu_Initialize(dropdown, function(thisDD, level, menuList) -- Called anytime a menu/submenu opens.
-                ----print("thisDD:GetID()", thisDD:GetID(), "level:", level, "menuList", menuList)
-                ----vdt_dump(thisDD, "thisDD in initActionsDropDown()")
-                local bNoProfilesExist = ProfilesDB:isEmpty()
-                ----dbg()
-                local info = UIDropDownMenu_CreateInfo()
-                info.justifyH = nil  -- nil means "left justify".
-                info.notCheckable = true
-                ----info.leftPadding = 2
-                ----info.padding = 0  -- i.e. rightPadding
-                ----info.arrowXOffset = -1
-                info.func = thisDD.onSelectItem
+end
 
-                if not level or level == 1 then
-                    local currentName = ProfilesUI:getCurrentName()
-                    local sDefaults = (gDefaultsTable and L.mDefaults) or ""
-                    local actions = {L.mNewProfile, L.mSaveAs, L.mRename, L.mDelete,
-                                    kDivider, L.mLoad, sDefaults,
-                                    kDivider, L.mCopyTo, L.mCopyFrom, ----L.mExport, L.mImport,
-                                    kDivider, L.mBackup, L.mRestore, L.mOptions}
-                    for i, action in ipairs(actions) do
-                        info.icon = nil
-                        if action == kDivider then
-                            UIDropDownMenu_AddSeparator()
-                        elseif action == "" then
-                            -- Skip.  (For ommitting Defaults action when no function exists to set them.)
-                        else
-                            info.text = action
-                            info.arg1 = action
-                            info.arg2 = nil
-                            info.tooltipTitle = action
-                            info.tooltipText = nil
-                            info.tooltipWhileDisabled = nil
-                            info.tooltipOnButton = nil
-                            ----info.value = i  -- UIDROPDOWNMENU_MENU_VALUE is set to this on deeper level calls.
+--=============================================================================
+function actionMenuFuncs.onClickLine(thisLB, line, value, mouseButton, bDown)
+    ----tracePUI("actionMenuFuncs.onClickLine,", value)
+    thisLB:Hide()
+    thisLB:ClearSelection()
+    PlaySound(kSound.ActionQuiet)
+    actionMenuFuncs.onSelectItem(value)  -- Execute action.
+end
 
-                            -- - - - - - - - - - - - - - - --
-                            -- Disable actions as necessary.
-                            -- - - - - - - - - - - - - - - --
-                            info.disabled = false
-                            local bRequiresName = sFind(action, {L.mRename,L.mExport})
-                            local bRequiresProfiles = sFind(action, {L.mLoad,L.mCopyTo,L.mCopyFrom,L.mDelete,L.mBackup,L.mExport})
-                            local backupRestoreIcon = "Interface\\BUTTONS\\UI-GuildButton-PublicNote-Disabled"
+--~ --=============================================================================
+--~ function actionMenuFuncs.onClose(thisLB)
+--~     PlaySound(kSound.ActionQuiet)
+--~ end
 
-                            -- Do any profiles exist?
-                            if bRequiresProfiles and bNoProfilesExist then
-                                info.disabled = true
-                                info.tooltipText = L.Disabled_NoProfiles
-                            -- Is profile name is blank?
-                            elseif bRequiresName and currentName == "" then
-                                info.disabled = true
-                                info.tooltipText = L.Disabled_NameIsBlank
-                            -- Is profile name unsaved?
-                            elseif bRequiresName and hasUnsavedMarker(currentName) then
-                                info.disabled = true
-                                info.tooltipText = L.Disabled_Unsaved
-                            -- Is the action "New Profile"?
-                            elseif action == L.mNewProfile then
-                                info.text = "|cff00FF00".. action .."|r"
-                                info.tooltipText = L.NewProfileDesc
-                                info.icon = "Interface\\PaperDollInfoFrame\\Character-Plus"
-                            -- Is the action "Backup"?
-                            elseif action == L.mBackup then
-                                info.tooltipText = L.BackupDesc
-                                info.icon = backupRestoreIcon
-                            -- Is the action "Restore"?
-                            elseif action == L.mRestore then
-                                if ProfilesDB:countBackups() > 0 then
-                                    info.tooltipText = L.RestoreDesc
-                                    info.icon = backupRestoreIcon
-                                else
-                                    info.disabled = true
-                                    info.tooltipText = L.Disabled_NoBackups
-                                end
-                            -- Not implemented yet?
-                            elseif action == L.mImport or action == L.mExport then
-                                info.disabled = true
-                                info.tooltipText = "|cffFF0000".. L.Disabled_NotImplemented
-                            -- Is the action "Profile Options"?
-                            elseif action == L.mOptions then
-                                ----info.tooltipText = L.OptionsDesc
-                                info.icon = "Interface\\BUTTONS\\UI-OptionsButton"
-                            ------ Is the action Backups"?
-                            ----elseif action == L.mBackups then
-                            ----    info.tooltipText = L.BackupsDesc
-                            end
+--=============================================================================
+function actionMenuFuncs.onOpen(thisLB)
+    ----tracePUI("actionMenuFuncs.onOpen,", thisLB)
+    local bNoProfilesExist = ProfilesDB:isEmpty()
+    local currentName = ProfilesUI:getCurrentName()
+    local actionsRequiringName = {L.mRename,L.mExport}
+    local actionsRequiringProfiles = {L.mLoad,L.mCopyTo,L.mCopyFrom,L.mDelete,L.mBackup,L.mExport}
+    local backupRestoreIcon = "Interface\\BUTTONS\\UI-GuildButton-PublicNote-Disabled"
 
-                            -- Finish and add info to the dropdown.
-                            if info.tooltipText then
-                                info.tooltipWhileDisabled = true
-                                info.tooltipOnButton = true
-                            end
-                            UIDropDownMenu_AddButton(info)
-                        end
-                    end
+    for i, action in ipairs( thisLB.items ) do
+        local info = thisLB.lineInfo[action]
+        if info then  -- (No info exists for divider lines or empty action names.)
+            local bRequiresName = sFind(action, actionsRequiringName)
+            local bRequiresProfiles = sFind(action, actionsRequiringProfiles)
+            info.disabled = false
+            info.tooltip = nil
+            info.tooltipTitle = nil
+
+            -- Do any profiles exist?
+            if bRequiresProfiles and bNoProfilesExist then
+                info.disabled = true
+                info.tooltip = L.Disabled_NoProfiles
+            -- Is profile name is blank?
+            elseif bRequiresName and currentName == "" then
+                info.disabled = true
+                info.tooltip = L.Disabled_NameIsBlank
+            -- Is profile name unsaved?
+            elseif bRequiresName and hasUnsavedMarker(currentName) then
+                info.disabled = true
+                info.tooltip = L.Disabled_Unsaved
+            -- Is the action "New Profile"?
+            elseif action == L.mNewProfile then
+                info.tooltip = L.NewProfileDesc
+                info.icon = "Interface\\PaperDollInfoFrame\\Character-Plus"
+            -- Is the action "Backup"?
+            elseif action == L.mBackup then
+                info.tooltip = L.BackupDesc
+                info.icon = backupRestoreIcon
+            -- Is the action "Restore"?
+            elseif action == L.mRestore then
+                if ProfilesDB:countBackups() > 0 then
+                    info.tooltip = L.RestoreDesc
+                else
+                    info.disabled = true
+                    info.tooltip = L.Disabled_NoBackups
+                end
+                info.icon = backupRestoreIcon
+            -- Not implemented yet?
+            elseif action == L.mImport or action == L.mExport then
+                info.disabled = true
+                info.tooltip = "|cffFF0000".. L.Disabled_NotImplemented
+            -- Is the action "Profile Options"?
+            elseif action == L.mOptions then
+                ----info.tooltip = L.OptionsDesc
+                info.icon = "Interface\\BUTTONS\\UI-OptionsButton"
+            ------ Is the action Backups"?
+            ----elseif action == L.mBackups then
+            ----    info.tooltip = L.BackupsDesc
+            end
+
+            if info.tooltip then
+                info.tooltipTitle = action
+            end
+        end
+    end -- for
+
+    thisLB:Refresh()
+    PlaySound(kSound.ActionQuiet)
+    ----vdt_dump(thisLB, "thisLB in actionMenuFuncs.onOpen()")
+end
+
+--=============================================================================
+function actionMenuFuncs.displayLine(thisLB, line, value, isSelected)
+    local action = value
+    if action == L.mNewProfile then
+        line.fontString:SetText( "|cff00FF00".. action )  -- Green.
+    else
+        line.fontString:SetText( action )
+    end
+
+    local info = thisLB.lineInfo[action]
+    if info then
+        line:SetEnabled( not info.disabled )
+        line.icon:SetTexture( info.icon )
+        line:SetTooltipTitleAndText(info.tooltipTitle, info.tooltip) ----, "ANCHOR_LEFT")
+    else
+        line:SetEnabled(true)
+        line.icon:SetTexture(nil)
+        line:SetTooltipTitleAndText() -- Clears tooltip for this line.
+    end
+end
+
+--=============================================================================
+function actionMenuFuncs.createLine(thisLB)
+    local line = CreateFrame("Button", nil, thisLB)
+    local iconSize = thisLB.lineInfo.iconSize
+
+    line.fontString = line:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    line.fontString:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+    line.fontString:SetJustifyH("LEFT")
+    line.fontString:SetPoint("TOPLEFT", line, "TOPLEFT", kActionsMenu.leftPadding, 0)
+    line.fontString:SetPoint("BOTTOMRIGHT", line, "BOTTOMRIGHT", -iconSize - kActionsMenu.rightPadding, 0)
+
+    line.icon = line:CreateTexture(nil, "ARTWORK")
+    line.icon:SetPoint("RIGHT", line, "RIGHT", -1 - kActionsMenu.rightPadding, 0)
+    line.icon:SetSize(iconSize, iconSize)
+
+    return line
+end
+
+--=============================================================================
+local function createActionsDropDown(dropDownFrameName, parent)
+    local listboxW = kActionsMenu.width
+    local listboxLineH = kActionsMenu.lineHeight
+    local listboxH = listboxLineH
+
+    ---------------------------------------------
+    -- Create the dropdown's editbox and button.
+    ---------------------------------------------
+    local bDisableWheelCycling = true
+    local dropdown = private.UDControls.CreateDropDown(parent, bDisableWheelCycling)
+    dropdown.Button = dropdown.buttonFrame  -- For compatibility with legacy code in this file.
+    dropdown:Configure(kActionsMenu.width, nil, nil)  -- (width, label, tooltipText)
+    dropdown.selectedFontString:SetText("|cffFFF4FF".. L.Menu)
+
+    -- Dropdown's click handler.  (Opens/closes the listbox part.)
+    dropdown.buttonFrame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    dropdown.buttonFrame:SetScript("OnClick", function(thisBtn, mouseButton)
+                local listbox = dropdown.listbox
+                if mouseButton == "LeftButton" then
+                    listbox:SetShown( not listbox:IsShown() )
+                else -- Right-click always hides the listbox.
+                    listbox:Hide()
                 end
             end)
-    -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+
+    ---------------------------------------
+    -- Create the dropdown's listbox part.
+    ---------------------------------------
+    assert(not dropdown.listbox)
+    dropdown.listbox = private.UDControls.CreateListBox(dropdown)
+    local listbox = dropdown.listbox
+    listbox.ownerDD = dropdown  -- So listbox change handler can update the dropdown's editbox text.
+
+    listbox:Hide()
+    listbox.tooltipWhileDisabled = true  -- Show tooltips even over disabled listbox lines.
+    listbox.separatorLeft = kActionsMenu.leftPadding - 4
+    listbox.separatorRight = -kActionsMenu.rightPadding
+    listbox:Configure(listboxW, listboxH, listboxLineH)  -- Temp sizes for now, so we can add items.
+	listbox:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", -4, 0)
+    listbox:SetFrameStrata("FULLSCREEN")
+    listbox:SetClampedToScreen(true)  -- Keep the bottom of the dropdown list on-screen.
+
+	listbox:SetCreateLineHandler( actionMenuFuncs.createLine )
+	listbox:SetDisplayHandler( actionMenuFuncs.displayLine )
+	listbox:SetClickHandler( actionMenuFuncs.onClickLine )
+    listbox:SetScript("OnShow", actionMenuFuncs.onOpen)
+    ----listbox:SetScript("OnHide", actionMenuFuncs.onClose)
+    listbox:SetScript("OnKeyDown", function(thisLB, key)
+            -- Close dropdown's listbox when Escape key is pressed.
+            local bPassKeyToParent = false
+            if key == "ESCAPE" then thisLB:Hide()
+            else bPassKeyToParent = true end
+            if not InCombatLockdown() then thisLB:SetPropagateKeyboardInput(bPassKeyToParent) end
+        end)
+
+    -- Define contents of listbox.
+    local sDefaults = (gDefaultsTable and L.mDefaults) or ""
+    local actions = {L.mNewProfile, L.mSaveAs, L.mRename, L.mDelete,
+                    kDivider, L.mLoad, sDefaults,
+                    kDivider, L.mCopyTo, L.mCopyFrom, ----L.mExport, L.mImport,
+                    kDivider, L.mBackup, L.mRestore, L.mOptions}
+    listbox.lineInfo = { iconSize=16 }
+
+    -- Add actions to the listbox and calculate its width.
+    local TextSize = private.UDControls.TextSize
+    TextSize:SetFontObject("GameFontNormalSmall")
+    for i, action in ipairs(actions) do
+        if action == kDivider then
+            listbox:AddSeparator()
+        elseif action == "" then
+            -- Skip.  (For ommitting Defaults action when no function exists to set them.)
+        else
+            listbox:AddItem(action)
+            listbox.lineInfo[action] = {}
+
+            local width = TextSize:GetSize(action)
+            listboxW = math.max(listboxW, width)
+        end
+    end
+
+    listboxW = listboxW + listbox.lineInfo.iconSize + kActionsMenu.leftPadding + kActionsMenu.rightPadding + kActionsMenu.edgeW
+    listboxH = (#actions * listboxLineH) + kActionsMenu.bottomPadding + kActionsMenu.edgeW
+    listbox:Configure(listboxW, listboxH, listboxLineH)  -- Set final size.
+
+    --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    -- - - - ACTIONS MENU FUNCTIONS - - - --
+    --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+    ---------------------------------------------------------------------------
+    function listbox:setColor(r, g, b, alpha) listbox.edges:setColor(r, g, b, alpha) end
+    ---------------------------------------------------------------------------
+    function listbox:getColor() return listbox.edges:getColor() end
+    ---------------------------------------------------------------------------
+
+    -- Enhance the listbox edges.
+    enhanceFrameEdges( listbox, 1, -0.5, -1, 0 )  -- (frame, x1, y1, x2, y2)
+    local color = ProfilesUI.ListBoxColor
+    listbox:setColor(color.r, color.g, color.b, color.alpha)
+
+    ----vdt_dump(dropdown, "dropdown in createActionsDropDown()")
     return dropdown
-end
+end  -- createActionsDropDown()
 
 --*****************************************************************************
 --[[                        Profiles UI                                      ]]
@@ -1757,7 +2020,7 @@ local function UDProfiles_CreateUI(info)
     local kRowHeight = 20
     local kMargin = 10
     local boxH = kRowHeight + (2*kMargin)
-    local boxW = kProfileNameWidth+kLoadDropDownBtnW+kLoadDropDownBtnOfsX+kStdDropDownWidth+(2*kMargin)+26
+    local boxW = kProfileNameWidth+kLoadDropDownBtnW+kLoadDropDownBtnOfsX+kActionsMenu.width+(2*kMargin)+8
     gMainFrame = private.UDControls.CreateGroupBox(L.Profiles, "TOPLEFT", parent, "TOPLEFT", xPos, yPos, boxW, boxH)
     ProfilesUI.mainFrame = gMainFrame
     ----gMainFrame:SetBackdropColor(0,0,0, 0.8)
@@ -1927,7 +2190,7 @@ local function UDProfiles_CreateUI(info)
                         profilesLB:SetPoint("TOPLEFT", gMainFrame.editbox, "BOTTOMLEFT", -8, dy)
                     end
                 end
-                PlaySound(kSound.Action)
+                PlaySound(kSound.ActionQuiet)
             end
     loadDropDownBtn:SetScript("OnMouseDown", function(self, button)  -- Process OnMouseDown so it acts like a dropdown.
                 if button == "LeftButton" then
@@ -1951,7 +2214,7 @@ local function UDProfiles_CreateUI(info)
                 ----    PlaySound(kSound.Failure)
                 ----else
                     local bResult = false
-                    gMainFrame.profilesListBox:Hide()
+                    gMainFrame:closeDropDownMenus()
                     gMainFrame.statusText:showMsg("")
                     if delta > 0 then  -- WheelUp: Load previous profile.
                         bResult = ProfilesUI:loadPreviousProfile()
@@ -1991,7 +2254,7 @@ local function UDProfiles_CreateUI(info)
     -- ACTIONS MENU DROPDOWN --
     local menuDropDown = createActionsDropDown(kAddonFolderName.."ProfilesDropDown", gMainFrame)
     gMainFrame.menuDropDown = menuDropDown
-    menuDropDown:SetPoint("LEFT", editbox, "RIGHT", kLoadDropDownBtnW+kLoadDropDownBtnOfsX-14, -3)
+    menuDropDown:SetPoint("LEFT", editbox, "RIGHT", kLoadDropDownBtnW+kLoadDropDownBtnOfsX+2, 0)
 
     -- PROFILE NAMES LISTBOX --
     ProfilesUI:createProfilesListBox()  -- Creates "gMainFrame.profilesListBox" variable.
@@ -2010,11 +2273,10 @@ local function UDProfiles_CreateUI(info)
                 ProfilesUI:refreshUI()  -- Sets UI values.
                 setModifiedProfiles(false)
                 gMainFrame.closeReason = nil
-                UIDropDownMenu_SetDropDownBorderScale( kStdDropDownBorderScale )  -- Optional UI customization.
 
                 ------ Make a copy of UI values.
                 ----ProfilesUI.OriginalValues = {}
-                ----UI_GetValues( ProfilesUI.OriginalValues )
+                ----UI_GetValues( ProfilesUI.OriginalValues, kReasons.ShowingUI )
 
                 ----dbg()
                 ----tracePUI("OUT OnShow gMainFrame")
@@ -2030,7 +2292,6 @@ local function UDProfiles_CreateUI(info)
                 end
 
                 -- Clean up.
-                UIDropDownMenu_SetDropDownBorderScale(1.0)  -- Undo optional UI tweak.
                 self.statusText:showMsg("")
                 self:closeDropDownMenus(true)  -- 'true' means clear contents of listboxes rarely used.
                 hideBlockerFrame()
@@ -2051,14 +2312,17 @@ local function UDProfiles_CreateUI(info)
             end)
     ---------------------------------------------------------------------------
 
-    --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=
+    --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     -- - - - MAIN FRAME FUNCTIONS - - - --
-    --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=
+    --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
     ---------------------------------------------------------------------------
     function gMainFrame:closeDropDownMenus(bFreeMemory)
         -- Pass in true to clear contents of listboxes that are rarely used.
         assert(self)  -- Fails if function called using '.' instead of ':'.
+        if self.menuDropDown then
+            self.menuDropDown.listbox:Hide()
+        end
         if self.profilesListBox then
             self.profilesListBox:Hide()
         end
@@ -2097,8 +2361,9 @@ local function UDProfiles_CreateUI(info)
             DB:deleteBackup(L.BackupName_Login)
         end
     end
-
     ---------------------------------------------------------------------------
+
+    ProfilesUI:setListBoxBackColor()  -- Set background color of all our listboxes.
     ProfilesUI:setCurrentName( ProfilesDB:getSelectedName() )
     return ProfilesUI
 end  -- End of UDProfiles_CreateUI().
@@ -2117,18 +2382,63 @@ function ProfilesUI:SetWidth(width)     return ProfilesUI:setWidthOfBox(width) e
 function ProfilesUI:SetHeight(height)   return gMainFrame:SetHeight(height) end
 function ProfilesUI:SetPoint(...)       gMainFrame:SetPoint(...) end
 function ProfilesUI:getBackColor()      return gMainFrame:GetBackColor() end
-function ProfilesUI:setBackColor(r, g, b, alpha) gMainFrame:SetBackColor(r, g, b, alpha) end
+function ProfilesUI:setBackColor(r, g, b, alpha) gMainFrame:SetBackColor(r, g, b, alpha) end  -- Sets background color of main group box.
+function ProfilesUI:showOptions()       return ProfileOptions_Show() end
+function ProfilesUI:hideOptions()       return ProfileOptions_Hide() end
 -------------------------------------------------------------------------------
-function ProfilesUI:setListBoxEdgeColor(r, g, b)
-    gMainFrame.profilesListBox:setColor(r, g, b)
-    if gMainFrame.backupsListBox then gMainFrame.backupsListBox:setColor(r, g, b) end
+function ProfilesUI:setCallback_LoadProfile(callbackFunc)
+    self.callbackLoadProfile = callbackFunc
 end
 -------------------------------------------------------------------------------
+function ProfilesUI:setCallback_LoadDefault(callbackFunc)
+    self.callbackLoadDefault = callbackFunc
+end
+-------------------------------------------------------------------------------
+function ProfilesUI:setListBoxEdgeColor(r, g, b, alpha)  -- Sets edge color and title box background color (if supported).
+    if r == nil then r = self.ListBoxColor.r end
+    if g == nil then g = self.ListBoxColor.g end
+    if b == nil then b = self.ListBoxColor.b end
+    if alpha == nil then alpha = self.ListBoxColor.alpha end
+
+    if gMainFrame.menuDropDown then
+        gMainFrame.menuDropDown.listbox:setColor(r, g, b, alpha)
+    end
+    if gMainFrame.profilesListBox then
+        gMainFrame.profilesListBox:setColor(r, g, b)
+    end
+    if gMainFrame.backupsListBox then
+        gMainFrame.backupsListBox:setColor(r, g, b)
+    end
+end
+--~ -------------------------------------------------------------------------------
 function ProfilesUI:setListBoxBackColor(r, g, b, alpha)
     ----local r0, g0, b0, a0 = gMainFrame.profilesListBox.Bg:GetVertexColor()
-    r = r or 1;  g = g or 1;  b = b or 1;  alpha = alpha or 1
-    gMainFrame.profilesListBox.Bg:SetVertexColor(r, g, b, alpha)
-    if gMainFrame.backupsListBox then gMainFrame.backupsListBox.Bg:SetVertexColor(r, g, b, alpha) end
+
+    if r == nil then r = self.ListBoxBackColor.r end
+    if g == nil then g = self.ListBoxBackColor.g end
+    if b == nil then b = self.ListBoxBackColor.b end
+    if alpha == nil then alpha = self.ListBoxBackColor.alpha end
+
+    if gMainFrame.menuDropDown then
+        gMainFrame.menuDropDown.listbox.Bg:SetVertexColor(r, g, b, alpha)
+    end
+    if gMainFrame.profilesListBox then
+        gMainFrame.profilesListBox.Bg:SetVertexColor(r, g, b, alpha)
+    end
+    if gMainFrame.backupsListBox then
+        gMainFrame.backupsListBox.Bg:SetVertexColor(r, g, b, alpha)
+    end
+end
+-------------------------------------------------------------------------------
+function ProfilesUI:getListBoxBackColor()
+    -- Return current background of one of our listboxes.  (They should be all the same color.)
+    if gMainFrame.profilesListBox then
+        return gMainFrame.profilesListBox.Bg:GetVertexColor()
+    end
+
+    -- Else return default color.
+    local color = self.ListBoxBackColor
+    return color.r, color.g, color.b, color.alpha
 end
 -------------------------------------------------------------------------------
 function ProfilesUI:setListBoxLinesPerPage(linesPerPage, optionalLineHeight)
@@ -2192,15 +2502,15 @@ function ProfilesUI:refreshUI(bRestoringProfiles)
                 -- Either way, it's messy to try to handle this.  Just clear the profile name field.
                 self:clearProfileName()
             else
-                UI_SetValues()  -- Populates UI with last saved data.
+                UI_SetValues(nil, kReasons.RefreshingUI)  -- Populates UI with last saved data.
             end
         else
-            self:loadProfile(selectedName, "s")  -- Populates UI from saved profile data.
+            self:loadProfile(selectedName, "bs")  -- Populates UI from saved profile data.
         end
     else -- No profile selected yet.
         self:setCurrentName("")
         ----self:setCurrentName(UnitFullName("player"))
-        UI_SetValues()  -- Populates UI with last saved data, or default values.
+        UI_SetValues(nil, kReasons.RefreshingUI)  -- Populates UI with last saved data, or default values.
     end
     self:onProfilesListChanged()
     ----tracePUI("OUT refreshUI")
@@ -2211,7 +2521,7 @@ function ProfilesUI:OnOkay(bPrintMsg)  -- Updates the selected profile's config 
     ----tracePUI("IN OnOkay")
     assert(self == ProfilesUI)  -- Fails if function called using '.' instead of ':'.
     gMainFrame.closeReason = L.OKAY
-    UI_GetValues()  -- Copy values of UI widgets into persistent "SavedVariables" config data.
+    UI_GetValues(nil, kReasons.OkayingChanges)  -- Copy values of UI widgets into persistent "SavedVariables" config data.
 
     -- Save changes when user clicks OKAY (if that option is set).
     if ProfilesDB:getOptions().bSaveOnOkay then
@@ -2234,11 +2544,11 @@ function ProfilesUI:OnCancel(bPrintMsg)  -- Reverts to original profile name and
     local origName = self.OriginalProfileName
     if origName and origName ~= "" and namesDiffer(origName, currentName) then
         -- Restore original profile name and data.  (Works properly even if user reloads while UI is open!)
-        self:loadProfile( origName, (bPrintMsg and "" or "s") )
+        self:loadProfile( origName, (bPrintMsg and "" or "bs") )
         self:setProfileName(origName)  -- Fixes BUG 20240522.1.
     end
     ----self:setCurrentName(self.OriginalProfileName)  <<< This does not undo modified name if user reloads while UI is open!
-    ----UI_SetValues(self.OriginalValues)
+    ----UI_SetValues(self.OriginalValues, kReasons.CancelingChanges)
 
     -- Assuming the main UI canceled our changes to profile data, restore changes made
     -- to backups and options, and then ask the user if we should restore changes made to the profiles.
@@ -2263,6 +2573,9 @@ function ProfilesUI:OnCancel(bPrintMsg)  -- Reverts to original profile name and
                             ProfilesUI.OriginalProfiles = nil  -- Free memory.
                             PlaySound(kSound.Delete)
                             printProfilesMsg(L.CanceledProfileChanges)
+
+                            -- Reload current profile in case its settings were altered by the undo.
+                            self:loadProfile( self:getCurrentName(), "s" )
                             ----dbg()
                         end,
                 nil, nil,  -- data1, data2
@@ -2470,7 +2783,7 @@ function ProfilesUI:saveProfile(nameToSave, options, nameToLoadAfterwards)  -- [
         profileData = profileData or {}
 
         ----vdt_dump(ProfilesDB:getProfiles(), "'.Profiles' in ProfilesUI:saveProfile()")
-        UI_GetValues(profileData)  -- Copies UI values into profileData.
+        UI_GetValues(profileData, kReasons.SavingProfile)  -- Copies UI values into profileData.
         bResult = ProfilesDB:set(nameToSave, profileData)  -- Saves data from the UI to the specified profile.
         if bResult then
             -- SUCCESS.
@@ -2534,6 +2847,7 @@ function ProfilesUI:loadProfile(nameToLoad, options)  -- [ Keywords: loadProfile
 -- Otherwise, returns true and the matching name if successful, or false if not.
     --  'options' is a string of option characters:
     --      a = auto-save the current profile before loading the specified profile.
+    --      b = bypass notification callback.
     --      c = get confirmation from user to save current profile before loading another one.
     --      e = errors only (Similar to silent, except errors will be printed.)
     --      s = silent (no output printed/displayed).
@@ -2542,8 +2856,8 @@ function ProfilesUI:loadProfile(nameToLoad, options)  -- [ Keywords: loadProfile
     assert(self)  -- Fails if function called using '.' instead of ':'.
     assert(options==nil or type(options)=="string")
     options = options or ""
-    local bSilent, bConfirm, bAutoSave, bErrorsOnly
-        = sFind("s",options), sFind("c",options), sFind("a",options), sFind("e",options)
+    local bSilent, bConfirm, bAutoSave, bErrorsOnly, bBypassNotification
+        = sFind("s",options), sFind("c",options), sFind("a",options), sFind("e",options), sFind("b",options)
     nameToLoad = nameToLoad:trim()
     assert(not sFind("d",options)) -- Fails if loadProfile() is used to load a default rather than an existing profile.
 
@@ -2582,13 +2896,17 @@ function ProfilesUI:loadProfile(nameToLoad, options)  -- [ Keywords: loadProfile
         if profileData and next(profileData) ~= nil then  -- Did we get a table with data in it?
             -- SUCCESS.
             self:setProfileName( nameFound )
-            UI_SetValues( CopyTable(profileData) )  -- Copies profileData into the UI.
+            UI_SetValues( CopyTable(profileData), kReasons.LoadingProfile )  -- Copies profileData into the UI.
             ----ProfilesDB:setSelectedName(nameFound)  <-- ONLY DO THIS IN OnOkay().  Name got out of sync on reloads if UI is left open.
             if not gMainFrame:IsVisible() then  -- Load initiated by a slash command?
                 self:OnOkay() -- Must do this if UI is not displayed (so the name matches the data when UI opens next time).
             end
             bResult = true
             self.bModifiedValues = false  -- Reset.  Changed values were either saved or discarded.
+
+            if self.callbackLoadProfile and not bBypassNotification then
+                self.callbackLoadProfile(nameFound)
+            end
         end
     end
 
@@ -2648,13 +2966,21 @@ function ProfilesUI:loadDefault(nameToLoad, options)  -- [ Keywords: loadDefault
     local bResult = UI_SetDefaults(nameToLoad)
     if bResult then
         if nameToLoad then
-            ProfilesUI:setProfileName( appendUnsavedMarker(nameToLoad) )
+            ----if nameToLoad:sub(1,1) == "(" then
+            ----    -- Detault names in parenthesis, such as "(Start Here)", are special.  Don't set such names in the UI.
+            ----    ProfilesUI:clearProfileName()
+            ----else
+                ProfilesUI:setProfileName( appendUnsavedMarker(nameToLoad) )
+            ----end
             msg = L.DefaultLoaded:format(nameToLoad)
         else
             ProfilesUI:clearProfileName()
             msg = L.DefaultsLoaded
         end
         ProfilesUI:onProfilesListChanged()
+        if self.callbackLoadDefault then
+            self.callbackLoadDefault(nameToLoad)
+        end
     end
 
     if not bSilent then
@@ -2709,7 +3035,7 @@ function ProfilesUI:copyProfile(srcName, destName, options)  -- [ Keywords: copy
     if srcName and (not destName or destNameIsUnsaved) then  -- No "usable" destination name?
         ----tracePUI("copyProfile: Case 1.")
         -- Copy source data into the UI.
-        UI_SetValues( CopyTable(srcProfile) )
+        UI_SetValues( CopyTable(srcProfile), kReasons.CopyingProfile )
         ----if destNameIsUnsaved then
         ----    self:clearProfileName()  -- Clear name since displayed data is not for the old name anymore.
         ----end
@@ -2717,7 +3043,7 @@ function ProfilesUI:copyProfile(srcName, destName, options)  -- [ Keywords: copy
         ----tracePUI("copyProfile: Case 2.")
         -- Put UI values into a temp var, then copy it to the destination name.
         local tempData = {}
-        UI_GetValues(tempData)
+        UI_GetValues(tempData, kReasons.CopyingProfile)
         ProfilesDB:set(destName, nil)  -- Clears all fields and marks them for garbage collection.
         ProfilesDB:set(destName, tempData)  -- Copy temp data.  (Don't need to use CopyTable() here.)
 
@@ -2730,7 +3056,7 @@ function ProfilesUI:copyProfile(srcName, destName, options)  -- [ Keywords: copy
         local copyOfSrc = CopyTable(srcProfile)
         ----ProfilesDB:set(destName, nil)  -- Clears all fields and marks them for garbage collection.
         ----ProfilesDB:set(destName, copyOfSrc)  -- Copy default data.
-        UI_SetValues(copyOfSrc)  -- Copies data into the UI.
+        UI_SetValues(copyOfSrc, kReasons.CopyingProfile)  -- Copies data into the UI.
         self:OnValueChanged()  -- Marks profile as modified and appends "*" to end of its name.
     end
 
@@ -2859,7 +3185,7 @@ function ProfilesUI:renameProfile(oldName, newName, options)
                 local bDeleted = self:deleteProfile(oldName, "s")
                 assert(bDeleted)
             end
-            local bLoaded = self:loadProfile(newName, "s")
+            local bLoaded = self:loadProfile(newName, "bs")
             assert(bLoaded)
 
             -- SUCCESS.
@@ -2950,8 +3276,8 @@ function ProfilesUI:loadNextProfile()
     local strippedCurrentName = stripUnsavedMarker(currentName)
 
     if bUnsaved then
-        if defaultValuesAreLoaded() then  -- Does name refer to a default?
-            return self:loadFirstProfile("s")
+        if defaultValuesAreLoaded() then  -- Unmodified default data?
+            return self:loadFirstProfile("s")  -- Load first profile without getting confirmation.
         end
     end
 
@@ -2969,6 +3295,12 @@ function ProfilesUI:loadNextProfile()
         elseif namesMatch(name, strippedCurrentName) then
             bLoadNext = true
         end
+    end
+
+    if gDefaultsTable[strippedCurrentName] then
+        -- It's a modified default that has not been saved to the profile list.
+        -- Get confirmation before loading the first profile.
+        return self:loadFirstProfile("cs")
     end
 
     gMainFrame.statusText:showMsg(L.BottomOfList, kStatusMsgShorterSecs, true)
@@ -3019,6 +3351,12 @@ function ProfilesUI:loadPreviousProfile()
                 return self:loadProfile(previousName, "s")
             end
         end
+    end
+
+    if gDefaultsTable[strippedCurrentName] then
+        -- It's a modified default that has not been saved to the profile list.
+        -- Get confirmation before loading the last profile.
+        return self:loadLastProfile("cs")
     end
 
     -- If we get here, the displayed name no longer exists as a profile (nor is it a default).
@@ -3270,10 +3608,7 @@ local function createPopupListBox(parent, titleText,
     function listbox:getTitle()    return self.titleBox.title:GetText() end
     ---------------------------------------------------------------------------
     function listbox:setColor(r, g, b, alpha)
-        r = r or 1;  g = g or 1;  b = b or 1;  alpha = alpha or 1
-        self.R = r;  self.G = g;  self.B = b;  self.Alpha = alpha
-
-        setRegionsTextureColor(self.edges, r, g, b, alpha)
+        self.edges:setColor(r, g, b, alpha)
         self.sliderFrame.background:SetVertexColor(r, g, b, 0.25) -- Scrollbar background color.
         local m = 0.56
         self.titleBox:SetBackColor(r*m, g*m, b*m, 1)
@@ -3281,9 +3616,7 @@ local function createPopupListBox(parent, titleText,
         self.divider:SetColorTexture(r*m, g*m, b*m, alpha)
     end
     ---------------------------------------------------------------------------
-    function listbox:getColor()
-        return (self.R or 0), (self.G or 0), (self.B or 0), (self.Alpha or 1)
-    end
+    function listbox:getColor() return self.edges:getColor() end
     ---------------------------------------------------------------------------
     function listbox:setLinesPerPage(linesPerPage, optionalLineHeight)
         ----printProfilesMsg("listbox:setLinesPerPage():", linesPerPage, optionalLineHeight)
@@ -3301,7 +3634,7 @@ local function createPopupListBox(parent, titleText,
     ---------------------------------------------------------------------------
     function listbox:getStringWidth(str)
         if not self.measurementLine then
-            self.measurementLine = self:lineHandler()  -- Create a line just for measuring string widths.
+            self.measurementLine = self:createLineHandler()  -- Create a line just for measuring string widths.
         end
         self.measurementLine.fontString:SetText(str)
         return self.measurementLine.fontString:GetUnboundedStringWidth()
@@ -3401,7 +3734,9 @@ local function createPopupListBox(parent, titleText,
     ----listbox:SetFrameLevel( gMainFrame:GetFrameLevel() + 10 ) <--DIDN'T WORK.  Use SetFrameStrata().
     listbox:SetFrameStrata("FULLSCREEN")
     listbox:SetClampedToScreen(true)  -- Keep the bottom of the dropdown list on-screen.
-    listbox.Bg:SetVertexColor(1,1,1, 0.94) -- Transparent background.
+    if listbox.Bg then
+        listbox.Bg:SetVertexColor(1,1,1, 0.94) -- Transparent background.
+    end
 
     listbox.deleteHandler = deleteHandler
     listbox.bShowDeleteBtn = (deleteHandler ~= nil)
@@ -3508,20 +3843,13 @@ local function createPopupListBox(parent, titleText,
     listbox.nextBtn:SetPushedTexture("Interface\\BUTTONS\\Arrow-Down-Down")
     listbox.nextBtn:SetScript("OnClick", function(self) listbox:selectNext() end)
 
-    -- Enhance the listbox edges.
-    listbox.edges = CreateFrame("Frame", nil,  listbox, "ThinBorderTemplate")
-    listbox.edges:SetPoint("TOPLEFT", listbox.titleBox, "TOPLEFT", 2, -2)
-    listbox.edges:SetPoint("BOTTOMRIGHT", listbox, "BOTTOMRIGHT", -1, 0)
-    listbox.edges:SetScale(0.92)
-    ----setRegionsTextureColor(listbox.edges, 0.3, 0.3, 0.3,  1.0)
-
     -- Set color of title box, edges, and scrollbar.
     listbox.sliderFrame.background:SetTexture("Interface\\Buttons\\WHITE8X8") -- So we can change scrollbar color.
-    ----listbox:setColor(0.5, 0.5, 0.4)
-    ----listbox:setColor(0.4, 0.25, 0.0)
-    ----listbox:setColor(0.15, 0.25, 0.4)
-    ----listbox:setColor(0.2, 0.4, 0.5)
-    listbox:setColor(0.24, 0.48, 0.6)
+
+    -- Enhance the listbox edges.
+    enhanceFrameEdges(listbox, 2, -2, -1, 0)  -- (frame, x1, y1, x2, y2)
+    local color = ProfilesUI.ListBoxColor
+    listbox:setColor(color.r, color.g, color.b, color.alpha)
 
     --=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     -- - - - LISTBOX EVENTS - - - --
@@ -3531,10 +3859,6 @@ local function createPopupListBox(parent, titleText,
     -- Close the listbox if user clicks anywhere outside of it.
     hooksecurefunc(private.UDControls, "handleGlobalMouseClick", function(mouseButton)
                 ----print("listbox HOOK CALLED")
-                -- For Classic WoW, if standard dropdown is open, close that first (if necessary).
-                if not isRetailWoW() and DropDownList1:IsShown() and not DropDownList1:IsMouseOver() then
-                    DropDownList1:Hide()
-                end
 
                 -- Hide our custom dropdowns when user clicks outside of them.
                 local listbox
@@ -3542,13 +3866,16 @@ local function createPopupListBox(parent, titleText,
                     listbox = gMainFrame.profilesListBox
                 elseif gMainFrame.backupsListBox and gMainFrame.backupsListBox:IsShown() then
                     listbox = gMainFrame.backupsListBox
+                elseif gMainFrame.menuDropDown.listbox:IsShown() then
+                    if gMainFrame.menuDropDown:IsMouseOver() then return end
+                    listbox = gMainFrame.menuDropDown.listbox
                 end
 
                 if not listbox or not listbox:IsShown() then return end  -- Nothing to do.
                 if mouseButton == nil or mouseButton == "LeftButton" then
                     -- Did user click somewhere inside the listbox?  If so, do nothing.
                     if listbox:IsMouseOver() then return end
-                    if listbox.titleBox:IsMouseOver() then return end
+                    if listbox.titleBox and listbox.titleBox:IsMouseOver() then return end
                     -- Otherwise, user clicked outside of the listbox.
                     if gMainFrame.loadDropDownBtn:IsMouseOver() or gMainFrame.editbox:IsMouseOver() then
                         if listbox == gMainFrame.profilesListBox then return end
@@ -3764,6 +4091,7 @@ function ProfilesUI:createBackupsListBox()
     listbox:SetPoint("TOPLEFT", gMainFrame.menuDropDown.Button, "BOTTOMLEFT", -2, 0)
     listbox:setLinesPerPage(20)
     listbox:setColor( gMainFrame.profilesListBox:getColor() )  -- Use same color as Profiles listbox.
+    ProfilesUI:setListBoxBackColor( ProfilesUI:getListBoxBackColor() ) -- Sets background color to match our other listboxes.
 
 --~     -- NEW (BACKUP) BUTTON (in listbox title) --
 --~     listbox.newBtnSmall = CreateFrame("Button", nil, listbox.titleBox, kButtonTemplate)
@@ -3881,10 +4209,11 @@ local function staticPopup_OnShow(thisStaticPopupTable, customData)
     ----tracePUI("OnShow popup", thisStaticPopupTable.which)
     -- 'customData' is the 4th parameter passed to StaticPopup_Show().
     assert(customData)  -- Fails if missing 4th param ... StaticPopup_Show(which, text_arg1, text_arg2, customData)
+    assert(thisStaticPopupTable.OnHide == staticPopup_OnHide) -- Required function so blockerFrame doesn't stay visible forever.
+
     thisStaticPopupTable.data = customData
     ----thisStaticPopupTable.origPos = { thisStaticPopupTable:GetPoint() }
     ----gLastUsedStaticPopup = thisStaticPopupTable  -- Risky!  Main UI could change popup's position and possibly cause taint problems.
-    showBlockerFrame()
 
     -- Remove empty quotes (empty names) from the text message.
     local msg = thisStaticPopupTable.text:GetText()
@@ -3921,6 +4250,8 @@ local function staticPopup_OnShow(thisStaticPopupTable, customData)
                     end)
         ----end
     end
+
+    showBlockerFrame()  -- Do this last.  (If something fails above, the blocker frame won't be stuck on screen.)
 end
 
 --=============================================================================
@@ -4156,17 +4487,23 @@ function ProfilesUI.menu.restore(bSilent)   triggerMenuItem(L.mRestore, not bSil
 
 private.UDProfiles_CreateUI = UDProfiles_CreateUI
 private.ProfilesUI = ProfilesUI  -- Expose this variable so the main UI can always get ProfilesUI.VERSION .
+private.ProfilesUI_Reasons = kReasons
 private.ProfilesUI_ProfilesHelp = L.ProfilesHelp  -- Expose this variable so the main UI can include it in its help window.
 private.ProfilesUI_BackupsHelp = L.BackupsHelp  -- Expose this variable so the main UI can include it in its help window.
+private.ProfilesDB = ProfilesDB  -- Expose this variable so the main UI can create backups before modifying config data.
 
 private.util = private.util or {}
+private.util.enhanceFrameEdges= private.util.enhanceFrameEdges or enhanceFrameEdges
 private.util.sFind            = private.util.sFind or sFind
 private.util.strEndsWith      = private.util.strEndsWith or strEndsWith
 private.util.strMatchNoCase   = private.util.strMatchNoCase or strMatchNoCase
 private.util.tCount           = private.util.tCount or tCount
 private.util.tEmpty           = private.util.tEmpty or tEmpty
 private.util.tGet             = private.util.tGet or tGet
+private.util.tGetSub          = private.util.tGetSub or tGetSub
 private.util.tSet             = private.util.tSet or tSet
 private.util.vdt_dump         = private.util.vdt_dump or vdt_dump
+
+private.kSound  = kSound  -- Share our sound constants.
 
 --- End of File ---

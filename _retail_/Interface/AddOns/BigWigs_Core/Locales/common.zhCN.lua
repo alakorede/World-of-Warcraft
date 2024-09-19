@@ -45,6 +45,8 @@ L.health = "血量" -- The health of an NPC
 L.health_percent = "%d%% 血量" -- "10% Health" The health percentage of an NPC
 L.door_open = "门开了" -- When a door is open, usually after a speech from an NPC
 L.gate_open = "门开了" -- When a gate is open, usually after a speech from an NPC
+L.threat = "威胁"
+L.energy = "能量"
 
 L.remaining = "剩余：%d" -- 5 remaining
 L.duration = "%s持续 %s 秒" -- Spell for 10 seconds
@@ -64,17 +66,20 @@ L.cancelled = "%s取消" -- Spell Cancelled
 L.you_die = "你将死亡" -- You will die
 L.you_die_sec = "你将在%d秒后死亡" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "下个技能" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.landing = "%s 正在着陆" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing
+L.flying_available = "可以起飞"  --改为简短提示
 
 -- Add related
-L.add_spawned = "小怪已刷新" -- singular
-L.adds_spawned = "小怪已刷新" -- plural
-L.add_spawning = "小怪刷新" -- singular
-L.adds_spawning = "小怪刷新" -- plural
+L.add_spawned = "增援出现" -- singular
+L.adds_spawned = "增援出现" -- plural
+L.adds_spawned_count = "%d 增援出现" -- 1 add spawned / 2 adds spawned
+L.add_spawning = "增援出现" -- singular
+L.adds_spawning = "增援出现" -- plural
 L.spawned = "%s已刷新"
-L.spawning = "%s刷新"
-L.next_add = "下一波小怪"
-L.add_killed = "小怪已击杀（%d/%d）"
-L.add_remaining = "小怪已击杀，剩余 %d"
+L.spawning = "%s出现"
+L.next_add = "下一波增援"
+L.add_killed = "增援已击杀（%d/%d）"
+L.add_remaining = "增援已击杀，剩余 %d"
 L.add = "增援"
 L.adds = "增援"
 L.big_add = "大型增援" -- singular
@@ -86,6 +91,18 @@ L.small_adds = "小型增援" -- plural
 L.killed = "%s已击杀"
 L.mob_killed = "%s已击杀（%d/%d）"
 L.mob_remaining = "%s已击杀，剩余 %d"
+
+-- NPCs for follower dungeons
+L.garrick = "嘉里克船长" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*嘉里克"
+L.meredy = "梅瑞迪·寻涌" -- AI mage dps (NPC 209059)
+L.meredy_short = "*梅瑞迪"
+L.shuja = "修加·恐斧" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*修加"
+L.crenna = "科蕾娜·大地之女" -- AI druid healer (NPC 209072)
+L.crenna_short = "*科蕾娜"
+L.austin = "奥斯汀·哈克斯沃斯" -- AI hunter dps (NPC 209065)
+L.austin_short = "*奥斯汀"
 
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
@@ -109,9 +126,12 @@ L.marker_npc_aura_desc = "标记受到'%s'影响的 NPC 为%s，需要权限。"
 L.link = "连接"
 L.link_with = "与%s连接"
 L.link_with_icon = "与|T13700%d:0|t%s连接"
-L.link_short = "连接：%s"
+L.link_with_rticon = "{rt%d}与%s连接"
 L.link_both = "%s和%s连接"
+L.link_both_icon = "|T13700%d:0|t%s和|T13700%d:0|t%s连接"
 L.link_removed = "连接已移除"
+L.link_say_option_name = "重复“连接”信息"
+L.link_say_option_desc = "已重复喊话方式来发送信息，说明正在与谁连接。"
 
 -- Abbreviated numbers
 L.amount_one = "%.2f亿" -- Billions 1,000,000,000
@@ -175,6 +195,7 @@ L.charge = "冲锋" -- When a boss select a new target and charges at it quickly
 L.full_energy = "满能量" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "虚弱" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "免疫" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "昏迷" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "水池" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "水池" -- Plural of L.pool
 L.totem = "图腾" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -188,7 +209,7 @@ L.orbs = "宝珠" -- Plural for L.orb
 L.curse = "诅咒" -- Any curse-type dispellable debuff, or debuffs called "Curse of XYZ", etc.
 L.curses = "诅咒" -- Plural of L.curse
 L.disease = "疾病" -- Any disease-type dispellable debuff, or debuffs called "Disease of XYZ", etc.
-L.poison = "毒" -- Any poison-type dispellable debuff, or debuffs called "Poison of XYZ", etc.
+L.poison = "中毒" -- Any poison-type dispellable debuff, or debuffs called "Poison of XYZ", etc.
 L.spirit = "精魂" -- Sometimes a boss will summon spirits, similar to ghosts, but not exactly, although you might have the same word for both. e.g. "Spirits of X" or "Wild Spirits"
 L.spirits = "精魂" -- Plural of L.spirit
 L.tornado = "旋风" -- 'A tornado is a violently rotating column of air that is in contact with both the surface of the Earth and a cloud' - Wikipedia
@@ -204,3 +225,10 @@ L.soaks = "分摊" -- Plural of L.soak
 L.spell_reflection = "法术反射" -- Any ability that reflects spells
 L.parasite = "寄生" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "定身" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+L.dodge = "躲开" -- When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+L.health_drain = "消耗生命" -- Any ability that drains health from the player
+L.smash = "重击" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+L.spike = "尖刺" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+L.spikes = "尖刺" -- Plural of L.spike

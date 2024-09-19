@@ -2,8 +2,10 @@
 local _, MoveAny = ...
 function MoveAny:LangptBR()
 	local tab = {
-		["LID_MMBTNLEFT"] = "Clique esquerdo => Bloqueios/Desbloqueio + Opções",
-		["LID_MMBTNRIGHT"] = "Shift + Right Click => Hide Minimap Button",
+		["LID_LEFTCLICK"] = "Clique esquerdo",
+		["LID_RIGHTCLICK"] = "Right Click",
+		["LID_MMBTNLEFT"] = "Bloqueios/Desbloqueio + Opções",
+		["LID_MMBTNRIGHT"] = "Hide Minimap Button",
 		["LID_GENERAL"] = "Geral",
 		["LID_SHOWMINIMAPBUTTON"] = "Show Minimap Button",
 		["LID_GRIDSIZE"] = "Gridsize",
@@ -48,7 +50,7 @@ function MoveAny:LangptBR()
 		["LID_CHAT"] = "Chatframe %d",
 		["LID_CHATBUTTONFRAME"] = "Botões de Chat",
 		["LID_CHATQUICKJOIN"] = "Chat Quick Join",
-		["LID_CHATEDITBOX"] = "Chat Inputbox",
+		["LID_CHATEDITBOX"] = "Chat Inputbox %s",
 		["LID_COMPACTRAIDFRAMEMANAGER"] = "Gerente de Raid",
 		["LID_BNToastFrame"] = "Battlenet Friends Notifications",
 		["LID_ZONETEXTFRAME"] = "Texto da zona",

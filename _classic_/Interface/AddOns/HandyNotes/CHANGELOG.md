@@ -1,6 +1,7 @@
 # HandyNotes
 
-## [v1.6.19](https://github.com/Nevcairiel/HandyNotes/tree/v1.6.19) (2024-05-01)
-[Full Changelog](https://github.com/Nevcairiel/HandyNotes/compare/v1.6.18...v1.6.19) [Previous Releases](https://github.com/Nevcairiel/HandyNotes/releases)
+## [v1.6.21](https://github.com/Nevcairiel/HandyNotes/tree/v1.6.21) (2024-08-28)
+[Full Changelog](https://github.com/Nevcairiel/HandyNotes/compare/v1.6.20.3...v1.6.21) [Previous Releases](https://github.com/Nevcairiel/HandyNotes/releases)
 
-- Update Classic TOCs  
+- Add Wago upload support  
+- Remove 11.0.0 TOC entry  

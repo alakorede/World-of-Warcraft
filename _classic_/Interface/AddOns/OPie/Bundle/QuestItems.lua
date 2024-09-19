@@ -1,4 +1,6 @@
 local AB, _, T = assert(OPie.ActionBook:compatible(2,14), "Requires a compatible version of ActionBook"), ...
+if T.TenEnv then T.TenEnv() end
+
 local ORI, EV, L, PC, XU, config = OPie.UI, T.Evie, T.L, T.OPieCore, T.exUI, T.config
 local COMPAT = select(4,GetBuildInfo())
 local MODERN, CF_WRATH = COMPAT >= 10e4, COMPAT < 10e4 and COMPAT >= 3e4
@@ -24,10 +26,13 @@ if MODERN then
 		local function have1()
 			return true, false, false, 4
 		end
-		local function consume()
+		local function c1()
 			return true, false, false, 3
 		end
-		local mapMarker = consume
+		local function c100(iid)
+			return C_Item.GetItemCount(iid) > 99, false, false, 3
+		end
+		local mapMarker = c1
 		include = {
 			[33634]=true, [35797]=true, [37888]=true, [37860]=true, [37859]=true, [37815]=true, [46847]=true, [47030]=true, [39213]=true, [42986]=true, [49278]=true,
 			[86425]={31332, 31333, 31334, 31335, 31336, 31337}, [90006]=true, [86536]=true, [86534]=true,
@@ -38,9 +43,13 @@ if MODERN then
 			[199066]=mapMarker, [199067]=mapMarker, [199068]=mapMarker, [199069]=mapMarker, [200738]=mapMarker, [202667]=mapMarker, [202668]=mapMarker,
 			[202669]=mapMarker, [202670]=mapMarker,
 			[204911]=have1,
-			[205254]=consume,
-			[199192]=have1, [204359]=have1, [205226]=have1, [210549]=have1,
-			[211279]=have1, -- remix lootboxes
+			[205254]=c1, -- Honorary Explorer's Compass [dragonscale rep]
+			[199192]=have1, [204359]=have1, [205226]=have1, [210549]=have1, [227450]=have1,  -- racer's purse
+			[228741]=have1, -- lamplighter supply satchel
+			[229899]=c100, -- coffer key shard
+			[217011]=have1, [217012]=have1, [217013]=have1, -- (isle of dorn) actor's chest
+			[227792]=have1, -- everyday cache
+			[227713]=have1, -- art consortium payout
 		}
 	end
 	local includeSpell = {
@@ -67,7 +76,7 @@ if MODERN then
 			return true, false, disItems[iid]
 		end
 		local inc, isQuest, startQuestId, isQuestActive = include[iid], getContainerItemQuestInfo(bag, slot)
-		isQuest = iid and ((isQuest and GetItemSpell(iid)) or (inc == true) or (startQuestId and not isQuestActive and not C_QuestLog.IsQuestFlaggedCompleted(startQuestId)))
+		isQuest = iid and ((isQuest and C_Item.GetItemSpell(iid)) or (inc == true) or (startQuestId and not isQuestActive and not C_QuestLog.IsQuestFlaggedCompleted(startQuestId)))
 		local tinc, rcat = inc and not isQuest and type(inc), nil
 		if tinc == "function" then
 			isQuest, startQuestId, isQuestActive, rcat = inc(iid)
@@ -83,7 +92,7 @@ if MODERN then
 			end
 		end
 		if inc == nil and not isQuest then
-			local isn, isid = GetItemSpell(iid)
+			local isn, isid = C_Item.GetItemSpell(iid)
 			if isid and includeSpell[isn] and IsUsableSpell(isid) then
 				isQuest, startQuestId, rcat = true, false, includeSpell[isn]
 			end
@@ -109,8 +118,8 @@ else
 			return false
 		elseif include[iid] then
 			isQuest = true
-		elseif not (GetItemSpell(iid) and not exclude[iid]) then
-		elseif select(12, GetItemInfo(iid)) == QUEST_ITEM then
+		elseif not (C_Item.GetItemSpell(iid) and not exclude[iid]) then
+		elseif select(12, C_Item.GetItemInfo(iid)) == QUEST_ITEM then
 			isQuest = true
 		elseif skipTypeCheck then
 			include[iid], isQuest = true, true
@@ -342,11 +351,11 @@ local edFrame = CreateFrame("Frame") do
 		if not (iid and w) then
 			return w and w:Hide()
 		end
-		local n, _, _iq, _, _, _, _, _, _, ico = GetItemInfo(iid or 0)
+		local n, _, _iq, _, _, _, _, _, _, ico = C_Item.GetItemInfo(iid or 0)
 		if n then
 			w.pendingItemID = nil
 		else
-			w.pendingItemID, n, _, _, _, _, ico = iid, "item:" .. iid, GetItemInfoInstant(iid or 0)
+			w.pendingItemID, n, _, _, _, _, ico = iid, "item:" .. iid, C_Item.GetItemInfoInstant(iid or 0)
 		end
 		w.Text:SetText(n)
 		w.Icon:SetTexture(ico)
@@ -397,7 +406,7 @@ local edFrame = CreateFrame("Frame") do
 		local allDone = 1
 		for i=1, numRowsPV do
 			local pid = rows[i].pendingItemID
-			local n = pid and GetItemInfo(pid)
+			local n = pid and C_Item.GetItemInfo(pid)
 			allDone = allDone and (n or not pid)
 			if n then
 				rows[i].pendingItemID = nil
@@ -493,7 +502,7 @@ T.AddSlashSuffix(function(msg)
 	else
 		local flag, _, link
 		flag, args = args:match("^(%-?)(.*)$")
-		_, link = GetItemInfo(args:match("|H(item:%d+)") or args)
+		_, link = C_Item.GetItemInfo(args:match("|H(item:%d+)") or args)
 		local iid = link and link:match("item:(%d+)")
 		if iid then
 			excludeItemID(tonumber(iid) * (flag == "-" and -1 or 1))

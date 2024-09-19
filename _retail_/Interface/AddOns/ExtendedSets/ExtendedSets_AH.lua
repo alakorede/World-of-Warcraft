@@ -241,6 +241,9 @@ local function SetupAHSearchButton()
         end
       end
     end)
+    
+  AHSearchButton:SetShown(ExS_Settings.extraButtonToggles[1]);
+  app.AHSearchButton = AHSearchButton;
 end
 
 --Create the button in the armor sets collection window
@@ -271,6 +274,7 @@ local function InitializeAH()
       FillAHSearchList();
     end
   end);
+  WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.AHButton:SetShown(ExS_Settings.extraButtonToggles[1]);
   
   SetupAHSearchButton();
 end
@@ -303,6 +307,7 @@ local function InitializeAH_wep()
       FillAHSearchList();
     end
   end);
+  WardrobeCollectionFrame.WeaponSetsCollectionFrame.RightFrame.AHButton:SetShown(ExS_Settings.extraButtonToggles[1]);
   
   SetupAHSearchButton();
 end

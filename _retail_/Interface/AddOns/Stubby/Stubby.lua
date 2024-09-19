@@ -1,6 +1,6 @@
 --[[
 	Stubby AddOn for World of Watcraft (tm)
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://auctioneeraddon.com/dl/Stubby/
 
@@ -196,7 +196,17 @@
 		since that is its designated purpose as per:
 		http://www.fsf.org/licensing/licenses/gpl-faq.html#InterpreterIncompat
 ]]
-LibStub("LibRevision"):Set("$URL$","$Rev$","5.1.DEV.", 'auctioneer', 'libs')
+
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local GetNumAddOns = C_AddOns.GetNumAddOns
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local IsAddOnLoadOnDemand = C_AddOns.IsAddOnLoadOnDemand
+local GetAddOnDependencies = C_AddOns.GetAddOnDependencies
+
+-- *** CAUTION *** DO NOT USE local/shorthand versions inside boot code or other loadable strings
+-- *** you MUST use the full Global name
+-- *** Currently we only appear to use the below:
+local LoadAddOn = C_AddOns.LoadAddOn
 
 -------------------------------------------------------------------------------
 -- Error codes
@@ -772,7 +782,7 @@ end
 function createAddOnLoadBootCode(ownerAddOn, triggerAddOn)
 	registerBootCode(ownerAddOn, triggerAddOn.."AddOnLoader",
 		'local function hookFunction() '..
-			'LoadAddOn("'..ownerAddOn..'") '..
+			'C_AddOns.LoadAddOn("'..ownerAddOn..'") '..
 			'Stubby.UnregisterAddOnHook("'..triggerAddOn..'", "'..ownerAddOn..'") '..
 		'end '..
 		'Stubby.RegisterAddOnHook("'..triggerAddOn..'", "'..ownerAddOn..'", hookFunction)'
@@ -782,7 +792,7 @@ end
 function createFunctionLoadBootCode(ownerAddOn, triggerFunction)
 	registerBootCode(ownerAddOn, triggerFunction.."FunctionLoader",
 		'local function hookFunction() '..
-			'LoadAddOn("'..ownerAddOn..'") '..
+			'C_AddOns.LoadAddOn("'..ownerAddOn..'") '..
 			'Stubby.UnregisterFunctionHook("'..triggerFunction..'", hookFunction) '..
 		'end '..
 		'Stubby.RegisterFunctionHook("'..triggerFunction..'", 200, hookFunction)'
@@ -792,7 +802,7 @@ end
 function createEventLoadBootCode(ownerAddOn, triggerEvent)
 	registerBootCode(ownerAddOn, triggerEvent.."FunctionLoader",
 		'local function hookFunction() '..
-			'LoadAddOn("'..ownerAddOn..'") '..
+			'C_AddOns.LoadAddOn("'..ownerAddOn..'") '..
 			'Stubby.UnregisterEventHook("'..triggerEvent..'", "'..ownerAddOn..'") '..
 		'end '..
 		'Stubby.RegisterEventHook("'..triggerEvent..'", "'..ownerAddOn..'", hookFunction)'
@@ -859,7 +869,7 @@ function cleanUpAddOnConfigs()
 	end
 
 	StaticPopupDialogs["CLEANUP_STUBBY" .. addonIndex] = {
-		text = "The AddOn \"" .. addonName .. "\" is no longer available. Do you wish to delete it's loading preferences?",
+		text = "The AddOn \"" .. addonName .. "\" is no longer available. Do you wish to delete its loading preferences?",
 		button1 = "Delete",
 		button2 = "Keep",
 		OnAccept = function()
@@ -911,7 +921,12 @@ function runBootCodes()
 			local _, _, _, _, reason = GetAddOnInfo(addon)
 			if reason == "DEMAND_LOADED" or reason == "DEP_DEMAND_LOADED" then
 				for bootname, boot in pairs(boots) do
-					RunScript(boot)
+					local success, result = pcall(RunScript, boot)
+					if not success then
+						chatPrint("Stubby found error in boot script for", addon, bootname, result)
+						-- This will protect us against script errors that occur immediately when the boot script is run
+						-- but will not protect against errors in scripts that get installed for future events
+					end
 				end
 			end
 		end
@@ -923,14 +938,14 @@ function onWorldStart()
 	-- Check for expired or updated addons and remove their boot codes.
 	checkAddOns()
 
-	-- Run all of our boots to setup the respective addons functions.
-	runBootCodes()
-
 	-- The search for new life and new civilizations... or just addons maybe.
 	searchForNewAddOns()
 
 	-- Delete data for removed addons
 	cleanUpAddOnData()
+
+	-- Run all of our boots to setup the respective addons functions.
+	runBootCodes()
 end
 
 function onLoaded()
@@ -960,14 +975,7 @@ end
 
 function chatPrint(...)
 	if ( DEFAULT_CHAT_FRAME ) then
-		local msg = ""
-		for i = 1, select("#", ...) do
-			if (i == 1) then
-				msg = select(i, ...)
-			else
-				msg = msg.." "..select(i, ...)
-			end
-		end
+		local msg = strjoin(" ", tostringall(...))
 		DEFAULT_CHAT_FRAME:AddMessage(msg, 1.0, 0.35, 0.15)
 	end
 end

@@ -27,16 +27,13 @@ local LSR = LibStub( "SpellRange-1.0" )
 local class = Hekili.Class
 local scripts = Hekili.Scripts
 
-local GetMeleeHaste = _G.GetMeleeHaste or function() return GetCombatRatingBonus( CR_HASTE_MELEE ) end
-local GetRangedHaste = _G.GetRangedHaste or function() return GetCombatRatingBonus( CR_HASTE_RANGED ) end
 local GetSpecialization = _G.GetSpecialization or function() return GetActiveTalentGroup() end
 local GetSpecializationInfo = _G.GetSpecializationInfo or function()
     local name, baseName, id = UnitClass( "player" )
     return id, baseName, name
 end
 local IsInJailersTower = _G.IsInJailersTower or function() return false end
-local UnitEffectiveLevel = _G.UnitEffectiveLevel or _G.UnitLevel
-local UnitSpellHaste = _G.UnitSpellHaste or function() return GetCombatRatingBonus( CR_HASTE_SPELL ) end
+local GetMasteryEffect = _G.GetMasteryEffect or function() return GetCombatRating(CR_MASTERY)/1.79280040 end
 
 -- This will be our environment table for local functions.
 local state = Hekili.State
@@ -1105,6 +1102,7 @@ local function applyDebuff( unit, aura, duration, stacks, value, noPandemic )
         d.value = 0
         d.applied = 0
         d.unit = unit
+        d.caster = "unknown"
 
         state.active_dot[ aura ] = max( 0, state.active_dot[ aura ] - 1 )
     else
@@ -1126,6 +1124,7 @@ local function applyDebuff( unit, aura, duration, stacks, value, noPandemic )
         d.value = value or 0
         d.applied = state.query_time
         d.unit = unit or "target"
+        d.caster = "player"
     end
 
 end
@@ -1359,8 +1358,8 @@ do
 
         local timeout = FORECAST_DURATION * state.haste -- roundDown( FORECAST_DURATION * state.haste, 2 )
 
-        if state.class.file == "DEATHKNIGHT" then
-            timeout = max( timeout, 0.01 + 2 * ( 1 / state.blood_runes.regen ) )
+        if state.class.file == "DEATHKNIGHT" and (state.blood_runes or state.frost_runes or state.unholy_runes) then
+            timeout = max( timeout, 0.01 + 2 * state.blood_runes.cooldown )
         end
 
         timeout = timeout + state.gcd.remains
@@ -2379,7 +2378,7 @@ local mt_stat = {
             t[k] = state.mana and state.mana.regen or 0
 
         elseif k == "attack_power" then
-            if Hekili.IsWrath() then
+            if Hekili.IsClassic() then
                 local a, b = UnitAttackPower( "player" )
                 t[k] = a + b
             else t[k] = UnitAttackPower("player") + UnitWeaponAttackPower("player") end
@@ -2448,7 +2447,7 @@ local mt_stat = {
             t[k] = 0
 
         elseif k == "crit" then
-            t[k] = ( max( GetCritChance(), Hekili.IsWrath() and GetSpellCritChance( 3 ) or GetSpellCritChance( "player" ), GetRangedCritChance() ) + ( t.mod_crit_pct or 0 ) )
+            t[k] = ( max( GetCritChance(), Hekili.IsClassic() and GetSpellCritChance( 3 ) or GetSpellCritChance( "player" ), GetRangedCritChance() ) + ( t.mod_crit_pct or 0 ) )
 
         end
 
@@ -2768,6 +2767,8 @@ do
         is_friendly = 1,
         is_player = 1,
         is_undead = 1,
+        is_dragonkin = 1,
+        is_elemental = 1,
         level = 1,
         moving = 1,
         real_ttd = 1,
@@ -2842,6 +2843,10 @@ do
             elseif k == "is_friendly" then t[k] = t.exists and UnitIsFriend( "target", "player" )
             elseif k == "is_player" then t[k] = UnitIsPlayer( "target" )
             elseif k == "is_undead" then t[k] = UnitCreatureType( "target" ) == BATTLE_PET_NAME_4
+
+            -- TODO: This probably needs peer review, not sure it works as intended.
+            elseif k == "is_dragonkin" then t[k] = UnitCreatureType( "target" ) == "Dragonkin"
+            elseif k == "is_elemental" then t[k] = UnitCreatureType( "target" ) == "Elemental"
 
             elseif k == "level" then t[k] = UnitLevel( "target" ) or UnitLevel( "player" ) or MAX_PLAYER_LEVEL
             elseif k == "moving" then t[k] = GetUnitSpeed( "target" ) > 0
@@ -4798,6 +4803,9 @@ do
             elseif k == "max_stack" or k == "max_stacks" then
                 return aura and aura.max_stack or 1
 
+            elseif k == "mine" then
+                return t.caster == "player"
+
             elseif k == "stack_pct" then
                 if t.up then
                     if aura then aura.max_stack = max( aura.max_stack or 1, t.count ) end
@@ -5457,38 +5465,36 @@ do
             local name, _, count, _, duration, expires, caster, _, _, spellID, _, _, _, _, timeMod, v1, v2, v3 = UnitBuff( unit, i )
             if not name then break end
 
-            if caster and ( UnitIsUnit( "pet", caster ) or UnitIsUnit( "player", caster ) ) then
-                local key = class.auras[ spellID ] and class.auras[ spellID ].key
-                -- if not key then key = class.auras[ name ] and class.auras[ name ].key end
-                if not key then key = autoAuraKey[ spellID ] end
+            local aura = class.auras[ spellID ]
+            local shared = aura and aura.shared
+            local key = aura and aura.key or autoAuraKey[ spellID ]
 
-                if key then
-                    db.buff[ key ] = db.buff[ key ] or {}
-                    local buff = db.buff[ key ]
+            if key and ( shared or caster and ( UnitIsUnit( "pet", caster ) or UnitIsUnit( "player", caster ) ) ) then
+                db.buff[ key ] = db.buff[ key ] or {}
+                local buff = db.buff[ key ]
 
-                    if expires == 0 then
-                        expires = GetTime() + 3600
-                        duration = 7200
-                    end
-
-                    buff.key = key
-                    buff.id = spellID
-                    buff.name = name
-                    buff.count = count > 0 and count or 1
-                    buff.expires = expires
-                    buff.duration = duration
-                    buff.applied = expires - duration
-                    buff.caster = caster
-                    buff.timeMod = timeMod
-                    buff.v1 = v1
-                    buff.v2 = v2
-                    buff.v3 = v3
-
-                    buff.last_application = buff.last_application or 0
-                    buff.last_expiry      = buff.last_expiry or 0
-
-                    buff.unit = unit
+                if expires == 0 then
+                    expires = GetTime() + 3600
+                    duration = 7200
                 end
+
+                buff.key = key
+                buff.id = spellID
+                buff.name = name
+                buff.count = count > 0 and count or 1
+                buff.expires = expires
+                buff.duration = duration
+                buff.applied = expires - duration
+                buff.caster = caster
+                buff.timeMod = timeMod
+                buff.v1 = v1
+                buff.v2 = v2
+                buff.v3 = v3
+
+                buff.last_application = buff.last_application or 0
+                buff.last_expiry      = buff.last_expiry or 0
+
+                buff.unit = unit
             end
 
             i = i + 1
@@ -5496,38 +5502,37 @@ do
 
         i = 1
         while ( true ) do
+
             local name, _, count, _, duration, expires, caster, _, _, spellID, _, _, _, _, timeMod, v1, v2, v3 = UnitDebuff( unit, i )
             if not name then break end
 
-            if caster and ( UnitIsUnit( "pet", caster ) or UnitIsUnit( "player", caster ) ) then
-                local key = class.auras[ spellID ] and class.auras[ spellID ].key
-                -- if not key then key = class.auras[ name ] and class.auras[ name ].key end
-                if not key then key = autoAuraKey[ spellID ] end
+            local aura = class.auras[ spellID ]
+            local shared = aura and aura.shared
+            local key = aura and aura.key or autoAuraKey[ spellID ]
 
-                if key then
-                    db.debuff[ key ] = db.debuff[ key ] or {}
-                    local debuff = db.debuff[ key ]
+            if key and ( shared or caster and ( UnitIsUnit( "pet", caster ) or UnitIsUnit( "player", caster ) ) ) then
+                db.debuff[ key ] = db.debuff[ key ] or {}
+                local debuff = db.debuff[ key ]
 
-                    if expires == 0 then
-                        expires = GetTime() + 3600
-                        duration = 7200
-                    end
-
-                    debuff.key = key
-                    debuff.id = spellID
-                    debuff.name = name
-                    debuff.count = count > 0 and count or 1
-                    debuff.expires = expires
-                    debuff.duration = duration
-                    debuff.applied = expires - duration
-                    debuff.caster = caster
-                    debuff.timeMod = timeMod
-                    debuff.v1 = v1
-                    debuff.v2 = v2
-                    debuff.v3 = v3
-
-                    debuff.unit = unit
+                if expires == 0 then
+                    expires = GetTime() + 3600
+                    duration = 7200
                 end
+
+                debuff.key = key
+                debuff.id = spellID
+                debuff.name = name
+                debuff.count = count > 0 and count or 1
+                debuff.expires = expires
+                debuff.duration = duration
+                debuff.applied = expires - duration
+                debuff.caster = caster
+                debuff.timeMod = timeMod
+                debuff.v1 = v1
+                debuff.v2 = v2
+                debuff.v3 = v3
+
+                debuff.unit = unit
             end
 
             i = i + 1
@@ -6622,6 +6627,22 @@ ns.spendResources = function( ability )
         end
     end
 
+    if action.spend_runes ~= nil then
+        
+        local function containsNonZero(arr)
+            for i = 1, #arr do
+                if arr[i] ~= 0 then
+                    return true
+                end
+            end
+            return false
+        end
+
+        if containsNonZero(action.spend_runes) then
+            state.death_runes.spend(action.spend_runes)
+        end
+    end
+
     if action.spend2 ~= nil then
         local cost, resource
 
@@ -7123,6 +7144,22 @@ ns.hasRequiredResources = function( ability )
 
         if spend > 0 then
             return ( state[ resource ].current >= spend )
+        end
+    end
+    
+    -- Checking rune availability including Death_Runes
+    if action.spend_runes and action.spend_runes ~= nil then
+        local function containsNonZero(arr)
+            for i = 1, #arr do
+                if arr[i] ~= 0 then
+                    return true
+                end
+            end
+            return false
+        end
+
+        if containsNonZero(action.spend_runes) then
+            return state.death_runes.runes_for_requirement(action.spend_runes)
         end
     end
 

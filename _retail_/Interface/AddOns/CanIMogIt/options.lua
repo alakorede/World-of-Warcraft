@@ -116,9 +116,11 @@ CanIMogItOptions_DisplayData = {
 }
 
 
-CanIMogIt.frame = CreateFrame("Frame", "CanIMogItOptionsFrame", UIParent);
+CanIMogIt.frame = CreateFrame("Frame", "CanIMogItOptionsFrame", InterfaceOptionsFramePanelContainer);
 CanIMogIt.frame.name = "Can I Mog It?";
-InterfaceOptions_AddCategory(CanIMogIt.frame);
+local category = Settings.RegisterCanvasLayoutCategory(CanIMogIt.frame, CanIMogIt.frame.name)
+CanIMogIt.settingsCategory = category
+Settings.RegisterAddOnCategory(category)
 
 
 local EVENTS = {
@@ -152,6 +154,7 @@ local EVENTS = {
     "TRADE_SKILL_SHOW",
     "NEW_TOY_ADDED",
     "NEW_MOUNT_ADDED",
+    "ITEM_LOCK_CHANGED",
 }
 
 if CanIMogIt.isRetail then
@@ -232,6 +235,21 @@ function CanIMogIt.frame.AddonLoaded(event, addonName)
     end
 end
 CanIMogIt.frame:AddEventFunction(CanIMogIt.frame.AddonLoaded)
+
+
+local transmogEvents = {
+    ["TRANSMOG_COLLECTION_SOURCE_ADDED"] = true,
+    ["TRANSMOG_COLLECTION_SOURCE_REMOVED"] = true,
+    ["TRANSMOG_COLLECTION_UPDATED"] = true,
+}
+
+local function TransmogCollectionUpdated(event, ...)
+    if transmogEvents[event] then
+        CanIMogIt:ResetCache()
+    end
+end
+
+CanIMogIt.frame:AddEventFunction(TransmogCollectionUpdated)
 
 
 local changesSavedStack = {}
@@ -520,9 +538,6 @@ Can I Mog It? help:
     toyitems        Toggles showing overlay on toy items.
     petitems        Toggles showing overlay on pet items.
     mountitems      Toggles showing overlay on mount items.
-    count           Shows how many appearances CIMI has recorded.
-    printdb         Toggles printing database debug messages when learning apperances.
-    PleaseDeleteMyDB    WARNING: Completely deletes the database (for all characters)!
     ]])
 end
 
@@ -548,13 +563,6 @@ function CanIMogIt:SlashCommands(input)
         CanIMogIt.frame.showPetItems:Click()
     elseif input == 'mountitems' then
         CanIMogIt.frame.showMountItems:Click()
-    elseif input == 'count' then
-        self:Print(CanIMogIt.Utils.tablelength(CanIMogIt.db.global.appearances))
-    elseif input == 'PleaseDeleteMyDB' then
-        self:DBReset()
-    elseif input == 'printdb' then
-        CanIMogItOptions['databaseDebug'] = not CanIMogItOptions['databaseDebug']
-        self:Print("Database prints: " .. tostring(CanIMogItOptions['databaseDebug']))
     elseif input == 'refresh' then
         self:ResetCache()
     elseif input == 'help' then
@@ -565,8 +573,5 @@ function CanIMogIt:SlashCommands(input)
 end
 
 function CanIMogIt:OpenOptionsMenu()
-    -- Run it twice, because the first one only opens
-    -- the main interface window.
-    InterfaceOptionsFrame_OpenToCategory(CanIMogIt.frame)
-    InterfaceOptionsFrame_OpenToCategory(CanIMogIt.frame)
+    Settings.OpenToCategory(CanIMogIt.settingsCategory.ID)
 end

@@ -45,6 +45,8 @@ L.health = "生命值" -- The health of an NPC
 L.health_percent = "%d%% 生命值" -- "10% Health" The health percentage of an NPC
 L.door_open = "開門" -- 小的門 When a door is open, usually after a speech from an NPC
 L.gate_open = "開門" -- 大的門 When a gate is open, usually after a speech from an NPC
+L.threat = "威脅"
+L.energy = "能量"
 
 L.remaining = "剩餘 %d" -- 5 remaining
 L.duration = "%s持續 %s 秒" -- Spell for 10 seconds
@@ -64,12 +66,15 @@ L.cancelled = "%s取消" -- Spell Cancelled
 L.you_die = "你將死亡" -- You will die
 L.you_die_sec = "你將在%d秒後死亡" -- "You die in 15 sec" (sec = seconds)
 L.next_ability = "下個技能" -- We don't know what ability will be next, we only know when it will happen (showing a bar)
+L.landing = "%s即將著陸" -- "NPC_NAME is landing" Used when a flying NPC/dragon/boss is landing 即將著陸、正在降落
+L.flying_available = "可以飛行"
 
 -- Add related
-L.add_spawned = "小怪出現" -- singular
-L.adds_spawned = "小怪出現" -- plural
-L.add_spawning = "小怪出現" -- singular 小怪正在出現/小怪出現/小怪已出現，中文沒有英文那麼明確的時態和單複數之別
-L.adds_spawning = "小怪出現" -- plural
+L.add_spawned = "增援出現" -- singular 小怪OR增援，開發者要求用增援
+L.adds_spawned = "增援出現" -- plural
+L.adds_spawned_count = "%d名增援出現" -- 1 add spawned / 2 adds spawned
+L.add_spawning = "增援出現" -- singular 小怪正在出現/小怪出現/小怪已出現，中文沒有英文那麼明確的時態和單複數之別
+L.adds_spawning = "增援出現" -- plural
 L.spawned = "%s已重生"
 L.spawning = "%s出現"
 L.next_add = "下一波小怪"
@@ -86,6 +91,18 @@ L.small_adds = "小型增援" -- plural
 L.killed = "%s已擊殺"
 L.mob_killed = "%s已擊殺（%d/%d）"
 L.mob_remaining = "%s已擊殺，剩餘 %d"
+
+-- NPCs for follower dungeons
+L.garrick = "蓋瑞克船長" -- AI paladin tank (NPC 209057)
+L.garrick_short = "*蓋瑞克"
+L.meredy = "美芮迪‧漢茲威爾" -- AI mage dps (NPC 209059)
+L.meredy_short = "*美芮迪"
+L.shuja = "秀嘉‧嚴斧" -- AI shaman dps (NPC 214390)
+L.shuja_short = "*秀嘉"
+L.crenna = "『大地之女』克蘭娜" -- AI druid healer (NPC 209072)
+L.crenna_short = "*克蘭娜"
+L.austin = "奧斯汀‧哈克斯沃" -- AI hunter dps (NPC 209065)
+L.austin_short = "*奧斯汀"
 
 -- Localizers note:
 -- The default mod:Berserk(600) uses spell ID 26662 to get the Berserk name
@@ -109,9 +126,12 @@ L.marker_npc_aura_desc = "將受到%s影響的 NPC 標記為%s，需要權限。
 L.link = "連結"
 L.link_with = "與%s連結"
 L.link_with_icon = "與|T13700%d:0|t%s連結"
-L.link_short = "連結：%s"
+L.link_with_rticon = "{rt%d}與%s連結"
 L.link_both = "%s和%s連結"
+L.link_both_icon = "|T13700%d:0|t%s和|T13700%d:0|t%s連結"
 L.link_removed = "連結移除"
+L.link_say_option_name = "重覆「連結」喊話"
+L.link_say_option_desc = "不停地喊話你和誰連結了。" -- 可能需要再改
 
 -- Abbreviated numbers
 L.amount_one = "%.2f億" -- Billions 1,000,000,000
@@ -175,6 +195,7 @@ L.charge = "衝鋒" -- When a boss select a new target and charges at it quickly
 L.full_energy = "滿能量" -- When a boss reaches full/maximum energy, usually the boss will cast something big and powerful when this happens
 L.weakened = "虛弱" -- When a boss becomes weakened and sometimes takes extra damage, usually the "hit all your cooldowns" part of the fight
 L.immune = "免疫" -- When a boss becomes immune to all damage and you can no longer hurt it
+L.stunned = "昏迷" -- When a boss becomes stunned and cannot cast abilities or move
 L.pool = "水池" -- A pool or puddle on the ground, usually something bad that you should avoid standing in
 L.pools = "水池" -- Plural of L.pool
 L.totem = "圖騰" -- A totem, usually summoned by a boss, the same thing that shamans summon
@@ -204,3 +225,10 @@ L.soaks = "分攤" -- Plural of L.soak
 L.spell_reflection = "法術反射" -- Any ability that reflects spells
 L.parasite = "寄生" -- Any ability where a parasite is involved e.g. "Parasitic Infection", "Parasitic Growth", etc
 L.rooted = "被定身" -- Any ability that roots you in place, preventing you from moving
+
+-- Common ability name replacements A-Z
+L.dodge = "躲開" -- 躲開/躲避/閃避/躲圈? When you need to continually run around to dodge abilities, like missiles landing on the ground under you
+--L.health_drain = "Health Drain" -- Any ability that drains health from the player
+L.smash = "重擊" -- Short for any ability with the name "smash" in it e.g. "Darkrift Smash" or "Seismic Smash" or "Arcing Smash"
+--L.spike = "Spike" -- Short for any ability with the name "spike" in it e.g. "Glacial Spike" or "Fel Spike" or "Volatile Spike"
+--L.spikes = "Spikes" -- Plural of L.spike

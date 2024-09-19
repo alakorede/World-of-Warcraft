@@ -1,110 +1,99 @@
 # AllTheThings
 
-## [DF-3.12.6](https://github.com/DFortun81/AllTheThings/tree/DF-3.12.6) (2024-06-09)
-[Full Changelog](https://github.com/DFortun81/AllTheThings/compare/DF-3.12.5...DF-3.12.6) [Previous Releases](https://github.com/DFortun81/AllTheThings/releases)
+## [4.0.14](https://github.com/DFortun81/AllTheThings/tree/4.0.14) (2024-09-15)
+[Full Changelog](https://github.com/DFortun81/AllTheThings/compare/4.0.13...4.0.14) [Previous Releases](https://github.com/DFortun81/AllTheThings/releases)
 
-- every sunday is att ririsudesu  
-- Weapons and achievement correction  
-- Cobalt Guardian's Cloak does not require a mail class to learn  
-- Alchemy and Herbalism are now Added and Loaded into Beta  
-- Reported as normal drop also  
-- Added MoP HQT.  
-- Some Unsorted upkeep  
-- Generate Missing (Diff against Beta)  
-- Sort new recipes!  
-- Some Data Entry Fixes  
-- Harvest: 11.0.0.55000  
-- Harvest: 10.2.7.54988  
-- Harvest: 4.4.0.55006  
-- Harvest: 4.4.0.54986  
-- Harvest: 3.4.3.54987  
-- Harvest: 1.15.2.55002  
-- World Bosses are now in Beta  
-- Load Priory, Dawnbreaker, Rookery, Stonevault onto beta  
-- Loading in Ara-Kara, Cinderbrew, City of Threads and Darkflame Cleft onto the Beta  
-- Merge branch 'master' of https://github.com/DFortun81/AllTheThings  
-- Norushen's Tower Shield (mythic SoO)  
-- Loading in Azj-Kahet onto beta  
-- This Should load Hallowfall into Beta  
-- Merge branch 'master' of https://github.com/DFortun81/AllTheThings  
-- The Ringing Deeps should now load on the Beta  
-- Death Lotus Repeater for Mythic SoO confirmed via Discord  
-- Fixed some non-existent timeline constants  
-- New achievementDB & Wago files for TWW Beta  
-- Dornogal and Isle of Dorn should now load on the Beta  
-- 3 NYI items sourced  
-- updated the bronze caches a bit  
-- Some additional weapon sources  
-- Fixed another Lua error on load  
-- Fixed some in-line global calls for custom headers (needs re-parse)  
-- Transformed old custom headers into the new style: Most Dragonflight headers but also remaining PvP BFA and some misc ones  
-- GetSpellName's wrapper now prevents bad data from bricking everything.  
-- Added GetSpellLink to the WOW API Wrapper file.  
-- Fixed a retail API bug.  
-- Moved GetItemCount to the WoW API Wrapper file.  
-- Added Item APIs to the WoW API Wrapper.  
-- Moved GetSpellName/GetSpellIcon to the WOW API Wrapper file.  
-- Moved all GetFactionInfoByID to the new WoW API Wrappers file.  
-- Added temporary helper functions for GetFactionName and GetFactionBonusReputation.  
-- locales now loads without issue on Beta.  
-- Added temporary functions for GetSpellName and GetSpellIcon.  
-- Rebuilt all DBs for all game flavors to show the new WOWAPI helper functions doing the lord's work.  
-- Added a function for GetCategoryName being used within the contrib folder. (It returns a versioned string that switches GetCategoryInfo with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Added a function for GetAchievementName being used within the contrib folder. (It returns a versioned string that switches GetAchievementInfo with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Fixed a scuffed sharedData function in the draenor garrison mission file.  
-- Added a function for GetItemSubClassInfo being used within the contrib folder. (It returns a versioned string that switches GetItemSubClassInfo with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Added a function for GetItemClassInfo being used within the contrib folder. (It returns a versioned string that switches GetItemClassInfo with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Added a function for GetSpellName being used within the contrib folder. (It returns a versioned string that switches GetSpellInfo/GetSpellName with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Added a function for GetSpellCooldown being used within the contrib folder. (It returns a versioned string that switches GetSpellCooldown with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Added a function for GetItemCount being used within the contrib folder. (It returns a versioned string that switches GetItemCount with the namespaced version)  
-    In the future, this function might return something else, but for now this is good enough.  
-- Moved the Brazier OnInit function to the function templates file.  
-- Added back some valid commits that were lost in the great purge.  
-- Revert "Don't need this preprocessor since parser is a bit smarter now"  
-- Extra weapon sources  
-- Some headers in pvp converted  
-- BFA S1/2 Ensemble clean up  
-- TWW Achcats  
-- Great Vault Cleaning  
-- Fixed 'Polyformic Acid Science' criterias  
-    Fixed Bronze prices on some Mounts  
-- Pandamix DH starter kit  
-- 8.1 QIs  
-- Darkhide Shield additional drop location  
-- Remix: Another Round of Noodles  
-- Don't need this preprocessor since parser is a bit smarter now  
-- Parser no longer exports empty top level Categories  
-    Parser no longer attempts to automate Achievements listed under a Difficulty (typically these are specific to a boss or encounter, and automating them can cause mutliple criteria to spread to other difficulties)  
-- Retail: Fixed an issue (probably) where mapIDs with no data were being reported as mapID 0  
-- Unsorted weapon located :)  
-- TWW: more data before beta  
-- TWW: a little bit of cleanup in zone HQTs  
-- Fixed the 'real' difficulties of T14/ToT raids in Remix (someone pls parse and test thanks :smirk:)  
-- Retail: Factions are 'Things'  
-- Couple additional weapon sources  
-- Mini Mana Bomb (Horde) and Theramore Tabard (Alliance)  
-    No longer level 35 requirements  
-- Added a new function to allow a Filter to be added externally  
-    Added some other unused Filter code that is potentially usable for some situations in the future  
-- Dinomancer's Spire fix  
-- Added the Delves custom header.  
-- Added Delves main category.  
-- Weapons. Maybe possibly finally cleaned up the mess that was T14 LFR/N due to things dropping on wrong difficulty for a while.  
-- Sorted all NYI Unknown Sources from SL and DF.  
-- TWW: Azj-Kahet re-run on warrior  
-- Weapons  
-- TWW: new character again, more quests! (Isle of Dorn main story)  
-- Removed temp itemDB  
-    Fixed some weird Difficulty issues due to multi-difficulty logic causing unexpected shifts in data values when parsing  
-    SImplified some Item merging logic which was being duplicated  
-    Recipes now automatically have their ModID/BonusID cleaned (in case they are listed inside Instances)  
-- Reported as HC drop  
-- Added Green Snugglefin Murloc Romper set to Shop.  
-    More unknown sources sorting.  
-- wpn is hc only  
+- yolo  
+- But like actually this time  
+- Move quest to NYI  
+- retail errors  
+- TWW/Isle of Dorn: Correct some coordinates  
+- Add and sort some Severed Pacts quest chains  
+- Added all missing Brann Level quests.  
+- Brann Level 30 questID.  
+- Retail: Fixed a couple visibility update issues with DirectGroupUpdate  
+- Retail: Removed some unused logic from UpdateGroup  
+    Retail: Removed duplicated visibility assignment from DirectGroupUpdate  
+- Updated Provisioner Arok to the bubbleDownClassicRep structure.?  
+    Parser now shows what the active configurations are in the Console's title. (the title of the window)  
+- Cata: Corroded Blade correction  
+- "Delver's Guide to Delves" is NYI.  
+- Sweep some retail errors  
+- Fixed Error Eremier found  
+- fixing 1 error for eremeir  
+- m0 for these is s2  
+- Fixed a few SearchForObject which were not quite searching as accurately as expected, but currently retrieving correct results due to extraneous logic in SFO function  
+- Fixed Spectral Essence from being a Character Unlock (will likely have to add more lockCriteria conditions in the future to lock the HQT properly for some players who kept their Spectral Essence since Vanilla)  
+- whenever I can remove rewards headers, its a good day  
+    mechanical cache can only come from the weekly quest  
+- radiant cache can only come from spreading the light wq  
+- added grim batol tw loot back as M0/M+  
+- Missing #endif.  
+- WoW Anniversary Stuff added  
+- Merge pull request #1785 from NORPG/master  
+    add mac file to ignore list  
+- add mac file to ignore list  
+- Harbinger achievements were changed to already pop on live, so adjusted the timeline and added extra info.  
+- Fix some retail errors  
+- Accountwide quest  
+- Special Assignment: Titanic Resurgence  
+- BFA achievement style refactor  
+- Reparse for Mount Mods and other recent changes  
+- Add Mount Mods header to encompass Drakewatcher Manuscripts, Delver's Dirigible Schematics and similar modifications (#1783)  
+- Retail: Added a report sound when contribute reports are notified  
+- IGNORE\_QUEST\_PRINT should now work even when assigning the questIDs as indexes with value 1 in the table instead of an array (I'll still probably add a built-in function to help with this eventually)  
+- Battle Pets are properly considered Trackable  
+- Clean up some raid quest factions with bubbleDownRep  
+- Add renown quests and a coord  
+- Sorted few more of the Spreading The Light weapons.  
+- Added Grizzly Hills Packmaster into the MountDB.  
+- Sorted the Spreading The Light items.  
+- Fixed "Comprehensibly Organized Ideas" from being shown as collectible itself.  
+    Added first craft of Dawnweave Bolt.  
+- TWW: some DF leveling fixes and TWW bits  
+- Fix parser error and clean up duplicated minrep fields  
+- Update 1 - Shattrath City.lua  
+- Add Hallowfall renown questchain and fix minor errors  
+- Delves  
+- Clean up an Ember Court vendor and fix some missed factionID conversions  
+- Change to Teldrassil quest 28723 - nightelf only (#1777)  
+    Changed Quest 28723 - Priestess of the Moon to be Nightelf only unless after 7.2.5.  
+- Update Trolli promotion notes  
+- Urga: Fixed Darkmoon Faire gearsets, changing to class lists.  
+- Missing Delves Object  
+- Retail: Fixed (probably -- I'm CrowdStriking this change) an /att contribute issue for un-Sourced FlightPaths seen on flight maps  
+- Update Trolli tabards and fix misc reported errors  
+- TWW: Coordinate updates, mostly Hallowfall  
+- New achievement categories  
+- Fix world boss HQT and add a world quest  
+- Add Trolli tabard and more renown quests  
+- Added more Brann Bronzebeard quests.  
+    Added (QI!) in Nerub'ar Palace.  
+    Fixed tabs in TWW achievements file.  
+- Sorted Delver's Bounty  
+- New crests achievements  
+- Wago file updates so anniversary event auomation can work, bit more data to help things make sense  
+- PTR reparsed with new achievementDB  
+- Some Cataclysm hidden achievement triggers sorted & excluded from being picked up again by harvest  
+- Retail: Unnecessary achievement class func  
+- Retail: Fixed Achievement Harvester  
+- Add some delve HQTs and fix some reported errors  
+- Another creatureID for Queen Ansurek  
+- Nerub-ar Palace HQTs (rip power outage)  
+- Sweep some retail errors  
+- TWW: Hotfixes  
+    Add "Machine-Warden" title back to it's achievement  
+    Remove criteria from "Itsy Bitsy Spider"  
+    Adjusted cost for Forged (Vicious?) Jeweler's Setting  
+    Reduced cost for Glorious Contender's Strongbox  
+    Ref: https://rb.gy/3gs84k  
+- TWW/Isle of Dorn: Coordinates for quest givers on "Brotherhood in the Skolzgal Wood" chain  
+- Azj-Kahet quick fix back  
+- Some updates from LFR Nerub-ar clear  
+- Drop evokers from Death Knight starter quests  
+- Sweep some retail quest and profession errors  
+- druid & hunter glad costs  
+- Add Grizzly Hills Packmaster  
+- More 20th Aniversary progress  
+- Progress commit for WoW 20th Aniversary  
+- Some PTR file maintenance  

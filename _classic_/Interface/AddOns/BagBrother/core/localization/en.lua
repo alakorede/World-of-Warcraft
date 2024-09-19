@@ -35,12 +35,14 @@ L.NumAllowed = '%s Allowed'
 L.NumWithdraw = '%d Withdraw'
 L.NumDeposit = '%d Deposit'
 L.NumRemaining = '%d Remaining'
+L.WarbandMoney = 'Warband Money'
 
 --dropdowns
 L.OfflineViewing = 'Offline Viewing'
 L.ServerSorting = 'Server-Side Sorting'
 L.ServerSortingTip = 'Whether to let the game server sort items, where available.'
 L.CleanupOptions = 'Cleanup Options'
+L.IncludeReagents = 'Include Reagents'
 L.LockItems = 'Lock Item Slots'
 L.RequiresClientSorting = 'Requires client-side sorting!'
 

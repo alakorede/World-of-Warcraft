@@ -8,7 +8,7 @@ local BasePanel = Sushi.OptionsGroup:NewClass()
 local Options = Scrap:NewModule('Options', BasePanel('|Tinterface/addons/scrap/art/scrap-small:16:16:2:0|t  Scrap'))
 local L = LibStub('AceLocale-3.0'):GetLocale('Scrap')
 
-local PATRONS = {{title='Jenkins',people={'Gnare','Adcantu','Justin Hall','Debora S Ogormanw','Johnny Rabbit','Francesco Rollo'}},{title='Ambassador',people={'Julia F','Lolari ','Rafael Lins','Dodgen','Ptsdthegamer','Burt Humburg','Adam Mann','Bc Spear','Jury ','Tigran Andrew','Swallow@area52','Peter Hollaubek','Michael Kinasz','Kelly Wolf','Kopernikus ','Metadata','Ds9293','Charles Howarth','Lyta ','נעמי מקינו','Melinani King'}}} -- generated patron list
+local PATRONS = {{title='Jenkins',people={'Gnare','Adcantu','Debora S Ogormanw','Johnny Rabbit','Shaun Potts'}},{title='Ambassador',people={'Julia F','Lolari ','Rafael Lins','Dodgen','Ptsdthegamer','Adam Mann','Bc Spear','Jury ','Swallow@area52','Peter Hollaubek','Michael Kinasz','Metadata','Kelly Wolf','Charles Howarth','Lisa','M Prieto','נעמי מקינו','Melinani King'}}} -- generated patron list
 local PATREON_ICON = '  |TInterface/Addons/Scrap/art/patreon:12:12|t'
 local HELP_ICON = '  |T516770:13:13:0:0:64:64:14:50:14:50|t'
 local FOOTER = 'Copyright 2012-2024 João Cardoso'
@@ -61,7 +61,7 @@ function Options:OnFilters()
 	self:AddCheck {set = 'unusable', text = 'Unusable', char = true}
 	self:AddCheck {set = 'equip', text = 'LowEquip', char = true}
 	self:AddTreshold ('equip')
-	self:AddCheck {set = 'consumable', text = 'LowConsume', char = true}
+	self:AddCheck {set = 'consumable', text = 'LowConsumable', char = true}
 	self:AddTreshold ('consumable')
 end
 
@@ -123,11 +123,13 @@ end
 
 function BasePanel:AddTreshold(set)
 	if Scrap.charsets[set] then
-		local set = set .. 'Factor'
-		local s = self:Add('Slider', L.iLevelTreshold, (Scrap.charsets[set] - 1) * 100, 0,100,1, '%s%')
+		local key = set .. 'Lvl'
+		local Set = set:gsub('^%l', strupper)
+		local s = self:Add('Slider', L.iLevelTreshold, Scrap.charsets[key] * 100, 0,100,1, '%s%')
 		s:SetSmall(true):SetKeys {top = 5, left = 40, bottom = 15}
+		s:SetTip(L['Low' .. Set], L[Set .. 'LevelTip'])
 		s:SetCall('OnInput', function(s, v)
-			Scrap.charsets[set] = 1 + v / 100
+			Scrap.charsets[key] = v / 100
 			Options:SendSignal('LIST_CHANGED')
 		end)
 	end
