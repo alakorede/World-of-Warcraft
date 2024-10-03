@@ -324,6 +324,43 @@ GTFO.SpellID["454945"] = {
   sound = 3;
 };
 
+GTFO.SpellID["453192"] = {
+  --desc = "Fracturing Crags (Cragmund)";
+  sound = 3;
+};
+
+GTFO.SpellID["450863"] = {
+  --desc = "Rupturing Runes (Orta)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["450407"] = {
+  --desc = "Colossal Slam (Orta)";
+  sound = 3;
+};
+
+GTFO.SpellID["455878"] = {
+  --desc = "Reformation Nova (The Oozekhan)";
+  sound = 3;
+};
+
+GTFO.SpellID["456329"] = {
+  --desc = "Grimweave Bombardment (Harvester Qixt)";
+  sound = 3;
+};
+
+GTFO.SpellID["448351"] = {
+  --desc = "Stomp! (Wicktwister Kobold)";
+  sound = 3;
+};
+
+GTFO.SpellID["442725"] = {
+  --desc = "Furnace Blast";
+  sound = 3;
+};
+
+
 
 --- ****************************
 --- * Ara-Kara, City of Echoes *
@@ -465,7 +502,6 @@ GTFO.SpellID["435788"] = {
 --- * City of Threads *
 --- *******************
 
--- TODO: Shadows of Doubt (Orator Krix'vizk) - Mythic
 -- TODO: Slime Propagation (Orator Krix'vizk) - Mythic
 -- TODO: Gutburst (Izo - Ravenous Scarab) - Mythic
 
@@ -476,8 +512,20 @@ GTFO.SpellID["443438"] = {
   applicationOnly = true;
 };
 
+GTFO.SpellID["448561"] = {
+  --desc = "Shadows of Doubt (Orator Krix'vizk)";
+  applicationOnly = true;
+  sound = 3;
+};
+
 GTFO.SpellID["450783"] = {
   --desc = "Perfume Toss (Xeph'itik)";
+  sound = 3;
+  applicationOnly = true;
+};
+
+GTFO.SpellID["451426"] = {
+  --desc = "Gossamer Barrage (Xeph'itik)";
   sound = 3;
   applicationOnly = true;
 };
@@ -727,7 +775,6 @@ GTFO.SpellID["423019"] = {
 -- TODO: Stygian Seed (Nightfall Ritualist)
 -- TODO: Obsidian Beam (Shadowcrown) - Mythic
 -- TODO: Collapsing Night (Shadowcrown) - Mythic
--- TODO: Expel Webs (Rasha'nan) - Mythic
 
 GTFO.SpellID["430655"] = {
   --desc = "Arathi Airship Cannon";
@@ -807,7 +854,14 @@ GTFO.SpellID["427378"] = {
 GTFO.SpellID["434441"] = {
   --desc = "Rolling Acid (Rasha'nan)";
   applicationOnly = true;
+  negatingDebuffSpellID = 434576; -- Acidic Stupor
   sound = 3;
+};
+
+GTFO.SpellID["448215"] = {
+  --desc = "Expel Webs (Rasha'nan)";
+  sound = 3;
+  test = true; -- Verify
 };
 
 --- ***************
@@ -1339,6 +1393,12 @@ GTFO.SpellID["449319"] = {
   sound = 3;
 };
 
+GTFO.SpellID["450544"] = {
+  --desc = "Angler's Web (Zekvir)";
+  sound = 3;
+};
+
+
 --- *******************
 --- * Nerub-ar Palace *
 --- *******************
@@ -1347,14 +1407,11 @@ GTFO.SpellID["444000"] = {
   --desc = "Gossamer Weave (Woven Threadmancer)";
   applicationOnly = true;
   sound = 3;
-  test = true;
 };
 
-GTFO.SpellID["444030"] = {
-  --desc = "Gossamer Weave (Web Cocoon)";
-  applicationOnly = true;
+GTFO.SpellID["436745"] = {
+  --desc = "Ravaging Spikes (Scarab Captain Vul'akan)";
   sound = 3;
-  test = true;
 };
 
 GTFO.SpellID["451412"] = {
@@ -1387,6 +1444,11 @@ GTFO.SpellID["435152"] = {
 GTFO.SpellID["464621"] = {
   --desc = "Consuming Mass (Congealed Mass)";
   applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["442987"] = {
+  --desc = "Spewing Hemorrhage (The Bloodbound Horror)";
   sound = 3;
 };
 
@@ -1456,6 +1518,116 @@ GTFO.SpellID["441612"] = {
 
 GTFO.SpellID["451016"] = {
   --desc = "Shatter Existence (Skeinspinner Takazj)";
+  sound = 3;
+};
+
+GTFO.SpellID["441782"] = {
+  --desc = "Strands of Reality (Skeinspinner Takazj)";
+  sound = 3;
+};
+
+GTFO.SpellID["444094"] = {
+  --desc = "Caustic Hail (Rasha'nan)";
+  sound = 3;
+};
+
+GTFO.SpellID["449857"] = {
+  --desc = "Impaled (Anub'arash)";
+  sound = 3;
+  applicationOnly = true;
+};
+
+GTFO.SpellID["449696"] = {
+  --desc = "Devastating Dreadwave (Queen's Guard Ge'zah)";
+  sound = 3;
+};
+
+GTFO.SpellID["439536"] = {
+  --desc = "Web Blades (Queen Ansurek)";
+  sound = 3;
+  applicationOnly = true;
+};
+
+GTFO.SpellID["438481"] = {
+  --desc = "Toxic Waves (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["438804"] = {
+  --desc = "Venom Nova (Queen Ansurek)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["464640"] = {
+  --desc = "Concentrated Toxin (Queen Ansurek)";
+  sound = 3;
+  negatingDebuffSpellID = 451278; -- Concentrated Toxin
+  ignoreEvent = "ConcentratedToxin";
+};
+
+GTFO.SpellID["464736"] = {
+  --desc = "Concentrated Toxin (Queen Ansurek)";
+  soundFunction = function() 
+	GTFO_AddEvent("ConcentratedToxin", 9);
+	return 0;
+  end;
+};
+
+GTFO.SpellID["447240"] = {
+  --desc = "Devour (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["441084"] = {
+  --desc = "Acid Explosion (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["451600"] = {
+  --desc = "Expulsion Beam (Chamber Expeller)";
+  sound = 3;
+};
+
+GTFO.SpellID["451607"] = {
+  --desc = "Paralyzing Waves (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["439786"] = {
+  --desc = "Rolling Acid (Rasha'nan)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["444030"] = {
+  --desc = "Gossamer Weave (Web Cocoon)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["461408"] = {
+  --desc = "Consume (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["450031"] = {
+  --desc = "Land (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["450034"] = {
+  --desc = "Land (Queen Ansurek)";
+  sound = 3;
+};
+
+GTFO.SpellID["471445"] = {
+  --desc = "Expulsion Beam (Chamber Expeller)";
+  sound = 3;
+};
+
+GTFO.SpellID["453264"] = {
+  --desc = "Rain of Arrows (Sikran)";
   sound = 3;
 };
 

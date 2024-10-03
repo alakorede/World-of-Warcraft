@@ -7,8 +7,8 @@ OPie_SavedData = {
 ["Goldrinn-Dishy-3"] = "default",
 ["Goldrinn-Elshy-3"] = "default",
 },
-["_GameVersion"] = "10.2.7",
-["_OPieVersion"] = "Zeta 6 (4.122)",
+["_GameVersion"] = "11.0.2",
+["_OPieVersion"] = "Ælling 5 (4.129)",
 ["ProfileStorage"] = {
 ["default"] = {
 ["MouseBucket"] = 3,
@@ -43,7 +43,7 @@ OPie_SavedData = {
 ["hicoxavier"] = "BUTTON3",
 ["Sharan1"] = "BUTTON3",
 ["Artheras"] = "BUTTON3",
-["Custom4"] = "BUTTON3",
+["Custom"] = "BUTTON3",
 ["Batezu2"] = "BUTTON3",
 ["MageCombat"] = "BUTTON3",
 ["Custom2"] = "BUTTON3",
@@ -51,8 +51,8 @@ OPie_SavedData = {
 ["ostradamus"] = "BUTTON3",
 ["Priest"] = "BUTTON3",
 ["Apinia"] = "BUTTON3",
-["Custom"] = "BUTTON3",
 ["Monk2"] = "BUTTON3",
+["Custom4"] = "BUTTON3",
 },
 ["ShowCooldowns"] = true,
 },
@@ -515,17 +515,17 @@ OPie_SavedData = {
 ["limit"] = "Sharan-Goldrinn",
 },
 ["OPieDeletedRings"] = {
-["DruidUtility"] = true,
-["MageTools"] = true,
+["SpecMenu"] = true,
+["CommonTrades"] = true,
 ["DruidShift"] = true,
 ["DruidFeral"] = true,
 ["RaidSymbols"] = true,
 ["TrinketSlots"] = true,
-["WarlockCombat"] = true,
-["MageTravel"] = true,
-["SpecMenu"] = true,
-["CommonTrades"] = true,
 ["WorldMarkers"] = true,
+["MageTravel"] = true,
+["DruidUtility"] = true,
+["MageTools"] = true,
+["WarlockCombat"] = true,
 },
 ["Bearbull"] = {
 {
@@ -1009,8 +1009,8 @@ OPie_SavedData = {
 ["vm"] = 2,
 },
 {
-["sliceToken"] = "OPCLSa",
 ["id"] = "/cast [mod][noknown:119898] {{spell:755}}; {{spell:119898}}",
+["sliceToken"] = "OPCLSa",
 ["vm"] = 2,
 },
 {
@@ -1019,8 +1019,8 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuebu8Er27",
 },
 {
-["sliceToken"] = "OPCLSh",
 ["id"] = "/cast [mod:alt] {{spell:20707}}; [group,nomod][nogroup,mod] {{spell:29893}}; {{spell:6201}}",
+["sliceToken"] = "OPCLSh",
 ["vm"] = 3,
 },
 {
@@ -1034,30 +1034,30 @@ OPie_SavedData = {
 ["sliceToken"] = "OPCLSg",
 },
 {
-["sliceToken"] = "OPCLSe",
 ["id"] = "/cast [flyable,nocombat,nomod] {{mount:air}}; [outdoors,nocombat,nomod:alt] {{mount:ground}}; {{spell:126}}",
+["sliceToken"] = "OPCLSe",
 ["fastClick"] = true,
 },
 {
-["sliceToken"] = "OPCLSi",
 ["id"] = 1122,
+["sliceToken"] = "OPCLSi",
 ["vm"] = 2,
 },
 {
-["sliceToken"] = "ABuebu8Er2E",
 ["id"] = 111400,
+["sliceToken"] = "ABuebu8Er2E",
 },
 {
-["sliceToken"] = "ABuebu8Er2W",
 ["id"] = 688,
+["sliceToken"] = "ABuebu8Er2W",
 },
 {
-["sliceToken"] = "ABuebu8Er2Q",
 ["id"] = 697,
+["sliceToken"] = "ABuebu8Er2Q",
 },
 {
-["sliceToken"] = "ABuebu8Er2m",
 ["id"] = 150544,
+["sliceToken"] = "ABuebu8Er2m",
 },
 {
 "mount",
@@ -1074,12 +1074,12 @@ OPie_SavedData = {
 460,
 ["sliceToken"] = "ABuebu8Er26",
 },
-["save"] = true,
-["v"] = 2,
-["vm"] = 125,
 ["name"] = "Warlock General",
 ["limit"] = "WARLOCK",
+["vm"] = 125,
+["save"] = true,
 ["hotkey"] = "BUTTON3",
+["v"] = 2,
 },
 ["Apinia"] = {
 {
@@ -1381,40 +1381,40 @@ OPie_SavedData = {
 ["sliceToken"] = "ABuemFZYtMs",
 },
 {
-["sliceToken"] = "ABuemFZYtMw",
 ["id"] = 20577,
+["sliceToken"] = "ABuemFZYtMw",
 },
 {
-["sliceToken"] = "ABuemFZYtMe",
 ["id"] = 7744,
+["sliceToken"] = "ABuemFZYtMe",
 },
 {
-["sliceToken"] = "ABuemFZYtMr",
 ["id"] = 29893,
+["sliceToken"] = "ABuemFZYtMr",
 },
 {
-["sliceToken"] = "ABuemFZYtM1",
 ["id"] = 48020,
+["sliceToken"] = "ABuemFZYtM1",
 },
 {
-["sliceToken"] = "ABuemFZYtMt",
 ["id"] = 342601,
+["sliceToken"] = "ABuemFZYtMt",
 },
 {
-["sliceToken"] = "ABuemFZYtMy",
 ["id"] = 698,
+["sliceToken"] = "ABuemFZYtMy",
 },
 {
-["sliceToken"] = "ABuemFZYtM3",
 ["id"] = 6201,
+["sliceToken"] = "ABuemFZYtM3",
 },
 {
-["sliceToken"] = "ABuemFZYtMu",
 ["id"] = 5697,
+["sliceToken"] = "ABuemFZYtMu",
 },
 {
-["sliceToken"] = "ABuemFZYtMi",
 ["id"] = 20707,
+["sliceToken"] = "ABuemFZYtMi",
 },
 {
 "mount",
@@ -1441,8 +1441,8 @@ OPie_SavedData = {
 1556,
 ["sliceToken"] = "ABuemFZYtMa",
 },
-["limit"] = "Batezu-Nemesis",
 ["save"] = true,
+["limit"] = "Batezu-Nemesis",
 ["name"] = "Batezu",
 },
 ["Mitraculo"] = {
@@ -1466,8 +1466,8 @@ OPie_SavedData = {
 6948,
 ["sliceToken"] = "ABuemA2Zmi1",
 },
-["save"] = true,
 ["name"] = "Mitraculo",
+["save"] = true,
 ["limit"] = "Mitráculo-Nemesis",
 },
 ["Muligan"] = {

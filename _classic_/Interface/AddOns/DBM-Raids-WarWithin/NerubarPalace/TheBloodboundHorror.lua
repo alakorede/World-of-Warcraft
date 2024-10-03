@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2611, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240917094345")
+mod:SetRevision("20240923174107")
 mod:SetCreatureID(214502)
 mod:SetEncounterID(2917)
 mod:SetUsedIcons(4, 5, 6, 7, 8)
@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 444363 452237 445936 442530 451288 445016 445174",
-	"SPELL_CAST_SUCCESS 443203",
+	"SPELL_CAST_SUCCESS 443203 445016",
 	"SPELL_SUMMON 444830 444835",
 	"SPELL_AURA_APPLIED 443612 452245 443042 445272",
 	"SPELL_AURA_APPLIED_DOSE 445272",
@@ -46,7 +46,7 @@ local warnBanefulShiftFades						= mod:NewFadesAnnounce(443612, 2)
 local warnCrimsonRain							= mod:NewCountAnnounce(443203, 2)
 local warnGraspFromBeyondFades					= mod:NewFadesAnnounce(443042, 1, nil, nil, 367465, nil, nil, 2)
 
-local specWarnGruesomeDisgorge					= mod:NewSpecialWarningCount(444363, nil, nil, DBM_COMMON_L.FRONTAL, 1, 2)
+local specWarnGruesomeDisgorge					= mod:NewSpecialWarningCount(444363, nil, nil, DBM_COMMON_L.FRONTAL, 1, 15)
 local specWarnBanefulShift						= mod:NewSpecialWarningTaunt(443612, nil, nil, nil, 1, 2)
 local specWarnBloodcurdle						= mod:NewSpecialWarningMoveAway(452237, nil, nil, DBM_COMMON_L.SPREADS, 1, 2, 4)
 local yellBloodcurdle							= mod:NewShortYell(452237)
@@ -120,7 +120,7 @@ function mod:SPELL_CAST_START(args)
 		--14.0, 59.0, 69.1, 59.0, 69.1, 58.9, 69.0 (mythic)
 		self.vb.disgorgeCount = self.vb.disgorgeCount + 1
 		specWarnGruesomeDisgorge:Show(self.vb.disgorgeCount)
-		specWarnGruesomeDisgorge:Play("shockwave")
+		specWarnGruesomeDisgorge:Play("frontal")
 		if self.vb.disgorgeCount % 2 == 0 then
 			timerGruesomeDigorgeCD:Start(self:IsMythic() and 69.1 or 77, self.vb.disgorgeCount+1)
 		else
@@ -143,8 +143,10 @@ function mod:SPELL_CAST_START(args)
 		self.vb.hemorrhageCount = self.vb.hemorrhageCount + 1
 		specWarnSpewingHemorrhage:Show(self.vb.hemorrhageCount)
 		specWarnSpewingHemorrhage:Play("farfromline")
+		--32.3, 49.0, 78.9, 49.1, 79.0, 49.1, 79.0, 49.0
+		--34.7, 46.4, 79.1, 49.0, 79.0, 49.0, 79.0, 49.0", (broken example if no tank in range)
 		if self.vb.hemorrhageCount % 2 == 0 then
-			timerSpewingHemorrhageCD:Start(self:IsMythic() and 69.1 or 79, self.vb.hemorrhageCount+1)
+			timerSpewingHemorrhageCD:Start(self:IsMythic() and 69.1 or 78.9, self.vb.hemorrhageCount+1)
 		else
 			timerSpewingHemorrhageCD:Start(self:IsMythic() and 59 or 49, self.vb.hemorrhageCount+1)
 		end
@@ -163,7 +165,7 @@ function mod:SPELL_CAST_START(args)
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 			if self.Options.SetIconOnWatchers then
-				self:ScanForMobs(args.sourceGUID, 2, 8, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
+				self:ScanForMobs(args.sourceGUID, 2, 4, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
 			end
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
@@ -178,7 +180,6 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerBlackBulwarkCD:Start(nil, args.sourceGUID)
 	elseif spellId == 445016 then
-		timerSpectralSlamCD:Start(nil, args.sourceGUID)
 		if self:IsTanking("player", nil, nil, true, args.sourceGUID) then
 			specWarnSpectralSlam:Show()
 			specWarnSpectralSlam:Play("defensive")
@@ -195,6 +196,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.membraneCount = self.vb.membraneCount +1
 		warnCrimsonRain:Show(self.vb.membraneCount)
 		timerCrimsonRainCD:Start(nil, self.vb.membraneCount+1)--128
+	elseif spellId == 445016 then
+		timerSpectralSlamCD:Start(10.4, args.sourceGUID)
 	end
 end
 
@@ -206,7 +209,7 @@ function mod:SPELL_SUMMON(args)
 			--timerBlackBulwarkCD:Start(nil, args.destGUID)
 			--timerSpectralSlamCD:Start(nil, args.destGUID)
 			if self.Options.SetIconOnWatchers then
-				self:ScanForMobs(args.destGUID, 2, 8, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
+				self:ScanForMobs(args.destGUID, 2, 4, 1, nil, 12, "SetIconOnWatchers", nil, nil, true)
 			end
 		end
 	elseif spellId == 444835 then--Forgotten Harbinger

@@ -9,7 +9,7 @@ local Things = {
 	"BattlePets",
 	"CharacterUnlocks",
 	"Conduits",
-	"Deaths",
+	"DeathTracker",
 	"MountMods",
 	"Exploration",
 	"FlightPaths",
@@ -42,7 +42,7 @@ local GeneralSettingsBase = {
 		["AccountWide:BattlePets"] = true,
 		["AccountWide:CharacterUnlocks"] = true,
 		["AccountWide:Conduits"] = true,
-		["AccountWide:Deaths"] = true,
+		["AccountWide:DeathTracker"] = true,
 		["AccountWide:Exploration"] = false,
 		["AccountWide:FlightPaths"] = false,
 		["AccountWide:Followers"] = true,
@@ -133,6 +133,7 @@ local TooltipSettingsBase = {
 		["PlayDeathSound"] = false,
 		["Precision"] = 2,
 		["Progress"] = true,
+		["Repeatables"] = true,
 		["ShowIconOnly"] = false,
 		["SharedAppearances"] = true,
 		["Show:CraftedItems"] = false,
@@ -229,23 +230,11 @@ local AllTheThingsSettings, AllTheThingsSettingsPerCharacter = {}, {};
 settings.Initialize = function(self)
 	local global_AllTheThingsSettings = _G["AllTheThingsSettings"];
 	if global_AllTheThingsSettings then AllTheThingsSettings = global_AllTheThingsSettings; end
-	global_AllTheThingsSettings = _G["ATTClassicSettings"];
-	if global_AllTheThingsSettings then
-		-- Purge the deprecated variable (remove this in a few versions)
-		AllTheThingsSettings = global_AllTheThingsSettings;
-		_G["ATTClassicSettings"] = nil;
-	end
 	_G["AllTheThingsSettings"] = AllTheThingsSettings;
 	RawSettings = AllTheThingsSettings;
 
 	local global_AllTheThingsSettingsPerCharacter = _G["AllTheThingsSettingsPerCharacter"];
 	if global_AllTheThingsSettingsPerCharacter then AllTheThingsSettingsPerCharacter = global_AllTheThingsSettingsPerCharacter; end
-	global_AllTheThingsSettingsPerCharacter = _G["ATTClassicSettingsPerCharacter"];
-	if global_AllTheThingsSettingsPerCharacter then
-		-- Purge the deprecated variable (remove this in a few versions)
-		AllTheThingsSettingsPerCharacter = global_AllTheThingsSettingsPerCharacter;
-		_G["ATTClassicSettingsPerCharacter"] = nil;
-	end
 	_G["AllTheThingsSettingsPerCharacter"] = AllTheThingsSettingsPerCharacter;
 
 	-- Assign the default settings
@@ -275,11 +264,13 @@ settings.Initialize = function(self)
 
 	-- Somehow some forced Account-Wide Things were set to false in user Profiles, so using app.IsAccountTracked ALWAYS returned false
 	-- so let's erase that data, and assign those Things in the Base General class
-	for thing,_ in pairs(settings.ForceAccountWide) do
-		local accountWideThing = "AccountWide:"..thing;
-		settings:Set(accountWideThing, nil)
-		GeneralSettingsBase.__index[accountWideThing] = true
-		settings.AccountWide[thing] = true
+	for thing,forced in pairs(settings.ForceAccountWide) do
+		if forced then
+			local accountWideThing = "AccountWide:"..thing;
+			settings:Set(accountWideThing, nil)
+			GeneralSettingsBase.__index[accountWideThing] = true
+			settings.AccountWide[thing] = true
+		end
 	end
 
 	if self.LocationsSlider then
@@ -600,7 +591,7 @@ ATTSettingsPanelMixin = {
 		---@class ATTSettingsCheckButton: CheckButton
 		---@field Text FontString
 		---@field OnRefreshCheckedDisabled any
-		local cb = CreateFrame("CheckButton", self:GetName() .. "-" .. text, self, "InterfaceOptionsCheckButtonTemplate")
+		local cb = CreateFrame("CheckButton", self:GetName() .. "-" .. text, self, "UICheckButtonTemplate")
 		Mixin(cb, ATTSettingsObjectMixin);
 		--self:RegisterObject(cb);
 		if OnClick then cb:SetScript("OnClick", OnClick) end
@@ -610,9 +601,10 @@ ATTSettingsPanelMixin = {
 			OnRefresh(cb);
 		end);
 		cb.Text:SetText(text)
-		cb.Text:SetScale(1.1)
+		cb.Text:SetScale(1.3)
 		cb.Text:SetWordWrap(false)
 		cb:SetHitRectInsets(0,0 - cb.Text:GetUnboundedStringWidth(),0,0);
+		cb:SetScale(0.8);
 		return cb
 	end,
 	CreateTextbox = function(self, opts, functions)
@@ -887,7 +879,7 @@ settings.CreateOptionsPage = function(self, text, parentCategory, isRootCategory
 		if not skipRefresh then settings:UpdateMode("FORCE"); end
 	end)
 	checkboxSkipAutoRefresh:SetATTTooltip(L.SKIP_AUTO_REFRESH_TOOLTIP);
-	checkboxSkipAutoRefresh:SetPoint("BOTTOMRIGHT", separator, "TOPRIGHT", -(checkboxSkipAutoRefresh.Text:GetWidth() + checkboxSkipAutoRefresh:GetWidth()), 0)
+	checkboxSkipAutoRefresh:SetPoint("BOTTOMRIGHT", separator, "TOPRIGHT", -(checkboxSkipAutoRefresh.Text:GetWidth() * checkboxSkipAutoRefresh.Text:GetScale()), 0)
 	return subcategory;
 end
 
@@ -1185,13 +1177,6 @@ settings.UpdateMode = function(self, doRefresh)
 		filterSet.SkillLevel()
 	end
 	self.Collectibles.Loot = self:Get("LootMode");
-
-	app:UnregisterEvent("GOSSIP_SHOW");
-	app:UnregisterEvent("TAXIMAP_OPENED");
-	if self:Get("Thing:FlightPaths") or self:Get("DebugMode") then
-		app:RegisterEvent("GOSSIP_SHOW");
-		app:RegisterEvent("TAXIMAP_OPENED");
-	end
 
 	-- FORCE = Force Update
 	-- 1 = Force Update IF NOT Skip

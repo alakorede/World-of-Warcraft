@@ -29,10 +29,10 @@ Bagnon_Sets = {
 ["mineColor"] = {
 },
 ["version"] = "10.2.2",
-["display"] = {
-},
 ["latest"] = {
 ["cooldown"] = 1715387840,
+},
+["display"] = {
 },
 ["fridgeColor"] = {
 },
@@ -192,6 +192,38 @@ Bagnon_Sets = {
 ["lockedSlots"] = {
 },
 ["showBags"] = true,
+},
+},
+["color"] = {
+["quiver"] = {
+},
+["herb"] = {
+},
+["normal"] = {
+},
+["soul"] = {
+},
+["leather"] = {
+},
+["mine"] = {
+},
+["gem"] = {
+},
+["inscribe"] = {
+},
+["reagent"] = {
+},
+["engineer"] = {
+},
+["key"] = {
+},
+["tackle"] = {
+},
+["fridge"] = {
+},
+["enchant"] = {
+},
+["account"] = {
 },
 },
 }

@@ -83,6 +83,7 @@ local GetSpellName = app.WOWAPI.GetSpellName;
 local GetSpellIcon = app.WOWAPI.GetSpellIcon;
 
 -- Helper Functions
+app.AddEventHandler("OnThingCollected", function() app.Audio:PlayFanfare(); end);
 local pendingCollection, pendingRemovals, retrievingCollection, pendingCollectionCooldown = {},{},{},0;
 local function PendingCollectionCoroutine()
 	while not app.IsReady do coroutine.yield(); end
@@ -177,79 +178,31 @@ local function RemoveFromCollection(group)
 end
 
 -- Data Lib
-local attData;
 local AllTheThingsAD = {};			-- For account-wide data.
-local function SetDataMember(member, data)
-	AllTheThingsAD[member] = data;
-end
-local function GetDataMember(member, default)
-	attData = AllTheThingsAD[member];
-	if attData == nil then
-		AllTheThingsAD[member] = default;
-		return default;
-	else
-		return attData;
-	end
-end
-local function GetDataSubMember(member, submember, default)
-	attData = AllTheThingsAD[member];
-	if attData then
-		attData = attData[submember];
-		if attData == nil then
-			AllTheThingsAD[member][submember] = default;
-			return default;
-		else
-			return attData;
-		end
-	else
-		AllTheThingsAD[member] = { [submember] = default };
-		return default;
-	end
-end
-app.SetDataMember = SetDataMember;
-app.GetDataMember = GetDataMember;
-app.GetDataSubMember = GetDataSubMember;
-
 
 -- Color Lib
-local function GetCollectionIcon(state)
-	return L[(state and (state == 2 and "COLLECTED_APPEARANCE_ICON" or "COLLECTED_ICON")) or "NOT_COLLECTED_ICON"];
-end
-local function GetCollectionText(state)
-	return L[(state and (state == 2 and "COLLECTED_APPEARANCE" or "COLLECTED")) or "NOT_COLLECTED"];
-end
-local function GetCompletionIcon(state)
-	return L[state and "COMPLETE_ICON" or "NOT_COLLECTED_ICON"];
-end
-local function GetCompletionText(state)
-	return L[(state == 2 and "COMPLETE_OTHER") or ((state == 1 or state == true) and "COMPLETE") or "INCOMPLETE"];
-end
 local function GetProgressTextForRow(data)
 	local total = data.total;
 	if total and (total > 1 or (total > 0 and not data.collectible)) then
 		return GetProgressColorText(data.progress or 0, total);
 	elseif data.collectible then
-		return GetCollectionIcon(data.collected);
+		return app.GetCollectionIcon(data.collected);
 	elseif data.trackable then
-		return GetCompletionIcon(data.saved);
+		return app.GetCompletionIcon(data.saved);
 	end
 end
 local function GetProgressTextForTooltip(data)
 	local iconOnly = app.Settings:GetTooltipSetting("ShowIconOnly");
 	if iconOnly then return GetProgressTextForRow(data); end
-	
+
 	if data.total and (data.total > 1 or (data.total > 0 and not data.collectible)) then
 		return GetProgressColorText(data.progress or 0, data.total);
 	elseif data.collectible or (data.spellID and data.itemID and data.trackable) then
-		return GetCollectionText(data.collected);
+		return app.GetCollectionText(data.collected);
 	elseif data.trackable then
-		return GetCompletionText(data.saved);
+		return app.GetCompletionText(data.saved);
 	end
 end
-app.GetCollectionIcon = GetCollectionIcon;
-app.GetCollectionText = GetCollectionText;
-app.GetCompletionIcon = GetCompletionIcon;
-app.GetCompletionText = GetCompletionText;
 app.GetProgressTextForRow = GetProgressTextForRow;
 app.GetProgressTextForTooltip = GetProgressTextForTooltip;
 local function GetUnobtainableTexture(group)
@@ -291,47 +244,6 @@ local function GetUnobtainableTexture(group)
 end
 app.GetUnobtainableTexture = GetUnobtainableTexture;
 
-
-app.IsComplete = function(o)
-	if o.total then return o.total == o.progress; end
-	if o.collectible then return o.collected; end
-	if o.trackable then return o.saved; end
-end
-local GetDisplayID = app.GetDisplayID
-local function GetIconFromProviders(group)
-	if group.providers then
-		local icon;
-		for k,v in ipairs(group.providers) do
-			if v[2] > 0 then
-				if v[1] == "o" then
-					icon = app.ObjectIcons[v[2]];
-				elseif v[1] == "i" then
-					icon = GetItemIcon(v[2]);
-				end
-				if icon then return icon; end
-			end
-		end
-	end
-end
-local function GetNameFromProviders(group)
-	if group.providers then
-		local name;
-		for k,v in ipairs(group.providers) do
-			if v[2] > 0 then
-				if v[1] == "o" then
-					name = app.ObjectNames[v[2]];
-				elseif v[1] == "i" then
-					name = GetItemInfo(v[2]);
-				elseif v[1] == "n" then
-					name = app.NPCNameFromID[v[2]];
-				end
-				if name then return name; end
-			end
-		end
-	end
-end
-app.GetIconFromProviders = GetIconFromProviders;
-app.GetNameFromProviders = GetNameFromProviders;
 
 local MergeObject;
 local CloneArray = app.CloneArray;
@@ -855,7 +767,7 @@ local function BuildContainsInfo(groups, entries, paramA, paramB, indent, layer)
 				if group.collectible then
 					if group.collected then
 						if app.Settings:Get("Show:CollectedThings") then
-							right = GetCollectionIcon(group.collected);
+							right = app.GetCollectionIcon(group.collected);
 						end
 					else
 						right = L["NOT_COLLECTED_ICON"];
@@ -1020,7 +932,7 @@ local function AddSourceLinesForTooltip(tooltipInfo, paramA, paramB, group)
 		local FilterUnobtainable, FilterCharacter, FirstParent
 			= app.RecursiveUnobtainableFilter, app.RecursiveCharacterRequirementsFilter, app.GetRelativeGroup
 		local abbrevs = L["ABBREVIATIONS"];
-		
+
 		-- Include Cost Sources
 		local sourceGroups = group;
 		if #sourceGroups == 0 and (paramA == "itemID" or paramA == "currencyID") then
@@ -1036,7 +948,7 @@ local function AddSourceLinesForTooltip(tooltipInfo, paramA, paramB, group)
 				sourceGroups = regroup;
 			end
 		end
-		
+
 		for _,j in ipairs(sourceGroups) do
 			parent = j.parent;
 			if parent and not FirstParent(j, "hideText") and parent.parent
@@ -1110,7 +1022,7 @@ app.Settings.CreateInformationType("SourceLocations", {
 		["expansionID"] = false,
 		["explorationID"] = true,
 		["factionID"] = true,
-		["flightPathID"] = true,
+		["flightpathID"] = true,
 		["headerID"] = false,
 		["itemID"] = true,
 		["speciesID"] = true,
@@ -1279,7 +1191,7 @@ local function GetSearchResults(method, paramA, paramB, ...)
 	group.working = nil;
 
 	-- For Creatures that are inside of an instance, we only want the data relevant for the instance.
-	
+
 	-- Determine if this is a search for an item
 	local itemID, itemString;
 	if rawlink then
@@ -1315,7 +1227,7 @@ local function GetSearchResults(method, paramA, paramB, ...)
 	elseif paramA == "itemID" then
 		itemID = paramB;
 	end
-	
+
 	-- Find the most accessible version of the thing we're looking for.
 	if paramA == "spellID" and not itemID then
 		-- We want spells to have higher preference for the spell itself rather than the recipe.
@@ -1336,7 +1248,7 @@ local function GetSearchResults(method, paramA, paramB, ...)
 			break;
 		end
 	end
-	
+
 	-- Create a list of sources
 	if isTopLevelSearch then
 		AddSourceLinesForTooltip(tooltipInfo, paramA, paramB, group);
@@ -1441,7 +1353,7 @@ local function GetSearchResults(method, paramA, paramB, ...)
 			end
 		end
 	end
-		
+
 	-- Only need to build/update groups from the top level
 	if isTopLevelSearch and group.g then
 		group.total = 0;
@@ -1456,10 +1368,6 @@ local function GetSearchResults(method, paramA, paramB, ...)
 		end
 	end
 
-	if group.isLimited then
-		tinsert(tooltipInfo, 1, { left = L.LIMITED_QUANTITY, wrap = true, color = app.Colors.TooltipDescription });
-	end
-	
 	if isTopLevelSearch then
 		-- Add various extra field info if enabled in settings
 		group.itemString = itemString
@@ -1467,10 +1375,7 @@ local function GetSearchResults(method, paramA, paramB, ...)
 		if group.working then working = true; end
 	end
 
-	if app.AddSourceInformation(group.sourceID, tooltipInfo, group) then
-		working = true;
-	end
-	
+
 	if app.Settings:GetTooltipSetting("SummarizeThings") then
 		-- Contents
 		if group.g and #group.g > 0 then
@@ -1504,9 +1409,14 @@ local function GetSearchResults(method, paramA, paramB, ...)
 				end
 			end
 		end
-		
+
 		if itemID then
-			local reagentCache = app.GetDataSubMember("Reagents", itemID);
+			local reagentCache = AllTheThingsAD.Reagents;
+			if reagentCache then
+				reagentCache = reagentCache[itemID];
+			else
+				AllTheThingsAD.Reagents = {};
+			end
 			if reagentCache then
 				-- Crafted Items
 				if app.Settings:GetTooltipSetting("Show:CraftedItems") then
@@ -1625,7 +1535,9 @@ end
 app.UpdateRawID = UpdateRawID;
 -- Temporary functions to update the cache without breaking ATT.
 local function UpdateRawIDs(field, ids)
-	app:RefreshDataQuietly("UpdateRawIDs", true);
+	if ids and #ids > 0 then
+		app:RefreshDataQuietly("UpdateRawIDs", true);
+	end
 end
 app.UpdateRawIDs = UpdateRawIDs;
 
@@ -1645,7 +1557,7 @@ local function SearchForLink(link)
 			end
 		end
 	end
-	
+
 	---@diagnostic disable-next-line: undefined-field
 	local kind, id = (":"):split(link);
 	kind = kind:lower():gsub("id", "ID");
@@ -1680,7 +1592,7 @@ local function SearchForLink(link)
 	elseif kind == "pettype" or kind == "pettypeID" then
 		kind = "petTypeID";
 	elseif kind == "azeriteessence" or kind == "azeriteessenceID" then
-		kind = "azeriteEssenceID";
+		kind = "azeriteessenceID";
 	end
 	local cache;
 	if id then
@@ -1846,7 +1758,7 @@ function app:GetDataCache()
 				g = app.Categories.ExpansionFeatures
 			});
 		end
-		
+
 		-- Character
 		if app.Categories.Character then
 			local db = {};
@@ -1856,7 +1768,7 @@ function app:GetDataCache()
 			db.icon = app.asset("Category_ItemSets");
 			tinsert(g, db);
 		end
-		
+
 		-- In-Game Store
 		if app.Categories.InGameShop then
 			tinsert(g, app.CreateNPC(app.HeaderConstants.IN_GAME_SHOP, {
@@ -1883,14 +1795,14 @@ function app:GetDataCache()
 				isPromotionCategory = true
 			});
 		end
-		
+
 		-- Season of Discovery
 		if app.Categories.SeasonOfDiscovery then
 			for i,o in ipairs(app.Categories.SeasonOfDiscovery) do
 				tinsert(g, o);
 			end
 		end
-		
+
 		-- Skills
 		if app.Categories.Skills then
 			tinsert(g, {
@@ -1910,7 +1822,7 @@ function app:GetDataCache()
 				isEventCategory = true,
 			});
 		end
-		
+
 		-- Dynamic Categories
 		if app.Windows then
 			local keys,sortedList = {},{};
@@ -2370,7 +2282,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 		if name then return name; end
 		local data = L.ACHIEVEMENT_DATA[t.achievementID];
 		if data and data[2] then return data[2]; end
-		return GetNameFromProviders(t)
+		return app.GetNameFromProviders(t)
 			or (t.spellID and GetSpellName(t.spellID));
 	end
 	fields.link = function(t)
@@ -2381,7 +2293,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 		if name then return name; end
 		local data = L.ACHIEVEMENT_DATA[t.achievementID];
 		if data and data[3] then return data[3]; end
-		return GetIconFromProviders(t)
+		return app.GetIconFromProviders(t)
 			or (t.spellID and GetSpellIcon(t.spellID))
 			or t.parent.icon or "Interface\\Worldmap\\Gear_64Grey";
 	end
@@ -2415,7 +2327,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 					criteriaDatasByUID[criteriaUID] = true;
 					tinsert(criteriaDatas, {
 						" [" .. criteriaUID .. "]: " .. tostring(criteriaString),
-						"(" .. tostring(assetID) .. " @ " .. tostring(criteriaType) .. ") " .. tostring(quantityString) .. " " .. GetCompletionIcon(completed)
+						"(" .. tostring(assetID) .. " @ " .. tostring(criteriaType) .. ") " .. tostring(quantityString) .. " " .. app.GetCompletionIcon(completed)
 					});
 				end
 			end
@@ -2427,7 +2339,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 					if criteriaString and (not criteriaDatasByUID[criteriaUID] or criteriaUID == 0) then
 						tinsert(criteriaDatas, {
 							" [" .. criteriaUID .. " @ Index: " .. criteriaIndex .. "]: " .. tostring(criteriaString),
-							"(" .. tostring(assetID) .. " @ " .. tostring(criteriaType) .. ") " .. tostring(quantityString) .. " " .. GetCompletionIcon(completed)
+							"(" .. tostring(assetID) .. " @ " .. tostring(criteriaType) .. ") " .. tostring(quantityString) .. " " .. app.GetCompletionIcon(completed)
 						});
 					end
 				end
@@ -2464,7 +2376,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 					if criteriaString then
 						tinsert(tooltipInfo, {
 							left = " [" .. criteriaUID .. "]: " .. tostring(criteriaString),
-							right = "(" .. tostring(assetID) .. " @ " .. tostring(criteriaType) .. ") " .. tostring(quantityString) .. " " .. GetCompletionIcon(completed),
+							right = "(" .. tostring(assetID) .. " @ " .. tostring(criteriaType) .. ") " .. tostring(quantityString) .. " " .. app.GetCompletionIcon(completed),
 							r = 1, g = 1, b = 1
 						});
 					end
@@ -2517,7 +2429,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 			if achievementID then
 				local criteriaID = t.criteriaID;
 				if criteriaID then
-					local name = t.GetInfo(achievementID, criteriaID, true) or GetNameFromProviders(t);
+					local name = t.GetInfo(achievementID, criteriaID, true) or app.GetNameFromProviders(t);
 					if not IsRetrieving(name) then return name; end
 					local sourceQuests = t.sourceQuests;
 					if sourceQuests then
@@ -2530,7 +2442,7 @@ if GetCategoryInfo and (GetCategoryInfo(92) ~= "" and GetCategoryInfo(92) ~= nil
 			end
 		end,
 		["icon"] = function(t)
-			return GetIconFromProviders(t)
+			return app.GetIconFromProviders(t)
 				or (t.achievementID and select(10, GetAchievementInfo(t.achievementID)));
 		end,
 		["model"] = function(t)
@@ -2683,12 +2595,12 @@ else
 	fields.name = function(t)
 		local data = L.ACHIEVEMENT_DATA[t.achievementID];
 		if data and data[2] then return data[2]; end
-		return GetNameFromProviders(t) or (t.spellID or GetSpellName(t.spellID)) or RETRIEVING_DATA;
+		return app.GetNameFromProviders(t) or (t.spellID or GetSpellName(t.spellID)) or RETRIEVING_DATA;
 	end
 	fields.icon = function(t)
 		local data = L.ACHIEVEMENT_DATA[t.achievementID];
 		if data and data[3] then return data[3]; end
-		return GetIconFromProviders(t)
+		return app.GetIconFromProviders(t)
 			or (t.spellID and GetSpellIcon(t.spellID))
 			or t.parent.icon or "Interface\\Worldmap\\Gear_64Grey";
 	end
@@ -3393,234 +3305,6 @@ app.CreateCurrencyClass = app.CreateClass("Currency", "currencyID", {
 		return CurrencyCollectedAsCost[t.currencyID];
 	end,
 });
-end)();
-
--- Flight Path Lib
-(function()
-local function distance( x1, y1, x2, y2 )
-	return math.sqrt( (x2-x1)^2 + (y2-y1)^2 )
-end
-local arrOfNodes = {
-	1414,	-- Kalimdor
-	1415,	-- Eastern Kingdoms
-	1941,	-- Eversong Woods (and Ghostlands + Isle of Quel'Danas)
-	1943,	-- Azuremyst Isle (and Bloodmyst)
-	1944,	-- Hellfire Peninsula (All of Outland)
-
-	-- TODO:
-	118,	-- Icecrown (All of Northrend)
-	--422,	-- Dread Wastes (All of Pandaria)
-	--525,	-- Frostfire Ridge (All of Draenor)
-	--630,	-- Azsuna (All of Broken Isles)
-	--882,	-- Mac'Aree (All of Argus)
-	--862,	-- Zuldazar (All of Zuldazar)
-	--896,	-- Drustvar (All of Kul Tiras)
-
-	1209,	-- Kalimdor
-	1208,	-- Eastern Kingdoms
-	1467,	-- Outland
-	1384,	-- Northrend
-	1923,	-- Pandaria
-	1922,	-- Draenor
-	993,	-- Broken Isles
-	994,	-- Argus
-	1011,	-- Zandalar
-	1014,	-- Kul Tiras
-	1504,	-- Nazjatar
-	1647,	-- The Shadowlands
-	1409,	-- Exile's Reach [Correct]
-	2046,	-- Zereth Mortis
-	2057,	-- Dragon Isles
-	2055,	-- Sepulcher of the First Ones (has FPs inside)
-	2149,	-- Ohn'ahran Plains [The Nokhud Offensive] (has FPs inside)
-	2175,	-- Zaralek Cavern
-};
-app.AddEventHandler("OnReady", function()
-	-- Cache Flight Path Data once the addon is ready.
-	local newNodes, anyNew = {}, false;
-	for i,mapID in ipairs(arrOfNodes) do
-		local allNodeData = C_TaxiMap.GetTaxiNodesForMap(mapID);
-		if allNodeData then
-			for j,nodeData in ipairs(allNodeData) do
-				if nodeData.name then
-					AllTheThingsAD.LocalizedFlightPathNames[nodeData.nodeID] = nodeData.name;
-					if #SearchForField("flightPathID", nodeData.nodeID) < 1 then
-						newNodes[nodeData.nodeID] = nodeData.name;
-						anyNew = true;
-					end
-				end
-			end
-		end
-	end
-	if anyNew then
-		print("Found new flight path data:");
-		for i,name in pairs(newNodes) do
-			print(i, name);
-		end
-		SetDataMember("NewFlightPathData", newNodes);
-	end
-end);
-app.CacheFlightPathDataForMap = function(mapID, nodes)
-	local count = 0;
-	local temp = {};
-	for nodeID,_ in pairs(SearchForFieldContainer("flightPathID")) do
-		for i,node in ipairs(_) do
-			if not node.u and node.coords and node.coords[1][3] == mapID then
-				if not node.r or node.r == app.FactionID then
-					temp[nodeID] = node;
-					count = count + 1;
-				end
-			end
-		end
-	end
-	if count > 0 then
-		if count > 1 then
-			count = 0;
-			local mapID = app.CurrentMapID;
-			if mapID then
-				local pos = C_Map_GetPlayerMapPosition(mapID, "player");
-				if pos then
-					local px, py = pos:GetXY();
-					px, py = px * 100, py * 100;
-
-					-- Select the best flight path node.
-					for nodeID,node in pairs(temp) do
-						local coord = node.coords and node.coords[1];
-						if coord then
-							-- Allow for a little bit of leeway.
-							if distance(px, py, coord[1], coord[2]) < 0.6 then
-								nodes[nodeID] = true;
-							end
-						end
-					end
-				end
-			end
-		else
-			for nodeID,_ in pairs(temp) do
-				nodes[nodeID] = true;
-			end
-		end
-	end
-	return count;
-end
-app.CacheFlightPathDataForTarget = function(nodes)
-	local guid = UnitGUID("npc") or UnitGUID("target");
-	if guid then
-		---@diagnostic disable-next-line: undefined-field
-		local type, _, _, _, _, npcID = ("-"):split(guid);
-		if type == "Creature" and npcID then
-			npcID = tonumber(npcID);
-			local count = 0;
-			local searchResults = SearchForField("creatureID", npcID);
-			if searchResults and #searchResults > 0 then
-				for i,group in ipairs(searchResults) do
-					if group.flightPathID and not group.nmr and not group.nmc and (not group.u or group.u > 1) then
-						nodes[group.flightPathID] = true;
-						count = count + 1;
-					end
-				end
-			end
-			return count;
-		end
-	end
-	return 0;
-end
-app.CreateFlightPath = app.CreateClass("FlightPath", "flightPathID", {
-	["text"] = function(t)
-		return t.name;
-	end,
-	["name"] = function(t)
-		return AllTheThingsAD.LocalizedFlightPathNames[t.flightPathID] or "Visit the Flight Master to cache.";
-	end,
-	["icon"] = function(t)
-		local r = t.r;
-		if r then
-			if r == HORDE_FACTION_ID then
-				return app.asset("fp_horde");
-			else
-				return app.asset("fp_alliance");
-			end
-		end
-		return app.asset("fp_neutral");
-	end,
-	["description"] = function(t)
-		return "Flight paths are cached when you look at the flight master at each location.\n  - Crieve";
-	end,
-	["collectible"] = function(t)
-		return app.Settings.Collectibles.FlightPaths;
-	end,
-	["collected"] = function(t)
-		if app.CurrentCharacter.FlightPaths[t.flightPathID] then return 1; end
-		if app.Settings.AccountWide.FlightPaths and ATTAccountWideData.FlightPaths[t.flightPathID] then return 2; end
-		if t.altQuests then
-			for i,questID in ipairs(t.altQuests) do
-				if IsQuestFlaggedCompleted(questID) then
-					return 2;
-				end
-			end
-		end
-	end,
-	["nmc"] = function(t)
-		local c = t.c;
-		if c and not contains(c, app.ClassIndex) then
-			rawset(t, "nmc", true); -- "Not My Class"
-			return true;
-		end
-		rawset(t, "nmc", false); -- "My Class"
-		return false;
-	end,
-	["nmr"] = function(t)
-		local r = t.r;
-		return r and r ~= app.FactionID;
-	end,
-});
-app.events.GOSSIP_SHOW = function()
-	local knownNodeIDs = {};
-	if app.CacheFlightPathDataForTarget(knownNodeIDs) > 0 then
-		local any = false;
-		for nodeID,_ in pairs(knownNodeIDs) do
-			nodeID = tonumber(nodeID);
-			if not app.CurrentCharacter.FlightPaths[nodeID] then
-				local searchResults = SearchForField("flightPathID", nodeID);
-				app.SetCollected(#searchResults > 0 and searchResults[1], "FlightPaths", nodeID, true);
-				any = true;
-			end
-		end
-		if any then
-			app:RefreshDataQuietly("GOSSIP_SHOW", true);
-		end
-	end
-end
-app.events.TAXIMAP_OPENED = function()
-	local knownNodeIDs = {};
-	app.CacheFlightPathDataForTarget(knownNodeIDs);
-	app.CacheFlightPathDataForMap(app.CurrentMapID, knownNodeIDs);
-
-	-- apparently this can be nil somehow
-	if not app.CurrentMapID then return end
-
-	local allNodeData = C_TaxiMap.GetAllTaxiNodes(app.CurrentMapID);
-	if allNodeData then
-		for j,nodeData in ipairs(allNodeData) do
-			if nodeData.state and nodeData.state < 2 then
-				knownNodeIDs[nodeData.nodeID] = true;
-			end
-		end
-	end
-
-	local any = false;
-	for nodeID,_ in pairs(knownNodeIDs) do
-		nodeID = tonumber(nodeID);
-		if not app.CurrentCharacter.FlightPaths[nodeID] then
-			local searchResults = SearchForField("flightPathID", nodeID);
-			app.SetCollected(#searchResults > 0 and searchResults[1], "FlightPaths", nodeID, true);
-			any = true;
-		end
-	end
-	if any then
-		app:RefreshDataQuietly("TAXIMAP_OPENED", true);
-	end
-end
 end)();
 
 -- NPC Lib
@@ -4546,345 +4230,6 @@ app.CreatePetAbility = app.CreateUnimplementedClass("PetAbility", "petAbilityID"
 app.CreateSelfieFilter = app.CreateUnimplementedClass("SelfieFilter", "questID");
 end)();
 
--- TomTom Support
-local AttachTooltipSearchResults = app.Modules.Tooltip.AttachTooltipSearchResults;
-local __TomTomWaypointCacheIndexY = { __index = function(t, y)
-	local o = {};
-	rawset(t, y, o);
-	return o;
-end };
-local __TomTomWaypointCacheIndexX = { __index = function(t, x)
-	local o = setmetatable({}, __TomTomWaypointCacheIndexY);
-	rawset(t, x, o);
-	return o;
-end };
-local __TomTomWaypointCache = setmetatable({}, { __index = function(t, mapID)
-	local o = setmetatable({}, __TomTomWaypointCacheIndexX);
-	rawset(t, mapID, o);
-	return o;
-end });
-local __TomTomWaypointFirst = nil;
-local function AddTomTomWaypointCache(coord, group)
-	local mapID = coord[3];
-	if mapID then
-		__TomTomWaypointCache[mapID][math_floor(coord[1] * 10)][math_floor(coord[2] * 10)][group.key .. ":" .. group[group.key]] = group;
-	else
-		print("Missing mapID for", group.text, coord[1], coord[2], mapID);
-	end
-end
-local function AddTomTomWaypointInternal(group, depth)
-	if group.visible then
-		if group.plotting then return false; end
-		group.plotting = true;
-		if group.g then
-			depth = depth + 1;
-			for _,o in ipairs(group.g) do
-				AddTomTomWaypointInternal(o, depth);
-			end
-			depth = depth - 1;
-		end
-
-		local searchResults = ResolveSymbolicLink(group);
-		if searchResults then
-			depth = depth + 1;
-			for _,o in ipairs(searchResults) do
-				AddTomTomWaypointInternal(o, depth);
-			end
-			depth = depth - 1;
-		end
-		group.plotting = nil;
-
-		if TomTom then
-			if (depth == 0 and not __TomTomWaypointFirst) or not group.saved then
-				if group.coords or group.coord then
-					__TomTomWaypointFirst = false;
-					if group.coords then
-						for _,coord in ipairs(group.coords) do
-							AddTomTomWaypointCache(coord, group);
-						end
-					end
-					if group.coord then AddTomTomWaypointCache(group.coord, group); end
-				end
-			end
-		elseif C_SuperTrack then
-			if depth == 0 or __TomTomWaypointFirst then
-				local coord = group.coords and group.coords[1] or group.coord;
-				if coord then
-					__TomTomWaypointFirst = false;
-					C_SuperTrack.SetSuperTrackedUserWaypoint(false);
-					C_Map.ClearUserWaypoint();
-					C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(coord[3],coord[1]/100,coord[2]/100));
-					C_SuperTrack.SetSuperTrackedUserWaypoint(true);
-				end
-			end
-		end
-	end
-end
-local function AddTomTomWaypoint(group)
-	if TomTom or C_SuperTrack then
-		__TomTomWaypointFirst = true;
-		wipe(__TomTomWaypointCache);
-		AddTomTomWaypointInternal(group, 0);
-		if TomTom then
-			local xnormal;
-			for mapID,c in pairs(__TomTomWaypointCache) do
-				for x,d in pairs(c) do
-					xnormal = x / 1000;
-					for y,datas in pairs(d) do
-						-- Determine the Root and simplify NPC/Object data.
-						-- An NPC/Object can contain all of the other types by reference and don't need individual entries.
-						local root,rootByCreatureID,rootByObjectID = {},{},{};
-						for key,group in pairs(datas) do
-							local creatureID, objectID;
-							if group.npcID or group.creatureID then
-								creatureID = group.npcID or group.creatureID;
-							elseif group.objectID then
-								objectID = group.objectID;
-							else
-								if group.providers then
-									for i,provider in ipairs(group.providers) do
-										if provider[1] == "n" then
-											if provider[2] > 0 then
-												creatureID = provider[2];
-											end
-										elseif provider[1] == "o" then
-											if provider[2] > 0 then
-												objectID = provider[2];
-											end
-										end
-									end
-								end
-								if group.qgs then
-									local count = #group.qgs;
-									if count > 1 and group.coords and #group.coords == count then
-										for i=count,1,-1 do
-											local coord = group.coords[i];
-											if coord[3] == mapID and math_floor(coord[1] * 10) == x and math_floor(coord[2] * 10) == y then
-												creatureID = group.qgs[i];
-												break;
-											end
-										end
-										if not creatureID then
-											creatureID = group.qgs[1];
-										end
-									else
-										creatureID = group.qgs[1];
-									end
-								end
-								if group.crs then
-									local count = #group.crs;
-									if count > 1 and group.coords and #group.coords == count then
-										for i=count,1,-1 do
-											local coord = group.coords[i];
-											if coord[3] == mapID and math_floor(coord[1] * 10) == x and math_floor(coord[2] * 10) == y then
-												creatureID = group.crs[i];
-												break;
-											end
-										end
-										if not creatureID then
-											creatureID = group.crs[1];
-										end
-									else
-										creatureID = group.crs[1];
-									end
-								end
-							end
-							if creatureID then
-								if not rootByCreatureID[creatureID] then
-									rootByCreatureID[creatureID] = group;
-									tinsert(root, app.CreateNPC(creatureID));
-								end
-							elseif objectID then
-								if not rootByObjectID[objectID] then
-									rootByObjectID[objectID] = group;
-									tinsert(root, app.CreateObject(objectID));
-								end
-							else
-								tinsert(root, group);
-							end
-						end
-
-						local first = root[1];
-						if first then
-							local sourcePath = app.GenerateSourceHash(first);
-							for i=2,#root,1 do sourcePath = sourcePath .. ";" .. app.GenerateSourceHash(root[i]); end
-							TomTom:AddWaypoint(mapID, xnormal, y / 1000, {
-								from = "ATT",
-								persistent = true,
-								sourcePath = sourcePath,
-								title = (first.text or RETRIEVING_DATA)
-							}, root);
-						end
-					end
-				end
-			end
-			if TomTom.SetClosestWaypoint then
-				TomTom:SetClosestWaypoint();
-			end
-		end
-		if C_SuperTrack and group.questID and C_QuestLog_IsOnQuest(group.questID) then
-			C_SuperTrack.SetSuperTrackedQuestID(group.questID);
-		end
-	else
-		app.print("You must have TomTom installed to plot coordinates.");
-	end
-end
-app.AddTomTomWaypoint = AddTomTomWaypoint;
-app.AddEventHandler("OnReady", function()
-	local tomTom = TomTom;
-	if tomTom then
-		local oldAddWaypoint = tomTom.AddWaypoint;
-		tomTom.AddWaypoint = function(self, m, x, y, opts, root, ...)
-			if opts and (opts.from == "ATT" and opts.sourcePath) then
-				local sourceString = opts.sourcePath;
-				if sourceString then
-					if not root then
-						root = {};
-						---@diagnostic disable-next-line: undefined-field
-						local sourceStrings = { (";"):split(sourceString) };
-						for i,sourcePath in ipairs(sourceStrings) do
-							---@diagnostic disable-next-line: undefined-field
-							local hashes = { (">"):split(sourcePath) };
-							local ref = app.SearchForSourcePath(app:GetDataCache().g, hashes, 2, #hashes);
-							if ref then
-								tinsert(root, ref);
-							else
-								---@diagnostic disable-next-line: undefined-field
-								hashes = { ("ID"):split(sourcePath) };
-								if #hashes == 3 then
-									ref = app.CreateClassInstance(hashes[1] .. "ID", tonumber(hashes[3]));
-									if ref then tinsert(root, ref); end
-								end
-							end
-						end
-					end
-					if #root > 0 then
-						local first = root[1];
-						if IsRetrieving(opts.title) then
-							opts.title = first.text or RETRIEVING_DATA;
-						end
-						local displayID = GetDisplayID(first);
-						if displayID then
-							opts.minimap_displayID = displayID;
-							opts.worldmap_displayID = displayID;
-						end
-						if first.icon then
-							opts.minimap_icon = first.icon;
-							opts.worldmap_icon = first.icon;
-						end
-						---@diagnostic disable-next-line: undefined-global
-						if TomTom.DefaultCallbacks then
-							---@diagnostic disable-next-line: undefined-global
-							local callbacks = TomTom:DefaultCallbacks();
-							callbacks.minimap.tooltip_update = nil;
-							callbacks.minimap.tooltip_show = function(event, tooltip, uid, dist)
-								tooltip:ClearLines();
-								for i,o in ipairs(root) do
-									local line = tooltip:NumLines() + 1;
-									tooltip:AddLine(o.text);
-									if o.title and not o.explorationID then tooltip:AddLine(o.title); end
-									local key = o.key;
-									if key == "objectiveID" then
-										if o.parent and o.parent.questID then tooltip:AddLine("Objective for " .. o.parent.text); end
-									elseif key == "criteriaID" then
-										tooltip:AddDoubleLine(L.CRITERIA_FOR, GetAchievementLink(o.achievementID));
-									else
-										if key == "npcID" then key = "creatureID"; end
-										AttachTooltipSearchResults(tooltip, line, SearchForField, key, o[o.key]);
-									end
-								end
-								tooltip:Show();
-							end
-							callbacks.world.tooltip_update = nil;
-							callbacks.world.tooltip_show = callbacks.minimap.tooltip_show;
-							opts.callbacks = callbacks;
-						end
-					else
-						print("Failed to rebuild TomTom Waypoint");
-					end
-				end
-			end
-			return oldAddWaypoint(self, m, x, y, opts, root, ...);
-		end
-		
-		local function AreAnyATTWaypointsPersisted()
-			-- If there are any persisted waypoints, recover their tooltips
-			local waypointsByMapID = tomTom.waypoints;
-			if not waypointsByMapID then return false; end
-			
-			local any = false;
-			for mapID,waypointsByMap in pairs(waypointsByMapID) do
-				for waypointUID,waypoint in pairs(waypointsByMap) do
-					if waypoint.from == "ATT" then
-						return true;
-					end
-				end
-			end
-			return false;
-		end
-		if AreAnyATTWaypointsPersisted() then tomTom:ReloadWaypoints(); end
-	end
-end);
-
--- Clickable ATT Chat Link Handling
-(function()
-	hooksecurefunc("SetItemRef", function(link, text)
-		-- print("Chat Link Click",link,string_gsub(text, "\|","&"));
-		---@diagnostic disable-next-line: undefined-field
-		local type, info, data1, data2, data3 = (":"):split(link);
-		--print(type, info, data1, data2, data3)
-		if type == "addon" and info == "ATT" then
-			local op = link:sub(17)
-			--print("ATT Link",op)
-			-- local type, paramA, paramB = (":"):split(data);
-			-- print(type,paramA,paramB)
-			if data1 == "search" then
-				local cmd = data2 .. ":" .. data3;
-				app.SetSkipLevel(2);
-				local group = app.GetCachedSearchResults(app.SearchForLink, cmd);
-				app.SetSkipLevel(0);
-				app:CreateMiniListForGroup(group);
-				return true;
-			elseif data1 == "dialog" then
-				return app:TriggerReportDialog(data2);
-			end
-		end
-	end);
-
-	-- Turns a bit of text into a colored link which ATT will attempt to understand
-	function app:Linkify(text, color, operation)
-		text = "|Haddon:ATT:"..operation.."|h|c"..color.."["..text.."]|r|h";
-		return text;
-	end
-	
-	function app:WaypointLink(mapID, x, y, text)
-		return "|cffffff00|Hworldmap:" .. mapID .. ":" .. math_floor(x * 10000) .. ":" .. math_floor(y * 10000)
-			.. "|h[|A:Waypoint-MapPin-ChatIcon:13:13:0:0|a" .. (text or "") .. "]|h|r";
-	end
-	
-	-- Stores some information for use by a report popup by id
-	local reports = {};
-	function app:SetupReportDialog(id, reportMessage, text)
-		if not reports[id] then
-			-- print("Setup Report", id, reportMessage)
-			reports[id] = {
-				msg = reportMessage,
-				text = (type(text) == "table" and app.TableConcat(text, nil, "", "\n") or text)
-			};
-			return true;
-		end
-	end
-
-	-- Retrieves stored information for a report dialog and attempts to display the dialog if possible
-	function app:TriggerReportDialog(id)
-		local popup = reports[id];
-		if popup then
-			app:ShowPopupDialogToReport(popup.msg, popup.text);
-			return true;
-		end
-	end
-end)();
-
 -- Startup Event
 local ADDON_LOADED_HANDLERS = {
 	[appName] = function()
@@ -4893,7 +4238,7 @@ local ADDON_LOADED_HANDLERS = {
 			AllTheThingsAD = { };
 			_G["AllTheThingsAD"] = AllTheThingsAD;
 		end
-		
+
 		-- Cache the Localized Category Data
 		AllTheThingsAD.LocalizedCategoryNames = setmetatable(AllTheThingsAD.LocalizedCategoryNames or {}, { __index = app.CategoryNames });
 		app.CategoryNames = nil;
@@ -4977,6 +4322,9 @@ local ADDON_LOADED_HANDLERS = {
 
 		-- Account Wide Settings
 		local accountWideSettings = app.Settings.AccountWide;
+		local function IsCached(field, id)
+			return currentCharacter[field][id] or nil
+		end
 		local function IsAccountCached(field, id)
 			return accountWideData[field][id] or nil
 		end
@@ -5096,38 +4444,44 @@ local ADDON_LOADED_HANDLERS = {
 				return 2;
 			end
 		end
+		-- Allows directly saving a cached state for a table of ids for a given field at the Account level
+		-- Note: This does not include reporting of collected things. It should be used in situations where this is not desired (onstartup refresh, etc.)
+		local function SetBatchAccountCached(field, ids, state)
+			-- app.PrintDebug("SBAC:A",field,state)
+			local container = accountWideData[field]
+			for id,_ in pairs(ids) do
+				container[id] = state
+			end
+		end
+		-- Allows directly saving a cached state for a table of ids for a given field.
+		-- Note: This does not include reporting of collected things. It should be used in situations where this is not desired (onstartup refresh, etc.)
+		local function SetBatchCached(field, ids, state)
+			-- app.PrintDebug("SBC",field,state)
+			local container = currentCharacter[field]
+			for id,_ in pairs(ids) do
+				container[id] = state
+			end
+		end
+		app.IsCached = IsCached;
 		app.IsAccountCached = IsAccountCached;
 		app.SetAccountCollected = SetAccountCollected;
 		app.SetAccountCollectedForSubType = SetAccountCollectedForSubType;
 		app.SetCollected = SetCollected;
 		app.SetCollectedForSubType = SetCollectedForSubType;
-		
+		app.SetBatchAccountCached = SetBatchAccountCached;
+		app.SetBatchCached = SetBatchCached;
+
 		-- Notify Event Handlers that Saved Variable Data is available.
 		app.HandleEvent("OnSavedVariablesAvailable", currentCharacter, accountWideData, accountWideSettings);
-		
-		-- Check to see if we have a leftover ItemDB cache
-		GetDataMember("GroupQuestsByGUID", {});
 
-		-- Clean up settings
-		local oldsettings = {};
-		for i,key in ipairs({
-			"GroupQuestsByGUID",
-			"LocalizedCategoryNames",
-			"LocalizedFlightPathNames",
-			"Reagents",
-			"SoftReserves",
-			"SoftReservePersistence",
-		}) do
-			oldsettings[key] = AllTheThingsAD[key];
-		end
-		wipe(AllTheThingsAD);
-		for key,value in pairs(oldsettings) do
-			AllTheThingsAD[key] = value;
+		-- Check to see if we have a leftover ItemDB cache
+		if not AllTheThingsAD.GroupQuestsByGUID then
+			AllTheThingsAD.GroupQuestsByGUID = {};
 		end
 
 		-- Wipe the Debugger Data
 		AllTheThingsDebugData = nil;
-		
+
 		-- If we have RWP data on this character, let's update that to use Transmog.
 		for guid,character in pairs(characterData) do
 			local characterRWP = character.RWP;
@@ -5155,7 +4509,7 @@ local ADDON_LOADED_HANDLERS = {
 				if not any then character.RWP = nil; end
 			end
 		end
-		
+
 		-- Refresh Collections
 		app.RefreshCollections();
 
@@ -5175,7 +4529,7 @@ app.AddEventHandler("OnStartupDone", function()
 
 	-- Execute the OnReady handlers.
 	app.HandleEvent("OnReady");
-	
+
 	-- Mark that we're ready now!
 	app.IsReady = true;
 end);

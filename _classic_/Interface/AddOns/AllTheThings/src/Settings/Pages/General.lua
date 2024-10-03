@@ -409,9 +409,9 @@ local accwideCheckboxDeaths;
 if app.IsClassic then
 -- Classic wants you to collect these, but Retail doesn't yet.
 accwideCheckboxDeaths =
-child:CreateAccountWideCheckbox("DEATHS", "Deaths")
+child:CreateAccountWideCheckbox("DEATHS", "DeathTracker")
 	:AlignBelow(accwideCheckboxCharacterUnlocks or accwideCheckboxAchievements)
-child:CreateTrackingCheckbox("DEATHS", "Deaths", true)
+child:CreateTrackingCheckbox("DEATHS", "DeathTracker", true)
 	:AlignAfter(accwideCheckboxDeaths)
 end
 
@@ -436,8 +436,13 @@ child:CreateAccountWideCheckbox("QUESTS", "Quests")
 local checkboxQuests =
 child:CreateTrackingCheckbox("QUESTS", "Quests", true)
 	:AlignAfter(accwideCheckboxQuests)
+local checkboxQuestsLocked =
 child:CreateTrackingCheckbox("QUESTS_LOCKED", "QuestsLocked", true)
 	:AlignAfter(checkboxQuests)
+if app.IsRetail then
+	child:CreateTrackingCheckbox("QUESTS_HIDDEN_TRACKER", "QuestsHidden", true)
+		:AlignAfter(checkboxQuestsLocked)
+end
 
 local accwideCheckboxRecipes =
 child:CreateAccountWideCheckbox("RECIPES", "Recipes")

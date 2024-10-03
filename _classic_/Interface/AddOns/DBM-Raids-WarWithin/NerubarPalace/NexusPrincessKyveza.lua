@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2601, "DBM-Raids-WarWithin", 1, 1273)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20240916074034")
+mod:SetRevision("20240922113921")
 mod:SetCreatureID(217748)--Needs confirmation, could also use 218510
 mod:SetEncounterID(2920)
 mod:SetUsedIcons(1, 2, 3, 4, 5)
@@ -12,8 +12,8 @@ mod.respawnTime = 29
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 436971 437620 448364 438245 439576 440377 453683 442277 435405",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START 436971 437620 438245 439576 440377 453683 442277 435405",
+	"SPELL_CAST_SUCCESS 448364",
 	"SPELL_AURA_APPLIED 447169 447174 440576 437343",--436870
 	"SPELL_AURA_APPLIED_DOSE 447174 440576",
 	"SPELL_AURA_REMOVED 447169 435405 437343"--436870
@@ -28,12 +28,13 @@ mod:RegisterEventsInCombat(
 --TODO, recheck option keys to match BW for weak aura compatability before live
 --TODO, verify queensbane is actually hidden, cause they flagged wrong spellids.
 --[[
-(ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 448364 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
- or ability.id = 435405 and type = "removebuff"
+(ability.id = 436971 or ability.id = 435405 or ability.id = 437620 or ability.id = 438245 or ability.id = 439576 or ability.id = 440377 or ability.id = 453683 or ability.id = 442277) and type = "begincast"
+or ability.id = 448364 and type = "cast"
+or ability.id = 435405 and type = "removebuff"
 --]]
 local warnAss									= mod:NewIncomingCountAnnounce(436867, 3)
 local warnDeathMasks							= mod:NewCountAnnounce(448364, 4)
-local warnTwilightMassacre						= mod:NewCountAnnounce(438245, 3, nil, nil, 281001)--Shortname "Massacre"
+local warnTwilightMassacre						= mod:NewCountAnnounce(438245, 3, nil, nil, nil, nil, DBM_COMMON_L.CHARGES)
 local warnChasmalGash							= mod:NewStackAnnounce(440576, 2, nil, "Tank|Healer", 320007)--Shortname "Gash"
 local warnStarlessNight							= mod:NewCountAnnounce(435414, 3)
 local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
@@ -41,6 +42,7 @@ local warnEternalNight							= mod:NewCastAnnounce(442277, 4)
 --local specWarnAss								= mod:NewSpecialWarningSpell(436867, nil, nil, nil, 3, 2)
 --local yellAss									= mod:NewShortYell(436867)
 --local yellAssFades							= mod:NewShortFadesYell(436867)
+local specWarnQueensBane						= mod:NewSpecialWarningMoveAway(437343, nil, nil, nil, 1, 2, 3)
 local yellQueensBane							= mod:NewShortFadesYell(437343)
 local specWarnDeathCloak						= mod:NewSpecialWarningSpell(447174, nil, nil, nil, 2, 2)
 local specWarnNetherRift						= mod:NewSpecialWarningDodgeCount(437620, nil, nil, nil, 2, 2)
@@ -51,12 +53,13 @@ local specWarnChasmalGashSwap					= mod:NewSpecialWarningTaunt(440576, nil, 3200
 --local specWarnGTFO							= mod:NewSpecialWarningGTFO(421532, nil, nil, nil, 1, 8)
 
 local timerAssCD								= mod:NewCDCountTimer(120, 436867, nil, nil, nil, 3)
-local timerDeathMasksCD							= mod:NewAITimer(49, 448364, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
-local timerTwilightMassacreCD					= mod:NewCDCountTimer(30, 438245, 281001, nil, nil, 3)--Shortname "Massacre"
+local timerOrbsCD								= mod:NewCastTimer(10, 439409, DBM_COMMON_L.ORBS, nil, nil, 3)
+local timerDeathMasksCD							= mod:NewCDCountTimer(49, 448364, nil, nil, nil, 3, nil, DBM_COMMON_L.MYTHIC_ICON)
+local timerTwilightMassacreCD					= mod:NewCDCountTimer(30, 438245, DBM_COMMON_L.CHARGES.." (%s)", nil, nil, 3)
 local timerNetherRiftCD							= mod:NewCDCountTimer(30, 437620, DBM_COMMON_L.RIFT.." (%s)", nil, nil, 3)--shortname Rift
 local timerNexusDaggersCD						= mod:NewCDCountTimer(30, 439576, 1180, nil, nil, 3)--Shortname "Daggers"
 local timerVoidShreddersCD						= mod:NewCDCountTimer(30, 440377, DBM_COMMON_L.TANKDEBUFF.." (%s)", "Tank|healer", nil, 5, nil, DBM_COMMON_L.TANK_ICON)
-local timerStarlessNightCD						= mod:NewCDCountTimer(120, 435405, nil, nil, nil, 6)
+local timerStarlessNightCD						= mod:NewCDCountTimer(120, 435405, nil, nil, nil, 6)--BW note. They localized it as "stage 2" but they don't use a "stages" bar. if they ever change it, object needs to be changed to NewStageCountCycleTimer for WA compat to remain
 local timerStarlessNight						= mod:NewBuffActiveTimer(24, 435405, nil, nil, nil, 5)
 
 --mod:AddInfoFrameOption(407919, true)
@@ -65,7 +68,7 @@ mod:AddNamePlateOption("NPOnMask", 448364)
 mod:AddPrivateAuraSoundOption(438141, true, 438245, 1)--Twilight Massacre Target
 mod:AddPrivateAuraSoundOption(436671, true, 435486, 1)--Regicide Targets
 mod:AddPrivateAuraSoundOption(436870, true, 436867, 1)--Assassination Targets
-mod:AddPrivateAuraSoundOption(437343, true, 437343, 1)--Queen's Bane
+--mod:AddPrivateAuraSoundOption(437343, true, 437343, 1)--Queen's Bane
 --mod:AddPrivateAuraSoundOption(426010, true, 425885, 4)
 
 mod.vb.assCount = 0
@@ -76,6 +79,7 @@ mod.vb.riftCount = 0
 mod.vb.daggersCount = 0
 mod.vb.shredderCount = 0
 mod.vb.starlessCount = 0
+mod.vb.expectedOrbs = 0
 
 function mod:OnCombatStart(delay)
 	self.vb.assCount = 0
@@ -85,6 +89,7 @@ function mod:OnCombatStart(delay)
 	self.vb.daggersCount = 0
 	self.vb.shredderCount = 0
 	self.vb.starlessCount = 0
+	self.vb.expectedOrbs = 0
 	self:SetStage(1)
 	timerVoidShreddersCD:Start(10, 1)
 	timerAssCD:Start(13.2, 1)
@@ -135,10 +140,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnNetherRift:Show(self.vb.riftCount)
 			specWarnNetherRift:Play("watchstep")
 		end
-	elseif spellId == 448364 then
-		self.vb.maskCount = self.vb.maskCount + 1
-		warnDeathMasks:Show(self.vb.maskCount)
---		timerDeathMasksCD:Start(30, self.vb.maskCount+1)--Only once per rotation, so timer started at starless night end
 	elseif spellId == 438245 then
 		self.vb.massacreCount = self.vb.massacreCount + 1
 		warnTwilightMassacre:Show(self.vb.massacreCount)
@@ -179,6 +180,15 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	local spellId = args.spellId
+	if spellId == 448364 then
+		self.vb.maskCount = self.vb.maskCount + 1
+		warnDeathMasks:Show(self.vb.maskCount)
+--		timerDeathMasksCD:Start(30, self.vb.maskCount+1)--Only once per rotation, so timer started at starless night end
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 447169 then
@@ -186,7 +196,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.Nameplate:Show(true, args.destGUID, spellId)
 		end
 	elseif spellId == 437343 then
+		if self:IsHard() and self:AntiSpam() then
+			timerOrbsCD:Start()
+		end
 		if args:IsPlayer() and not self:IsEasy() then
+			specWarnQueensBane:Show()
+			specWarnQueensBane:Play("runout")
 			yellQueensBane:Countdown(spellId)
 		end
 	--elseif spellId == 436870 then
@@ -261,7 +276,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif spellId == 435405 then
 		self:SetStage(1)
 		timerStarlessNight:Stop()
-		timerVoidShreddersCD:Start(6.8, self.vb.shredderCount+1)
+		timerVoidShreddersCD:Start(14.8, self.vb.shredderCount+1)--FIXME
 		timerAssCD:Start(18.1, self.vb.assCount+1)
 		timerNetherRiftCD:Start(26.8, self.vb.riftCount+1)
 		timerTwilightMassacreCD:Start(38.8, self.vb.massacreCount+1)

@@ -1,167 +1,168 @@
 
 PawnOptions = {
-	["LastVersion"] = 2.0811,
-	["LastPlayerFullName"] = "Mitráculo-Nemesis",
-	["AutoSelectScales"] = true,
-	["ItemLevels"] = {
-		{
-			["ID"] = 198013,
-			["Level"] = 319,
-			["Link"] = "|cff0070dd|Hitem:198013::::::::70:104::26:1:8774:2:9:68:28:2153:::::|h[Twisted Leather Hood]|h|r",
-		}, -- [1]
-		{
-			["ID"] = 193676,
-			["Level"] = 336,
-			["Link"] = "|cff0070dd|Hitem:193676::::::::69:104::17:5:7978:7975:6652:7937:8783:2:28:2155:9:69:::::|h[Ukhel Ancestry Beads]|h|r",
-		}, -- [2]
-		{
-			["ID"] = 197653,
-			["Level"] = 276,
-			["Link"] = "|cff1eff00|Hitem:197653::::::::69:104::26:1:7963:2:28:2504:9:65:::::|h[Teerai Watcher Spaulders]|h|r",
-		}, -- [3]
-		nil, -- [4]
-		{
-			["ID"] = 186463,
-			["Level"] = 441,
-			["Link"] = "|cffa335ee|Hitem:186463::::::::70:104::3:4:9552:9505:9465:8767:1:28:888:::::|h[Túnica Fiada no Terror]|h|r",
-		}, -- [5]
-		{
-			["ID"] = 197660,
-			["Level"] = 276,
-			["Link"] = "|cff1eff00|Hitem:197660::::::::66:104::26:1:7963:2:28:2152:9:65:::::|h[Teerai Watcher Belt]|h|r",
-		}, -- [6]
-		{
-			["ID"] = 198015,
-			["Level"] = 306,
-			["Link"] = "|cff1eff00|Hitem:198015::::::::70:104::26:1:7963:2:28:2153:9:68:::::|h[Twisted Leather Breeches]|h|r",
-		}, -- [7]
-		{
-			["ID"] = 191991,
-			["Level"] = 306,
-			["Link"] = "|cff1eff00|Hitem:191991::::::::69:104::17:2:9156:6652:2:9:68:28:2424:::::|h[Ottuk Hide Waders]|h|r",
-		}, -- [8]
-		{
-			["ID"] = 193793,
-			["Level"] = 316,
-			["Link"] = "|cff0070dd|Hitem:193793::::::::67:104::17:5:7978:7975:6652:7937:8815:2:28:2550:9:67:::::|h[Ferocious Hyena Hidebinders]|h|r",
-		}, -- [9]
-		{
-			["ID"] = 193661,
-			["Level"] = 316,
-			["Link"] = "|cff0070dd|Hitem:193661::::::::67:104::17:4:7978:7975:6652:8813:2:28:2155:9:67:::::|h[Blightweaver's Clutches]|h|r",
-		}, -- [10]
-		{
-			["ID"] = 200172,
-			["Level"] = 306,
-			["AlsoFitsIn"] = 12,
-			["Link"] = "|cff0070dd|Hitem:200172::::::::68:104::17:3:9156:6652:7937:2:28:2424:9:68:::::|h[Zephyrdance Signet]|h|r",
-		}, -- [11]
-		{
-			["ID"] = 200172,
-			["Level"] = 306,
-			["AlsoFitsIn"] = 11,
-			["Link"] = "|cff0070dd|Hitem:200172::::::::68:104::17:3:9156:6652:7937:2:9:68:28:2424:::::|h[Zephyrdance Signet]|h|r",
-		}, -- [12]
-		{
-			["ID"] = 193689,
-			["Level"] = 336,
-			["AlsoFitsIn"] = 14,
-			["Link"] = "|cff0070dd|Hitem:193689::::::::69:104::17:3:7978:7975:6652:2:9:69:28:2549:::::|h[Granyth's Enduring Scale]|h|r",
-		}, -- [13]
-		{
-			["ID"] = 193689,
-			["Level"] = 336,
-			["AlsoFitsIn"] = 13,
-			["Link"] = "|cff0070dd|Hitem:193689::::::::70:104::17:3:7978:7975:6652:2:9:69:28:2549:::::|h[Granyth's Enduring Scale]|h|r",
-		}, -- [14]
-		{
-			["ID"] = 200278,
-			["Level"] = 276,
-			["Link"] = "|cff1eff00|Hitem:200278::::::::66:104::26:1:7963:2:28:2262:9:65:::::|h[Drake Archaeologist's Shawl]|h|r",
-		}, -- [15]
-		{
-			["ID"] = 198008,
-			["Level"] = 319,
-			["Link"] = "|cff0070dd|Hitem:198008::::::::70:104::26:1:8774:2:28:2153:9:68:::::|h[Shined Iron Polearm]|h|r",
-		}, -- [16]
-		{
-			["ID"] = 180663,
-			["Level"] = 167,
-			["AlsoFitsIn"] = 16,
-			["Link"] = "|cff0070dd|Hitem:180663::::::::60:104::11:1:6706:2:9:55:28:1337:::::|h[War Scholar's Bonesaw]|h|r",
-		}, -- [17]
-	},
-	["Artifacts"] = {
-		[128832] = {
-			["Relics"] = {
-				{
-					["Type"] = "Iron",
-				}, -- [1]
-				{
-					["Type"] = "Arcane",
-				}, -- [2]
-				{
-					["Type"] = "Fel",
-				}, -- [3]
-			},
-			["Name"] = "The Aldrachi Warblades",
-		},
-		[128821] = {
-			["Relics"] = {
-				{
-					["ItemLevel"] = 17,
-					["Type"] = "Fire",
-				}, -- [1]
-				{
-					["ItemLevel"] = 15,
-					["Type"] = "Blood",
-				}, -- [2]
-				{
-					["ItemLevel"] = 16,
-					["Type"] = "Life",
-				}, -- [3]
-			},
-			["Name"] = "Claws of Ursoc",
-		},
-		[128306] = {
-			["Relics"] = {
-				{
-					["ItemLevel"] = 18,
-					["Type"] = "Life",
-				}, -- [1]
-				{
-					["ItemLevel"] = 18,
-					["Type"] = "Frost",
-				}, -- [2]
-				{
-					["ItemLevel"] = 18,
-					["Type"] = "Life",
-				}, -- [3]
-			},
-			["Name"] = "G'Hanir, the Mother Tree",
-		},
-		[128860] = {
-			["Relics"] = {
-				{
-					["ItemLevel"] = 23,
-					["Type"] = "Frost",
-				}, -- [1]
-				{
-					["ItemLevel"] = 12,
-					["Type"] = "Blood",
-				}, -- [2]
-				{
-					["ItemLevel"] = 15,
-					["Type"] = "Life",
-				}, -- [3]
-			},
-			["Name"] = "Fangs of Ashamane",
-		},
-	},
-	["LastKeybindingsSet"] = 1,
+["LastVersion"] = 2.1001,
+["LastPlayerFullName"] = "Mitráculo-Nemesis",
+["AutoSelectScales"] = true,
+["ItemLevels"] = {
+{
+["ID"] = 221163,
+["Level"] = 580,
+["Link"] = "|cff0070dd|Hitem:221163::::::::80:581::2:8:10294:10388:6652:10877:10375:12045:1615:10254:1:28:2462:::::|h[Whispering Mask]|h|r",
+},
+{
+["ID"] = 221077,
+["Level"] = 580,
+["Link"] = "|cff0070dd|Hitem:221077::::::::80:581::2:8:10294:10388:6652:10394:10392:12045:1615:10254:1:28:2462:::::|h[\"Emergency Stop\" Keychain]|h|r",
+},
+{
+["ID"] = 221175,
+["Level"] = 580,
+["Link"] = "|cff0070dd|Hitem:221175::::::::80:581::2:7:10294:10388:6652:10375:12045:1615:10254:1:28:2462:::::|h[Shadowchill Amice]|h|r",
+},
+nil,
+{
+["ID"] = 133297,
+["Level"] = 580,
+["Link"] = "|cff0070dd|Hitem:133297::::::::80:581::63:7:6652:10375:12045:11215:10282:10010:10254:1:28:2462:::::|h[Vest of Misshapen Hides]|h|r",
+},
+{
+["ID"] = 219168,
+["Level"] = 603,
+["Link"] = "|cffa335ee|Hitem:219168::::::::80:581::109:6:10271:6652:10877:10377:3182:10255:1:28:2462:::::|h[Myconic Strap]|h|r",
+},
+{
+["ID"] = 225733,
+["Level"] = 603,
+["Link"] = "|cffa335ee|Hitem:225733::::::::80:581::81:6:41:10376:10354:10271:1504:10255:1:28:2462:::::|h[Abyssal Tendril Tights]|h|r",
+},
+{
+["ID"] = 224675,
+["Level"] = 584,
+["Link"] = "|cffa335ee|Hitem:224675::::::::80:581::42:6:10281:6652:1709:10377:1656:10255:1:28:2462:::::|h[Lockstitch Waders of the Aurora]|h|r",
+},
+{
+["ID"] = 178702,
+["Level"] = 580,
+["Link"] = "|cff0070dd|Hitem:178702::::::::80:581::2:8:10294:10388:6652:10876:10375:12045:9845:10254:1:28:2462:::::|h[Bands of the Undergrowth]|h|r",
+},
+{
+["ID"] = 224676,
+["Level"] = 584,
+["Link"] = "|cffa335ee|Hitem:224676::::::::80:581::42:6:10281:6652:1707:10377:1656:10255:1:28:2462:::::|h[Lockstitch Grips of the Aurora]|h|r",
+},
+{
+["ID"] = 219187,
+["Level"] = 603,
+["AlsoFitsIn"] = 12,
+["Link"] = "|cffa335ee|Hitem:219187::::::::80:581::109:6:10271:6652:10395:10392:3182:10255:1:28:2462:::::|h[Bone-Carved Circlet]|h|r",
+},
+{
+["ID"] = 162541,
+["Level"] = 580,
+["AlsoFitsIn"] = 11,
+["Link"] = "|cff0070dd|Hitem:162541::::::::80:581::2:8:10294:10388:6652:10394:10393:12045:9988:10254:1:28:2462:::::|h[Band of the Roving Scalawag]|h|r",
+},
+{
+["ID"] = 225653,
+["Level"] = 616,
+["AlsoFitsIn"] = 14,
+["Link"] = "|cffa335ee|Hitem:225653::::::::80:581::108:4:6652:10263:3145:10255:1:28:2462:::::|h[Siphoning Lightbrand]|h|r",
+},
+{
+["ID"] = 219315,
+["Level"] = 593,
+["AlsoFitsIn"] = 13,
+["Link"] = "|cffa335ee|Hitem:219315::::::::80:581::102:6:10278:10388:6652:10383:1628:10255:1:28:2462:::::|h[Refracting Aggression Module]|h|r",
+},
+{
+["ID"] = 211007,
+["Level"] = 603,
+["Link"] = "|cffa335ee|Hitem:211007::::::::80:581::109:5:10271:6652:10377:1508:10255:1:28:2462:::::|h[Torchbearer's Greatcloak]|h|r",
+},
+{
+["ID"] = 224638,
+["Level"] = 580,
+["AlsoFitsIn"] = 17,
+["Link"] = "|cff0070dd|Hitem:224638::::::::80:581::27:6:6652:1685:10844:10282:1507:10254:1:28:2462:::::|h[Underscout's Glaive of the Peerless]|h|r",
+},
+{
+["ID"] = 224638,
+["Level"] = 580,
+["AlsoFitsIn"] = 16,
+["Link"] = "|cff0070dd|Hitem:224638::::::::80:581::25:6:6652:1680:10844:10282:1507:10254:1:28:2462:::::|h[Underscout's Glaive of the Quickblade]|h|r",
+},
+},
+["Artifacts"] = {
+[128832] = {
+["Relics"] = {
+{
+["Type"] = "Iron",
+},
+{
+["Type"] = "Arcane",
+},
+{
+["Type"] = "Fel",
+},
+},
+["Name"] = "The Aldrachi Warblades",
+},
+[128821] = {
+["Relics"] = {
+{
+["ItemLevel"] = 17,
+["Type"] = "Fire",
+},
+{
+["ItemLevel"] = 15,
+["Type"] = "Blood",
+},
+{
+["ItemLevel"] = 16,
+["Type"] = "Life",
+},
+},
+["Name"] = "Claws of Ursoc",
+},
+[128306] = {
+["Relics"] = {
+{
+["ItemLevel"] = 18,
+["Type"] = "Life",
+},
+{
+["ItemLevel"] = 18,
+["Type"] = "Frost",
+},
+{
+["ItemLevel"] = 18,
+["Type"] = "Life",
+},
+},
+["Name"] = "G'Hanir, the Mother Tree",
+},
+[128860] = {
+["Relics"] = {
+{
+["ItemLevel"] = 23,
+["Type"] = "Frost",
+},
+{
+["ItemLevel"] = 12,
+["Type"] = "Blood",
+},
+{
+["ItemLevel"] = 15,
+["Type"] = "Life",
+},
+},
+["Name"] = "Fangs of Ashamane",
+},
+},
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
-	["LastClass"] = "DEMONHUNTER",
-	["LastAdded"] = 1,
+["LastClass"] = "DEMONHUNTER",
+["LastAdded"] = 1,
 }
 PawnClassicScaleProviderOptions = nil

@@ -61,6 +61,7 @@ else
 end
 
 -- Item APIs
+---@diagnostic disable-next-line: deprecated
 if not GetItemInfo then
 	local C_Item = C_Item;
 	local GetItemInfo = C_Item.GetItemInfo;
@@ -70,9 +71,10 @@ if not GetItemInfo then
 		local _, _, _, _, _, itemType, itemSubType, _, itemEquipLoc, itemTexture, _, classID, subclassID = GetItemInfo(item);
 		return C_Item.GetItemIDForItemInfo(item), itemType, itemSubType, itemEquipLoc, itemTexture, classID, subclassID;
 	end
-	lib.GetItemID = function(item) return C_Item.GetItemIDForItemInfo(item); end
-	lib.GetItemIcon = function(item) return C_Item.GetItemIconByID(item); end
-	lib.GetItemSpecInfo = function(item) return C_Item.GetItemSpecInfo(item); end
+	lib.GetItemID = C_Item.GetItemIDForItemInfo;
+	lib.GetItemIcon = C_Item.GetItemIconByID;
+	lib.GetItemClassInfo = C_Item.GetItemClassInfo;
+	lib.GetItemSpecInfo = C_Item.GetItemSpecInfo;
 else
 	---@diagnostic disable-next-line: deprecated
 	local GetItemInfoInstant = GetItemInfoInstant;
@@ -80,13 +82,18 @@ else
 	lib.GetItemInfo = GetItemInfo;
 	---@diagnostic disable-next-line: deprecated
 	lib.GetItemCount = GetItemCount;
+	---@diagnostic disable-next-line: deprecated
 	lib.GetItemInfoInstant = GetItemInfoInstant;
-	lib.GetItemID = function(item) return GetItemInfoInstant(item); end
+	---@diagnostic disable-next-line: deprecated
+	lib.GetItemID = GetItemInfoInstant;
 	lib.GetItemIcon = function(item) return select(5, GetItemInfoInstant(item)); end
+	lib.GetItemClassInfo = GetItemClassInfo;
+	---@diagnostic disable-next-line: deprecated
 	lib.GetItemSpecInfo = GetItemSpecInfo;
 end
 
 -- Spell APIs
+---@diagnostic disable-next-line: deprecated
 if not GetSpellInfo then
 	local C_Spell_GetSpellName = C_Spell.GetSpellName;
 	lib.GetSpellName = function(spell)
@@ -101,6 +108,7 @@ if not GetSpellInfo then
 		return t and t.startTime or 0;
 	end
 else
+---@diagnostic disable-next-line: deprecated
 	local GetSpellInfo = GetSpellInfo;
 	if app.GameBuildVersion >= 40000 then
 		lib.GetSpellName = function(spellID) return select(1, GetSpellInfo(spellID)); end;
@@ -109,6 +117,7 @@ else
 	end
 	lib.GetSpellIcon = function(spellID) return select(3, GetSpellInfo(spellID)); end;
 	--lib.GetSpellLink = GetSpellLink;
+---@diagnostic disable-next-line: deprecated
 	lib.GetSpellCooldown = GetSpellCooldown;
 end
 

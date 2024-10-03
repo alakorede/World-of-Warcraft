@@ -7,6 +7,10 @@ CursorTrail_Config = {
 ["ProfileOptions"] = {
 },
 ["ProfileBackups"] = {
+["@v11.0.2.3"] = {
+["_SelectedName"] = {
+},
+},
 },
 ["Profiles"] = {
 ["_SelectedName"] = {

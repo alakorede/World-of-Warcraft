@@ -108,6 +108,24 @@ GTFO.SpellID["452261"] = {
   sound = 1;
 };
 
+GTFO.SpellID["446843"] = {
+  --desc = "Darkness Outburst (The Oozekhan)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["453876"] = {
+  --desc = "Militant Green (Grand Overspinner Antourix)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["449770"] = {
+  --desc = "Worm Bile (Magma Serpent)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
 --- ****************************
 --- * Ara-Kara, City of Echoes *
 --- ****************************
@@ -226,6 +244,12 @@ GTFO.SpellID["462439"] = {
   sound = 1;
 };
 
+GTFO.SpellID["461825"] = {
+  --desc = "Black Blood (The Coaglamation)";
+  sound = 1;
+};
+
+
 --- *******************
 --- * Darkflame Cleft *
 --- *******************
@@ -326,6 +350,19 @@ GTFO.SpellID["434096"] = {
   ignoreApplication = true;
   sound = 1;
 };
+
+GTFO.SpellID["453214"] = {
+  --desc = "Obsidian Beam (Speaker Shadowcrown)";
+  applicationOnly = true;
+  sound = 1;
+};
+
+GTFO.SpellID["453173"] = {
+  --desc = "Collapsing Night (Speaker Shadowcrown)";
+  sound = 1;
+  ignoreApplication = true;
+};
+
 
 --- ***************
 --- * The Rookery *
@@ -481,12 +518,6 @@ GTFO.SpellID["434053"] = {
   sound = 1;
 };
 
-GTFO.SpellID["443839"] = {
-  --desc = "Desolate Surge (Speaker Halven)";
-  sound = 1;
-  test = true; -- Verification
-};
-
 GTFO.SpellID["443841"] = {
   --desc = "Desolate Surge (Speaker Halven)";
   sound = 1;
@@ -540,6 +571,31 @@ GTFO.SpellID["445193"] = {
   sound = 1;
 };
 
+GTFO.SpellID["424710"] = {
+  --desc = "Vicious Stabs (Fungal Gutter)";
+  sound = 1;
+};
+
+GTFO.SpellID["465605"] = {
+  --desc = "Poisoned (Poison Device)";
+  sound = 1;
+};
+
+GTFO.SpellID["440779"] = {
+  --desc = "Shadow Line (Shadow Totem)";
+  sound = 1;
+};
+
+GTFO.SpellID["455662"] = {
+  --desc = "Grasping Shadows";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["414523"] = {
+  --desc = "Shadow Barrier";
+  sound = 1;
+};
 
 --- *******************
 --- * Nerub-ar Palace *
@@ -610,6 +666,19 @@ GTFO.SpellID["439776"] = {
   ignoreApplication = true;
 };
 
+GTFO.SpellID["457467"] = {
+  --desc = "Acid Pools (Rasha'nan)";
+  sound = 1;
+  ignoreApplication = true;
+  test = true;
+};
+
+GTFO.SpellID["439780"] = {
+  --desc = "Sticky Webs (Rasha'nan)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
 GTFO.SpellID["437786"] = {
   --desc = "Atomized (Nexus-Princess Ky'veza)";
   sound = 1;
@@ -637,6 +706,26 @@ GTFO.SpellID["444956"] = {
   sound = 1;
 };
 
+GTFO.SpellID["437078"] = {
+  --desc = "Acid (Queen Ansurek)";
+  sound = 1;
+};
+
+GTFO.SpellID["443403"] = {
+  --desc = "Gloom (Queen Ansurek)";
+  sound = 1;
+};
+
+GTFO.SpellID["445818"] = {
+  --desc = "Frothing Gluttony (Queen Ansurek)";
+  applicationOnly = true;
+  sound = 1;
+};
+
+GTFO.SpellID["462252"] = {
+  --desc = "Volatile Eruption (Volatile Black Blood Pool)";
+  sound = 1;
+};
 
 end
 

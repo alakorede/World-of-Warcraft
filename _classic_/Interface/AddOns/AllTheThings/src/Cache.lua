@@ -144,7 +144,6 @@ if app.Debugging and app.Version == "[Git]" then
 			print("Header " .. id .. " has " .. data[2] .. " references" .. (data[3] or "."), header.name);
 			tinsert(data, header);
 		end
-		app.SetDataMember("CUSTOM_HEADERS", CUSTOM_HEADERS);
 	end
 	cacheCreatureID = function(group, creatureID)
 		if creatureID > 0 then
@@ -420,8 +419,8 @@ local fieldConverters = {
 	["artifactID"] = function(group, value)
 		CacheField(group, "artifactID", value);
 	end,
-	["azeriteEssenceID"] = function(group, value)
-		CacheField(group, "azeriteEssenceID", value);
+	["azeriteessenceID"] = function(group, value)
+		CacheField(group, "azeriteessenceID", value);
 	end,
 	["creatureID"] = cacheCreatureID,
 	["currencyID"] = function(group, value)
@@ -437,14 +436,14 @@ local fieldConverters = {
 		CacheField(group, "explorationID", value);
 	end,
 	["factionID"] = cacheFactionID,
-	["flightPathID"] = function(group, value)
-		CacheField(group, "flightPathID", value);
+	["flightpathID"] = function(group, value)
+		CacheField(group, "flightpathID", value);
 	end,
 	["followerID"] = function(group, value)
 		CacheField(group, "followerID", value);
 	end,
-	["garrisonBuildingID"] = function(group, value)
-		CacheField(group, "garrisonBuildingID", value);
+	["garrisonbuildingID"] = function(group, value)
+		CacheField(group, "garrisonbuildingID", value);
 	end,
 	["guildAchievementID"] = cacheAchievementID,
 	["headerID"] = cacheHeaderID,
@@ -492,8 +491,8 @@ local fieldConverters = {
 	["requireSkill"] = function(group, value)
 		CacheField(group, "requireSkill", value);
 	end,
-	["runeforgePowerID"] = function(group, value)
-		CacheField(group, "runeforgePowerID", value);
+	["runeforgepowerID"] = function(group, value)
+		CacheField(group, "runeforgepowerID", value);
 	end,
 	["rwp"] = function(group, value)
 		CacheField(group, "rwp", value);
@@ -983,33 +982,13 @@ local function SearchForObject(field, id, require, allowMultiple)
 			fcacheObj = fcache[i];
 			-- field matching id
 			if fcacheObj[field] == id then
-				if fcacheObj.key == field then
-					-- with keyed-field matching key
-					keyMatch[#keyMatch + 1] = fcacheObj
-				else
 					-- with field matching id
 					fieldMatch[#fieldMatch + 1] = fcacheObj
-				end
 			end
 		end
 	else
 		-- No require
-		for i=1,count,1 do
-			fcacheObj = fcache[i];
-			-- field matching id
-			if fcacheObj[field] == id then
-				if fcacheObj.key == field then
-					-- with keyed-field matching key
-					keyMatch[#keyMatch + 1] = fcacheObj
-				else
-					-- with field matching id
-					fieldMatch[#fieldMatch + 1] = fcacheObj
-				end
-			else
-				-- basic group related to search
-				match[#match + 1] = fcacheObj
-			end
-		end
+		match = fcache
 	end
 	-- app.PrintDebug("SFO",field,id,require,"?>",#keyMatch,#fieldMatch,#match)
 	local results = (#keyMatch > 0 and keyMatch) or (#fieldMatch > 0 and fieldMatch) or (#match > 0 and match) or app.EmptyTable
@@ -1183,7 +1162,7 @@ local function GenerateSourceHash(group)
 	if parent then
 		return GenerateSourceHash(parent) .. ">" .. (group.hash or group.name or group.text);
 	else
-		return group.hash or group.name or group.text;
+		return group.hash or group.name or group.text or "NOHASH"..app.UniqueCounter.SourceHash
 	end
 end
 local function GenerateSourcePath(group, l)

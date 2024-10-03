@@ -1,24 +1,36 @@
 # DBM - Core
 
-## [11.0.13](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/11.0.13) (2024-09-17)
-[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/11.0.11...11.0.13) [Previous Releases](https://github.com/DeadlyBossMods/DeadlyBossMods/releases)
+## [11.0.20](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/11.0.20) (2024-10-02)
+[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/11.0.19...11.0.20) [Previous Releases](https://github.com/DeadlyBossMods/DeadlyBossMods/releases)
 
-- disable that last minute change for now, it has load order issues  
-- bump alpha  
-- Add option to disable built in music options. Closes https://github.com/DeadlyBossMods/DBM-SoundEventsPack/issues/5  
-- Update localization.ru.lua (#1244)  
-- Update koKR (#1243)  
-- Fixed a few places short names weren't being applied.  
-- Queen Ansurek Update:  
-     - Improved Wrest a little bit  
-     - Changed Reactive Toxin target message to give count and no longer be filtered  
-     - Added icon setting and yell ptions to reactive toxin that support both matching BW or doing it ascended method or disabling globally  
-     - Changed icons for Royal Condemnation to be more compatible  
-     - Added queens summon icon marking using remaining icons  
-     - Fixed bug where Gloom Eruption announce/timer was started in wrong spot.  
-    Blood Twister Ovinax Update:  
-     - Fixed variable names that caused raid leader overide to not be set correctly.  
-    Both of above:  
-     - Icon dropdown override menus are now categorized as "icon" options and not "misc" so they are grouped properly if user is using the "show icons as separate category" option.  
-- messaging tweaks  
+- Update several changed timers on silken court in LFR, normal, and heroic difficuty  
+    mythic has changes too but i only got one pubic log that's 30 seconds log (and in that log already had one timer that's 3 sec different). I'll have to wait for more mythic logs to finish fixing that.  
+    Closes https://github.com/DeadlyBossMods/DeadlyBossMods/issues/1302 and closes https://github.com/DeadlyBossMods/DeadlyBossMods/issues/1297  
+- pre new tag  
+- Create localization.br.lua (#1299)  
+- Create localization.es.lua (#1298)  
+- Update localization.fr.lua (#1296)  
+- Update localization.es.lua (#1295)  
+- Update localization.ru.lua (#1294)  
+- Update localization.ru.lua (#1293)  
+- Update localization.ru.lua (#1292)  
+- Create localization.fr.lua (#1300)  
+- Update DBM-Affixes\_Mainline.toc (#1301)  
+- more fixes that were causing this weeks world boss not to work  
+- forgot to hit save on this one  
+- fix loading and detection of kordac  
+- push mythic ansurek mod updates  
+- Improve audio for first boss on mythic to clarify group 1 and group 2 soaks via voice packs.  
+    in addition, will no longer tell players with debuff from first soak to soak the second.  
+- Update koKR (#1290)  
+- Core: Delete unused NilWarning code  
+    It's impossible* to get the different announce Show() arguments into the type system in a reasonable manner if the variable can be a NilWarning  
+    *without a LuaLS plugin which I don't want to write  
+- Tests: Fix test generation when you pull while already in combat  
+- UI: Show SoD stats as Normal/Heroic/Mythic without player count  
+- UI: Add option to anonymize imported tests  
+- UI: Minor UX improvements for test import dropdowns  
+    Auto-select recently imported tests, auto-select first log that contains an encounter  
+- Change frontal text to include both colors AND boss names so they give context to all difficulties  
+- Fix delve difficulty check for zekvir  
 - bump alpha  

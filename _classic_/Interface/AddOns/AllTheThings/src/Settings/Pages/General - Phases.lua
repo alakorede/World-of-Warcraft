@@ -81,7 +81,7 @@ for i,o in ipairs({ { 11, 0, 0 }, {1101, spacing, -vspacing }, { 12, 0, -vspacin
 	filter:SetATTTooltip(reason[2] .. (reason[6] or ""));
 	filter:SetPoint("LEFT", ClassicPhasesLabel, "LEFT", o[2], 0);
 	filter:SetPoint("TOP", last, "BOTTOMLEFT", 0, yoffset);
-	filter:SetScale(o[2] > 0 and 0.8 or 1);
+	filter:SetScale(o[2] > 0 and 0.6 or 0.8);
 	filter.u = u;
 	last = filter;
 end
@@ -102,7 +102,7 @@ for i,o in ipairs({ { 17, 0, 0 }, {1701, spacing, -vspacing }, { 18, 0, -vspacin
 	filter:SetATTTooltip(reason[2] .. (reason[6] or ""));
 	filter:SetPoint("LEFT", TBCPhasesLabel, "LEFT", o[2], 0);
 	filter:SetPoint("TOP", last, "BOTTOMLEFT", 0, yoffset);
-	filter:SetScale(o[2] > 0 and 0.8 or 1);
+	filter:SetScale(o[2] > 0 and 0.6 or 0.8);
 	filter.u = u;
 	last = filter;
 end
@@ -123,7 +123,7 @@ for i,o in ipairs({ { 30, 0, 0 }, {3001, spacing, -vspacing }, { 31, 0, -vspacin
 	filter:SetATTTooltip(reason[2] .. (reason[6] or ""));
 	filter:SetPoint("LEFT", WrathPhasesLabel, "LEFT", o[2], 0);
 	filter:SetPoint("TOP", last, "BOTTOMLEFT", 0, yoffset);
-	filter:SetScale(o[2] > 0 and 0.8 or 1);
+	filter:SetScale(o[2] > 0 and 0.6 or 0.8);
 	filter.u = u;
 	last = filter;
 end
@@ -136,7 +136,7 @@ CataclysmPhasesLabel:SetText("|CFFAAFFAACataclysm Phases|r");
 CataclysmPhasesLabel:Show();
 
 last, yoffset = CataclysmPhasesLabel, -4;
-for i,o in ipairs({ { 40, 0, 0 }, {4001, spacing, -vspacing }, { 41, 0, -vspacing }, { 42, 0, -vspacing }, }) do
+for i,o in ipairs({ { 40, 0, 0 }, {4001, spacing, -vspacing }, {4002, spacing }, { 41, 0, -vspacing }, { 42, 0, -vspacing }, }) do
 	local u = o[1];
 	yoffset = o[3] or 6;
 	local reason = conditions[u];
@@ -144,7 +144,7 @@ for i,o in ipairs({ { 40, 0, 0 }, {4001, spacing, -vspacing }, { 41, 0, -vspacin
 	filter:SetATTTooltip(reason[2] .. (reason[6] or ""));
 	filter:SetPoint("LEFT", CataclysmPhasesLabel, "LEFT", o[2], 0);
 	filter:SetPoint("TOP", last, "BOTTOMLEFT", 0, yoffset);
-	filter:SetScale(o[2] > 0 and 0.8 or 1);
+	filter:SetScale(o[2] > 0 and 0.6 or 0.8);
 	filter.u = u;
 	last = filter;
 end

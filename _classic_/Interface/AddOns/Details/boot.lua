@@ -19,8 +19,8 @@
 		local addonName, Details222 = ...
 		local version, build, date, tvs = GetBuildInfo()
 
-		Details.build_counter = 13066
-		Details.alpha_build_counter = 13066 --if this is higher than the regular counter, use it instead
+		Details.build_counter = 13096
+		Details.alpha_build_counter = 13096 --if this is higher than the regular counter, use it instead
 		Details.dont_open_news = true
 		Details.game_version = version
 		Details.userversion = version .. " " .. Details.build_counter
@@ -119,7 +119,20 @@
 		local storage = {
 			DiffNames = {"normal", "heroic", "mythic", "raidfinder", "10player", "25player", "10playerheroic", "25playerheroic", "raidfinderclassic", "raidfindertimewalking", "timewalking"},
 			DiffNamesHash = {normal = 14, heroic = 15, mythic = 16, raidfinder = 17, ["10player"] = 3, ["25player"] = 4, ["10playerheroic"] = 5, ["25playerheroic"] = 6, raidfinderclassic = 7, raidfindertimewalking = 151, timewalking = 33},
-			DiffIdToName = {[14] = "normal", [15] = "heroic", [16] = "mythic", [17] = "raidfinder", [3] = "10player", [4] = "25player", [5] = "10playerheroic", [6] = "25playerheroic", [7] = "raidfinderclassic", [151] = "raidfindertimewalking", [33] = "timewalking"},
+			DiffIdToName = {
+				[14] = "normal",
+				[15] = "heroic",
+				[16] = "mythic",
+				[17] = "raidfinder",
+				[3] = "10player",
+				[4] = "25player",
+				[5] = "10playerheroic",
+				[6] = "25playerheroic",
+				[7] = "raidfinderclassic",
+				[8] = "mythicdungeon",
+				[151] = "raidfindertimewalking",
+				[33] = "timewalking"
+			},
 			IsDebug = false
 		}
 		Details222.storage = storage
@@ -341,6 +354,8 @@
 							return
 						end
 
+						do return end
+
 						--if a context is found, finishes it before a new one is created
 						if (self.bHasContext) then
 							--discard the context
@@ -377,6 +392,14 @@
 
 						--will ba called when the context finishes, in this case when the SCENARIO_COMPLETED event is triggered
 						local fOnContextFinished = function()
+							--check if this is not a mythic+ run
+							if (C_ChallengeMode.GetActiveChallengeMapID() or C_ChallengeMode.GetActiveKeystoneInfo() or C_ChallengeMode.IsChallengeModeActive()) then
+								print("did not start as this is a m+ run")
+								return
+							else
+								print("this is not a m+ run")
+							end
+
 							---@type combat[]
 							local interestCombats = {}
 							--get all segments
@@ -485,7 +508,7 @@
                 end
             end
         end
-        
+
         if (C_UnitAuras and C_UnitAuras.GetAuraDataByIndex) then
 			Details222.UnitBuff = function(unitToken, index, filter)
 				local auraData = UnitBuff(unitToken, index, filter)
@@ -1677,11 +1700,11 @@ Made Details! survive for another expansion (Details! Team).
                                 if not (leftText and rightText) then
                                     break
                                 end
-                                
+
                                 outputTable[#outputTable+1] = {left = leftText:GetText(), right = rightText:GetText()}
                             end
-                            
-                            return Details:Dump(outputTable)                            
+
+                            return Details:Dump(outputTable)
                         end
 					end
 				end

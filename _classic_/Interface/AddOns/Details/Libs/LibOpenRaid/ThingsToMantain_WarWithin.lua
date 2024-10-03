@@ -736,6 +736,7 @@ do
 			[408233] = {cooldown = 60,	duration = 0,	specs = {1473},			talent = false,	charges = 1,	class = "EVOKER",	type = 5}, --Bestow Weyrnstone
 			[409311] = {cooldown = 12,	duration = 0,	specs = {1473},			talent = false,	charges = 1,	class = "EVOKER",	type = 1}, --Prescience
 			--[412710] = {cooldown = 0,	duration = 0,	specs = {1473},			talent = false,	charges = 1,	class = "EVOKER",	type = 0}, --Timelessness
+			[443328] = {cooldown = 30,	duration = 0,	specs = {1468, 1467}, 		talent = false, charges = 2,    class = "EVOKER", 	type = 3}, --Engulf
 		}
 
 		--list of all crowd control spells
@@ -999,6 +1000,7 @@ do
 			[370564] = 370537, -- Evoker Stasis
 			--[414658] = 45438, -- Ice Block with the talent Ice Cold
 			--[414658] = 45438, -- Ice Block with the talent IceCold
+			[406971] = 372048, -- Oppressing Roar, when talented
 		}
 		LIB_OPEN_RAID_MULTI_OVERRIDE_SPELLS = {
 			[106898] = {106898,77764,77761},

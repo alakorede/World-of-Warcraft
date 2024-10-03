@@ -2136,3 +2136,23 @@ Change Log:
 * Added SL spells for Mists of Tirna Scithe
 * Added BFA spells for Siege of Boralus
 
+5.12.5
+* Updated ToC and UI updates for WoW Cataclysm 4.4.1
+* Added The War Within spells (world)
+* Added Cataclysm spells for Grim Batol (Mythic)
+* Added TWW spells for TWW Delves 
+* Added TWW spells for Nerub-ar Palace
+
+5.13
+* Disabled sliders temporarily for WoW Classic until a replacement can be found
+* Updated ToC for WoW Classic 1.15.4
+* Removed Pre-Dragonflight UI management
+* Added TWW spells for Nerub-ar Palace
+
+5.13.1
+* Updated for patch 11.0.5 (PTR)
+* Added The War Within spells (world)
+* Added TWW spells for City of Threads
+* Added TWW spells for The Dawnbreaker
+* Added TWW spells for Nerub-ar Palace
+

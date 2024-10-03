@@ -42,6 +42,8 @@ CL.NORTHEAST						= "북동쪽"
 CL.SOUTHEAST						= "남동쪽"
 CL.SOUTHWEST						= "남서쪽"
 CL.NORTHWEST						= "북서쪽"
+CL.OUTSIDE							= "바깥쪽"
+CL.INSIDE							= "안쪽"
 CL.SHIELD							= "보호막"--Usually auto localized but kept around in case it needs to be used in a place that's not auto localized such as MoveTo or Use alert
 CL.PILLAR					= "기둥"
 CL.SHELTER					= "안전한 곳"
@@ -101,3 +103,12 @@ CL.MARKS							= "징표"--Plural of above
 CL.CURSE							= "저주"
 CL.CURSES							= "저주"
 CL.SWIRLS							= "회오리"--Plural of Swirl
+CL.CHARGES							= "돌진"--Context, this is plural of boss "charging to players" and NOT bomb charges
+CL.CIRCLES							= "동그라미"--As in circles on ground that players need to move out of or need to drop off
+
+-- Colors
+CL.BLACK	= "검은용"
+CL.BLUE		= "푸른용"
+CL.GREEN	= "녹색용"
+CL.RED		= "붉은용"
+CL.BRONZE	= "청동용"
