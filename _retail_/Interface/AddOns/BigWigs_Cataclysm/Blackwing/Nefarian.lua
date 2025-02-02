@@ -32,7 +32,7 @@ local empowerLine = 9
 local L = mod:GetLocale()
 if L then
 	L.discharge = "Discharge"
-	L.stage3_yell_trigger = "I have tried to be an accommodating host"
+	L.stage3_yell_trigger = "KILL YOU ALL" -- I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!
 	L.too_close = "Dragons are too close"
 	L["77939_icon"] = "spell_nature_lightning"
 end
@@ -318,7 +318,7 @@ end
 function mod:ExplosiveCindersRemoved(args)
 	if self:Me(args.destGUID) then
 		self:CancelSayCountdown(args.spellId)
-		self:StopBar(args.spellName, args.destName)
+		self:StopBar(CL.cast:format(CL.explosion))
 		self:PersonalMessage(args.spellId, "removed", CL.bomb)
 	end
 end

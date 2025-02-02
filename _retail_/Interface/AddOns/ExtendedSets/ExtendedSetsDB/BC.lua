@@ -66,11 +66,11 @@ local db = {
 {"Bold","","Dungeon (BC)(Set 2)",35,20000,{11923,12078,12191,12327,12418,13033,13034,}},
 {"Courage","","Dungeon (BC)(Set 2)",35,20000,{12510,12522,12571,12573,12582,12594,12695,12194,}},
 
-{"Righteous","","Dungeon (BC)(Set 3)",35,20000,{11963,12030,12098,12325,12369,13048,13049,}},
-{"Crusader's Ornamented","","Dungeon (BC)(Set 3)",35,20000,{16472,16471,16473,16474,16475,17064,}},
+--{"Righteous","","Dungeon (BC)(Set 3)",35,20000,{11963,12030,12098,12325,12369,13048,13049,}},
+--{"Crusader's Ornamented","","Dungeon (BC)(Set 3)",35,20000,{16472,16471,16473,16474,16475,17064,}},
 
-{"Iron Guardian","","Dungeon (BC)(Set 4)",35,20000,{9429,9434,9519,9528,9570,9575,10667,}},
-{"Wildguard","","Dungeon (BC)(Set 4)",35,20000,{14333,14335,14336,}},
+{"Iron Guardian","","Dungeon (BC)(Set 3)",35,20000,{9429,9434,9519,9528,9570,9575,10667,}},
+{"Wildguard","","Dungeon (BC)(Set 3)",35,20000,{14333,14335,14336,}},
 
 --Dungeon Mail
 {"Shamblehide","","Dungeon (BC)(Set 1)",68,20000,{9421,9433,9516,9522,9565,9577,10653,11884,}},
@@ -85,31 +85,31 @@ local db = {
 {"Mistshroud","","Dungeon (BC)(Set 4)",68,20000,{14481,14482,14483,14484,14485,14486,}},
 {"Felstalker","","Dungeon (BC)(Set 4)",68,20000,{10554,10555,10556,12296,35709,}},
 
-{"Tidefury","","Dungeon (BC)(Set 5)",68,20000,{{11944,16135},12077,12147,12348,12417,13039,13040,13038}},
-{"Seer's","","Dungeon (BC)(Set 5)",68,20000,{16462,{16461,12687},{16464,18047},16463,16465,}},
+--{"Tidefury","","Dungeon (BC)(Set 5)",68,20000,{{11944,16135},12077,12147,12348,12417,13039,13040,13038}},
+--{"Seer's","","Dungeon (BC)(Set 5)",68,20000,{16462,{16461,12687},{16464,18047},16463,16465,}},
 
 --Dungeon Leather
 {"Assassination","","Dungeon (BC)(Set 1)",3592,20000,{11943,12059,12146,12326,12458,13042,13043,}},
 {"Opportunist's","","Dungeon (BC)(Set 1)",3592,20000,{16444,16441,16442,16443,16445,21345,12408,}},
+{"Wastewalker","","Dungeon (BC)(Set 1)",3592,20000,{11960,12048,12096,12362,12408,}},
 
-{"Wastewalker","","Dungeon (BC)(Set 2)",3592,20000,{11960,12048,12072,12096,12342,12362,12408,}},
-{"Moonglade","","Dungeon (BC)(Set 2)",3592,20000,{11916,12028,12118,12324,12416,13057,13058,}},
+--{"Moonglade","","Dungeon (BC)(Set 2)",3592,20000,{11916,12028,12118,12324,12416,13057,13058,}},
 
-{"Nightwatcher","","Dungeon (BC)(Set 3)",3592,20000,{9531,9566,9569,11880,11886,}},
+{"Nightwatcher","","Dungeon (BC)(Set 2)",3592,20000,{9531,9566,9569,11880,11886,}},
 
 --Dungeon Cloth
 {"Divine Authority","","Dungeon (BC)(Set 1)",400,20000,{14303,9537,11881,11882,11896,}},
 
-{"Mana-Etched","","Dungeon (BC)(Set 2)",400,20000,{11913,12071,12101,12145,12313,12315,12451,}},
-{"Mooncloth","","Dungeon (BC)(Set 2)",400,20000,{16137,16416,16417,16418,16419,16420,}},
-{"Hallowed","","Dungeon (BC)(Set 2)",400,20000,{11964,12058,12120,12347,12457,13045,13046,}},
+--{"Mana-Etched","","Dungeon (BC)(Set 2)",400,20000,{11913,12071,12101,12145,12313,12315,12451,}},
+--{"Mooncloth","","Dungeon (BC)(Set 2)",400,20000,{16137,16416,16417,16418,16419,16420,}},
+--{"Hallowed","","Dungeon (BC)(Set 2)",400,20000,{11964,12058,12120,12347,12457,13045,13046,}},
 
-{"Arcane Rage","","Dungeon (BC)(Set 3)",400,20000,{9423,9515,9532,9535,9564,9579,10668,}},
+{"Arcane Rage","","Dungeon (BC)(Set 2)",400,20000,{9423,9515,9532,9535,9564,9579,10668,}},
 
-{"Oblivion","","Dungeon (BC)(Set 4)",400,20000,{11965,12060,12168,12349,12459,13036,13037,}},
-{"Fel-Tinged","","Dungeon (BC)(Set 4)",400,20000,{76766,21329,}},
+--{"Oblivion","","Dungeon (BC)(Set 4)",400,20000,{11965,12060,12168,12349,12459,13036,13037,}},
+--{"Fel-Tinged","","Dungeon (BC)(Set 4)",400,20000,{76766,21329,}},
 
-{"Incanter's","","Dungeon (BC)(Set 5)",400,20000,{11942,12029,12097,12346,12368,13051,13052,}},
+{"Incanter's","","Dungeon (BC)(Set 3)",400,20000,{11942,12029,12097,12346,12368,13051,13052,}},
 
 --Leveling Plate
 {"Bloodscale","","Leveling (BC)(Set 1)",35,19999,{9967,9968,9969,9970,9972,9974,}},
@@ -179,6 +179,20 @@ local db = {
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
+{4132,16456,12687},--TBC Dungeon Mail Red Chest/Robe
+{4132,16464,18047},--TBC Dungeon Mail Red pants/skirt
+{4130,11944,16135},--TBC Dungeon Mail blue gloves
+{4126,16450,21323},--TBC Dungeon Leather Red Chest/Robe
+}
+
+local altLabelAppendDB = {
+[4137] = " (Set 1)",
+[4141] = " (Set 2)",
+[4142] = " (Set 2)",
+[4140] = " (Set 1)",
+[4138] = " (Set 1)",
+[4139] = " (Set 1)",
+[4143] = " (Set 2)",
 }
 
 function AddToCollection()
@@ -207,11 +221,32 @@ function AddToCollection()
     for j=1,#db[i][6] do 
       if type(db[i][6][j]) == "table" then
         if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-          data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-          data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
-          data.altSourceNumbers[db[i][6][j][1]] = 1;
+        local isKnown = false;
+        --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).visualID)) do
+        for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j][1]))) do
+          if C_TransmogCollection.PlayerKnowsSource(b) then
+            isKnown = true;
+            break;
+          end
+        end
+        data.sources[db[i][6][j][1]] = isKnown;
+          data.altSources[db[i][6][j][1]] = {}
+        for k=1,#db[i][6][j] do
+          app.AppID(db[i][6][j][k])
+          tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
+        end
+        --data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+        data.altSourceNumbers[db[i][6][j][1]] = 1;
       else
-        data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j]] = isKnown;
       end
     end
     
@@ -225,6 +260,7 @@ end
 
 app.ExpandedCallbacks[expansionID] = AddToCollection;
 app.altAppearancesDB[expansionID] = altAppearancesDB;
+app.altLabelAppendDB[expansionID] = altLabelAppendDB;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};

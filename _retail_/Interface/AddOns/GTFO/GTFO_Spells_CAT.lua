@@ -1357,12 +1357,17 @@ GTFO.SpellID["92468"] = {
 };
 
 GTFO.SpellID["92987"] = {
-	--desc = "Dark Sludge (Maloriak, BWD 10H)";
+	--desc = "Dark Sludge (Maloriak, BWD 10H Old)";
 	sound = 1;
 };
 
 GTFO.SpellID["92988"] = {
-	--desc = "Dark Sludge (Maloriak, BWD 25H)";
+	--desc = "Dark Sludge (Maloriak, BWD 25H Old)";
+	sound = 1;
+};
+
+GTFO.SpellID["92930"] = {
+	--desc = "Dark Sludge (Maloriak, BWD New)";
 	sound = 1;
 };
 
@@ -2719,6 +2724,44 @@ GTFO.SpellID["110095"] = {
 GTFO.SpellID["108787"] = {
 	--desc = "Parasitic Backlash (Deathwing, DS H)";
 	sound = 4;
+};
+
+--- *******************
+--- * Grim Batol (M+) *
+--- *******************
+
+GTFO.SpellID["451614"] = {
+  --desc = "Twilight Ember (Twilight Destroyer)";
+  sound = 1;
+};
+
+GTFO.SpellID["448953"] = {
+  --desc = "Rumbling Earth (General Umbriss)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["449536"] = {
+  --desc = "Molten Pool (Forgemaster Throngus)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["462220"] = {
+  --desc = "Blazing Shadowflame (Twilight Flamerender)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["456773"] = {
+  --desc = "Twilight Wind (Valiona)";
+  ignoreApplication = true;
+  sound = 1;
+};
+
+GTFO.SpellID["461513"] = {
+  --desc = "Shadow Gale (Erudax)";
+  sound = 1;
 };
 
 end

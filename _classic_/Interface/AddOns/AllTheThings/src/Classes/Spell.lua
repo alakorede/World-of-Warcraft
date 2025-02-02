@@ -19,6 +19,10 @@ local IsSpellKnown, IsPlayerSpell, GetNumSpellTabs, GetSpellTabInfo, IsSpellKnow
 	= IsSpellKnown, IsPlayerSpell, GetNumSpellTabs, GetSpellTabInfo, IsSpellKnownOrOverridesKnown
 
 -- Consolidates some spell checking
+---@param spellID number
+---@param rank? number
+---@param ignoreHigherRanks? boolean
+---@return boolean isKnown
 local IsSpellKnownHelper = function(spellID, rank, ignoreHigherRanks)
 	if IsPlayerSpell(spellID) or IsSpellKnown(spellID) or IsSpellKnown(spellID, true)
 		or IsSpellKnownOrOverridesKnown(spellID) or IsSpellKnownOrOverridesKnown(spellID, true) then
@@ -27,10 +31,10 @@ local IsSpellKnownHelper = function(spellID, rank, ignoreHigherRanks)
 	if spellID == 390631 and IsQuestFlaggedCompleted(66444) then	-- Ottuk Taming returning false for the above functions
 		return true;
 	end
-	if spellID == 241857 or spellID == 231437 and IsQuestFlaggedCompleted(46319) then	-- Lunarwing returning false for the above functions
+	if (spellID == 241857 or spellID == 231437) and IsQuestFlaggedCompleted(46319) then	-- Lunarwing returning false for the above functions
 		return true;
 	end
-	if spellID == 148972 or spellID == 148970 and IsQuestFlaggedCompleted(32325) then	-- Green Dread/Fel-Steed returning false for the above functions
+	if (spellID == 148972 or spellID == 148970) and IsQuestFlaggedCompleted(32325) then	-- Green Dread/Fel-Steed returning false for the above functions
 		return true;
 	end
 end
@@ -141,6 +145,7 @@ end
 do
 	local KEY, CACHE = "spellID", "Spells"
 	app.CreateSpell = app.CreateClass("Spell", KEY, {
+		CACHE = function() return CACHE end,
 		_cachekey = function(t)
 			return t[KEY];
 		end,
@@ -153,7 +158,6 @@ do
 		icon = function(t)
 			return cache.GetCachedField(t, "icon", CacheInfo) or 136243;	-- Trade_engineering
 		end,
-		trackable = app.ReturnTrue,
 		saved = function(t)
 			local id = t[KEY];
 			-- character known
@@ -161,11 +165,7 @@ do
 		end,
 		collectible = app.ReturnFalse,
 		collected = function(t)
-			local id = t[KEY];
-			-- character collected
-			if app.IsCached(CACHE, id) then return 1; end
-			-- account-wide collected
-			if app.IsAccountTracked(CACHE, id) then return 2; end
+			return app.TypicalCharacterCollected(CACHE, t[KEY])
 		end,
 		skillID = function(t)
 			return t.requireSkill;
@@ -211,14 +211,21 @@ do
 	app.AddEventHandler("OnRefreshCollections", function()
 		local state
 		local saved, none = {}, {}
+		local IsAccountCached = app.IsAccountCached
 		for id,_ in pairs(app.GetRawFieldContainer(KEY)) do
-			state = IsSpellKnownHelper(id) or CheckRecipeLearned(id)
-			if state ~= nil then
-				saved[id] = true
+			-- Don't cache other cached spells within Spells, they're handled separately
+			if not IsAccountCached("Mounts", id) then
+				state = IsSpellKnownHelper(id) or CheckRecipeLearned(id)
+				if state ~= nil then
+					saved[id] = true
+				else
+					-- for now, don't uncache learned Spells for the character...
+					-- Recipes are weird, and can only properly be refreshed via a TradeSkill window (without crashing the game anyway...)
+					-- none[id] = true
+				end
 			else
-				-- for now, don't uncache learned Spells for the character...
-				-- Recipes are weird, and can only properly be refreshed via a TradeSkill window (without crashing the game anyway...)
-				-- none[id] = true
+				-- Remove other Spells
+				none[id] = true
 			end
 		end
 		-- Character Cache
@@ -256,11 +263,7 @@ do
 			-- 	);
 		end,
 		collected = function(t)
-			local id = t[KEY];
-			-- character collected
-			if app.IsCached(CACHE, id) then return 1; end
-			-- account-wide collected
-			if app.Settings.AccountWide[SETTING] and app.IsAccountCached(CACHE, id) then return 2; end
+			return app.TypicalCharacterCollected(CACHE, t[KEY], SETTING)
 		end,
 		b = function(t)
 			-- If not tracking Recipes Account-Wide, then pretend that every Recipe is BoP
@@ -289,9 +292,7 @@ do
 	-- saved vars handled by Spell
 	app.AddEventRegistration("NEW_RECIPE_LEARNED", function(spellID, rank, previousSpellID)
 		if spellID then
-			local spell = app.SearchForObject("spellID", spellID, "field")
-			app.SetCollected(spell, CACHE, spellID, true, SETTING)
-			app.UpdateRawID("spellID", spellID)
+			app.SetThingCollected("spellID", spellID, false, true)
 		end
 	end);
 end

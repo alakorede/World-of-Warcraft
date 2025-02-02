@@ -127,28 +127,27 @@ function MoveAny:InitMicroMenu()
 						end
 					)
 
-					if MoveAny:GetWoWBuild() == "RETAIL" and mb ~= HelpMicroButton and mb ~= MainMenuMicroButton then
-						hooksecurefunc(
-							mb,
-							"SetScale",
-							function(sel, scale)
-								if sel.ma_set_s then return end
-								sel.ma_set_s = true
-								if MoveAny:GetCVar("useUiScale") == "0" then
-									mb:SetScale(MAMenuBar:GetScale() / UIParent:GetScale())
-								else
-									mb:SetScale(MAMenuBar:GetScale())
-								end
-
-								sel.ma_set_s = false
-							end
-						)
-
+					if MoveAny:GetWoWBuild() == "RETAIL" then
 						hooksecurefunc(
 							MAMenuBar,
 							"SetScale",
 							function(sel, scale)
-								mb:SetScale(scale)
+								if InCombatLockdown() and sel:IsProtected() then return false end
+								if scale and type(scale) == "number" then
+									mb:SetScale(scale)
+								end
+							end
+						)
+
+						hooksecurefunc(
+							mb,
+							"SetScale",
+							function(sel, scale)
+								if InCombatLockdown() and sel:IsProtected() then return false end
+								if sel.ma_set_s then return end
+								sel.ma_set_s = true
+								mb:SetScale(MAMenuBar:GetScale())
+								sel.ma_set_s = false
 							end
 						)
 
@@ -163,17 +162,19 @@ function MoveAny:InitMicroMenu()
 						end
 					)
 
-					if MicroMenu then
+					if MicroMenu and MicroMenu.SetScaleAdjustment then
 						hooksecurefunc(
 							MicroMenu,
 							"SetScaleAdjustment",
 							function(sel)
 								if sel.ma_SetScaleAdjustment then return end
 								sel.ma_SetScaleAdjustment = true
-								MicroMenu:SetScaleAdjustment(1)
+								sel:SetScaleAdjustment(1)
 								sel.ma_SetScaleAdjustment = false
 							end
 						)
+
+						MicroMenu:SetScaleAdjustment(1)
 					end
 
 					mb:Show()

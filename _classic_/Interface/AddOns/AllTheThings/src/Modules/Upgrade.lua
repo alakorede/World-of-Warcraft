@@ -37,6 +37,8 @@ end)
 local BonusIDNextUnlock = {
 
 	-- 10.0.7
+	-- Primalist 1/3 (Vendor)
+	[9340] = 9344,
 	-- Primalist 1/3
 	[9342] = 9344,
 	-- Primalist 2/3
@@ -191,10 +193,10 @@ local BonusIDNextUnlock = {
 
 	-- Explorer
 	-- in case this will be needed but probably not
-	[10321] = 10325,
-	[10322] = 10325,
-	[10323] = 10325,
-	[10324] = 10325,
+	-- [10321] = 10325,
+	-- [10322] = 10325,
+	-- [10323] = 10325,
+	-- [10324] = 10325,
 	-- [10325] = 0,
 	-- [10326] = 0,
 	-- [10327] = 0,
@@ -202,40 +204,40 @@ local BonusIDNextUnlock = {
 
 	-- Adventurer
 	-- in case this will be needed but probably not
-	[10305] = 10309,
-	[10306] = 10309,
-	[10307] = 10309,
-	[10308] = 10309,
+	-- [10305] = 10309,
+	-- [10306] = 10309,
+	-- [10307] = 10309,
+	-- [10308] = 10309,
 	-- [10309] = 0,
 	-- [10310] = 0,
 	-- [10311] = 0,
 	-- [10312] = 0,
 
 	-- Veteran
-	[10341] = 10345,
-	[10342] = 10345,
-	[10343] = 10345,
-	[10344] = 10345,
+	-- [10341] = 10345,
+	-- [10342] = 10345,
+	-- [10343] = 10345,
+	-- [10344] = 10345,
 	-- [10345] = 0,
 	-- [10346] = 0,
 	-- [10347] = 0,
 	-- [10348] = 0,
 
 	-- Champion
-	[10313] = 10317,
-	[10314] = 10317,
-	[10315] = 10317,
-	[10316] = 10317,
+	-- [10313] = 10317,
+	-- [10314] = 10317,
+	-- [10315] = 10317,
+	-- [10316] = 10317,
 	-- [10317] = 0,
 	-- [10318] = 0,
 	-- [10319] = 0,
 	-- [10320] = 0,
 
 	-- Hero
-	[10329] = 10333,
-	[10330] = 10333,
-	[10331] = 10333,
-	[10332] = 10333,
+	-- [10329] = 10333,
+	-- [10330] = 10333,
+	-- [10331] = 10333,
+	-- [10332] = 10333,
 	-- [10333] = 0,
 	-- [10334] = 0,
 
@@ -246,29 +248,76 @@ local BonusIDNextUnlock = {
 	-- [10338] = 0,
 
 	-- Awakened 12
-	[10407] = 10411,
-	[10408] = 10411,
-	[10409] = 10411,
-	[10410] = 10411,
-	[10411] = 10415,
-	[10412] = 10415,
-	[10413] = 10415,
-	[10414] = 10415,
+	-- [10407] = 10411,
+	-- [10408] = 10411,
+	-- [10409] = 10411,
+	-- [10410] = 10411,
+	-- [10411] = 10415,
+	-- [10412] = 10415,
+	-- [10413] = 10415,
+	-- [10414] = 10415,
 
 	-- Awakened 14
-	[10490] = 10494,
-	[10491] = 10494,
-	[10492] = 10494,
-	[10493] = 10494,
-	[10494] = 10498,
-	[10495] = 10498,
-	[10496] = 10498,
-	[10497] = 10498,
+	-- [10490] = 10494,
+	-- [10491] = 10494,
+	-- [10492] = 10494,
+	-- [10493] = 10494,
+	-- [10494] = 10498,
+	-- [10495] = 10498,
+	-- [10496] = 10498,
+	-- [10497] = 10498,
+
+	-- 11.0
+	-- Adventurer
+	-- [10297] = 0,
+	-- [10296] = 0,
+	-- [10295] = 0,
+	-- [10294] = 0,
+	-- [10293] = 0,
+	-- [10292] = 0,
+	-- [10291] = 0,
+	-- [10290] = 0,
+
+	-- Veteran
+	[10281] = 10277,
+	[10280] = 10277,
+	[10279] = 10277,
+	[10278] = 10277,
+	-- [10277] = 0,
+	-- [10276] = 0,
+	-- [10275] = 0,
+	-- [10274] = 0,
+
+	-- Champion
+	[10273] = 10269,
+	[10272] = 10269,
+	[10271] = 10269,
+	[10270] = 10269,
+	-- [10269] = 0,
+	-- [10268] = 0,
+	-- [10267] = 0,
+	-- [10266] = 0,
+
+	-- Hero
+	[10265] = 10261,
+	[10264] = 10261,
+	[10263] = 10261,
+	[10262] = 10261,
+	-- [10261] = 0,
+	-- [10256] = 0,
+
+	-- Myth
+	-- [10260] = 0,
+	-- [10259] = 0,
+	-- [10258] = 0,
+	-- [10257] = 0,
+	-- [10298] = 0,
+	-- [10299] = 0,
 }
 -- Which bonusID nested upgrades are allowed to be nested under an already-upgraded listing
 local NestedUpgradesAllowedByBonusID = {
-	[10415] = true,	-- Awakened 12 3/3
-	[10498] = true,	-- Awakened 14 3/3
+	-- [10415] = true,	-- Awakened 12 3/3
+	-- [10498] = true,	-- Awakened 14 3/3
 }
 
 local function GetFirstValueAndKey(t, keys)
@@ -384,12 +433,21 @@ local function HasUpgrade(t)
 	return GetUpgrade(t, up);
 end
 
-local UpdateUpgradeGroup
-local function CheckIsUpgrade(t)
+local UpgradeSources = {}
+
+local function SetupUpgrade(t)
 	local upgrade = t._up or HasUpgrade(t);
 	if upgrade then
 		t.isUpgrade = upgrade.collectible and not upgrade.collected
-		-- app.PrintDebug("isUpgrade",t.link,t.isUpgrade)
+		-- app.PrintDebug("SetupUpgrade",t.isUpgrade,app:SearchLink(t),"=>",app:SearchLink(upgrade))
+		-- store the upgrade source for ad-hoc updates
+		local upgradehash = upgrade.hash
+		local sources = UpgradeSources[upgradehash]
+		if not sources then
+			sources = {}
+			UpgradeSources[upgradehash] = sources
+		end
+		sources[#sources + 1] = t
 		Runner.Run(DGU, t)
 		return
 	end
@@ -402,18 +460,45 @@ local function CheckIsUpgrade(t)
 		t.retries = (t.retries or 0) + 1
 		-- in situations where the upgrade item cannot be loaded/found quickly, we unfortunately will just give up
 		if (t.retries > 10) then return end
-		Runner.Run(UpdateUpgradeGroup, t)
+		Runner.Run(SetupUpgrade, t)
+	end
+end
+local function CheckIsUpgrade(t)
+	local upgrade = t._up or HasUpgrade(t);
+	if upgrade then
+		t.isUpgrade = upgrade.collectible and not upgrade.collected
+		-- app.PrintDebug("CheckIsUpgrade",t.isUpgrade,app:SearchLink(t),"=>",app:SearchLink(upgrade))
+		Runner.Run(DGU, t)
+		return
+	end
+	-- if it had no upgrade and no link, it isn't cached in game which means
+	-- blizz returns wrong data in some appearance API calls. very nice.
+	-- queue this group up to try again since we are only running this logic on groups which we *know*
+	-- have upgrades
+	if IsRetrieving(t.link) then
+		-- app.PrintDebug("re-try upgrade",t.hash,t.link)
+		t.retries = (t.retries or 0) + 1
+		-- in situations where the upgrade item cannot be loaded/found quickly, we unfortunately will just give up
+		if (t.retries > 10) then return end
+		Runner.Run(CheckIsUpgrade, t)
 	end
 end
 
-UpdateUpgradeGroup = function(ref)
-	-- app.PrintDebug("Upgrade Update",ref.link)
-	CheckIsUpgrade(ref)
+local function OnSearchResultUpdate(t)
+	-- app.PrintDebug("UpdateUpgradeGroup",app:SearchLink(t))
+	local sources = UpgradeSources[t.hash]
+	if not sources then return end
+	for _,upgradeSource in ipairs(sources) do
+		-- app.PrintDebug("UpdateUpgradeGroup.source",app:SearchLink(upgradeSource))
+		CheckIsUpgrade(upgradeSource)
+	end
 end
+app.AddEventHandler("OnSearchResultUpdate", OnSearchResultUpdate)
+
 local function UpdateUpgradeGroups(refs)
 	-- app.PrintDebug("Upgrade Updates",#refs)
 	for i=1,#refs do
-		CheckIsUpgrade(refs[i])
+		SetupUpgrade(refs[i])
 	end
 end
 local function UpdateStart()
@@ -439,7 +524,8 @@ local function UpdateUpgrades()
 		Runner.Run(UpdateStart)
 	end
 
-	-- Get all itemIDAsCost entries
+	wipe(UpgradeSources)
+	-- Get all up entries
 	for up,refs in pairs(SearchForFieldContainer("up")) do
 		Runner.Run(UpdateUpgradeGroups, refs)
 	end

@@ -2,7 +2,7 @@
 	Elvui Plugin to reskin new/changed UI
 ]]
 
-if not IsAddOnLoaded("ElvUI") then return end
+if not C_AddOns.IsAddOnLoaded("ElvUI") then return end
 local addonName, addon = ...
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
@@ -169,8 +169,8 @@ local function SkinTransmogFrames()
 	DetailsFrame.BW_LinkSetButton:SetSize(20,20)
 	DetailsFrame.BW_OpenDressingRoomButton:SetSize(20,20)
 
-	S:HandleButton(BetterWardrobeCollectionFrame.BW_SetsHideSlotButton)
-	BetterWardrobeCollectionFrame.BW_SetsHideSlotButton:SetSize(20,20)
+	S:HandleButton(BetterWardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.BW_SetsHideSlotButton)
+	BetterWardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.BW_SetsHideSlotButton:SetSize(20,20)
 
 	BetterWardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 	BetterWardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')

@@ -4,38 +4,32 @@
 ---
 --- This file is part of addon Kaliel's Tracker.
 
-local _, KT = ...
+---@type KT
+local addonName, KT = ...
 
 -- Constants
-KT.BLIZZARD_MODULES = {
-    "KT_SCENARIO_CONTENT_TRACKER_MODULE",
-    "KT_UI_WIDGET_TRACKER_MODULE",
-    "KT_CAMPAIGN_QUEST_TRACKER_MODULE",
-    "KT_QUEST_TRACKER_MODULE",
-    "KT_ADVENTURE_TRACKER_MODULE",
-    "KT_BONUS_OBJECTIVE_TRACKER_MODULE",
-    "KT_WORLD_QUEST_TRACKER_MODULE",
-    "KT_ACHIEVEMENT_TRACKER_MODULE",
-    "KT_PROFESSION_RECIPE_TRACKER_MODULE",
-    "KT_MONTHLY_ACTIVITIES_TRACKER_MODULE"
+KT.MEDIA_PATH = "Interface\\AddOns\\"..addonName.."\\Media\\"
+
+KT.MODULES = {
+    "KT_ScenarioObjectiveTracker",
+    "KT_UIWidgetObjectiveTracker",
+    "KT_CampaignQuestObjectiveTracker",
+    "KT_QuestObjectiveTracker",
+    "KT_AdventureObjectiveTracker",
+    "KT_AchievementObjectiveTracker",
+    "KT_MonthlyActivitiesObjectiveTracker",
+    "KT_ProfessionsRecipeTracker",
+    "KT_BonusObjectiveTracker",
+    "KT_WorldQuestObjectiveTracker"
 }
 
-KT.ALL_BLIZZARD_MODULES = {
-    -- Don't change the order!
-    "KT_QUEST_TRACKER_MODULE",
-    "KT_CAMPAIGN_QUEST_TRACKER_MODULE",
-    "KT_ACHIEVEMENT_TRACKER_MODULE",
-    "KT_BONUS_OBJECTIVE_TRACKER_MODULE",
-    "KT_WORLD_QUEST_TRACKER_MODULE",
-    "KT_SCENARIO_CONTENT_TRACKER_MODULE",
-    "KT_SCENARIO_TRACKER_MODULE",
-    "KT_UI_WIDGET_TRACKER_MODULE",
-    "KT_PROFESSION_RECIPE_TRACKER_MODULE",
-    "KT_MONTHLY_ACTIVITIES_TRACKER_MODULE",
-    "KT_ADVENTURE_TRACKER_MODULE"
-}
+KT.EXPANSION = EXPANSION_NAME10
 
 KT.QUEST_DASH = "- "
+KT_QUEST_DASH = KT.QUEST_DASH
+KT.RETRIEVING_DATA = RETRIEVING_DATA.."..."
+
+KT.TRACKER_DEFAULT_COLOR = { r = 0.93, g = 0.76, b = 0 }
 
 KT.PLAYER_FACTION_COLORS = {
     Horde = "ff0000",
@@ -64,6 +58,21 @@ KT.WORLD_QUEST_REWARD_TYPE_FLAG_EQUIPMENT = 0x0010
 KT.WORLD_QUEST_REWARD_TYPE_FLAG_REPUTATION = 0x0020
 KT.WORLD_QUEST_REWARD_TYPE_FLAG_OTHERS = 0x10000
 
+KT.ICONS = {
+    MouseLeft = { atlas = "newplayertutorial-icon-mouse-leftbutton", width = 24, height = 28, offsetX = -1, offsetY = 6 },
+    MouseRight = { atlas = "newplayertutorial-icon-mouse-rightbutton", width = 24, height = 28, offsetX = -1, offsetY = 6 }
+}
+do
+    for _, info in pairs(KT.ICONS) do
+        if info.atlas then
+            local atlasInfo = C_Texture.GetAtlasInfo(info.atlas)
+            if atlasInfo then
+                info.markup = format("|A:%s:%d:%d:%d:%d|a", info.atlas, info.height, info.width, info.offsetX, info.offsetY)
+            end
+        end
+    end
+end
+
 -- Blizzard Constants
 KT_OBJECTIVE_TRACKER_COLOR["Header"] = { r = 1, g = 0.5, b = 0 }                 -- orange
 KT_OBJECTIVE_TRACKER_COLOR["Complete"] = { r = 0.1, g = 0.85, b = 0.1 }          -- green
@@ -74,6 +83,8 @@ KT_OBJECTIVE_TRACKER_COLOR["Label"] = { r = 0.5, g = 0.5, b = 0.5 }             
 KT_OBJECTIVE_TRACKER_COLOR["LabelHighlight"] = { r = 0.6, g = 0.6, b = 0.6 }     -- gray
 KT_OBJECTIVE_TRACKER_COLOR["Zone"] = { r = 0.1, g = 0.65, b = 1 }                -- blue
 KT_OBJECTIVE_TRACKER_COLOR["ZoneHighlight"] = { r = 0.3, g = 0.8, b = 1 }        -- blue
+KT_OBJECTIVE_TRACKER_COLOR["Inactive"] = GRAY_FONT_COLOR                         -- gray
+KT_OBJECTIVE_TRACKER_COLOR["InactiveHighlight"] = LIGHTGRAY_FONT_COLOR           -- gray
 KT_OBJECTIVE_TRACKER_COLOR["Header"].reverse = KT_OBJECTIVE_TRACKER_COLOR["HeaderHighlight"]
 KT_OBJECTIVE_TRACKER_COLOR["HeaderHighlight"].reverse = KT_OBJECTIVE_TRACKER_COLOR["Header"]
 KT_OBJECTIVE_TRACKER_COLOR["Complete"].reverse = KT_OBJECTIVE_TRACKER_COLOR["CompleteHighlight"]
@@ -84,7 +95,8 @@ KT_OBJECTIVE_TRACKER_COLOR["Label"].reverse = KT_OBJECTIVE_TRACKER_COLOR["LabelH
 KT_OBJECTIVE_TRACKER_COLOR["LabelHighlight"].reverse = KT_OBJECTIVE_TRACKER_COLOR["Label"]
 KT_OBJECTIVE_TRACKER_COLOR["Zone"].reverse = KT_OBJECTIVE_TRACKER_COLOR["ZoneHighlight"]
 KT_OBJECTIVE_TRACKER_COLOR["ZoneHighlight"].reverse = KT_OBJECTIVE_TRACKER_COLOR["Zone"]
+KT_OBJECTIVE_TRACKER_COLOR["Inactive"].reverse = KT_OBJECTIVE_TRACKER_COLOR["InactiveHighlight"]
+KT_OBJECTIVE_TRACKER_COLOR["InactiveHighlight"].reverse = KT_OBJECTIVE_TRACKER_COLOR["Inactive"]
 
 -- Max Quests - fix Blizz bug
 MAX_QUESTS = C_QuestLog.GetMaxNumQuestsCanAccept()
-Constants.QuestWatchConsts.MAX_QUEST_WATCHES = MAX_QUESTS

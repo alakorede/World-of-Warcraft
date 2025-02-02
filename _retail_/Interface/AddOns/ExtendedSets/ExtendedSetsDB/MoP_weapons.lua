@@ -112,7 +112,7 @@ local db = {
 {1,196807,nil,Zone(20)},
 {9,198456,nil,Zone(20)},
 {8,198453,nil,Zone(20)},
-{6,196938,nil,Zone(21)},
+--{6,196938,nil,Zone(21)},
 {16,193716,nil,Zone(21)},
 {16,197298,nil,Zone(22)},
 {6,196941,nil,Zone(23)},
@@ -137,11 +137,11 @@ local db = {
 {"Abyssal Cult","Remix: Pandaria Class Sets",app.GetColoredClassNameString("Priest"),100207,"i:217831:4:Arsenal Secrets of the Abyssal Cult","Only usable by "..app.GetColoredClassNameString("Priest"),{{10,200458},{8,200459},{13,200460},},nil,nil,2,16,IS_REMIX},
 {"Temptation's Call","Remix: Pandaria Class Sets",app.GetColoredClassNameString("Warlock"),100207,"i:217826:4:Arsenal Instruments of Temptation's Call","Only usable by "..app.GetColoredClassNameString("Warlock"),{{5,200503},{10,200504},{13,200505},},nil,nil,2,256,IS_REMIX},
 
---Remix Exclusive models
-{"Fearspeaker","Remix Exclusives (MoP)","Red",50000,nil,nil,{{15,197291,nil,Zone(5)},{5,196877},{4,196867,nil,Zone(17)},{13,197152,nil,Zone(17)},{13,197149,NOT_REMIX},{13,197143,nil,Zone(16)},{13,198477},{12,198525,nil,Zone(9,10)},{12,198527,nil,Zone(2)},{10,196967,nil,Zone(2)},{8,197071,nil,Zone(5)},{8,197070,nil,Zone(8)},{6,196961,nil,Zone(3)},{5,196925,nil,Zone(12)},{3,196849,nil,Zone(3)},{1,196804,nil,Zone(3)},{2,196825,nil,Zone(8)},{8,197039,nil,Zone(15)},{9,197098,nil,Zone(20)},},nil,nil,2,nil,IS_REMIX},
-{"Fearspeaker","Remix Exclusives (MoP)","Blue",50000,nil,nil,{{15,197292,nil,Zone(3)},{13,197150,nil,Zone(15)},{13,197146,nil,Zone(15)},{13,197142,nil,Zone(15)},{13,198476},{12,198523,nil,Zone(2,3)},{12,198529,nil,Zone(3)},{10,196968,nil,Zone(1,3)},{8,197072,nil,Zone(2)},{8,197069,nil,Zone(3)},{6,196960,nil,Zone(2)},{5,196922,nil,Zone(13)},{3,196850,nil,Zone(2)},{1,196805,nil,Zone(2)},{2,196822,nil,Zone(2)},{9,197097,nil,Zone(19)},},nil,nil,2,nil,IS_REMIX},
-{"Fearspeaker","Remix Exclusives (MoP)","Purple",50000,nil,nil,{{5,196875},{15,197290,Zone(2)},{13,197151,nil,Zone(16)},{13,197147,nil,Zone(16)},{13,197144,nil,Zone(17)},{13,198474},{12,198526,nil,Zone(5)},{12,198530,nil,Zone(8)},{10,100770},{8,197073,nil,Zone(3)},{8,197067,nil,Zone(2)},{2,196823,nil,Zone(5)},},nil,nil,2,nil,IS_REMIX},
-{"Fearspeaker","Remix Exclusives (MoP)","Yellow",50000,nil,nil,{{5,196876},{4,196866,nil,Zone(16)},{13,197153,nil,Zone(15)},{13,197148,nil,Zone(17)},{13,197145,nil,Zone(15)},{13,198475},{12,198524,nil,Zone(2)},{12,198528,nil,Zone(5)},{8,197068,nil,Zone(5)},{6,196959,nil,Zone(5)},{5,196924,nil,Zone(11)},{3,196851,nil,Zone(5)},{1,196806,nil,Zone(5)},{2,196824,nil,Zone(3)},{14,197206},{9,197096,nil,Zone(18)},},nil,nil,2,nil,IS_REMIX},
+--Remix Exclusive models --Didn't actually drop in remix: {5,196877},{13,198477},{13,198476},{5,196875},{13,198474},{13,198475},{14,197206},
+{"Fearspeaker","Remix Exclusives (MoP)","Red",50000,nil,nil,{{15,197291,nil,Zone(5)},{4,196867,nil,Zone(17)},{13,197152,nil,Zone(17)},{13,197149,NOT_REMIX},{13,197143,nil,Zone(16)},{12,198525,nil,Zone(9,10)},{12,198527,nil,Zone(2)},{10,196967,nil,Zone(2)},{8,197071,nil,Zone(5)},{8,197070,nil,Zone(8)},{6,196961,nil,Zone(3)},{5,196925,nil,Zone(12)},{3,196849,nil,Zone(3)},{1,196804,nil,Zone(3)},{2,196825,nil,Zone(8)},{8,197039,nil,Zone(15)},{9,197098,nil,Zone(20)},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Blue",50000,nil,nil,{{15,197292,nil,Zone(3)},{13,197150,nil,Zone(15)},{13,197146,nil,Zone(15)},{13,197142,nil,Zone(15)},{12,198523,nil,Zone(2,3)},{12,198529,nil,Zone(3)},{10,196968,nil,Zone(1,3)},{8,197072,nil,Zone(2)},{8,197069,nil,Zone(3)},{6,196960,nil,Zone(2)},{5,196922,nil,Zone(13)},{3,196850,nil,Zone(2)},{1,196805,nil,Zone(2)},{2,196822,nil,Zone(2)},{9,197097,nil,Zone(19)},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Purple",50000,nil,nil,{{15,197290,Zone(2)},{13,197151,nil,Zone(16)},{13,197147,nil,Zone(16)},{13,197144,nil,Zone(17)},{12,198526,nil,Zone(5)},{12,198530,nil,Zone(8)},{8,197073,nil,Zone(3)},{8,197067,nil,Zone(2)},{2,196823,nil,Zone(5)},},nil,nil,2,nil,IS_REMIX},
+{"Fearspeaker","Remix Exclusives (MoP)","Yellow",50000,nil,nil,{{5,196876},{4,196866,nil,Zone(16)},{13,197153,nil,Zone(15)},{13,197148,nil,Zone(17)},{13,197145,nil,Zone(15)},{12,198524,nil,Zone(2)},{12,198528,nil,Zone(5)},{8,197068,nil,Zone(5)},{6,196959,nil,Zone(5)},{5,196924,nil,Zone(11)},{3,196851,nil,Zone(5)},{1,196806,nil,Zone(5)},{2,196824,nil,Zone(3)},{9,197096,nil,Zone(18)},},nil,nil,2,nil,IS_REMIX},
 
 --SoO Remix colors
 {"Sha-Touched","SoO Remix Colors","Mythic",50400,nil,nil,{{1,196782,nil,Zone(23)},{1,196786,nil,Zone(23)},{1,196790,nil,Zone(23)},{3,196837,nil,Zone(23)},{5,196890,nil,Zone(23)},{8,197027,nil,Zone(23)},{10,196980,nil,Zone(23)},{12,198547,nil,Zone(23)},{13,197129,nil,Zone(23)},{13,197133,nil,Zone(23)},{14,197223,nil,Zone(23)},{14,197215,nil,Zone(23)},},nil,nil,2,nil,IS_REMIX};
@@ -213,7 +213,7 @@ local db = {
 --Appearance id duplicate:  (item id: ) shares appearance with  (item id: ).
 
 --MoP Dungeon Remix Colors
-{"Yak-Herder's","Dungeon Remix Colors","Normal",50004,nil,nil,{{5,196919,nil,Zone(13)},{5,196914,nil,Zone(13)},{10,196992,nil,Zone(13)},{12,198569,nil,Zone(13)},{6,196955,nil,Zone(13)},{9,197092,nil,Zone(13)},{12,47082,NOT_REMIX},},nil,nil,2,nil,IS_REMIX};
+{"Yak-Herder's","Dungeon Remix Colors","Normal",50004,nil,nil,{{5,196919,nil,Zone(13)},{5,196914,nil,Zone(13)},{10,196992,nil,Zone(13)},{12,198569,nil,Zone(13)},{6,196955,nil,Zone(13)},{9,197092,nil,Zone(13)},},nil,nil,2,nil,IS_REMIX};
 {"Yak-Herder's","Dungeon Remix Colors","Heroic",50004,nil,nil,{{10,196993,nil,Zone(14)},{13,197181,nil,Zone(14)},{6,196956,nil,Zone(14)},{15,197286,nil,Zone(14)},},nil,nil,2,nil,IS_REMIX};
 {"Yak-Herder's","Scenario Remix Colors","Normal",50004,nil,nil,{{5,196920,nil,Zone(11)},{5,196917,nil,Zone(11,12)},{7,197015,nil,Zone(11)},{11,197117,nil,Zone(11)},{12,198571,nil,Zone(11)},{3,196847,nil,Zone(11)},{12,60753,NOT_REMIX},},nil,nil,2,nil,IS_REMIX};
 {"Yak-Herder's","Scenario Remix Colors","Heroic",50004,nil,nil,{{5,196921,nil,Zone(12)},{5,196917,nil,Zone(11,12)},{8,197066,nil,Zone(12)},{11,197118,nil,Zone(12)},{6,196958,nil,Zone(12)},{15,197289,nil,Zone(12)},},nil,nil,2,nil,IS_REMIX};
@@ -306,80 +306,77 @@ end
 
 
 local function AddToCollection()
-  local patch = select(4,GetBuildInfo());
   for i = 1, #db do
-    if (db[i][4] <= patch) then
-      local data = {};
-      data.name = db[i][1];
-      data.label = db[i][2];
-      data.difficulty = db[i][3];
-      data.patchID = db[i][4];
-      --data.sources = db[i][7];
-      data.sources = {};
-      data.requiredFaction = db[i][8];
-      data.isPvP = db[i][9];
-      if db[i][10] == 2 then
-        data.limitedTimeSet = true;
-      else
-        data.noLongerObtainable = db[i][10];
-      end
-      data.favorite = false;
-      data.expansionID = expansionID;
-      
-      data.setID = expansionID * 1000 + (#db - i);
-      
-      if db[i][12] == IS_REMIX then
-        data.isRemix = true;
-        data.isAllRemix = true;
-      end
-      
-      data.sources={}
-      for j=1,#db[i][7] do
-        local _,appID,_,icon = C_TransmogCollection.GetAppearanceSourceInfo(db[i][7][j][2])
-        if appID then
-          tinsert(data.sources, db[i][7][j]);
-          local index = #data.sources;
-          local s = C_TransmogCollection.GetAllAppearanceSources(appID);
-          local isCollected = false;
-          for i=1,#s do
-            if C_TransmogCollection.GetSourceInfo(s[i]).isCollected then
-              isCollected = true;
-              break;
-            end
+    local data = {};
+    data.name = db[i][1];
+    data.label = db[i][2];
+    data.difficulty = db[i][3];
+    data.patchID = db[i][4];
+    --data.sources = db[i][7];
+    data.sources = {};
+    data.requiredFaction = db[i][8];
+    data.isPvP = db[i][9];
+    if db[i][10] == 2 then
+      data.limitedTimeSet = true;
+    else
+      data.noLongerObtainable = db[i][10];
+    end
+    data.favorite = false;
+    data.expansionID = expansionID;
+    
+    data.setID = expansionID * 1000 + (#db - i);
+    
+    if db[i][12] == IS_REMIX then
+      data.isRemix = true;
+      data.isAllRemix = true;
+    end
+    
+    data.sources={}
+    for j=1,#db[i][7] do
+      local _,appID,_,icon = C_TransmogCollection.GetAppearanceSourceInfo(db[i][7][j][2])
+      if appID then
+        tinsert(data.sources, db[i][7][j]);
+        local index = #data.sources;
+        local s = C_TransmogCollection.GetAllAppearanceSources(appID);
+        local isCollected = false;
+        for i=1,#s do
+          if C_TransmogCollection.GetSourceInfo(s[i]).isCollected then
+            isCollected = true;
+            break;
           end
-          
-          data.icon = icon;
-          
-          if data.sources[index][3] == IS_REMIX then
-            if not data.isRemix then
-              data.isRemix = true;
-            end
-          end
-          
-          if db[i][12] == IS_REMIX and data.sources[index][3] ~= NOT_REMIX then
-            if not data.sources[index][3] and not db[i][5] then
-              data.sources[index][3] = IS_REMIX;
-            elseif not data.sources[index][4] and not db[i][6] then
-              data.sources[index][4] = IS_REMIX;
-            end
-          end
-          if data.sources[index][3] == NOT_REMIX then
-            data.sources[index][3] = nil;
-          end
-          
-          if not data.sources[index][3] and db[i][5] then data.sources[index][3] = db[i][5]; end
-          data.sources[index][5] = GetFormattedLabel(data.sources[index][3]);
-          if not data.sources[index][4] and db[i][6] then data.sources[index][4] = db[i][6]; end
-          data.sources[index][6] = GetFormattedLabel(data.sources[index][4]);
-          
-          data.sources[index][3] = isCollected;
-          data.sources[index][4] = appID;
         end
+        
+        data.icon = icon;
+        
+        if data.sources[index][3] == IS_REMIX then
+          if not data.isRemix then
+            data.isRemix = true;
+          end
+        end
+        
+        if db[i][12] == IS_REMIX and data.sources[index][3] ~= NOT_REMIX then
+          if not data.sources[index][3] and not db[i][5] then
+            data.sources[index][3] = IS_REMIX;
+          elseif not data.sources[index][4] and not db[i][6] then
+            data.sources[index][4] = IS_REMIX;
+          end
+        end
+        if data.sources[index][3] == NOT_REMIX then
+          data.sources[index][3] = nil;
+        end
+        
+        if not data.sources[index][3] and db[i][5] then data.sources[index][3] = db[i][5]; end
+        data.sources[index][5] = GetFormattedLabel(data.sources[index][3]);
+        if not data.sources[index][4] and db[i][6] then data.sources[index][4] = db[i][6]; end
+        data.sources[index][6] = GetFormattedLabel(data.sources[index][4]);
+        
+        data.sources[index][3] = isCollected;
+        data.sources[index][4] = appID;
       end
-      
-      if #data.sources > 0 then
-        app.AddWeaponSetToTables(data);
-      end
+    end
+    
+    if #data.sources > 0 then
+      app.AddWeaponSetToTables(data);
     end
   end
 end

@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0914,
+["LastVersion"] = 2.1001,
 ["LastPlayerFullName"] = "Córsega-Nemesis",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
@@ -36,14 +36,14 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193694::::::::70:66::1:6:7974:6652:10864:10328:3155:8766:1:28:2587:::::|h[Drake Hunter's Greaves]|h|r",
 },
 {
-["ID"] = 153902,
-["Level"] = 424,
-["Link"] = "|cffa335ee|Hitem:153902::::::::70:66::61:2:3303:8767::::::|h[Sunsoul Greaves]|h|r",
+["ID"] = 209883,
+["Level"] = 454,
+["Link"] = "|cff1eff00|Hitem:209883::::::::70:66::25:4:10321:8902:6652:1511:1:28:2699:::::|h[Chartreuse Champion's Sabatons]|h|r",
 },
 {
-["ID"] = 153913,
-["Level"] = 424,
-["Link"] = "|cffa335ee|Hitem:153913::::::::70:66::61:2:3303:8767::::::|h[Sunsoul Armguards]|h|r",
+["ID"] = 209908,
+["Level"] = 454,
+["Link"] = "|cff1eff00|Hitem:209908::::::::70:66::25:5:10321:8902:40:10531:1511:1:28:2699:::::|h[Chartreuse Champion's Bracers]|h|r",
 },
 {
 ["ID"] = 193795,

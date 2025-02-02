@@ -17,17 +17,23 @@ SetCollectorDB = {
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Default",
 ["Mitráculo - Nemesis"] = "Default",
+["Mafiano - Nemesis"] = "Default",
+["Kigon - Nemesis"] = "Default",
 ["Chishy - Goldrinn"] = "Default",
 ["Kirashy - Dentarg"] = "Default",
 ["Migoshy - Aerie Peak"] = "Default",
 ["Nostradamus - Goldrinn"] = "Default",
+["Maharishi - Goldrinn"] = "Default",
 ["Eshy - Nemesis"] = "Default",
 ["Sifú - Goldrinn"] = "Default",
 ["Hilarión - Azralon"] = "Default",
+["Trunkate - Nemesis"] = "Default",
 ["Córsega - Nemesis"] = "Default",
 ["Vacalactika - Nemesis"] = "Default",
 ["Apoena - Azralon"] = "Default",
 ["Eshy - Steamwheedle Cartel"] = "Default",
+["Elaphe - Goldrinn"] = "Default",
+["Lvcivs - Goldrinn"] = "Default",
 ["Eshy - Goldrinn"] = "Default",
 ["Bankshy - Thrall"] = "Default",
 ["Tamagoshy - Nemesis"] = "Default",
@@ -40,6 +46,7 @@ SetCollectorDB = {
 ["Migoshy - Goldrinn"] = "Default",
 ["Goroshy - Nemesis"] = "Default",
 ["Elshy - Goldrinn"] = "Default",
+["Átilla - Gurubashi"] = "Default",
 ["Muruatan - Nemesis"] = "Default",
 ["Muligan - Nemesis"] = "Default",
 ["Belashy - Goldrinn"] = "Default",
@@ -48,6 +55,7 @@ SetCollectorDB = {
 ["Aimekalo - Goldrinn"] = "Default",
 ["Uzetab - Nemesis"] = "Default",
 ["Aleshy - Goldrinn"] = "Default",
+["Crysthina - Goldrinn"] = "Default",
 ["Muligan - Goldrinn"] = "Default",
 ["Dishy - Goldrinn"] = "Default",
 ["Apinéia - Nemesis"] = "Default",
@@ -55,6 +63,7 @@ SetCollectorDB = {
 ["Trimegistos - Goldrinn"] = "Default",
 ["Jeshy - Goldrinn"] = "Default",
 ["Natashy - Goldrinn"] = "Default",
+["Tankeabot - Nemesis"] = "Default",
 ["Artheras - Goldrinn"] = "Default",
 ["Aiollos - Azralon"] = "Default",
 ["Jeshy - Nemesis"] = "Default",
@@ -64,28 +73,29 @@ SetCollectorDB = {
 ["Turoshy - Nemesis"] = "Default",
 ["Corsega - Nemesis"] = "Default",
 ["Arieshy - Goldrinn"] = "Default",
+["Batezu - Nemesis"] = "Default",
 ["Sashy - Goldrinn"] = "Default",
 ["Verdessauro - Azralon"] = "Default",
 ["Chicoxavier - Nemesis"] = "Default",
-["Batezu - Nemesis"] = "Default",
+["Satishy - Goldrinn"] = "Default",
 ["Keishy - Aerie Peak"] = "Default",
 ["Dishy - Nemesis"] = "Default",
 ["Wishy - Nemesis"] = "Default",
 ["Aenshy - Goldrinn"] = "Default",
 ["Skoshy - Goldrinn"] = "Default",
-["Satishy - Goldrinn"] = "Default",
 ["Kuradis - Nemesis"] = "Default",
 ["Kerrishy - Goldrinn"] = "Default",
-["Trystam - Nemesis"] = "Default",
 ["Melishy - Goldrinn"] = "Default",
-["Yashy - Nemesis"] = "Default",
+["Trystam - Nemesis"] = "Default",
 ["Sharan - Goldrinn"] = "Default",
-["Satishy - Nemesis"] = "Default",
+["Yashy - Nemesis"] = "Default",
 ["Aishy - Nemesis"] = "Default",
-["Neshy - Nemesis"] = "Default",
+["Satishy - Nemesis"] = "Default",
 ["Kirashy - Nemesis"] = "Default",
+["Neshy - Nemesis"] = "Default",
 ["Trystam - Goldrinn"] = "Default",
 ["Vedronys - Azralon"] = "Default",
+["Dartho - Goldrinn"] = "Default",
 },
 ["global"] = {
 ["collections"] = {
@@ -19546,14 +19556,10 @@ SetCollectorDB = {
 ["isCollected"] = false,
 ["isValidSourceForPlayer"] = false,
 ["categoryID"] = 7,
-["isHideVisual"] = false,
-["quality"] = 3,
 ["invType"] = 10,
 ["sourceID"] = 11932,
-["useError"] = "�h?��",
 ["playerCanCollect"] = false,
 ["itemID"] = 27489,
-["name"] = "Virtue Bearer's Vambraces",
 ["itemModID"] = 0,
 },
 ["alternateIDs"] = {
@@ -159482,7 +159488,7 @@ SetCollectorDB = {
 ["setID"] = 1529,
 ["Variants"] = {
 {
-["Title"] = "Mindwrack Raiment",
+["Title"] = "Trial of Style Season 2",
 ["Order"] = 1150,
 ["Count"] = 8,
 ["Appearances"] = {
@@ -161422,307 +161428,70 @@ SetCollectorDB = {
 {
 ["Title"] = "TRADING",
 ["Sets"] = {
-["TP110052327ZZZ"] = {
-["ArmorType"] = {
-["Description"] = "Any",
-["Code"] = "Z",
-},
-["setID"] = 2327,
-["Variants"] = {
-{
-["Title"] = "Darkmoon Harlequin's Bells",
-["Order"] = 1640,
-["Count"] = 7,
-["Appearances"] = {
-{
-["ID"] = 70115,
-["sourceID"] = 168734,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 70116,
-["sourceID"] = 168735,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 70117,
-["sourceID"] = 168736,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 70119,
-["sourceID"] = 168738,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 70120,
-["sourceID"] = 168739,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 70121,
-["sourceID"] = 168740,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 70118,
-["sourceID"] = 168737,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Darkmoon Harlequin's Bells",
-["Faction"] = "Any",
-["ID"] = "TP110052327ZZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052676MZZ"] = {
-["ArmorType"] = {
-["Description"] = "MAIL",
-["Code"] = "M",
-},
-["setID"] = 2676,
-["Variants"] = {
-{
-["Title"] = "Void-Bound Chains",
-["Order"] = 10,
-["Count"] = 9,
-["Appearances"] = {
-{
-["ID"] = 69868,
-["sourceID"] = 168933,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69861,
-["sourceID"] = 169054,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69865,
-["sourceID"] = 169053,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69866,
-["sourceID"] = 168929,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69860,
-["sourceID"] = 168932,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69864,
-["sourceID"] = 168928,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69862,
-["sourceID"] = 169049,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69867,
-["sourceID"] = 169050,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69851,
-["sourceID"] = 183071,
-["slotID"] = 15,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Void-Bound Chains",
-["Faction"] = "Any",
-["ID"] = "TP110052676MZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052338MZZ"] = {
-["ArmorType"] = {
-["Description"] = "MAIL",
-["Code"] = "M",
-},
-["setID"] = 2338,
-["Variants"] = {
-{
-["Title"] = "Slumbering Caldera Regalia",
-["Order"] = 10,
-["Count"] = 8,
-["Appearances"] = {
-{
-["ID"] = 15864,
-["sourceID"] = 168997,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15867,
-["sourceID"] = 168994,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15870,
-["sourceID"] = 168991,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15868,
-["sourceID"] = 168993,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15866,
-["sourceID"] = 168995,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15865,
-["sourceID"] = 168996,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15863,
-["sourceID"] = 168998,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 15869,
-["sourceID"] = 168992,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Slumbering Caldera Regalia",
-["Faction"] = "Any",
-["ID"] = "TP110052338MZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052678LZZ"] = {
+["TP110052337LZZ"] = {
 ["ArmorType"] = {
 ["Description"] = "LEATHER",
 ["Code"] = "L",
 },
-["setID"] = 2678,
+["setID"] = 2337,
 ["Variants"] = {
 {
-["Title"] = "Kvaldir Scout Leathers",
+["Title"] = "Vestments of the Nightmare Forest",
 ["Order"] = 10,
 ["Count"] = 8,
 ["Appearances"] = {
 {
-["ID"] = 28016,
-["sourceID"] = 168806,
+["ID"] = 28707,
+["sourceID"] = 168341,
 ["slotID"] = 1,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28017,
-["sourceID"] = 168784,
+["ID"] = 28710,
+["sourceID"] = 168344,
 ["slotID"] = 3,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28014,
-["sourceID"] = 168286,
+["ID"] = 28705,
+["sourceID"] = 168339,
 ["slotID"] = 5,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28012,
-["sourceID"] = 168780,
+["ID"] = 28703,
+["sourceID"] = 168337,
 ["slotID"] = 6,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28018,
-["sourceID"] = 168285,
+["ID"] = 28708,
+["sourceID"] = 168342,
 ["slotID"] = 7,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28013,
-["sourceID"] = 168281,
+["ID"] = 28704,
+["sourceID"] = 168338,
 ["slotID"] = 8,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28019,
-["sourceID"] = 168781,
+["ID"] = 28711,
+["sourceID"] = 168345,
 ["slotID"] = 9,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 28015,
-["sourceID"] = 168282,
+["ID"] = 28706,
+["sourceID"] = 168340,
 ["slotID"] = 10,
 ["alternateIDs"] = {
 },
@@ -161731,528 +161500,10 @@ SetCollectorDB = {
 ["Transmog"] = true,
 },
 },
-["Title"] = "Kvaldir Scout Leathers",
+["Title"] = "Vestments of the Nightmare Forest",
 ["Faction"] = "Any",
-["ID"] = "TP110052678LZZ",
+["ID"] = "TP110052337LZZ",
 ["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052655CZZ"] = {
-["ArmorType"] = {
-["Description"] = "CLOTH",
-["Code"] = "C",
-},
-["setID"] = 2655,
-["Variants"] = {
-{
-["Title"] = "Corrupted Runelord's Regalia",
-["Order"] = 1640,
-["Count"] = 8,
-["Appearances"] = {
-{
-["ID"] = 31631,
-["sourceID"] = 168326,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31633,
-["sourceID"] = 168060,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31635,
-["sourceID"] = 168327,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31627,
-["sourceID"] = 168055,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31632,
-["sourceID"] = 168059,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31628,
-["sourceID"] = 168323,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31634,
-["sourceID"] = 168322,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 31630,
-["sourceID"] = 168056,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Corrupted Runelord's Regalia",
-["Faction"] = "Any",
-["ID"] = "TP110052655CZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052321CZZ"] = {
-["ArmorType"] = {
-["Description"] = "CLOTH",
-["Code"] = "C",
-},
-["setID"] = 2321,
-["Variants"] = {
-{
-["Title"] = "Trading Post",
-["Order"] = 1640,
-["Count"] = 9,
-["Appearances"] = {
-{
-["ID"] = 69901,
-["sourceID"] = 168241,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69894,
-["sourceID"] = 168234,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69896,
-["sourceID"] = 168236,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69898,
-["sourceID"] = 168238,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69900,
-["sourceID"] = 168240,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69899,
-["sourceID"] = 168239,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69897,
-["sourceID"] = 168237,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69902,
-["sourceID"] = 168242,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69895,
-["sourceID"] = 168235,
-["slotID"] = 15,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Vestment of the Honored Valarjar",
-["Faction"] = "Any",
-["ID"] = "TP110052321CZZ",
-["Location"] = "Trial of Valor",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052659CZZ"] = {
-["ArmorType"] = {
-["Description"] = "CLOTH",
-["Code"] = "C",
-},
-["setID"] = 2659,
-["Variants"] = {
-{
-["Title"] = "Void-Bound Raiment",
-["Order"] = 1640,
-["Count"] = 9,
-["Appearances"] = {
-{
-["ID"] = 69847,
-["sourceID"] = 169052,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69842,
-["sourceID"] = 168934,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69844,
-["sourceID"] = 169051,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69845,
-["sourceID"] = 168930,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69841,
-["sourceID"] = 168935,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69846,
-["sourceID"] = 169048,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69843,
-["sourceID"] = 169047,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69848,
-["sourceID"] = 168931,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69852,
-["sourceID"] = 183072,
-["slotID"] = 15,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Void-Bound Raiment",
-["Faction"] = "Any",
-["ID"] = "TP110052659CZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052334LZZ"] = {
-["ArmorType"] = {
-["Description"] = "LEATHER",
-["Code"] = "L",
-},
-["setID"] = 2334,
-["Variants"] = {
-{
-["Title"] = "Trading Post",
-["Order"] = 10,
-["Count"] = 9,
-["Appearances"] = {
-{
-["ID"] = 69906,
-["sourceID"] = 168970,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69903,
-["sourceID"] = 168967,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69911,
-["sourceID"] = 168975,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69908,
-["sourceID"] = 168972,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69907,
-["sourceID"] = 168971,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69909,
-["sourceID"] = 168973,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69904,
-["sourceID"] = 168968,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69910,
-["sourceID"] = 168974,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69905,
-["sourceID"] = 168969,
-["slotID"] = 15,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Battlewraps of the Honored Valarjar",
-["Faction"] = "Any",
-["ID"] = "TP110052334LZZ",
-["Location"] = "Trial of Valor",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052654MZZ"] = {
-["ArmorType"] = {
-["Description"] = "MAIL",
-["Code"] = "M",
-},
-["setID"] = 2654,
-["Variants"] = {
-{
-["Title"] = "Glorious Dragonrider's Mail",
-["Order"] = 10,
-["Count"] = 8,
-["Appearances"] = {
-{
-["ID"] = 28645,
-["sourceID"] = 168328,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28647,
-["sourceID"] = 168057,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28643,
-["sourceID"] = 168058,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28641,
-["sourceID"] = 168325,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28646,
-["sourceID"] = 168346,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28642,
-["sourceID"] = 168324,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28648,
-["sourceID"] = 168054,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28644,
-["sourceID"] = 167802,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Glorious Dragonrider's Mail",
-["Faction"] = "Any",
-["ID"] = "TP110052654MZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052340ZZZ"] = {
-["ArmorType"] = {
-["Description"] = "Any",
-["Code"] = "Z",
-},
-["setID"] = 2340,
-["Variants"] = {
-{
-["Title"] = "Trading Post - Red",
-["Order"] = 1640,
-["Count"] = 4,
-["Appearances"] = {
-{
-["ID"] = 69595,
-["sourceID"] = 169000,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69598,
-["sourceID"] = 169001,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69601,
-["sourceID"] = 169002,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69604,
-["sourceID"] = 169003,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Swashbuckling Buccaneer's Slops",
-["Faction"] = "Any",
-["ID"] = "TP110052340ZZZ",
-["Location"] = "Buccaneer's Slops",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052346ZZZ"] = {
-["ArmorType"] = {
-["Description"] = "Any",
-["Code"] = "Z",
-},
-["setID"] = 2346,
-["Variants"] = {
-{
-["Title"] = "Trading Post - Blue",
-["Order"] = 1640,
-["Count"] = 4,
-["Appearances"] = {
-{
-["ID"] = 69593,
-["sourceID"] = 169111,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69596,
-["sourceID"] = 169112,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69599,
-["sourceID"] = 169113,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69602,
-["sourceID"] = 169114,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Dashing Buccaneer's Slops",
-["Faction"] = "Any",
-["ID"] = "TP110052346ZZZ",
-["Location"] = "Buccaneer's Slops",
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
 },
@@ -162414,70 +161665,70 @@ SetCollectorDB = {
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
 },
-["TP110052679PZZ"] = {
+["TP110052338MZZ"] = {
 ["ArmorType"] = {
-["Description"] = "PLATE",
-["Code"] = "P",
+["Description"] = "MAIL",
+["Code"] = "M",
 },
-["setID"] = 2679,
+["setID"] = 2338,
 ["Variants"] = {
 {
-["Title"] = "Helarjar Berserker Warplate",
-["Order"] = 1640,
+["Title"] = "Slumbering Caldera Regalia",
+["Order"] = 10,
 ["Count"] = 8,
 ["Appearances"] = {
 {
-["ID"] = 31658,
-["sourceID"] = 168283,
+["ID"] = 15864,
+["sourceID"] = 168997,
 ["slotID"] = 1,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31660,
-["sourceID"] = 168786,
+["ID"] = 15867,
+["sourceID"] = 168994,
 ["slotID"] = 3,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31656,
-["sourceID"] = 168785,
+["ID"] = 15870,
+["sourceID"] = 168991,
 ["slotID"] = 5,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31654,
-["sourceID"] = 168782,
+["ID"] = 15868,
+["sourceID"] = 168993,
 ["slotID"] = 6,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31659,
-["sourceID"] = 168284,
+["ID"] = 15866,
+["sourceID"] = 168995,
 ["slotID"] = 7,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31655,
-["sourceID"] = 168279,
+["ID"] = 15865,
+["sourceID"] = 168996,
 ["slotID"] = 8,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31661,
-["sourceID"] = 168783,
+["ID"] = 15863,
+["sourceID"] = 168998,
 ["slotID"] = 9,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 31657,
-["sourceID"] = 168280,
+["ID"] = 15869,
+["sourceID"] = 168992,
 ["slotID"] = 10,
 ["alternateIDs"] = {
 },
@@ -162486,9 +161737,9 @@ SetCollectorDB = {
 ["Transmog"] = true,
 },
 },
-["Title"] = "Helarjar Berserker Warplate",
+["Title"] = "Slumbering Caldera Regalia",
 ["Faction"] = "Any",
-["ID"] = "TP110052679PZZ",
+["ID"] = "TP110052338MZZ",
 ["Location"] = "Trading Post",
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
@@ -162651,12 +161902,177 @@ SetCollectorDB = {
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
 },
-["TP110052331MZZ"] = {
+["TP110052321CZZ"] = {
 ["ArmorType"] = {
-["Description"] = "MAIL",
-["Code"] = "M",
+["Description"] = "CLOTH",
+["Code"] = "C",
 },
-["setID"] = 2331,
+["setID"] = 2321,
+["Variants"] = {
+{
+["Title"] = "Trading Post",
+["Order"] = 1640,
+["Count"] = 9,
+["Appearances"] = {
+{
+["ID"] = 69901,
+["sourceID"] = 168241,
+["slotID"] = 1,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69894,
+["sourceID"] = 168234,
+["slotID"] = 3,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69896,
+["sourceID"] = 168236,
+["slotID"] = 5,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69898,
+["sourceID"] = 168238,
+["slotID"] = 6,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69900,
+["sourceID"] = 168240,
+["slotID"] = 7,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69899,
+["sourceID"] = 168239,
+["slotID"] = 8,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69897,
+["sourceID"] = 168237,
+["slotID"] = 9,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69902,
+["sourceID"] = 168242,
+["slotID"] = 10,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 69895,
+["sourceID"] = 168235,
+["slotID"] = 15,
+["alternateIDs"] = {
+},
+},
+},
+["Transmog"] = true,
+},
+},
+["Title"] = "Vestment of the Honored Valarjar",
+["Faction"] = "Any",
+["ID"] = "TP110052321CZZ",
+["Location"] = "Trial of Valor",
+["Class"] = "Any",
+["Collection"] = "TRADING",
+},
+["TP110052655CZZ"] = {
+["ArmorType"] = {
+["Description"] = "CLOTH",
+["Code"] = "C",
+},
+["setID"] = 2655,
+["Variants"] = {
+{
+["Title"] = "Corrupted Runelord's Regalia",
+["Order"] = 1640,
+["Count"] = 8,
+["Appearances"] = {
+{
+["ID"] = 31631,
+["sourceID"] = 168326,
+["slotID"] = 1,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31633,
+["sourceID"] = 168060,
+["slotID"] = 3,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31635,
+["sourceID"] = 168327,
+["slotID"] = 5,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31627,
+["sourceID"] = 168055,
+["slotID"] = 6,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31632,
+["sourceID"] = 168059,
+["slotID"] = 7,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31628,
+["sourceID"] = 168323,
+["slotID"] = 8,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31634,
+["sourceID"] = 168322,
+["slotID"] = 9,
+["alternateIDs"] = {
+},
+},
+{
+["ID"] = 31630,
+["sourceID"] = 168056,
+["slotID"] = 10,
+["alternateIDs"] = {
+},
+},
+},
+["Transmog"] = true,
+},
+},
+["Title"] = "Corrupted Runelord's Regalia",
+["Faction"] = "Any",
+["ID"] = "TP110052655CZZ",
+["Location"] = "Trading Post",
+["Class"] = "Any",
+["Collection"] = "TRADING",
+},
+["TP110052334LZZ"] = {
+["ArmorType"] = {
+["Description"] = "LEATHER",
+["Code"] = "L",
+},
+["setID"] = 2334,
 ["Variants"] = {
 {
 ["Title"] = "Trading Post",
@@ -162664,64 +162080,64 @@ SetCollectorDB = {
 ["Count"] = 9,
 ["Appearances"] = {
 {
-["ID"] = 69918,
-["sourceID"] = 168800,
+["ID"] = 69906,
+["sourceID"] = 168970,
 ["slotID"] = 1,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69921,
-["sourceID"] = 168803,
+["ID"] = 69903,
+["sourceID"] = 168967,
 ["slotID"] = 3,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69917,
-["sourceID"] = 168799,
+["ID"] = 69911,
+["sourceID"] = 168975,
 ["slotID"] = 5,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69915,
-["sourceID"] = 168797,
+["ID"] = 69908,
+["sourceID"] = 168972,
 ["slotID"] = 6,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69920,
-["sourceID"] = 168802,
+["ID"] = 69907,
+["sourceID"] = 168971,
 ["slotID"] = 7,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69919,
-["sourceID"] = 168801,
+["ID"] = 69909,
+["sourceID"] = 168973,
 ["slotID"] = 8,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69913,
-["sourceID"] = 168795,
+["ID"] = 69904,
+["sourceID"] = 168968,
 ["slotID"] = 9,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69916,
-["sourceID"] = 168798,
+["ID"] = 69910,
+["sourceID"] = 168974,
 ["slotID"] = 10,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69914,
-["sourceID"] = 168796,
+["ID"] = 69905,
+["sourceID"] = 168969,
 ["slotID"] = 15,
 ["alternateIDs"] = {
 },
@@ -162730,175 +162146,10 @@ SetCollectorDB = {
 ["Transmog"] = true,
 },
 },
-["Title"] = "Chains of the Honored Valarjar",
+["Title"] = "Battlewraps of the Honored Valarjar",
 ["Faction"] = "Any",
-["ID"] = "TP110052331MZZ",
+["ID"] = "TP110052334LZZ",
 ["Location"] = "Trial of Valor",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052660LZZ"] = {
-["ArmorType"] = {
-["Description"] = "LEATHER",
-["Code"] = "L",
-},
-["setID"] = 2660,
-["Variants"] = {
-{
-["Title"] = "Void-Bound Battlegear",
-["Order"] = 10,
-["Count"] = 9,
-["Appearances"] = {
-{
-["ID"] = 70021,
-["sourceID"] = 169088,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69859,
-["sourceID"] = 168959,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69854,
-["sourceID"] = 168958,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69856,
-["sourceID"] = 169072,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69855,
-["sourceID"] = 183068,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69857,
-["sourceID"] = 168954,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69877,
-["sourceID"] = 169071,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69858,
-["sourceID"] = 168955,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 69849,
-["sourceID"] = 183069,
-["slotID"] = 15,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Void-Bound Battlegear",
-["Faction"] = "Any",
-["ID"] = "TP110052660LZZ",
-["Location"] = "Trading Post",
-["Class"] = "Any",
-["Collection"] = "TRADING",
-},
-["TP110052337LZZ"] = {
-["ArmorType"] = {
-["Description"] = "LEATHER",
-["Code"] = "L",
-},
-["setID"] = 2337,
-["Variants"] = {
-{
-["Title"] = "Vestments of the Nightmare Forest",
-["Order"] = 10,
-["Count"] = 8,
-["Appearances"] = {
-{
-["ID"] = 28707,
-["sourceID"] = 168341,
-["slotID"] = 1,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28710,
-["sourceID"] = 168344,
-["slotID"] = 3,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28705,
-["sourceID"] = 168339,
-["slotID"] = 5,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28703,
-["sourceID"] = 168337,
-["slotID"] = 6,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28708,
-["sourceID"] = 168342,
-["slotID"] = 7,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28704,
-["sourceID"] = 168338,
-["slotID"] = 8,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28711,
-["sourceID"] = 168345,
-["slotID"] = 9,
-["alternateIDs"] = {
-},
-},
-{
-["ID"] = 28706,
-["sourceID"] = 168340,
-["slotID"] = 10,
-["alternateIDs"] = {
-},
-},
-},
-["Transmog"] = true,
-},
-},
-["Title"] = "Vestments of the Nightmare Forest",
-["Faction"] = "Any",
-["ID"] = "TP110052337LZZ",
-["Location"] = "Trading Post",
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
 },
@@ -163067,77 +162318,77 @@ SetCollectorDB = {
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
 },
-["TP110052677PZZ"] = {
+["TP110052331MZZ"] = {
 ["ArmorType"] = {
-["Description"] = "PLATE",
-["Code"] = "P",
+["Description"] = "MAIL",
+["Code"] = "M",
 },
-["setID"] = 2677,
+["setID"] = 2331,
 ["Variants"] = {
 {
-["Title"] = "Void-Bound Warplate",
-["Order"] = 1640,
+["Title"] = "Trading Post",
+["Order"] = 10,
 ["Count"] = 9,
 ["Appearances"] = {
 {
-["ID"] = 69876,
-["sourceID"] = 168957,
+["ID"] = 69918,
+["sourceID"] = 168800,
 ["slotID"] = 1,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69869,
-["sourceID"] = 169076,
+["ID"] = 69921,
+["sourceID"] = 168803,
 ["slotID"] = 3,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69874,
-["sourceID"] = 169075,
+["ID"] = 69917,
+["sourceID"] = 168799,
 ["slotID"] = 5,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69871,
-["sourceID"] = 168952,
+["ID"] = 69915,
+["sourceID"] = 168797,
 ["slotID"] = 6,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69872,
-["sourceID"] = 168956,
+["ID"] = 69920,
+["sourceID"] = 168802,
 ["slotID"] = 7,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69873,
-["sourceID"] = 169073,
+["ID"] = 69919,
+["sourceID"] = 168801,
 ["slotID"] = 8,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69870,
-["sourceID"] = 168953,
+["ID"] = 69913,
+["sourceID"] = 168795,
 ["slotID"] = 9,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69875,
-["sourceID"] = 169074,
+["ID"] = 69916,
+["sourceID"] = 168798,
 ["slotID"] = 10,
 ["alternateIDs"] = {
 },
 },
 {
-["ID"] = 69850,
-["sourceID"] = 183070,
+["ID"] = 69914,
+["sourceID"] = 168796,
 ["slotID"] = 15,
 ["alternateIDs"] = {
 },
@@ -163146,10 +162397,10 @@ SetCollectorDB = {
 ["Transmog"] = true,
 },
 },
-["Title"] = "Void-Bound Warplate",
+["Title"] = "Chains of the Honored Valarjar",
 ["Faction"] = "Any",
-["ID"] = "TP110052677PZZ",
-["Location"] = "Trading Post",
+["ID"] = "TP110052331MZZ",
+["Location"] = "Trial of Valor",
 ["Class"] = "Any",
 ["Collection"] = "TRADING",
 },
@@ -168886,35 +168137,10 @@ SetCollectorDB = {
 ["variant"] = 1,
 ["set"] = "TR10503557LDRZ",
 },
-[70118] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052327ZZZ",
-},
 [21518] = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR10503572PDKZ",
-},
-[35728] = {
-["collection"] = 7,
-["variant"] = 9,
-["set"] = "PV107031411LMOH",
-},
-[70120] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052327ZZZ",
-},
-[70119] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052327ZZZ",
-},
-[70117] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052327ZZZ",
 },
 [5700] = {
 ["collection"] = 4,
@@ -168925,11 +168151,6 @@ SetCollectorDB = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR10601LZZ",
-},
-[70116] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052327ZZZ",
 },
 [5892] = {
 ["collection"] = 5,
@@ -168946,25 +168167,10 @@ SetCollectorDB = {
 ["variant"] = 8,
 ["set"] = "TR10103924LDRZ",
 },
-[70115] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052327ZZZ",
-},
 [32795] = {
 ["collection"] = 4,
 ["variant"] = 3,
 ["set"] = "TR10700183PZZ",
-},
-[20206] = {
-["collection"] = 4,
-["variant"] = 4,
-["set"] = "TR10502526CMAZ",
-},
-[28648] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052654MZZ",
 },
 [34331] = {
 ["collection"] = 7,
@@ -168986,25 +168192,10 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "PV10603111LMOH",
 },
-[35129] = {
-["collection"] = 7,
-["variant"] = 4,
-["set"] = "PV107031419MSHH",
-},
-[28646] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052654MZZ",
-},
 [37403] = {
 ["collection"] = 8,
 ["variant"] = 1,
 ["set"] = "EX110223062LZH",
-},
-[28641] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052654MZZ",
 },
 [6852] = {
 ["collection"] = 10,
@@ -169036,16 +168227,6 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "PV10201381PWRZ",
 },
-[8363] = {
-["collection"] = 4,
-["variant"] = 6,
-["set"] = "TR10203847PWRZ",
-},
-[28647] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052654MZZ",
-},
 [29454] = {
 ["collection"] = 4,
 ["variant"] = 2,
@@ -169061,40 +168242,15 @@ SetCollectorDB = {
 ["variant"] = 2,
 ["set"] = "DG110002703CZZ",
 },
-[28645] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052654MZZ",
-},
-[69602] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052346ZZZ",
-},
 [30734] = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR10701994LDRZ",
 },
-[69599] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052346ZZZ",
-},
 [7812] = {
 ["collection"] = 4,
 ["variant"] = 5,
 ["set"] = "TR10202848PWRZ",
-},
-[69596] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052346ZZZ",
-},
-[69593] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052346ZZZ",
 },
 [8004] = {
 ["collection"] = 4,
@@ -169121,16 +168277,6 @@ SetCollectorDB = {
 ["variant"] = 1,
 ["set"] = "PV10202967CMAZ",
 },
-[69604] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052340ZZZ",
-},
-[69601] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052340ZZZ",
-},
 [69684] = {
 ["collection"] = 4,
 ["variant"] = 7,
@@ -169140,11 +168286,6 @@ SetCollectorDB = {
 ["collection"] = 8,
 ["variant"] = 1,
 ["set"] = "EX105011444MHUZ",
-},
-[69598] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052340ZZZ",
 },
 [9096] = {
 ["collection"] = 7,
@@ -169226,16 +168367,6 @@ SetCollectorDB = {
 ["variant"] = 9,
 ["set"] = "TR109012154MZZ",
 },
-[69595] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052340ZZZ",
-},
-[31657] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052679PZZ",
-},
 [11400] = {
 ["collection"] = 4,
 ["variant"] = 1,
@@ -169266,11 +168397,6 @@ SetCollectorDB = {
 ["variant"] = 1,
 ["set"] = "TR110102866ZHUZ",
 },
-[31661] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052679PZZ",
-},
 [12296] = {
 ["collection"] = 4,
 ["variant"] = 1,
@@ -169281,50 +168407,20 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "TR10304703PPAZ",
 },
-[36049] = {
-["collection"] = 10,
-["variant"] = 2,
-["set"] = "OT10802PZZ",
-},
 [12680] = {
 ["collection"] = 7,
 ["variant"] = 1,
 ["set"] = "PV10304767MHUZ",
-},
-[31659] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052679PZZ",
 },
 [25871] = {
 ["collection"] = 4,
 ["variant"] = 8,
 ["set"] = "TR10604323CPRZ",
 },
-[31654] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052679PZZ",
-},
-[36172] = {
-["collection"] = 10,
-["variant"] = 8,
-["set"] = "OT10801PZZ",
-},
-[15698] = {
-["collection"] = 8,
-["variant"] = 5,
-["set"] = "EX10804CZZ",
-},
 [37405] = {
 ["collection"] = 7,
 ["variant"] = 4,
 ["set"] = "PV108011669LZH",
-},
-[31658] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052679PZZ",
 },
 [38429] = {
 ["collection"] = 4,
@@ -169346,20 +168442,10 @@ SetCollectorDB = {
 ["variant"] = 7,
 ["set"] = "TR10401836PDKZ",
 },
-[28015] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052678LZZ",
-},
 [40989] = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR108041982PZZ",
-},
-[28019] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052678LZZ",
 },
 [42013] = {
 ["collection"] = 10,
@@ -169396,16 +168482,6 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "TR10701994LDRZ",
 },
-[28013] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052678LZZ",
-},
-[28018] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052678LZZ",
-},
 [76855] = {
 ["collection"] = 4,
 ["variant"] = 3,
@@ -169441,11 +168517,6 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "TR107021333LDHZ",
 },
-[28012] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052678LZZ",
-},
 [34334] = {
 ["collection"] = 4,
 ["variant"] = 9,
@@ -169465,11 +168536,6 @@ SetCollectorDB = {
 ["collection"] = 4,
 ["variant"] = 9,
 ["set"] = "TR107031496PPAZ",
-},
-[28014] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052678LZZ",
 },
 [18448] = {
 ["collection"] = 7,
@@ -169526,11 +168592,6 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "TR10503572PDKZ",
 },
-[41252] = {
-["collection"] = 8,
-["variant"] = 1,
-["set"] = "EX109012059PZZ",
-},
 [21520] = {
 ["collection"] = 4,
 ["variant"] = 6,
@@ -169546,35 +168607,10 @@ SetCollectorDB = {
 ["variant"] = 9,
 ["set"] = "TR109012154MZZ",
 },
-[28016] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052678LZZ",
-},
-[76117] = {
-["collection"] = 4,
-["variant"] = 3,
-["set"] = "TR110002603ZDRZ",
-},
-[69875] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052677PZZ",
-},
-[69870] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052677PZZ",
-},
 [76857] = {
 ["collection"] = 4,
 ["variant"] = 5,
 ["set"] = "TR110002604ZDTZ",
-},
-[69873] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052677PZZ",
 },
 [78905] = {
 ["collection"] = 7,
@@ -169586,11 +168622,6 @@ SetCollectorDB = {
 ["variant"] = 5,
 ["set"] = "TR110102866ZHUZ",
 },
-[69872] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052677PZZ",
-},
 [32799] = {
 ["collection"] = 4,
 ["variant"] = 2,
@@ -169600,16 +168631,6 @@ SetCollectorDB = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR107021333LDHZ",
-},
-[69871] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052677PZZ",
-},
-[69874] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052677PZZ",
 },
 [69690] = {
 ["collection"] = 4,
@@ -169626,11 +168647,6 @@ SetCollectorDB = {
 ["variant"] = 4,
 ["set"] = "PV10603112LMOA",
 },
-[69869] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052677PZZ",
-},
 [36895] = {
 ["collection"] = 7,
 ["variant"] = 2,
@@ -169640,11 +168656,6 @@ SetCollectorDB = {
 ["collection"] = 7,
 ["variant"] = 2,
 ["set"] = "PV108011669LZH",
-},
-[69876] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052677PZZ",
 },
 [38431] = {
 ["collection"] = 4,
@@ -169666,21 +168677,6 @@ SetCollectorDB = {
 ["variant"] = 5,
 ["set"] = "TR108031842PZZ",
 },
-[69851] = {
-["collection"] = 13,
-["variant"] = 9,
-["set"] = "TP110052676MZZ",
-},
-[69867] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052676MZZ",
-},
-[69862] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052676MZZ",
-},
 [42015] = {
 ["collection"] = 10,
 ["variant"] = 2,
@@ -169696,45 +168692,20 @@ SetCollectorDB = {
 ["variant"] = 5,
 ["set"] = "TR107021317LMOZ",
 },
-[76233] = {
-["collection"] = 4,
-["variant"] = 5,
-["set"] = "TR110002601ZDKZ",
-},
 [44063] = {
 ["collection"] = 4,
 ["variant"] = 9,
 ["set"] = "TR109012154MZZ",
-},
-[69860] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052676MZZ",
 },
 [30736] = {
 ["collection"] = 4,
 ["variant"] = 4,
 ["set"] = "TR10701994LDRZ",
 },
-[69866] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052676MZZ",
-},
-[69865] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052676MZZ",
-},
 [76859] = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR110002604ZDTZ",
-},
-[69861] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052676MZZ",
 },
 [32016] = {
 ["collection"] = 4,
@@ -169766,11 +168737,6 @@ SetCollectorDB = {
 ["variant"] = 8,
 ["set"] = "TR107021333LDHZ",
 },
-[69868] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052676MZZ",
-},
 [69692] = {
 ["collection"] = 4,
 ["variant"] = 6,
@@ -169780,11 +168746,6 @@ SetCollectorDB = {
 ["collection"] = 8,
 ["variant"] = 2,
 ["set"] = "EX105011444MHUZ",
-},
-[76152] = {
-["collection"] = 4,
-["variant"] = 2,
-["set"] = "TR110002603ZDRZ",
 },
 [9097] = {
 ["collection"] = 7,
@@ -169800,11 +168761,6 @@ SetCollectorDB = {
 ["collection"] = 7,
 ["variant"] = 4,
 ["set"] = "PV108011669LZH",
-},
-[69858] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052660LZZ",
 },
 [76860] = {
 ["collection"] = 4,
@@ -169830,11 +168786,6 @@ SetCollectorDB = {
 ["collection"] = 4,
 ["variant"] = 1,
 ["set"] = "TR10502510LMOZ",
-},
-[69877] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052660LZZ",
 },
 [20753] = {
 ["collection"] = 7,
@@ -169866,16 +168817,6 @@ SetCollectorDB = {
 ["variant"] = 9,
 ["set"] = "TR109012154MZZ",
 },
-[69857] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052660LZZ",
-},
-[69855] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052660LZZ",
-},
 [11401] = {
 ["collection"] = 4,
 ["variant"] = 5,
@@ -169906,11 +168847,6 @@ SetCollectorDB = {
 ["variant"] = 4,
 ["set"] = "TR10602569PDKZ",
 },
-[75920] = {
-["collection"] = 4,
-["variant"] = 3,
-["set"] = "TR110002602ZDHZ",
-},
 [12297] = {
 ["collection"] = 4,
 ["variant"] = 5,
@@ -169920,11 +168856,6 @@ SetCollectorDB = {
 ["collection"] = 4,
 ["variant"] = 7,
 ["set"] = "TR10304822LDRZ",
-},
-[77670] = {
-["collection"] = 4,
-["variant"] = 9,
-["set"] = "TR110002602ZDHZ",
 },
 [12681] = {
 ["collection"] = 7,
@@ -169946,25 +168877,10 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "PV10603112LMOA",
 },
-[69859] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052660LZZ",
-},
-[70021] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052660LZZ",
-},
 [37409] = {
 ["collection"] = 7,
 ["variant"] = 1,
 ["set"] = "PV108011669LZH",
-},
-[69852] = {
-["collection"] = 13,
-["variant"] = 9,
-["set"] = "TP110052659CZZ",
 },
 [76862] = {
 ["collection"] = 4,
@@ -169986,21 +168902,6 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "TR10401653PWRZ",
 },
-[76157] = {
-["collection"] = 4,
-["variant"] = 7,
-["set"] = "TR110002603ZDRZ",
-},
-[69843] = {
-["collection"] = 13,
-["variant"] = 7,
-["set"] = "TP110052659CZZ",
-},
-[43195] = {
-["collection"] = 8,
-["variant"] = 1,
-["set"] = "EX109012055MZZ",
-},
 [42017] = {
 ["collection"] = 10,
 ["variant"] = 5,
@@ -170010,11 +168911,6 @@ SetCollectorDB = {
 ["collection"] = 4,
 ["variant"] = 2,
 ["set"] = "TR10401717CMAZ",
-},
-[69841] = {
-["collection"] = 13,
-["variant"] = 5,
-["set"] = "TP110052659CZZ",
 },
 [70719] = {
 ["collection"] = 8,
@@ -170036,35 +168932,15 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "TR10701994LDRZ",
 },
-[69845] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052659CZZ",
-},
-[69844] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052659CZZ",
-},
 [15753] = {
 ["collection"] = 4,
 ["variant"] = 6,
 ["set"] = "TR10402342CPRZ",
 },
-[76861] = {
-["collection"] = 4,
-["variant"] = 9,
-["set"] = "TR110002604ZDTZ",
-},
 [32017] = {
 ["collection"] = 4,
 ["variant"] = 6,
 ["set"] = "TR10701998LDHZ",
-},
-[69847] = {
-["collection"] = 13,
-["variant"] = 1,
-["set"] = "TP110052659CZZ",
 },
 [32529] = {
 ["collection"] = 8,
@@ -181771,10 +180647,10 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "PV10301789CWKZ",
 },
-[69842] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052659CZZ",
+[76861] = {
+["collection"] = 4,
+["variant"] = 9,
+["set"] = "TR110002604ZDTZ",
 },
 [25910] = {
 ["collection"] = 4,
@@ -182091,10 +180967,10 @@ SetCollectorDB = {
 ["variant"] = 8,
 ["set"] = "PV10304372CPRZ",
 },
-[69846] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052659CZZ",
+[43195] = {
+["collection"] = 8,
+["variant"] = 1,
+["set"] = "EX109012055MZZ",
 },
 [35437] = {
 ["collection"] = 7,
@@ -182251,10 +181127,10 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "PV10302784CMAZ",
 },
-[69848] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052659CZZ",
+[76157] = {
+["collection"] = 4,
+["variant"] = 7,
+["set"] = "TR110002603ZDRZ",
 },
 [35438] = {
 ["collection"] = 7,
@@ -182331,10 +181207,10 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "DG10901CZZ",
 },
-[69849] = {
-["collection"] = 13,
-["variant"] = 9,
-["set"] = "TP110052660LZZ",
+[76152] = {
+["collection"] = 4,
+["variant"] = 2,
+["set"] = "TR110002603ZDRZ",
 },
 [76151] = {
 ["collection"] = 4,
@@ -182411,10 +181287,10 @@ SetCollectorDB = {
 ["variant"] = 7,
 ["set"] = "PV10302779PWRZ",
 },
-[69850] = {
-["collection"] = 13,
-["variant"] = 9,
-["set"] = "TP110052677PZZ",
+[76117] = {
+["collection"] = 4,
+["variant"] = 3,
+["set"] = "TR110002603ZDRZ",
 },
 [35439] = {
 ["collection"] = 7,
@@ -182731,10 +181607,10 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "PV10304764LROZ",
 },
-[69854] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052660LZZ",
+[77670] = {
+["collection"] = 4,
+["variant"] = 9,
+["set"] = "TR110002602ZDHZ",
 },
 [35441] = {
 ["collection"] = 7,
@@ -182891,10 +181767,10 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "PV10303778PDKZ",
 },
-[69856] = {
-["collection"] = 13,
-["variant"] = 4,
-["set"] = "TP110052660LZZ",
+[75920] = {
+["collection"] = 4,
+["variant"] = 3,
+["set"] = "TR110002602ZDHZ",
 },
 [35442] = {
 ["collection"] = 7,
@@ -183531,10 +182407,10 @@ SetCollectorDB = {
 ["variant"] = 7,
 ["set"] = "PV10304762CWKZ",
 },
-[69864] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052676MZZ",
+[76233] = {
+["collection"] = 4,
+["variant"] = 5,
+["set"] = "TR110002601ZDKZ",
 },
 [76232] = {
 ["collection"] = 4,
@@ -200696,10 +199572,10 @@ SetCollectorDB = {
 ["variant"] = 5,
 ["set"] = "TR109032354LDHZ",
 },
-[28017] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052678LZZ",
+[41252] = {
+["collection"] = 8,
+["variant"] = 1,
+["set"] = "EX109012059PZZ",
 },
 [14137] = {
 ["collection"] = 7,
@@ -204091,10 +202967,10 @@ SetCollectorDB = {
 ["variant"] = 1,
 ["set"] = "EX109022043PZZ",
 },
-[70121] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052327ZZZ",
+[35728] = {
+["collection"] = 7,
+["variant"] = 9,
+["set"] = "PV107031411LMOH",
 },
 [33569] = {
 ["collection"] = 7,
@@ -218046,10 +216922,10 @@ SetCollectorDB = {
 ["variant"] = 7,
 ["set"] = "EX10804CZZ",
 },
-[31655] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052679PZZ",
+[36049] = {
+["collection"] = 10,
+["variant"] = 2,
+["set"] = "OT10802PZZ",
 },
 [31911] = {
 ["collection"] = 4,
@@ -218366,10 +217242,10 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "TR110002611ZSHZ",
 },
-[31656] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052679PZZ",
+[36172] = {
+["collection"] = 10,
+["variant"] = 8,
+["set"] = "OT10801PZZ",
 },
 [31912] = {
 ["collection"] = 4,
@@ -219646,10 +218522,10 @@ SetCollectorDB = {
 ["variant"] = 3,
 ["set"] = "TR110002613ZWRZ",
 },
-[31660] = {
-["collection"] = 13,
-["variant"] = 2,
-["set"] = "TP110052679PZZ",
+[15698] = {
+["collection"] = 8,
+["variant"] = 5,
+["set"] = "EX10804CZZ",
 },
 [31916] = {
 ["collection"] = 4,
@@ -236866,10 +235742,10 @@ SetCollectorDB = {
 ["variant"] = 7,
 ["set"] = "TR109032402MSHZ",
 },
-[28642] = {
-["collection"] = 13,
-["variant"] = 6,
-["set"] = "TP110052654MZZ",
+[35129] = {
+["collection"] = 7,
+["variant"] = 4,
+["set"] = "PV107031419MSHH",
 },
 [41411] = {
 ["collection"] = 8,
@@ -237186,10 +236062,10 @@ SetCollectorDB = {
 ["variant"] = 1,
 ["set"] = "PV108031885MZH",
 },
-[28643] = {
-["collection"] = 13,
-["variant"] = 3,
-["set"] = "TP110052654MZZ",
+[8363] = {
+["collection"] = 4,
+["variant"] = 6,
+["set"] = "TR10203847PWRZ",
 },
 [41413] = {
 ["collection"] = 8,
@@ -237506,10 +236382,10 @@ SetCollectorDB = {
 ["variant"] = 6,
 ["set"] = "PV108031885MZH",
 },
-[28644] = {
-["collection"] = 13,
-["variant"] = 8,
-["set"] = "TP110052654MZZ",
+[20206] = {
+["collection"] = 4,
+["variant"] = 4,
+["set"] = "TR10502526CMAZ",
 },
 [41415] = {
 ["collection"] = 8,

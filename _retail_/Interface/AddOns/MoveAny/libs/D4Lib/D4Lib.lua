@@ -62,6 +62,16 @@ function D4:IsOldWow()
     return D4.oldWow
 end
 
+function D4:RegisterEvent(frame, event, unit)
+    if C_EventUtils.IsEventValid(event) then
+        if unit then
+            frame:RegisterUnitEvent(event, "player")
+        else
+            frame:RegisterEvent(event)
+        end
+    end
+end
+
 --[[ QOL ]]
 local ICON_TAG_LIST_EN = {
     ["star"] = 1,
@@ -77,6 +87,11 @@ local ICON_TAG_LIST_EN = {
     ["red"] = 7,
     ["skull"] = 8,
 }
+
+function D4:SafeExec(sel, func)
+    if InCombatLockdown() and sel:IsProtected() then return end
+    func()
+end
 
 function D4:GetCVar(name)
     if C_CVar and C_CVar.GetCVar then return C_CVar.GetCVar(name) end
@@ -97,7 +112,6 @@ end
 
 function D4:GetSpellInfo(spellID)
     if spellID == nil then return nil end
-    if GetSpellInfo then return GetSpellInfo(spellID) end
     if C_Spell and C_Spell.GetSpellInfo then
         local tab = C_Spell.GetSpellInfo(spellID)
         if tab then return tab.name, tab.rank, tab.iconID, tab.castTime, tab.minRange, tab.maxRange, tab.spellID end
@@ -105,6 +119,7 @@ function D4:GetSpellInfo(spellID)
         return tab
     end
 
+    if GetSpellInfo then return GetSpellInfo(spellID) end
     D4:MSG("[D4][GetSpellInfo] FAILED")
 
     return nil
@@ -112,9 +127,27 @@ end
 
 function D4:IsSpellInRange(spellID, spellType, unit)
     if spellID == nil then return nil end
-    if IsSpellInRange then return IsSpellInRange(spellID, spellType, unit) end
     if C_Spell and C_Spell.IsSpellInRange then return C_Spell.IsSpellInRange(spellID, spellType, unit) end
+    if IsSpellInRange then return IsSpellInRange(spellID, spellType, unit) end
     D4:MSG("[D4][IsSpellInRange] FAILED")
+
+    return nil
+end
+
+function D4:GetSpellCharges(spellID)
+    if spellID == nil then return nil end
+    if C_Spell and C_Spell.GetSpellCharges then return C_Spell.GetSpellCharges(spellID) end
+    if GetSpellCharges then return GetSpellCharges(spellID) end
+    D4:MSG("[D4][GetSpellCharges] FAILED")
+
+    return nil
+end
+
+function D4:GetSpellCastCount(...)
+    if spellID == nil then return nil end
+    if C_Spell and C_Spell.GetSpellCastCount then return C_Spell.GetSpellCastCount(...) end
+    if GetSpellCastCount then return GetSpellCastCount(...) end
+    D4:MSG("[D4][GetSpellCastCount] FAILED")
 
     return nil
 end
@@ -123,6 +156,14 @@ function D4:GetMouseFocus()
     if GetMouseFoci then return GetMouseFoci()[1] end
     if GetMouseFocus then return GetMouseFocus() end
     D4:MSG("[D4][GetMouseFocus] FAILED")
+
+    return nil
+end
+
+function D4:UnitAura(...)
+    if C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then return C_UnitAuras.GetAuraDataByIndex(...) end
+    if UnitAura then return UnitAura(...) end
+    D4:MSG("[D4][UnitAura] FAILED")
 
     return nil
 end
@@ -149,7 +190,7 @@ function D4:GetName(frameOrTexture)
     return nil
 end
 
-local function FixIconChat(self, event, message, author, ...)
+local function FixIconChat(sel, event, message, author, ...)
     if ICON_LIST then
         for tag in string.gmatch(message, "%b{}") do
             local term = strlower(string.gsub(tag, "[{}]", ""))
@@ -207,8 +248,8 @@ if D4:GetWoWBuild() == "CLASSIC" then
                     TargetFrameHealthBarTextLeft:SetPoint("LEFT", TargetFrameHealthBar, "LEFT", 0, 0)
                     TargetFrameHealthBarTextRight:SetPoint("RIGHT", TargetFrameHealthBar, "RIGHT", 0, 0)
                     TargetFrameManaBarText:SetPoint("CENTER", TargetFrameManaBar, "CENTER", 0, 0)
-                    TargetFrameManaBarTextLeft:SetPoint("LEFT", TargetFrameManaBar, "LEFT", 0, 0)
-                    TargetFrameManaBarTextRight:SetPoint("RIGHT", TargetFrameManaBar, "RIGHT", 0, 0)
+                    TargetFrameManaBarTextLeft:SetPoint("LEFT", TargetFrameManaBar, "LEFT", 2, 0)
+                    TargetFrameManaBarTextRight:SetPoint("RIGHT", TargetFrameManaBar, "RIGHT", -2, 0)
                     TargetFrameHealthBar.LeftText = TargetFrameHealthBarTextLeft
                     TargetFrameHealthBar.RightText = TargetFrameHealthBarTextRight
                     TargetFrameManaBar.LeftText = TargetFrameManaBarTextLeft
@@ -317,4 +358,69 @@ if D4:GetWoWBuild() == "CLASSIC" then
             end
         end
     )
+end
+
+function D4:ReplaceStr(text, old, new)
+    if text == nil then return "" end
+    local b, e = text:find(old, 1, true)
+    if b == nil then
+        return text
+    else
+        return text:sub(1, b - 1) .. new .. text:sub(e + 1)
+    end
+end
+
+local genderNames = {"", "Male", "Female"}
+function D4:GetClassAtlas(class)
+    return ("classicon-%s"):format(class)
+end
+
+function D4:GetClassIcon(class)
+    return "|A:" .. D4:GetClassAtlas(class) .. ":16:16:0:0|a"
+end
+
+function D4:GetRaceAtlas(race, gender)
+    return ("raceicon-%s-%s"):format(race, gender)
+end
+
+function D4:GetRaceIcon(race, gender)
+    return "|A:" .. D4:GetRaceAtlas(race, genderNames[gender]) .. ":16:16:0:0|a"
+end
+
+local units = {"player"}
+for i = 1, 4 do
+    table.insert(units, "party" .. i)
+end
+
+for i = 1, 40 do
+    table.insert(units, "raid" .. i)
+end
+
+function D4:GetRoleByGuid(guid)
+    if UnitGroupRolesAssigned == nil then return "" end
+    for i, unit in pairs(units) do
+        if UnitGUID(unit) == guid then return UnitGroupRolesAssigned(unit) end
+    end
+
+    return ""
+end
+
+function D4:GetRoleIcon(role)
+    if role == "" then return "" end
+    if role == "DAMAGER" then
+        return "UI-LFG-RoleIcon-DPS"
+    elseif role == "HEALER" then
+        return "UI-LFG-RoleIcon-HEALER"
+    elseif role == "TANK" then
+        return "UI-LFG-RoleIcon-TANK"
+    end
+
+    return ""
+end
+
+--[[ Fix for Classic Era ]]
+for i = 2, 5 do
+    if _G["FriendsFrameTab" .. i] == nil then
+        _G["FriendsFrameTab" .. i] = CreateFrame("Frame")
+    end
 end

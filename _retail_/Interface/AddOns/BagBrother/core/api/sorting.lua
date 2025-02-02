@@ -4,9 +4,9 @@
 --]]
 
 local ADDON, Addon = ...
-local Search = LibStub('ItemSearch-1.3')
-local Cache = LibStub('LibItemCache-2.0')
 local Sort = Addon:NewModule('Sorting', 'MutexDelay-1.0')
+local Search = LibStub('ItemSearch-1.3')
+local C = LibStub('C_Everywhere').Item
 
 Sort.Proprieties = {
 	'set',
@@ -20,12 +20,8 @@ Sort.Proprieties = {
 --[[ Process ]]--
 
 function Sort:Start(target)
-	if not self:CanRun() then
-		return
-	end
-
-	self:SendSignal('SORTING_STATUS', target.id)
 	self.target = target
+	self:SendSignal('SORTING_STATUS', target.id)
 	self:Run()
 end
 
@@ -119,12 +115,12 @@ function Sort:GetSpaces()
 				local item = self.target:GetItemInfo(bag, slot)
 				local id = item.itemID
 				if id then
-					local name, _,_, level, _,_,_, stack, equip, _, _, class, subclass = GetItemInfo(id) 
+					local name, _,_, level, _,_,_, stack, equip, _, _, class, subclass = C.GetItemInfo(id) 
 
 					item.class = Search:IsQuestItem(id) and Enum.ItemClass.Questitem or class or 14
 					item.set = (item.class < Enum.ItemClass.Weapon and 0) or Search:BelongsToSet(id) and 1 or 2
-					item.subclass, item.equip, item.level, item.stackSize = subclass, equip, level, stack
-					item.family = GetItemFamily(id) or 0
+					item.subclass, item.equip, item.level, item.stackSize = subclass or -1, equip, level, stack
+					item.family = C.GetItemFamily(id) or 0
 				end
 
 				tinsert(spaces, {index = #spaces, bag = bag, slot = slot, family = family, item = item})
@@ -147,16 +143,17 @@ function Sort:GetFamilies(spaces)
 		tinsert(list, family)
 	end
 
-	sort(list, function(a, b) return a > b or a < 0 end)
+	sort(list, function(a, b) return a > b and (a ~= 0x80000 or b == 0) end)
 	return list
 end
 
 function Sort:GetOrder(spaces, family)
 	local order, slots = {}, {}
+	local sign = family < 0
 
 	for _, space in ipairs(spaces) do
 		local item = space.item
-		if item.itemID and not item.sorted and self:FitsIn(item.itemID, family) then
+		if item.itemID and not item.sorted and (space.family < 0) == sign and self:FitsIn(item.itemID, family) then
 			tinsert(order, space.item)
 		end
 
@@ -173,17 +170,17 @@ end
 --[[ API ]]--
 
 function Sort:CanRun()
-	return not InCombatLockdown() and not UnitIsDead('player')
+	return not InCombatLockdown() and not UnitIsDead('player') and not self.target:IsCached()
 end
 
 function Sort:FitsIn(id, family)
 	if family == 9 then
-		return GetItemFamily(id) == 256
-	elseif family == -3 then
-		return select(17, GetItemInfo(id))
+		return C.GetItemFamily(id) == 256
+	elseif family == 0x80000 then
+		return select(17, C.GetItemInfo(id))
 	end
 	
-	return family == 0 or (bit.band(GetItemFamily(id), family) > 0 and select(9, GetItemInfo(id)) ~= 'INVTYPE_BAG')
+	return family <= 0 or (bit.band(C.GetItemFamily(id), family) > 0 and select(9, C.GetItemInfo(id)) ~= 'INVTYPE_BAG')
 end
 
 function Sort.Rule(a, b)

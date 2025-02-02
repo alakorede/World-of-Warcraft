@@ -256,6 +256,7 @@ qcMenu={
 {text=qcL.DORNOGAL,isTitle=false,notCheckable=false,hasArrow=false,arg1=1403,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.HALLOWFALL,isTitle=false,notCheckable=false,hasArrow=false,arg1=1404,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.ISLEOFDORN,isTitle=false,notCheckable=false,hasArrow=false,arg1=1405,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
+{text=qcL.SIRENISLE,isTitle=false,notCheckable=false,hasArrow=false,arg1=1407,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.THERINGINGDEEPS,isTitle=false,notCheckable=false,hasArrow=false,arg1=1406,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.OTHERCATEGORIES,isTitle=true,notCheckable=true,hasArrow=false},
 --{text=stringformat("   %s%s|r","|cFFE2B018",GetText("SETTINGS")),isTitle=false,notCheckable=true,hasArrow=false},
@@ -363,7 +364,7 @@ qcMenu={
 {text=stringformat("   %s",GetText("EXPANSION_NAME2")),isTitle=false,notCheckable=true,hasArrow=true,menuList={
 {text=qcL.AHNKAHETTHEOLDKINGDOM,isTitle=false,notCheckable=false,hasArrow=false,arg1=2,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.AZJOLNERUB,isTitle=false,notCheckable=false,hasArrow=false,arg1=15,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
-{text=qcL.THECULLINGOFSTRATHOLME,isTitle=false,notCheckable=false,hasArrow=false,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
+{text=qcL.THECULLINGOFSTRATHOLME,isTitle=false,notCheckable=false,hasArrow=false,arg1=410,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.TRIALOFTHECHAMPION,isTitle=false,notCheckable=false,hasArrow=false,arg1=250,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.DRAKTHARONKEEP,isTitle=false,notCheckable=false,hasArrow=false,arg1=60,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},
 {text=qcL.GUNDRAK,isTitle=false,notCheckable=false,hasArrow=false,arg1=89,func=function(button,arg1)qcProcessMenuSelection(button,arg1);end},

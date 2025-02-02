@@ -1,10 +1,10 @@
-tag 912f8a69687663711455c90102d813a77ba74379 v2.35
+tag 70ece49052959d9e86279e35bc70ca2c3325d5b7 v2.38
 Author:	Tim Milligan <tim@voidzonemedia.com>
-Date:	Wed Jul 24 12:00:41 2024 -0500
+Date:	Thu Aug 29 13:51:09 2024 -0500
 
-commit 4eecec5296772798329f7f39fe2e6ade1ee84e2b
+commit b4ed69048a2725030173f95ff26c4fc429c84950
 Author: Tim Milligan <tim@voidzonemedia.com>
-Date:   Wed Jul 24 12:00:34 2024 -0500
+Date:   Thu Aug 29 13:51:03 2024 -0500
 
-    fix slash command
+    fix a bunch of constants that changed
 

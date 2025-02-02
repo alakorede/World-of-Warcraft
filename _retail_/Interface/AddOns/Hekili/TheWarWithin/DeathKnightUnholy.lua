@@ -13,28 +13,19 @@ local PTR = ns.PTR
 
 local strformat = string.format
 
-local me = Hekili:NewSpecialization( 252 )
-
-me:RegisterResource( Enum.PowerType.Runes, {
+local spec = Hekili:NewSpecialization( 252 )
+spec:RegisterResource( Enum.PowerType.Runes, {
     rune_regen = {
-        last = function ()
-            return state.query_time
-        end,
+        last = function () return state.query_time end,
+        stop = function( x ) return x == 6 end,
 
         interval = function( time, val )
-            local r = state.runes
-            val = math.floor( val )
-
+            val = floor( val )
             if val == 6 then return -1 end
-            return r.expiry[ val + 1 ] - time
+            return state.runes.expiry[ val + 1 ] - time
         end,
-
-        stop = function( x )
-            return x == 6
-        end,
-
         value = 1,
-    },
+    }
 }, setmetatable( {
     expiry = { 0, 0, 0, 0, 0, 0 },
     cooldown = 10,
@@ -48,72 +39,57 @@ me:RegisterResource( Enum.PowerType.Runes, {
 
     reset = function()
         local t = state.runes
-
         for i = 1, 6 do
             local start, duration, ready = GetRuneCooldown( i )
-
-            start = start or 0
-            duration = duration or ( 10 * state.haste )
-
-            start = roundUp( start, 3 )
-
-            t.expiry[ i ] = ready and 0 or start + duration
+            t.expiry[ i ] = ready and 0 or ( start + duration )
             t.cooldown = duration
         end
-
         table.sort( t.expiry )
-
-        t.actual = nil
+        t.actual = nil -- Reset actual to force recalculation
     end,
 
     gain = function( amount )
         local t = state.runes
-
         for i = 1, amount do
-            t.expiry[ 7 - i ] = 0
+            table.insert( t.expiry, 0 )
+            t.expiry[ 7 ] = nil
         end
         table.sort( t.expiry )
-
-        t.actual = nil
+        t.actual = nil -- Reset actual to force recalculation
     end,
 
     spend = function( amount )
         local t = state.runes
-
         for i = 1, amount do
-            if t.expiry[ 4 ] > state.query_time then
-                t.expiry[ 1 ] = t.expiry[ 4 ] + t.cooldown
-            else
-                t.expiry[ 1 ] = state.query_time + t.cooldown
-            end
-            table.sort( t.expiry )
+            local nextReady = ( t.expiry[ 4 ] > 0 and t.expiry[ 4 ] or state.query_time ) + t.cooldown
+            table.remove( t.expiry, 1 )
+            table.insert( t.expiry, nextReady )
         end
 
-        if amount > 0 then
-            state.gain( amount * 10, "runic_power" )
+        -- Handle Runic Power gain
+        state.gain( amount * 10, "runic_power" )            
 
-            if state.set_bonus.tier20_4pc == 1 then
-                state.cooldown.army_of_the_dead.expires = max( 0, state.cooldown.army_of_the_dead.expires - 1 )
-            end
-        end
+        -- Handle Tier 20 4-piece set bonus
+        if state.set_bonus.tier20_4pc == 1 then
+            state.cooldown.army_of_the_dead.expires = max( 0, state.cooldown.army_of_the_dead.expires - 1 )
+        end      
 
-        t.actual = nil
+        t.actual = nil -- Reset actual to force recalculation
     end,
 
     timeTo = function( x )
         return state:TimeToResource( state.runes, x )
     end,
 }, {
-    __index = function( t, k, v )
+    __index = function( t, k )
         if k == "actual" then
+            -- Calculate the number of runes available based on `expiry`.
             local amount = 0
-
             for i = 1, 6 do
                 if t.expiry[ i ] <= state.query_time then
                     amount = amount + 1
                 end
             end
-
             return amount
 
         elseif k == "current" then
@@ -126,7 +102,7 @@ me:RegisterResource( Enum.PowerType.Runes, {
 
                 for i = 1, t.fcount do
                     local v = t.forecast[ i ]
-                    if v.t <= q then
+                    if v.t <= q and v.v ~= nil then
                         index = i
                         slice = v
                     else
@@ -135,7 +111,7 @@ me:RegisterResource( Enum.PowerType.Runes, {
                 end
 
                 -- We have a slice.
-                if index and slice then
+                if index and slice and slice.v then
                     t.values[ q ] = max( 0, min( t.max, slice.v ) )
                     return t.values[ q ]
                 end
@@ -150,32 +126,17 @@ me:RegisterResource( Enum.PowerType.Runes, {
             return t[ "time_to_" .. t.current + 1 ]
 
         elseif k == "time_to_max" then
-            return t.current == 6 and 0 or max( 0, t.expiry[6] - state.query_time )
-
-
-        elseif k == "add" then
-            return t.gain
+            return t.current == t.max and 0 or max( 0, t.expiry[ 6 ] - state.query_time )
 
         else
             local amount = k:match( "time_to_(%d+)" )
             amount = amount and tonumber( amount )
-
-            if amount then return state:TimeToResource( t, amount ) end
+            if amount then return t.timeTo( amount ) end
         end
     end
-} ) )
-me:RegisterResource( Enum.PowerType.RunicPower )
+}))
 
-
-me:RegisterStateFunction( "apply_festermight", function( n )
-    if azerite.festermight.enabled or talent.festermight.enabled then
-        if buff.festermight.up then
-            addStack( "festermight", buff.festermight.remains, n )
-        else
-            applyBuff( "festermight", nil, n )
-        end
-    end
-end )
+spec:RegisterResource( Enum.PowerType.RunicPower )
 
 
 local spendHook = function( amt, resource, noHook )
@@ -184,172 +145,179 @@ local spendHook = function( amt, resource, noHook )
     end
 end
 
-me:RegisterHook( "spend", spendHook )
+spec:RegisterHook( "spend", spendHook )
 
 
 -- Talents
-me:RegisterTalents( {
+spec:RegisterTalents( {
     -- DeathKnight
-    abomination_limb          = { 76049, 383269, 1 }, -- Sprout an additional limb, dealing 50,684 Shadow damage over 12 sec to all nearby enemies. Deals reduced damage beyond 5 targets. Every 1 sec, an enemy is pulled to your location if they are further than 8 yds from you. The same enemy can only be pulled once every 4 sec.
-    antimagic_barrier         = { 76046, 205727, 1 }, -- Reduces the cooldown of Anti-Magic Shell by 20 sec and increases its duration and amount absorbed by 40%.
-    antimagic_zone            = { 76065, 51052 , 1 }, -- Places an Anti-Magic Zone that reduces spell damage taken by party or raid members by 20%. The Anti-Magic Zone lasts for 8 sec or until it absorbs 573,060 damage.
-    asphyxiate                = { 76064, 221562, 1 }, -- Lifts the enemy target off the ground, crushing their throat with dark energy and stunning them for 5 sec.
-    assimilation              = { 76048, 374383, 1 }, -- The amount absorbed by Anti-Magic Zone is increased by 10% and its cooldown is reduced by 30 sec.
-    blinding_sleet            = { 76044, 207167, 1 }, -- Targets in a cone in front of you are blinded, causing them to wander disoriented for 5 sec. Damage may cancel the effect. When Blinding Sleet ends, enemies are slowed by 50% for 6 sec.
-    blood_draw                = { 76056, 374598, 1 }, -- When you fall below 30% health you drain 10,596 health from nearby enemies, the damage you take is reduced by 10% and your Death Strike cost is reduced by 10 for 8 sec. Can only occur every 2 min.
-    blood_scent               = { 76078, 374030, 1 }, -- Increases Leech by 3%.
-    brittle                   = { 76061, 374504, 1 }, -- Your diseases have a chance to weaken your enemy causing your attacks against them to deal 6% increased damage for 5 sec.
-    cleaving_strikes          = { 76073, 316916, 1 }, -- Scourge Strike hits up to 7 additional enemies while you remain in Death and Decay. When leaving your Death and Decay you retain its bonus effects for 4 sec.
-    coldthirst                = { 76083, 378848, 1 }, -- Successfully interrupting an enemy with Mind Freeze grants 10 Runic Power and reduces its cooldown by 3 sec.
-    control_undead            = { 76059, 111673, 1 }, -- Dominates the target undead creature up to level 71, forcing it to do your bidding for 5 min.
-    death_pact                = { 76075, 48743 , 1 }, -- Create a death pact that heals you for 50% of your maximum health, but absorbs incoming healing equal to 30% of your max health for 15 sec.
-    death_strike              = { 76071, 49998 , 1 }, -- Focuses dark power into a strike that deals 4,099 Physical damage and heals you for 40.00% of all damage taken in the last 5 sec, minimum 11.2% of maximum health.
+    abomination_limb          = {  76049, 383269, 1 }, -- Sprout an additional limb, dealing 75,598 Shadow damage over 12 sec to all nearby enemies. Deals reduced damage beyond 5 targets. Every 1 sec, an enemy is pulled to your location if they are further than 8 yds from you. The same enemy can only be pulled once every 4 sec.
+    antimagic_barrier         = {  76046, 205727, 1 }, -- Reduces the cooldown of Anti-Magic Shell by 20 sec and increases its duration and amount absorbed by 40%.
+    antimagic_zone            = {  76065,  51052, 1 }, -- Places an Anti-Magic Zone that reduces spell damage taken by party or raid members by 20%. The Anti-Magic Zone lasts for 8 sec or until it absorbs 1.2 million damage.
+    asphyxiate                = {  76064, 221562, 1 }, -- Lifts the enemy target off the ground, crushing their throat with dark energy and stunning them for 5 sec.
+    assimilation              = {  76048, 374383, 1 }, -- The amount absorbed by Anti-Magic Zone is increased by 10% and its cooldown is reduced by 30 sec.
+    blinding_sleet            = {  76044, 207167, 1 }, -- Targets in a cone in front of you are blinded, causing them to wander disoriented for 5 sec. Damage may cancel the effect. When Blinding Sleet ends, enemies are slowed by 50% for 6 sec.
+    blood_draw                = {  76056, 374598, 1 }, -- When you fall below 30% health you drain 16,964 health from nearby enemies, the damage you take is reduced by 10% and your Death Strike cost is reduced by 10 for 8 sec. Can only occur every 2 min.
+    blood_scent               = {  76078, 374030, 1 }, -- Increases Leech by 3%.
+    brittle                   = {  76061, 374504, 1 }, -- Your diseases have a chance to weaken your enemy causing your attacks against them to deal 6% increased damage for 5 sec.
+    cleaving_strikes          = {  76073, 316916, 1 }, -- Scourge Strike hits up to 7 additional enemies while you remain in Death and Decay. When leaving your Death and Decay you retain its bonus effects for 4 sec.
+    coldthirst                = {  76083, 378848, 1 }, -- Successfully interrupting an enemy with Mind Freeze grants 10 Runic Power and reduces its cooldown by 3 sec.
+    control_undead            = {  76059, 111673, 1 }, -- Dominates the target undead creature up to level 71, forcing it to do your bidding for 5 min.
+    death_pact                = {  76075,  48743, 1 }, -- Create a death pact that heals you for 50% of your maximum health, but absorbs incoming healing equal to 30% of your max health for 15 sec.
+    death_strike              = {  76071,  49998, 1 }, -- Focuses dark power into a strike that deals 6,563 Physical damage and heals you for 40.00% of all damage taken in the last 5 sec, minimum 11.2% of maximum health.
     deaths_echo               = { 102007, 356367, 1 }, -- Death's Advance, Death and Decay, and Death Grip have 1 additional charge.
     deaths_reach              = { 102006, 276079, 1 }, -- Increases the range of Death Grip by 10 yds. Killing an enemy that yields experience or honor resets the cooldown of Death Grip.
-    enfeeble                  = { 76060, 392566, 1 }, -- Your ghoul's attacks have a chance to apply Enfeeble, reducing the enemies movement speed by 30% and the damage they deal to you by 15% for 6 sec.
-    gloom_ward                = { 76052, 391571, 1 }, -- Absorbs are 15% more effective on you.
-    grip_of_the_dead          = { 76057, 273952, 1 }, -- Death and Decay reduces the movement speed of enemies within its area by 90%, decaying by 10% every sec.
-    ice_prison                = { 76086, 454786, 1 }, -- Chains of Ice now also roots enemies for 4 sec but its cooldown is increased to 12 sec.
-    icebound_fortitude        = { 76081, 48792 , 1 }, -- Your blood freezes, granting immunity to Stun effects and reducing all damage you take by 30% for 8 sec.
-    icy_talons                = { 76085, 194878, 1 }, -- Your Runic Power spending abilities increase your melee attack speed by 6% for 10 sec, stacking up to 3 times.
-    improved_death_strike     = { 76067, 374277, 1 }, -- Death Strike's cost is reduced by 10, and its healing is increased by 60%.
-    insidious_chill           = { 76051, 391566, 1 }, -- Your auto-attacks reduce the target's auto-attack speed by 5% for 30 sec, stacking up to 4 times.
-    march_of_darkness         = { 76074, 391546, 1 }, -- Death's Advance grants an additional 25% movement speed over the first 3 sec.
-    mind_freeze               = { 76084, 47528 , 1 }, -- Smash the target's mind with cold, interrupting spellcasting and preventing any spell in that school from being cast for 3 sec.
-    null_magic                = { 102008, 454842, 1 }, -- Magic damage taken is reduced by 10% and the duration of harmful Magic effects against you are reduced by 35%.
-    osmosis                   = { 76088, 454835, 1 }, -- Anti-Magic Shell increases healing received by 15%.
-    permafrost                = { 76066, 207200, 1 }, -- Your auto attack damage grants you an absorb shield equal to 40% of the damage dealt.
+    enfeeble                  = {  76060, 392566, 1 }, -- Your ghoul's attacks have a chance to apply Enfeeble, reducing the enemies movement speed by 30% and the damage they deal to you by 12% for 6 sec.
+    gloom_ward                = {  76052, 391571, 1 }, -- Absorbs are 15% more effective on you.
+    grip_of_the_dead          = {  76057, 273952, 1 }, -- Defile reduces the movement speed of enemies within its area by 90%, decaying by 10% every sec.
+    ice_prison                = {  76086, 454786, 1 }, -- Chains of Ice now also roots enemies for 4 sec but its cooldown is increased to 12 sec.
+    icebound_fortitude        = {  76081,  48792, 1 }, -- Your blood freezes, granting immunity to Stun effects and reducing all damage you take by 30% for 8 sec.
+    icy_talons                = {  76085, 194878, 1 }, -- Your Runic Power spending abilities increase your melee attack speed by 6% for 10 sec, stacking up to 3 times.
+    improved_death_strike     = {  76067, 374277, 1 }, -- Death Strike's cost is reduced by 10, and its healing is increased by 60%.
+    insidious_chill           = {  76051, 391566, 1 }, -- Your auto-attacks reduce the target's auto-attack speed by 5% for 30 sec, stacking up to 4 times.
+    march_of_darkness         = {  76074, 391546, 1 }, -- Death's Advance grants an additional 25% movement speed over the first 3 sec.
+    mind_freeze               = {  76084,  47528, 1 }, -- Smash the target's mind with cold, interrupting spellcasting and preventing any spell in that school from being cast for 3 sec.
+    null_magic                = { 102008, 454842, 1 }, -- Magic damage taken is reduced by 8% and the duration of harmful Magic effects against you are reduced by 35%.
+    osmosis                   = {  76088, 454835, 1 }, -- Anti-Magic Shell increases healing received by 15%.
+    permafrost                = {  76066, 207200, 1 }, -- Your auto attack damage grants you an absorb shield equal to 40% of the damage dealt.
     proliferating_chill       = { 101708, 373930, 1 }, -- Chains of Ice affects 1 additional nearby enemy.
-    raise_dead                = { 76072, 46585 , 1 }, -- Raises a ghoul to fight by your side. You can have a maximum of one ghoul at a time. Lasts 1 min.
-    rune_mastery              = { 76079, 374574, 2 }, -- Consuming a Rune has a chance to increase your Strength by 3% for 8 sec.
-    runic_attenuation         = { 76045, 207104, 1 }, -- Auto attacks have a chance to generate 3 Runic Power.
-    runic_protection          = { 76055, 454788, 1 }, -- Your chance to be critically struck is reduced by 3% and your Armor is increased by 6%.
-    sacrificial_pact          = { 76060, 327574, 1 }, -- Sacrifice your ghoul to deal 10,296 Shadow damage to all nearby enemies and heal for 25% of your maximum health. Deals reduced damage beyond 8 targets.
-    soul_reaper               = { 76063, 343294, 1 }, -- Strike an enemy for 7,085 Shadowfrost damage and afflict the enemy with Soul Reaper. After 5 sec, if the target is below 35% health this effect will explode dealing an additional 32,509 Shadowfrost damage to the target. If the enemy that yields experience or honor dies while afflicted by Soul Reaper, gain Runic Corruption.
-    subduing_grasp            = { 76080, 454822, 1 }, -- When you pull an enemy, the damage they deal to you is reduced by 6% for 6 sec.
-    suppression               = { 76087, 374049, 1 }, -- Damage taken from area of effect attacks reduced by 3%. When suffering a loss of control effect, this bonus is increased by an additional 6% for 6 sec.
-    unholy_bond               = { 76076, 374261, 1 }, -- Increases the effectiveness of your Runeforge effects by 20%.
-    unholy_endurance          = { 76058, 389682, 1 }, -- Increases Lichborne duration by 2 sec and while active damage taken is reduced by 15%.
-    unholy_ground             = { 76069, 374265, 1 }, -- Gain 5% Haste while you remain within your Death and Decay.
-    unyielding_will           = { 76050, 457574, 1 }, -- Anti-Magic Shell's cooldown is increased by 20 sec and it now also removes all harmful magic effects when activated.
-    vestigial_shell           = { 76053, 454851, 1 }, -- Casting Anti-Magic Shell grants 2 nearby allies a Lesser Anti-Magic Shell that Absorbs up to 37,527 magic damage and reduces the duration of harmful Magic effects against them by 50%.
-    veteran_of_the_third_war  = { 76068, 48263 , 1 }, -- Stamina increased by 20%.
-    will_of_the_necropolis    = { 76054, 206967, 2 }, -- Damage taken below 30% Health is reduced by 20%.
-    wraith_walk               = { 76077, 212552, 1 }, -- Embrace the power of the Shadowlands, removing all root effects and increasing your movement speed by 70% for 4 sec. Taking any action cancels the effect. While active, your movement speed cannot be reduced below 170%.
+    raise_dead                = {  76072,  46585, 1 }, -- Raises a ghoul to fight by your side. You can have a maximum of one ghoul at a time. Lasts 1 min.
+    rune_mastery              = {  76079, 374574, 2 }, -- Consuming a Rune has a chance to increase your Strength by 3% for 8 sec.
+    runic_attenuation         = {  76045, 207104, 1 }, -- Auto attacks have a chance to generate 3 Runic Power.
+    runic_protection          = {  76055, 454788, 1 }, -- Your chance to be critically struck is reduced by 3% and your Armor is increased by 6%.
+    sacrificial_pact          = {  76060, 327574, 1 }, -- Sacrifice your ghoul to deal 15,357 Shadow damage to all nearby enemies and heal for 25% of your maximum health. Deals reduced damage beyond 8 targets.
+    soul_reaper               = {  76063, 343294, 1 }, -- Strike an enemy for 10,568 Shadowfrost damage and afflict the enemy with Soul Reaper. After 5 sec, if the target is below 35% health this effect will explode dealing an additional 48,489 Shadowfrost damage to the target. If the enemy that yields experience or honor dies while afflicted by Soul Reaper, gain Runic Corruption.
+    subduing_grasp            = {  76080, 454822, 1 }, -- When you pull an enemy, the damage they deal to you is reduced by 6% for 6 sec.
+    suppression               = {  76087, 374049, 1 }, -- Damage taken from area of effect attacks reduced by 3%. When suffering a loss of control effect, this bonus is increased by an additional 6% for 6 sec.
+    unholy_bond               = {  76076, 374261, 1 }, -- Increases the effectiveness of your Runeforge effects by 20%.
+    unholy_endurance          = {  76058, 389682, 1 }, -- Increases Lichborne duration by 2 sec and while active damage taken is reduced by 15%.
+    unholy_ground             = {  76069, 374265, 1 }, -- Gain 5% Haste while you remain within your Death and Decay.
+    unyielding_will           = {  76050, 457574, 1 }, -- Anti-Magic shell now removes all harmful magical effects when activated, but it's cooldown is increased by 20 sec.
+    vestigial_shell           = {  76053, 454851, 1 }, -- Casting Anti-Magic Shell grants 2 nearby allies a Lesser Anti-Magic Shell that Absorbs up to 55,050 magic damage and reduces the duration of harmful Magic effects against them by 50%.
+    veteran_of_the_third_war  = {  76068,  48263, 1 }, -- Stamina increased by 20%.
+    will_of_the_necropolis    = {  76054, 206967, 2 }, -- Damage taken below 30% Health is reduced by 20%.
+    wraith_walk               = {  76077, 212552, 1 }, -- Embrace the power of the Shadowlands, removing all root effects and increasing your movement speed by 70% for 4 sec. Taking any action cancels the effect. While active, your movement speed cannot be reduced below 170%.
 
     -- Unholy
-    all_will_serve            = { 76181, 194916, 1 }, -- Your Raise Dead spell summons an additional skeletal minion.
-    apocalypse                = { 76185, 275699, 1 }, -- Bring doom upon the enemy, dealing 6,864 Shadow damage and bursting up to 4 Festering Wounds on the target. Summons 4 Army of the Dead ghouls for 20 sec. Generates 2 Runes.
-    army_of_the_dead          = { 76196, 42650 , 1 }, -- Summons a legion of ghouls who swarms your enemies, fighting anything they can for 30 sec.
-    bursting_sores            = { 76164, 207264, 1 }, -- Bursting a Festering Wound deals 20% more damage, and deals 2,491 Shadow damage to all nearby enemies. Deals reduced damage beyond 8 targets.
-    clawing_shadows           = { 76183, 207311, 1 }, -- Deals 11,747 Shadow damage and causes 1 Festering Wound to burst.
-    coil_of_devastation       = { 76156, 390270, 1 }, -- Death Coil causes the target to take an additional 30% of the direct damage dealt over 4 sec.
-    commander_of_the_dead     = { 76149, 390259, 1 }, -- Dark Transformation also empowers your Gargoyle and Army of the Dead for 30 sec, increasing their damage by 35%.
-    dark_transformation       = { 76187, 63560 , 1 }, -- Your ghoul deals 6,141 Shadow damage to 5 nearby enemies and transforms into a powerful undead monstrosity for 15 sec. Granting them 100% energy and the ghoul's abilities are empowered and take on new functions while the transformation is active.
-    death_rot                 = { 76158, 377537, 1 }, -- Death Coil and Epidemic debilitate your enemy applying Death Rot causing them to take 1% increased Shadow damage, up to 10% from you for 10 sec. If Death Coil or Epidemic consume Sudden Doom it applies two stacks of Death Rot.
-    decomposition             = { 76154, 455398, 2 }, -- Virulent Plague has a chance to abruptly flare up, dealing 50% of the damage it dealt to target in the last 4 sec. When this effect triggers, the duration of your active minions are increased by 1.0 sec, up to 3.0 sec.
-    defile                    = { 76161, 152280, 1 }, -- Defile the targeted ground, dealing 22,651 Shadow damage to all enemies over 10 sec. While you remain within your Defile, your Scourge Strike will hit 7 enemies near the target. Every sec, if any enemies are standing in the Defile, it grows in size and deals increased damage.
-    defile_2                  = { 76180, 152280, 1 }, -- Defile the targeted ground, dealing 22,651 Shadow damage to all enemies over 10 sec. While you remain within your Defile, your Scourge Strike will hit 7 enemies near the target. Every sec, if any enemies are standing in the Defile, it grows in size and deals increased damage.
-    doomed_bidding            = { 76176, 455386, 1 }, -- Consuming Sudden Doom calls upon a Magus of the Dead to assist you for 8 sec.
-    ebon_fever                = { 76160, 207269, 1 }, -- Diseases deal 15% more damage over time in half the duration.
-    eternal_agony             = { 76182, 390268, 1 }, -- Death Coil and Epidemic increase the duration of Dark Transformation by 1 sec.
-    festering_scythe          = { 76193, 455397, 1 }, -- Every 20 Festering Wound you burst empowers your next Festering Strike to become Festering Scythe for 12 sec. Festering Scythe
-    festering_strike          = { 76189, 85948 , 1 }, -- Strikes for 14,749 Physical damage and infects the target with 2-3 Festering Wounds.  Festering Wound A pustulent lesion that will burst on death or when damaged by Scourge Strike, dealing 3,928 Shadow damage and generating 3 Runic Power.
-    festermight               = { 76152, 377590, 2 }, -- Popping a Festering Wound increases your Strength by 1% for 20 sec stacking. Multiple instances may overlap.
-    foul_infections           = { 76162, 455396, 1 }, -- Your diseases deal 10% more damage and have a 5% increased chance to critically strike.
-    ghoulish_frenzy           = { 76194, 377587, 1 }, -- Dark Transformation also increases the attack speed and damage of you and your Monstrosity by 5%.
-    harbinger_of_doom         = { 76178, 276023, 1 }, -- Sudden Doom triggers 30% more often, can accumulate up to 2 charges, and increases the damage of your next Death Coil by 20% or Epidemic by 10%.
-    improved_death_coil       = { 76184, 377580, 1 }, -- Death Coil deals 15% additional damage and seeks out 1 additional nearby enemy.
-    improved_festering_strike = { 76192, 316867, 2 }, -- Festering Strike and Festering Wound damage increased by 10%.
-    infected_claws            = { 76195, 207272, 1 }, -- Your ghoul's Claw attack has a 30% chance to cause a Festering Wound on the target.
-    magus_of_the_dead         = { 76148, 390196, 1 }, -- Apocalypse and Army of the Dead also summon a Magus of the Dead who hurls Frostbolts and Shadow Bolts at your foes.
+    all_will_serve            = {  76181, 194916, 1 }, -- Your Raise Dead spell summons an additional skeletal minion.
+    apocalypse                = {  76185, 275699, 1 }, -- Bring doom upon the enemy, dealing 10,238 Shadow damage and bursting up to 4 Festering Wounds on the target. Summons 4 Army of the Dead ghouls for 20 sec. Generates 2 Runes.
+    army_of_the_dead          = {  76196,  42650, 1 }, -- Summons a legion of ghouls who swarms your enemies, fighting anything they can for 30 sec.
+    bursting_sores            = {  76164, 207264, 1 }, -- Bursting a Festering Wound deals 16% more damage, and deals 3,420 Shadow damage to all nearby enemies. Deals reduced damage beyond 8 targets.
+    clawing_shadows           = {  76183, 207311, 1 }, -- Deals 21,909 Shadow damage and causes 1 Festering Wound to burst.
+    coil_of_devastation       = {  76156, 390270, 1 }, -- Death Coil causes the target to take an additional 30% of the direct damage dealt over 4 sec.
+    commander_of_the_dead     = {  76149, 390259, 1 }, -- Dark Transformation also empowers your Gargoyle and Army of the Dead for 30 sec, increasing their damage by 35%.
+    dark_transformation       = {  76187,  63560, 1 }, -- Your ghoul deals 9,159 Shadow damage to 5 nearby enemies and transforms into a powerful undead monstrosity for 15 sec. Granting them 100% energy and the ghoul's abilities are empowered and take on new functions while the transformation is active.
+    death_rot                 = {  76158, 377537, 1 }, -- Death Coil and Epidemic debilitate your enemy applying Death Rot causing them to take 1% increased Shadow damage, up to 10% from you for 10 sec. If Death Coil or Epidemic consume Sudden Doom it applies two stacks of Death Rot.
+    decomposition             = {  76154, 455398, 2 }, -- Virulent Plague has a chance to abruptly flare up, dealing 50% of the damage it dealt to target in the last 4 sec. When this effect triggers, the duration of your active minions are increased by 1.0 sec, up to 3.0 sec.
+    defile                    = {  76161, 152280, 1 }, -- Defile the targeted ground, dealing 33,785 Shadow damage to all enemies over 10 sec. While you remain within your Defile, your Scourge Strike will hit 7 enemies near the target. Every sec, if any enemies are standing in the Defile, it grows in size and deals increased damage.
+    doomed_bidding            = {  76176, 455386, 1 }, -- Consuming Sudden Doom calls upon a Magus of the Dead to assist you for 8 sec.
+    ebon_fever                = {  76160, 207269, 1 }, -- Diseases deal 12% more damage over time in half the duration.
+    eternal_agony             = {  76182, 390268, 1 }, -- Death Coil and Epidemic increase the duration of Dark Transformation by 1 sec.
+    festering_scythe          = {  76193, 455397, 1 }, -- Every 20 Festering Wound you burst empowers your next Festering Strike to become Festering Scythe for 12 sec. Festering Scythe Sweep through all enemies within 14 yds in front of you, dealing 45,047 Shadow damage and infecting them with 2-3 Festering Wounds.
+    festering_strike          = {  76189,  85948, 1 }, -- Strikes for 21,646 Physical damage and infects the target with 2-3 Festering Wounds.  Festering Wound A pustulent lesion that will burst on death or when damaged by Scourge Strike, dealing 6,230 Shadow damage and generating 3 Runic Power.
+    festermight               = {  76152, 377590, 2 }, -- Popping a Festering Wound increases your Strength by 1% for 20 sec stacking. Multiple instances may overlap.
+    foul_infections           = {  76162, 455396, 1 }, -- Your diseases deal 10% more damage and have a 5% increased chance to critically strike.
+    ghoulish_frenzy           = {  76194, 377587, 1 }, -- Dark Transformation also increases the attack speed and damage of you and your Monstrosity by 5%.
+    harbinger_of_doom         = {  76178, 276023, 1 }, -- Sudden Doom triggers 30% more often, can accumulate up to 2 charges, and increases the damage of your next Death Coil by 20% or Epidemic by 10%.
+    improved_death_coil       = {  76184, 377580, 1 }, -- Death Coil deals 15% additional damage and seeks out 1 additional nearby enemy.
+    improved_festering_strike = {  76192, 316867, 2 }, -- Festering Strike and Festering Wound damage increased by 10%.
+    infected_claws            = {  76195, 207272, 1 }, -- Your ghoul's Claw attack has a 30% chance to cause a Festering Wound on the target.
+    magus_of_the_dead         = {  76148, 390196, 1 }, -- Apocalypse and Army of the Dead also summon a Magus of the Dead who hurls Frostbolts and Shadow Bolts at your foes.
     menacing_magus            = { 101882, 455135, 1 }, -- Your Magus of the Dead Shadow Bolt now fires a volley of Shadow Bolts at up to 4 nearby enemies.
-    morbidity                 = { 76197, 377592, 2 }, -- Diseased enemies take 1% increased damage from you per disease they are affected by.
-    pestilence                = { 76157, 277234, 1 }, -- Death and Decay damage has a 10% chance to apply a Festering Wound to the enemy.
-    plaguebringer             = { 76183, 390175, 1 }, -- Scourge Strike causes your disease damage to occur 100% more quickly for 10 sec.
-    raise_abomination         = { 76153, 455395, 1 }, -- Raises an Abomination for 30 sec which wanders and attacks enemies, applying Festering Wound when it melees targets, and affecting all those nearby with Virulent Plague.
-    raise_dead_2              = { 76188, 46584 , 1 }, -- Raises a ghoul to fight by your side. You can have a maximum of one ghoul at a time.
-    reaping                   = { 76179, 377514, 1 }, -- Your Soul Reaper, Scourge Strike, Festering Strike, and Death Coil deal 30% additional damage to enemies below 35% health.
-    rotten_touch              = { 76175, 390275, 1 }, -- Sudden Doom causes your next Death Coil to also increase your Scourge Strike damage against the target by 50% for 10 sec.
-    runic_mastery             = { 76186, 390166, 2 }, -- Increases your maximum Runic Power by 10 and increases the Rune regeneration rate of Runic Corruption by 10%.
-    ruptured_viscera          = { 76177, 390236, 1 }, -- When your ghouls expire, they explode in viscera dealing 1,594 Shadow damage to nearby enemies. Each explosion has a 25% chance to apply Festering Wounds to enemies hit.
-    scourge_strike            = { 76190, 55090 , 1 }, -- An unholy strike that deals 5,151 Physical damage and 4,412 Shadow damage, and causes 1 Festering Wound to burst.
-    sudden_doom               = { 76191, 49530 , 1 }, -- Your auto attacks have a 25% chance to make your next Death Coil or Epidemic cost 10 less Runic Power and critically strike. Additionally, your next Death Coil will burst 1 Festering Wound.
-    summon_gargoyle           = { 76176, 49206 , 1 }, -- Summon a Gargoyle into the area to bombard the target for 25 sec. The Gargoyle gains 1% increased damage for every 1 Runic Power you spend. Generates 50 Runic Power.
-    superstrain               = { 76155, 390283, 1 }, -- Your Virulent Plague also applies Frost Fever and Blood Plague at 80% effectiveness.
-    unholy_assault            = { 76151, 207289, 1 }, -- Strike your target dealing 17,517 Shadow damage, infecting the target with 4 Festering Wounds and sending you into an Unholy Frenzy increasing all damage done by 20% for 20 sec.
-    unholy_aura               = { 76150, 377440, 2 }, -- All enemies within 8 yards take 10% increased damage from your minions.
-    unholy_blight             = { 76163, 460448, 1 }, -- Dark Transformation surrounds your ghoul with a vile swarm of insects for 6 sec, stinging all nearby enemies and infecting them with Virulent Plague and an unholy disease that deals 4,803 damage over 14 sec, stacking up to 4 times.
-    unholy_pact               = { 76180, 319230, 1 }, -- Dark Transformation creates an unholy pact between you and your pet, igniting flaming chains that deal 30,810 Shadow damage over 15 sec to enemies between you and your pet.
-    vile_contagion            = { 76159, 390279, 1 }, -- Inflict disease upon your enemies spreading Festering Wounds equal to the amount currently active on your target to 7 nearby enemies.
+    morbidity                 = {  76197, 377592, 2 }, -- Diseased enemies take 1% increased damage from you per disease they are affected by.
+    pestilence                = {  76157, 277234, 1 }, -- Death and Decay damage has a 10% chance to apply a Festering Wound to the enemy.
+    plaguebringer             = {  76183, 390175, 1 }, -- Scourge Strike causes your disease damage to occur 100% more quickly for 10 sec.
+    raise_abomination         = {  76153, 455395, 1 }, -- Raises an Abomination for 30 sec which wanders and attacks enemies, applying Festering Wound when it melees targets, and affecting all those nearby with Virulent Plague.
+    raise_dead_2              = {  76188,  46584, 1 }, -- Raises a ghoul to fight by your side. You can have a maximum of one ghoul at a time.
+    reaping                   = {  76179, 377514, 1 }, -- Your Soul Reaper, Scourge Strike, Festering Strike, and Death Coil deal 30% additional damage to enemies below 35% health.
+    rotten_touch              = {  76175, 390275, 1 }, -- Sudden Doom causes your next Death Coil to also increase your Scourge Strike damage against the target by 50% for 10 sec.
+    runic_mastery             = {  76186, 390166, 2 }, -- Increases your maximum Runic Power by 10 and increases the Rune regeneration rate of Runic Corruption by 10%.
+    ruptured_viscera          = {  76177, 390236, 1 }, -- When your ghouls expire, they explode in viscera dealing 2,876 Shadow damage to nearby enemies. Each explosion has a 25% chance to apply Festering Wounds to enemies hit.
+    scourge_strike            = {  76190,  55090, 1 }, -- An unholy strike that deals 8,248 Physical damage and 6,581 Shadow damage, and causes 1 Festering Wound to burst.
+    sudden_doom               = {  76191,  49530, 1 }, -- Your auto attacks have a 25% chance to make your next Death Coil or Epidemic cost 10 less Runic Power and critically strike. Additionally, your next Death Coil will burst 1 Festering Wound.
+    summon_gargoyle           = {  76176,  49206, 1 }, -- Summon a Gargoyle into the area to bombard the target for 25 sec. The Gargoyle gains 1% increased damage for every 1 Runic Power you spend. Generates 50 Runic Power.
+    superstrain               = {  76155, 390283, 1 }, -- Your Virulent Plague also applies Frost Fever and Blood Plague at 75% effectiveness.
+    unholy_assault            = {  76151, 207289, 1 }, -- Strike your target dealing 26,127 Shadow damage, infecting the target with 4 Festering Wounds and sending you into an Unholy Frenzy increasing all damage done by 20% for 20 sec.
+    unholy_aura               = {  76150, 377440, 2 }, -- All enemies within 8 yards take 10% increased damage from your minions.
+    unholy_blight             = {  76163, 460448, 1 }, -- Dark Transformation surrounds your ghoul with a vile swarm of insects for 6 sec, stinging all nearby enemies and infecting them with Virulent Plague and an unholy disease that deals 7,164 damage over 14 sec, stacking up to 4 times.
+    unholy_pact               = {  76180, 319230, 1 }, -- Dark Transformation creates an unholy pact between you and your pet, igniting flaming chains that deal 45,956 Shadow damage over 15 sec to enemies between you and your pet.
+    vile_contagion            = {  76159, 390279, 1 }, -- Inflict disease upon your enemies spreading Festering Wounds equal to the amount currently active on your target to 7 nearby enemies.
 
     -- Rider of the Apocalypse
-    a_feast_of_souls          = { 95042, 444072, 1 }, -- While you have 2 or more Horsemen aiding you, your Runic Power spending abilities deal 30% increased damage.
-    apocalypse_now            = { 95041, 444040, 1 }, -- Army of the Dead and Frostwyrm's Fury call upon all 4 Horsemen to aid you for 20 sec.
-    death_charge              = { 95060, 444010, 1 }, -- Call upon your Death Charger to break free of movement impairment effects. For 10 sec, while upon your Death Charger your movement speed is increased by 100%, you cannot be slowed, and you are immune to forced movement effects and knockbacks.
-    fury_of_the_horsemen      = { 95042, 444069, 1 }, -- Every 50 Runic Power you spend extends the duration of the Horsemen's aid in combat by 1 sec, up to 5 sec.
-    horsemens_aid             = { 95037, 444074, 1 }, -- While at your aid, the Horsemen will occasionally cast Anti-Magic Shell on you and themselves at 80% effectiveness. You may only benefit from this effect every 45 sec.
-    hungering_thirst          = { 95044, 444037, 1 }, -- The damage of your diseases and Death Coil are increased by 15%.
-    mawsworn_menace           = { 95054, 444099, 1 }, -- Scourge Strike deals 15% increased damage and the cooldown of your Death and Decay is reduced by 10 sec.
-    mograines_might           = { 95067, 444047, 1 }, -- Your damage is increased by 5% and you gain the benefits of your Death and Decay while inside Mograine's Death and Decay.
-    nazgrims_conquest         = { 95059, 444052, 1 }, -- If an enemy dies while Nazgrim is active, the strength of Apocalyptic Conquest is increased by 3%. Additionally, each Rune you spend increase its value by 1%.
-    on_a_paler_horse          = { 95060, 444008, 1 }, -- While outdoors you are able to mount your Acherus Deathcharger in combat.
-    pact_of_the_apocalypse    = { 95037, 444083, 1 }, -- When you take damage, 5% of the damage is redirected to each active horsemen.
-    riders_champion           = { 95066, 444005, 1, "rider_of_the_apocalypse" }, -- Spending Runes has a chance to call forth the aid of a Horsemen for 10 sec. Mograine Casts Death and Decay at his location that follows his position. Whitemane Casts Undeath on your target dealing 1,745 Shadowfrost damage per stack every 3 sec, for 24 sec. Each time Undeath deals damage it gains a stack. Cannot be Refreshed. Trollbane Casts Chains of Ice on your target slowing their movement speed by 40% and increasing the damage they take from you by 5% for 8 sec. Nazgrim While Nazgrim is active you gain Apocalyptic Conquest, increasing your Strength by 5%.
-    trollbanes_icy_fury       = { 95063, 444097, 1 }, -- Scourge Strike shatters Trollbane's Chains of Ice when hit, dealing 32,947 Shadowfrost damage to nearby enemies, and slowing them by 40% for 4 sec. Deals reduced damage beyond 8 targets.
-    whitemanes_famine         = { 95047, 444033, 1 }, -- When Scourge Strike damages an enemy affected by Undeath it gains 1 stack and infects another nearby enemy.
+    a_feast_of_souls          = {  95042, 444072, 1 }, -- While you have 2 or more Horsemen aiding you, your Runic Power spending abilities deal 20% increased damage.
+    apocalypse_now            = {  95041, 444040, 1 }, -- Army of the Dead and Frostwyrm's Fury call upon all 4 Horsemen to aid you for 20 sec.
+    death_charge              = {  95060, 444010, 1 }, -- Call upon your Death Charger to break free of movement impairment effects. For 10 sec, while upon your Death Charger your movement speed is increased by 100%, you cannot be slowed below 100% of normal speed, and you are immune to forced movement effects and knockbacks.
+    fury_of_the_horsemen      = {  95042, 444069, 1 }, -- Every 50 Runic Power you spend extends the duration of the Horsemen's aid in combat by 1 sec, up to 5 sec.
+    horsemens_aid             = {  95037, 444074, 1 }, -- While at your aid, the Horsemen will occasionally cast Anti-Magic Shell on you and themselves at 80% effectiveness. You may only benefit from this effect every 45 sec.
+    hungering_thirst          = {  95044, 444037, 1 }, -- The damage of your diseases and Death Coil are increased by 10%.
+    mawsworn_menace           = {  95054, 444099, 1 }, -- Scourge Strike deals 15% increased damage and the cooldown of your Defile is reduced by 5 sec.
+    mograines_might           = {  95067, 444047, 1 }, -- Your damage is increased by 5% and you gain the benefits of your Death and Decay while inside Mograine's Death and Decay.
+    nazgrims_conquest         = {  95059, 444052, 1 }, -- If an enemy dies while Nazgrim is active, the strength of Apocalyptic Conquest is increased by 3%. Additionally, each Rune you spend increase its value by 1%.
+    on_a_paler_horse          = {  95060, 444008, 1 }, -- While outdoors you are able to mount your Acherus Deathcharger in combat.
+    pact_of_the_apocalypse    = {  95037, 444083, 1 }, -- When you take damage, 5% of the damage is redirected to each active horsemen.
+    riders_champion           = {  95066, 444005, 1, "rider_of_the_apocalypse" }, -- Spending Runes has a chance to call forth the aid of a Horsemen for 10 sec. Mograine Casts Death and Decay at his location that follows his position. Whitemane Casts Undeath on your target dealing 2,466 Shadowfrost damage per stack every 3 sec, for 24 sec. Each time Undeath deals damage it gains a stack. Cannot be Refreshed. Trollbane Casts Chains of Ice on your target slowing their movement speed by 40% and increasing the damage they take from you by 5% for 8 sec. Nazgrim While Nazgrim is active you gain Apocalyptic Conquest, increasing your Strength by 5%.
+    trollbanes_icy_fury       = {  95063, 444097, 1 }, -- Scourge Strike shatters Trollbane's Chains of Ice when hit, dealing 28,748 Shadowfrost damage to nearby enemies, and slowing them by 40% for 4 sec. Deals reduced damage beyond 8 targets.
+    whitemanes_famine         = {  95047, 444033, 1 }, -- When Scourge Strike damages an enemy affected by Undeath it gains 1 stack and infects another nearby enemy.
 
     -- San'layn
-    bloodsoaked_ground        = { 95048, 434033, 1 }, -- While you are within your Death and Decay, your physical damage taken is reduced by 5% and your chance to gain Vampiric Strike is increased by 5%.
-    bloody_fortitude          = { 95056, 434136, 1 }, -- Icebound Fortitude reduces all damage you take by up to an additional 20% based on your missing health. Killing an enemy that yields experience or honor reduces the cooldown of Icebound Fortitude by 3 sec.
-    frenzied_bloodthirst      = { 95065, 434075, 1 }, -- Essence of the Blood Queen stacks 2 additional times and increases the damage of your Death Coil and Death Strike by 2% per stack.
-    gift_of_the_sanlayn       = { 95053, 434152, 1 }, -- While Vampiric Blood or Dark Transformation is active you gain Gift of the San'layn. Gift of the San'layn increases the effectiveness of your Essence of the Blood Queen by 100%, and Vampiric Strike replaces your Scourge Strike for the duration.
-    incite_terror             = { 95040, 434151, 1 }, -- Vampiric Strike and Scourge Strike cause your targets to take 1% increased Shadow damage, up to 5% for 15 sec. Vampiric Strike benefits from Incite Terror at 400% effectiveness.
-    infliction_of_sorrow      = { 95033, 434143, 1 }, -- When Vampiric Strike damages an enemy affected by your Virulent Plague, it extends the duration of the disease by 3 sec, and deals 10% of the remaining damage to the enemy. After Gift of the San'layn ends, your next Scourge Strike consumes the disease to deal 100% of their remaining damage to the target.
-    newly_turned              = { 95064, 433934, 1 }, -- Raise Ally revives players at full health and grants you and your ally an absorb shield equal to 20% of your maximum health.
-    pact_of_the_sanlayn       = { 95055, 434261, 1 }, -- You store 50% of all Shadow damage dealt into your Blood Beast to explode for additional damage when it expires.
-    sanguine_scent            = { 95055, 434263, 1 }, -- Your Death Coil, Epidemic and Death Strike have a 15% increased chance to trigger Vampiric Strike when damaging enemies below 35% health.
-    the_blood_is_life         = { 95046, 434260, 1 }, -- Vampiric Strike has a chance to summon a Blood Beast to attack your enemy for 10 sec. Each time the Blood Beast attacks, it stores a portion of the damage dealt. When the Blood Beast dies, it explodes, dealing 25% of the damage accumulated to nearby enemies and healing the Death Knight for the same amount.
-    vampiric_aura             = { 95056, 434100, 1 }, -- Your Leech is increased by 2%. While Lichborne is active, the Leech bonus of this effect is increased by 100%, and it affects 4 allies within 12 yds.
-    vampiric_speed            = { 95064, 434028, 1 }, -- Death's Advance and Wraith Walk movement speed bonuses are increased by 10%. Activating Death's Advance or Wraith Walk increases 4 nearby allies movement speed by 20% for 5 sec.
-    vampiric_strike           = { 95051, 433901, 1, "sanlayn" }, -- Your Death Coil, Epidemic and Death Strike have a 10% chance to make your next Scourge Strike become Vampiric Strike. Vampiric Strike heals you for 2% of your maximum health and grants you Essence of the Blood Queen, increasing your Haste by 1.0%, up to 5.0% for 20 sec.
-    visceral_strength         = { 95045, 434157, 1 }, -- When Sudden Doom is consumed, you gain 5% Strength for 5 sec.
+    bloodsoaked_ground        = {  95048, 434033, 1 }, -- While you are within your Death and Decay, your physical damage taken is reduced by 5% and your chance to gain Vampiric Strike is increased by 5%.
+    bloody_fortitude          = {  95056, 434136, 1 }, -- Icebound Fortitude reduces all damage you take by up to an additional 20% based on your missing health. Killing an enemy that yields experience or honor reduces the cooldown of Icebound Fortitude by 3 sec.
+    frenzied_bloodthirst      = {  95065, 434075, 1 }, -- Essence of the Blood Queen stacks 2 additional times and increases the damage of your Death Coil and Death Strike by 5% per stack.
+    gift_of_the_sanlayn       = {  95053, 434152, 1 }, -- While Dark Transformation is active you gain Gift of the San'layn. Gift of the San'layn increases the effectiveness of your Essence of the Blood Queen by 100%, and Vampiric Strike replaces your Scourge Strike for the duration.
+    incite_terror             = {  95040, 434151, 1 }, -- Vampiric Strike and Scourge Strike cause your targets to take 1% increased Shadow damage, up to 5% for 15 sec. Vampiric Strike benefits from Incite Terror at 400% effectiveness.
+    infliction_of_sorrow      = {  95033, 434143, 1 }, -- When Vampiric Strike damages an enemy affected by your Virulent Plague, it extends the duration of the disease by 3 sec, and deals 10% of the remaining damage to the enemy. After Gift of the San'layn ends, your next Scourge Strike consumes the disease to deal 100% of their remaining damage to the target.
+    newly_turned              = {  95064, 433934, 1 }, -- Raise Ally revives players at full health and grants you and your ally an absorb shield equal to 20% of your maximum health.
+    pact_of_the_sanlayn       = {  95055, 434261, 1 }, -- You store 50% of all Shadow damage dealt into your Blood Beast to explode for additional damage when it expires.
+    sanguine_scent            = {  95055, 434263, 1 }, -- Your Death Coil, Epidemic and Death Strike have a 15% increased chance to trigger Vampiric Strike when damaging enemies below 35% health.
+    the_blood_is_life         = {  95046, 434260, 1 }, -- Vampiric Strike has a chance to summon a Blood Beast to attack your enemy for 10 sec. Each time the Blood Beast attacks, it stores a portion of the damage dealt. When the Blood Beast dies, it explodes, dealing 25% of the damage accumulated to nearby enemies and healing the Death Knight for the same amount. Deals reduced damage beyond 8 targets.
+    vampiric_aura             = {  95056, 434100, 1 }, -- Your Leech is increased by 2%. While Lichborne is active, the Leech bonus of this effect is increased by 100%, and it affects 4 allies within 12 yds.
+    vampiric_speed            = {  95064, 434028, 1 }, -- Death's Advance and Wraith Walk movement speed bonuses are increased by 10%. Activating Death's Advance or Wraith Walk increases 4 nearby allies movement speed by 20% for 5 sec.
+    vampiric_strike           = {  95051, 433901, 1, "sanlayn" }, -- Your Death Coil, Epidemic and Death Strike have a 25% chance to make your next Scourge Strike become Vampiric Strike. Vampiric Strike heals you for 2% of your maximum health and grants you Essence of the Blood Queen, increasing your Haste by 1.0%, up to 5.0% for 20 sec.
+    visceral_strength         = {  95045, 434157, 1 }, -- When Sudden Doom is consumed, you gain 8% Strength for 5 sec.
 } )
 
 
 -- PvP Talents
-me:RegisterPvpTalents( {
+spec:RegisterPvpTalents( {
     bloodforged_armor    = 5585, -- (410301) Death Strike reduces all Physical damage taken by 20% for 3 sec.
-    dark_simulacrum      = 41  , -- (77606) Places a dark ward on an enemy player that persists for 12 sec, triggering when the enemy next spends mana on a spell, and allowing the Death Knight to unleash an exact duplicate of that spell.
+    dark_simulacrum      =   41, -- (77606) Places a dark ward on an enemy player that persists for 12 sec, triggering when the enemy next spends mana on a spell, and allowing the Death Knight to unleash an exact duplicate of that spell.
     doomburst            = 5436, -- (356512) Sudden Doom also causes your next Death Coil to burst up to 2 Festering Wounds and reduce the target's movement speed by 45% per burst. Lasts 3 sec.
-    life_and_death       = 40  , -- (288855) When targets afflicted by your Virulent Plague are healed, you are also healed for 5% of the amount. In addition, your Virulent Plague now erupts for 400% of normal eruption damage when dispelled.
+    life_and_death       =   40, -- (288855) When targets afflicted by your Virulent Plague are healed, you are also healed for 5% of the amount. In addition, your Virulent Plague now erupts for 400% of normal eruption damage when dispelled.
     necromancers_bargain = 3746, -- (288848) The cooldown of your Apocalypse is reduced by 15 sec, but your Apocalypse no longer summons ghouls but instead applies Crypt Fever to the target. Crypt Fever Deals up to 8% of the targets maximum health in Shadow damage over 4 sec. Healing spells cast on this target will refresh the duration of Crypt Fever.
-    necrotic_aura        = 3437, -- (199642) All enemies within 8 yards take 4% increased magical damage.
-    necrotic_wounds      = 149 , -- (356520) Bursting a Festering Wound converts it into a Necrotic Wound, absorbing 3% of all healing received for 15 sec and healing you for the amount absorbed when the effect ends, up to 3% of your max health. Max 6 stacks. Adding a stack does not refresh the duration.
-    reanimation          = 152 , -- (210128) Reanimates a nearby corpse, summoning a zombie for 20 sec that slowly moves towards your target. If your zombie reaches its target, it explodes after 3.0 sec. The explosion stuns all enemies within 8 yards for 3 sec and deals 10% of their health in Shadow damage.
-    rot_and_wither       = 5511, -- (202727) Your Death and Decay rots enemies each time it deals damage, absorbing healing equal to 100% of damage dealt.
+    necrotic_wounds      =  149, -- (356520) Bursting a Festering Wound converts it into a Necrotic Wound, absorbing 3% of all healing received for 15 sec and healing you for the amount absorbed when the effect ends, up to 3% of your max health. Max 6 stacks. Adding a stack does not refresh the duration.
+    reanimation          =  152, -- (210128) Reanimates a nearby corpse, summoning a zombie for 20 sec that slowly moves towards your target. If your zombie reaches its target, it explodes after 3.0 sec. The explosion stuns all enemies within 8 yards for 3 sec and deals 10% of their health in Shadow damage.
+    rot_and_wither       = 5511, -- (202727) Your Death's Due rots enemies each time it deals damage, absorbing healing equal to 100% of damage dealt.
     spellwarden          = 5590, -- (410320) Anti-Magic Shell is now usable on allies and its cooldown is reduced by 10 sec.
-    strangulate          = 5430, -- (47476) Shadowy tendrils constrict an enemy's throat, silencing them for 5 sec.
+    strangulate          = 5430, -- (47476) Shadowy tendrils constrict an enemy's throat, silencing them for 4 sec.
 } )
 
-
 -- Auras
-me:RegisterAuras( {
+spec:RegisterAuras( {
     -- Your Runic Power spending abilities deal $w1% increased damage.
     a_feast_of_souls = {
         id = 440861,
         duration = 3600,
         max_stack = 1,
     },
+    abomination_limb = {
+        id = 383269,
+        duration = 12,
+        max_stack = 1,
+    },
     -- Talent: Absorbing up to $w1 magic damage.  Immune to harmful magic effects.
-    -- https://wowhead.com/beta/spell=48707
+    -- https://wowhead.com/spell=48707
     antimagic_shell = {
         id = 48707,
         duration = 5,
         max_stack = 1
     },
+    apocalyptic_conquest = {
+        id = 444763,
+        duration = 3600,
+        max_stack = 1,
+    },
     -- Talent: Summoning ghouls.
-    -- https://wowhead.com/beta/spell=42650
+    -- https://wowhead.com/spell=42650
     army_of_the_dead = {
         id = 42650,
         duration = 4,
@@ -357,7 +325,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Talent: Stunned.
-    -- https://wowhead.com/beta/spell=221562
+    -- https://wowhead.com/spell=221562
     asphyxiate = {
         id = 108194,
         duration = 4.0,
@@ -366,7 +334,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Talent: Disoriented.
-    -- https://wowhead.com/beta/spell=207167
+    -- https://wowhead.com/spell=207167
     blinding_sleet = {
         id = 207167,
         duration = 5,
@@ -380,18 +348,19 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- You may not benefit from the effects of Blood Draw.
-    -- https://wowhead.com/beta/spell=374609
+    -- https://wowhead.com/spell=374609
     blood_draw_cd = {
         id = 374609,
         duration = 120,
         max_stack = 1
     },
     -- Draining $w1 health from the target every $t1 sec.
-    -- https://wowhead.com/beta/spell=55078
+    -- https://wowhead.com/spell=55078
     blood_plague = {
         id = 55078,
         duration = function() return 24 * ( talent.ebon_fever.enabled and 0.5 or 1 ) end,
         tick_time = function() return 3 * ( talent.ebon_fever.enabled and 0.5 or 1 ) * ( buff.plaguebringer.up and 0.5 or 1 ) end,
+        type = "Disease",
         max_stack = 1,
         copy = "blood_plague_superstrain"
     },
@@ -401,14 +370,39 @@ me:RegisterAuras( {
         duration = 3600,
         max_stack = 1,
     },
+    -- https://www.wowhead.com/spell=374557
+    brittle = {
+        id = 374557,
+        duration = 5,
+        max_stack = 1,
+    },
     -- Talent: Movement slowed $w1% $?$w5!=0[and Haste reduced $w5% ][]by frozen chains.
-    -- https://wowhead.com/beta/spell=45524
+    -- https://wowhead.com/spell=45524
     chains_of_ice = {
         id = 45524,
         duration = 8,
         mechanic = "snare",
         type = "Magic",
         max_stack = 1
+    },
+    chains_of_ice_trollbane_slow = {
+        id = 444826,
+        duration = 8,
+        mechanic = "snare",
+        type = "Magic",
+        max_stack = 1
+    },
+    chains_of_ice_trollbane_damage = {
+        id = 444828,
+        duration = 8,
+        type = "Magic",
+        max_stack = 1
+    },
+    coil_of_devastation = {
+        id = 390271,
+        duration = 5,
+        type = "Disease",
+        max_stack = 1,
     },
     commander_of_the_dead = { -- 10.0.7 PTR
         id = 390260,
@@ -417,7 +411,7 @@ me:RegisterAuras( {
         copy = "commander_of_the_dead_window"
     },
     -- Talent: Controlled.
-    -- https://wowhead.com/beta/spell=111673
+    -- https://wowhead.com/spell=111673
     control_undead = {
         id = 111673,
         duration = 300,
@@ -426,7 +420,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Taunted.
-    -- https://wowhead.com/beta/spell=56222
+    -- https://wowhead.com/spell=56222
     dark_command = {
         id = 56222,
         duration = 3,
@@ -434,14 +428,14 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Your next Death Strike is free and heals for an additional $s1% of maximum health.
-    -- https://wowhead.com/beta/spell=101568
+    -- https://wowhead.com/spell=101568
     dark_succor = {
         id = 101568,
         duration = 20,
         max_stack = 1
     },
     -- Talent: $?$w2>0[Transformed into an undead monstrosity.][Gassy.]  Damage dealt increased by $w1%.
-    -- https://wowhead.com/beta/spell=63560
+    -- https://wowhead.com/spell=63560
     dark_transformation = {
         id = 63560,
         duration = 15,
@@ -469,7 +463,7 @@ me:RegisterAuras( {
         end,
     },
     -- Reduces healing done by $m1%.
-    -- https://wowhead.com/beta/spell=327095
+    -- https://wowhead.com/spell=327095
     death = {
         id = 327095,
         duration = 6,
@@ -489,6 +483,13 @@ me:RegisterAuras( {
         -- blood_death_knight[137008] #14: { 'type': APPLY_AURA, 'subtype': ADD_PCT_MODIFIER, 'points': 48.2, 'target': TARGET_UNIT_CASTER, 'modifies': DAMAGE_HEALING, }
         -- death_rot[377540] #0: { 'type': APPLY_AURA, 'subtype': MOD_SPELL_DAMAGE_FROM_CASTER, 'points': 1.0, 'target': TARGET_UNIT_TARGET_ENEMY, }
     },
+    death_and_decay_cleave_buff = {
+        id = 188290,
+        duration = 10,
+        type = "None",
+        max_stack = 1,
+        copy = "death_and_decay"
+    },
     -- [444347] $@spelldesc444010
     death_charge = {
         id = 444347,
@@ -496,7 +497,7 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Talent: The next $w2 healing received will be absorbed.
-    -- https://wowhead.com/beta/spell=48743
+    -- https://wowhead.com/spell=48743
     death_pact = {
         id = 48743,
         duration = 15,
@@ -505,7 +506,7 @@ me:RegisterAuras( {
     death_rot = {
         id = 377540,
         duration = 10,
-        max_stack = 2,
+        max_stack = 10,
     },
     -- Your movement speed is increased by $w1%, you cannot be slowed below $s2% of normal speed, and you are immune to forced movement effects and knockbacks.
     deaths_advance = {
@@ -531,19 +532,18 @@ me:RegisterAuras( {
     essence_of_the_blood_queen = {
         id = 433925,
         duration = 20.0,
-        max_stack = function() return 1 + ( talent.frenzied_bloodthirst.enabled and 2 or 0 ) end,
+        max_stack = function() return 5 + ( talent.frenzied_bloodthirst.enabled and 2 or 0 ) end,
     },
-    festering_scythe = {
+    festering_scythe_ready = {
         id = 458123,
         duration = 15,
         max_stack = 1,
-        copy = "festering_scythe_buff"
+        copy = "festering_scythe"
     },
-    festering_scythe_stacking_buff = {
+    festering_scythe_stack = {
         id = 459238,
         duration = 3600,
         max_stack = 20,
-        copy = "festering_scythe_stack"
     },
     -- Suffering from a wound that will deal [(20.7% of Attack power) / 1] Shadow damage when damaged by Scourge Strike.
     festering_wound = {
@@ -552,30 +552,37 @@ me:RegisterAuras( {
         max_stack = 6,
     },
     -- Reduces damage dealt to $@auracaster by $m1%.
-    -- https://wowhead.com/beta/spell=327092
+    -- https://wowhead.com/spell=327092
     famine = {
         id = 327092,
         duration = 6,
         max_stack = 3
     },
     -- Strength increased by $w1%.
-    -- https://wowhead.com/beta/spell=377591
+    -- https://wowhead.com/spell=377591
     festermight = {
         id = 377591,
         duration = 20,
         max_stack = 20
     },
     -- Suffering $w1 Frost damage every $t1 sec.
-    -- https://wowhead.com/beta/spell=55095
+    -- https://wowhead.com/spell=55095
     frost_fever = {
         id = 55095,
         duration = function() return 24 * ( talent.ebon_fever.enabled and 0.5 or 1 ) end,
         tick_time = function() return 3 * ( talent.ebon_fever.enabled and 0.5 or 1 ) * ( buff.plaguebringer.up and 0.5 or 1 ) end,
         max_stack = 1,
+        type = "Disease",
         copy = "frost_fever_superstrain"
     },
+    frost_shield = {
+        id = 207203,
+        duration = 10,
+        type = "None",
+        max_stack = 1,
+    },
     -- Movement speed slowed by $s2%.
-    -- https://wowhead.com/beta/spell=279303
+    -- https://wowhead.com/spell=279303
     frostwyrms_fury = {
         id = 279303,
         duration = 10,
@@ -583,20 +590,22 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Damage and attack speed increased by $s1%.
-    -- https://wowhead.com/beta/spell=377588
+    -- https://wowhead.com/spell=377588
     ghoulish_frenzy = {
         id = 377588,
         duration = 15,
         max_stack = 1,
         copy = 377589
     },
+    -- https://www.wowhead.com/spell=434153
+    -- Gift of the San'layn The effectiveness of Essence of the Blood Queen is increased by 100%. Scourge Strike has been replaced with Vampiric Strike.  
     gift_of_the_sanlayn = {
         id = 434153,
-        duration = 10,
+        duration = 15,
         max_stack = 1
     },
     -- Dealing $w1 Frost damage every $t1 sec.
-    -- https://wowhead.com/beta/spell=274074
+    -- https://wowhead.com/spell=274074
     glacial_contagion = {
         id = 274074,
         duration = 14,
@@ -610,7 +619,7 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Dealing $w1 Shadow damage every $t1 sec.
-    -- https://wowhead.com/beta/spell=275931
+    -- https://wowhead.com/spell=275931
     harrowing_decay = {
         id = 275931,
         duration = 4,
@@ -625,30 +634,34 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Talent: Damage taken reduced by $w3%.  Immune to Stun effects.
-    -- https://wowhead.com/beta/spell=48792
+    -- https://wowhead.com/spell=48792
     icebound_fortitude = {
         id = 48792,
         duration = 8,
         max_stack = 1
     },
-    -- Attack speed increased by $w1%$?a436687[, and Runic Power spending abilities deal Shadowfrost damage.][.]
+    -- https://www.wowhead.com/spell=194879
+    -- Icy Talons Attack speed increased by 18%.  
     icy_talons = {
         id = 194879,
-        duration = 6,
-        max_stack = 3
+        duration = 10,
+        max_stack = 3,
     },
     -- Taking $w1% increased Shadow damage from $@auracaster.
     incite_terror = {
         id = 458478,
         duration = 15.0,
-        max_stack = 1,
+        max_stack = 5,
     },
+    -- https://www.wowhead.com/spell=460049
+    -- Infliction of Sorrow Scourge Strike consumes your Virulent Plague to deal 100% of their remaining damage to the target.  
     infliction_of_sorrow = {
         id = 460049,
         duration = 15,
-        max_stack = 1
+        max_stack = 1,
     },
     -- Time between auto-attacks increased by $w1%.
+    -- https://www.wowhead.com/spell=391568
     insidious_chill = {
         id = 391568,
         duration = 30,
@@ -661,14 +674,14 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Casting speed reduced by $w1%.
-    -- https://wowhead.com/beta/spell=326868
+    -- https://wowhead.com/spell=326868
     lethargy = {
         id = 326868,
         duration = 6,
         max_stack = 1
     },
     -- Leech increased by $s1%$?a389682[, damage taken reduced by $s8%][] and immune to Charm, Fear and Sleep. Undead.
-    -- https://wowhead.com/beta/spell=49039
+    -- https://wowhead.com/spell=49039
     lichborne = {
         id = 49039,
         duration = 10,
@@ -681,8 +694,13 @@ me:RegisterAuras( {
         duration = 3,
         max_stack = 1
     },
+    mograines_might = {
+        id = 444505,
+        duration = 3600,
+        max_stack = 1,
+    },
     -- Grants the ability to walk across water.
-    -- https://wowhead.com/beta/spell=3714
+    -- https://wowhead.com/spell=3714
     path_of_frost = {
         id = 3714,
         duration = 600,
@@ -690,6 +708,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Disease damage occurring ${100*(1/(1+$s1/100)-1)}% more quickly.
+    -- https://www.wowhead.com/spell=390178
     plaguebringer = {
         id = 390178,
         duration = 10,
@@ -711,7 +730,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Frost damage taken from the Death Knight's abilities increased by $s1%.
-    -- https://wowhead.com/beta/spell=51714
+    -- https://wowhead.com/spell=51714
     razorice = {
         id = 51714,
         duration = 20,
@@ -719,41 +738,42 @@ me:RegisterAuras( {
         type = "Magic",
         max_stack = 5
     },
+     -- https://www.wowhead.com/spell=390276
     rotten_touch = {
         id = 390276,
         duration = 10,
         max_stack = 1
     },
     -- Strength increased by $w1%
-    -- https://wowhead.com/beta/spell=374585
+    -- https://wowhead.com/spell=374585
     rune_mastery = {
         id = 374585,
         duration = 8,
         max_stack = 1
     },
     -- Runic Power generation increased by $s1%.
-    -- https://wowhead.com/beta/spell=326918
+    -- https://wowhead.com/spell=326918
     rune_of_hysteria = {
         id = 326918,
         duration = 8,
         max_stack = 1
     },
     -- Healing for $s1% of your maximum health every $t sec.
-    -- https://wowhead.com/beta/spell=326808
+    -- https://wowhead.com/spell=326808
     rune_of_sanguination = {
         id = 326808,
         duration = 8,
         max_stack = 1
     },
     -- Absorbs $w1 magic damage.    When an enemy damages the shield, their cast speed is reduced by $w2% for $326868d.
-    -- https://wowhead.com/beta/spell=326867
+    -- https://wowhead.com/spell=326867
     rune_of_spellwarding = {
         id = 326867,
         duration = 8,
         max_stack = 1
     },
     -- Haste and Movement Speed increased by $s1%.
-    -- https://wowhead.com/beta/spell=326984
+    -- https://wowhead.com/spell=326984
     rune_of_unending_thirst = {
         id = 326984,
         duration = 10,
@@ -772,7 +792,7 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Talent: Afflicted by Soul Reaper, if the target is below $s3% health this effect will explode dealing an additional $343295s1 Shadowfrost damage.
-    -- https://wowhead.com/beta/spell=343294
+    -- https://wowhead.com/spell=343294
     soul_reaper = {
         id = 448229,
         duration = 5,
@@ -796,10 +816,12 @@ me:RegisterAuras( {
     sudden_doom = {
         id = 81340,
         duration = 10,
-        max_stack = function () return talent.harbinger_of_doom.enabled and 2 or 1 end,
+        max_stack = function ()
+            if talent.harbinger_of_doom.enabled then return 2 end
+            return 1 end,
     },
     -- Runic Power is being fed to the Gargoyle.
-    -- https://wowhead.com/beta/spell=61777
+    -- https://wowhead.com/spell=61777
     summon_gargoyle = {
         id = 61777,
         duration = 25,
@@ -830,7 +852,7 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Talent: Haste increased by $s1%.
-    -- https://wowhead.com/beta/spell=207289
+    -- https://wowhead.com/spell=207289
     unholy_assault = {
         id = 207289,
         duration = 20,
@@ -838,7 +860,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Talent: Surrounded by a vile swarm of insects, infecting enemies within $115994a1 yds with Virulent Plague and an unholy disease that deals damage to enemies.
-    -- https://wowhead.com/beta/spell=115989
+    -- https://wowhead.com/spell=115989
     unholy_blight_buff = {
         id = 115989,
         duration = 6,
@@ -867,7 +889,7 @@ me:RegisterAuras( {
         end,
     },
     -- Suffering $s1 Shadow damage every $t1 sec.
-    -- https://wowhead.com/beta/spell=115994
+    -- https://wowhead.com/spell=115994
     unholy_blight = {
         id = 115994,
         duration = 14,
@@ -888,7 +910,7 @@ me:RegisterAuras( {
         max_stack = 1,
     },
     -- Strength increased by $s1%.
-    -- https://wowhead.com/beta/spell=53365
+    -- https://wowhead.com/spell=53365
     unholy_strength = {
         id = 53365,
         duration = 15,
@@ -912,7 +934,7 @@ me:RegisterAuras( {
         max_stack = 1
     },
     -- Suffering $w1 Shadow damage every $t1 sec.  Erupts for $191685s1 damage split among all nearby enemies when the infected dies.
-    -- https://wowhead.com/beta/spell=191587
+    -- https://wowhead.com/spell=191587
     virulent_plague = {
         id = 191587,
         duration = function () return 27 * ( talent.ebon_fever.enabled and 0.5 or 1 ) end,
@@ -922,14 +944,14 @@ me:RegisterAuras( {
         copy = 441277,
     },
     -- The touch of the spirit realm lingers....
-    -- https://wowhead.com/beta/spell=97821
+    -- https://wowhead.com/spell=97821
     voidtouched = {
         id = 97821,
         duration = 300,
         max_stack = 1
     },
     -- Increases damage taken from $@auracaster by $m1%.
-    -- https://wowhead.com/beta/spell=327096
+    -- https://wowhead.com/spell=327096
     war = {
         id = 327096,
         duration = 6,
@@ -937,7 +959,7 @@ me:RegisterAuras( {
         max_stack = 3
     },
     -- Talent: Movement speed increased by $w1%.  Cannot be slowed below $s2% of normal movement speed.  Cannot attack.
-    -- https://wowhead.com/beta/spell=212552
+    -- https://wowhead.com/spell=212552
     wraith_walk = {
         id = 212552,
         duration = 4,
@@ -969,11 +991,72 @@ me:RegisterAuras( {
     },
 } )
 
+-- Pets
+spec:RegisterPets({
+    apoc_ghoul = {
+        id = 24207,
+        spell = "apocalypse",
+        duration = 15,
+        copy = "army_ghoul",
+    },
+    magus_of_the_dead = {
+        id = 148797,
+        spell = "apocalypse",
+        duration = 15,
+        copy = "t31_magus",
+    },
+    ghoul = {
+        id = 26125,
+        spell = "raise_dead",
+        duration = function() return talent.raise_dead_2.enabled and 3600 or 60 end
+    },
+    highlord_darion_mograine = {
+        id = 221632,
+        spell = "army_of_the_dead",
+        duration = 20,
+    },
+    king_thoras_trollbane = {
+        id = 221635,
+        spell = "army_of_the_dead",
+        duration = 20,
+    },
+    nazgrim = {
+        id = 221634,
+        spell = "army_of_the_dead",
+        duration = 20,
+    },
+    high_inquisitor_whitemane = {
+        id = 221633,
+        spell = "army_of_the_dead",
+        duration = 20,
+    },
+    risen_skulker = {
+        id = 99541,
+        spell = "raise_dead",
+        duration = function() return talent.raise_dead_2.enabled and 3600 or 60 end,
+    },
+})
 
-me:RegisterStateTable( "death_and_decay",
+-- Totems (which are sometimes pets)
+spec:RegisterTotems({
+    gargoyle = {
+        id = 458967,
+        copy = "dark_arbiter",
+    },
+    dark_arbiter = {
+        id = 298674,
+        copy = "gargoyle",
+    },
+    abomination = {
+        id = 298667,
+    },
+})
+
+spec:RegisterStateTable( "death_and_decay",
 setmetatable( { onReset = function( self ) end },
 { __index = function( t, k )
     if k == "ticking" then
+        if state.query_time - class.abilities.any_dnd.lastCast < 10 then return true end
         return buff.death_and_decay.up
 
     elseif k == "remains" then
@@ -984,10 +1067,11 @@ setmetatable( { onReset = function( self ) end },
     return false
 end } ) )
 
-me:RegisterStateTable( "defile",
+spec:RegisterStateTable( "defile",
 setmetatable( { onReset = function( self ) end },
 { __index = function( t, k )
     if k == "ticking" then
+        if state.query_time - class.abilities.any_dnd.lastCast < 10 then return true end
         return buff.death_and_decay.up
 
     elseif k == "remains" then
@@ -998,25 +1082,25 @@ setmetatable( { onReset = function( self ) end },
     return false
 end } ) )
 
-me:RegisterStateExpr( "dnd_ticking", function ()
+spec:RegisterStateExpr( "dnd_ticking", function ()
     return death_and_decay.ticking
 end )
 
-me:RegisterStateExpr( "dnd_remains", function ()
+spec:RegisterStateExpr( "dnd_remains", function ()
     return death_and_decay.remains
 end )
 
 
-me:RegisterStateExpr( "spreading_wounds", function ()
-    if talent.infected_claws.enabled and buff.dark_transformation.up then return false end -- Ghoul is dumping wounds for us, don't bother.
+spec:RegisterStateExpr( "spreading_wounds", function ()
+    if talent.infected_claws.enabled and pet.ghoul.up then return false end -- Ghoul is dumping wounds for us, don't bother.
     return azerite.festermight.enabled and settings.cycle and settings.festermight_cycle and cooldown.death_and_decay.remains < 9 and active_dot.festering_wound < spell_targets.festering_strike
 end )
 
 
-me:RegisterStateFunction( "time_to_wounds", function( x )
+spec:RegisterStateFunction( "time_to_wounds", function( x )
     if debuff.festering_wound.stack >= x then return 0 end
     return 3600
-    --[[ No timeable wounds mechanic in SL?
+    --[[No timeable wounds mechanic in SL?
     if buff.unholy_frenzy.down then return 3600 end
 
     local deficit = x - debuff.festering_wound.stack
@@ -1026,29 +1110,19 @@ me:RegisterStateFunction( "time_to_wounds", function( x )
     local fw = last + ( speed * deficit ) - query_time
 
     if fw > buff.unholy_frenzy.remains then return 3600 end
-    return fw ]]
+    return fw--]]
 end )
 
-me:RegisterHook( "step", function ( time )
-    if Hekili.ActiveDebug then Hekili:Debug( "Rune Regeneration Time: 1=%.2f, 2=%.2f, 3=%.2f, 4=%.2f, 5=%.2f, 6=%.2f\n", runes.time_to_1, runes.time_to_2, runes.time_to_3, runes.time_to_4, runes.time_to_5, runes.time_to_6 ) end
+
+spec:RegisterHook( "step", function ( time )
+    if Hekili.ActiveDebug then Hekili:Debug( "Rune Regeneration Tispec: 1=%.2f, 2=%.2f, 3=%.2f, 4=%.2f, 5=%.2f, 6=%.2f\n", runes.time_to_1, runes.time_to_2, runes.time_to_3, runes.time_to_4, runes.time_to_5, runes.time_to_6 ) end
 end )
 
 local Glyphed = IsSpellKnownOrOverridesKnown
 
-me:RegisterPet( "ghoul", 26125, "raise_dead", 3600 )
-
-me:RegisterTotem( "gargoyle", 458967 )
-me:RegisterTotem( "dark_arbiter", 298674 )
-
-me:RegisterTotem( "abomination", 298667 )
-me:RegisterPet( "apoc_ghoul", 24207, "apocalypse", 15 )
-me:RegisterPet( "army_ghoul", 24207, "army_of_the_dead", 30 )
-me:RegisterPet( "magus_of_the_dead", 148797, "apocalypse", 15 )
-me:RegisterPet( "t31_magus", 148797, "apocalypse", 15 )
-
 -- Tier 29
-me:RegisterGear( "tier29", 200405, 200407, 200408, 200409, 200410 )
-me:RegisterAuras( {
+spec:RegisterGear( "tier29", 200405, 200407, 200408, 200409, 200410 )
+spec:RegisterAuras( {
     vile_infusion = {
         id = 3945863,
         duration = 5,
@@ -1063,75 +1137,86 @@ me:RegisterAuras( {
 } )
 
 -- Tier 30
-me:RegisterGear( "tier30", 202464, 202462, 202461, 202460, 202459 )
+spec:RegisterGear( "tier30", 202464, 202462, 202461, 202460, 202459 )
 -- 2 pieces (Unholy) : Death Coil and Epidemic damage increased by 10%. Casting Death Coil or Epidemic grants a stack of Master of Death, up to 20. Dark Transformation consumes Master of Death and grants 1% Mastery for each stack for 20 sec.
-me:RegisterAura( "master_of_death", {
+spec:RegisterAura( "master_of_death", {
     id = 408375,
     duration = 30,
     max_stack = 20
 } )
-me:RegisterAura( "death_dealer", {
+spec:RegisterAura( "death_dealer", {
     id = 408376,
     duration = 20,
     max_stack = 1
 } )
 -- 4 pieces (Unholy) : Army of the Dead grants 20 stacks of Master of Death. When Death Coil or Epidemic consumes Sudden Doom gain 2 extra stacks of Master of Death and 10% Mastery for 6 sec.
-me:RegisterAura( "lingering_chill", {
+spec:RegisterAura( "lingering_chill", {
     id = 410879,
     duration = 12,
     max_stack = 1
 } )
 
-me:RegisterGear( "tier31", 207198, 207199, 207200, 207201, 207203, 217223, 217225, 217221, 217222, 217224 )
+spec:RegisterGear( "tier31", 207198, 207199, 207200, 207201, 207203, 217223, 217225, 217221, 217222, 217224 )
 -- (2) Apocalypse summons an additional Magus of the Dead. Your Magus of the Dead Shadow Bolt now fires a volley of Shadow Bolts at up to $s2 nearby enemies.
 -- (4) Each Rune you spend increases the duration of your active Magi by ${$s1/1000}.1 sec and your Magi will now also cast Amplify Damage, increasing the damage you deal by $424949s2% for $424949d.
 
 
+-- TWW2
+spec:RegisterAura( "winning_streak", {
+    id = 1216813,
+    max_stack = 10,
+    duration = 3600,
+    copy = "winning_streak_unholy"
+} )
+
+
 local any_dnd_set, wound_spender_set = false, false
 
-local ExpireRunicCorruption = setfenv( function()
-    local debugstr
+local TriggerInflictionOfSorrow = setfenv( function ()
+    applyBuff( "infliction_of_sorrow" )
+end, state )
 
-    local mod = ( 2 + 0.1 * talent.runic_mastery.rank )
-
-    if Hekili.ActiveDebug then debugstr = format( "Runic Corruption expired; updating regen from %.2f to %.2f at %.2f + %.2f.", rune.cooldown, rune.cooldown * mod, offset, delay ) end
-    rune.cooldown = rune.cooldown * mod
-
-    for i = 1, 6 do
-        local exp = rune.expiry[ i ] - query_time
-
-        if exp > 0 then
-            rune.expiry[ i ] = query_time + exp * mod
-            if Hekili.ActiveDebug then debugstr = format( "%s\n - rune %d extended by %.2f [%.2f].", debugstr, i, exp * mod, rune.expiry[ i ] - query_time ) end
+local ApplyFestermight = setfenv( function ( woundsPopped )
+    if woundsPopped > 0 and talent.festermight.enabled or azerite.festermight.enabled  then
+        if buff.festermight.up then
+            addStack( "festermight", buff.festermight.remains, woundsPopped )
+        else
+            applyBuff( "festermight", nil, woundsPopped )
         end
     end
 
-    table.sort( rune.expiry )
-    rune.actual = nil
-    if Hekili.ActiveDebug then debugstr = format( "%s\n - %d, %.2f %.2f %.2f %.2f %.2f %.2f.", debugstr, rune.current, rune.expiry[1] - query_time, rune.expiry[2] - query_time, rune.expiry[3] - query_time, rune.expiry[4] - query_time, rune.expiry[5] - query_time, rune.expiry[6] - query_time ) end
-    forecastResources( "runes" )
-    if Hekili.ActiveDebug then debugstr = format( "%s\n - %d, %.2f %.2f %.2f %.2f %.2f %.2f.", debugstr, rune.current, rune.expiry[1] - query_time, rune.expiry[2] - query_time, rune.expiry[3] - query_time, rune.expiry[4] - query_time, rune.expiry[5] - query_time, rune.expiry[6] - query_time ) end
-    if debugstr then Hekili:Debug( debugstr ) end
+    return woundsPopped -- Needs to be returned into the gain() function for runic power
+
 end, state )
 
+local PopWounds = setfenv( function ( attemptedPop, targetCount )
+    targetCount = targetCount or 1
+    local realPop = targetCount
+    realPop = ApplyFestermight( removeDebuffStack( "target", "festering_wound", attemptedPop ) * targetCount )
+    gain( realPop * 3, "runic_power" )
 
-local TriggerERW = setfenv( function()
-    gain( 1, "runes" )
-    gain( 5, "runic_power" )
-end, state )
-
-me:RegisterHook( "reset_precast", function ()
-    if buff.runic_corruption.up then
-        state:QueueAuraExpiration( "runic_corruption", ExpireRunicCorruption, buff.runic_corruption.expires )
+    if talent.festering_scythe.enabled then
+        if realPop + buff.festering_scythe_stack.stack >= 20 then -- overflow stacks don't carry over
+            removeBuff( "festering_scythe_stack" )
+            applyBuff( "festering_scythe" )
+        else
+            addStack( "festering_scythe_stack", nil, realPop )
+         end
     end
+
+end, state )
+
+spec:RegisterHook( "reset_precast", function ()
+    --[[if buff.runic_corruption.up then
+        state:QueueAuraExpiration( "runic_corruption", ExpireRunicCorruption, buff.runic_corruption.expires )
+    end--]]
 
     if totem.dark_arbiter.remains > 0 then
         summonPet( "dark_arbiter", totem.dark_arbiter.remains )
-        summonTotem( "gargoyle", nil, totem.dark_arbiter.remains )
-        summonPet( "gargoyle", totem.dark_arbiter.remains )
     elseif totem.gargoyle.remains > 0 then
         summonPet( "gargoyle", totem.gargoyle.remains )
     end
+    
 
     local control_expires = action.control_undead.lastCast + 300
     if control_expires > now and pet.up and not pet.ghoul.up then
@@ -1156,14 +1241,6 @@ me:RegisterHook( "reset_precast", function ()
         summonPet( "army_ghoul", army_expires - now )
     end
 
-    if talent.all_will_serve.enabled and pet.ghoul.up then
-        summonPet( "skeleton" )
-    end
-
-    if query_time - action.outbreak.lastCast < 2 and debuff.virulent_plague.down then
-        applyDebuff( "target", "virulent_plague" )
-    end
-
     if state:IsKnown( "deaths_due" ) then
         class.abilities.any_dnd = class.abilities.deaths_due
         cooldown.any_dnd = cooldown.deaths_due
@@ -1182,12 +1259,16 @@ me:RegisterHook( "reset_precast", function ()
         any_dnd_set = true
     end
 
-    if state:IsKnown( "clawing_shadows" ) then
-        class.abilities.wound_spender = class.abilities.clawing_shadows
-        cooldown.wound_spender = cooldown.clawing_shadows
-    else
+    if IsActiveSpell( 433899 ) or IsActiveSpell( 433895 ) then applyBuff( "vampiric_strike" ) end
+
+    if not talent.clawing_shadows.enabled or buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up then
         class.abilities.wound_spender = class.abilities.scourge_strike
+        class.abilities[ 433895 ] = class.abilities.scourge_strike
         cooldown.wound_spender = cooldown.scourge_strike
+    else
+        class.abilities.wound_spender = class.abilities.clawing_shadows
+        class.abilities[ 433895 ] = class.abilities.clawing_shadows
+        cooldown.wound_spender = cooldown.clawing_shadows
     end
 
     if not wound_spender_set then
@@ -1198,26 +1279,15 @@ me:RegisterHook( "reset_precast", function ()
     if state:IsKnown( "deaths_due" ) and cooldown.deaths_due.remains then setCooldown( "death_and_decay", cooldown.deaths_due.remains )
     elseif talent.defile.enabled and cooldown.defile.remains then setCooldown( "death_and_decay", cooldown.defile.remains ) end
 
-    -- Reset CDs on any Rune abilities that do not have an actual cooldown.
-    for action in pairs( class.abilityList ) do
-        local data = class.abilities[ action ]
-        if data and data.cooldown == 0 and data.spendType == "runes" then
-            setCooldown( action, 0 )
-        end
+    if talent.infliction_of_sorrow.enabled and buff.gift_of_the_sanlayn.up then
+        state:QueueAuraExpiration( "gift_of_the_sanlayn", TriggerInflictionOfSorrow, buff.gift_of_the_sanlayn.expires )
     end
-
-    if buff.empower_rune_weapon.up then
-        local expires = buff.empower_rune_weapon.expires
-
-        while expires >= query_time do
-            state:QueueAuraExpiration( "empower_rune_weapon", TriggerERW, expires )
-            expires = expires - 5
-        end
-    end
-
-    if talent.vampiric_strike.enabled and IsActiveSpell( 433899 ) then applyBuff( "vampiric_strike" ) end
 
     if Hekili.ActiveDebug then Hekili:Debug( "Pet is %s.", pet.alive and "alive" or "dead" ) end
+
+    if IsSpellKnownOrOverridesKnown( 458128 ) then applyBuff( "festering_scythe" ) end
+    if IsSpellKnownOrOverridesKnown( 433895 ) then applyBuff( "vampiric_strike" ) end
+
 end )
 
 local mt_runeforges = {
@@ -1227,7 +1297,7 @@ local mt_runeforges = {
 }
 
 -- Not actively supporting this since we just respond to the player precasting AOTD as they see fit.
-me:RegisterStateTable( "death_knight", setmetatable( {
+spec:RegisterStateTable( "death_knight", setmetatable( {
     disable_aotd = false,
     delay = 6,
     runeforge = setmetatable( {}, mt_runeforges )
@@ -1281,7 +1351,7 @@ Hekili:RegisterGearHook( ResetRuneforges, UpdateRuneforge )
 
 
 -- Abilities
-me:RegisterAbilities( {
+spec:RegisterAbilities( {
     -- Talent: Surrounds you in an Anti-Magic Shell for $d, absorbing up to $<shield> magic ...
     antimagic_shell = {
         id = 48707,
@@ -1289,7 +1359,6 @@ me:RegisterAbilities( {
         cooldown = function() return 60 - ( talent.antimagic_barrier.enabled and 20 or 0 ) - ( talent.unyielding_will.enabled and -20 or 0 ) - ( pvptalent.spellwarden.enabled and 10 or 0 ) end,
         gcd = "off",
 
-        talent = "antimagic_shell",
         startsCombat = false,
 
         toggle = function()
@@ -1339,23 +1408,10 @@ me:RegisterAbilities( {
                 applyDebuff( "target", "necrotic_wound" )
             else
                 summonPet( "apoc_ghoul", 15 )
+                if set_bonus.tww1_4pc > 0 then addStack( "unholy_commander" ) end
             end
 
-            if debuff.festering_wound.stack > 4 then
-                applyDebuff( "target", "festering_wound", debuff.festering_wound.remains, debuff.festering_wound.remains - 4 )
-                apply_festermight( 4 )
-                if conduit.convocation_of_the_dead.enabled and cooldown.apocalypse.remains > 0 then
-                    reduceCooldown( "apocalypse", 4 * conduit.convocation_of_the_dead.mod * 0.1 )
-                end
-                gain( 12, "runic_power" )
-            else
-                gain( 3 * debuff.festering_wound.stack, "runic_power" )
-                apply_festermight( debuff.festering_wound.stack )
-                if conduit.convocation_of_the_dead.enabled and cooldown.apocalypse.remains > 0 then
-                    reduceCooldown( "apocalypse", debuff.festering_wound.stack * conduit.convocation_of_the_dead.mod * 0.1 )
-                end
-                removeDebuff( "target", "festering_wound" )
-            end
+            PopWounds( 4, 1 )
 
             if level > 57 then gain( 2, "runes" ) end
             if set_bonus.tier29_2pc > 0 then applyBuff( "vile_infusion" ) end
@@ -1381,13 +1437,22 @@ me:RegisterAbilities( {
 
         handler = function ()
             if set_bonus.tier30_4pc > 0 then addStack( "master_of_death", nil, 20 ) end
+            if set_bonus.tww1_4pc > 0 then addStack( "unholy_commander" ) end
 
-            if pvptalent.raise_abomination.enabled then
-                summonPet( "abomination" )
+            if talent.raise_abomination.enabled then
+                summonPet( "abomination", 30 )
             else
                 applyBuff( "army_of_the_dead", 4 )
                 summonPet( "army_ghoul", 30 )
             end
+
+            if talent.apocalypse_now.enabled then
+                summonPet( "highlord_darion_mograine", 20 )
+                summonPet( "king_thoras_trollbane", 20 )
+                summonPet( "nazgrim", 20 )
+                summonPet( "high_inquisitor_whitemane", 20 )
+            end
+
         end,
 
         copy = { 455395, 42650, "army_of_the_dead", "raise_abomination" }
@@ -1449,7 +1514,11 @@ me:RegisterAbilities( {
 
     -- Talent: Deals $s2 Shadow damage and causes 1 Festering Wound to burst.
     clawing_shadows = {
-        id = 207311,
+        id = function()
+            if ( buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up ) then return 433895 end
+            return 207311
+        end,
+        known = 55090,
         cast = 0,
         cooldown = 0,
         gcd = "spell",
@@ -1459,33 +1528,52 @@ me:RegisterAbilities( {
 
         talent = "clawing_shadows",
         startsCombat = true,
+        max_targets = function()
+            if talent.cleaving_strikes.enabled and buff.death_and_decay_cleave_buff.up then return 8 end
+            return 1 end,
 
-        aura = "festering_wound",
+        texture = function() return ( buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up ) and 5927645 or 615099 end,
+
+        cycle = function()
+            if debuff.chains_of_ice_trollbane_slow.down and active_dot.chains_of_ice_trollbane_slow > 0 then return "chains_of_ice_trollbane_slow" end
+            return "festering_wound"
+        end,
+        min_ttd = function () return min( cooldown.death_and_decay.remains + 3, 8 ) end, -- don't try to cycle onto targets that will die too fast to get consumed.
         cycle_to = true,
-        nobuff = "vampiric_strike",
 
         handler = function ()
-            if debuff.festering_wound.up then
-                if debuff.festering_wound.stack > 1 then
-                    applyDebuff( "target", "festering_wound", debuff.festering_wound.remains, debuff.festering_wound.stack - 1 )
-                else removeDebuff( "target", "festering_wound" ) end
+            PopWounds( 1, min( action.clawing_shadows.max_targets, active_enemies, active_dot.festering_wound ) )
 
-                if conduit.convocation_of_the_dead.enabled and cooldown.apocalypse.remains > 0 then
-                    reduceCooldown( "apocalypse", conduit.convocation_of_the_dead.mod * 0.1 )
+            if debuff.undeath.up then
+                applyDebuff( "target", "undeath", debuff.undeath.stack + 1 )
+                active_dot.undeath = min( active_enemies, active_dot.undeath + 1 )
+            end
+
+            if buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up then
+                gain( 0.01 * health.max, "health" )
+                applyBuff( "essence_of_the_blood_queen" ) -- TODO: mod haste
+
+                if talent.infliction_of_sorrow.enabled and dot.virulent_plague.ticking then
+                    dot.virulent_plague.expires = dot.virulent_plague.expires + 3
                 end
 
-                apply_festermight( 1 )
-                if set_bonus.tier29_2pc > 0 then applyBuff( "vile_infusion" ) end
+                removeBuff( "vampiric_strike" )
             end
 
             if buff.infliction_of_sorrow.up then
                 removeDebuff( "target", "virulent_plague" )
                 removeBuff( "infliction_of_sorrow" )
             end
-            -- gain( 3, "runic_power" ) -- ?
+
+            -- Legacy
+            if conduit.convocation_of_the_dead.enabled and cooldown.apocalypse.remains > 0 then
+                reduceCooldown( "apocalypse", conduit.convocation_of_the_dead.mod * 0.1 )
+            end
+
         end,
 
-        bind = { "scourge_strike", "wound_spender", "vampiric_strike" }
+        bind = { "scourge_strike", "wound_spender" },
+        copy = { 207311, 433895 }
     },
 
     -- Talent: Dominates the target undead creature up to level $s1, forcing it to do your b...
@@ -1573,10 +1661,11 @@ me:RegisterAbilities( {
                 applyDebuff( "target", "unholy_blight" )
                 applyDebuff( "target", "virulent_plague" )
                 active_dot.virulent_plague = active_enemies
-
                 if talent.superstrain.enabled then
-                    applyDebuff( "target", "blood_plague_superstrain" )
-                    applyDebuff( "target", "frost_fever_superstrain" )
+                    applyDebuff( "target", "frost_fever" )
+                    active_dot.frost_fever = active_enemies
+                    applyDebuff( "target", "blood_plague" )
+                    active_dot.blood_plague = active_enemies
                 end
             end
 
@@ -1611,9 +1700,9 @@ me:RegisterAbilities( {
         id = 43265,
         noOverride = 324128,
         cast = 0,
-        charges = function() if talent.deaths_echo.enabled then return 2 end end,
+        charges = function () if talent.deaths_echo.enabled then return 2 end end,
         cooldown = 30,
-        recharge = function() if talent.deaths_echo.enabled then return 30 end end,
+        recharge = function () if talent.deaths_echo.enabled then return 30 end end,
         gcd = "spell",
 
         spend = 1,
@@ -1623,7 +1712,7 @@ me:RegisterAbilities( {
         notalent = "defile",
 
         handler = function ()
-            applyBuff( "death_and_decay" )
+            applyBuff( "death_and_decay", 10 )
             if talent.grip_of_the_dead.enabled then applyDebuff( "target", "grip_of_the_dead" ) end
         end,
 
@@ -1643,40 +1732,33 @@ me:RegisterAbilities( {
             return 30 - ( buff.sudden_doom.up and 10 or 0 ) - ( legendary.deadliest_coil.enabled and 10 or 0 ) end,
         spendType = "runic_power",
 
-        startsCombat = false,
+        startsCombat = true,
 
         handler = function ()
-            if set_bonus.tier30_2pc > 0 then addStack( "master_of_death" ) end
-
-            if pvptalent.doomburst.enabled and buff.sudden_doom.up and debuff.festering_wound.up then
-                if debuff.festering_wound.stack > 2 then
-                    applyDebuff( "target", "festering_wound", debuff.festering_wound.remains, debuff.festering_wound.stack - 2 )
-                    applyDebuff( "target", "doomburst", debuff.doomburst.up and debuff.doomburst.remains or nil, 2 )
-                else
-                    removeDebuff( "target", "festering_wound" )
-                    applyDebuff( "target", "doomburst", debuff.doomburst.up and debuff.doomburst.remains or nil, debuff.doomburst.stack + 1 )
-                end
-                if set_bonus.tier29_2pc > 0 then applyBuff( "vile_infusion" ) end
-            end
-
+            
             if buff.sudden_doom.up then
+                PopWounds( 1 + ( 1 * pvptalent.doomburst.rank ) )
                 removeStack( "sudden_doom" )
-                if set_bonus.tier30_4pc > 0 then
-                    addStack( "master_of_death", nil, 2 )
-                    applyBuff( "doom_dealer" )
-                end
-                if buff.master_of_death.up then
-                    removeBuff( "master_of_death" )
-                    applyBuff( "death_dealer" )
-                end
                 if talent.rotten_touch.enabled then applyDebuff( "target", "rotten_touch" ) end
                 if talent.death_rot.enabled then applyDebuff( "target", "death_rot", nil, 2 ) end
-            elseif talent.death_rot.enabled then applyDebuff( "target", "death_rot" ) end
-            if cooldown.dark_transformation.remains > 0 then setCooldown( "dark_transformation", max( 0, cooldown.dark_transformation.remains - 1 ) ) end
+            elseif talent.death_rot.enabled then applyDebuff( "target", "death_rot", nil, 1 ) end
+            if buff.dark_transformation.up then buff.dark_transformation.expires = buff.dark_transformation.expires + 1 end
+            if buff.gift_of_the_sanlayn.up then buff.gift_of_the_sanlayn.expires = buff.gift_of_the_sanlayn.expires + 1 end
+            
+            -- Legacy
             if legendary.deadliest_coil.enabled and buff.dark_transformation.up then buff.dark_transformation.expires = buff.dark_transformation.expires + 2 end
             if legendary.deaths_certainty.enabled then
                 local spell = action.deaths_due.known and "deaths_due" or ( talent.defile.enabled and "defile" or "death_and_decay" )
                 if cooldown[ spell ].remains > 0 then reduceCooldown( spell, 2 ) end
+            end
+            if set_bonus.tier30_2pc > 0 then addStack( "master_of_death" ) end
+            if set_bonus.tier30_4pc > 0 then
+                addStack( "master_of_death", nil, 2 )
+                applyBuff( "doom_dealer" )
+            end
+            if set_bonus.tier30_2pc > 0 and buff.master_of_death.up then
+                removeBuff( "master_of_death" )
+                applyBuff( "death_dealer" )
             end
         end,
     },
@@ -1802,33 +1884,6 @@ me:RegisterAbilities( {
         bind = { "defile", "any_dnd" },
     },
 
-    -- Talent: Empower your rune weapon, gaining $s3% Haste and generating $s1 $LRune:Runes;...
-    empower_rune_weapon = {
-        id = 47568,
-        cast = 0,
-        charges = function()
-            if spec.frost and talent.empower_rune_weapon.enabled then return 2 end
-        end,
-        cooldown = 120,
-        recharge = function()
-            if spec.frost and talent.empower_rune_weapon.enabled then return ( level > 55 and 105 or 120 ) end
-        end,
-        gcd = "off",
-
-        talent = "empower_rune_weapon",
-        startsCombat = false,
-
-        handler = function ()
-            applyBuff( "empower_rune_weapon" )
-            gain( 1, "runes" )
-            gain( 5, "runic_power" )
-            state:QueueAuraExpiration( "empower_rune_weapon", TriggerERW, query_time + 5 )
-            state:QueueAuraExpiration( "empower_rune_weapon", TriggerERW, query_time + 10 )
-            state:QueueAuraExpiration( "empower_rune_weapon", TriggerERW, query_time + 15 )
-            state:QueueAuraExpiration( "empower_rune_weapon", TriggerERW, query_time + 20 )
-        end,
-    },
-
     -- Talent: Causes each of your Virulent Plagues to flare up, dealing $212739s1 Shadow da...
     epidemic = {
         id = 207317,
@@ -1836,33 +1891,33 @@ me:RegisterAbilities( {
         cooldown = 0,
         gcd = "spell",
 
-        spend = function () return 30 - ( buff.sudden_doom.up and 10 or 0 ) end,
+        spend = function() return 30 - ( buff.sudden_doom.up and 10 or 0 ) end,
         spendType = "runic_power",
 
         startsCombat = false,
 
         targets = {
-            count = function () return active_dot.virulent_plague end,
+            count = function() return active_dot.virulent_plague end,
         },
 
-        usable = function () return active_dot.virulent_plague > 0, "requires active virulent_plague dots" end,
+        usable = function() return active_dot.virulent_plague > 0, "requires active virulent_plague dots" end,
         handler = function ()
-            if set_bonus.tier30_2pc > 0 then addStack( "master_of_death" ) end
 
             if buff.sudden_doom.up then
                 removeStack( "sudden_doom" )
-                if set_bonus.tier30_4pc > 0 then
-                    addStack( "master_of_death", nil, 2 )
-                    applyBuff( "doom_dealer" )
-                end
                 if talent.death_rot.enabled then applyDebuff( "target", "death_rot", nil, 2 ) end
-            elseif talent.death_rot.enabled then applyDebuff( "target", "death_rot" ) end
+            elseif talent.death_rot.enabled then applyDebuff( "target", "death_rot", nil, 1 ) end
+            if buff.dark_transformation.up then buff.dark_transformation.expires = buff.dark_transformation.expires + 1 end
+            if buff.gift_of_the_sanlayn.up then buff.gift_of_the_sanlayn.expires = buff.gift_of_the_sanlayn.expires + 1 end
+            if set_bonus.tier30_2pc > 0 then addStack( "master_of_death" ) end
         end,
     },
 
     -- Talent: Strikes for $s1 Physical damage and infects the target with $m2-$M2 Festering...
     festering_strike = {
-        id = function() return buff.festering_scythe.up and 458123 or 85948 end,
+        id = function ()
+            if IsSpellKnownOrOverridesKnown( 458128 ) or buff.festering_scythe.up then return 458128 end
+            return 85948 end,
         known = 85948,
         cast = 0,
         cooldown = 0,
@@ -1873,25 +1928,31 @@ me:RegisterAbilities( {
 
         talent = "festering_strike",
         startsCombat = true,
+        texture = function ()
+            if IsSpellKnownOrOverridesKnown( 458128 ) or buff.festering_scythe.up then return 3997563 end
+            return 879926 end,
 
-        aura = "festering_wound",
-        cycle = "festering_wound",
-
-        min_ttd = function () return min( cooldown.death_and_decay.remains + 3, 8 ) end, -- don't try to cycle onto targets that will die too fast to get consumed.
+        cycle = function() if debuff.festering_wound.stack_pct > 60 then return "festering_wound" end end,
+        min_ttd = function() return min( cooldown.death_and_decay.remains + 3, 8 ) end, -- don't try to cycle onto targets that will die too fast to get consumed.
 
         handler = function ()
+
+            if buff.festering_scythe.up then
+                active_dot.festering_wound = active_enemies
+            end
             removeBuff( "festering_scythe" )
-            applyDebuff( "target", "festering_wound", nil, debuff.festering_wound.stack + 2 )
+
+            applyDebuff( "target", "festering_wound", nil, min( 6, debuff.festering_wound.stack + 2 ) )
         end,
 
-        copy = { 85948, 458123 }
+        copy = { 85948, 458128 }
     },
 
     -- Talent: Your blood freezes, granting immunity to Stun effects and reducing all damage...
     icebound_fortitude = {
         id = 48792,
         cast = 0,
-        cooldown = function () return 180 - ( azerite.cold_hearted.enabled and 15 or 0 ) + ( conduit.chilled_resilience.mod * 0.001 ) end,
+        cooldown = function() return 180 - ( azerite.cold_hearted.enabled and 15 or 0 ) + ( conduit.chilled_resilience.mod * 0.001 ) end,
         gcd = "off",
 
         talent = "icebound_fortitude",
@@ -1960,10 +2021,11 @@ me:RegisterAbilities( {
         handler = function ()
             applyDebuff( "target", "virulent_plague" )
             active_dot.virulent_plague = active_enemies
-
-            if legendary.superstrain.enabled or talent.superstrain.enabled then
-                applyDebuff( "target", "blood_plague_superstrain" )
-                applyDebuff( "target", "frost_fever_superstrain" )
+            if talent.superstrain.enabled then
+                applyDebuff( "target", "frost_fever" )
+                active_dot.frost_fever = active_enemies
+                applyDebuff( "target", "blood_plague" )
+                active_dot.blood_plague = active_enemies
             end
         end,
     },
@@ -2020,10 +2082,11 @@ me:RegisterAbilities( {
         essential = true, -- new flag, will allow recasting even in precombat APL.
         nomounted = true,
 
-        usable = function () return not pet.alive end,
+        usable = function() return not pet.alive end,
         handler = function ()
-            summonPet( "ghoul", talent.raise_dead_2.enabled and 3600 or 30 )
-            if talent.all_will_serve.enabled then summonPet( "skeleton", talent.raise_dead_2.enabled and 3600 or 30 ) end
+            summonPet( "ghoul", talent.raise_dead_2.enabled and 3600 or 60 )
+            if talent.all_will_serve.enabled then summonPet( "risen_skulker", talent.raise_dead_2.enabled and 3600 or 60 ) end
+            if set_bonus.tww1_4pc > 0 then addStack( "unholy_commander" ) end
         end,
 
         copy = { 46584, 46585 }
@@ -2063,7 +2126,7 @@ me:RegisterAbilities( {
 
         toggle = "cooldowns",
 
-        usable = function () return pet.alive, "requires an undead pet" end,
+        usable = function() return pet.alive, "requires an undead pet" end,
 
         handler = function ()
             dismissPet( "ghoul" )
@@ -2073,7 +2136,11 @@ me:RegisterAbilities( {
 
     -- Talent: An unholy strike that deals $s2 Physical damage and $70890sw2 Shadow damage, ...
     scourge_strike = {
-        id = 55090,
+        id = function ()
+            if buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up then return 433895 end
+            return 55090
+        end,
+        known = 55090,
         cast = 0,
         cooldown = 0,
         gcd = "spell",
@@ -2082,29 +2149,40 @@ me:RegisterAbilities( {
         spendType = "runes",
 
         talent = "scourge_strike",
+        texture = function() return ( buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up ) and 5927645 or 237530 end,
         startsCombat = true,
+        max_targets = function ()
+            if talent.cleaving_strikes.enabled and buff.death_and_decay_cleave_buff.up then return 8 end
+            return 1 end,
 
-        notalent = "clawing_shadows",
-        aura = "festering_wound",
-        cycle_to = true,
-        nobuff = function()
-            if buff.gift_of_the_sanlayn.up then return "gift_of_the_sanlayn" end
-            return "vampiric_strike"
+        notalent = function ()
+            if buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up then return end
+            return "clawing_shadows"
         end,
 
+        cycle = function ()
+            if debuff.chains_of_ice_trollbane_slow.down and active_dot.chains_of_ice_trollbane_slow > 0 then return "chains_of_ice_trollbane_slow" end
+            return "festering_wound"
+        end,
+        min_ttd = function() return min( cooldown.death_and_decay.remains + 3, 8 ) end, -- don't try to cycle onto targets that will die too fast to get consumed.
+        cycle_to = true,
+
         handler = function ()
-            if debuff.festering_wound.up then
-                if debuff.festering_wound.stack > 1 then
-                    applyDebuff( "target", "festering_wound", debuff.festering_wound.remains, debuff.festering_wound.stack - 1 )
-                else
-                    removeDebuff( "target", "festering_wound" )
+            PopWounds( 1, min( action.scourge_strike.max_targets, active_enemies, active_dot.festering_wound ) )
+
+            if buff.vampiric_strike.up or buff.gift_of_the_sanlayn.up then
+                gain( 0.01 * health.max, "health" )
+                applyBuff( "essence_of_the_blood_queen" ) -- TODO: mod haste
+
+                if talent.infliction_of_sorrow.enabled and dot.virulent_plague.ticking then
+                    dot.virulent_plague.expires = dot.virulent_plague.expires + 3
+                    applyBuff( "infliction_of_sorrow" ) -- TODO: Apply on Gift of the San'layn expiry?
                 end
-                apply_festermight( 1 )
-                if set_bonus.tier29_2pc > 0 then applyBuff( "vile_infusion" ) end
+
+                removeBuff( "vampiric_strike" )
             end
 
             if talent.plaguebringer.enabled then
-                removeBuff( "plaguebringer" )
                 applyBuff( "plaguebringer" )
             end
 
@@ -2118,7 +2196,8 @@ me:RegisterAbilities( {
             end
         end,
 
-        bind = { "clawing_shadows", "wound_spender", "vampiric_strike" }
+        bind = { "clawing_shadows", "wound_spender" },
+        copy = { 55090, "vampiric_strike", 433895 }
     },
 
 
@@ -2182,6 +2261,7 @@ me:RegisterAbilities( {
         handler = function ()
             summonPet( "gargoyle", 25 )
             gain( 50, "runic_power" )
+            if set_bonus.tww1_4pc > 0 then addStack( "unholy_commander" ) end
         end,
 
         copy = { 49206, 207349 }
@@ -2204,66 +2284,8 @@ me:RegisterAbilities( {
         handler = function ()
             applyDebuff( "target", "festering_wound", nil, min( 6, debuff.festering_wound.stack + 4 ) )
             applyBuff( "unholy_frenzy" )
-            stat.haste = stat.haste + 0.1
         end,
     },
-
-    -- A vampiric strike that deals $?a137007[$s1][$s5] Shadow damage and heals you for $?a137007[$434422s2][$434422s3]% of your maximum health.; Additionally grants you Essence of the Blood Queen for $433925d.
-    vampiric_strike = {
-        id = 433895,
-        cast = 0.0,
-        cooldown = 0.0,
-        gcd = "spell",
-
-        spend = 1,
-        spendType = 'runes',
-
-        startsCombat = true,
-        buff = function()
-            if buff.gift_of_the_sanlayn.up then return "gift_of_the_sanlayn" end
-            return "vampiric_strike"
-        end,
-
-        handler = function ()
-            removeBuff( "vampiric_strike" )
-            gain( 0.01 * health.max, "health" )
-            applyBuff( "essence_of_the_blood_queen" ) -- TODO: mod haste
-
-            if talent.infliction_of_sorrow.enabled and dot.virulent_plague.ticking then
-                dot.virulent_plague.expires = dot.virulent_plague.expires + 3
-                applyBuff( "infliction_of_sorrow" ) -- TODO: Apply on Gift of the San'layn expiry?
-            end
-        end,
-
-        bind = { "scourge_strike", "clawing_shadows", "wound_spender" }
-    },
-
-    --[[ Talent: Surrounds yourself with a vile swarm of insects for $d, stinging all nearby e...
-    unholy_blight = {
-        id = 115989,
-        cast = 0,
-        cooldown = 45,
-        gcd = "spell",
-
-        spend = 1,
-        spendType = "runes",
-
-        talent = "unholy_blight",
-        startsCombat = false,
-
-        handler = function ()
-            applyBuff( "unholy_blight_buff" )
-            applyDebuff( "target", "unholy_blight" )
-            applyDebuff( "target", "virulent_plague" )
-            active_dot.virulent_plague = active_enemies
-
-            if talent.superstrain.enabled then
-                applyDebuff( "target", "blood_plague_superstrain" )
-                applyDebuff( "target", "frost_fever_superstrain" )
-            end
-        end,
-    }, ]]
-
     -- Talent: Inflict disease upon your enemies spreading Festering Wounds equal to the amount currently active on your target to $s1 nearby enemies.
     vile_contagion = {
         id = 390279,
@@ -2277,8 +2299,11 @@ me:RegisterAbilities( {
         talent = "vile_contagion",
         startsCombat = false,
 
-        toggle = "cooldowns",
+        -- usable = function() return debuff.festering_wound.up, "requires active festering wounds" end,
+        cycle = "festering_wound",
+        cycle_to = true,
 
+        toggle = "cooldowns",
         debuff = "festering_wound",
 
         handler = function ()
@@ -2307,7 +2332,7 @@ me:RegisterAbilities( {
 
     -- Stub.
     any_dnd = {
-        name = function () return "|T136144:0|t |cff00ccff[Any " .. ( class.abilities.death_and_decay and class.abilities.death_and_decay.name or "Death and Decay" ) .. "]|r" end,
+        name = function() return "|T136144:0|t |cff00ccff[Any " .. ( class.abilities.death_and_decay and class.abilities.death_and_decay.name or "Death and Decay" ) .. "]|r" end,
         cast = 0,
         cooldown = 0,
         copy = "any_dnd_stub"
@@ -2322,9 +2347,9 @@ me:RegisterAbilities( {
 } )
 
 
-me:RegisterRanges( "festering_strike", "mind_freeze", "death_coil" )
+spec:RegisterRanges( "festering_strike", "mind_freeze", "death_coil" )
 
-me:RegisterOptions( {
+spec:RegisterOptions( {
     enabled = true,
 
     aoe = 2,
@@ -2339,29 +2364,29 @@ me:RegisterOptions( {
     cycle = true,
     cycleDebuff = "festering_wound",
 
-    potion = "potion_of_spectral_strength",
+    potion = "tempered_potion",
 
     package = "Unholy",
 } )
 
 
-me:RegisterSetting( "dps_shell", false, {
-    name = strformat( "Use %s Offensively", Hekili:GetSpellLinkWithTexture( me.abilities.antimagic_shell.id ) ),
-    desc = strformat( "If checked, %s will not be on the Defensives toggle by default.", Hekili:GetSpellLinkWithTexture( me.abilities.antimagic_shell.id ) ),
+spec:RegisterSetting( "dps_shell", false, {
+    name = strformat( "Use %s Offensively", Hekili:GetSpellLinkWithTexture( spec.abilities.antimagic_shell.id ) ),
+    desc = strformat( "If checked, %s will not be on the Defensives toggle by default.", Hekili:GetSpellLinkWithTexture( spec.abilities.antimagic_shell.id ) ),
     type = "toggle",
     width = "full",
 } )
 
-me:RegisterSetting( "ob_macro", nil, {
-    name = strformat( "%s Macro", Hekili:GetSpellLinkWithTexture( me.abilities.outbreak.id ) ),
+spec:RegisterSetting( "ob_macro", nil, {
+    name = strformat( "%s Macro", Hekili:GetSpellLinkWithTexture( spec.abilities.outbreak.id ) ),
     desc = strformat( "Using a mouseover macro makes it easier to apply %s and %s to other enemies without retargeting.",
-        Hekili:GetSpellLinkWithTexture( me.abilities.outbreak.id ), Hekili:GetSpellLinkWithTexture( me.auras.virulent_plague.id ) ),
+        Hekili:GetSpellLinkWithTexture( spec.abilities.outbreak.id ), Hekili:GetSpellLinkWithTexture( spec.auras.virulent_plague.id ) ),
     type = "input",
     width = "full",
     multiline = true,
-    get = function () return "#showtooltip\n/use [@mouseover,harm,nodead][] " .. class.abilities.outbreak.name end,
-    set = function () end,
+    get = function() return "#showtooltip\n/use [@mouseover,harm,nodead][] " .. class.abilities.outbreak.name end,
+    set = function() end,
 } )
 
 
-me:RegisterPack( "Unholy", 20240805, [[Hekili:S3ZAVnUrs(BX4qKLMhYI0wECcSeq2CzpSbbzpSE27(MPOjPK4Aksfsk7Xlm0V9TFWhD3S6huI0EMb(ljJfBwV6QQUE0n7BTU9Z3EJVBEWT)H9e7lMC1KPJN8Pl(0uRBVj)PTb3EZwxV7DxH(hXUBq)3)z86KONW)8trjU(4xplzxQh6rRZZ3M9tND2QW817UBSxYMZYc3SlYnpmj2l1Dzo(V9o72BUBxyu(Fl(27aX9fxHG52ap0pp1gb2qF)a6ydY8U9g8y)4Kp9r7Z)P9l(86G9l()Dtr)hewdJV9MOWS8mcz5g7Smmd9JRq)5Fq40Gy37Ic8V9VC7nUEyYc9)JZd34Uk0ZjBDqueflPHBPpf94tJCFkE)I)AbOUb9W8G0qx8iDZx7CFC4Q15JD3K54Exws6DoBdqYJ489lMVFXK9lgSFr6Uyec2M8yaIsVE)IlMCBoI9eiPAiFY(f3TB5YXum4g774h45(04DBjGR8Xp4UzBykM0ZtdVpa9yw(6jh)yFmEoxkEiqjBhwa74NKSPeb5Urigym(Nc8DUdndGy9XLGOchuYZljmcJMlKIMC30vb5Jxh4gLVE8wpKO56z7xC(ucYwILFoPbBCdJZicTP1OaPCfHEMlsMIXXuTImvYeE69sPWA4(f(beOTmid)BXRCEmzxS)4SCK5aIgXu)(fFC)ITi(Y9UKnHXe18Xyu9qaHV8ssI8tEe9BBt8CJEABwWywU8bxeYqiN8ChKwicn7xmA)INF2aEHqpoi7KyFQO5tszh18Y1QzLAmw)(uYbH08BVj11l0nktPjwQNBCGtEsAksRsWc7Fu8(m0RO1IDLrua9VvB8mSq6DxusIVZYDPpn2FxkHN2V49eUfp)Hz3vifZKNIyMxgi8GY5ZIPLHeJVcZJSDB2Ke7un2cQHoYQzFXrXQcC5ecKhqamr(NU5jNvRrk9SAscpPccyJiDSkMwiVpwjdgY1pP1qMckNG4GnHbzubRnbYIUUYd9UNtbpjldY8xpMRvSQhIA3CvAebPzbPyY47Fnc5S6XQrOgY9PgHmmZOrune1RirG3osSmyVzbXRqlmvS4h3mk1P3gYs8CZMmUuPpTMEXVmzbpKpDSBph)WaMxseT6EXr1Sxegtzo)RD(R2GDLQCfreFyD13vA2y25W1ElF7(rd16k2yV8qkgPUroO191eRHeQPycaVMhkkWLHEH50NnvmGs(htKYnw6D7UOSa1bju6JCzyAaXV639UiLZPhUoMbaUFu)uIyMy4khbwz4kJvkX63LsCPUovsIefxgfZ7Cx5KS0bfiP39z0ij9IcCrXBQmxnAon8rq(l03ZO0N0M2vvq5BrQI4yD5cgTo1OWnBttEiad5YCk0LFK84t4X7wA85zf6eAID)IglhrIq37P818jmae(UIfibOhf5EOmTmvI0AygSn0hPT5vOl4N5GsGxLYGVB69i9h34SLjPBClL4GjV)lf(vY055TslVIOZYD2g5ghtmeXs66028rejvdNXHuH(btoFvE4y8y10XIcxdfM)NOe4J0Mu0bZsuBPMI7YaMK(CwZFlBo7)chiUzzU7IY1g((bt7gLhVkzpJ3NkPoKPt5Os2LFxAG79ig4jKhnhAeDzy9yu4BO1I9qoiMm(835NKp(HW0D4zumpTAxqLBBa1u8WlHnXH8eofkM825K60WfGWvAWY0GS1ygGkbkuU2KKExOFy(tCkUePyy8YOqcFI9DNHYNp5rHsgLTBlkeCKEqym37JPGLPjOPVLbpGcAHd7fpNMohe5nQzG5fkq3f1m0C1JyatygkvANtfFNrq8qIIY7a5t07FpHgFpzC2SJl4oKWQGLvmmktFhwdLDKJazDesZcCyNYHyFfJIve0CyFTjauVat)4fxru5NO3Hy5qaQSAJ0gl(DnRZ30zu9eMtu4M7yw2CTBAGVQvo3MaTyj51oKLk7Ty71jMpFcLs0V(tva9Totbmoo80b4EB4Qel37DX7BqW)NRPDchJLqXuRxYMnU4W9irTVoah3R)b4uLMiaF4m6HTe9pDIgClgyZfgnfZGH(lOdJ5lJLzR88hVX9lepM2VKYVjQLFYtG4yKFedAyUQmrZUG7RznbxsOWtrRjMSCPdsUJ9JcScu5R(qikipVK4C3vcbUbZKdmiSuCDCQh5segQRfaM5LwOao)SfzlZPhDE1KoAHBFh0YY40jq034GVGBCkbRIpIVoxwQhZ8kdCjPGBWYD4jOlmJBmfwJaIhNSKjUnXz5QwUKpBxHvnr4dhG6NjqD)IYuoBuR5GSSGyVGsDuAOU)5UGGyaoI8gnB(hx4DRcxMxcnepGrAZa2p2K2kC7OE1fLH6arMvyOCqkeo8jQX5EfU708XaNKNJOQ8KDERzsvUWcOQFICbTrRoHhk5MDBleyTVIoQ749jkeofcV20uCLoHnPasd00S6R10S6HgRvQJZ5DTReA8Rwau6RsFL6cS2szJ8hPUcAkB)IEptVkBIGdgWkQaO8gCysrvleuuRlKrlCSpfQAY83OxAB10WFKmB7dD7uGeDxOqojVM7gxPuo6KM03XvN0)ij(JAQv6XenNoxlxjA2dvEt8iKghxVL8Josxzy5THnS1VM9lyXtF1R55W2vYszfDCOM6oswFqxHhFR2JVv7Xo02QuKAqfgFXlFioxiuqcX3hKdUKc3QgFUyGSj9q3JWlFk1ncVgfjBCKJHnPf5oXSikYSBd2cafEx54RZJfwevx7Ogcpe)zPTygxWi(LfYfgesQuiV3D1Q4mRciu1eb7LWnbvk7SHAktecSux57umZH85MfLKZ(3cvZqIgCX4DSCW6szfei9hhNBnomdnKaxV1bPj7YOUU2eIsWkvmy8JnTtasQEdnGSBNm(tvjd2ySBtdtq83tL7AboUWECTZNsewoVwpM1UzoLJR0vaNjneDHnG505GwxwyUYwyUYUTZv2GZv2VMZv2h6CLDdno9ZvwMpxzRBUsw0nhID1jQSReeg(UBCxf40B6V8(TK2Jgd9AnWqNGMJvtqPPXGWLyRiazdUWEs3hWIDD3AmJZ7s5DBcTuG5vrIg11UInO)jQ3gGkwz2AQQsSFiolHmaTpadWUWP0RJcH5y1eu(MbyBiZVnnarMwUjhWgW8N)7)QGPht18A06honP72HYJJur1eus38kV(ShVULKeAc8lRTaDnCA5gQsdWW3QOGt9BhW0uvQtmTAFm7lsPrt2OW0miY4synqxwKZi75mIIKKkUd2JnPXvj0xnJlWA1EprxjSl7EfivjBXgvYs99srwxg9dwskvxPTvj2qUr8DwMge8VdyPgavh(T8SBu0(f)ShnA2FNCKxRGj(mh4q)dh8PHLEMyDO5MxQ0bMDcB)RiMNI9oOCS3G)BVCYAUgHwUklOSLv1(g6mKZIyzt7kbq5zCeOphg9(mBllLDwOh4DCZbu22HEaHKDUn6v(rPifOYo02q2OWo4qWoaIGEKaWVXeJjIIDkWaPlF1E6aTCQdzjocPiUQQjKI8ftnNeiix(srfAahBRBhOVz(SR7ywSsVNm9xYOOfiv6HP84(J5x5(2ef2vRN01McfBTe8Bi3FNuQPhCgqig0pTnnWlzZDUnxpIgFlz3DPE5OYxOXMcRg44MgJqQn0knjyJPG8A4uUUe(FfTR2PDz2u4m9WQxqvLCtyAAcz7FTe5PoFxkoGVKnKTNEgb08leuwjgOfIAbHzRIWSpicZUMWexOQGWcxctAnzrO(Q1s5gIFDcWNCq2xetHmaVqQypbA1Xws02QjAZKPaeTTsIwC94ws0wozpf7XsW6Q8xzkNWhrOCGsnux5YFaoS36buhLEbAG8VEy4dcsIiEulABa)S1KXtRMySGIzPLZl26NxSpO5fBDYPoEErl(oK5fvTiqZ8IyyDTCEPS8A32IYLRDMJ3NCZsVLkP0CYBwah8hQB64mUbW5THGK3rGH14PKqAKUes1ibiiS2CzdoM3GQanEpJBagtvIR4kNQSQPQcyv2GDEAlm6HiYoDJv)J8BJiuP1Kj1TCNt7ZQ2zny48gQ8jPeVTrhuxfLBWA4G4fKbQ4T8AkhS57mCQbrpsRYMSsCbv(l8UtOUr0CLB4)RIUyePmB4bPrlv6cH3bIySKgohYSpk0L7K9bkdmPeGZjBo)rk5qjH7QLdz3QLMxcpRjgu9URN1yR(YVnY437nt45VZR4VpPiQzD8h7zjNRV26QKxLHh3UCLVo)Ghk6s9GwxsrzYMRRk2EbAfgi7k4vuDJ9gub5WT90nAN8WSlw1pWluVXMPGb8d1Gz0HstGdm)fWAH3SAvCh6g4(LimgwoKUHee)mJD5Kg(558XPGzpW8Ei1(2jDRG1at7Map)cSTndCauUqMsgXXh03pMRR6GwDupu0O4RDr5GbwjYMJuXVeoTn)GhCrAr8X7oQISckNHW)ny3SQ6aH4(JRWFWd19vPfFknkpNqACTNZuozZ3HCS7W632LCSkPAB)krd67TDj3qtBqT4y1iN0nObM2DE15vq2wxtTaA4QFyggvoUj5coQmRX5Q7VVHufRyg7qBUMDU3Gd94DReQVdNzvHlqmvO9fg0IZBWaDhwakEhQlajq3eux3JmglhWjRVfYUd6SZBi8hXPJQYqeCLiXFV14hJCJ2GhxXUUCdq35BzqfBJYVT3YRF744fSmtV6oEvtvM441UxC8A3whV2V54vNSRRC8cb)xshVY4VU2XBxSvrv449T9VUwDftCxpWW0tmhRMGYHgIvJxN4TTpRzUpmYiVB2(SVT)17ufcZXQjO8ndW2qMFBAas3)6fB4ovFreiFsLe3e7j)6(f)fYRYBgY)bycQ0sWwTY(wxauYo8Y5xkmtPANXRzid0Ul4VUXwN3O35srDtfuGSkmFo7EixScUm12ZK99(XSdYV1O9QEnifaOHFGL72pmY0(miH7RXc9SCR0eG9liKSVOvKpOv8vUMTrmT9k95OnCQ7ktrBt07vycRrVzF5Mo5qBGW1CF4x(k)RTTVH3eshS0G0of58aD7oeKMHFk96)6t4V1Gp6MIB2gI7j3SxHB2MKIuTqRcTFXPmBX3troyc(ZDHKpzPzj42d4UlpbTuf(h8w7gVc5pA)V97H4gkHVPW(LKye(ip(0cVx8FaXqGmpr2dlDTHg0qRVmcb59)gafwkRYAh9Dbm9vx3abARzbfQPlLqKVz1cqfUt2IqEkmK572QaKHBxRiKVegYS9VuaUqD)8vfQa9jva4k6KQH4aOpQc4qrNw1O)sp3eTt51UxffGKzrMkT0kZsIMGyiXIQdYczwC(sc8fJmx0wwsG7IqVHyUiBnvDCScv1z2PCWQriyS(cCJKmbme29LOQFHE1erJsJdi)HgtVcEDsLot9VRj8Eg86KlhXIVVOwof8yZcR2qkaoKEe4gaw26mbasHhZrRnIPRcOTWFOMbRgHD4SQey3rESEHHEtLgPgMWJPxbVoPsN5pSRj8Eg86KlhH)WxulNMlliZLf4q6rGBayv6pSXJvNX3r57UxbUbG9iwyqsQVDI2MSe17gpPsGEN5r6njZxzW)njFVkzAuQQJY9DVcCda7rS2GKA21pc5ov9tc07m1V3KmFLb)3K89KKbUEVvFyIoTlkL6rsIuylP6jGxZtcyq5vb1RfEKK9Z3S4rYk2DiEavvR2zhTttvYSm)gxqGmH3vdgQ)8vkKbLPSFv2ANy9TEPCC9s5OYFUxbUbG9iso)1VQThvy69kWnaShroaDBjC6vGBaypcvW(mJZ3YfVLW(BBjtFd)3K89QKPBlHtVcCda7rS2q)KXPsy3rQFFBMl(3XsM(g(Vj57jjJ0eeBBg3ssDd4ZgSajQ4dqSOiqsgYh1g6vjKpYTlQKvX6uzs)Id5Lp0nUt0poI9xq3drjYYnjPi1NW8Neay1V3s4XCpg2WCTXnAPHWK7MNuaQG3kLVYWTZCl(cd)e0eez8ziRIye8koux4pztL3hQZMmyOKJk)1wthO5ko95NLPEnGCYlcJxgfsoFfyR3mYxa5X72oqUk0af3gQduDrOoAWWtunxxrQGpDqv4SkoxHZTM(ddhE(7aOE04VF07hAx(mHR1t2h18Q8C0igIx6KDfdiDe1mrZH0)SqPs7BkzhRs2z90m0lOswFXc4SmjRYVmjkk5rY3yo3DPUipCpgKI(9DzypFyVD54HrpCx7xGVHbWhOZ8YXfNqcryxm3O99Xd23n39o3SGFcftb(ZtzPASKqmQUnbAxqgQlHA5N24tHttM5XCRaihO6(U0dGidEf1lVXvluPCuJhBiqnG8erKbVIHvizBAI3yYDn22mv7QFzJRJrd3hoBZbVbYJJvPOXreRA(ZmEt(46y0Ouekh8gipowTWp15jp0aInR8xRoPk9m41jjawovqKO4MmOVj(Eg8ga4w03Y20X4pPjBdzFDMgmuQE6avS6p8dv)eW1xXSjvXUOyY2ueO6(Qy2KriuzOeJiE7CjrFli6A5qLoZvDURSgqSYZSE7jdodlDn41jj6uxzDnX3ZG3aaR3wJFDwdDLDvBDLz3cdyawTBDLPgbMBcBI4TZLe9TGORLdv6m)OYSDkrlGAPQ2CkdOhvVtLtPhMDApdEdaSPX0BuQdhpAuM6GA9e63ykKYw8Q81suwehthdEzzElxxu)8Qbbc31G3aaB28PHjTF8O5GuBSmyEfEmDm4BVAd(6Lcayf)SraXggi2MaKgRQFI04YvSkhVTtPA4ZpFIeNXOfwKdTHQCe(dY8Wm6DdTgp99smJrpfaH4lbTrJMZGrO4(LPCkIrlTyKETRHFV3ZHt880hfM3g9dwtMW0bHVYNxo7fFE5SxP5LZkMxQSOSM0f2LsHIHUiKD4loTv1Fxsl57(JWGNF3CYfoIKK7(pGmVTDbEXBNFFd)gRpo00gZc1I1Hk6X6ZpRSjRVmDzTV6d(lyxw7lwOuH67BfG(Qh1VGka9flCQS1YsD9cDJA56z95hBS(8d3Je)V0pNSBaw1G5jYGz)SZyPWws3XosydQh4hSS4ZZAl0dKmx9G7MTHPHEfFgIfOpHN2Y5Qob2sKRDcSL0gGob2wsm86O9BBbs6ZzvR(zAD)V93iAZyqIVVgz3Lqy11BVbPfVojf)PgFZUiIx3Fj1Dz(T3SnnH(L5N(ozJR29pVF2zux14nE)(Fd65IBp)pu9q8fgCWmB4xRmjUpGVvoNjKt8hi38NZQtHIndW6IARFJB0gCBdIBBj4w)oEOn4U(2D7djBNrUcBlOd7jFO(wrLrIawpUp4Le7hI)xZ6lzu7OtjLBgGo7A5jUIaI0Ofljoz8ugYOfDZEqTOTt7bMHW14w(O8orTfYs7JwwkVDAdQN(7hzzh1grLxZHTqwwEhb1W6HvAAXilpMYgkTQHhsrdvvlxjw5cfYdO5ngw(qvv1vINqbCd0baJlKOqDe5lVRjt(sUNO6aDGMpPCIJNANpJNzWrluq3iQfLdMpYHBqW)oy)V9FHInXnkA)IFUi(HFhh)a7WrwIro0)0bhCbLjRUcg0pu2p)jFahoJxoIFdxodouh9aeeyNCOqRiDq9dS(R4KrJTBOUIZ(vNi3Ox7aCGY1J9ks66lgW)dZzcNtkyR(KbPaYZNDb9Go4tUecCJXxhbEUpHVoImbbWq8edaz6UyyvYIR4egbkqgdfOakxIDBPCuqwwqSxq5JPfe6p3feuF(qmPyoV3ajn9CIQqmpZAWHQCOdUs1Gj(q(5)(Vw7AenFHtua7Io2NO9lzEQUkt8nL45N9vDjznFg3TQL2rF1ZpJYQX3j4bs0i((zJd(c2n3aXFUCcBMLLSNnF6iroT8QJIWQvUOHUFLeErXBVOpWDxzrNiGckQKmx55pq19deoOjHNwDHAjslCxDqqeIkenhPGOGqNJi0dH3vHYRVOu1R6gLJdfuxsierVy5iZn83XCWd34jZbdfDiD5azQZG)8aLQTxZPJRzSxIJ2deha3pCxFEPAb)9c3iybYXQyad1gt)iazKQA7NOmGTkuLyVf2W1SHQqZKjkA1ySgvtV4yIOo(YmsJgIXxXwmbBJ9IuCVPnAWqv21xvpDw)0NFwuFZAKiLXF3s1TefYg(D2Mry2fR1dETA3GORHuBjyrivEi3AOLIujcC88rjUE(7G6huvHkWeWb0WO(OrrWniY0gd1xTvtrJHK3qiZAeuFrYn03QXok(Nn31wTUMo(XMfaouhW4qJ2qf0VPCnTz2JkCfPZneomu5UIA4Pyq7yWMfUHE2Nr)n3LGpGP)iixeJGO9J1zLcFmY9)uDKTTbPPd3xeYfGY1bphswbrcDItScu1NhG92EW178dS(Boi7isg0qaWj5X6vrQBtjgXDUpvAXBK6rL8yeVVnrHF0tQMa4658Zpxnfk2n6YjWlNOXP15tMptNJRNFMydJBchRJ4bc)AvIS4y9bDDpq4xB(gm6GSVcG7d07GC7JVHGhWD7aJFasYJe9)ZSG9lU2D)I1id7zNUopFB2pD2zp(4JJFm5X14pZxEjBodfoEu0mRjtUCYzKy3)iY)Yo8Tx7PZ)FP3qX)TIF46ZCNVFXJRdJAbKV4hTNC5z0jOpwTzcM))u8VOWmmB)IDB)W(f0Vid4IJI)xMId7pn9YF8hzwj505)C1)MIb82p4XW81Md0lpFksKG1l(iVEXPZ)Vr)4(fFM7xlyKLMJadPAtbNrcA3QpIfuBkCHvXklGgLHXpKCpYu8lit8y3isDVPvUIOO4uQO0foQaUD8hW9Bv632mzejy3xUeOydZRIUQ5QaT0SZIjprjaZy)ewxnsoNCImwrH3m5qt9lbj715A99wtMxngiffhEDKQqLAgt25kDrxwQX6IywulPglIwQ22y7s06WklKIGFu)nkyNRNwpxadLMfwa0B(5tLWKnu(En4sH6tCCC6ejCQGc4hWBuKeK(fc50IH1oUMOQbFDnWAbzkViHO5VxWHkHhe5PoHMzxIFoB5uLABWeAurpbQMZoFu3wA(I6Ac0Pb1jNDHkAu37wgE5VqAVgZCa5VnRtiaVLF111T2kCwUudWv9naGHk9kl43s5Vm1HvFHjTwOcN8frMvJRgFaVwlQXlzk4Fi0l3Xfn3L4i2ZfL)CokdvKOcdqMx)A7j4kLhCTn0RstmD5U0Niw4e2U(3Qwm59NpFguucdawsdP3FSzs0U13Lt0Tn)avqQrgEdKTEjC6cYHn48ckd4Gum4yMxQ(TVLMxGi6dBEbgsDZ8ceSHMxi1HjZ5FTZF1McBncakQtt5oYHRbWmz0Z5yHMJFjHqx0AmEJMISKD8ddkgSiOL)cJaDoe7fGlMsKdU54eTjRR(kwRbh5F70oWVXXQfyDLchRB3fLbUnnqXKne7BTS9JZNnfQRKZNHKdqWFzyAaXLqTrE1p9nKnoen32jrfa6yNBLcAqhVURirIMIazwZ5CC(2sm4br(0Mn94Vs3Co1iNzh7qSxrw0OOz9qb5gqny5AqU7Mmu6izjP35Sni1dntpFcRs31xmroO1gSwrHjf3I(Sb(Wdt(q5iVSqvnluh5)4PldCziLcKWZDlnuQcFCRdCJqY4TE5xp78P8I45tnJ0AlJ1iSoDnb5JskXHQnpsDYjytc0eFHwC7ivOOEvgGRmATuxfnECPh)mr6ZO7YHFGDqrPgGb7BSZhiHjR6Ka0wwJQ1EG9fJBN6uXb6vGj)g02KR0rSoEUudPQua82c19oH5EaaN9ijQ9clsQfUhke)DBl4yaMXiZhL77pL2ws3ElkTnU(cv2axlXgyOc1avCqDPfaEEzDjaYSdNJVcEyMLeBMrMyv8677O1GsRPI602lyy6RGuSzTcrtUq2zA2SvLgegjWvcRlooERWl5NtPBvBz(hl3k3iGJlLwyEWgAr9x(ekACm2iL7czTUjTMUrsQnyFy4douX4kdVrSlJ4IFkeBKTfyuixmQz)XPVPKEUPQ47YQyoYngkvK5w4qEyB1HGSWpXrYPpXj3n7(MLDK6DnfnUCNnUXUih7RqC8MWSmDE(jbLHFOx6tiVMEoiHrE6UccZO3erQOC(Wv60jo4l7WN1e8XDCfXxVFy5)udW0RzWZ2zrj5LNfaHAVw8RLhCcZoKuh7wkba70WO)pT3vtVjpmm4Fl7csDhqjMbSl0Fg7iiKyh4ciTH2j(XVMstRJRtItAzVOxQ2LjOQ5PoU(ZhhoF6v181lM1hF2zdX8IRfI9)LAenkpUZ4tb3S80TQLBC0WhI8f4LVav(gAWPgD5lix(cyvGaYxDC5lCpKVAxdQe9x0tMNHlktfOmA5xa2TKCJq9B)SZrm9xdmR7yqnm60aQCA4PaehI2riqtxYOfEauZ4AokF(86LdrBe41gbXAJ5962yUFmPn(GPnssAUoNzh(23PVkojn)5HLy0QDtxBD4X7(IVqvAfzjgPwPrURP1SSuFwJTyjJ)YnV1lAF(DwoRqpJr7JKdp5r6NMFPrkkFFv)h9nm7KESbh33aJNquCRl1K5x8WXVnpD72F(sGZyljovITWgrbOkdKbbTtenvCXx)jcLbKEEvqbGk4ffSeyMHDmGofURobNnPIi3LK6Tt0Nyp1SI(XcVFfEDyZ4lMNYIrrCux)VB6a2JsQSPzazKsJ9FKbeMZKJ)gdi(wyFgqGrZaciXac8)Kbe6t8qnGa3Ddiuepudi5L8yU1Qjndit1PzkZ4XoZ480eNQrZKM4yRjwNe)hnkoiBKwDjJQP9)TNAmTKCp8jgh68TY1HA9m1XZb8(Cd)4PBjthhyiISNjWmCOsoYcZA9YvYaDxNLPGEng0lqGouepAvKrJer6a3PXUf44sE5h4DvksSWo0znbBV2VYnx5XM6ADShqdZVBUTUxaQKG4b5Oz5WSqruB5JuanF8M46vcv5ITsY2T6vuqXBBnYk3rkPti7(5Tc5foKVBLcDs2HKUsWUT(SIbCNld0wglBIM9c)MBnNk6Di6aMGyT8VHzWlOLMS2F7TR281gFeh(8N9v7BgyAzYudLqjwSzpUEQEFOvikVsTffBVu932F)]] )
+spec:RegisterPack( "Unholy", 20250125, [[Hekili:S3tAVTnsY(BjFiksjtKfPTZX8Snq25nlWgSilW6m49nrrjsjXnuKA5H94fb63(R7MxD3SR(GI0XoRagmjrDZ6QRQ6QQ(AU18Vo)wp3m)5FXEM9LZSSVCQ1L2xC(fZVn7H9(ZVDV7QV5Ub9xIC3H())r024WhW)8dHXUE4ppnopzfQPTzz7t)1ZoBtq228LtxfV7S0GD5HUzbXrRsCxNH)3RoB(TlZdcZ(BrZxka3wF4Cei37Vc9RxAJGAGNNFrx9txn)wCxF7mR3AF5VEyXTb7(TdlY3JHYHpF4ZvnoZg14N8(x5Pz78JYspSil(WI9j(3H(xhwKg5UpDBCwwq0MYp7I3AH(SpI(S)P)DbP(hwCNBsG7Yq)uME0cRlg))67MT9WIFloiCstFN9w7Z)LdlW)jaLw0jmLAznD20lP)zllUV5)5WI)QFAMFcMKxC7QhY26lcEZEh6d)dm9)hF6WIDXjO)wqesy8p(DMUXd)6gN9H3A)beHp7JiMT4pTazauNN9EsNWSkgM)bPdEyHDqCsq2dhwSojEx53x)DVhjDq9(RyM4)Znb9)qknbrZVnminlLOv5g5Soif9JBq)ZVquu9JWdiEZ)lfkdjb7XQwZV9w3Oxf6(aIn)RLFXTOgXclxCprdpoFlkyZ2SPU7sDCxMgNS0zVpsRfRnCdI(pSy0Hfj5rbRC2hFVpIGU6WIlMn)w3vfOWnklyN7gu7PB9ddNNHup5iPgu(IdlwMVE90cu7g5545VY9HP57j4PQ57C3TpibdYSKGV5JAMgFp44f5HXZ5G4HaL0CSbIJxC8UPj(OVNGJm3qeZnf)R(EolrgriXY0sOCyX3)oYkWpZzzCuE60S7V325I9RiFjbO(PP(rR8DIx7Gu0Cwggh758VZ99JM6M5SZ9pr0mYXqknUwN4h9FcWyd3B0WzsAwdgLW3eQUH1lKARqMtyU)c95(sXRuwhcnxcIMm3Kn(zt367gMTD6ES89QRpS48ljiBnwTYjXFNBqukrx6YguG8mgIAZfPQHXX7uQWitJGLEFpiSgFyHNpbARRCy4CFCEK3uYqgIgXu)HfVfzJI4l3LX7cIi(ONIr1D(e(AvCCOx89OFBF8k3Wh2NIhNA4YkVJK2Dq2ge)stk0SuYle6Xb5LpYRq08bq2roVCLCwPbJnFFb5GqkwLl23bzgGinvUy(u8VJ8Hr6kVkifOjULz4ub4vUJdEFgzbR(gr2IgugtSHk1VxMJSViag5KpL3qRSt3fe6J0zIYqUUqsfg7FghJRjIvK9sH6EAHAYQhwH(E)i)DbO5b19R(qrptCd8CiZ4o11ZdrH)j23EHNwUMQ1SWwwwwY7d2gRadk8Zw5iWFnsk0W7t0YlRyv12kMR2IPkSJYaK)YSK4WWLUri1QW47jAcfYWsbewltGtnqTfwDdPdQIXeVFnDWuTTphIAgLQhb0qBGthAKk3tyvGleZmsDGw7rApI8XqLz68Qj2epBzH3IgI8kkW5VpWd9ZRQPfJ9i3jIJ2jsfjiYtPrdOICMJ41nR8MIMtxJbNRjXkPXi)vCd8Ihq)4rjZ6JrnRzDLeeo8GMtzLhkeZyFrZOu9b5KKOCCttDZdZOXjplH81zv56xhZYZlgCu21BWr3w7evXKftep4Xpnwf3Xcg9Nlh7S4IkMvM3)lQjCjtX0oWSliXNig8Mm3eJaUCgerdcYMAsljrz0uG6eknvFN4bo4ekok1pM5L1o(dbr6WiG57fNGMAYCp3KVHMa2nkDDCYosyGYtGWlgtGj5yk1zFO7MCFcrKwQ2unrxb)lQ3j(OKEs3IHDbzxY2O8Ur5DGY(vy(pBcwNvLzfknxCMRCHSKMJsza5hhremqatdO0PtZCwJ0qtyXFz7f5QjIaN0oiYsprldjUXzgEK3d6ueei4BgMeGueBL67qhTUielPx0iVD3AqDJUrCE2s009FtwirntoQLjbAQa)YubnnAfrWKIoA4fNWGDllNwj039oHZQWKNYVv0nTYPqyCWstorV5dzNHfkWAfX6sHQ9fo20k4X6zhGtnRVcixvuvItrwlwqVy5Bifbcl4KTrktPzkvKUfryyNgF1frbhw8L4O3wvMT5ds1rGv80ntligwYeESo52Kqgie5ZgyE8XLvEapcVzlIHQRHcwheQ(kvTTbj8IFaRHu2G4utHNbtNOKR7arG4KSV0(iovyGsxHRznKTmSgOADAQ5beABlZOLrYiQKkW(AnY0O7jXbjXGlSvN9XDtrcYYmVDJCmYepHyJlY(wrfPuA)OxqcxX4yqRzJKKnpyqw14RqtuJAKxflsCwgcpzX5R2sLxuzDUkceGeokLhJcLJvXjj5e5nrnwsD3zSBrEk)WmkBcjHmoC1Rx2ceCFquuPjikSkbiHk8iTit6jjox3yjKOoqlDEkQlaXIkwVdvkcTR6odXl6ZPhYlMRtGPknouzkxwojjUz76QTOrguMeYb8SgGYsT8oB1PzyuUWnxxTqLDlYZsv0XARmOsAZMQVuOvNfi8m8fLeqAuextY9srOaWZ4YKekLOJXkVZl8vb)Pw5q(sVv7XxKY3ej6vhxPulj7cxripCIlpCP6dKVw18UfNxsB2c4OBLzvGiPHh9fl(yI0wsbqPn18fR3RoQR6nRaznf)Ts9TuvfiGY)BRCrMRQiyq1QD4Qe97gKkrRm3f7zIZDgQkeNkw9t8Ivdhp0PAY21AYIhuqbuDgbXJjUHFTC(erMVPDx9rzhuY1k6zbRVepWZ15j)qlr8tnjrJJPN)vSgxfcuSlrFZNSJ(KpR4xl7iDvik2XPRFiXne7xcBA6Hej7sAVxmq2y7WA8il4Q(ZVZz4zHMnXGaMZ2s5mn0EOvvOp3KDpiO(GAPVpIjQvmGkDtH8w7XzweSZVwNMomzirO0kSiqMDtDiC8TugAUboHkl0yXGmUkcR26NeNNw8b7cqzztfXfuhKm1EPUNLWQbw2OJLd29Fkt6jhB(VcqIxEcPFepbZM((ZRqyR(2SVzBIxUSTPz2tBCQvHWkfPM(S1n1PQFvEwW9skDHNgNtjFuH(pYsomoJsEkz9sk7JTuzU9JHm3URYCBozULgYCl9L52DrMBlBwar65Vq4OnJyNMbDrrVu78yMwbg1we0cktAjW9C35UX3zW01zDQMMVBhAgP6vzXuxQJ00dT(yvhuQBCq0oABbq6aCSN1)bnzpRwdxpoVpL3ApftBMxgjwdt(oXdVc6u8c4PmSbRlf5pLpYlz(tfzBBdyBB3l22cGIz229Hp1Fm6A6JvDq5jBBtiZN)222IQ4FLTn(7C26g51Ug1sN7wQ9VsZmg(ut4iAQy5WXQd0JoOJDDeGcA0SckOPgSjjSPeyJKMxOw4qwoNIcYLzir(aVuv8QcvuOO3OetY5VeCMKVp7ol6uo)gQsEkNFv5cPkriTsbxvwh648I3NKOLGCKcxB1AxT3XzJA1cZQbin7FjF7neBg6Y0QuV0Gj7bSuA3I58IGVfRlBsetsoGK8nzo9bvpAwceqjza0bEt1UwrUMqhDI1rDDP2vLrKX7NwfJo6XPUwAvMjvz8OzStpL8Ry)tKFfr8Ytj)kIOVNc(vSF24xrKDLb(vSv6xziQDRwfD5ubvpv0fZ58N)fDzikOQwgCNQY5jdoZ58N)gCpbRYPraq0eJaaq)6AosbcyRJKXrCz9bED3Uej0)vxOuOAy65VMSzyRkHzTMCqKNZ6eF))JpTMUG6PfVhbAFQR0Qk9iYFZPO8xu7FCAtJgpII3B)fhecLh3olwhcS7Zx2qVXevyUVJFiEFKnR8Fo)2ZfvOnPSg5Zg319qVA15A1v17ivn5)RAw9Hc0Y1rA9iXL)et1LKdZjds79ollmKVjBLCWbaYzrpfMYdTsJYj1HLuqvruReuknH2h3J0yJHxt68xlFNpJLsBVp9fKWvjjhSwUMlLFlHhZlANoc7qHpsifc8NtrOKRMQvbz16H1k4nvdjy3(K478XBj7QZCaFWwcumTziv8hHDV65FNlAeN1d5KAYY)a1gcxyWbKidYfC6pkTDRnSn)aTwTSsnJSvNxzrHZRwd8CsHh0ri(gAXTYdfjHrKCogBoekfv3Ib6BZX76xSaqaKR6JBYsYMdMmIHfWTqpV0NrS16MpsqWzSxzeUHHhw8PvffX4VtUaoRLRiFWHof)dh8DZj(Udijyf(C0mN5y7vyVZDOLQqj5A9SAyLEBbl98A1ymccxkIbMIPqonI5pXumcL)P7Qa3qMdLdVFOYjoAomtuBi6Kv4BMGS4eK6eoOczNMPQvZUqlADEYdt5lEg2cHXGKomtzHXpwRSBW9uRChE3m(axnUeRQy1kFpMhsSoqM3v5nf(khj5uURkHiLyUrTOPlZLFq0Qvj8ts9tW0Xp)QeWS6XQsihYdPkbeMPujQ7crLqX9Dqz0P4dDF0MSTu3cjndPftYUR9HhIAk4IwPd1Q8CxJ3nbi3woEb0Z2ZJwvFi12qGCeLsD(x5EB2v5ke(u8pUiX2FI0TRYtVB6VvF9WOJA9bQzSqHZGpQtHo45pjdtWN8oaYPCeapHytKT42AfhpBZeXCRjp3NJZhftiW3wav(jxhK4tCU(tVBsyoT7AzAa4HrbukIP2ktv9GOnO)HuRUmaJb8JLR(UqIDtvT0DdjM)e8TeiHAKgz9TOy5XAj6DgVPj3bt1tA5ahHtUUGsa7xnKR13mwr(8zhJ2kZx3H1q)8zAPBEo1LG1(yYFIhVLE7suNU9UDU49Ahyjn1R4)xjyDXvdBa9kvSm(owH2hmBbzj8(hPRgARAUYxtu(eEQ(qovvrUZfZKTVYrgqHHnsyKNIZWFTZMvEvx5TWHS7rFFiB0ZmX5sYJuWRobCiIYtwguEyBEA0033fyAcoIoL5WpaKfHKGJEPd0Z1KYJ2fYPscbhdt3KqDMIiuJrZH2LbIIBHumQGVVJenOxFTzbgwbJ3tj3nW0xIHsP1M3acm5c7FhMChlHCRZHIVh1RpaLBdXxG(4fuH9o0NCEwR3i(AZLKxmccxcFzbjDqbGr0NeiROeCLWePKtWDPbIgxyvkMz117bgMr11PMoxyDxPeRLDKnQwK)Eqrf9JFewKbpTJkrwVv50Y7usm1apdei1O0jxhiimXG(P9j(O4aw62EbBlcrHe(I81RT6dAf1tdWjh(X53s2QdMVMOCB3hCGfy1Rc3dungKoDxqssmjGM1ji4LNGDheVlg9R3Nk6dapgfnlja3UxaZdDyj9y3JGa8GTP8GTH8GDdpy4A81wAuLWjt0bd2OrZASt9jyMHIokL1OGNZax0lD5pB58xVpsjG)SLYF8Hgyi)z5SfnRPtjiHgb1IGTAOmmHXheGHeMTkctFjjhHXpVTHeMLt6drROjjPBbRMmAb2Brus6MzaRlIZlfVrqA6W11pMmLOr0SNDdFIGepIN0z7xuWx1JlK8cBT6EgoWyREGH)e(R3aJTkbvppWOeFDzGrFZL2dm8roz4at1(7LlHnPMnkh6yNiT9E)TrHS1TkdUlQG)yvJhNP4CmmHKHbETyWjz8MwuCZu)19ua8WA0Y7rJxsACwTLjyzJGW7cj7)jAZvYVnHWqwZkuCk(VBAbbHEmejiS0sqWhhhmBAPuqyzGGWsGGWguqiDUKwR1OMMga7aEtSqKU1ChjG1WzHYjdKXBzfjBQ6mO)P)XVpNFfwf(IHujoeDDddLlb79oltHc5qeWExuwvdkDll5jGSlBbZ5ADZPkEyEiFJ2687FrdaPFb9GolwQgXu((JOZvQiOQef(uTfGfn2rvPjTF0BG2Y(YOnLB8yBX4c6zluLqxPzIkfDMlVAciHUw3bEnWGmmqozWLtvLtg6R3cnxjq6fcuLUGwhdaOvWvVvcH(1GrVBx6(H1Qh5EnZPL2C20MYFk8bHWaXa3TMTuNKILayKjhhnmOixGv9Q(wILz9nAVJCUb6UsUzZqmCVgEq3CYJvC5jJbHYBp56v2Ur3q9fOm8LWlpSuCO5u3RrAFI0upa86dLp5HM96GbAewvfCb3L)JfSFXOlmo9V3SLNB5ns4MrJDFWiAz(fSW3WNhe1pAe2kTUTOx01MXh63FVYfZtL)Ed913mrMmxLYZ2hyFuOL8ZaVE9QZFPEJL5TMDuZuE4KNBJ8Cl(oZNm2eeTomGWl4iItjvm(N3Bm)FGZmC0U71WfJglhQK5kGMOqBhZAG(U4YUznVv50M8sS8xiDT3liat2QctaPBVd9T1iHkhaL6OKkgOyNiCvBQRtFezVlCrJEJGNWV6m1e)8(1mFi0R1wJlODOFBfMF3HCKiwKaFq)07rrIDty4P57vhKUGOD0)qpUYT7s06BmzyTEB2Qiwtx08b47zyY8j5HP1FOEdec7j1jIEg)yfDrHGMMwv9j6urH6AfOuFkIb0P0R2uWtH0LQ2rQUulrnf(KuvOJOcuxdwck(fpfsQlQupO5fqrQKI7)xSNzF5mRziSCVBc(rWejc(6wuKjb72hNG8rHIF4WIxrThEE1Hfj()78aYMbpngFHD6MNfJcYa)diviuAOPtp85)EaElGE(VIZDicHpsZVsOZoeiZIHASY(h1PXw)5evqw0zELd(YowS8y5IbG(p8zbs46DUNzYxBX0hRluo6tS)vEohaYSNWDoil(iYRjKXhJMqFEzj5hnC05OOrHJoLBgxZgBSgaQtQUFpazajADUtCaTvovAcpQSP4GOG8S0eMmPfXbvHPm9dgUTstId2GzB94bFz2c4KAmZEy48OCsR9rdUdHmO5bNJdKTFj60eIm1eNdOcRxUMWThSP(Hc))7C0lgXAePfk6FCfeF1yf1n87FhYtXOxiP4oJGLLJKuNWrYQr4KrJFHmZ2AsvyRJ0PIG3yD5lhp2(1Wu)K300C7rv6wfo8mzcfxaQcxZjG9yK6sm(yWlvAKN0I4K8Nn0s(hrTObNxEfu8vL7nSuZcUcizJEBcfa4ZFkt4ap0DHip0BLqt5(JJDxLwd8eHB6u9bAJgqX4TaalOldiWvLzxZYWXlGBTsOkj0HDGRNv7(bb)(xE)CIIpkv5bf4Wrow(rwYDy0Qz5HJwduL0QWUmGaxvi0hH6aee7hhg)Gs8zOHF)lVForXhLQ8Gc8AWEzV6hIJM7xGRbypIOIAb0IrDUBYeoDcGlUhnHDp56aa69MHYjjZtm4FsYpOsM31REAhuGRbypI4(Ab0Hui3RQFaqV3u)ojzEIb)ts(bvY8(E1R1GcCLGTBbFQjn3nGReSDtuOjn3nGReSDtuOjn3nGdd2st5UN7hae7nRBikUF8nDI6ft9GBjnYEf7vgTsep6BjTHdYh128tkKz3l3Cqw8g9wtitVfW5veeS7W5Hkq5L7bz8qazH6TMQWcqyLlf6Me8wQLJUyAtxYI6TcXmc8N112RltTnOaxdWEevERFRS5GcCna7rKVnuDnrec(itGpYGIisQ2(raUUPsnOaxdWEe6RdzTNovvodH9ZBjZqd)ts(bvYav1vBjEyTH9W(ibUUn13GcCna7rmV6qwzSt1m0qy)8wYm0W)KKFqLm9BjqhuGReSDl0ynP5UbCLGTBIcnP5UbCLGTBIcnP5UbCyW2Z2IpxRB7ZBQhSmzMwbpGcyDevWRaUp6Lf(ilElau75Ze)J(z6)iLkaBasbN(goGl5jArtJKND44daUs6YcgsmUxhhggFFa(sD1npXn9WI79tq)EEkg(4tJxgUBf3FfhwGFtuW38hzv9lkM4zazKs3BppCN9CZCx6M6)Rixj4BrAeAIckUNn8D)gG)fp)14RlnZCW8iSP7zClvENUj2NvzJgQU3dhZAOsyCCMNpQqvWJNphWL886RjoWFc2CZZ)o30mrZnkOhgMLqVYha4ONN2aalBZXhmoSzRqmW3SPq3nzj5K3re3OjH4bpF7g68L76jI3Ss87dLMoD7fyBntmW7L0mTac8QFaou0mnxoF8AJTVGwBbua)U9dfpK1G1cqdSFaoGkOWhL0woZK8WL(ddr2a699pIGUwt6dRxBOB6NEb4qrk0lahWwOxa(5adU9AOWNdD)n1lCWWO1imI3639VxDCX8YSefvpxm1ui7suq1S8WERbQQhWnbisJprFKd8MmjgTWDwEO41vdtQiSvZAcunKh8isJprFKRRiurNLhJD9ygk82vtDJEWXBFA97GKGHlO(1ZObpu5yo41ya4yv7LICDhZmrThE9D1tyc3VEgnshZGbVgdahRDMuKR7yMj2zWl2Gbi0eLKwbco0C4hfpJ7rudNwqSwMvVsgsCyiQpdk4vjjeC5(WjsK80jo0e)adEnaSbQLMyhWHWw3vzqp(CJgdQNosgR(Yxw)tuFzvRxpR(cusYGTUiq2dK51ZMGqLMsmI4T3LedTGOVLd16mqf15i8L1gK1(JvBrjUpdl8vkm6v3z9o5p0WxhiR2KRtt0YJr1U0SnWqwaZ2VU0KJa9nL1r(27sIHwq03YHgLMwvBPwn9i2c7Gq9O2NLsO1UzSo0WxhiJz4Ih1c0yv0MSTaIA((OlLRl8Hk7HeqJFcDf5XQ4N1dkwIHILPqr9aKgr327WxhiREasCF0LY1f(gRa0pdDhLAuRP4EbyWQsC5l2N23)(la8lH8YcdTXY8i8sjVz6tE9yRPx(gaZsuRaVp6IBP55ahd33Wqwyj7B5gVM8sRzZMmzYnu9uuS1sERZ5zalLmGfidyjHbS4yaBggOst6jUMWzpD1eotlnH2mWtgnHsgGY7BRv9P8lmZ5deu00ri0H9)vgT8qdXHXh69MWmkd64m39KJb41JaIpI3p)d1lbrFFl9x9T9Wgl(Xb(aRW9rT)uGodIDrtd81BX4xUL(3IQ)HiWO9P3aM(hU9Mf0Wb)dF(Vru7XG16s29xmwVE(T7tIXpTyvpDEPtR3MeV56ZkWaEB)C4ZIAN)St8l1nsoHQxBl(ZQcQ4xICrDIlEWFHeAX1ntMthRst9uuV(VC9fO0lMqH2cPqBaku9QDY13EGcTC()BVR3EBBEJ4FwkkMQDtBIKSDEshSfqx3Zg2WW2Ws3BRIITCSxCS9KSBAgmYN9DKIsIK6oskBN0w8e03KklE84X7(X7pKuL(89UvRhLNUz(ub3g6x8hXPlYLLUO1i(DJxTeafG)A03x5D7gnev8gz089zUP2Z5gJh5HtaL4)iWeHhctC8KeSOl07(a5U3)0bsmqlk5LxTe7OMGChPRZ5d(4nHEOYs6CT7vpX)0ilps1y4yPxUoB(QmWxiNnmoKKAqMtJ9jLghwUTqYk9rlRgAj1Gm7whwYTqsR6rlTgAz1qn9wUOEnj5UKByFiPp6Azn)LsvdvUnAK6GH5yOGVbUfCFCcSeyA6)l9X)6RFDPxI5ngi58pVx8dxMG5fSEIY3w6rbMjtYei4RIZ2SjYefiZKAKaGCyUy2Gt6Pa8jjeXqReNV6Hd8m9bOEyq9NklTJEMGardO501RwxqSCvgTJbgkQAAvACYqi0bO761XeNhnYkRpm03tnuiXl4PpNUBNORuo2zBxBu2fj1oIxO)7xd6LYrXu0ZaW3uwqzXUnlfnYG6YAqiWE)STlNpoE9Q7tZuNneIa1Z)xTSt7CbwZrseCypFAgG)LipoBTUnF9hYnjHA93UnPh69kCX)UDs8a)7e945BGz1USvhkidYrGZRJ20ByvNICO86Y7K0H92TJnxvDkAkOXUDf4UBNmb4l(HhJXw1yt1MawMb7lHN2qeQ)nQV0G)e6r5jLsaSZNNhNtsZZtxooTmi2IpCG)3TPPlfm1GUvur)m4vA404WZ5HiqGrgaj(PKflE8QpkIc)VXIcxEedM1lIl(VXSq0fkps3yMVJDKhgVbwFy(0kTw1JdHDcIsSxrrnGT)xjJNNSqHvtYgNSewudIwcAfJaY2caQcxJjuUjfc3PBZEG96D4cP6NvTS)j9IgPOMjm38q09anZktiTZ41UDvMV6N(Rsy2ZzwjC0hwEmUz2QTle01t7PLw8JOz6cBdoGDtkv)uNOK2cHJc9kuQtwYuVhN8WPBMp(wqNdg)xVkp3tfP0aTvMpsZYtZyKrA(O6z)mnFGX0738boLooZhy0wE(GNdY84)Z2j3CNWMI3qXcZLo2YwZTsilLlDboSC21lzGciZtz5KdSyJNmVe0wN00nqbzobGmzP4DrmdGHR9eCXpWAjbx0wTbwlo0z9GlqamxVf8mLjXAqDqOWWmlxdpAKI7f1pgg)Y0D68SuUPETrC1J(jYggJNB7KMbcDOZLKKwbqn5gUJeWQN3M3Cog8gVdHbnANoOWNHlb)ly5V)tcrVYYWRxX(lm9PaVdDwKZRyjHbaG65hnI83furm95SEqp)2oHx1Igrp4P)yP2qmfZ8FNf26)op9XRgM84vZYsNo6nZ2SzD(V)SZU)(7p9(v3pJDgOHa9pdCPFXIrb((N7Fg3c99ZxoDBo0xVj6FY()pE1Fr8GHNLe94v3pdIIWDk3)dH(NFwXe07Row7r)zXFvqZ55pE121VdI1MFJYWCUK9xU2hH)YGZ)WhotQCJrFS6Vl6bw1sVF(MzUt0Z7naejm9I3RTTZJ(JWdF8QpR8uXazQ7DGJCTRKZjbDs1LWtHnfyqQLJJ5l)6QBb7VVbR(UewzKzDug9jOnexQDqyRIae7HHypCuyyDQa0SFlJirVUCv52TrjdByNyX8HTUi5hFCDlBRRk3LEK8kQHIbujAQzUryYEBqKNe4hv9oyZ9XQt7vlz0CTOEgHAz5pbFLkvxY0lflZBGQq6rUihC6Rz)Wb1YuCQ0qvghDTNskYAO5i)JAc83XQS6kqEEZ4jfrQwiTWVDkKvcoigoCGQdVGRWj3WIkEwAHhVfZk3UK7ODYD5WWjFv21XRtZgd9EKVwYHqcigp6C2wtH9nNbc73HO9BmECVhCj8)9L87fZRMcpsIVh8TtuErAYxvfkAeXHXoFIlDdSMmcmFpws8qTLLmg1EHkGxF36C(EleVZ7q05Iyb1)vEQDL0XNYZvhRg58Gdbs2z8dGqRSlER)PduXKi5scHdbBOGCSDjEcYMopFMitg6t9LRkICPN49klOGjtEqWxyxzkGiYwwelN)CbTvnAc6Kbc)TbT0QXBRZlOn6sMIqECkF8F8RvDXPWKml20Q88w8MvP0q6hg)aiYKNLfTLRTfZtCEA27k00eAEfSNTkFqPulgeQBcxV2wogD2ToRZCujPKF3O0dAytdREx9uCR3hL)U1EyFLLJNXgVm145JzfSC1IfxZsAr(Iv3Jmf1y6fHYMQ7gEzUCvbXLE3yD9c3xXK9ITHOebUVigB6xFrmG2vSIpLTLPzgxSRHlrNlTUw9RpE1FGPZQW1f49hIPwff00Grzv2ESqV0G06V1zGq1yRQwtA2GgxUzOAV2QxgwAQFZIYWhmivVQyqw68S6v2Bj6H63Mo0k2vv4Zcof(PkfFqxqERdiplOyJtPUCuLRklIFeeR8Sz18HIGCsINMY(cMaym5q0G5IiCOfui)QOS8(uYqxTJBdCxRjoD9WjMvDXQ0vlpZ6woIG0YX2WrH7HetgE7sMJZQ0G7l9bbVvsb(UcDjpUysVWjSRQD8rzFaugzoP)XkwwwF7l2TdIlEsC6x559yYK8tt)gRcXE6pUodkbu)welWDlEaXQOWI0U4IlxvZBLne5Sjc9XL57p9SUzoSobPduAYuOpoJ2gVejwxA)GakzaNDHedx)ii8r8ceW4nkmz7L0wSc2Hl4FMKWcKV)(QLV)YKLVHfqjwrEoD8eweBiHnIgJMP9v2WlW2ezntijvkX81zk1Tmw75hyQ)THUXtHMYHRR8BDhGXR6B4SMTF12nxdwH3IPI3SK5ryE1lioPh)L7mYHd86G3(PWksZykvvU7jDKRkA00SvGlwtHLfYuBa7hlYortY1TB96FkhlQQ(r54mk92nsNBT)WnkrqL6qZtVu5sx2enVTx3gtS1KjEX87Ugp9f0ELkVPjktQJ8ZkCEtY8r6hlR3DZ6toaFpBAXjkuD5GqoCXRBayWDCch1iUiQwnJuevxnBnzJwIfl7jvdz8xjQVF9Ox9v6IXLQVsB99mAuFVouUc1hyecpRueYr972Ki2Dbtsui8Xuwmr5dMTDczdeWaZlsEoMq1PfnCy(oAa1Cjz1PKKkuP0UhQIqfglBk)icswDsxnNpxeivdiQEgbuTHNQ8uNQh3tgOl6uH0YLUGAWlW1OEOuYk(CuzKGodTXM1AHooHHifzFkqnp)GqnDXhhPbWlaQhBavHGvgG63wOprbd(DD6e(2MCz3tQFC61GroNxLFQQVJDFYaYoM8iLgWrcxSKA7d2ibSyBGebpIBgTwd3v137Dfnb1XwNaOqrxrdC0q8E0Xcw7VCByNdkUqDyHFSInSg4HlZMVC6I5CEVid8SZ6(p(appzOfDr1gSBqIz7yeyhn2tSqpTgCOXUbnOraTGV1wKgR8)VBjfhPvTizAiT2L8f26dp2W(Uu44wXdTTY1w4peUqnh7qxImQBG8)Nk2Ol1KtA3VCYryNQ13NM01kluEHrvYskAQQkrKYBHbUALy3TlpDtmSo(28t3C)9HX9xp26UXjzt8DjFlMpLKxsx0thOH6FVNJfPcVOmqOihR8OGPCY6cDdXAiZstwSz2PRhVbCPyGM)2dCJ1A7Kud9ulN64EehP3wVjB66qXsvzvS6eA0UKIxlT7G3NTR9)mx6lzhQ0)8YC6awQ2rTU4RUStRaoCasp6KXd5YfLEBGVrhq3sdvheyH5rbUXyWlITRfUMHAwkHVeDHVysDp3qDUBctHpO(9XvJGcN1TYgLQT9A)8s5G85BsbHhBytBDoPPryf7GTZkjDr3f33Vz8eeE2jer39pshU0GCbBlB54LrqnPXWMmIKoY3eIjQtiSdVNHjftcN6y6q(9UkfkrX9kZxWddhf01fXChSIa261lSDFyqH2tUodgV3c3F9mVZM6GHnyD)dvCqcCsQAKw9pSXMyfYpNvCzcqT24gXVZI6hccB(M07k2TXtFilzbR34hndWS(USA(gKu3XWhaTWY3REx6Og6fRmBQpjkman4)(LLQdz(h9Olz6SorDaLaqrim)Oa(P3S(eIPllMSkM4gRcIcj)2MN6LIfKYG3JTE1Yea08gyeF388CBOQvRQs26QuBimegN9aS2X4y4zBY2kgbU0fOnuN6W4gI9NVg8Y0VTLDzxXU8lVHVw7K5L)PtDOR0QIhCu7KyYHdvPPTfOR)bqEU5uxGVDUjFXQnL3yhbkbjkEy9LHNvHLjEbHSLhzT36F6V0ZR5LMv5nzfdus8m5BImbLLUAZuVZZ6ID3Mv3RrJuSE9yg0TtCfIkUcFAexHUlUcLVganiUcSlUcpIIlTmV0q9sINz7GxomNVvxkWAuxjPdXTJ2EQtThhOudzwKIwuKIolLsoYP1OkhAc9pOuzcTFFooToWXMQiKetR3LvTN6sgieuEWV)jW2amdANYCiUYmY1W4EOmh2wL59ZI)yoD(IY8pJkZSxpEwsrwL6ShxeKM0748S9g2e9fVHbU1JgjR5BDetLbYG)40THspIiyas6qfub29mQqirl3r1xyfJwlHK88rQSzaR1PCoBj0jeXu8KoVP)1tmQqcQM)tYIjOVVkvIvJigoD7pnEPfX3wFh(wE7nIp34R1fTof0996GvVl6cAPpOCRos7RCWwN16A1fXoDeA5oaxpgdx83I5oqso8eK3akZSMzKZ2EW3uQdoU9IRH9F86yh0kF2ZzGnNGTKVaJb0tgGLz)cqYJRjXABVXVmKVaI2enGTzZAVhJT7UmYkF1OnrbMCrULxlt27FSDkxndyB)ETpZhN0JCgXjSrh1FOvh7QVXTmkLuZxInlllPwYyUFiJ2ZSJZp3wwH)GAzPZxp3ww69)ZLLv43llRMQJoyzfUVww2YcP1CT8sIdFjxle5AXMUNTKgAv37L889IUxB19yV6two(CPvnrj3VS7zi1EnpJSww9la9OQBmaTFUsoy3VCzY2nZwL9LlVC(DBxW)TpLLmDZxy)7l))d]] )

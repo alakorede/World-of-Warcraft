@@ -3,6 +3,9 @@ local L = DBM_CORE_L
 ---@class DBM
 local DBM = DBM
 
+---@class DBMCoreNamespace
+local private = select(2, ...)
+
 ---@type DBMAnnoyingPopup
 local frame
 
@@ -129,7 +132,12 @@ local popupData = {
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-bc-vanilla-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/dbm-vanilla",
 	},
-	Wrath = {
+	BCC = {
+		package = L.DBM_INSTALL_PACKAGE_BCC,
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-burning-crusade-mods",
+		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-tbc",
+	},
+	WoTLK = {
 		package = L.DBM_INSTALL_PACKAGE_WRATH,
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-wrath-of-the-lich-king-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-wotlk",
@@ -139,6 +147,11 @@ local popupData = {
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-cataclysm-mods",
 		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-cataclysm-mods",
 	},
+	MoP = {
+		package = L.DBM_INSTALL_PACKAGE_MOP,
+		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-mists-of-pandaria-mop-mods",
+		curseUrl = "https://www.curseforge.com/wow/addons/deadly-boss-mods-mop",
+	},
 	Dungeons = {
 		package = L.DBM_INSTALL_PACKAGE_DUNGEON,
 		wagoUrl = "https://addons.wago.io/addons/deadly-boss-mods-dbm-old-dungeon-mods",
@@ -147,32 +160,54 @@ local popupData = {
 	}
 }
 
-local annoyingPopupZonesSoD = {
-	[249]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Onyxia
+--Basically no naxx
+local annoyingPopupZonesVanillaRetail = {
 	[409]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Molten Core
-	[2791] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Azuregos (instanced in SoD), we literally wiped there to spell reflect because people didn't have this installed in my guild
-	[2784] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- Demon Fall Canyon in SoD, it's a bit harder than usual dungeons, so let's show a warning. Remove if too many people complain.
+	[469]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Blackwing Lair
+	[509]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Ruins of Ahn'Qiraj
+	[531]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Temple of Ahn'Qiraj
+	[2217] = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- BRD Raid
 }
 
-local annoyingPopupZonesVanilla = {
+--Filtering should be handled by core (ie the level up raids won't be triggered if not SoD or too high of level)
+local annoyingPopupZonesVanillaClassic = {
+	[40]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Blackfathom Deeps Level Up Raid
+	[90]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Gnomeragon Level up Raid
+	[109]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Sunken Temple Level up Raid
 	[249]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Onyxia
 	[409]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Molten Core
 	[469]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Blackwing Lair
 	[509]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Ruins of Ahn'Qiraj
 	[531]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Temple of Ahn'Qiraj
 	[533]  = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Naxxramas
+	[2791] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Azuregos (instanced in SoD), we literally wiped there to spell reflect because people didn't have this installed in my guild
+	[2784] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- Demon Fall Canyon in SoD, it's a bit harder than usual dungeons, so let's show a warning. Remove if too many people complain.
+	[2832] = {addon = "DBM-Azeroth",       package = "Vanilla"},  -- Nightmare Grove (instanced outdoor dragons)
+	[2856] = {addon = "DBM-Raids-Vanilla", package = "Vanilla"},  -- Scarlet Enclave
+	[2875] = {addon = "DBM-Party-Vanilla", package = "Dungeons"}, -- SoD Karazhan Cryptos, probably harder than the usual classic dungeon
+}
+
+local annoyingPopupZonesBCC = {
+	[532]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[534]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[544]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[548]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[550]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[564]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[565]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
+	[580]  = {addon = "DBM-Raids-BC", package = "BCC"},  -- ???
 }
 
 --No hard dungeons in wrath, so just popup for raids
 local annoyingPopupZonesWrath = {
-	[249]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- Onyxia (wrath version)
-	[724]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[649]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[616]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[631]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[533]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- Naxxramas (Wrath)
-	[603]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
-	[624]  = {addon = "DBM-Raids-Wrath", package = "Wrath"},  -- ???
+	[249]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- Onyxia (wrath version)
+	[724]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[649]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[616]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[631]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[533]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- Naxxramas (Wrath)
+	[603]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
+	[624]  = {addon = "DBM-Raids-WoTLK", package = "WoTLK"},  -- ???
 }
 
 --Iffy on hard cata dungeons, but it's not complained about much so omited for now
@@ -187,15 +222,6 @@ local annoyingPopupZonesCata = {
 }
 
 local annoyingPopupZonesRetail = {
-	--DF Season 4 M+ Dungeons
-	[2516]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2526]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2515]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2521]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2527]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2519]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2451]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
-	[2520]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
 	--TWW Season 1 M+ Dungeons
 	[2652]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
 	[2662]  = {addon = "DBM-Party-Dragonflight", package = "Dungeons"},  -- ???
@@ -236,19 +262,17 @@ end
 function DBM:AnnoyingPopupCheckZone(mapId, zoneLookup)
 	local zoneInfo
 	if zoneLookup == "Vanilla" then
-		if self:IsSeasonal("SeasonOfDiscovery") then
-			zoneInfo = annoyingPopupZonesSoD[mapId]
-		else
-			zoneInfo = annoyingPopupZonesVanilla[mapId]
-		end
-	elseif zoneLookup == "Wrath" then
+		zoneInfo = private.isRetail and annoyingPopupZonesVanillaRetail[mapId] or annoyingPopupZonesVanillaClassic[mapId]
+	elseif zoneLookup == "BCC" then
+		zoneInfo = annoyingPopupZonesBCC[mapId]
+	elseif zoneLookup == "WoTLK" then
 		zoneInfo = annoyingPopupZonesWrath[mapId]
 	elseif zoneLookup == "Cata" then
 		zoneInfo = annoyingPopupZonesCata[mapId]
 	elseif zoneLookup == "Retail" then
 		zoneInfo = annoyingPopupZonesRetail[mapId]
 	end
-	if zoneInfo and not C_AddOns.DoesAddOnExist(zoneInfo.addon) then
+	if zoneInfo and not DBM:DoesAddOnExist(zoneInfo.addon) then
 		self:ShowAnnoyingPopup(zoneInfo.package, (GetInstanceInfo()))
 	end
 end

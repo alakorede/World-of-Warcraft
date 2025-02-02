@@ -28,8 +28,15 @@ Bagnon_Sets = {
 },
 ["mineColor"] = {
 },
+["latest"] = {
+["cooldown"] = 1738178566,
+},
 ["version"] = "10.2.2",
+["customRules"] = {
+},
 ["display"] = {
+},
+["fridgeColor"] = {
 },
 ["global"] = {
 ["inventory"] = {
@@ -59,20 +66,21 @@ Bagnon_Sets = {
 ["point"] = "TOPRIGHT",
 ["hiddenBags"] = {
 [5] = false,
+[4] = false,
 },
 ["color"] = {
 },
 ["hiddenRules"] = {
 },
-["y"] = -232.2129516601563,
-["x"] = -729.8519287109375,
+["y"] = -219.8793334960938,
+["x"] = -206.519775390625,
 ["borderColor"] = {
 },
-["showBags"] = true,
-["columns"] = 13,
+["brokerObject"] = "Atlas",
 ["lockedSlots"] = {
 },
-["brokerObject"] = "Atlas",
+["columns"] = 13,
+["showBags"] = true,
 },
 ["vault"] = {
 ["rules"] = {
@@ -173,26 +181,63 @@ Bagnon_Sets = {
 "misc",
 "contain",
 },
-["point"] = "TOPLEFT",
+["point"] = "BOTTOMLEFT",
 ["hiddenBags"] = {
 [6] = true,
+[-1] = false,
+[-3] = false,
 },
 ["color"] = {
 },
 ["hiddenRules"] = {
 },
-["y"] = -132.5,
+["y"] = 90.10002136230469,
 ["x"] = 53.88884735107422,
 ["borderColor"] = {
 },
-["showBags"] = true,
 ["lockedSlots"] = {
 },
+["showBags"] = true,
+["filters"] = {
+"all",
+"player",
+"account",
+"questitem",
+"miscellaneous",
+"scrap",
 },
 },
-["fridgeColor"] = {
 },
-["latest"] = {
-["cooldown"] = 1715387840,
+["color"] = {
+["quiver"] = {
+},
+["herb"] = {
+},
+["normal"] = {
+},
+["soul"] = {
+},
+["inscribe"] = {
+},
+["mine"] = {
+},
+["gem"] = {
+},
+["leather"] = {
+},
+["fridge"] = {
+},
+["engineer"] = {
+},
+["key"] = {
+},
+["tackle"] = {
+},
+["reagent"] = {
+},
+["enchant"] = {
+},
+["account"] = {
+},
 },
 }

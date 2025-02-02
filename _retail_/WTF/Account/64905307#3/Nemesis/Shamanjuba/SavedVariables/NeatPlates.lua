@@ -12,14 +12,15 @@ NeatPlatesOptions = {
 ["FriendlyAutomation"] = {
 },
 ["DisableCastBars"] = false,
+["DisableChannelingCastBars"] = false,
 ["FourthSpecProfile"] = "Default",
 ["ThirdSpecProfile"] = "Default",
 ["EmulatedTargetPlate"] = false,
 ["SecondSpecProfile"] = "Default",
 ["EnforceRequiredCVars"] = true,
-["ForceBlizzardFont"] = false,
-["BlizzardNameVisibility"] = false,
 ["WelcomeShown"] = true,
+["BlizzardNameVisibility"] = false,
+["ForceBlizzardFont"] = false,
 ["NameplateClickableWidth"] = 1,
 ["FirstSpecProfile"] = "Default",
 }

@@ -1,6 +1,6 @@
 # SexyMap
 
-## [v11.0.1](https://github.com/funkydude/SexyMap/tree/v11.0.1) (2024-07-26)
-[Full Changelog](https://github.com/funkydude/SexyMap/compare/v11.0.0...v11.0.1) [Previous Releases](https://github.com/funkydude/SexyMap/releases)
+## [v11.0.10](https://github.com/funkydude/SexyMap/tree/v11.0.10) (2025-01-23)
+[Full Changelog](https://github.com/funkydude/SexyMap/compare/v11.0.9...v11.0.10) [Previous Releases](https://github.com/funkydude/SexyMap/releases)
 
-- Buttons: Alternative fix for the expansion button moving (closes #377)  
+- bump toc  

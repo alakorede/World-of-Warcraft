@@ -78,6 +78,14 @@ local DEFAULT_LOW_PRIORITY_SPELLS =
 168092; EVB Water Bolt
 400165; DIMR Epoch Bolt
 418202; DIMR Temporal Blast
+; TWW S1
+333602; NW Frostbolt
+434786; AK Web Bolt
+429110; SV Alloy Bolt
+451261; GB Earth Bolt
+76369; GB Shadowflame Bolt
+257063; SOB Brackish Bolt
+272581; SOB Water Bolt
 ]];
 -- 376399; ignore test
 -- 392279; ignore test
@@ -180,6 +188,11 @@ local DEFAULT_PVE_PURGE =
 374778; AV Brilliant Scales
 ; Dragonflight S3
 255579; AD Gilded Claws
+; TWW S1
+431493; DAWN Darkblade
+256957; SOB Watertight Shell
+275826; SOB Bolstering Shout
+335141; NW Dark Shroud
 ]];
 
 ------------------------------
@@ -999,12 +1012,12 @@ function FocusInterruptSounds:FHasBlacklistedAura(iSourceFlags, strSpellId, strS
 		local strBuffName;
 
 		if (0 ~= bit.band(iSourceFlags, COMBATLOG_OBJECT_FOCUS)) then
-			strBuffName, _, _, _, _, _ = UnitBuff("focus", i);
+			tbBuffData = C_UnitAuras.GetBuffDataByIndex("focus", i);
 		elseif (0 ~= bit.band(iSourceFlags, COMBATLOG_OBJECT_TARGET)) then
-			strBuffName, _, _, _, _, _ = UnitBuff("target", i);
+			tbBuffData = C_UnitAuras.GetBuffDataByIndex("target", i);
 		end
 
-		if (nil ~= strBuffName and self:FIsAuraBlacklisted(strBuffName, strSpellId, strSpellName, iSpellSchool)) then
+		if (nil ~= tbBuffData and self:FIsAuraBlacklisted(tbBuffData.name, strSpellId, strSpellName, iSpellSchool)) then
 			return true;
 		end
 	end
@@ -1040,7 +1053,8 @@ function FocusInterruptSounds:FIsPlayerSpellAvailable(strSpellName)
 	
 	-- Make sure there's a pet if this is a pet spell (for some reason, IsSpellKnown() is returning true for Felhunter spells
 	-- on my rogue)
-	if (isPetSpell and 0 <= C_StableInfo.GetNumActivePets()) then
+	if (isPetSpell and not IsPetActive()) then
+		-- self:CheckAndPrintMessage("No pet active");
 		return false;
 	end
 	
@@ -1051,7 +1065,7 @@ function FocusInterruptSounds:FIsPlayerSpellAvailable(strSpellName)
 
 	-- Verify that the spell isn't on cooldown
 	local tbSpellCooldown = C_Spell.GetSpellCooldown(strSpellName);
-	if (nil == tbSpellCooldown or tbSpellCooldown["startTime"] ~= 0 or not tbSpellCooldown["isEnabled"]) then
+	if (nil == tbSpellCooldown or tbSpellCooldown.startTime ~= 0 or not tbSpellCooldown.isEnabled) then
 		-- self:CheckAndPrintMessage(strSpellName .. " not known or on CD");
 		return false;
 	end

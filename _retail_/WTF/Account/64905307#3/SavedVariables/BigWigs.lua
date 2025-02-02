@@ -25,9 +25,11 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Super Emphasize"] = {
 },
-["BigWigs_Plugins_Wipe"] = {
+["BigWigs_Plugins_Statistics"] = {
 },
 ["LibDualSpec-1.0"] = {
+},
+["BigWigs_Plugins_Wipe"] = {
 },
 ["BigWigs_Plugins_Proximity"] = {
 ["profiles"] = {
@@ -41,20 +43,22 @@ BigWigs3DB = {
 },
 ["BigWigs_Plugins_Pull"] = {
 },
-["BigWigs_Plugins_Statistics"] = {
+["BigWigs_Plugins_Nameplates"] = {
 },
 },
 ["global"] = {
 ["watchedMovies"] = {
-[964] = true,
+[-2292] = true,
+[927] = true,
+[-1597] = true,
+[-2234] = true,
+[-2296] = true,
+[1003] = true,
 [-2238] = {
 true,
 true,
 },
-[-1597] = true,
-[1003] = true,
-[-2234] = true,
-[927] = true,
+[964] = true,
 [992] = true,
 },
 },
@@ -262,6 +266,99 @@ BigWigsStatsDB = {
 },
 },
 },
+[2657] = {
+[2609] = {
+["LFR"] = {
+["kills"] = 5,
+["fkDate"] = "2024/09/17",
+["bestDate"] = "2024/09/17",
+["best"] = 209.1280000000261,
+["fkDuration"] = 209.1280000000261,
+},
+},
+[2602] = {
+["normal"] = {
+["wipes"] = 10,
+},
+["story"] = {
+["kills"] = 1,
+["fkDate"] = "2024/09/22",
+["bestDate"] = "2024/09/22",
+["best"] = 277.6750000000029,
+["fkDuration"] = 277.6750000000029,
+},
+["LFR"] = {
+["kills"] = 3,
+["fkDate"] = "2024/09/27",
+["bestDate"] = "2024/10/11",
+["best"] = 367.1609999999928,
+["fkDuration"] = 523.3069999999989,
+},
+},
+[2611] = {
+["LFR"] = {
+["kills"] = 5,
+["fkDate"] = "2024/09/17",
+["wipes"] = 2,
+["bestDate"] = "2024/09/24",
+["best"] = 190.7839999999997,
+["fkDuration"] = 207.2399999999907,
+},
+},
+[2612] = {
+["LFR"] = {
+["kills"] = 5,
+["fkDate"] = "2024/09/17",
+["bestDate"] = "2024/09/17",
+["best"] = 251.6199999999953,
+["wipes"] = 1,
+["fkDuration"] = 251.6199999999953,
+},
+},
+[2599] = {
+["LFR"] = {
+["kills"] = 4,
+["fkDate"] = "2024/09/17",
+["bestDate"] = "2024/09/24",
+["best"] = 169.3299999999999,
+["fkDuration"] = 177.1719999999041,
+},
+},
+[2607] = {
+["LFR"] = {
+["kills"] = 4,
+["fkDate"] = "2024/09/18",
+["bestDate"] = "2024/10/11",
+["best"] = 193.5540000000037,
+["fkDuration"] = 233.7120000000577,
+},
+},
+[2608] = {
+["normal"] = {
+["kills"] = 1,
+["fkDate"] = "2024/09/18",
+["bestDate"] = "2024/09/18",
+["best"] = 403.4320000000298,
+["fkDuration"] = 403.4320000000298,
+},
+["LFR"] = {
+["kills"] = 2,
+["fkDate"] = "2024/09/26",
+["bestDate"] = "2024/09/26",
+["best"] = 300.2970000000005,
+["fkDuration"] = 300.2970000000005,
+},
+},
+[2601] = {
+["LFR"] = {
+["kills"] = 6,
+["fkDate"] = "2024/09/17",
+["bestDate"] = "2024/09/17",
+["best"] = 176.4470000000438,
+["fkDuration"] = 176.4470000000438,
+},
+},
+},
 [1861] = {
 [2167] = {
 ["LFR"] = {
@@ -283,3 +380,4 @@ BigWigsStatsDB = {
 },
 },
 }
+BigWigsTempNameplates = true

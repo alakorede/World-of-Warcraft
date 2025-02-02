@@ -29,6 +29,7 @@ if INTERFACE_NUMBER < 90000 then
     AddQuestWatch = AddQuestWatchForQuestID
     RemoveQuestWatch = RemoveQuestWatchForQuestID
 end
+local GetItemCount = C_Item and C_Item.GetItemCount or GetItemCount
 
 -- [[ Helper functions ]]
 function BtWQuestsItem_GetItems(item, character)
@@ -2614,14 +2615,18 @@ end
 local AuraItemMixin = CreateFromMixins(ItemMixin);
 function AuraItemMixin:IsCompleted(database, item, character)
     local id = self:GetID(database, item);
-    local index = 1
-    local name, _, count, _, _, _, _, _, _, spellId = UnitAura("player", index)
-    while name do
-        if spellId == id then
-            return true
+    if C_UnitAuras and C_UnitAuras.GetPlayerAuraBySpellID then
+        return not not C_UnitAuras.GetPlayerAuraBySpellID(id)
+    else
+        local index = 1
+        local name, _, count, _, _, _, _, _, _, spellId = UnitAura("player", index)
+        while name do
+            if spellId == id then
+                return true
+            end
+            index = index + 1
+            name, _, count, _, _, _, _, _, _, spellId = UnitAura("player", index)
         end
-        index = index + 1
-        name, _, count, _, _, _, _, _, _, spellId = UnitAura("player", index)
     end
 end
 
@@ -2782,10 +2787,10 @@ end
 local ChromieTimeItemMixin = CreateFromMixins(ItemMixin);
 function ChromieTimeItemMixin:IsCompleted(database, item, character)
     local chromieId = character:GetChromieTimeID()
-    if item.id then
+    if item.id ~= -1 then
         return item.id == chromieId
     else
-        return chromieId >= 0
+        return chromieId > 0
     end
 end
 
@@ -3406,15 +3411,32 @@ function Database:AddQuestItemsForChain(chainID, replace)
     while item do
         if item[1] ~= nil then
             for _,subitem in ipairs(item) do
-                local target = {
-                    type = "chain",
-                    id = chainID,
-                    restrictions = subitem.restrictions
-                }
-    
-                local ids = subitem.ids or {subitem.id}
-                for _,id in ipairs(ids) do
-                    self:AddQuestItem(id, target, replace)
+                if subitem.type == "quest" then
+                    local target = {
+                        type = "chain",
+                        id = chainID,
+                        restrictions = subitem.restrictions
+                    }
+        
+                    local ids = subitem.ids or {subitem.id}
+                    for _,id in ipairs(ids) do
+                        self:AddQuestItem(id, target, replace)
+                    end
+                end
+            end
+        elseif item.variations then
+            for _,variation in ipairs(item.variations) do
+                if variation.type == "quest" or (variation.type == nil and item.type == "quest") then
+                    local target = {
+                        type = "chain",
+                        id = chainID,
+                        restrictions = variation.restrictions or item.restrictions
+                    }
+        
+                    local ids = variation.ids or {variation.id}
+                    for _,id in ipairs(ids) do
+                        self:AddQuestItem(id, target, replace)
+                    end
                 end
             end
         elseif item.type == "quest" then
@@ -3443,7 +3465,7 @@ function Database:GetQuestItem(questID, character)
     end
 
     for i = 1,#item do
-        if self:IsValidForCharacter(item[i], character) then
+        if self:IsItemValidForCharacter(item[i], character) then
             return self:CreateItem(0, item[i]);
         end
     end

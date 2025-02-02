@@ -1,6 +1,6 @@
 ﻿--[[
 	Enchantrix Addon for World of Warcraft(tm).
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://enchantrix.org/
 
@@ -54,7 +54,7 @@ local GetContainerItemLink = C_Container and C_Container.GetContainerItemLink or
 
 
 
-Enchantrix.Version = "9.1.BETA.5.15"
+Enchantrix.Version = "<%version%>"
 if (Enchantrix.Version == "<".."%version%>") then
 	Enchantrix.Version = "4.0.DEV"
 end
@@ -98,7 +98,7 @@ function addonLoaded(hookArgs, event, addOnName)
 	Enchantrix.Locale.AddonLoaded()
 	Enchantrix.Tooltip.AddonLoaded()
 	Enchantrix.AutoDisenchant.AddonLoaded()
-	Enchantrix.MiniIcon.Reposition()
+	Enchantrix.MiniIcon.AddonLoaded()
 
 	Enchantrix.Revision = Enchantrix.Util.GetRevision("$Revision$")
 	for name, obj in pairs(Enchantrix) do
@@ -159,11 +159,11 @@ function onLoad()
 			if (cmd == "load") then
 				if (param == "") then
 					Stubby.Print("Manually loading Enchantrix...")
-					LoadAddOn("Enchantrix")
+					C_AddOns.LoadAddOn("Enchantrix")
 				elseif (param == "always") then
 					Stubby.Print("Setting Enchantrix to always load for this character")
 					Stubby.SetConfig("Enchantrix", "LoadType", param)
-					LoadAddOn("Enchantrix")
+					C_AddOns.LoadAddOn("Enchantrix")
 				elseif (param == "never") then
 					Stubby.Print("Setting Enchantrix to never load automatically for this character (you may still load manually)")
 					Stubby.SetConfig("Enchantrix", "LoadType", param)
@@ -186,7 +186,7 @@ function onLoad()
 
 	Stubby.RegisterBootCode("Enchantrix", "Triggers", [[
 		if Stubby.GetConfig("Enchantrix", "LoadType") == "always" then
-			LoadAddOn("Enchantrix")
+			C_AddOns.LoadAddOn("Enchantrix")
 		else
 			Stubby.Print("]].._ENCH('MesgNotloaded')..[[")
 		end

@@ -13,8 +13,8 @@ do -- /opie
 		end
 	end
 	addSuffix(function()
-		local sz, m, ok, m2 = ""
-		if PC then
+		local sx, m, ok, m2 = ""
+		if not PC then
 			m = "Restart World of Warcraft. If this message continues to appear, delete and re-install OPie."
 			ok, m2 = pcall(L, m)
 			sx = "\n  |cffe82020" .. (ok and m2 or m)
@@ -216,6 +216,7 @@ do -- config.bind
 		local parent = self:GetParent()
 		GameTooltip:SetOwner(self, self.tooltipOwnerPoint or "ANCHOR_BOTTOMRIGHT")
 		GameTooltip:AddLine(header)
+		GameTooltip:AddLine(L"Left click to set assign binding", hc.r, hc.g, hc.b)
 		if parent.OnBindingAltClick then
 			GameTooltip:AddLine(L"Alt click to set conditional binding", hc.r, hc.g, hc.b)
 		end
@@ -236,19 +237,22 @@ do -- config.bind
 	local specialSymbolMap = {OPEN="[", CLOSE="]", SEMICOLON=";"}
 	local function SetBindingText(self, bind, pre, post, hasBinding)
 		if type(bind) == "string" and bind:match("%[.*%]") then
-			return SetBindingText(self, KR:EvaluateCmdOptions(bind), pre, post or " |cff20ff20[+]|r", true)
+			bind, post, hasBinding = KR:EvaluateCmdOptions(bind), post or " |cff20ff20[+]|r", true
 		end
-		local bindText = bind and bind ~= "" and GetBindingText((bind:gsub("[^%-]+$", specialSymbolMap)))
+		local pre2
+		pre2, bind = (bind or ""):match('^%s*(!*)%s*(%S.*)$')
+		bind = bind and KR:UnescapeCmdOptionsValue(bind):gsub("[^%-]+$", specialSymbolMap)
+		local bindText = bind and bind ~= "" and GetBindingText(bind)
 		if CI_ERA and bindText and bind:match("PAD") then
 			for ai in bindText:gmatch("|A:([^:]+)") do
 				if not C_Texture.GetAtlasInfo(ai) then -- BUG[1.14.4/2310]
-					bindText = bind:gsub("[^%-]+$", specialSymbolMap)
+					bindText = bind
 					break
 				end
 			end
 		end
-		self.hasSetBinding, self.bindCoreText = not not (hasBinding or bindText), bindText
-		return self:SetText((pre or "") .. (bindText or L"Not bound") .. (post or ""))
+		self.hasSetBinding = not not (hasBinding or bindText)
+		return self:SetText((pre or "") .. (pre2 or "") .. (bindText or L"Not bound") .. (post or ""))
 	end
 	local function ToggleAlternateEditor(self, bind)
 		if alternateFrame:IsShown() and alternateFrame.owner == self then
@@ -300,8 +304,8 @@ do -- config.bind
 		local fs = btn:GetFontString()
 		fs:SetMaxLines(1)
 		fs:ClearAllPoints()
-		fs:SetPoint("LEFT", 5, 0)
-		fs:SetPoint("RIGHT", 5, 0)
+		fs:SetPoint("LEFT", 6, -0.5)
+		fs:SetPoint("RIGHT", 6, -0.5)
 		fs:SetJustifyH("CENTER")
 		btn.IsCapturingBinding, btn.SetBindingText, btn.ToggleAlternateEditor =
 			IsCapturingBinding, SetBindingText, ToggleAlternateEditor
@@ -391,16 +395,18 @@ local OPC_Options = {
 	{ "section", caption=L"Interaction" },
 		{"radio", "InteractionMode", {L"Quick", L"Relaxed", L"Mouse-less"}},
 		{"twof", tag="OnPrimaryPress", caption=L"On ring binding press:", menuOption="RingAtMouse"},
-		{"twof", tag="OnPrimaryRelease", caption=L"On ring binding release:", menuOption="QuickActionOnRelease", depOn="InteractionMode", depValue=2},
+		{"twof", tag="OnPrimaryRelease", caption=L"On ring binding release:", menuOption="QuickActionOnRelease", depOn="InteractionMode", depValueSet={nil, 2, 3}},
 		{"twof", tag="OnLeft", caption=L"On left click:", menuOption="NoClose", depOn="InteractionMode", depValue=2, otherwise=DISABLED_TEXT},
 		{"twof", tag="OnRight", caption=L"On right click:"},
-		{"twof", "QuickAction", caption=L"Quick action repeat:", depOn="InteractionMode", depValueSet=REQ_POINTER, otherwise=DISABLED_TEXT},
-		{"twof", "PadSupportMode", caption=L"Controller directional input:", reqFeature="GamePad", depOn="InteractionMode", depValueSet=REQ_POINTER, otherwise=DISABLED_TEXT, menu={"freelook", "freelook1", "cursor", "none", freelook=L"Camera analog stick", freelook1=L"Movement analog stick", cursor=L"Virtual mouse cursor", none=L"None"}},
+		{"twof", "QuickAction", caption=L"Quick action repeat trigger:", depOn="InteractionMode", depValueSet=REQ_POINTER, otherwise=DISABLED_TEXT},
+		{"twof", "PadSupportMode", caption=L"Controller directional input:", reqFeature="GamePad", depOn="InteractionMode", depValueSet=REQ_POINTER, otherwise=DISABLED_TEXT, globalOnly=true, menu={"freelook", "freelook1", "cursor", "none", freelook=L"Camera analog stick", freelook1=L"Movement analog stick", cursor=L"Virtual mouse cursor", none=L"None"}},
 		{"twof", "SliceBinding", caption="Per-slice bindings:", depOn="InteractionMode"},
 		{"bool", "ClickPriority", caption=L"Prevent other UI interactions", captionTop=L"While a ring is open:", depOn="InteractionMode", depValueSet=REQ_POINTER, otherwise=false},
+		{"navi", tag="InRingBindingNav", caption=L"Customize in-ring bindings"},
 	{ "section", caption=L"Behavior" },
 		{"bool", "UseDefaultBindings", caption=L"Use default ring bindings"},
 		{"bool", "HideStanceBar", caption=L"Hide stance bar", globalOnly=true},
+		{"bool", "PerCharRotationStore", caption=L"Per-character ring rotations", globalOnly=true},
 		{"range", "RingScale", 0.1, 2, caption=L"Ring scale", valueFormat="%0.1f"},
 	{ "section", tag="_Appearance", caption=L"Appearance" },
 		{"bool", "GhostMIRings", caption=L"Nested rings"},
@@ -478,14 +484,33 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 		local c = widgetControl[self]
 		local menuInit = c.menuInitializer or c.menu and twofMenuInitializer
 		if menuInit then
+			config.ui.HideTooltip(self)
 			sharedDrop.initialize, sharedDrop.owner = menuInit, self
 			ToggleDropDownMenu(1, nil, sharedDrop, self, -6, 6)
 		end
 	end
 	local function onTwofRefresh(c, v)
-		if c.menu and c.menu[v] then
+		local text = c.menu and c.menu[v]
+		if text then
 			c.cv = v
-			c.text:SetText(not c.widget:IsEnabled() and c.otherwise or c.menu[v])
+			if not c.widget:IsEnabled() then
+				text = not c.outOfScope and c.otherwise or ("|cffa0a0a0" .. text)
+			end
+			c.text:SetText(text)
+		end
+	end
+	local function onTwofEnter(self)
+		local c = widgetControl[self]
+		local isOutOfScope = c.outOfScope and not self:IsEnabled()
+		if (c.label:IsTruncated() or isOutOfScope) and (UIDROPDOWNMENU_OPEN_MENU ~= sharedDrop or sharedDrop.owner ~= self or not DropDownList1:IsVisible()) then
+			GameTooltip:SetOwner(self, "ANCHOR_NONE")
+			GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			GameTooltip:SetText((c.label:GetText():gsub("%s*:%s*$", "")))
+			if isOutOfScope then
+				local c = HIGHLIGHT_FONT_COLOR
+				GameTooltip:AddLine(L"Not configurable per-ring.", c.r, c.g, c.b, 1)
+			end
+			GameTooltip:Show()
 		end
 	end
 	local function onTwofTextSet(fs)
@@ -496,6 +521,18 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 	local function handlesLeftClicks(self, button, _ev)
 		return self:IsEnabled() and button == "LeftButton" and UIDROPDOWNMENU_OPEN_MENU == sharedDrop and sharedDrop.owner == self
 	end
+	local function onNaviEnter(self)
+		if self:GetFontString():IsTruncated() then
+			GameTooltip:SetOwner(self, "ANCHOR_NONE")
+			GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, 1)
+			GameTooltip:SetText(self:GetText())
+			GameTooltip:Show()
+		end
+	end
+	local function onNaviClick(self)
+		PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON)
+		return widgetControl[self]:OnClick(self)
+	end
 
 	local boolSetEnabledHook, twofTextSetTextHook
 	local build = {}
@@ -505,6 +542,7 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 		b:SetScript("OnEnter", config.ui.ShowControlTooltip)
 		b:SetScript("OnLeave", config.ui.HideTooltip)
 		b:SetMotionScriptsWhileDisabled(true)
+		b.tooltipOwnerPoint = "ANCHOR_RIGHT"
 		if v.captionTop then
 			local fs = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 			fs:SetText(v.captionTop)
@@ -557,6 +595,22 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 		fs:SetText(v.caption)
 		return fs, ofsY-20, false, 0
 	end
+	function build.navi(v, ofsY, halfpoint, rowHeight, rframe)
+		local b = CreateFrame("Button", nil, controlContainer, "UIPanelButtonTemplate")
+		b:SetSize(250, 24)
+		b:SetPoint("TOPLEFT", rframe, halfpoint and 316 or 16, ofsY-3)
+		b:SetText(v.caption)
+		b:SetScript("OnEnter", onNaviEnter)
+		b:SetScript("OnLeave", config.ui.HideTooltip)
+		b:SetScript("OnClick", onNaviClick)
+		local fs = b:GetFontString()
+		fs:ClearAllPoints()
+		fs:SetPoint("LEFT", 6, -0.5)
+		fs:SetPoint("RIGHT", -6, -0.5)
+		fs:SetJustifyH("CENTER")
+		fs:SetMaxLines(1)
+		return b, halfpoint and ofsY - math.max(rowHeight, 30) or ofsY, not halfpoint, halfpoint and 0 or 30
+	end
 	function build.twof(v, ofsY, halfpoint, rowHeight, rframe)
 		local tb = CreateFrame("Button", nil, controlContainer)
 		tb:SetSize(24,24)
@@ -567,15 +621,20 @@ local widgetControl, optionControl = {}, {} do -- Widget construction
 		tb:GetHighlightTexture():SetBlendMode("ADD")
 		tb:SetPoint("TOPLEFT", rframe, "TOPLEFT", halfpoint and 316 or 16, ofsY-13.5)
 		tb:SetScript("OnClick", onTwofClick)
+		tb:SetScript("OnEnter", onTwofEnter)
+		tb:SetScript("OnLeave", config.ui.HideTooltip)
+		tb:SetMotionScriptsWhileDisabled(true)
 		local label = tb:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 		label:SetPoint("BOTTOMLEFT", tb, "TOPLEFT", 2.5, -1.5)
+		label:SetWidth(285)
 		label:SetText(v.caption)
 		label:SetJustifyH("LEFT")
+		label:SetMaxLines(1)
 		local text = tb:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
 		text:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 23, -5)
 		text:SetWidth(240)
 		text:SetJustifyH("LEFT")
-		text:SetWordWrap(false)
+		text:SetMaxLines(1)
 		if not twofTextSetTextHook then
 			hooksecurefunc(text, "SetText", onTwofTextSet)
 			twofTextSetTextHook = text.SetText
@@ -637,6 +696,9 @@ do -- customized widgets
 		function offsetPanel:OnSetOwningButton()
 			getmetatable(self).__index.ClearAllPoints(self)
 			self:SetPoint("TOPRIGHT", self.owningButton)
+		end
+		function offsetPanel:GetPreferredEntryWidth()
+			return 200
 		end
 		function offsetPanel:ClearAllPoints()
 			-- called by UIDropDownMenu_CheckAddCustomFrame after OnSetOwningButton runs; keep our TOPRIGHT to size panel with button/dropdown
@@ -731,18 +793,42 @@ do -- customized widgets
 		local atMouse = PC:GetOption("RingAtMouse", OR_CurrentOptionsDomain)
 		self.text:SetText(atMouse and L"Open ring at mouse" or L"Open ring at screen center")
 	end
+	local function currentDomainHasQA()
+		return PC:GetOption("CenterAction", OR_CurrentOptionsDomain) or PC:GetOption("MotionAction", OR_CurrentOptionsDomain)
+	end
+	local function onPrimaryReleaseOption(_, pref)
+		local c = optionControl.OnPrimaryRelease
+		if pref == "close" or pref == "no-close" then
+			OPC_AlterOption(c, "CloseOnRelease", pref == "close")
+		elseif pref == "qa-close" or pref == "no-qa-close" then
+			OPC_AlterOption(c, "QuickActionOnRelease", pref == "qa-close")
+		end
+	end
 	function optionControl.OnPrimaryRelease:refresh()
+		local im = PC:GetOption("InteractionMode", OR_CurrentOptionsDomain)
 		self.text:SetText(not self.widget:IsEnabled() and self.otherwise
-		                  or PC:GetOption("QuickActionOnRelease", OR_CurrentOptionsDomain) and L"Quick action if mouse remains still"
+		                  or im == 3 and PC:GetOption("CloseOnRelease", OR_CurrentOptionsDomain) and L"Close ring"
+		                  or im == 2 and PC:GetOption("QuickActionOnRelease", OR_CurrentOptionsDomain) and currentDomainHasQA() and L"Close ring after quick action"
 		                  or L"Do nothing")
 	end
 	function optionControl.OnPrimaryRelease.menuInitializer()
-		local c = optionControl.OnPrimaryRelease
-		local info = {func=onMenuOptionSetClick, arg2=c.widget, minWidth=240}
+		local info = {func=onPrimaryReleaseOption, minWidth=240, tooltipWhileDisabled=true, tooltipOnButton=true}
 		local qaOnRelease = PC:GetOption("QuickActionOnRelease", OR_CurrentOptionsDomain)
-		info.text, info.arg1, info.checked = L"Quick action if mouse remains still", true, qaOnRelease
-		UIDropDownMenu_AddButton(info)
-		info.text, info.arg1, info.checked = L"Do nothing", false, not qaOnRelease
+		local closeOnRelease = PC:GetOption("CloseOnRelease", OR_CurrentOptionsDomain)
+		local im, hasQA = PC:GetOption("InteractionMode", OR_CurrentOptionsDomain), currentDomainHasQA()
+		if im == 3 then
+			info.text, info.arg1, info.checked = L"Close ring", "close", closeOnRelease
+			UIDropDownMenu_AddButton(info)
+		else
+			info.text, info.arg1, info.checked = L"Close ring after quick action", "qa-close", hasQA and qaOnRelease
+			if not hasQA then
+				local opt = "|cffffffff" .. (L"Quick action repeat trigger:"):gsub("%s*:%s*$", "") .. "|r"
+				info.disabled, info.tooltipTitle, info.tooltipText = true, info.text, (L"Select a %s interaction to enable this option."):format(opt)
+			end
+			UIDropDownMenu_AddButton(info)
+			info.disabled, info.tooltipTitle, info.tooltipText = nil
+		end
+		info.text, info.arg1, info.checked = L"Do nothing", im == 3 and "no-close" or "no-qa-close", not (im == 3 and closeOnRelease or im ~= 3 and qaOnRelease)
 		UIDropDownMenu_AddButton(info)
 	end
 	function optionControl.QuickAction.menuInitializer()
@@ -763,6 +849,7 @@ do -- customized widgets
 			motion and L"Unmoved cursor" or
 			((enabled and "" or "|cffa0a0a0") .. L"Disabled")
 		)
+		optionControl.OnPrimaryRelease:refresh()
 	end
 	function optionControl.OnLeft.menuInitializer()
 		local c = optionControl.OnLeft
@@ -790,21 +877,31 @@ do -- customized widgets
 		end
 		OPC_AlterOption(widgetControl[owner], "NoCloseOnSlice", pref == "UseNoClose")
 	end
+	local function onRunOnDownClick(_, pref, owner)
+		OPC_AlterOption(widgetControl[owner], "RunBindingsOnDown", pref == "OnDown")
+	end
 	function optionControl.SliceBinding.menuInitializer()
 		local c = optionControl.SliceBinding
 		local info = {func=onSliceBindingOptionClick, arg2=c.widget, minWidth=240}
 		local noClose = PC:GetOption("NoCloseOnSlice", OR_CurrentOptionsDomain)
+		local runOnDown = PC:GetOption("RunBindingsOnDown", OR_CurrentOptionsDomain)
 		if c.forced then
 			info.text, info.arg1, info.checked, info.isNotRadio = L"Leave open after use", "ToggleNoClose", noClose, true
 			UIDropDownMenu_AddButton(info)
-			return
+		else
+			local doBind = PC:GetOption("SliceBinding", OR_CurrentOptionsDomain)
+			info.text, info.arg1, info.checked = L"Use slice and close ring", "UseClose", doBind and not noClose
+			UIDropDownMenu_AddButton(info)
+			info.text, info.arg1, info.checked = L"Use slice", "UseNoClose", doBind and noClose
+			UIDropDownMenu_AddButton(info)
+			info.text, info.arg1, info.checked = L"Do nothing", "None", not doBind
+			UIDropDownMenu_AddButton(info)
 		end
-		local doBind = c.forced or PC:GetOption("SliceBinding", OR_CurrentOptionsDomain)
-		info.text, info.arg1, info.checked = L"Use slice and close ring", "UseClose", doBind and not noClose
+		UIDropDownMenu_AddSeparator()
+		info.func, info.isNotRadio = onRunOnDownClick, nil
+		info.text, info.arg1, info.checked = L"Trigger on binding press", "OnDown", runOnDown
 		UIDropDownMenu_AddButton(info)
-		info.text, info.arg1, info.checked = L"Use slice", "UseNoClose", doBind and noClose
-		UIDropDownMenu_AddButton(info)
-		info.text, info.arg1, info.checked = L"Do nothing", "None", not doBind
+		info.text, info.arg1, info.checked = L"Trigger on binding release", "OnUp", not runOnDown
 		UIDropDownMenu_AddButton(info)
 	end
 	function optionControl.SliceBinding:refresh()
@@ -815,6 +912,9 @@ do -- customized widgets
 			doBind and L"Use slice and close ring" or
 			L"Do nothing"
 		)
+	end
+	function optionControl.InRingBindingNav:OnClick(_w)
+		T.ShowSliceBindingPanel(OR_CurrentOptionsDomain)
 	end
 	function EV:CVAR_UPDATE(cvar)
 		if cvar == "GamePadEnable" and frame:IsVisible() then
@@ -834,7 +934,10 @@ T.OPC_RingScopePrefixes = {
 }
 
 function OPC_UpdateControlReqs(v)
-	local enabled, disabledHint = true, nil
+	local enabled, globalOnly, disabledHint = true, v.globalOnly, nil
+	local outOfScope, scopeEnabled = globalOnly and OR_CurrentOptionsDomain
+	local optionScope = not globalOnly and OR_CurrentOptionsDomain or nil
+	v.outOfScope = outOfScope and true or nil
 	if v.depOn then
 		local dv = PC:GetOption(v.depOn, OR_CurrentOptionsDomain)
 		enabled = v.depValueSet and v.depValueSet[dv] or (v.depValueSet or v.depValue) == nil or dv == v.depValue
@@ -845,16 +948,19 @@ function OPC_UpdateControlReqs(v)
 	if enabled and v.reqFeature == "GamePad" and not C_GamePad.IsEnabled() then
 		enabled, disabledHint = false, nil
 	end
+	if enabled and outOfScope then
+		scopeEnabled, enabled, disabledHint = enabled, false, HIGHLIGHT_FONT_COLOR_CODE .. L"Not configurable per-ring."
+	end
 	v.widget:SetEnabled(enabled)
 	if v.refresh then
-		v:refresh(v[2] and PC:GetOption(v[2], OR_CurrentOptionsDomain))
-	elseif v[1] ~= "bool" then
-	elseif enabled then
-		v.widget:SetChecked(PC:GetOption(v[2], OR_CurrentOptionsDomain) or nil)
-		v.widget.tooltipText = nil
-	else
-		v.widget:SetChecked(v.otherwise or nil)
-		v.widget.tooltipText = disabledHint
+		v:refresh(v[2] and PC:GetOption(v[2], optionScope))
+	elseif v[1] == "bool" then
+		local checked, disabled = v.otherwise, not enabled or nil
+		if enabled or scopeEnabled then
+			checked = PC:GetOption(v[2], optionScope)
+		end
+		v.widget:SetChecked(checked or nil)
+		v.widget.tooltipText, v.widget.tooltipTitle = disabled and disabledHint, disabled and disabledHint and v.caption or nil
 	end
 end
 function OPC_AlterOptionW(widget, newval, ...)
@@ -1076,7 +1182,6 @@ function frame.refresh()
 	OPC_Profile:text()
 	OPC_AppearanceFactory:text()
 	OPC_AppearanceFactory:SetShown(T.OPieUI:HasMultipleIndicatorConstructors())
-	local isViewOfGlobalDomain = OR_CurrentOptionsDomain == nil
 	for _, control in ipairs(OPC_Options) do
 		local widget, ctype, option = control.widget, control[1], control[2]
 		if control.refresh then
@@ -1093,11 +1198,8 @@ function frame.refresh()
 			widget:SetChecked(PC:GetOption(option, OR_CurrentOptionsDomain) or nil)
 			control.text:SetText(control.caption)
 		end
-		if control.depOn or control.depIndicatorFeature or control.reqFeature then
+		if control.depOn or control.depIndicatorFeature or control.reqFeature or control.globalOnly then
 			OPC_UpdateControlReqs(control)
-		end
-		if control.globalOnly then
-			widget:SetShown(isViewOfGlobalDomain)
 		end
 	end
 	OPC_BlockInput = false

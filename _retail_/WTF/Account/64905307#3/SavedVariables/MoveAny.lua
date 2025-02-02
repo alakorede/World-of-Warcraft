@@ -872,8 +872,8 @@ MATAB = {
 },
 ["AddonList"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 605.9999389648438,
-["PX"] = 871.9868774414062,
+["PY"] = 579,
+["PX"] = 432,
 ["RE"] = "BOTTOMLEFT",
 },
 ["GameMenuFrame"] = {
@@ -884,9 +884,9 @@ MATAB = {
 },
 ["CharacterFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 689,
+["PY"] = 208,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 1373,
+["PX"] = 411,
 },
 ["GroupLootHistoryFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -900,8 +900,14 @@ MATAB = {
 },
 ["StaticPopup1"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 975,
-["PX"] = 910,
+["PY"] = 683,
+["PX"] = 785,
+["RE"] = "BOTTOMLEFT",
+},
+["ItemSocketingFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 317,
+["PX"] = 783,
 ["RE"] = "BOTTOMLEFT",
 },
 ["QuestFrame"] = {
@@ -918,13 +924,15 @@ MATAB = {
 },
 ["ProfessionsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 433,
+["PY"] = 825,
+["PX"] = 134,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 103,
+},
+["PVPReadyDialog"] = {
 },
 ["SettingsPanel"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 361,
+["PY"] = 360,
 ["RE"] = "BOTTOMLEFT",
 ["PX"] = 627,
 },
@@ -938,15 +946,21 @@ MATAB = {
 },
 ["FriendsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 659,
+["PY"] = 551,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 13,
+["PX"] = 928,
 },
 ["GossipFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 524,
-["PX"] = 258,
+["PY"] = 525,
+["PX"] = 255,
 ["RE"] = "BOTTOMLEFT",
+},
+["DelvesDifficultyPickerFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 614,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 945,
 },
 ["ContainerFrameCombinedBags"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -964,8 +978,8 @@ MATAB = {
 },
 ["PlayerSpellsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 83,
-["PX"] = 953,
+["PY"] = 790,
+["PX"] = 155,
 ["RE"] = "BOTTOMLEFT",
 },
 ["GenericTraitFrame"] = {
@@ -976,13 +990,18 @@ MATAB = {
 },
 ["PVEFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 265,
+["PA"] = "UIParent",
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 1000,
+["PY"] = 304,
+["PX"] = 427,
 },
 ["PVPMatchScoreboard"] = {
 },
 ["CovenantMissionFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 506,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 668,
 },
 ["MajorFactionRenownFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -992,15 +1011,15 @@ MATAB = {
 },
 ["ReadyCheckFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 540,
-["PX"] = 905,
+["PY"] = 1020,
+["PX"] = 472,
 ["RE"] = "BOTTOMLEFT",
 },
 ["ItemUpgradeFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 545,
+["PX"] = 19,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 16,
 },
 ["ClassTalentFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1010,9 +1029,9 @@ MATAB = {
 },
 ["MailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 659,
-["PX"] = 15,
+["PY"] = 657,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 12,
 },
 ["MacroFrame"] = {
 },
@@ -1027,10 +1046,16 @@ MATAB = {
 ["ContainerFrame10"] = {
 },
 ["ArchaeologyFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 443,
+["PX"] = 650,
+["RE"] = "BOTTOMLEFT",
 },
 ["GarrisonCapacitiveDisplayFrame"] = {
 },
 ["ScrappingMachineFrame"] = {
+},
+["BattlefieldMapFrame"] = {
 },
 ["SpellBookFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1038,37 +1063,71 @@ MATAB = {
 ["PX"] = 212,
 ["RE"] = "BOTTOMLEFT",
 },
-["StaticPopup2"] = {
-},
 ["ChannelFrame"] = {
 },
-["ProfessionsCustomerOrdersFrame"] = {
+["ProfessionsBookFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 76,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 440,
+},
+["StaticPopup2"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 565,
+["PX"] = 723,
+["RE"] = "BOTTOMLEFT",
 },
 ["ContainerFrame7"] = {
 },
+["HeroTalentsSelectionDialog"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 304,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 590,
+},
 ["ClassTrainerFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 641.5385131835938,
-["PX"] = 16,
+["PY"] = 728,
 ["RE"] = "BOTTOMLEFT",
+["PX"] = 350,
+},
+["DelvesCompanionConfigurationFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 589,
+["PX"] = 17,
+["RE"] = "BOTTOMLEFT",
+},
+["ProfessionsCustomerOrdersFrame"] = {
+},
+["ItemRefTooltip"] = {
+},
+["CurrencyTransferLog"] = {
 },
 ["InspectFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 630.5794677734375,
-["PX"] = 338.7340087890625,
+["PY"] = 569,
+["PX"] = 1392,
 ["RE"] = "BOTTOMLEFT",
-},
-["ChallengesKeystoneFrame"] = {
-},
-["ContainerFrame8"] = {
-},
-["ContainerFrame2"] = {
 },
 ["ItemTextFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 640,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 16,
+["PX"] = 17,
+},
+["ContainerFrame8"] = {
+},
+["ContainerFrame2"] = {
+},
+["QuestLogPopupDetailFrame"] = {
+},
+["AchievementFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 584,
+["PX"] = 97,
+["RE"] = "BOTTOMLEFT",
+},
+["ModelPreviewFrame"] = {
 },
 ["CollectionsJournal"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1076,37 +1135,31 @@ MATAB = {
 ["PX"] = 244,
 ["RE"] = "BOTTOMLEFT",
 },
-["ModelPreviewFrame"] = {
-},
-["AchievementFrame"] = {
-},
-["QuestLogPopupDetailFrame"] = {
+["QuickKeybindFrame"] = {
 },
 ["OpenMailFrame"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 656,
 ["RE"] = "BOTTOMLEFT",
-["PX"] = 402,
-},
-["BankFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 669.0000610351562,
-["PX"] = 386,
-["RE"] = "BOTTOMLEFT",
+["PX"] = 403,
 },
 ["ContainerFrame5"] = {
 },
 ["PetStableFrame"] = {
 },
 ["WorldMapFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 304,
+["PX"] = 27,
+["RE"] = "BOTTOMLEFT",
+},
+["ContainerFrame11"] = {
 },
 ["MerchantFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 633,
+["PY"] = 632,
 ["RE"] = "BOTTOMLEFT",
 ["PX"] = 21,
-},
-["ContainerFrame11"] = {
 },
 ["CommunitiesFrame"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1122,19 +1175,29 @@ MATAB = {
 ["RE"] = "BOTTOMLEFT",
 ["PX"] = 604.666748046875,
 },
+["BankFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 382,
+["PX"] = 961,
+["RE"] = "BOTTOMLEFT",
+},
 ["PlayerChoiceFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 363,
+["RE"] = "BOTTOMLEFT",
+["PX"] = 784,
 },
 ["WeeklyRewardsFrame"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 431,
-["PX"] = 486,
+["PY"] = 637,
+["PX"] = 108,
 ["RE"] = "BOTTOMLEFT",
-},
-["QuickKeybindFrame"] = {
 },
 ["TaxiFrame"] = {
 },
 ["ContainerFrame3"] = {
+},
+["ChallengesKeystoneFrame"] = {
 },
 ["OrderHallMissionFrame"] = {
 },
@@ -1142,8 +1205,8 @@ MATAB = {
 },
 ["EncounterJournal"] = {
 ["AN"] = "BOTTOMLEFT",
-["PY"] = 588,
-["PX"] = 16,
+["PY"] = 366,
+["PX"] = 598,
 ["RE"] = "BOTTOMLEFT",
 },
 ["ItemInteractionFrame"] = {
@@ -1163,7 +1226,7 @@ MATAB = {
 ["AddonList"] = {
 },
 ["GameMenuFrame"] = {
-["SCALE"] = 0.888,
+["SCALE"] = 0.66,
 },
 ["ItemTextFrame"] = {
 },
@@ -1174,9 +1237,12 @@ MATAB = {
 ["GarrisonLandingPage"] = {
 },
 ["StaticPopup1"] = {
+["SCALE"] = 0.934,
+},
+["ItemSocketingFrame"] = {
 },
 ["QuestFrame"] = {
-["SCALE"] = 1.06,
+["SCALE"] = 1.096,
 },
 ["TradeFrame"] = {
 },
@@ -1185,6 +1251,9 @@ MATAB = {
 ["ContainerFrame1"] = {
 },
 ["ProfessionsFrame"] = {
+["SCALE"] = 0.634,
+},
+["PVPReadyDialog"] = {
 },
 ["SettingsPanel"] = {
 },
@@ -1194,8 +1263,12 @@ MATAB = {
 ["SplashFrame"] = {
 },
 ["FriendsFrame"] = {
+["SCALE"] = 0.988,
 },
 ["GossipFrame"] = {
+},
+["DelvesDifficultyPickerFrame"] = {
+["SCALE"] = 0.868,
 },
 ["ContainerFrameCombinedBags"] = {
 },
@@ -1204,13 +1277,14 @@ MATAB = {
 ["TimeManagerFrame"] = {
 },
 ["PlayerSpellsFrame"] = {
+["SCALE"] = 0.688,
 },
 ["GenericTraitFrame"] = {
 },
 ["InspectRecipeFrame"] = {
 },
 ["PVEFrame"] = {
-["SCALE"] = 1.042,
+["SCALE"] = 0.928,
 },
 ["PVPMatchScoreboard"] = {
 },
@@ -1228,6 +1302,7 @@ MATAB = {
 ["ClassTalentFrame"] = {
 },
 ["MailFrame"] = {
+["SCALE"] = 1.006,
 },
 ["MacroFrame"] = {
 },
@@ -1239,79 +1314,99 @@ MATAB = {
 },
 ["ArchaeologyFrame"] = {
 },
+["ChannelFrame"] = {
+},
 ["GarrisonCapacitiveDisplayFrame"] = {
 },
 ["TabardFrame"] = {
 },
+["CurrencyTransferMenu"] = {
+},
 ["ScrappingMachineFrame"] = {
+},
+["ContainerFrame7"] = {
+},
+["BattlefieldMapFrame"] = {
 },
 ["SpellBookFrame"] = {
 ["SCALE"] = 1.006,
 },
+["ProfessionsBookFrame"] = {
+["SCALE"] = 0.862,
+},
+["ItemRefTooltip"] = {
+},
 ["StaticPopup2"] = {
 },
-["ChannelFrame"] = {
+["DelvesCompanionConfigurationFrame"] = {
+},
+["HeroTalentsSelectionDialog"] = {
 },
 ["ProfessionsCustomerOrdersFrame"] = {
 },
-["ContainerFrame7"] = {
-},
-["TaxiFrame"] = {
-},
-["ItemUpgradeFrame"] = {
-},
-["InspectFrame"] = {
-},
 ["ContainerFrame3"] = {
 },
-["ContainerFrame8"] = {
-},
-["BankFrame"] = {
+["LootFrame"] = {
 },
 ["CharacterFrame"] = {
 ["SCALE"] = 0.9940000352859497,
 },
-["ScriptErrorsFrame"] = {
+["CurrencyTransferLog"] = {
 },
-["ModelPreviewFrame"] = {
+["InspectFrame"] = {
 },
-["LootFrame"] = {
+["WeeklyRewardsFrame"] = {
+["SCALE"] = 0.868,
 },
-["DressUpFrame"] = {
+["ContainerFrame8"] = {
 },
-["OpenMailFrame"] = {
-["SCALE"] = 0.988,
+["BankFrame"] = {
+["SCALE"] = 0.886,
+},
+["CommunitiesFrame"] = {
+["SCALE"] = 0.934,
 },
 ["ContainerFrame9"] = {
 },
+["ModelPreviewFrame"] = {
+},
 ["QuickKeybindFrame"] = {
+},
+["RolePollPopup"] = {
+},
+["OpenMailFrame"] = {
+["SCALE"] = 0.988,
 },
 ["ContainerFrame5"] = {
 },
 ["ReadyCheckFrame"] = {
 },
-["MerchantFrame"] = {
-["SCALE"] = 0.994,
+["WorldMapFrame"] = {
+["SCALE"] = 0.82,
 },
 ["CalendarFrame"] = {
 },
-["WorldMapFrame"] = {
+["MerchantFrame"] = {
+["SCALE"] = 0.994,
 },
 ["AuctionHouseFrame"] = {
 },
-["QuestLogPopupDetailFrame"] = {
-},
-["PlayerChoiceFrame"] = {
-},
-["WeeklyRewardsFrame"] = {
-["SCALE"] = 0.88,
-},
-["CommunitiesFrame"] = {
-["SCALE"] = 0.934,
+["DressUpFrame"] = {
 },
 ["ContainerFrame2"] = {
 },
+["ScriptErrorsFrame"] = {
+},
+["PlayerChoiceFrame"] = {
+["SCALE"] = 0.928,
+},
+["QuestLogPopupDetailFrame"] = {
+},
 ["ChallengesKeystoneFrame"] = {
+},
+["TaxiFrame"] = {
+},
+["ItemUpgradeFrame"] = {
 },
 ["OrderHallMissionFrame"] = {
 ["SCALE"] = 1.132,
@@ -1344,7 +1439,7 @@ MATAB = {
 },
 ["MACompactRaidFrameManager"] = {
 ["AN"] = "LEFT",
-["PY"] = -130,
+["PY"] = -140,
 ["RE"] = "LEFT",
 ["PX"] = 0,
 },
@@ -1408,6 +1503,12 @@ MATAB = {
 ["RE"] = "TOPLEFT",
 ["PX"] = 0,
 },
+["TalkingHeadFrame"] = {
+["AN"] = "BOTTOMLEFT",
+["PY"] = 40,
+["PX"] = 10,
+["RE"] = "BOTTOMLEFT",
+},
 ["MainStatusTrackingBarContainer"] = {
 ["AN"] = "BOTTOMLEFT",
 ["PY"] = 0,
@@ -1468,23 +1569,29 @@ MATAB = {
 ["RE"] = "LEFT",
 ["PX"] = 260,
 },
+["KTFButtons"] = {
+["AN"] = "TOPLEFT",
+["PY"] = 0,
+["PX"] = 0,
+["RE"] = "TOPLEFT",
+},
 ["MAFPSFrame"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = 0,
 ["PX"] = 0,
 ["RE"] = "TOPLEFT",
 },
-["DurabilityFrame"] = {
-["AN"] = "BOTTOMLEFT",
-["PY"] = 845,
-["RE"] = "BOTTOMLEFT",
-["PX"] = 2180,
-},
 ["AlertFrame"] = {
 ["AN"] = "TOPLEFT",
 ["PY"] = -230,
 ["RE"] = "TOPLEFT",
 ["PX"] = 350,
+},
+["DurabilityFrame"] = {
+["AN"] = "RIGHT",
+["PY"] = 110,
+["PX"] = -110,
+["RE"] = "RIGHT",
 },
 ["MAMenuBar"] = {
 ["AN"] = "BOTTOMLEFT",
@@ -1511,10 +1618,10 @@ MATAB = {
 ["PX"] = 680,
 },
 ["MALock"] = {
-["AN"] = "RIGHT",
-["PY"] = 130,
-["RE"] = "RIGHT",
-["PX"] = -380,
+["AN"] = "TOPRIGHT",
+["PY"] = -50,
+["RE"] = "TOPRIGHT",
+["PX"] = -350,
 },
 ["MultiBarBottomRight"] = {
 ["AN"] = "TOPLEFT",
@@ -1536,9 +1643,9 @@ MATAB = {
 },
 ["MainMenuBar"] = {
 ["AN"] = "BOTTOM",
-["PY"] = 50,
+["PY"] = 150,
+["PX"] = -10,
 ["RE"] = "BOTTOM",
-["PX"] = 0,
 },
 },
 ["SIZES"] = {
@@ -1551,7 +1658,7 @@ MATAB = {
 ["SW"] = 180.0000762939453,
 },
 ["MACompactRaidFrameManager"] = {
-["SH"] = 135,
+["SH"] = 140,
 ["SW"] = 20,
 },
 ["MultiBarBottomLeft"] = {
@@ -1592,6 +1699,10 @@ MATAB = {
 ["SH"] = 26,
 ["SW"] = 334,
 },
+["TalkingHeadFrame"] = {
+["SH"] = 155,
+["SW"] = 570,
+},
 ["IATokenBar"] = {
 },
 ["MainStatusTrackingBarContainer"] = {
@@ -1627,7 +1738,7 @@ MATAB = {
 ["SW"] = 100,
 },
 ["ObjectiveTrackerFrame"] = {
-["SH"] = 800,
+["SH"] = 1200,
 ["SW"] = 260,
 },
 ["UIWidgetBelowMinimapContainerFrame"] = {
@@ -1638,17 +1749,21 @@ MATAB = {
 ["SH"] = 20.00001525878906,
 ["SW"] = 100,
 },
-["UIWidgetTopCenterContainerFrame"] = {
-["SH"] = 72,
-["SW"] = 180,
+["KTFButtons"] = {
+["SH"] = 40,
+["SW"] = 40,
+},
+["AlertFrame"] = {
+["SH"] = 68,
+["SW"] = 276,
 },
 ["MAMenuBar"] = {
 ["SH"] = 32,
 ["SW"] = 304,
 },
-["AlertFrame"] = {
-["SH"] = 68,
-["SW"] = 276,
+["UIWidgetTopCenterContainerFrame"] = {
+["SH"] = 72,
+["SW"] = 180,
 },
 ["MultiBar5"] = {
 ["SH"] = 45,
@@ -1680,6 +1795,8 @@ MATAB = {
 },
 },
 ["OPTIONS"] = {
+["KTFButtons"] = {
+},
 ["CHAT10"] = {
 ["ENABLED"] = false,
 },
@@ -1747,7 +1864,7 @@ MATAB = {
 ["ENABLED"] = true,
 },
 ["TALKINGHEAD"] = {
-["ENABLED"] = false,
+["ENABLED"] = true,
 },
 ["TARGETFRAMENAMEBACKGROUND"] = {
 ["ENABLED"] = false,
@@ -1879,6 +1996,9 @@ MATAB = {
 ["QUESTTRACKER"] = {
 ["ENABLED"] = true,
 },
+["SCALELOOTFRAME"] = {
+["ENABLED"] = false,
+},
 ["STANCEBAR"] = {
 ["ENABLED"] = false,
 },
@@ -1940,6 +2060,9 @@ MATAB = {
 },
 ["QueueStatusButton"] = {
 },
+["ExpansionLandingPageMinimapButton"] = {
+["ENABLED"] = false,
+},
 ["ACTIONBAR4"] = {
 ["ENABLED"] = true,
 },
@@ -1950,11 +2073,21 @@ MATAB = {
 ["MALOCK"] = {
 ["ENABLED"] = false,
 },
+["BATTLEFIELDMAPFRAME"] = {
+["ENABLED"] = false,
+},
 ["UIWIDGETBELOWMINIMAP"] = {
 ["ENABLED"] = true,
 },
+["LFGMinimapFrame"] = {
+["ENABLED"] = false,
+},
+["GroupLootContainer"] = {
+},
 ["MAFPSFrame"] = {
 ["ENABLED"] = false,
+},
+["TalkingHeadFrame"] = {
 },
 ["COMBOFRAME"] = {
 ["ENABLED"] = false,
@@ -1962,7 +2095,8 @@ MATAB = {
 ["CHATBUTTONFRAME8"] = {
 ["ENABLED"] = false,
 },
-["GroupLootContainer"] = {
+["MINIMAPFLAG"] = {
+["ENABLED"] = false,
 },
 ["PARTYFRAME"] = {
 ["ENABLED"] = false,
@@ -1970,18 +2104,18 @@ MATAB = {
 ["MIRRORTIMER1"] = {
 ["ENABLED"] = false,
 },
-["MINIMAPFLAG"] = {
-["ENABLED"] = false,
-},
-["MOVEFRAMES"] = {
+["SHOWMINIMAPBUTTON"] = {
 ["ENABLED"] = true,
 },
-["CHATBUTTONFRAME6"] = {
+["CHATBUTTONFRAME10"] = {
+["ENABLED"] = false,
+},
+["CHAT3"] = {
 ["ENABLED"] = false,
 },
 ["MAKTB"] = {
 },
-["CHATBUTTONFRAME10"] = {
+["PLAYERLEVELTEXT"] = {
 ["ENABLED"] = false,
 },
 ["!KalielsTrackerButtons"] = {
@@ -1992,7 +2126,7 @@ MATAB = {
 },
 ["ExtraAbilityContainer"] = {
 },
-["PLAYERLEVELTEXT"] = {
+["CASTINGBARTIMER"] = {
 ["ENABLED"] = false,
 },
 ["MACompactRaidFrameManager"] = {
@@ -2000,16 +2134,16 @@ MATAB = {
 ["CHATQUICKJOIN"] = {
 ["ENABLED"] = false,
 },
-["CASTINGBARTIMER"] = {
+["MINIMAP"] = {
 ["ENABLED"] = false,
 },
-["MAPETFRAME"] = {
+["PETFRAME"] = {
 ["ENABLED"] = false,
 },
 ["BNToastFrame"] = {
 ["ENABLED"] = true,
 },
-["MINIMAP"] = {
+["GHOSTFRAME"] = {
 ["ENABLED"] = false,
 },
 ["ACTIONBAR7"] = {
@@ -2044,16 +2178,16 @@ MATAB = {
 ["COUNT"] = 12,
 ["ROWS"] = 1,
 },
-["PETFRAME"] = {
-["ENABLED"] = false,
+["MultiBar7"] = {
+["FLIPPED"] = false,
+["SPACING"] = 2,
+["COUNT"] = 12,
+["ROWS"] = 1,
 },
-["GHOSTFRAME"] = {
+["CASTINGBAR"] = {
 ["ENABLED"] = false,
 },
 ["COMPACTRAIDFRAMECONTAINER"] = {
-["ENABLED"] = false,
-},
-["CASTINGBAR"] = {
 ["ENABLED"] = false,
 },
 ["ENDCAPS"] = {
@@ -2065,13 +2199,14 @@ MATAB = {
 ["COUNT"] = 12,
 ["ROWS"] = 1,
 },
+["DurabilityFrame"] = {
+},
+["CHAT"] = {
+},
 ["QUEUESTATUSFRAME"] = {
 ["ENABLED"] = false,
 },
-["FOCUSFRAME"] = {
-["ENABLED"] = false,
-},
-["DurabilityFrame"] = {
+["MABagBar"] = {
 },
 ["BUFFS"] = {
 ["ENABLED"] = false,
@@ -2079,13 +2214,13 @@ MATAB = {
 ["CHATEDITBOX"] = {
 ["ENABLED"] = false,
 },
+["ARENAPREPFRAMES"] = {
+["ENABLED"] = false,
+},
 ["CHAT4"] = {
 ["ENABLED"] = false,
 },
-["CHAT9"] = {
-["ENABLED"] = false,
-},
-["CHAT"] = {
+["ZoneTextFrame"] = {
 },
 ["SecondaryStatusTrackingBarContainer"] = {
 ["ENABLED"] = true,
@@ -2105,7 +2240,7 @@ MATAB = {
 ["FRAMESKEYDRAG"] = {
 ["ENABLED"] = false,
 },
-["ARENAPREPFRAMES"] = {
+["CHAT9"] = {
 ["ENABLED"] = false,
 },
 ["TICKETSTATUSFRAME"] = {
@@ -2114,7 +2249,8 @@ MATAB = {
 ["DEBUFFS"] = {
 ["ENABLED"] = false,
 },
-["ZoneTextFrame"] = {
+["FOCUSFRAME"] = {
+["ENABLED"] = false,
 },
 ["UIWIDGETPOWERBAR"] = {
 ["ENABLED"] = false,
@@ -2122,7 +2258,8 @@ MATAB = {
 ["QUEUESTATUSBUTTON"] = {
 ["ENABLED"] = true,
 },
-["MABagBar"] = {
+["MAPROFILES"] = {
+["ENABLED"] = false,
 },
 ["OVERRIDEACTIONBAR"] = {
 ["ENABLED"] = false,
@@ -2130,19 +2267,16 @@ MATAB = {
 ["SAVEFRAMESCALE"] = {
 ["ENABLED"] = true,
 },
-["MAPROFILES"] = {
-["ENABLED"] = false,
-},
-["MultiBar7"] = {
-["FLIPPED"] = false,
-["SPACING"] = 2,
-["COUNT"] = 12,
-["ROWS"] = 1,
-},
 ["CHAT2"] = {
 ["ENABLED"] = false,
 },
 ["READYCHECKLISTENERFRAME"] = {
+["ENABLED"] = false,
+},
+["MAPETFRAME"] = {
+["ENABLED"] = false,
+},
+["FRAMESKEYSCALE"] = {
 ["ENABLED"] = false,
 },
 ["MOVELOOTFRAME"] = {
@@ -2151,17 +2285,17 @@ MATAB = {
 ["OBJECTIVETRACKERBONUSBANNERFRAME"] = {
 ["ENABLED"] = false,
 },
-["FRAMESKEYSCALE"] = {
+["CHATBUTTONFRAME6"] = {
 ["ENABLED"] = false,
 },
-["CHAT3"] = {
-["ENABLED"] = false,
+["MOVEFRAMES"] = {
+["ENABLED"] = true,
 },
 ["ACTIONBAR1"] = {
 ["ENABLED"] = true,
 },
-["SHOWMINIMAPBUTTON"] = {
-["ENABLED"] = true,
+["HIDEHIDDENFRAMES"] = {
+["ENABLED"] = false,
 },
 ["POSSESSBAR"] = {
 ["ENABLED"] = false,
@@ -2175,7 +2309,7 @@ MATAB = {
 ["CHAT7"] = {
 ["ENABLED"] = false,
 },
-["HIDEHIDDENFRAMES"] = {
+["QUESTTIMERFRAME"] = {
 ["ENABLED"] = false,
 },
 ["POWERBAR"] = {
@@ -2285,4 +2419,8 @@ MATAB = {
 },
 },
 ["VERSION"] = 2,
+["GRIDSIZE"] = 12,
+["MoveAny"] = {
+},
+["minimapPos"] = 0,
 }

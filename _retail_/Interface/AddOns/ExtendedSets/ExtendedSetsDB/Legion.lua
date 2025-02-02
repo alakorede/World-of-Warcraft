@@ -155,11 +155,32 @@ function AddToCollection()
     for j=1,#db[i][6] do 
       if type(db[i][6][j]) == "table" then
         if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-        data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-        data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j][1]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j][1]] = isKnown;
+        --data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+          data.altSources[db[i][6][j][1]] = {}
+        for k=1,#db[i][6][j] do
+          app.AppID(db[i][6][j][k])
+          tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
+        end
         data.altSourceNumbers[db[i][6][j][1]] = 1;
       else
-        data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j]] = isKnown;
       end
     end
     

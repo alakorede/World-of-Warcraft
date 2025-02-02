@@ -1,11 +1,18 @@
 # BigWigs
 
-## [v351.1](https://github.com/BigWigsMods/BigWigs/tree/v351.1) (2024-08-06)
-[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v351...v351.1) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
+## [v371.1](https://github.com/BigWigsMods/BigWigs/tree/v371.1) (2025-01-23)
+[Full Changelog](https://github.com/BigWigsMods/BigWigs/compare/v371...v371.1) [Previous Releases](https://github.com/BigWigsMods/BigWigs/releases)
 
-- Update koKR (#1743)  
-- Clean up pull timer code  
-- Core/BossPrototype: Fix docs  
-- Core/BossPrototype: Add `:ClearNameplate` and shuffle some args  
-- Update zhCN (#1741)  
-- Update zhCN (#1740)  
+- LiberationOfUndermine: Update option files  
+- LiberationOfUndermine/Stix: Add Overdrive timer  
+- LiberationOfUndermine/Rik: Heroic updates  
+- LiberationOfUndermine/Cauldron: Heroic Updates  
+- LiberationOfUndermine/Vexie: Heroic updates  
+- LiberationOfUndermine/Lockenstock: New build renames  
+- LiberationOfUndermine/MugZee: Fix headers  
+- LiberationOfUndermine/MugZee: Drycode  
+- LiberationOfUndermine/Lockenstock: Drycode  
+- LiberationOfUndermine/Stix: Heroic Updates  
+- LiberationOfUndermine/Bandit: Drycode  
+- LiberationOfUndermine: Add possible RegisterEnableMobs for the drycoded modules  
+- LiberationOfUndermine/Rik: Add drycoded module  

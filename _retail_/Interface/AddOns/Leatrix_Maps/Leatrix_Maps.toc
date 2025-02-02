@@ -1,15 +1,15 @@
-## Interface: 110000
+## Interface: 110007, 110100
 
 ## Title: Leatrix Maps
 ## Notes: Enhancements for your maps.
 
-## Version: 11.0.02
+## Version: 11.0.30
 ## Author: Leatrix
 ## SavedVariables: LeaMapsDB
 
 ## IconTexture: Interface\HELPFRAME\HelpIcon-Bug
 
-## OptionalDeps: Leatrix_enUS, ElvUI, Demodal, WorldQuestTracker
+## OptionalDeps: Leatrix_enUS, ElvUI
 
 ## AddonCompartmentFunc:LeaMapsGlobalMiniBtnClickFunc
 

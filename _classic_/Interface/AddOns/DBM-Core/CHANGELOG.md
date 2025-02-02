@@ -1,37 +1,77 @@
 # DBM - Core
 
-## [11.0.2](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/11.0.2) (2024-07-28)
-[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/11.0.1...11.0.2) [Previous Releases](https://github.com/DeadlyBossMods/DeadlyBossMods/releases)
+## [11.1.2](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/11.1.2) (2025-01-31)
+[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/11.1.1...11.1.2) [Previous Releases](https://github.com/DeadlyBossMods/DeadlyBossMods/releases)
 
-- prep new tag  
-- Tests: Give mods more time to detect a wipe if necessary (#1171)  
-- Tests: restructure UI a bit (#1170)  
-- AnnoyingPopup: Simplify logic (#1168)  
-- Update koKR (#1169)  
-- Update localization.tw.lua  
-- Update localization.ru.lua (#1165)  
-- fix link  
-- Update localization.ru.lua (#1163)  
-- Update koKR (#1164)  
-- improve instructional language  
-- Also support M+ dungeons for that alert  
-- Fix delves and molten core showing needless + sign. that was bad copy and paste from Mythic+  
-    Add regular vanilla, wrath, and cata raid popups  
-    Fix wago url for vanilla raid module  
-- Show more annoying nag if important raid mods are missing (#1162)  
-- Push core fixes for delve loading timing  
-- Fix last to actually use faster function on retail  
-- Fix and close https://github.com/DeadlyBossMods/DeadlyBossMods/issues/1159  
-    Fixes cross realm pull timers no longer working in pre patch. Also fixes pull timers never fully working correctly in Classic Era and Classic Cata  
-- Tests: strip prefix when auto-generating test report files  
-- Tests: pre-fill more metadata based on educated guesses when generating tests  
-- Tests: parse difficulty modifier from Transcriptor logs  
-- Tests: update transcriptor filter  
-- Tests: fake player debuff on test start for MC heat levels  
-- Core: don't special-case unnamed AntiSpam() calls  
-    This avoids a somewhat obscure problem in tests: it was generating a  
-    trailing whitespace in the record because the check result gets removed  
-    from an array with a hole due to the previous nil-value.  
-- Add new nil warning object to avoid a LuaLS nil checking bug (#1158)  
-- Fix and close https://github.com/DeadlyBossMods/DeadlyBossMods/issues/1160  
-- bump alpha  
+- Update koKR (#1513)  
+    Co-authored-by: Adam <MysticalOS@users.noreply.github.com>  
+- prep tag. More stuff to do from mythic testing, but this tag is mostly for vanilla SoD  
+- Rik reverb Update  
+    rework icon markin to be much smarter and reserve marks based on active amplifiers.  
+    Updated timers for Mythic test 2  
+    Make timer counts not reset to match BW behavior for weak aura synergy  
+- Add droptorch definition  
+- Forgot to add these IDs  
+- Missed this  
+- Rework and finish off rik reverb mod wit normal heroic and mythic timers  
+- Update localization.ru.lua (#1512)  
+- Update koKR strings in tocs (#1508)  
+    Co-authored-by: Adam <MysticalOS@users.noreply.github.com>  
+- Update localization.fr.lua (#1506)  
+- Update localization.br.lua (#1507)  
+- Update localization.es.lua (#1505)  
+- Tests: Slightly better metadata guessing for retail  
+- Tests/GUI: Add test export feature  
+- Tests/GUI: Small layout fixes  
+- Tests/CLI: Move anon validation failure to a callback  
+- Bugfixes for test mode  
+- Tests: Remove warning ignore feature (#1510)  
+- CI: Improve commit message in test results repo (#1509)  
+- Parital mythic updates for Mugzee  
+- Mythic updates for One armed bandit  
+- Mythic timersf for Lockenstock.  
+- Only one difference on mythic :D  
+- Refactor timer handling on lockenstock to make it easier to maintain since heroic and normal timers differ. Plus now it'll be easier to plug mythic timers in  
+    In addition. announce berserk and show berserk timer for gigadeath  
+- Improve meltdown tank warnings and timer for stix  
+- Improve normal mode timers for one armed bandit  
+- Tests: Make order between OnUpdate() calls to frames deterministic (#1504)  
+- Update localization.tw.lua (#1499)  
+- Update localization.br.lua (#1500)  
+- Update localization.es.lua (#1501)  
+- Update localization.fr.lua (#1502)  
+- Update koKR (#1503)  
+    Co-authored-by: Adam <MysticalOS@users.noreply.github.com>  
+- Prelkiminary cauldron of carnage updates from heroic testing  
+- popuplate mythic table with heroic timers for now  
+- update vexie from normal and heroic testing  
+- Update localization.ru.lua (#1498)  
+- add another localization  
+- Update localization.ru.lua (#1497)  
+- delete these for now. sorry about that. I did say they weren't final though :D  
+- Cleanup variance option texts  
+- restore sending to wago  
+- Update localization.es.lua (#1493)  
+- Update localization.fr.lua (#1494)  
+- Update localization.br.lua (#1495)  
+- Add RU locale for Title in .toc file (#1496)  
+- Preliminary phase change and timer support for mugzee. some timers not complete due to boss just being extra hard for most pugs. but most should be covered now  
+- Fix some variances  
+- Tests: Trace and report early timer refresh warnings (#1492)  
+- Add /dbm test freeze/resume/toggle-freeze  
+- Fix error  
+- Push full DBM-Offline results on any push to master (#1490)  
+- Push one armed bandit update  
+- Fix nil spellID due to blizzard hotfixing 472039 out of existance  
+- Fix two option keys that caused duplicate entries in GUI  
+- fix some bugs found by test mode in stix and lockenstock  
+- CI: Run all tests for all repos on core change  
+- Fix some failures caused by forgetting to change timer object  
+- Tests: Apply SPELL\_HEAL\_ABSORBED filtering to NerubarPalace tests  
+- Tests: More creature ID filters  
+- Tests: Avoid NaN in role guesser  
+- Tests: Support more extra args and strip trailing nils in combat log  
+- Tests: Strip SPELL\_HEAL\_ABSORBED like SPELL\_HEAL  
+- Tests: Add more Undermine logs  
+- Push finished Lockenstock mod  
+- suspend wago packaging for now  

@@ -3,11 +3,12 @@ BtWQuests_Settings = {
 ["minimapAngle"] = -14.22962453380711,
 }
 BtWQuests_AutoLoad = {
+["BtWQuestsBattleForAzerothPrologue"] = true,
 ["BtWQuestsShadowlands"] = true,
 ["BtWQuestsLegion"] = false,
-["BtWQuestsBattleForAzeroth"] = true,
-["BtWQuestsDragonflight"] = true,
-["BtWQuestsDragonflightPrologue"] = true,
+["BtWQuestsTheWarWithin"] = true,
 ["BtWQuestsShadowlandsPrologue"] = true,
-["BtWQuestsBattleForAzerothPrologue"] = true,
+["BtWQuestsDragonflightPrologue"] = true,
+["BtWQuestsDragonflight"] = true,
+["BtWQuestsBattleForAzeroth"] = true,
 }

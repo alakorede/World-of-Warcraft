@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- Leatrix Sounds 11.0.02 (31st July 2024)
+	-- Leatrix Sounds 11.0.30 (29th January 2025)
 	----------------------------------------------------------------------
 
 	--  Create global table
@@ -10,7 +10,7 @@
 	local LeaSoundsLC, LeaSoundsCB = {}, {}
 
 	-- Version
-	LeaSoundsLC["AddonVer"] = "11.0.02"
+	LeaSoundsLC["AddonVer"] = "11.0.30"
 
 	-- Get locale table
 	local void, Leatrix_Sounds = ...
@@ -19,7 +19,7 @@
 	-- Check Wow version is valid
 	do
 		local gameversion, gamebuild, gamedate, gametocversion = GetBuildInfo()
-		if gametocversion and gametocversion < 110000 then
+		if gametocversion and gametocversion < 0 then -- 110000
 			-- Game client is Wow Classic
 			C_Timer.After(2, function()
 				print(L["LEATRIX SOUNDS: THIS IS FOR THE WAR WITHIN ONLY!"])
@@ -30,6 +30,13 @@
 
 	-- Set bindings translations
 	_G.BINDING_NAME_LEATRIX_SOUNDS_GLOBAL_TOGGLE = L["Toggle panel"]
+
+	-- if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then LeaSoundsLC.GameVersion = L["The War Within"]
+	-- elseif WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC then LeaSoundsLC.GameVersion = L["Cataclysm"]
+	-- elseif WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then LeaSoundsLC.GameVersion = L["Classic Era"]
+	-- end
+
+	-- LeaSoundsLC["AddonVer"] = LeaSoundsLC["AddonVer"] .. " (" .. LeaSoundsLC.GameVersion .. ")"
 
 	----------------------------------------------------------------------
 	--	L00: Leatrix Sounds
@@ -144,10 +151,10 @@
 	end
 
 	-- Create a button
-	function LeaSoundsLC:CreateButton(name, frame, label, anchor, x, y, height, tip)
+	function LeaSoundsLC:CreateButton(name, frame, label, anchor, x, y, width, height, tip)
 		local mbtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 		LeaSoundsCB[name] = mbtn
-		mbtn:SetHeight(height)
+		mbtn:SetSize(width, height)
 		mbtn:SetPoint(anchor, x, y)
 		mbtn:SetHitRectInsets(0, 0, 0, 0)
 		mbtn:SetText(L[label])
@@ -162,7 +169,18 @@
 		-- Create fontstring and set button width based on it
 		mbtn.f = mbtn:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 		mbtn.f:SetText(L[label])
-		mbtn:SetWidth(mbtn.f:GetStringWidth() + 20)
+		if width > 0 then
+			-- Button should have static width
+			mbtn:SetWidth(width)
+			local buttonText = mbtn:GetFontString()
+			buttonText:SetWidth(width - 10)
+			buttonText:SetNonSpaceWrap(false)
+			buttonText:SetWordWrap(false)
+			buttonText:SetJustifyH("CENTER")
+		else
+			-- Button should have variable width
+			mbtn:SetWidth(mbtn.f:GetStringWidth() + 20)
+		end
 
 		-- Set skinned button textures
 		mbtn:SetNormalTexture("Interface\\AddOns\\Leatrix_Sounds\\Leatrix_Sounds.blp")
@@ -210,7 +228,7 @@
 
 		-- Set maximum label width
 		if Cbox.f:GetWidth() > 60 then
-			Cbox.f:SetWidth(60)
+			Cbox.f:SetWidth(60 - 10)
 		end
 
 		-- Set checkbox click width
@@ -307,19 +325,19 @@
 		end)
 
 		-- Create help button
-		local helpBtn = LeaSoundsLC:CreateButton("HelpButton", LeaSoundsLC["PageF"], "Help", "BOTTOMRIGHT", -10, 10, 25, "Searches can consist of up to 10 keywords.  Keywords prefixed with ! are excluded from search results.|n|nWhile a track is selected, you can press W and S to play the previous and next track, E to replay the currently selected track or Q to stop playback.|n|nHold SHIFT and click to print (left-click) or insert (right-click) the selected track details in chat.|n|nHold CONTROL and click to print (left-click) or insert (right-click) the selected track ID in chat.")
+		local helpBtn = LeaSoundsLC:CreateButton("HelpButton", LeaSoundsLC["PageF"], "Help", "BOTTOMRIGHT", -10, 10, 40, 25, "Searches can consist of up to 10 keywords.  Keywords prefixed with ! are excluded from search results.|n|nWhile a track is selected, you can press W and S to play the previous and next track, E to replay the currently selected track or Q to stop playback.|n|nHold SHIFT and click to print (left-click) or insert (right-click) the selected track details in chat.|n|nHold CONTROL and click to print (left-click) or insert (right-click) the selected track ID in chat.")
 		helpBtn:SetPushedTextOffset(0, 0)
 
 		-- Create checkboxes
 		LeaSoundsLC:MakeCB("SoundMusic", "Music", 416, -276, "If checked, music will be shown in the listing.")
-		LeaSoundsLC:MakeCB("SoundSFX", "SFX", 486, -276, "If checked, sound effects will be shown in the listing.")
+		LeaSoundsLC:MakeCB("SoundSFX", "Effects", 486, -276, "If checked, sound effects will be shown in the listing.")
 		LeaSoundsLC:MakeCB("SoundUnknown", "Unknown", 486, -276, "If checked, unknown sound files will be shown in the listing.|n|nThese are typically newer sound files which do not have names yet.|n|nNote that some unknown sound files may not be currently playable.")
 
 		-- Position checkboxes
 		LeaSoundsCB["SoundUnknown"]:ClearAllPoints()
 		LeaSoundsCB["SoundUnknown"]:SetPoint("RIGHT", LeaSoundsCB["HelpButton"], "LEFT", -76, 0)
 		LeaSoundsCB["SoundSFX"]:ClearAllPoints()
-		LeaSoundsCB["SoundSFX"]:SetPoint("RIGHT", LeaSoundsCB["SoundUnknown"], "LEFT", -35, 0)
+		LeaSoundsCB["SoundSFX"]:SetPoint("RIGHT", LeaSoundsCB["SoundUnknown"], "LEFT", -50, 0)
 		LeaSoundsCB["SoundMusic"]:ClearAllPoints()
 		LeaSoundsCB["SoundMusic"]:SetPoint("RIGHT", LeaSoundsCB["SoundSFX"], "LEFT", -50, 0)
 
@@ -397,10 +415,13 @@
 		LeaSoundsLC.scrollFrame = scrollFrame
 
 		-- Add stop button
-		local stopBtn = LeaSoundsLC:CreateButton("StopPlaybackButton", LeaSoundsLC["PageF"], "Stop", "BOTTOMRIGHT", -16, 12, 25)
+		local stopBtn = LeaSoundsLC:CreateButton("StopPlaybackButton", LeaSoundsLC["PageF"], "Stop", "BOTTOMRIGHT", -16, 12, 40, 25)
 		stopBtn:Hide(); stopBtn:Show()
 		LeaSoundsLC:LockItem(stopBtn, true)
 		stopBtn:SetScript("OnClick", function()
+			-- Close chat editbox
+			local eBox = ChatEdit_ChooseBoxForSend()
+			eBox:ClearFocus()
 			-- Stop currently playing track
 			if musicHandle then
 				StopSound(musicHandle)
@@ -417,14 +438,8 @@
 		end)
 
 		-- Create editbox for search
-		local searchLabel = LeaSoundsLC:MakeTx(LeaSoundsLC["PageF"], "Search", 16, -278)
-		searchLabel:ClearAllPoints()
-		searchLabel:SetPoint("BOTTOMLEFT", 16, 17)
-
-		local sBox = LeaSoundsLC:CreateEditBox("SearchBox", LeaSoundsLC["PageF"], 354, 100, "TOPLEFT", 101, -272)
+		local sBox = LeaSoundsLC:CreateEditBox("SearchBox", LeaSoundsLC["PageF"], 410, 100, "TOPLEFT", 16, -272)
 		LeaSoundsCB["sBox"] = sBox
-		sBox:ClearAllPoints()
-		sBox:SetPoint("LEFT", searchLabel, "RIGHT", 16, 0)
 
 		-- Reposition stop button so its next to the search box
 		stopBtn:ClearAllPoints()
@@ -634,6 +649,7 @@
 					if strfind(item, "#") then
 						-- Print track name in chat if shift is held
 						if IsShiftKeyDown() and not IsControlKeyDown() then
+							PageF:EnableKeyboard(false)
 							DEFAULT_CHAT_FRAME:AddMessage(item)
 							return
 						end
@@ -641,10 +657,14 @@
 						if IsControlKeyDown() and not IsShiftKeyDown() then
 							local file, soundID = item:match("([^,]+)%#([^,]+)")
 							if soundID then
+								PageF:EnableKeyboard(false)
 								DEFAULT_CHAT_FRAME:AddMessage(soundID)
 								return
 							end
 						end
+						-- Close editbox
+						local eBox = ChatEdit_ChooseBoxForSend()
+						eBox:ClearFocus()
 						-- Enable sound if required
 						if GetCVar("Sound_EnableAllSound") == "0" then SetCVar("Sound_EnableAllSound", "1") end
 						-- Disable music if it's currently enabled
@@ -683,6 +703,7 @@
 						-- Do nothing if its a blank line or informational heading
 						if not item or strfind(item, "|c") then return end
 						if strfind(item, "#") then
+							PageF:EnableKeyboard(false)
 							local file, soundID = item:match("([^,]+)%#([^,]+)")
 							local eBox = ChatEdit_ChooseBoxForSend()
 							ChatEdit_ActivateChat(eBox)
@@ -706,6 +727,7 @@
 						if strfind(item, "#") then
 							if IsShiftKeyDown() and not IsControlKeyDown() then
 								-- Print track name in chat editbox and highlight it
+								PageF:EnableKeyboard(false)
 								local eBox = ChatEdit_ChooseBoxForSend()
 								ChatEdit_ActivateChat(eBox)
 								eBox:SetText(item)
@@ -715,6 +737,7 @@
 								-- Print track name in chat editbox and highlight it
 								local file, soundID = item:match("([^,]+)%#([^,]+)")
 								if soundID then
+									PageF:EnableKeyboard(false)
 									local eBox = ChatEdit_ChooseBoxForSend()
 									ChatEdit_ActivateChat(eBox)
 									eBox:SetText(soundID)
@@ -967,22 +990,20 @@
 		subTitle:ClearAllPoints()
 		subTitle:SetPoint("BOTTOM", 0, 72)
 
-		local slashButton = CreateFrame("Button", nil, interPanel)
-		slashButton:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
-		slashButton:SetScript("OnClick", function() SlashCmdList["Leatrix_Sounds"]("") end)
-
-		local slashTitle = LeaSoundsLC:MakeTx(slashButton, "/lts", 0, 0)
+		local slashTitle = LeaSoundsLC:MakeTx(interPanel, "/lts", 0, 0)
 		slashTitle:SetFont(slashTitle:GetFont(), 72)
 		slashTitle:ClearAllPoints()
-		slashTitle:SetAllPoints()
-
-		slashButton:SetSize(slashTitle:GetSize())
-		slashButton:SetScript("OnEnter", function()
+		slashTitle:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
+		slashTitle:SetScript("OnMouseUp", function(self, button)
+			if button == "LeftButton" then
+				SlashCmdList["Leatrix_Sounds"]("")
+			end
+		end)
+		slashTitle:SetScript("OnEnter", function()
 			slashTitle.r,  slashTitle.g, slashTitle.b = slashTitle:GetTextColor()
 			slashTitle:SetTextColor(1, 1, 0)
 		end)
-
-		slashButton:SetScript("OnLeave", function()
+		slashTitle:SetScript("OnLeave", function()
 			slashTitle:SetTextColor(slashTitle.r, slashTitle.g, slashTitle.b)
 		end)
 

@@ -4,8 +4,10 @@
 ---
 --- This file is part of addon Kaliel's Tracker.
 
-local addonName, KT = ...
-local M = KT:NewModule(addonName.."_Hacks")
+---@type KT
+local _, KT = ...
+
+local M = KT:NewModule("Hacks")
 KT.Hacks = M
 
 local _DBG = function(...) if _DBG then _DBG("KT", ...) end end
@@ -56,19 +58,19 @@ end
 -- Affects World Map and removes taint errors. The hack removes call of restricted function SetPassThroughButtons.
 -- When the hack is inactive World Map display causes errors. It is not possible to get rid of these errors, since
 -- the tracker has a lot of interaction with the game frames.
--- Negative impacts: unknown in WoW 10.2.7
+-- Negative impacts: unknown in WoW 11.0.7
 local function Hack_WorldMap()
     if db.hackWorldMap then
         -- Blizzard_MapCanvas.lua
         local function OnPinReleased(pinPool, pin)
-            FramePool_HideAndClearAnchors(pinPool, pin);
+            Pool_HideAndClearAnchors(pinPool, pin);
             pin:OnReleased();
             pin.pinTemplate = nil;
             pin.owningMap = nil;
         end
 
         local function OnPinMouseUp(pin, button, upInside)
-            pin:OnMouseUp(button);
+            pin:OnMouseUp(button, upInside);
             if upInside then
                 pin:OnClick(button);
             end
@@ -76,11 +78,14 @@ local function Hack_WorldMap()
 
         function WorldMapFrame:AcquirePin(pinTemplate, ...)  -- R
             if not self.pinPools[pinTemplate] then
-                local pinTemplateType = self.pinTemplateTypes[pinTemplate] or "FRAME";
+                local pinTemplateType = self:GetPinTemplateType(pinTemplate);
                 self.pinPools[pinTemplate] = CreateFramePool(pinTemplateType, self:GetCanvas(), pinTemplate, OnPinReleased);
             end
 
             local pin, newPin = self.pinPools[pinTemplate]:Acquire();
+
+            pin.pinTemplate = pinTemplate;
+            pin.owningMap = self;
 
             if newPin then
                 local isMouseClickEnabled = pin:IsMouseClickEnabled();
@@ -89,6 +94,12 @@ local function Hack_WorldMap()
                 if isMouseClickEnabled then
                     pin:SetScript("OnMouseUp", OnPinMouseUp);
                     pin:SetScript("OnMouseDown", pin.OnMouseDown);
+
+                    -- Prevent OnClick handlers from being run twice, once a frame is in the mapCanvas ecosystem it needs
+                    -- to process mouse events only via the map system.
+                    if pin:IsObjectType("Button") then
+                        pin:SetScript("OnClick", nil);
+                    end
                 end
 
                 if isMouseMotionEnabled then
@@ -105,11 +116,10 @@ local function Hack_WorldMap()
                 pin:SetMouseMotionEnabled(isMouseMotionEnabled);
             end
 
-            pin.pinTemplate = pinTemplate;
-            pin.owningMap = self;
-
             if newPin then
                 pin:OnLoad();
+                pin.CheckMouseButtonPassthrough = function() end
+                pin.UpdateMousePropagation = function() end
             end
 
             self.ScrollContainer:MarkCanvasDirty();
@@ -119,38 +129,6 @@ local function Hack_WorldMap()
             return pin;
         end
     end
-end
-
--- Edit Mode
--- Affects Edit Mode and removes errors.
--- Negative impacts: none
-local function Hack_EditMode()
-    if not ObjectiveTrackerFrame:IsInDefaultPosition() then
-        KT:RegEvent("PLAYER_ENTERING_WORLD", function(eventID)
-            ShowUIPanel(EditModeManagerFrame)
-            ObjectiveTrackerFrame:ResetToDefaultPosition()
-            C_Timer.After(0.1, function()
-                EditModeManagerFrame:SaveLayouts()
-                HideUIPanel(EditModeManagerFrame)
-            end)
-            KT:UnregEvent(eventID)
-        end)
-    end
-
-    GameMenuButtonEditMode:HookScript("PreClick", function()
-        -- Clean DropDownList
-        local dropdown = LFDQueueFrameTypeDropDown
-        local parent = dropdown:GetParent()
-        dropdown:SetParent(nil)
-        dropdown:SetParent(parent)
-    end)
-end
-
--- EncounterJournal (from 10.1.0)
--- Affects Encounter Journal (Adventure Guide) and removes taint errors.
--- Negative impacts: unknown
-local function Hack_EncounterJournal()
-    C_EncounterJournal.OnOpen = function() end
 end
 
 -- Open/Close tainted frames during combat
@@ -221,13 +199,8 @@ end
 function M:OnInitialize()
     _DBG("|cffffff00Init|r - "..self:GetName(), true)
     db = KT.db.profile
-end
 
-function M:OnEnable()
-    _DBG("|cff00ff00Enable|r - "..self:GetName(), true)
     Hack_LFG()
     Hack_WorldMap()
-    Hack_EditMode()
-    Hack_EncounterJournal()
     Hack_TaintedFrames()
 end

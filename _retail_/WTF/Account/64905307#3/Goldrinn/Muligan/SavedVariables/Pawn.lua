@@ -1,6 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0901,
+["LastVersion"] = 2.1001,
 ["LastPlayerFullName"] = "Muligan-Goldrinn",
 ["AutoSelectScales"] = true,
 ["ItemLevels"] = {
@@ -43,19 +43,19 @@ PawnOptions = {
 },
 [8] = {
 ["ID"] = 159396,
-["Level"] = 66,
-["Link"] = "|cff0070dd|Hitem:159396::::::::23:264::1:2:6710:41:2:28:500:9:22:::::|h[Waders of the Infested]|h|r",
+["Level"] = 95,
+["Link"] = "|cff0070dd|Hitem:159396::::::::25:264::1:2:6710:41:2:9:22:28:500:::::|h[Waders of the Infested]|h|r",
 },
 [16] = {
 ["ID"] = 159133,
-["Level"] = 59,
+["Level"] = 77,
 ["AlsoFitsIn"] = 17,
-["Link"] = "|cff0070dd|Hitem:159133::::::::20:264::1:2:6710:6652:2:9:19:28:500:::::|h[Jagged Iris Sica]|h|r",
+["Link"] = "|cff0070dd|Hitem:159133::::::::25:264::1:2:6710:6652:2:9:19:28:500:::::|h[Jagged Iris Sica]|h|r",
 },
 [9] = {
 ["ID"] = 175205,
-["Level"] = 7,
-["Link"] = "|cff1eff00|Hitem:175205::::::::7:1444::11:1:6500:2:28:741:9:7:::::|h[Expeditionary Mail Armbands]|h|r",
+["Level"] = 12,
+["Link"] = "|cff1eff00|Hitem:175205::::::::25:264::11:1:6500:2:9:7:28:741:::::|h[Expeditionary Mail Armbands]|h|r",
 },
 [5] = {
 ["ID"] = 122380,
@@ -64,8 +64,8 @@ PawnOptions = {
 },
 [10] = {
 ["ID"] = 175187,
-["Level"] = 9,
-["Link"] = "|cff1eff00|Hitem:175187::::::::10:1444::11:1:6500:2:28:741:9:9:::::|h[Expeditionary Mail Gauntlets]|h|r",
+["Level"] = 17,
+["Link"] = "|cff1eff00|Hitem:175187::::::::25:264::11:1:6500:2:9:9:28:741:::::|h[Expeditionary Mail Gauntlets]|h|r",
 },
 [11] = {
 ["ID"] = 175244,
@@ -75,8 +75,8 @@ PawnOptions = {
 },
 [6] = {
 ["ID"] = 159403,
-["Level"] = 59,
-["Link"] = "|cff0070dd|Hitem:159403::::::::20:264::1:3:6710:6652:8812:2:9:19:28:500:::::|h[Waistguard of Deteriorating Grace]|h|r",
+["Level"] = 77,
+["Link"] = "|cff0070dd|Hitem:159403::::::::25:264::1:3:6710:6652:8812:2:9:19:28:500:::::|h[Waistguard of Deteriorating Grace]|h|r",
 },
 [12] = {
 ["ID"] = 175244,
@@ -86,8 +86,8 @@ PawnOptions = {
 },
 [17] = {
 ["ID"] = 158713,
-["Level"] = 61,
-["Link"] = "|cff0070dd|Hitem:158713::::::::20:264::1:2:6710:6652:2:28:500:9:20:::::|h[Disc of Indomitable Will]|h|r",
+["Level"] = 84,
+["Link"] = "|cff0070dd|Hitem:158713::::::::25:264::1:2:6710:6652:2:9:20:28:500:::::|h[Disc of Indomitable Will]|h|r",
 },
 },
 ["LastKeybindingsSet"] = 1,

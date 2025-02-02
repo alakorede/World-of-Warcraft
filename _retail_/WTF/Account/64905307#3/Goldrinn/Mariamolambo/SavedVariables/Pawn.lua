@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0914,
+["LastVersion"] = 2.1002,
+["LastPlayerFullName"] = "Mariamolambo-Goldrinn",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 193751,
@@ -90,9 +92,6 @@ nil,
 ["Link"] = "|cff1eff00|Hitem:194389::::::::70:581::26:1:7963:2:9:61:28:2297:::::|h[Brush-Clearing Axe]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Mariamolambo-Goldrinn",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -146,6 +145,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DEMONHUNTER",

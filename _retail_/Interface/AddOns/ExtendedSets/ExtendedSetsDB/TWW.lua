@@ -7,34 +7,148 @@ local expansionID = 10;
 --Name, Description, Label, classMask, patchID, sources, requiredFact, noLongerObtainable
 ----classMask:    (35=Plate, 68=Mail, 3592=Leather, 400=Cloth)
 local db = {
---Delver's Cloth other colors that were notalready there?
-{"Dark Agent's","","Underground Gear",400,110000,{219168,219177,{219160,219286},219180,219172,219195,219183,219166,219187,}},
+--Siren Isle set
+{"Tidecrasher",nil,"Siren Isle",35,110007,{231312,231314,231288,231309,231313,231310,231315,231311,231654,}},
+{"Hydraflayer",nil,"Siren Isle",68,110007,{231334,231336,231292,231331,231335,231332,231337,231333,231653,}},
+{"Bloodscout",nil,"Siren Isle",3592,110007,{99956,231328,231291,231324,231329,231325,231330,231326,231652,}},
+{"Rune Scribe",nil,"Siren Isle",400,110007,{231321,{231319,231323},{231289,231290},231316,{231320,231650},231317,231322,231318,}},
+
+--Cruise
+{"Southsea Cruise",nil,"Siren Isle, Cruise",0,110007,{231391,{231299,231300},{231389,231390},231388,}},
+{"Paradise Beach",nil,"Siren Isle, Cruise",0,110007,{231395,{231301,24223},{231393,231394},231392,}},
+{"Salvage Rig",nil,"Siren Isle, Cruise",0,110007,{231398,{231302,231303},231397,231396,}},
+{"Sun-Soaked",nil,"Siren Isle, Cruise",0,110007,{231426,231260,231307,231403,231402,}},
+
+--Siren Isle Pirate Garb
+{"Bilgeswabby",nil,"Siren Isle, Pirate Garb",0,110007,{96243,{96271,231356,231386},{231295,231296},231338,231339,231413,}},
+{"Pilfered Mariner",nil,"Siren Isle, Pirate Garb",0,110007,{231298,{96273,231358,231384},231348,96235,{231342,231387},231347,231412,}},
+{"Salt-Stained Sea",nil,"Siren Isle, Pirate Garb",0,110007,{231297,{96274,231357,231385},231349,231345,{231343,231350},231346,231414,}},
+
+{"Rusty Bruiser",nil,"Siren Isle, Rusty Bruiser",0,110007,{231304,231400,231401,231399,231424,231308}},
+
+--Dorn Defender (plate)
+{"Earthen Landlubber","Siren Isle","Dorn Defender Armaments",35,110007,{225040,225042,225037,225043,225041,225038,225044,225039,225036,}},
+{"Kyros's Spare",nil,"Dorn Defender Armaments",35,110000,{225074,225079,225075,225080,225078,225076,225081,225077,219034,}},
+{"Sedimentary",nil,"Dorn Defender Armaments",35,110000,{220537,220539,220534,220540,220538,220535,220541,220536,}},
+--Algari (mail)
+{"Earthen Islander","Siren Isle","Algari Chainmail",68,110007,{225031,225033,225028,225034,225032,225029,225035,225030,225027,}},
+{"Aevery's Spare",nil,"Algari Chainmail",68,110000,{225069,225071,225066,225072,225070,225067,225073,225068,}},
+{"Chitinoid",nil,"Algari Chainmail",68,110000,{220529,220531,220526,220532,220530,220527,220533,220528,220509,}},
+--Coreway Regalia (leather)
+{"Earthen Deckhand","Siren Isle","Coreway Regalia",3592,110007,{225045,225024,225020,225025,225023,225021,225026,225022,225019,}},
+{"Azra's Spare",nil,"Coreway Regalia",3592,110000,{225060,225065,225064,225062,225061,225058,225063,225059,}},
+{"Lockstitch",nil,"Coreway Regalia",3592,110000,{220521,220523,220518,220524,220522,220519,220525,220520,220508,}},
+--Threads of Awakening (cloth)
+{"Earthen Scallywag","Siren Isle","Threads of Awakening",400,110007,{225014,225016,225011,225017,225015,225012,225018,225013,225010,}},
+{"Nisa's Spare",nil,"Threads of Awakening",400,110000,{225050,225056,225054,225049,225055,225052,225051,225053,225057,}},
+{"Alighted",nil,"Threads of Awakening",400,110000,{220513,220515,220510,220516,220514,220511,220517,220512,}},
+
+--Underground Gear (Delver's
+{"Timely Tourist's","","Underground Gear",35,110005,{222898,222900,222895,222901,222899,222896,222902,222897,222878,}},
+{"Algari Competitor's","","Underground Gear",35,110000,{198892,198894,198889,198895,198893,198890,198896,198891,}},
+{"Begrimed","","Underground Gear",35,110000,{218521,218523,218518,218524,218522,218519,218525,218520,}},
+
+{"Timely Tourist's","","Underground Gear",68,110005,{222906,222908,222903,222909,222907,222904,222910,222905,}},
+{"Algari Competitor's","","Underground Gear",68,110000,{198883,198884,198882,198885,198886,198881,198888,198887,}},
+{"Pierced","","Underground Gear",68,110000,{218513,218515,218510,218516,218514,218511,218517,218512,}},
+
+{"Timely Tourist's","","Underground Gear",3592,110005,{222914,222916,222911,222917,222915,222912,222918,222913,}},
+{"Distressed","","Underground Gear",3592,110000,{218505,218507,218502,218508,218506,218503,218509,218504,}},
+{"Algari Competitor's","","Underground Gear",3592,110000,{198875,198876,198874,198877,198878,198873,198880,198879,}},
+
+{"Timely Tourist's","","Underground Gear",400,110005,{222922,222924,222919,222925,222923,222920,222926,222921,222877,}},
+--{"Dark Agent's","","Underground Gear",400,110000,{219168,219177,{219160,219286},219180,219172,219195,219183,219166,219187,}},
 {"Moth-Ridden","","Underground Gear",400,110000,{218497,218499,{220464,218494},218500,218498,218495,218501,218496,220491,}},
 {"Algari Competitor's","","Underground Gear",400,110000,{198868,198865,{198870,219628},198871,198864,198866,198867,198869,198872,}},
 
 --hallowfall cloth dark/red
 {"Consecrated","","Hallowfall Gear",400,110000,{219609,219612,219610,219607,219611,219599,219602,219598,}},
+
+--earthen attire
+{"Earthen","Protector","Earthen Attire",0,110000,{220301,220306,220302,220304,220307,220305,220303},nil,nil,{[3]=true,[34]=true,[84]=true,[85]=true}},
+{"Earthen","Stoneward","Earthen Attire",0,110000,{220298,220295,220297,220300,220299,220296},nil,nil,{[3]=true,[34]=true,[84]=true,[85]=true}},
+{"Earthen","Adventurer","Earthen Attire",0,110000,{220289,220292,220291,220294,220290,220293},nil,nil,{[3]=true,[34]=true,[84]=true,[85]=true}},
+{"Earthen","Smith","Earthen Attire",0,110000,{222962,220314,220316,220318,220317,220315},nil,nil,{[3]=true,[34]=true,[84]=true,[85]=true}},
+{"Earthen","Merchant","Earthen Attire",0,110000,{220308,220311,220322,220313,220312,220321},nil,nil,{[3]=true,[34]=true,[84]=true,[85]=true}},
+{"Earthen","Gatherer","Earthen Attire",0,110000,{218092,220323,220319,220310,220325,220324,220309},nil,nil,{[3]=true,[34]=true,[84]=true,[85]=true}},
+
 };
+
+--"Wrath of the Lich King: PvP" 20th anniversary s6 recolors
+--4144 leather 
+--4145 plate (green)
+--4146 Mail
+--4147 plate (purple)
+--4148 Cloth
+
+--"The Burning Crusade: Dungoen" 20th anniversary recolors
+--4125 leather tw blue
+--4126 leather red
+--4127 leather brown
+--4128 leather purple
+--4129 mail tw brown
+--4130 mail blue
+--4131 mail purple
+--4132 mail red
+--4133 plate tw purple
+--4134 plate red
+--4135 plate dungeon silver
+--4136 plate silver
+--4137 cloth 1 tw blue
+--4138 cloth 1 purple
+--4139 cloth 1 red
+--4140 cloth 1 white
+--4141 cloth 2 tw brown
+--4142 cloth 2 green
+--4143 cloth 2 red
 
 --[setID] = "label"
 local altLabelDB = {
 [3877] = "Arathi Attire",
 [3876] = "Arathi Attire",
 [3518] = "Arathi Attire",
+[4227] = "Arathi Attire",
+[4228] = "Arathi Attire",
+[4149] = "Underground Gear",
+[4150] = "Underground Gear",
+[4151] = "Underground Gear",
+[4152] = "Underground Gear",
+[4175] = "Plunderstorm",
+[3875] = "Plunderstorm",
 }
-
+--/script printTable(C_TransmogSets.GetSetInfo(3875))
 local altNoteDB = {
 [3877] = "Spreading the Light",
 [3876] = "Hallowfall Quests",
 [3518] = "Hallowfall Arathi Renown";
+[4227] = "Siren Isle",
+[4228] = "Siren Isle",
+[4175] = "Plunderstorm 2025",
+[3875] = "Trading Post",
+}
+
+local altPatchID = {
+[3518] = 110007,
+[3875] = 110007,
+[3891] = 110007,--coreway Regalia
+[3890] = 110007,--algari Chainmail
+[3889] = 110007,--dorn defender armraments
+[3892] = 110007,--threads of awakening
 }
 
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
---test
-{3642,193880,222562},
+{4175,230261,230326},--Plunderlord's Stormridden Finery, Eyepatch
 
+--20th Anniversary
+{3870,220739,220756},--Druid Chest
+{3873,219971,230286},--Warlock chest
+{3868,220383,230285},--Mage chest
+{3865,220658,230287},--Priest chest
+{3871,220115,230290},--Paladin robeless pants
+{3866,220797,230288},--Shaman robes/pants
+--11.0 ends at 94162
 
 --DK 91493, helms 91641
 {3719,222558,222562},--Mythic Shoulders
@@ -170,7 +284,7 @@ local altAppearancesDB = {
 {3750,221853,221857},--mythic shoulders
 {3750,221846,221850},--mythic belt
 {3750,221874,221878},--mythic gloves
---{3750,,221890},--mythic chest
+{3750,229638,221890},--mythic chest
 {3842,217015,217017},--elite helm
 {3842,217031,217033},--elite shoulders
 {3842,217039,217041},--elite belt
@@ -180,7 +294,7 @@ local altAppearancesDB = {
 {3752,221851,221854},--lfr shoulders
 {3752,221844,221847},--lfr belt
 {3752,221872,221875},--lfr gloves
---{3752,,},--lfr chest --missing
+--{3752,221886,},--lfr chest --missing
 
 --Warrior 92403
 {3767,194494,222740},--normal helm
@@ -289,7 +403,7 @@ local altAppearancesDB = {
 --Delver's Cloth 91102
 {3640,193881,218291},--Robe version (underground teal)
 --{,220464,218494},--Robe version (?? green)
---{,219160,219286},--Robe version (?? red)
+{4152,220209,219286},--Robe version (?? red)
 --{,198870,219628},--Robe version (?? yellow)
 
 --Hallowfall Cloth 85070
@@ -322,6 +436,7 @@ function AddToCollection()
       if db[i][8] == true then
         data.noLongerObtainable = true;
       end
+      data.raceID = db[i][9];
       
       data.setID = (expansionID + 1) * app.SetsFrame.ExpandedID + db[i][6][1];
       
@@ -329,11 +444,32 @@ function AddToCollection()
       for j=1,#db[i][6] do 
         if type(db[i][6][j]) == "table" then
           if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-          data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-          data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j][1]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j][1]] = isKnown;
+          data.altSources[db[i][6][j][1]] = {}
+          for k=1,#db[i][6][j] do
+            app.AppID(db[i][6][j][k])
+            tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
+          end
+          --data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
           data.altSourceNumbers[db[i][6][j][1]] = 1;
         else
-          data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j]] = isKnown;
         end
       end
       
@@ -352,6 +488,7 @@ app.ExpandedCallbacks[expansionID] = AddToCollection;
 app.altAppearancesDB[expansionID] = altAppearancesDB;
 app.altLabelDB[expansionID] = altLabelDB;
 app.altNoteDB[expansionID] = altNoteDB;
+app.altPatchID[expansionID] = altPatchID;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};

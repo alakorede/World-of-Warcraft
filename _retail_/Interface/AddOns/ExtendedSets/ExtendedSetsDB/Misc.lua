@@ -19,8 +19,8 @@ local db = {
 {"Brewfest Dress","Brewfest","Holiday",0,10000,{15663,15711,}},
 {"Brewfest Regalia","Brewfest","Holiday",0,10000,{15662,15665,{15664,15712,15713,15714}}},
 --Winter Veil
-{"Fine Winter Veil (Red)","Winter Veil","Holiday",0,10000,{80593,80587,80597,{80591,80589},80595,}},
-{"Fine Winter Veil (Green)","Winter Veil","Holiday",0,10000,{80594,80588,80598,{80592,80590},80596,}},
+{"Fine Winter Veil (Red)","Winter Veil","Holiday",0,10000,{80593,{80587,249017},80597,{80591,80589},80595,}},
+{"Fine Winter Veil (Green)","Winter Veil","Holiday",0,10000,{80594,{80588,249016},80598,{80592,80590},80596,}},
 {"Winter Veil (Green)","Winter Veil","Holiday",0,10000,{8510,15751,}},
 {"Winter Veil (Red)","Winter Veil","Holiday",0,10000,{8509,15749,}},
 --Pilgrim's Bounty
@@ -71,14 +71,15 @@ function AddToCollection()
       for j=1,#db[i][6] do 
         if type(db[i][6][j]) == "table" then
           if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-          data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
+          data.sources[db[i][6][j][1]] = C_TransmogCollection.PlayerKnowsSource(db[i][6][j][1]);
           data.altSources[db[i][6][j][1]] = {}
           for k=1,#db[i][6][j] do
+            app.AppID(db[i][6][j][k])
             tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
           end
           data.altSourceNumbers[db[i][6][j][1]] = 1;
         else
-          data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+          data.sources[db[i][6][j]] = C_TransmogCollection.PlayerKnowsSource(db[i][6][j]);
         end
       end
       

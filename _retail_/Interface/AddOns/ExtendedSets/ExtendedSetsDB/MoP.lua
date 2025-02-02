@@ -6,7 +6,6 @@ local expansionID = 4;
 ----classMask:    (35=Plate, 68=Mail, 3592=Leather, 400=Cloth
 local db = {
 --MoP: Remix --start 91045
---{"test","test","test",0,50000,{55775}},
 
 --Alt Dungeon Cloth Set
 {"Koegler","","Dungeon Alt (MoP)",400,50002.5,{45671,45679,45694,45703,45708,45719,}},
@@ -18,6 +17,12 @@ local db = {
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
+{3381,195676,249132},--Shado-pan robe, original
+{3380,195661,249134},--Shado-pan robe, dark
+{3381,195672,249163},--Shado-pan robe bottoms, original
+{3380,195665,249165},--Shado-pan robe bottoms, dark
+
+
 {489,61767,196577},--SoO, Paladin, Chest/Robe (lfr)--remix
 {487,57097,196593},--SoO, Paladin, Chest/Robe (normal)--remix
 {488,61768,196584},--SoO, Paladin, Chest/Robe (mythic)--remix
@@ -92,6 +97,15 @@ local altAppearancesDB = {
 {3365,62542,41841}, --MoP:Dungeon Cloth (original)
 {3369,45298,41833}, --MoP:Dungeon Cloth (purple)
 {3408,45528,42736}, --Mop:world mail 1 (green/kilt)
+
+{3438,196722,38100}, --alt id robe Vestments of Serenity (green)
+{3439,196709,38071}, --alt id robe Vestments of Serenity (blue)
+{3368,196729,37521}, --alt id robe Vestments of Serenity (white)
+
+{3413,37516,196180}, --alt id Sun Pearl Clothing (green)
+
+{3396,76116,195787}, --alt id Tian Monastery Boots (white)
+{3395,38101,195782}, --alt id Tian Monastery Boots (red)
 }
 
 --91045
@@ -168,50 +182,26 @@ local altLabelAppendDB = {
 }
 
 local setsFlagRemix = {
-[3368] = true, --Vestments of serenity (white)
-[3438] = true, --                      (green)
-[3439] = true, --                      (blue)
-[3394] = true, --Tian Monastary Clothing (blue)
-[3395] = true, --                        (red)
-[3396] = true, --                        (white)
-[3415] = true, --Sun Pearl Clothing (yellow)
-[3414] = true, --                   (red)
-[3413] = true, --                   (green)
-[3434] = true, --Robes of Quiet Reflection (brown)
-[3435] = true, --                          (green)
-[3436] = true, --                          (red)
-[3437] = true, --                          (yellow)
+[3368] = 400, --Vestments of serenity (white)
+[3438] = 400, --                      (green)
+[3439] = 400, --                      (blue)
+[3394] = 3592, --Tian Monastary Clothing (blue)
+[3395] = 3592, --                        (red)
+[3396] = 3592, --                        (white)
+[3415] = 35, --Sun Pearl Clothing (yellow)
+[3414] = 35, --                   (red)
+[3413] = 35, --                   (green)
+[3434] = 400, --Robes of Quiet Reflection (brown)
+[3435] = 400, --                          (green)
+[3436] = 400, --                          (red)
+[3437] = 400, --                          (yellow)
 [3403] = true, --Kor'kron Shaman (cool)
 [3404] = true, --Kor'kron Shaman (warm)
-[3405] = true, --Kor'kron Shaman (yellow)
+[3405] = 64, --Kor'kron Shaman (yellow)
 [3380] = true, --Guise of the Shado-pan (dark)
 [3381] = true, --Guise of the Shado-pan (original)
 [3440] = true, --Battleplate of Resounding Rings
 }
-
--- --flags for sets that include a remix item
--- [489] = true,
--- [487] = true,
--- [488] = true,
--- [559] = true,
--- [558] = true,
--- [508] = true,
--- [506] = true,
--- [507] = true,
--- [525] = true,
--- [523] = true,
--- [524] = true,
--- [457] = true,
--- [562] = true,
--- [560] = true,
--- [561] = true,
--- [458] = true,
--- [460] = true,
--- [565] = true,
--- [563] = true,
--- [564] = true,
--- [462] = true,
--- }
 
 local itemsFlagRemix = {
 --[setID] = { [sourceID] = true, },
@@ -246,6 +236,19 @@ local itemsFlagRemix = {
 [462] = {[218933] = true, },--HoF, Cloth/Warlock, Chest/Robe (LFR)
 
 [3415] = { [196194] = true, }, --Sun Pearl Clothing, Yellow, Shoes
+
+[3438] = {[196722] = true, }, --Vestments of Serenity robe alt id(green)
+[3439] = {[196709] = true, }, --Vestments of Serenity robe alt id(blue)
+[3368] = {[196729] = true, }, --Vestments of Serenity robe alt id(white)
+
+[3434] = {[196732] = true, }, --robes of quiet reflection pants(brown)
+[3434] = {[196731] = true, }, --robes of quiet reflection shoes(brown)
+[3436] = {[196739] = true, }, --robes of quiet reflection pants(red)
+[3436] = {[196740] = true, }, --robes of quiet reflection shoes(red)
+[3435] = {[196735] = true, }, --robes of quiet reflection pants(green)
+[3435] = {[196736] = true, }, --robes of quiet reflection shoes(green)
+[3437] = {[196743] = true, }, --robes of quiet reflection pants(yellow)
+[3437] = {[196744] = true, }, --robes of quiet reflection shoes(yellow)
 }
 
 --Legion alt appearances at 35559
@@ -272,11 +275,16 @@ function AddToCollection()
     for j=1,#db[i][6] do 
       if type(db[i][6][j]) == "table" then
         if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-        data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-        data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+        data.sources[db[i][6][j][1]] = C_TransmogCollection.PlayerKnowsSource(db[i][6][j][1]);
+        --data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+        data.altSources[db[i][6][j][1]] = {}
+        for k=1,#db[i][6][j] do
+          app.AppID(db[i][6][j][k])
+          tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
+        end
         data.altSourceNumbers[db[i][6][j][1]] = 1;
       else
-        data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+        data.sources[db[i][6][j]] = C_TransmogCollection.PlayerKnowsSource(db[i][6][j]);
       end
     end
     
@@ -284,8 +292,41 @@ function AddToCollection()
   end
   
   for i = 1, #altAppearancesDB do
-    app.SetsFrame.AddAltAppearancesToTables(altAppearancesDB[i][1],altAppearancesDB[i][2],altAppearancesDB[i][3]);
+    --local skip = false;
+    --if ExS_Settings.hideMopRemix then
+    --  if setsFlagRemix[altAppearancesDB[i][1]] then skip = true;
+    --  elseif itemsFlagRemix[altAppearancesDB[i][1]] and itemsFlagRemix[altAppearancesDB[i][1]][altAppearancesDB[i][3]] then skip = true; end
+    --end
+    --if not skip then
+      app.SetsFrame.AddAltAppearancesToTables(altAppearancesDB[i][1],altAppearancesDB[i][2],altAppearancesDB[i][3]);
+    --end
   end
+end
+
+local function shouldUseMopRemix(data)
+  data.isRemix = nil;
+  if not setsFlagRemix[data.setID] then return true; end
+  
+  if type(setsFlagRemix[data.setID]) ~= 'number' and data.classMask == setsFlagRemix[data.setID] then
+    return true;
+  end
+  
+  local correctIDs = {
+    [37516] = 196180,  --alt id Sun Pearl Clothing (green)
+    [76116] = 195787,  --alt id Tian Monastery Boots (white)
+    [38101] = 195782 } --alt id Tian Monastery Boots (red)
+  
+  local sources = C_TransmogSets.GetSetPrimaryAppearances(data.setID);
+  for i=1,#sources do
+    if correctIDs[sources[i].appearanceID] then
+      if not C_TransmogCollection.GetSourceInfo(correctIDs[sources[i].appearanceID]).isCollected then
+        return false;
+      end
+    elseif not sources[i].collected then
+      return false;
+    end
+  end
+  return true;
 end
 
 app.ExpandedCallbacks[expansionID] = AddToCollection;
@@ -295,6 +336,7 @@ app.altLabelAppendDB[expansionID] = altLabelAppendDB;
 app.mopRemixFlag = setsFlagRemix;
 app.mopItemRemixFlag = itemsFlagRemix;
 app.altNoteDB[expansionID] = altNoteDB;
+app.shouldUseMopRemix = shouldUseMopRemix;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};

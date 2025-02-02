@@ -2,7 +2,7 @@
 -- Written by fuba (fuba82 on CurseForge) and updated by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2020-2024 fuba and KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v22.0.0-release
+-- Addon version: v23.19.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 

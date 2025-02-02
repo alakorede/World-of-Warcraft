@@ -1,6 +1,8 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "esMX")
 if not L then return end
 
+--L.tempNPMsg = "Our season 1 nameplate timers are active."
+
 -- Core.lua
 L.berserk = "Enfurecer"
 L.berserk_desc = "Muestra un contador que avisa cuando el jefe entrará en enfurecer"
@@ -47,6 +49,8 @@ L.offline = "Desconectado"
 
 L.missingAddOnPopup = "¡Falta el addon |cFF436EEE%s|r!"
 --L.missingAddOnRaidWarning = "¡Falta el addon |cFF436EEE%s|r! No timers will be displayed in this zone!"
+--L.outOfDateAddOnPopup = "The |cFF436EEE%s|r addon is out of date!"
+--L.outOfDateAddOnRaidWarning = "The |cFF436EEE%s|r addon is out of date! It may have bugs, missing features, or completely incorrect timers."
 L.disabledAddOn = "Tienes el addon |cFF436EEE%s|r desactivado, los contadores no se mostrarán."
 L.removeAddOn = "Por favor elimina '|cFF436EEE%s|r' ya que está siendo reemplazado por '|cFF436EEE%s|r'."
 L.alternativeName = "%s (|cFF436EEE%s|r)"
@@ -160,8 +164,8 @@ L.SAY_COUNTDOWN = "Decir cuenta regresiva"
 L.SAY_COUNTDOWN_desc = "Las burbujas de chat son fáciles de detectar. BigWigs usará múltiples mensajes de cuenta regresiva para alertar a los que estén cerca que una habilidad en ti está a punto de expirar."
 L.ME_ONLY_EMPHASIZE = "Enfatizar (sólo en mi)"
 L.ME_ONLY_EMPHASIZE_desc = "Al activar esto enfatizará cualquier mensaje asociado con esta habilidad SÓLO si se lanza sobre ti, mostrándolo más grande y visible."
---L.NAMEPLATEBAR = "Nameplates"
---L.NAMEPLATEBAR_desc = "If enabled, features such as icons and text related to this specific ability will show on your nameplates. This makes it easier to see which specific NPC is casting an ability when there are multiple NPCs that cast it."
+--L.NAMEPLATE = "Nameplates"
+--L.NAMEPLATE_desc = "If enabled, features such as icons and text related to this specific ability will show on your nameplates. This makes it easier to see which specific NPC is casting an ability when there are multiple NPCs that cast it."
 L.PRIVATE = "Aura privada"
 L.PRIVATE_desc = "Las auras privadas no se pueden rastrear normalmente, pero el sonido \"sobre ti\" (aviso) se puede configurar en la pestaña Sonido."
 
@@ -175,17 +179,20 @@ L.dispeller = "|cFFFF0000Alertas para dispelear únicamente.|r "
 
 -- Sharing.lua
 --L.import = "Import"
---L.import_info = "After entering a string you can select what settings you would like to import.\nIf settings are not available in the import string they will not be selectable.\n\nThis import will only affect the general settings and does not affect boss specific settings."
+--L.import_info = "After entering a string you can select what settings you would like to import.\nIf settings are not available in the import string they will not be selectable.\n\n|cffff4411This import will only affect the general settings and does not affect boss specific settings.|r"
 --L.import_info_active = "Choose what parts you would like to import and then click the import button."
 --L.import_info_none = "|cFFFF0000The import string is incompatible or out of date.|r"
 --L.export = "Export"
---L.export_info = "Select which settings you would like to export and share with others.\n\nYou can only share general settings and these have no effect on boss specific settings."
+--L.export_info = "Select which settings you would like to export and share with others.\n\n|cffff4411You can only share general settings and these have no effect on boss specific settings.|r"
 --L.export_string = "Export String"
 --L.export_string_desc = "Copy this BigWigs string if you want to share your settings."
 --L.import_string = "Import String"
 --L.import_string_desc = "Paste the BigWigs string you want to import here."
 --L.position = "Position"
 --L.settings = "Settings"
+--L.other_settings = "Other Settings"
+--L.nameplate_settings_import_desc = "Import all nameplate settings."
+--L.nameplate_settings_export_desc = "Export all nameplate settings."
 --L.position_import_bars_desc = "Import the position (anchors) of the bars."
 --L.position_import_messages_desc = "Import the position (anchors) of the messages."
 --L.position_import_countdown_desc = "Import the position (anchors) of the countdown."
@@ -220,6 +227,7 @@ L.dispeller = "|cFFFF0000Alertas para dispelear únicamente.|r "
 --L.imported_countdown_position = "Countdown Position"
 --L.imported_countdown_settings = "Countdown Settings"
 --L.imported_countdown_color = "Countdown Color"
+--L.imported_nameplate_settings = "Nameplate Settings"
 
 -- Statistics
 L.statistics = "Estadísticas"

@@ -10,6 +10,7 @@ local GetItemCount = app.WOWAPI.GetItemCount;
 local KEY, CACHE = "toyID", "Toys"
 local AccountWideToyData = {};
 local toyFields = {
+	CACHE = function() return CACHE end,
 	f = function(t)
 		return 102;
 	end,
@@ -21,9 +22,7 @@ local toyFields = {
 		-- should be a cached check with a re-evaluation if not cached state
 		return app.SetCollected(t, CACHE, t[KEY], GetItemCount(t[KEY], true) > 0);
 	end or function(t)
-		local id = t[KEY];
-		-- account-wide collected
-		if app.IsAccountTracked(CACHE, id) then return 1; end
+		return app.TypicalAccountCollected(CACHE, t[KEY])
 	end,
 	itemID = function(t)
 		return t[KEY];
@@ -64,9 +63,7 @@ toyFields.collected = app.IsClassic and function(t)
 		return app.SetCollected(t, CACHE, toyID, GetItemCount(toyID, true) > 0);
 	end
 end or function(t)
-	local id = t[KEY];
-	-- account-wide collected
-	if app.IsAccountTracked(CACHE, id) then return 1; end
+	return app.TypicalAccountCollected(CACHE, t[KEY])
 end;
 toyFields.description = function(t)
 	if not IsToyBNETCollectible[t[KEY]] then
@@ -75,9 +72,8 @@ toyFields.description = function(t)
 end;
 
 app.AddEventRegistration("TOYS_UPDATED", app.IsRetail and function(itemID, new)
-	if itemID and not AccountWideToyData[itemID] and PlayerHasToy(itemID) then
-		app.SetAccountCollected(app.SearchForObject(KEY, itemID) or app.CreateToy(itemID), CACHE, itemID, true);
-		app.UpdateRawID("itemID", itemID);
+	if itemID and PlayerHasToy(itemID) then
+		app.SetThingCollected(KEY, itemID, true, true)
 	end
 end or function(toyID, new)
 	if toyID then
@@ -143,4 +139,7 @@ app.AddEventHandler("OnSavedVariablesAvailable", function(currentCharacter, acco
 		end
 	end
 end);
-app.CreateToy = app.ExtendClass("Item", "Toy", "toyID", toyFields);
+local CLASSNAME = "Toy"
+app.CreateToy = app.ExtendClass("Item", CLASSNAME, "toyID", toyFields);
+
+app.AddSimpleCollectibleSwap(CLASSNAME, CACHE)

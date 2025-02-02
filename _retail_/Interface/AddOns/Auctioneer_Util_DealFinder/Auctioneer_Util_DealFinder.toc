@@ -1,13 +1,13 @@
 ## Title: Auctioneer Util: |cff447722Deal Finder
 ## Notes: Shows deals from recent scan.
 ##
-## Interface: 110000
+## Interface: 110002
 ## LoadOnDemand: 0
 ## Dependencies: Stubby, Auctioneer
 ## OptionalDependencies: !nLog, SlideBar, Configator, Babylonian, DebugLib, TipHelper, LibExtraTip, LibDataBroker
 ## SavedVariables: AuctioneerUtilDealFinderData
 ##
-## Version: 9.1.BETA.5.17 (OneMawTime)
+## Version: 11.x.BETA.4 (TheWarWithBlizzardAPIs)
 ## Revision: $Id$
 ## Author: Norganna's AddOns
 ## X-Part-Of: Auctioneer

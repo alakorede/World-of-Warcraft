@@ -70,7 +70,7 @@ local function OnEncounterJournalLoaded(event, addonName, ...)
 end
 
 if CanIMogIt.isRetail then
-    CanIMogIt.frame:AddEventFunction(OnEncounterJournalLoaded)
+    CanIMogIt.frame:AddSmartEvent(OnEncounterJournalLoaded, {"ADDON_LOADED"})
 end
 
 
@@ -86,7 +86,7 @@ local function EncounterJournalOverlayEvents(event, ...)
 end
 
 if CanIMogIt.isRetail then
-    CanIMogIt.frame:AddOverlayEventFunction(EncounterJournalOverlayEvents)
+    CanIMogIt.frame:AddSmartEvent(EncounterJournalOverlayEvents, {"PLAYER_LOGIN"})
 
     CanIMogIt:RegisterMessage("OptionUpdate", EncounterJournalOverlayEvents)
 end

@@ -1,6 +1,8 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "zhCN")
 if not L then return end
 
+L.tempNPMsg = "我们的第1赛季姓名板计时器已激活。"
+
 -- Core.lua
 L.berserk = "狂暴"
 L.berserk_desc = "为首领狂暴显示计时器和警报。"
@@ -46,7 +48,9 @@ L.noBossMod = "没有首领模块："
 L.offline = "离线"
 
 L.missingAddOnPopup = "你缺少 |cFF436EEE%s|r 插件!"
---L.missingAddOnRaidWarning = "你缺少 |cFF436EEE%s|r 插件! No timers will be displayed in this zone!"
+L.missingAddOnRaidWarning = "你缺少 |cFF436EEE%s|r 插件！此区域将不显示计时条！"
+L.outOfDateAddOnPopup = "|cFF436EEE%s|r 插件已过期！"
+L.outOfDateAddOnRaidWarning = "|cFF436EEE%s|r 插件已过期！它可能存在错误、功能缺失或计时器完全错误。"
 L.disabledAddOn = "你的 |cFF436EEE%s|r 插件已禁用，计时器将无法显示。"
 L.removeAddOn = "请移除“|cFF436EEE%s|r”，其已被“|cFF436EEE%s|r”所替代。"
 L.alternativeName = "%s（|cFF436EEE%s|r）"
@@ -160,8 +164,8 @@ L.SAY_COUNTDOWN = "说话冷却"
 L.SAY_COUNTDOWN_desc = "聊天泡泡很容易被发现。BigWigs 将使用多个说话消息倒计时提醒附近的人身上的技能即将到期。"
 L.ME_ONLY_EMPHASIZE = "醒目（自身）"
 L.ME_ONLY_EMPHASIZE_desc = "启用此选项将醒目如只作用于自身相关技能的任一信息，使它们更大更明显。"
-L.NAMEPLATEBAR = "姓名板"
-L.NAMEPLATEBAR_desc = "如果启用，与此特定技能的相关图标和文字等功能将显示在姓名板上。这样当有多个NPC施放技能时，就能更容易地看到是哪个特定的NPC在施放。"
+L.NAMEPLATE = "姓名板"
+L.NAMEPLATE_desc = "如果启用，与此特定技能的相关图标和文字等功能将显示在姓名板上。这样当有多个NPC施放技能时，就能更容易地看到是哪个特定的NPC在施放。"
 L.PRIVATE = "私有光环"
 L.PRIVATE_desc = "私有光环无法用常规手段追踪，但可以在音效分页指定只有“私有光环”出现在你身上时的音效。"
 
@@ -175,17 +179,20 @@ L.dispeller = "|cFFFF0000只警报驱散。|r"
 
 -- Sharing.lua
 L.import = "导入"
-L.import_info = "导入字符串后，你可以选择要导入的设置。\n如果导入的字符串中有不可使用的设置，则无法选择这些设置。\n\n此导入只会改变你的常规设置，不会改变你对首领的特定设置。"
+L.import_info = "导入字符串后，你可以选择要导入的设置。\n如果导入的字符串中有不可使用的设置，则无法选择这些设置。\n\n|cffff4411此导入只会改变你的常规设置，不会改变你对首领的特定设置。|r"
 L.import_info_active = "选择要导入的选项，然后点击导入按钮。"
 L.import_info_none = "|cFFFF0000导入的字符串不兼容或已过期。|r"
 L.export = "导出"
-L.export_info = "选择要导出并分享给他人的设置。\n\n您只能分享常规设置，这些设置对首领的特定设置没有影响。"
+L.export_info = "选择要导出并分享给他人的设置。\n\n|cffff4411您只能分享常规设置，这些设置对首领的特定设置没有影响。|r"
 L.export_string = "导出字符串"
 L.export_string_desc = "如果要分享设置，请复制此 BigWigs 字符串。"
 L.import_string = "导入字符串"
 L.import_string_desc = "将要导入的 BigWigs 字符串粘贴到此处。"
 L.position = "位置"
 L.settings = "设置"
+L.other_settings = "其他设置"
+L.nameplate_settings_import_desc = "导入所有姓名板设置。"
+L.nameplate_settings_export_desc = "导出所有姓名板设置。"
 L.position_import_bars_desc = "导入 计时条 的位置（锚点）。"
 L.position_import_messages_desc = "导入 信息 的位置（锚点）。"
 L.position_import_countdown_desc = "导入 倒数 的位置（锚点）。"
@@ -220,6 +227,7 @@ L.imported_message_colors = "信息颜色"
 L.imported_countdown_position = "倒数位置"
 L.imported_countdown_settings = "倒数设置"
 L.imported_countdown_color = "倒数颜色"
+L.imported_nameplate_settings = "姓名板设置"
 
 -- Statistics
 L.statistics = "统计"

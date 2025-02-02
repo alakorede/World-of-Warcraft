@@ -2,58 +2,69 @@ CanIMogIt.cache = {}
 
 function CanIMogIt.cache:Clear()
     self.data = {
-        ["text"] = {},
         ["source"] = {},
         ["dressup_source"] = {},
         ["sets"] = {},
         ["setsSumRatio"] = {},
+        ["appearanceData"] = {},
+        ["itemData"] = {},
+        ["bindData"] = {},
     }
 end
 
 
-local function GetSourceIDKey(sourceID)
-    return "source:" .. sourceID
+function CanIMogIt.cache:GetAppearanceDataValue(itemLink)
+    return self.data["appearanceData"][CanIMogIt:CalculateKey(itemLink)]
 end
 
 
-local function GetItemIDKey(itemID)
-    return "item:" .. itemID
+function CanIMogIt.cache:SetAppearanceDataValue(appData)
+    if appData == nil then return end
+    self.data["appearanceData"][appData.key] = appData
 end
 
 
-local function GetItemLinkKey(itemLink)
-    return "itemlink:" .. itemLink
+function CanIMogIt.cache:GetItemDataValue(itemLink)
+    return self.data["itemData"][CanIMogIt:CalculateKey(itemLink)]
 end
 
 
-local function CalculateCacheKey(itemLink)
-    local sourceID = CanIMogIt:GetSourceID(itemLink)
-    local itemID = CanIMogIt:GetItemID(itemLink)
-    local key;
-    if sourceID then
-        key = GetSourceIDKey(sourceID)
-    elseif itemID then
-        key = GetItemIDKey(itemID)
-    else
-        key = GetItemLinkKey(itemLink)
+function CanIMogIt.cache:SetItemDataValue(itemData)
+    if itemData == nil then return end
+    self.data["itemData"][itemData.key] = itemData
+end
+
+
+function CanIMogIt.cache:GetBindDataValue(itemLink, bag, slot)
+    return self.data["bindData"][CanIMogIt.BindData.CalculateKey(itemLink, bag, slot)]
+end
+
+
+function CanIMogIt.cache:SetBindDataValue(bindData)
+    if bindData == nil then return end
+    self.data["bindData"][bindData.key] = bindData
+end
+
+
+function CanIMogIt.cache:DeleteBindDataValue(itemLink, bag, slot)
+    if itemLink == nil and (bag == nil or slot == nil) then
+        return
     end
-    return key
-end
-
-
-function CanIMogIt.cache:GetItemTextValue(itemLink)
-    return self.data["text"][CalculateCacheKey(itemLink)]
-end
-
-
-function CanIMogIt.cache:SetItemTextValue(itemLink, value)
-    self.data["text"][CalculateCacheKey(itemLink)] = value
+    if itemLink == nil then
+        itemLink = C_Container.GetContainerItemLink(bag, slot)
+    end
+    if self.data["bindData"][CanIMogIt.BindData.CalculateKey(itemLink, bag, slot)] ~= nil then
+        self.data["bindData"][CanIMogIt.BindData.CalculateKey(itemLink, bag, slot)] = nil
+    end
+    if itemLink then
+        -- Delete the itemLink key as well, since it may be cached without the bag and slot.
+        self.data["bindData"][CanIMogIt:CalculateKey(itemLink)] = nil
+    end
 end
 
 
 function CanIMogIt.cache:RemoveItem(itemLink)
-    self.data["text"][CalculateCacheKey(itemLink)] = nil
-    self.data["source"][CalculateCacheKey(itemLink)] = nil
+    self.data["source"][CanIMogIt:CalculateKey(itemLink)] = nil
     -- Have to remove all of the set data, since other itemLinks may cache
     -- the same set information. Alternatively, we scan through and find
     -- the same set on other items, but they're loaded on mouseover anyway,
@@ -62,30 +73,23 @@ function CanIMogIt.cache:RemoveItem(itemLink)
 end
 
 
-function CanIMogIt.cache:RemoveItemBySourceID(sourceID)
-    self.data["text"][GetSourceIDKey(sourceID)] = nil
-    self.data["source"][GetSourceIDKey(sourceID)] = nil
-    self:ClearSetData()
-end
-
-
 function CanIMogIt.cache:GetItemSourcesValue(itemLink)
-    return self.data["source"][CalculateCacheKey(itemLink)]
+    return self.data["source"][CanIMogIt:CalculateKey(itemLink)]
 end
 
 
 function CanIMogIt.cache:SetItemSourcesValue(itemLink, value)
-    self.data["source"][CalculateCacheKey(itemLink)] = value
+    self.data["source"][CanIMogIt:CalculateKey(itemLink)] = value
 end
 
 
 function CanIMogIt.cache:GetSetsInfoTextValue(itemLink)
-    return self.data["sets"][CalculateCacheKey(itemLink)]
+    return self.data["sets"][CanIMogIt:CalculateKey(itemLink)]
 end
 
 
 function CanIMogIt.cache:SetSetsInfoTextValue(itemLink, value)
-    self.data["sets"][CalculateCacheKey(itemLink)] = value
+    self.data["sets"][CanIMogIt:CalculateKey(itemLink)] = value
 end
 
 
@@ -120,6 +124,14 @@ local function OnClearCacheEvent(event)
     end
 end
 
-CanIMogIt.frame:AddEventFunction(OnClearCacheEvent)
+CanIMogIt.frame:AddSmartEvent(OnClearCacheEvent, {"TRANSMOG_COLLECTION_UPDATED"})
+
+local function OnClearBindCacheEvent(event, bag, slot)
+    if event == "ITEM_LOCK_CHANGED" then
+        CanIMogIt.cache:DeleteBindDataValue(nil, bag, slot)
+    end
+end
+
+CanIMogIt.frame:AddSmartEvent(OnClearBindCacheEvent, {"ITEM_LOCK_CHANGED"})
 
 CanIMogIt.cache:Clear()

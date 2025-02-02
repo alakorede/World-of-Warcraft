@@ -1,6 +1,6 @@
 ﻿
 	----------------------------------------------------------------------
-	-- 	Leatrix Maps 11.0.02 (31st July 2024)
+	-- 	Leatrix Maps 11.0.30 (29th January 2025)
 	----------------------------------------------------------------------
 
 	-- 10:Func, 20:Comm, 30:Evnt, 40:Panl
@@ -12,7 +12,7 @@
 	local LeaMapsLC, LeaMapsCB, LeaConfigList = {}, {}, {}
 
 	-- Version
-	LeaMapsLC["AddonVer"] = "11.0.02"
+	LeaMapsLC["AddonVer"] = "11.0.30"
 
 	-- Get locale table
 	local void, Leatrix_Maps = ...
@@ -28,15 +28,13 @@
 			end)
 			return
 		end
-		if gametocversion and gametocversion >= 110000 then -- 11.0.0
+		if gametocversion and gametocversion >= 110100 then -- 11.1.0
 			LeaMapsLC.NewPatch = true
 		end
 	end
 
 	-- Check for addons
 	if C_AddOns.IsAddOnLoaded("ElvUI") then LeaMapsLC.ElvUI = unpack(ElvUI) end
-	if C_AddOns.IsAddOnLoaded("Demodal") then LeaMapsLC.Demodal = true end
-	if C_AddOns.IsAddOnLoaded("WorldQuestTracker") then LeaMapsLC.WorldQuestTracker = true end
 
 	-- Set bindings translations
 	_G.BINDING_NAME_LEATRIX_MAPS_GLOBAL_TOGGLE = L["Toggle panel"]
@@ -107,7 +105,21 @@
 				if v.ResetButton then
 					v.ResetButton:SetParent(hiddenFrame)
 				end
+				if v.FilterCounter then
+					v.FilterCounter:HookScript("OnShow", function() v.FilterCounter:Hide() end)
+					v.FilterCounterBanner:HookScript("OnShow", function() v.FilterCounterBanner:Hide() end)
+				end
 			end
+		end
+
+		----------------------------------------------------------------------
+		-- Hide world map tabs
+		----------------------------------------------------------------------
+
+		if LeaMapsLC["NoMapTabs"] == "On" then
+			QuestMapFrame.QuestsTab:Hide()
+			QuestMapFrame.MapLegendTab:Hide()
+			QuestMapFrame.EventsTab:Hide()
 		end
 
 		----------------------------------------------------------------------
@@ -649,9 +661,11 @@
 			----------------------------------------------------------------------
 
 			-- Remove frame management
-			WorldMapFrame:SetAttribute("UIPanelLayout-area", nil)
-			WorldMapFrame:SetAttribute("UIPanelLayout-enabled", false)
-			WorldMapFrame:SetAttribute("UIPanelLayout-allowOtherPanels", true)
+			C_Timer.After(0.1, function() -- Needed to apply settings properly (else game menu wont open with escape and opening map alongside character frame resets map position)
+				WorldMapFrame:SetAttribute("UIPanelLayout-area", nil)
+				WorldMapFrame:SetAttribute("UIPanelLayout-enabled", false)
+				WorldMapFrame:SetAttribute("UIPanelLayout-allowOtherPanels", true)
+			end)
 
 			-- Enable movement
 			WorldMapFrame:SetMovable(true)
@@ -672,12 +686,16 @@
 				end
 			end)
 
+			WorldMapFrame:SetClampedToScreen(true)
+
 			-- Set position when map size is toggled
 			hooksecurefunc(WorldMapFrame, "SynchronizeDisplayState", function()
 				WorldMapFrame:ClearAllPoints()
 				if not WorldMapFrame:IsMaximized() then
+					WorldMapFrame:SetClampRectInsets(600, -600, -64, 470)
 					WorldMapFrame:SetPoint(LeaMapsLC["MapPosA"], UIParent, LeaMapsLC["MapPosR"], LeaMapsLC["MapPosX"], LeaMapsLC["MapPosY"])
 				else
+					WorldMapFrame:SetClampRectInsets(900, -900, -64, 700)
 					WorldMapFrame:SetPoint(LeaMapsLC["MaxMapPosA"], UIParent, LeaMapsLC["MaxMapPosR"], LeaMapsLC["MaxMapPosX"], LeaMapsLC["MaxMapPosY"])
 				end
 			end)
@@ -688,13 +706,6 @@
 				WorldMapFrame:SetPoint(LeaMapsLC["MapPosA"], UIParent, LeaMapsLC["MapPosR"], LeaMapsLC["MapPosX"], LeaMapsLC["MapPosY"])
 			else
 				WorldMapFrame:SetPoint(LeaMapsLC["MaxMapPosA"], UIParent, LeaMapsLC["MaxMapPosR"], LeaMapsLC["MaxMapPosX"], LeaMapsLC["MaxMapPosY"])
-			end
-
-			-- Fix for Demodal clamping the map frame to the screen
-			if LeaMapsLC.Demodal then
-				if WorldMapFrame:IsClampedToScreen() then
-					WorldMapFrame:SetClampedToScreen(false)
-				end
 			end
 
 			----------------------------------------------------------------------
@@ -767,11 +778,11 @@
 			end)
 
 			-- Fix for World Quest Tracker to set map window centralised to disabled
-			if LeaMapsLC.WorldQuestTracker then
+			EventUtil.ContinueOnAddOnLoaded("WorldQuestTracker", function()
 				if WQTrackerDB and WQTrackerDB.profiles and WQTrackerDB.profiles.Default and WQTrackerDB.profiles.Default.map_frame_anchor and WQTrackerDB.profiles.Default.map_frame_anchor == "center" then
 					WQTrackerDB.profiles.Default.map_frame_anchor = "left"
 				end
-			end
+			end)
 
 		end
 
@@ -1416,22 +1427,20 @@
 			subTitle:ClearAllPoints()
 			subTitle:SetPoint("BOTTOM", 0, 72)
 
-			local slashButton = CreateFrame("Button", nil, interPanel)
-			slashButton:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
-			slashButton:SetScript("OnClick", function() SlashCmdList["Leatrix_Maps"]("") end)
-
-			local slashTitle = LeaMapsLC:MakeTx(slashButton, "/ltm", 0, 0)
+			local slashTitle = LeaMapsLC:MakeTx(interPanel, "/ltm", 0, 0)
 			slashTitle:SetFont(slashTitle:GetFont(), 72)
 			slashTitle:ClearAllPoints()
-			slashTitle:SetAllPoints()
-
-			slashButton:SetSize(slashTitle:GetSize())
-			slashButton:SetScript("OnEnter", function()
+			slashTitle:SetPoint("BOTTOM", subTitle, "TOP", 0, 40)
+			slashTitle:SetScript("OnMouseUp", function(self, button)
+				if button == "LeftButton" then
+					SlashCmdList["Leatrix_Maps"]("")
+				end
+			end)
+			slashTitle:SetScript("OnEnter", function()
 				slashTitle.r,  slashTitle.g, slashTitle.b = slashTitle:GetTextColor()
 				slashTitle:SetTextColor(1, 1, 0)
 			end)
-
-			slashButton:SetScript("OnLeave", function()
+			slashTitle:SetScript("OnLeave", function()
 				slashTitle:SetTextColor(slashTitle.r, slashTitle.g, slashTitle.b)
 			end)
 
@@ -1778,6 +1787,7 @@
 		or	(LeaMapsLC["HideTownCity"] ~= LeaMapsDB["HideTownCity"])			-- Hide town and city icons
 		or	(LeaMapsLC["EnhanceBattleMap"] ~= LeaMapsDB["EnhanceBattleMap"])	-- Enhance battlefield map
 		or	(LeaMapsLC["NoFilterResetBtn"] ~= LeaMapsDB["NoFilterResetBtn"])	-- Hide filte reset button
+		or	(LeaMapsLC["NoMapTabs"] ~= LeaMapsDB["NoMapTabs"])					-- Hide world map tabs
 		then
 			-- Enable the reload button
 			LeaMapsLC:LockItem(LeaMapsCB["ReloadUIButton"], false)
@@ -1906,7 +1916,7 @@
 	function LeaMapsLC:MakeSL(frame, field, label, caption, low, high, step, x, y, form)
 
 		-- Create slider control
-		local Slider = CreateFrame("Slider", "LeaMapsGlobalSlider" .. field, frame, "OptionssliderTemplate")
+		local Slider = CreateFrame("Slider", nil, frame, "UISliderTemplate")
 		LeaMapsCB[field] = Slider
 		Slider:SetMinMaxValues(low, high)
 		Slider:SetValueStep(step)
@@ -1919,12 +1929,10 @@
 		Slider:SetScript("OnEnter", LeaMapsLC.TipSee)
 		Slider:SetScript("OnLeave", GameTooltip_Hide)
 
-		-- Remove slider text
-		_G[Slider:GetName().."Low"]:SetText('')
-		_G[Slider:GetName().."High"]:SetText('')
-
 		-- Set label
-		_G[Slider:GetName().."Text"]:SetText(L[label])
+		Slider.label = Slider:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+		Slider.label:SetPoint("TOP", Slider, "TOP", 0, 12)
+		Slider.label:SetText(L[label])
 
 		-- Create slider label
 		Slider.f = Slider:CreateFontString(nil, 'BACKGROUND')
@@ -2060,6 +2068,7 @@
 				LeaMapsDB["NoMapFade"] = "On"
 				LeaMapsDB["NoMapEmote"] = "On"
 				LeaMapsDB["NoFilterResetBtn"] = "On"
+				LeaMapsDB["NoMapTabs"] = "On"
 
 				LeaMapsDB["MapPosA"] = "TOPLEFT"
 				LeaMapsDB["MapPosR"] = "TOPLEFT"
@@ -2160,6 +2169,8 @@
 			LeaMapsLC:LoadVarChk("NoMapFade", "On")						-- Disable map fade
 			LeaMapsLC:LoadVarChk("NoMapEmote", "On")					-- Disable map emote
 			LeaMapsLC:LoadVarChk("NoFilterResetBtn", "On")				-- Hide filter reset button
+			LeaMapsLC:LoadVarChk("NoMapTabs", "Off")					-- Hide world map tabs
+
 			LeaMapsLC:LoadVarAnc("MapPosA", "TOPLEFT")					-- Windowed map anchor
 			LeaMapsLC:LoadVarAnc("MapPosR", "TOPLEFT")					-- Windowed map relative
 			LeaMapsLC:LoadVarNum("MapPosX", 16, -5000, 5000)			-- Windowed map X
@@ -2221,7 +2232,7 @@
 
 			if LeaMapsLC.NewPatch then
 			else
-				-- LockDF("NoFilterResetBtn", "This is for The War Within.")
+				LockDF("NoMapTabs", "This is for game patch 11.1.0.")
 			end
 
 		elseif event == "PLAYER_LOGIN" then
@@ -2240,6 +2251,8 @@
 			LeaMapsDB["NoMapFade"] = LeaMapsLC["NoMapFade"]
 			LeaMapsDB["NoMapEmote"] = LeaMapsLC["NoMapEmote"]
 			LeaMapsDB["NoFilterResetBtn"] = LeaMapsLC["NoFilterResetBtn"]
+			LeaMapsDB["NoMapTabs"] = LeaMapsLC["NoMapTabs"]
+
 			LeaMapsDB["MapPosA"] = LeaMapsLC["MapPosA"]
 			LeaMapsDB["MapPosR"] = LeaMapsLC["MapPosR"]
 			LeaMapsDB["MapPosX"] = LeaMapsLC["MapPosX"]
@@ -2384,22 +2397,11 @@
 	LeaMapsLC:MakeCB(PageF, "NoMapFade", "Disable map fade", 225, -232, false, "If checked, the map will not fade while your character is moving.")
 	LeaMapsLC:MakeCB(PageF, "NoMapEmote", "Disable reading emote", 225, -252, false, "If checked, your character will not perform the reading emote when you open the map.")
 	LeaMapsLC:MakeCB(PageF, "NoFilterResetBtn", "Hide filter reset button", 225, -272, true, "If checked, the world map filter reset button will be hidden.")
-	LeaMapsLC:MakeCB(PageF, "ShowMinimapIcon", "Show minimap button", 225, -292, false, "If checked, the minimap button will be shown.")
+	LeaMapsLC:MakeCB(PageF, "NoMapTabs", "Hide world map tabs", 225, -292, true, "If checked, world map tabs will be hidden.")
+	LeaMapsLC:MakeCB(PageF, "ShowMinimapIcon", "Show minimap button", 225, -312, false, "If checked, the minimap button will be shown.")
 
 	LeaMapsLC:CfgBtn("ScaleWorldMapBtn", LeaMapsCB["ScaleWorldMap"])
 	LeaMapsLC:CfgBtn("RevTintBtn", LeaMapsCB["RevealMap"])
 	LeaMapsLC:CfgBtn("UnlockMapBtn", LeaMapsCB["UnlockMap"])
 	LeaMapsLC:CfgBtn("ShowCoordsBtn", LeaMapsCB["ShowCoords"])
 	LeaMapsLC:CfgBtn("EnhanceBattleMapBtn", LeaMapsCB["EnhanceBattleMap"])
-
-	-- Show help button for Zoom heading
-	LeaMapsLC:CfgBtn("ZoomInfoBtn", LeaMapsLC["PageF"])
-	LeaMapsCB["ZoomInfoBtn"]:ClearAllPoints()
-	LeaMapsCB["ZoomInfoBtn"]:SetPoint("LEFT", ZoomHeading, "RIGHT", 0, 0)
-	LeaMapsCB["ZoomInfoBtn"]:SetSize(25, 25)
-	LeaMapsCB["ZoomInfoBtn"].t:SetTexture("Interface\\COMMON\\help-i.blp")
-	LeaMapsCB["ZoomInfoBtn"].t:SetTexCoord(0, 1, 0, 1)
-	LeaMapsCB["ZoomInfoBtn"].t:SetVertexColor(0.9, 0.8, 0.0)
-	LeaMapsCB["ZoomInfoBtn"]:SetHighlightTexture("Interface\\COMMON\\help-i.blp")
-	LeaMapsCB["ZoomInfoBtn"]:GetHighlightTexture():SetTexCoord(0, 1, 0, 1)
-	LeaMapsCB["ZoomInfoBtn"].tiptext = L["Enabling any of the zoom settings below will taint the map until you reload or logout."]

@@ -1,9 +1,9 @@
 --[[
-	info.lua
-		Help and credits menus
+	Help and credits menus.
+	All Rights Reserved
 --]]
 
-local PATRONS = {{title='Jenkins',people={'Gnare','Adcantu','Debora S Ogormanw','Johnny Rabbit'}},{title='Ambassador',people={'Julia F','Lolari ','Rafael Lins','Dodgen','Ptsdthegamer','Swallow@area52','Adam Mann','Bc Spear','Jury ','Peter Hollaubek','Michael Kinasz','Metadata','Kelly Wolf','Ds9293','Charles Howarth','Lisa','נעמי מקינו','Melinani King'}}} -- generated patron list
+local PATRONS = {{title='Jenkins',people={'Gnare','Debora S Ogormanw','Johnny Rabbit','Shaun Potts'}},{title='Ambassador',people={'Julia F','Lolari ','Rafael Lins','Ptsdthegamer','Adam Mann','Bc Spear','Jury ','Swallow@area52','Peter Hollaubek','Michael Kinasz','Ds9293','Metadata','נעמי מקינו','Lisa','M Prieto','Ronald Platz'}}} -- generated patron list
 local L, ADDON, Addon = select(2, ...).Addon()
 local Sushi = LibStub('Sushi-3.2')
 

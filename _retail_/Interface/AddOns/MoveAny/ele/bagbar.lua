@@ -56,6 +56,7 @@ function MoveAny:UpdateBags()
 					BagsBar_MA_DRAG,
 					"SetSize",
 					function(sel, w, h)
+						if InCombatLockdown() and sel:IsProtected() then return false end
 						if sel.ma_bags_setsize then return end
 						sel.ma_bags_setsize = true
 						MoveAny:UpdateBags()
@@ -124,6 +125,7 @@ function MoveAny:InitBags()
 				BagsBar,
 				"SetSize",
 				function(sel, w, h)
+					if InCombatLockdown() and sel:IsProtected() then return false end
 					if sel.ma_bags_setsize then return end
 					sel.ma_bags_setsize = true
 					MoveAny:UpdateBags()
@@ -180,19 +182,21 @@ function MoveAny:InitBags()
 			-- Masque
 			if once then
 				once = false
-				local MSQ = LibStub("Masque", true)
-				if MSQ then
-					local group = MSQ:Group("MA Blizzard Bags")
-					for i, v in pairs(BAGS) do
-						if v ~= "KeyRingButton" and v ~= "BagToggle" then
-							local btn = _G[v]
-							if not btn.MasqueButtonData then
-								btn.MasqueButtonData = {
-									Button = btn,
-									Icon = _G[v .. "IconTexture"],
-								}
+				if LibStub then
+					local MSQ = LibStub("Masque", true)
+					if MSQ then
+						local group = MSQ:Group("MA Blizzard Bags")
+						for i, v in pairs(BAGS) do
+							if v ~= "KeyRingButton" and v ~= "BagToggle" then
+								local btn = _G[v]
+								if not btn.MasqueButtonData then
+									btn.MasqueButtonData = {
+										Button = btn,
+										Icon = _G[v .. "IconTexture"],
+									}
 
-								group:AddButton(btn, btn.MasqueButtonData, "Item")
+									group:AddButton(btn, btn.MasqueButtonData, "Item")
+								end
 							end
 						end
 					end

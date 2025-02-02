@@ -57,7 +57,7 @@ function Cacher:OnEnable()
 
 	for id = 1, 5000 do
 		local data = C.CurrencyInfo.GetCurrencyInfo(id)
-		if data and data.quantity > 0 and data.quality > 0 then
+		if data and data.quantity > 0 and data.quality > 0 and not C.CurrencyInfo.IsAccountWideCurrency(id) then
 			self.player.currency[id] = data.quantity
 		end
 	end
@@ -88,9 +88,12 @@ function Cacher:PLAYER_MONEY()
 	self.player.money = GetMoney()
 end
 
-function Cacher:CURRENCY_DISPLAY_UPDATE(_, id, quantity)
-	if id and quantity then
-		self.player.currency[id] = quantity > 0 and quantity or nil
+function Cacher:CURRENCY_DISPLAY_UPDATE(_, id)
+	if id and not C.CurrencyInfo.IsAccountWideCurrency(id) then
+		local info = C.CurrencyInfo.GetCurrencyInfo(id)
+		if info then
+			self.player.currency[id] = (info.quantity or 0) > 0 and info.quantity or nil
+		end
 	end
 end
 
@@ -106,13 +109,22 @@ function Cacher:CURRENCY_TRACKED_CHANGED()
 end
 
 function Cacher:BANK_CLOSE()
-	for i = FIRST_BANK_SLOT, LAST_BANK_SLOT do
-		self:SaveBag(i)
+	if C.Bank.CanViewBank(0) then
+		for i = FIRST_BANK_SLOT, LAST_BANK_SLOT do
+			self:SaveBag(i)
+		end
+		if REAGENTBANK_CONTAINER and IsReagentBankUnlocked() then
+			self:SaveBag(REAGENTBANK_CONTAINER)
+		end
+		self:SaveBag(BANK_CONTAINER)
 	end
-	if REAGENTBANK_CONTAINER and IsReagentBankUnlocked() then
-		self:SaveBag(REAGENTBANK_CONTAINER)
+
+	if C.Bank.CanViewBank(2) then
+		BrotherBags.account = C.Bank.FetchPurchasedBankTabData(2)
+		for _, bag in pairs(BrotherBags.account) do
+			Mixin(bag, self:ParseBag(bag.ID))
+		end
 	end
-	self:SaveBag(BANK_CONTAINER)
 end
 
 function Cacher:VAULT_CLOSE()
@@ -154,7 +166,15 @@ end
 
 --[[ API ]]--
 
+function Cacher:SaveEquip(slot)
+	self.player.equip[slot] = self:ParseItem(GetInventoryItemLink('player', slot), GetInventoryItemCount('player', slot))
+end
+
 function Cacher:SaveBag(bag)
+	self.player[bag] = self:ParseBag(bag)
+end
+
+function Cacher:ParseBag(bag)
 	local size = C.Container.GetContainerNumSlots(bag)
 	if size > 0 then
 		local items = {}
@@ -173,25 +193,20 @@ function Cacher:SaveBag(bag)
 			items.link = self:ParseItem(GetInventoryItemLink('player', C.Container.ContainerIDToInventoryID(bag)))
 		end
 
-		self.player[bag] = items
-	else
-		self.player[bag] = nil
+		return items
 	end
-end
-
-function Cacher:SaveEquip(i)
-	self.player.equip[i] = self:ParseItem(GetInventoryItemLink('player', i), GetInventoryItemCount('player', i))
 end
 
 function Cacher:ParseItem(link, count)
 	if link then
 		local id = tonumber(link:match('item:(%d+):')) -- check for profession window bug
 		if id == 0 and TradeSkillFrame then
-			local focus = GetMouseFocus():GetName()
-			if focus == 'TradeSkillSkillIcon' then
+			local focus = GetMouseFoci and GetMouseFoci()[1] or GetMouseFocus and GetMouseFocus()
+			local name = focus:GetName()
+			if name == 'TradeSkillSkillIcon' then
 				link = GetTradeSkillItemLink(TradeSkillFrame.selectedSkill)
 			else
-				local i = focus:match('TradeSkillReagent(%d+)')
+				local i = name:match('TradeSkillReagent(%d+)')
 				if i then
 					link = GetTradeSkillReagentItemLink(TradeSkillFrame.selectedSkill, tonumber(i))
 				end

@@ -4,8 +4,9 @@
 
 
 local ADDON, Addon = ...
-local L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 local Title = Addon.Tipped:NewClass('Title', 'Button')
+local L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
+local C = LibStub('C_Everywhere')
 
 
 --[[ Construct ]]--
@@ -14,18 +15,13 @@ function Title:New(parent, title)
 	local b = self:Super(Title):New(parent)
 	b.title = title
 
-	b:SetScript('OnHide', b.OnMouseUp)
-	b:SetScript('OnMouseUp', b.OnMouseUp)
-	b:SetScript('OnMouseDown', b.OnMouseDown)
-	b:SetScript('OnDoubleClick', b.OnDoubleClick)
-	b:SetScript('OnEnter', b.OnEnter)
-	b:SetScript('OnLeave', b.OnLeave)
-	b:SetScript('OnClick', b.OnClick)
 	b:RegisterSignal('SEARCH_TOGGLED', 'UpdateVisible')
 	b:RegisterFrameSignal('OWNER_CHANGED', 'Update')
+	b:SetScript('OnHide', b.OnMouseUp)
 	b:RegisterForClicks('anyUp')
 	b:SetToplevel(true)
 	b:Update()
+	b:Show()
 
 	return b
 end
@@ -56,7 +52,7 @@ function Title:OnDoubleClick()
 end
 
 function Title:OnClick(button)
-	if button == 'RightButton' and LoadAddOn(ADDON .. '_Config') then
+	if button == 'RightButton' and C.AddOns.LoadAddOn(ADDON .. '_Config') then
 		Addon.FrameOptions.frame = self:GetFrameID()
 		Addon.FrameOptions:Open()
 	end

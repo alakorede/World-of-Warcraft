@@ -3,7 +3,8 @@
 --------------------------------------------------------------------------------
 --            Copyright 2017-2024 Dylan Fortune (Crieve-Sargeras)             --
 --------------------------------------------------------------------------------
-local rawget, ipairs, pairs, tinsert, setmetatable, print = rawget, ipairs, pairs, tinsert, setmetatable, print
+local rawget, ipairs, pairs, tinsert, setmetatable, print,math_sqrt,math_floor
+	= rawget, ipairs, pairs, tinsert, setmetatable, print,math.sqrt,math.floor
 -- This is a hidden frame that intercepts all of the event notifications that we have registered for.
 local appName, app = ...;
 app.EmptyFunction = function() end;
@@ -26,7 +27,7 @@ SLASH_RELOADUI1 = "/reloadui";
 SLASH_RELOADUI2 = "/rl";
 SlashCmdList.RELOADUI = ReloadUI;
 
-local assetRootPath = "Interface\\Addons\\" .. appName .. "\\assets\\";
+local assetRootPath = "interface/Addons\\" .. appName .. "\\assets\\";
 app.asset = function(path)
 	return assetRootPath .. path;
 end
@@ -68,17 +69,19 @@ local function AssignFieldValue(group, field, value)
 		end
 	end
 end
-local function CloneArray(arr)
-	local clone = {};
-	for i,value in ipairs(arr) do
-		tinsert(clone, value);
+local function CloneArray(arr, clone)
+	local clone = clone or {}
+	for i=1,#arr do
+		clone[#clone + 1] = arr[i]
 	end
-	return clone;
+	return clone
 end
-local function CloneDictionary(data)
-	local clone = {};
+local function CloneDictionary(data, clone)
+	local clone = clone or {};
 	for key,value in pairs(data) do
-		clone[key] = value;
+		if clone[key] == nil then
+			clone[key] = value;
+		end
 	end
 	return clone;
 end
@@ -94,6 +97,14 @@ local function CloneReference(group)
 		clone.g = g;
 	end
 	return setmetatable(clone, { __index = group });
+end
+app.distance = function( x1, y1, x2, y2 )
+	return math_sqrt( (x2-x1)^2 + (y2-y1)^2 )
+end
+-- from http://lua-users.org/wiki/SimpleRound
+app.round = function(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math_floor(num * mult + 0.5) / mult
 end
 -- Returns the best mapID for a group based on that group's coordinate and map data. If the current mapID is included in any of those fields, it will return that. This is used exclusively within tooltips and does not need to reference the source parent.
 local function GetBestMapForGroup(group, currentMapID)
@@ -136,6 +147,11 @@ local function GetRelativeField(group, field, value)
 		return group[field] == value or GetRelativeField(group.sourceParent or group.parent, field, value);
 	end
 end
+local function GetRawRelativeField(group, field, value)
+	if group then
+		return group[field] == value or GetRawRelativeField(rawget(group, "parent"), field, value)
+	end
+end
 -- Returns the first encountered group's value tracing upwards in parent hierarchy which has a value for the provided field
 -- Prioritizes sourceParent before parent
 local function GetRelativeValue(group, field)
@@ -173,7 +189,58 @@ app.CloneReference = CloneReference;
 app.GetBestMapForGroup = GetBestMapForGroup;
 app.GetDeepestRelativeValue = GetDeepestRelativeValue;
 app.GetRelativeField = GetRelativeField;
+app.GetRawRelativeField = GetRawRelativeField
 app.GetRelativeValue = GetRelativeValue;
+app.IsComplete = function(o)
+	local total = o.total
+	if total and total > 0 then return total == o.progress; end
+	if o.collectible then return o.collected; end
+	if o.trackable then return o.saved; end
+	return true;
+end
+
+local GetItemIcon = app.WOWAPI.GetItemIcon;
+app.GetIconFromProviders = function(group)
+	if group.providers then
+		local icon;
+		for k,v in ipairs(group.providers) do
+			if v[2] > 0 then
+				if v[1] == "o" then
+					icon = app.ObjectIcons[v[2]];
+				elseif v[1] == "i" then
+					icon = GetItemIcon(v[2]);
+				end
+				if icon then return icon; end
+			end
+		end
+	end
+end;
+app.GetNameFromProviders = function(group)
+	if group.providers then
+		local name;
+		for k,v in ipairs(group.providers) do
+			if v[2] > 0 then
+				if v[1] == "o" then
+					name = app.ObjectNames[v[2]];
+				elseif v[1] == "i" then
+					name = GetItemInfo(v[2]);
+				elseif v[1] == "n" then
+					name = app.NPCNameFromID[v[2]];
+				end
+				if name then return name; end
+			end
+		end
+	end
+end;
+
+-- Common Metatable Functions
+app.MetaTable = {}
+app.MetaTable.AutoTable = { __index = function(t, key)
+	if key == nil then return end
+	local k = {}
+	t[key] = k
+	return k
+end}
 
 -- Cache information about the player.
 app.Gender = UnitSex("player");
@@ -251,6 +318,8 @@ app.LocalizeGlobalIfAllowed = function(globalName, init)
 	end
 	return app.LocalizeGlobal(globalName, init);
 end
+
+if not app.Presets.ALL then app.Presets.ALL = setmetatable({}, {__index = app.ReturnTrue}) end
 
 (function()
 -- Extend the Frame Class and give them ATT-Style Coroutines and Tooltips!
@@ -421,8 +490,8 @@ function app:ShowPopupDialogWithMultiLineEditBox(text, onclick, label)
 		f:SetPoint("CENTER")
 		f:SetSize(600, 500)
 		f:SetBackdrop({
-			bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-			edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+			bgFile = 137056,
+			edgeFile = 137057,
 			tile = true, tileSize = 16, edgeSize = 16,
 			insets = { left = 4, right = 4, top = 4, bottom = 4 }
 		})
@@ -488,9 +557,9 @@ function app:ShowPopupDialogWithMultiLineEditBox(text, onclick, label)
 		rb:SetPoint("BOTTOMRIGHT", -6, 7)
 		rb:SetSize(16, 16)
 
-		rb:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
-		rb:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
-		rb:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+		rb:SetNormalTexture(386864)
+		rb:SetHighlightTexture(386863)
+		rb:SetPushedTexture(386862)
 
 		rb:SetScript("OnMouseDown", function(self, button)
 			if button == "LeftButton" then
@@ -506,6 +575,7 @@ function app:ShowPopupDialogWithMultiLineEditBox(text, onclick, label)
 		f:Show()
 	end
 	f.OnClick = onclick;
+	f:Show()
 	if text then
 		if label then
 			local l = f.Label;
@@ -515,14 +585,127 @@ function app:ShowPopupDialogWithMultiLineEditBox(text, onclick, label)
 		f.EditBox:HighlightText();
 		f.EditBox:SetFocus();
 	end
-	f:Show()
 end
 function app:ShowPopupDialogToReport(reportReason, text)
 	app:ShowPopupDialogWithMultiLineEditBox(text, nil, (reportReason or "Missing Data").."\n"..app.L.PLEASE_REPORT_MESSAGE..app.L.REPORT_TIP);
 end
 
+-- Clickable ATT Chat Link Handling
+local reports = {};
+function app:SetupReportDialog(id, reportMessage, text)
+	-- Store some information for use by a report popup by id
+	if not reports[id] then
+		-- print("Setup Report", id, reportMessage)
+		reports[id] = {
+			msg = reportMessage,
+			text = (type(text) == "table" and app.TableConcat(text, nil, "", "\n") or text)
+		};
+		return true;
+	end
+end
+hooksecurefunc("SetItemRef", function(link, text)
+	-- print("Chat Link Click",link,text:gsub("\|", "&"));
+	-- if IsShiftKeyDown() then
+	-- 	ChatEdit_InsertLink(text);
+	-- else
+	local type, info, data1, data2, data3 = (":"):split(link);
+	-- print(type, info, data1, data2, data3)
+	if type == "addon" and info == "ATT" then
+		-- local op = link:sub(17)
+		-- print("ATT Link",op)
+		-- local type, paramA, paramB = (":"):split(data);
+		-- print(type,paramA,paramB)
+		if data1 == "search" then
+			local cmd = data2 .. ":" .. data3;
+			app.SetSkipLevel(2);
+			local group = app.GetCachedSearchResults(app.SearchForLink, cmd);
+			app.SetSkipLevel(0);
+
+			if IsShiftKeyDown() then
+				-- If this reference has a link, then attempt to preview the appearance or write to the chat window.
+				local link = group.link or group.silentLink;
+				if (link and HandleModifiedItemClick(link)) or ChatEdit_InsertLink(link) then return true; end
+			end
+
+			app:CreateMiniListForGroup(group);
+			return true;
+		elseif data1 == "dialog" then
+			-- Retrieves stored information for a report dialog and attempts to display the dialog if possible
+			local popup = reports[data2];
+			if popup then
+				app:ShowPopupDialogToReport(popup.msg, popup.text);
+				return true;
+			end
+		end
+	end
+end);
+
+-- Chat Links
+function app:Linkify(text, color, operation)
+	-- Turns a bit of text into a colored link which ATT will attempt to understand
+	return "|Haddon:ATT:"..operation.."|h|c"..color.."["..text.."]|r|h";
+end
+function app:SearchLink(group)
+	if not group then return end
+	return app:Linkify(group.text or group.hash or UNKNOWN, app.Colors.ChatLink, "search:"..(group.key or "?")..":"..(group[group.key] or "?"))
+end
+function app:WaypointLink(mapID, x, y, text)
+	return "|cffffff00|Hworldmap:" .. mapID .. ":" .. math_floor(x * 10000) .. ":" .. math_floor(y * 10000)
+		.. "|h[|A:Waypoint-MapPin-ChatIcon:13:13:0:0|a" .. (text or "") .. "]|h|r";
+end
+
 -- Define Modules
 app.Modules = {};
+
+-- Define Chat Commands handling
+app.ChatCommands = { Help = {} }
+-- Adds a handled chat command for ATT
+-- cmd : The lowercase string to trigger the command handler
+-- func : The function which is run with provided 'args' from chat input when 'cmd' is used
+-- info : (optional, WIP) An Info table which defines helpful information about using the command
+app.ChatCommands.Add = function(cmd, func, help)
+	if not cmd or cmd == "" then error("Must supply an Add Chat Command name") end
+	if type(func) ~= "function" then error("Attempted to add a non-function handler for a Chat Command: "..cmd) end
+		app.ChatCommands[cmd:lower()] = func
+		if help then
+			if type(help) ~= "table" then
+				app.print("Attempted to add a non-table Help for a Chat Command: "..cmd)
+			else
+				app.ChatCommands.Help[cmd:lower()] = help
+			end
+		end
+	end
+-- Removes a handled chat command for ATT
+-- cmd : The lowercase string command whose handler will be removed
+app.ChatCommands.Remove = function(cmd)
+	if not cmd or cmd == "" then error("Must supply a Remove Chat Command name") end
+	app.ChatCommands[cmd:lower()] = nil
+	app.ChatCommands.Help[cmd:lower()] = nil
+end
+-- Prints the Help information for a given command
+-- cmd : The command's Help to print
+app.ChatCommands.PrintHelp = function(cmd)
+	local help = app.ChatCommands.Help[cmd:lower()]
+	if not help then
+		app.print("No Help provided for command:",cmd)
+		return true
+	end
+	for _,helpLine in ipairs(help) do
+		app.print(helpLine)
+	end
+	return true
+end
+
+-- Allows a user to use /att report-reset
+-- to clear all generated Report dialog IDs so that they may be re-generated within the same game session
+app.ChatCommands.Add("report-reset", function(args)
+	wipe(reports)
+	app.HandleEvent("OnReportReset")
+	return true
+end, {
+	"Usage : /att report-reset",
+	"Allows resetting the tracking of displayed Dialog reports such that duplicate reports can be repeated in the same game session.",
+})
 
 -- Global Variables
 AllTheThingsSavedVariables = {};

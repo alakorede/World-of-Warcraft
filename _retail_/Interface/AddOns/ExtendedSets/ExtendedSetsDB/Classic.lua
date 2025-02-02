@@ -5,11 +5,11 @@ local expansionID = 0;
 --Name, Description, Label, classMask, patchID, sources, requiredFact
 ----classMask:    (35=Plate, 68=Mail, 3592=Leather, 400=Cloth)
 local db = {
---Naxx Polar SetsFrame
-{"Polar","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",3592,10500,{9069,9028,8908,12507,8928,21032,8910,8909,},nil,true},
-{"Icy Scale","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",68,10500,{9074,9042,8911,8929,21035,8912,8913,},nil,true},
-{"Icebane","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",35,10500,{9068,9027,8916,14394,8926,8918,8917,},nil,true},
-{"Glacial","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",400,100000,{9073,{8902,21024},14562,8927,21026,8904,8903,1837,},nil,true},
+--Naxx Polar
+--{"Polar","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",3592,10500,{9069,9028,8908,12507,8928,21032,8910,8909,},nil,true},
+--{"Icy Scale","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",68,10500,{9074,9042,8911,8929,21035,8912,8913,},nil,true},
+--{"Icebane","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",35,10500,{9068,9027,8916,14394,8926,8918,8917,},nil,true},
+--{"Glacial","Original level 60 Naxx. Most pieces unavailable.","Naxxramas (Classic)",400,100000,{9073,{8902,21024},14562,8927,21026,8904,8903,1837,},nil,true},
 
 --Scarlet Crusade
 {"Scale of the Scarlet Crusade","Purchased at DMF while wearing the Tabard of the Scarlet Crusade.","Scarlet Crusade",35,10001,{3913,3914,3915,3916,3917,3918,}},
@@ -550,6 +550,7 @@ local db = {
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
+{3055,8902,21024},--Glacial Cloth, Robe/chest
 }
 
 function AddToCollection()
@@ -578,11 +579,32 @@ function AddToCollection()
     for j=1,#db[i][6] do 
       if type(db[i][6][j]) == "table" then
         if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-        data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-        data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+        local isKnown = false;
+        --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).visualID)) do
+        for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j][1]))) do
+          if C_TransmogCollection.PlayerKnowsSource(b) then
+            isKnown = true;
+            break;
+          end
+        end
+        data.sources[db[i][6][j][1]] = isKnown;
+          data.altSources[db[i][6][j][1]] = {}
+        for k=1,#db[i][6][j] do
+          app.AppID(db[i][6][j][k])
+          tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
+        end
+        --data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
         data.altSourceNumbers[db[i][6][j][1]] = 1;
       else
-        data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j]] = isKnown;
       end
     end
     

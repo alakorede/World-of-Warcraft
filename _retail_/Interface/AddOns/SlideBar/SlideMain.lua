@@ -32,8 +32,6 @@ local LIBRARY_VERSION_MINOR = 20
 local lib = LibStub:NewLibrary(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR)
 if not lib then return end
 
-LibStub("LibRevision"):Set("$URL$","$Rev$","6.0.DEV.", 'auctioneer', 'libs')
-
 -- Autoconvert existing nSideBar instances to SlideBar
 if LibStub.libs.nSideBar then
 	for k,v in pairs(LibStub.libs.nSideBar) do
@@ -62,9 +60,9 @@ if not LibDataBroker then
 	-- This should only occur in the Dev version of SlideBar, which does not come with the Libs embedded
 	-- We will look for the disembedded LibDataBroker AddOn from the Norganna Libs, and load it if found
 	local add = "LibDataBroker"
-	local _, _, _, _, reason = GetAddOnInfo(add)
+	local _, _, _, _, reason = C_AddOns.GetAddOnInfo(add)
 	if reason == "DEMAND_LOADED" then -- check that LibDataBroker exists and is the expected type
-		LoadAddOn(add)
+		C_AddOns.LoadAddOn(add)
 		LibDataBroker = LibStub("LibDataBroker-1.1", true) -- try again
 	end
 end

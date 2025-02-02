@@ -1,5 +1,64 @@
-Decursive 2.7.20
+Decursive 2.7.25
 ================
+
+
+Decursive 2.7.25 (2025-01-06)
+-----------------------------
+
+- Fix: Player's character was ignored in priority list if other non-present
+  player names appeared before.
+
+- New "Player" entry in the populate priority list GUI to add the currently
+  playing character (useful when using the same profile on different
+  characters).
+
+- TOC updates.
+
+
+**New Way to support Decursive:** If you are an [ADA/Cardano](https://cardano.org) holder you can
+delegate your stake to my pool: [anfra.io](https://anfra.io)
+
+
+Decursive 2.7.24 (2024-11-01)
+-----------------------------
+
+- Detect Void Rift in TWW and allow it to be cured by the 1st registered spell ([issue #30](https://github.com/2072/Decursive/issues/30)).
+
+- Fix potential initialization issue.
+
+
+Decursive 2.7.23 (2024-10-04)
+-----------------------------
+
+- Fix pet's spells addition by name in the custom spell interface.
+
+- WoW classic: fix Lua errors with pet's spells
+
+- Fix Improved Detox detection for Mistweaver monks.
+
+- WoW Cataclysm 4.4.1 (current PTR): fix Lua error due to API change.
+
+
+Decursive 2.7.22 (2024-08-16)
+-----------------------------
+
+- Fix Cooldown related Lua error in WoW 11
+
+
+Decursive 2.7.21 (2024-08-06)
+-----------------------------
+
+- Fix many compatibility issues with WoW 11 (Cooldown issue and various Lua errors).
+
+- Fix Evoker's spells priorities.
+
+- Add Remove Greater Curse for mages in WoW Classic SoD.
+
+- Fix bug introduced in 2.7.20 for spells set up to only work on the player (or
+  all other units but the player), they had become unusable.
+
+- Mark this version as incompatible with WotLK (This version of WoW classic is still being used in China - Players from China need to stick with Decursive 2.7.17 when playing WotLK).
+
 
 Decursive 2.7.20 (2024-07-19)
 -----------------------------
@@ -12,11 +71,6 @@ Decursive 2.7.20 (2024-07-19)
   works on the player unless they are Holy
 
 - TOC updates
-
-
-
-**New Way to support Decursive:** If you are an [ADA/Cardano](https://cardano.org) holder you can
-delegate your stake to my pool: [anfra.io](https://anfra.io)
 
 
 Decursive 2.7.19 (2024-05-10)

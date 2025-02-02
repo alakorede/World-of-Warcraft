@@ -531,5 +531,3 @@ do -- tooltip class definition
 	lib.BONUSIDPATTERNS = libASB.BONUSIDPATTERNS
 
 end -- tooltip class definition
-
-LibStub("LibRevision"):Set("$URL$","$Rev$","5.12.DEV.", 'auctioneer', 'libs')

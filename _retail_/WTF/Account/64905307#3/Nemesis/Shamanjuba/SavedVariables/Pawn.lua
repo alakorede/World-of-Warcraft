@@ -1,8 +1,6 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0914,
-["LastPlayerFullName"] = "Shamanjuba-Nemesis",
-["AutoSelectScales"] = true,
+["LastVersion"] = 2.1002,
 ["ItemLevels"] = {
 {
 ["ID"] = 193765,
@@ -91,6 +89,9 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:193665::::::::68:264::17:3:7978:7975:6652:2:28:2155:9:68:::::|h[Decatriarch's Bone Pestle]|h|r",
 },
 },
+["AutoSelectScales"] = true,
+["LastPlayerFullName"] = "Shamanjuba-Nemesis",
+["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -144,7 +145,6 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
-["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "SHAMAN",

@@ -23,11 +23,11 @@ g_auctionHouseSortsBySearchContext = {
 {
 {
 ["reverseSort"] = true,
-["sortOrder"] = 0,
+["sortOrder"] = 2,
 },
 {
-["reverseSort"] = false,
-["sortOrder"] = 2,
+["reverseSort"] = true,
+["sortOrder"] = 0,
 },
 },
 {
@@ -42,17 +42,17 @@ g_auctionHouseSortsBySearchContext = {
 },
 {
 {
-["reverseSort"] = false,
+["reverseSort"] = true,
 ["sortOrder"] = 0,
 },
 {
-["reverseSort"] = false,
-["sortOrder"] = 1,
+["reverseSort"] = true,
+["sortOrder"] = 2,
 },
 },
 {
 {
-["reverseSort"] = false,
+["reverseSort"] = true,
 ["sortOrder"] = 0,
 },
 {

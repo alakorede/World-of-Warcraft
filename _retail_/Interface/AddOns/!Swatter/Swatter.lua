@@ -20,7 +20,14 @@
 	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 ]]
 
+local addonname, internal = ...  -- get the addonname
+
 local DEBUG_LEVEL = 4
+
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
+local GetNumAddOns = C_AddOns.GetNumAddOns
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 -- Check to see if another debugging aid has been loaded.
 local otherdebug = {
@@ -29,14 +36,13 @@ local otherdebug = {
 }
 local player = UnitName("player")
 for addon, name in pairs(otherdebug) do
-	local enabled = GetAddOnEnableState(player, addon)
+	local enabled = C_AddOns.GetAddOnEnableState(addon, player)
 	if enabled and enabled > 0 then
 	  DEFAULT_CHAT_FRAME:AddMessage("|cffffaa11Swatter is not loaded, because you are running "..name.."|r")
 	  return
 	end
 end
 
-local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 
 Swatter = {
 	nilFrame = {
@@ -47,11 +53,17 @@ Swatter = {
 	HISTORY_SIZE = 100,
 }
 
-Swatter.Version="<%version%>"
-if (Swatter.Version == "<%".."version%>") then
-	Swatter.Version = "10.1.DEV"
+do
+	local version = GetAddOnMetadata(addonname, "Version")
+	if version then
+		version = strsplit(' ', version)
+	end
+	if not version or version == "" or version:byte(1) == 60 then -- 60 = '<'
+		version = "11.1.DEV"
+	end
+	Swatter.Version = version
+	-- Global SWATTER_VERSION is no longer supported
 end
-SWATTER_VERSION = Swatter.Version
 
 SwatterData = {
 	enabled = true,
@@ -80,8 +92,6 @@ end
 hooksecurefunc("SetAddOnDetail", addOnDetail)
 
 -- End SetAddOnDetail function hook.
-
-LibStub("LibRevision"):Set("$URL$","$Rev$","6.0.DEV.", 'auctioneer', 'libs')
 
 local function toggle()
 	if Swatter.Error:IsVisible() then
@@ -117,6 +127,27 @@ local function addSlideIcon()
 			GameTooltip:Hide()
 		end
 	end
+end
+
+-- AddOnCompartment... Quik Access to Settings
+if AddonCompartmentFrame then
+	local mouseButtonNote = "\nImproved Bug Capture & Tracking.";
+	AddonCompartmentFrame:RegisterAddon({
+		text = "Swatter",
+		icon = "Interface/AddOns/!Swatter/Textures/SwatterIcon.blp",
+		notCheckable = true,
+		func = function(button, menuInputData, menu)
+			toggle()
+		end,
+		funcOnEnter = function(button)
+			MenuUtil.ShowTooltip(button, function(tooltip)
+				tooltip:SetText("Swatter" .. mouseButtonNote)
+			end)
+		end,
+		funcOnLeave = function(button)
+			MenuUtil.HideTooltip(button)
+		end,
+	})
 end
 
 do -- protect chat function, AddMessage can fail during certain events, e.g. at logout

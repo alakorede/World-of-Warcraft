@@ -1,787 +1,956 @@
 
 Prat3CharDB = {
-	["history"] = {
-		["cmdhistory"] = {
-			["ChatFrame10EditBox"] = {
-			},
-			["ChatFrame7EditBox"] = {
-			},
-			["ChatFrame5EditBox"] = {
-			},
-			["ChatFrame8EditBox"] = {
-			},
-			["ChatFrame4EditBox"] = {
-			},
-			["ChatFrame6EditBox"] = {
-			},
-			["ChatFrame9EditBox"] = {
-			},
-			["ChatFrame2EditBox"] = {
-			},
-			["ChatFrame3EditBox"] = {
-			},
-			["ChatFrame1EditBox"] = {
-			},
-		},
-	},
+["history"] = {
+["cmdhistory"] = {
+["ChatFrame10EditBox"] = {
+},
+["ChatFrame7EditBox"] = {
+},
+["ChatFrame5EditBox"] = {
+},
+["ChatFrame8EditBox"] = {
+},
+["ChatFrame4EditBox"] = {
+},
+["ChatFrame6EditBox"] = {
+},
+["ChatFrame1EditBox"] = {
+},
+["ChatFrame3EditBox"] = {
+},
+["ChatFrame2EditBox"] = {
+},
+["ChatFrame9EditBox"] = {
+},
+},
+},
 }
 Prat3HighCPUPerCharDB = {
-	["time"] = 1590464384,
-	["scrollback"] = {
-		["ChatFrame5"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame11"] = {
-			["maxElements"] = 128,
-			["elements"] = {
-				{
-					["message"] = "|cff979797|Hpratcopy|h[10:03:20]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T524050:14|tLil' Tarecgosa is now your active pet.",
-					["serverTime"] = 1668690157,
-					["r"] = 0.9058824181556702,
-					["extraData"] = {
-						61, -- [1]
-						false, -- [2]
-						3, -- [3]
-						4, -- [4]
-						["n"] = 4,
-					},
-					["timestamp"] = 262603.703,
-					["g"] = 0.8705883026123047,
-					["b"] = 0.6705882549285889,
-				}, -- [1]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[10:03:21]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T134324:14|tStormwind Rat is now enemy active pet.",
-					["serverTime"] = 1668690158,
-					["r"] = 0.9058824181556702,
-					["extraData"] = {
-						61, -- [1]
-						false, -- [2]
-						3, -- [3]
-						4, -- [4]
-						["n"] = 4,
-					},
-					["timestamp"] = 262604.454,
-					["g"] = 0.8705883026123047,
-					["b"] = 0.6705882549285889,
-				}, -- [2]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[10:04:10]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T524050:14|tLil' Tarecgosa is now your active pet.",
-					["serverTime"] = 1668690207,
-					["r"] = 0.9058824181556702,
-					["extraData"] = {
-						61, -- [1]
-						false, -- [2]
-						3, -- [3]
-						4, -- [4]
-						["n"] = 4,
-					},
-					["timestamp"] = 262653.583,
-					["g"] = 0.8705883026123047,
-					["b"] = 0.6705882549285889,
-				}, -- [3]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[10:04:10]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T134324:14|tStormwind Rat is now enemy active pet.",
-					["serverTime"] = 1668690207,
-					["r"] = 0.9058824181556702,
-					["extraData"] = {
-						61, -- [1]
-						false, -- [2]
-						3, -- [3]
-						4, -- [4]
-						["n"] = 4,
-					},
-					["timestamp"] = 262654.334,
-					["g"] = 0.8705883026123047,
-					["b"] = 0.6705882549285889,
-				}, -- [4]
-			},
-			["headIndex"] = 4,
-		},
-		["ChatFrame3"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 4,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-				{
-					["message"] = "A conversão de fala em texto permite a adição de legendas a um canal de voz.",
-					["serverTime"] = 1713662309,
-					["r"] = 1,
-					["b"] = 0,
-					["timestamp"] = 6079.175,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["g"] = 1,
-				}, -- [1]
-				{
-					["message"] = "0 |4dia:dias;, 0 |4hora:horas;, 0 |4minuto:minutos;, 0 |4segundo:segundos;",
-					["timestamp"] = 6079.175,
-				}, -- [2]
-				{
-					["message"] = "========== End of Scrollback ==========",
-					["timestamp"] = 6079.175,
-				}, -- [3]
-				{
-					["message"] = "A conversão de fala em texto permite a adição de legendas a um canal de voz.",
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["timestamp"] = 6069.195,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [4]
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame7"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame6"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame10"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame8"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame4"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 7,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-				{
-					["message"] = "|cff979797|Hpratcopy|h[19:14:44]|h|r Mensagem do dia da guilda: \"Estamos usando o Discord como comunicação, baixem e vejam na info da guilda os endereços - LINK arrumado\"",
-					["serverTime"] = 1713662309,
-					["r"] = 0.03921568766236305,
-					["b"] = 0,
-					["timestamp"] = 6079.175,
-					["extraData"] = {
-						5, -- [1]
-						["n"] = 1,
-					},
-					["g"] = 0.9843137860298157,
-				}, -- [1]
-				{
-					["message"] = "0 |4dia:dias;, 0 |4hora:horas;, 0 |4minuto:minutos;, 0 |4segundo:segundos;",
-					["timestamp"] = 6079.175,
-				}, -- [2]
-				{
-					["message"] = "========== End of Scrollback ==========",
-					["timestamp"] = 6079.175,
-				}, -- [3]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:38]|h|r Você adicionou a montaria Falcodrago Azul para sua coleção.",
-					["serverTime"] = 1713662319,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6079.175,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [4]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:39]|h|r Missão aceita: Apresente-se no Posto Comercial",
-					["serverTime"] = 1713662320,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6094.502,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [5]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:19:04]|h|r Apresente-se no Posto Comercial concluída.",
-					["serverTime"] = 1713662345,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6119.244,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [6]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:19:04]|h|r 2 de Ouro, 80 de Prata, 90 de Cobre recebido.",
-					["serverTime"] = 1713662345,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6119.244,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [7]
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame9"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 0,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-		["ChatFrame1"] = {
-			["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["headIndex"] = 50,
-			["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndex"] = nil --[[ skipped inline function ]],
-			["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
-			["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-			["PushBack"] = nil --[[ skipped inline function ]],
-			["RemoveIf"] = nil --[[ skipped inline function ]],
-			["Clear"] = nil --[[ skipped inline function ]],
-			["PushFront"] = nil --[[ skipped inline function ]],
-			["OnLoad"] = nil --[[ skipped inline function ]],
-			["IsEmpty"] = nil --[[ skipped inline function ]],
-			["IsFull"] = nil --[[ skipped inline function ]],
-			["elements"] = {
-				{
-					["message"] = "|cff979797|Hpratcopy|h[19:14:44]|h|r Mensagem do dia da guilda: \"Estamos usando o Discord como comunicação, baixem e vejam na info da guilda os endereços - LINK arrumado\"",
-					["serverTime"] = 1713662309,
-					["r"] = 0.03921568766236305,
-					["b"] = 0,
-					["timestamp"] = 6079.175,
-					["extraData"] = {
-						5, -- [1]
-						["n"] = 1,
-					},
-					["g"] = 0.9843137860298157,
-				}, -- [1]
-				{
-					["message"] = "0 |4dia:dias;, 0 |4hora:horas;, 0 |4minuto:minutos;, 0 |4segundo:segundos;",
-					["timestamp"] = 6079.175,
-				}, -- [2]
-				{
-					["message"] = "========== End of Scrollback ==========",
-					["timestamp"] = 6079.175,
-				}, -- [3]
-				{
-					["message"] = "|cffffaa11Swatter is not loaded, because you are running BugGrabber|r",
-					["timestamp"] = 6069.195,
-				}, -- [4]
-				{
-					["message"] = "|Hbuggrabber:Dishy:000002030BDE1040:|h|cffff0000[Error 000002030BDE1040]|r|h |cffffff00capturado, clique no link para mais informações.|r ",
-					["timestamp"] = 6069.195,
-				}, -- [5]
-				{
-					["message"] = "|Hbuggrabber:Dishy:000002030BDE1040:|h|cffff0000[Error 000002030BDE1040]|r|h |cffffff00capturado, clique no link para mais informações.|r ",
-					["timestamp"] = 6069.195,
-				}, -- [6]
-				{
-					["message"] = "|Hbuggrabber:Dishy:000002030BDE1040:|h|cffff0000[Error 000002030BDE1040]|r|h |cffffff00capturado, clique no link para mais informações.|r ",
-					["timestamp"] = 6069.195,
-				}, -- [7]
-				{
-					["message"] = "|Hbuggrabber:Dishy:000002030BDE1040:|h|cffff0000[Error 000002030BDE1040]|r|h |cffffff00capturado, clique no link para mais informações.|r ",
-					["timestamp"] = 6069.195,
-				}, -- [8]
-				{
-					["message"] = "|Hbuggrabber:Dishy:000002030BDE1040:|h|cffff0000[Error 000002030BDE1040]|r|h |cffffff00capturado, clique no link para mais informações.|r ",
-					["timestamp"] = 6069.195,
-				}, -- [9]
-				{
-					["message"] = "|Hbuggrabber:Dishy:000002030BDE1040:|h|cffff0000[Error 000002030BDE1040]|r|h |cffffff00capturado, clique no link para mais informações.|r ",
-					["timestamp"] = 6069.195,
-				}, -- [10]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |CFF9482C9Quest Completist:|r Thanks for using Quest Completist. Spot a quest innaccuracy? Please report it on curse",
-					["timestamp"] = 6069.195,
-				}, -- [11]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |CFF9482C9Quest Completist:|r Warning!!! Map Pins are missing, we are working on a solution no eta",
-					["timestamp"] = 6069.195,
-				}, -- [12]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c0000FF00Roth_UI loaded.|r",
-					["timestamp"] = 6069.195,
-				}, -- [13]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c0000FF00/rabs|r to display the command list",
-					["timestamp"] = 6069.195,
-				}, -- [14]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c00FF00AARoth_UI loaded.|r",
-					["timestamp"] = 6069.195,
-				}, -- [15]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c00FF00AA/rot|r to display the command list",
-					["timestamp"] = 6069.195,
-				}, -- [16]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c00FF3300Roth_UI loaded.|r",
-					["timestamp"] = 6069.195,
-				}, -- [17]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c00FF3300/roth|r to display the command list",
-					["timestamp"] = 6069.195,
-				}, -- [18]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c00FF00AARoth_UI loaded.|r",
-					["timestamp"] = 6069.195,
-				}, -- [19]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:18]|h|r |c00FF00AA/rot|r to display the command list",
-					["timestamp"] = 6069.195,
-				}, -- [20]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:24]|h|r Dishy grita: Vim para concluir minha tarefa.",
-					["r"] = 1,
-					["extraData"] = {
-						15, -- [1]
-						1, -- [2]
-						2, -- [3]
-						"CHAT_MSG_MONSTER_YELL", -- [4]
-						nil, -- [5]
-						nil --[[ skipped inline function ]], -- [6]
-						["n"] = 6,
-					},
-					["timestamp"] = 6079.175,
-					["g"] = 0.250980406999588,
-					["b"] = 0.250980406999588,
-				}, -- [21]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:28]|h|r |cff7fff7fFIS|r: Add-on activated for the class DRUID",
-					["timestamp"] = 6079.175,
-				}, -- [22]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:28]|h|r |cff0066ffAPR:|r v20.1.0-release loaded. For help and options, type /apr",
-					["timestamp"] = 6079.175,
-					["serverTime"] = 1713662309,
-				}, -- [23]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:28]|h|r Enchantrix v9.1.BETA.5.13-0 carregado",
-					["serverTime"] = 1713662309,
-					["r"] = 0.8,
-					["extraData"] = {
-						["n"] = 2,
-					},
-					["timestamp"] = 6079.175,
-					["g"] = 0.8,
-					["b"] = 0.2,
-				}, -- [24]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:28]|h|r Informant v9.1.BETA.5.13 carregado",
-					["r"] = 0.25,
-					["serverTime"] = 1713662309,
-					["timestamp"] = 6079.175,
-					["g"] = 0.55,
-					["b"] = 1,
-				}, -- [25]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:29]|h|r |cff33ff99CanIMogIt|r: Atualizando banco de dados de aparências.",
-					["timestamp"] = 6079.175,
-					["serverTime"] = 1713662310,
-				}, -- [26]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:37]|h|r Especialização de Saque definida para: Guardião",
-					["serverTime"] = 1713662318,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						["n"] = 1,
-					},
-					["timestamp"] = 6079.175,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [27]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:37]|h|r |CFF9482C9Quest Completist:|r No quests were returned from the server query. Attempting to check each quest individually...",
-					["timestamp"] = 6079.175,
-					["serverTime"] = 1713662318,
-				}, -- [28]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:37]|h|r |CFF9482C9Quest Completist:|r Query completed.",
-					["timestamp"] = 6079.175,
-					["serverTime"] = 1713662318,
-				}, -- [29]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:37]|h|r |cffEE5500<|cffFDDA0DCursorTrail|cffEE5500> |cff7F7FFF|cff00FF00NEW FEATURES available!|cff7F7FFF  (Type either |cffFFFFFF/ct|r or |cffFFFFFF/CursorTrail|r to see them.)",
-					["timestamp"] = 6079.175,
-					["serverTime"] = 1713662318,
-				}, -- [30]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:38]|h|r Você adicionou a montaria Falcodrago Azul para sua coleção.",
-					["serverTime"] = 1713662319,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6079.175,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [31]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:39]|h|r Missão aceita: Apresente-se no Posto Comercial",
-					["serverTime"] = 1713662320,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6094.502,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [32]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:39]|h|r |cFFFF0000Grail|r automatically initializing a server query for completed quests",
-					["timestamp"] = 6094.502,
-					["serverTime"] = 1713662320,
-				}, -- [33]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:39]|h|r |cFF00FF00Grail|r: starting to process completed query results",
-					["timestamp"] = 6094.502,
-					["serverTime"] = 1713662320,
-				}, -- [34]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:39]|h|r |cFFFF0000Grail|r: finished processing completed query results",
-					["timestamp"] = 6094.502,
-					["serverTime"] = 1713662320,
-				}, -- [35]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:40]|h|r |cff33ff99Hekili|r: The |cFFFFD100Feral|r, |cFFFFD100Balance|r, and |cFFFFD100Guardian|r priorities were updated.",
-					["timestamp"] = 6094.974,
-					["serverTime"] = 1713662321,
-				}, -- [36]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:40]|h|r |cffffaeaeDetails!:|r A new version has been installed: /details news    ",
-					["timestamp"] = 6094.974,
-					["serverTime"] = 1713662321,
-				}, -- [37]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:18:41]|h|r AutoDesencantamento inativo",
-					["r"] = 1,
-					["serverTime"] = 1713662322,
-					["timestamp"] = 6096.203,
-					["g"] = 0.5,
-					["b"] = 0.25,
-				}, -- [38]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:19:04]|h|r Apresente-se no Posto Comercial concluída.",
-					["serverTime"] = 1713662345,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6119.244,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [39]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:19:04]|h|r 2 de Ouro, 80 de Prata, 90 de Cobre recebido.",
-					["serverTime"] = 1713662345,
-					["r"] = 1,
-					["extraData"] = {
-						1, -- [1]
-						3, -- [2]
-						4, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6119.244,
-					["g"] = 1,
-					["b"] = 0,
-				}, -- [40]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:20:16]|h|r |cff33ff99CanIMogIt|r: Itens atualizados: |cff15abff+0, |cffe69f00-0",
-					["timestamp"] = 6190.906,
-					["serverTime"] = 1713662417,
-				}, -- [41]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:21:27]|h|r Cleaned: 81.26mb",
-					["timestamp"] = 6261.551,
-					["serverTime"] = 1713662488,
-				}, -- [42]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:23:43]|h|r Sully McLeary, o Picles diz: Lora, bom te ver de novo. Eu tava pensando... Tu não tem uns mascotes?",
-					["serverTime"] = 1713662624,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6398.233,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [43]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:23:47]|h|r Lora Trançamar diz: Bom te ver também, Sully. Já faz muito tempo que tu perdeu teu amigo, tem certeza?",
-					["serverTime"] = 1713662628,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6402.601000000001,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [44]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:23:52]|h|r Sully McLeary, o Picles diz: É verdade, parece que foi ontem, mas... O Meias ia querer me ver seguir em frente.",
-					["serverTime"] = 1713662633,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6407.704,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [45]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:23:58]|h|r Lora Trançamar diz: Tá certo. Sem pressa. Se tu não achar um novo amigo, gente vai estar aqui na hora certa pra você.",
-					["serverTime"] = 1713662639,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6412.804,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [46]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:24:03]|h|r Sully McLeary, o Picles diz: Agradecido. Tu tem alguém legal, e corajoso, e incrível, e macio, e doido pra ser o melhor amigo que um anão pode ter?",
-					["serverTime"] = 1713662644,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6418.647,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [47]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:24:10]|h|r Sully funga.",
-					["serverTime"] = 1713662651,
-					["r"] = 1,
-					["extraData"] = {
-						17, -- [1]
-						7, -- [2]
-						8, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6425.52,
-					["g"] = 0.501960813999176,
-					["b"] = 0.250980406999588,
-				}, -- [48]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:24:12]|h|r Lora Trançamar diz: Ô, Sully... quem sabe não é melhor dar mais um tempo?",
-					["serverTime"] = 1713662653,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6427.148,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [49]
-				{
-					["message"] = "|cff979797|Hpratcopy|h[22:24:16]|h|r Sully McLeary, o Picles diz: É, acho que me afobei. Precisa ser alguém especial de verdade pra ficar no lugar do Cão.",
-					["serverTime"] = 1713662657,
-					["r"] = 1,
-					["extraData"] = {
-						13, -- [1]
-						5, -- [2]
-						6, -- [3]
-						["n"] = 3,
-					},
-					["timestamp"] = 6430.773,
-					["g"] = 1,
-					["b"] = 0.6235294342041016,
-				}, -- [50]
-			},
-			["maxElements"] = 128,
-			["TransformIf"] = nil --[[ skipped inline function ]],
-			["ReplaceElements"] = nil --[[ skipped inline function ]],
-			["SetMaxNumElements"] = nil --[[ skipped inline function ]],
-			["GetNumElements"] = nil --[[ skipped inline function ]],
-			["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-		},
-	},
+["time"] = 1590464384,
+["scrollback"] = {
+["ChatFrame5"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 0,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame11"] = {
+["maxElements"] = 128,
+["elements"] = {
+{
+["message"] = "|cff979797|Hpratcopy|h[10:03:20]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T524050:14|tLil' Tarecgosa is now your active pet.",
+["b"] = 0.6705882549285889,
+["r"] = 0.9058824181556702,
+["g"] = 0.8705883026123047,
+["timestamp"] = 262603.703,
+["serverTime"] = 1668690157,
+["extraData"] = {
+61,
+false,
+3,
+4,
+["n"] = 4,
+},
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[10:03:21]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T134324:14|tStormwind Rat is now enemy active pet.",
+["b"] = 0.6705882549285889,
+["r"] = 0.9058824181556702,
+["g"] = 0.8705883026123047,
+["timestamp"] = 262604.454,
+["serverTime"] = 1668690158,
+["extraData"] = {
+61,
+false,
+3,
+4,
+["n"] = 4,
+},
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[10:04:10]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T524050:14|tLil' Tarecgosa is now your active pet.",
+["b"] = 0.6705882549285889,
+["r"] = 0.9058824181556702,
+["g"] = 0.8705883026123047,
+["timestamp"] = 262653.583,
+["serverTime"] = 1668690207,
+["extraData"] = {
+61,
+false,
+3,
+4,
+["n"] = 4,
+},
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[10:04:10]|h|r |Hchannel:PET_BATTLE_COMBAT_LOG|h[Pet Battle]|h: |T134324:14|tStormwind Rat is now enemy active pet.",
+["b"] = 0.6705882549285889,
+["r"] = 0.9058824181556702,
+["g"] = 0.8705883026123047,
+["timestamp"] = 262654.334,
+["serverTime"] = 1668690207,
+["extraData"] = {
+61,
+false,
+3,
+4,
+["n"] = 4,
+},
+},
+},
+["headIndex"] = 4,
+},
+["ChatFrame3"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 4,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+{
+["message"] = "A conversão de fala em texto permite a adição de legendas a um canal de voz.",
+["serverTime"] = 1726669813,
+["r"] = 1,
+["b"] = 0,
+["timestamp"] = 691779.2930000001,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["g"] = 1,
+},
+{
+["message"] = "0 |4day:days;, 0 |4hour:hours;, 0 |4minute:minutes;, 0 |4second:seconds;",
+["timestamp"] = 691779.2930000001,
+},
+{
+["message"] = "========== End of Scrollback ==========",
+["timestamp"] = 691779.2930000001,
+},
+{
+["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
+["r"] = 1,
+["extraData"] = {
+1,
+["n"] = 1,
+},
+["timestamp"] = 691768.0430000001,
+["g"] = 1,
+["b"] = 0,
+},
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame7"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 0,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame6"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 0,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame10"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 0,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame8"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 0,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame4"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 1,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:13]|h|r Guild Message of the Day: \"Estamos usando o Discord como comunicação, baixem e vejam na info da guilda os endereços - LINK arrumado\"",
+["r"] = 0.250980406999588,
+["extraData"] = {
+5,
+["n"] = 1,
+},
+["timestamp"] = 691779.078,
+["g"] = 1,
+["b"] = 0.250980406999588,
+},
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame9"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 0,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+["ChatFrame1"] = {
+["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["headIndex"] = 72,
+["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndex"] = nil --[[ skipped inline function ]],
+["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
+["ReverseEnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
+["PushBack"] = nil --[[ skipped inline function ]],
+["RemoveIf"] = nil --[[ skipped inline function ]],
+["Clear"] = nil --[[ skipped inline function ]],
+["PushFront"] = nil --[[ skipped inline function ]],
+["OnLoad"] = nil --[[ skipped inline function ]],
+["IsEmpty"] = nil --[[ skipped inline function ]],
+["IsFull"] = nil --[[ skipped inline function ]],
+["elements"] = {
+{
+["message"] = "|cffffaa11Swatter is not loaded, because you are running BugGrabber|r",
+["timestamp"] = 691768.537,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3e8ef0:|h|cffff0000[Error 0x7fe45c3e8ef0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.559,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3e8fe0:|h|cffff0000[Error 0x7fe45c3e8fe0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.667,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3e9030:|h|cffff0000[Error 0x7fe45c3e9030]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.675,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3e9210:|h|cffff0000[Error 0x7fe45c3e9210]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.678,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3e9260:|h|cffff0000[Error 0x7fe45c3e9260]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.678,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3eae80:|h|cffff0000[Error 0x7fe45c3eae80]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.678,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c3eaed0:|h|cffff0000[Error 0x7fe45c3eaed0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.682,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c401c30:|h|cffff0000[Error 0x7fe45c401c30]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.705,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c4024f0:|h|cffff0000[Error 0x7fe45c4024f0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.723,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c402ae0:|h|cffff0000[Error 0x7fe45c402ae0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.734,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c402540:|h|cffff0000[Error 0x7fe45c402540]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.774,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c402590:|h|cffff0000[Error 0x7fe45c402590]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.7760000001,
+},
+{
+["message"] = "|cffffff00There are too many errors in your UI. As a result, your game experience may be degraded. Disable or update the failing addons if you don't want to see this message again.|r",
+["timestamp"] = 691768.78,
+},
+{
+["message"] = "|Hbuggrabber:Lvcivs:0x7fe45c4025e0:|h|cffff0000[Error 0x7fe45c4025e0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 691768.871,
+},
+{
+["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Bartender4 Detected, please make sure that an element is only controlled by one addon at a time!",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Click the MoveAny Minimap Button to open the settings.",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Or type /move or /moveany in chat to open the settings.",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r To hide these messages deactivate tips in the MoveAny menu.",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |CFF9482C9Quest Completist:|r Thanks for using Quest Completist. Spot a quest inaccuracy? Please report it on Curse.",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |CFF9482C9Quest Completist:|r Map Pins are back. There are some hickups still, see bug list on CF",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c0000FF00Roth_UI loaded.|r",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c0000FF00/rabs|r to display the command list",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c00FF00AARoth_UI loaded.|r",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c00FF00AA/rot|r to display the command list",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c00FF3300Roth_UI loaded.|r",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c00FF3300/roth|r to display the command list",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c00FF00AARoth_UI loaded.|r",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:06]|h|r |c00FF00AA/rot|r to display the command list",
+["timestamp"] = 691769.915,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:13]|h|r Guild Message of the Day: \"Estamos usando o Discord como comunicação, baixem e vejam na info da guilda os endereços - LINK arrumado\"",
+["r"] = 0.250980406999588,
+["extraData"] = {
+5,
+["n"] = 1,
+},
+["timestamp"] = 691779.078,
+["g"] = 1,
+["b"] = 0.250980406999588,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:14]|h|r |cff7fff7fFIS|r: Add-on activated for the class DEATHKNIGHT",
+["timestamp"] = 691779.2930000001,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:14]|h|r |cff0066ffAPR:|r v22.1.0-release loaded. For help and options, type /apr",
+["timestamp"] = 691779.2930000001,
+["serverTime"] = 1726669813,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:14]|h|r Enchantrix v4.0.DEV-0 loaded",
+["serverTime"] = 1726669813,
+["r"] = 0.8,
+["extraData"] = {
+["n"] = 2,
+},
+["timestamp"] = 691779.2930000001,
+["g"] = 0.8,
+["b"] = 0.2,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:14]|h|r Informant v6.1.DEV loaded",
+["r"] = 0.25,
+["serverTime"] = 1726669813,
+["timestamp"] = 691779.2930000001,
+["g"] = 0.55,
+["b"] = 1,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r |cffEE5500<|cffFDDA0DCursorTrail|cffEE5500> |cff7F7FFF|cff00FF00NEW FEATURES available!|cff7F7FFF  (Type either |cffFFFFFF/ct|r or |cffFFFFFF/CursorTrail|r to see them.)",
+["timestamp"] = 691779.2930000001,
+["serverTime"] = 1726669818,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r |CFF9482C9Quest Completist:|r 31048 quests were checked, and 159 previously completed quest(s) have now been updated as such.",
+["timestamp"] = 691779.2930000001,
+["serverTime"] = 1726669818,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r You have learned a new ability: |cff71d5ff|Hspell:436854:0|h[Switch Flight Style]|h|r.",
+["serverTime"] = 1726669818,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 691785.047,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r Quest accepted: The Dragon Isles Await",
+["serverTime"] = 1726669818,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 691785.047,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r |cFFFF0000Grail|r automatically initializing a server query for completed quests",
+["timestamp"] = 691785.047,
+["serverTime"] = 1726669818,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r |cFF00FF00Grail|r: starting to process completed query results",
+["timestamp"] = 691785.047,
+["serverTime"] = 1726669818,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:19]|h|r |cFFFF0000Grail|r: abandoned processing completed query results because currently complete 5365 but server only thinks 461",
+["timestamp"] = 691785.047,
+["serverTime"] = 1726669818,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:20]|h|r You have learned a new spell: |cff71d5ff|Hspell:425782:0|h[Second Wind]|h|r.",
+["serverTime"] = 1726669819,
+["r"] = 1,
+["extraData"] = {
+1,
+1,
+2,
+["n"] = 3,
+},
+["timestamp"] = 691786.454,
+["g"] = 1,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:21]|h|r |cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Please switch LAYOUT in Editmode (from Blizzard) to a CUSTOM LAYOUT. MoveAny doesn't work with a Preset Profile, it's mostly readonly. ESC -> Editmode -> Layout: [CUSTOM-LAYOUT] (no Preset Layout)",
+["timestamp"] = 691786.454,
+["serverTime"] = 1726669820,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:21]|h|r |cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r FAILED TO ADD !KalielsTrackerButtons",
+["timestamp"] = 691786.454,
+["serverTime"] = 1726669820,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:21]|h|r |cff33ff99Hekili|r: The |cFFFFD100Unholy|r, |cFFFFD100Frost DK|r, and |cFFFFD100Blood|r priorities were updated.",
+["timestamp"] = 691786.454,
+["serverTime"] = 1726669820,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:21]|h|r You receive item: |cffffffff|Hitem:205456::::::::44:250::11::1:28:2573:::::|h[Lost Dragonscale]|h|r",
+["serverTime"] = 1726669820,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691786.714,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:21]|h|r Wrathion says: Heroes of the Alliance! The Dragon Isles have awakened and beckon the dragonflights home.",
+["serverTime"] = 1726669820,
+["r"] = 1,
+["extraData"] = {
+13,
+5,
+6,
+["n"] = 3,
+},
+["timestamp"] = 691787.171,
+["g"] = 1,
+["b"] = 0.6235294342041016,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:21]|h|r AutoDisenchant inactive",
+["r"] = 1,
+["serverTime"] = 1726669820,
+["timestamp"] = 691787.447,
+["g"] = 0.5,
+["b"] = 0.25,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:28]|h|r You receive item: |cff1eff00|Hitem:54443::::::::44:250:::::::::|h[Embersilk Bag]|h|r",
+["serverTime"] = 1726669828,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691793.831,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:28]|h|r You receive item: |cff1eff00|Hitem:54443::::::::44:250:::::::::|h[Embersilk Bag]|h|r",
+["serverTime"] = 1726669828,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691794.1510000001,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:28]|h|r You receive item: |cff1eff00|Hitem:54443::::::::44:250:::::::::|h[Embersilk Bag]|h|r",
+["serverTime"] = 1726669828,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691794.458,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:39]|h|r You receive item: |cff1eff00|Hitem:54443::::::::44:250:::::::::|h[Embersilk Bag]|h|r",
+["serverTime"] = 1726669839,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691805.262,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:40]|h|r You receive item: |cff1eff00|Hitem:153734::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Cloak of Stoicism]|h|r",
+["serverTime"] = 1726669840,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691805.569,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:40]|h|r You receive item: |cff1eff00|Hitem:153733::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Chestguard]|h|r",
+["serverTime"] = 1726669840,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691805.929,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:40]|h|r You receive item: |cff1eff00|Hitem:153739::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Amulet]|h|r",
+["serverTime"] = 1726669840,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691806.395,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:41]|h|r You receive item: |cff1eff00|Hitem:153736::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Handguards]|h|r",
+["serverTime"] = 1726669841,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691806.729,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:41]|h|r You receive item: |cff1eff00|Hitem:153717::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Greatsword]|h|r",
+["serverTime"] = 1726669841,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691807.169,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:42]|h|r You receive item: |cff1eff00|Hitem:153737::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Faceguard]|h|r",
+["serverTime"] = 1726669842,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691807.5160000001,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:42]|h|r You receive item: |cff1eff00|Hitem:153742::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Band of Stoicism]|h|r",
+["serverTime"] = 1726669842,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691808.129,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:42]|h|r You receive item: |cff1eff00|Hitem:153745::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Waistband]|h|r",
+["serverTime"] = 1726669842,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691808.4500000001,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:43]|h|r You receive item: |cff1eff00|Hitem:153740::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Defender Idol]|h|r",
+["serverTime"] = 1726669843,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691808.77,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:43]|h|r You receive item: |cff1eff00|Hitem:153743::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Defender Stone]|h|r",
+["serverTime"] = 1726669843,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691809.116,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:43]|h|r You receive item: |cff1eff00|Hitem:153735::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Greaves]|h|r",
+["serverTime"] = 1726669843,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691809.463,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:44]|h|r You receive item: |cff1eff00|Hitem:153741::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Ring of Stoicism]|h|r",
+["serverTime"] = 1726669844,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691809.917,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:44]|h|r You receive item: |cff1eff00|Hitem:153746::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Armguards]|h|r",
+["serverTime"] = 1726669844,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691810.223,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:45]|h|r You receive item: |cff1eff00|Hitem:153738::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Legguards]|h|r",
+["serverTime"] = 1726669845,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691810.53,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:45]|h|r You receive item: |cff1eff00|Hitem:153744::::::::44:250::17:1:9370:1:9:44:::::|h[Heart-Lesion Shoulderguards]|h|r",
+["serverTime"] = 1726669845,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691810.8640000001,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:30:45]|h|r You receive item: |cff1eff00|Hitem:205877::::::::44:250::17:::::::|h[Adventurer's Footlocker]|h|r",
+["serverTime"] = 1726669845,
+["r"] = 0,
+["extraData"] = {
+28,
+3,
+4,
+["n"] = 3,
+},
+["timestamp"] = 691811.197,
+["g"] = 0.6666666865348816,
+["b"] = 0,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:31:47]|h|r |Hchannel:channel:1|h[1] |h Left Channel: |Hchannel:CHANNEL:1|h1|h",
+["serverTime"] = 1726669907,
+["r"] = 1,
+["extraData"] = {
+69,
+7,
+8,
+["n"] = 3,
+},
+["timestamp"] = 691873.38,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:31:47]|h|r |Hchannel:channel:2|h[2] |h Left Channel: |Hchannel:CHANNEL:2|h2|h",
+["serverTime"] = 1726669907,
+["r"] = 1,
+["extraData"] = {
+70,
+10,
+11,
+["n"] = 3,
+},
+["timestamp"] = 691873.38,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:31:47]|h|r |Hchannel:channel:3|h[3] |h Left Channel: |Hchannel:CHANNEL:3|h3|h",
+["serverTime"] = 1726669907,
+["r"] = 1,
+["extraData"] = {
+71,
+13,
+14,
+["n"] = 3,
+},
+["timestamp"] = 691873.38,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[11:31:48]|h|r |Hchannel:channel:5|h[5] |h Left Channel: |Hchannel:CHANNEL:5|h5|h",
+["serverTime"] = 1726669908,
+["r"] = 1,
+["extraData"] = {
+73,
+16,
+17,
+["n"] = 3,
+},
+["timestamp"] = 691873.567,
+["g"] = 0.7529412508010864,
+["b"] = 0.7529412508010864,
+},
+},
+["maxElements"] = 128,
+["TransformIf"] = nil --[[ skipped inline function ]],
+["ReplaceElements"] = nil --[[ skipped inline function ]],
+["SetMaxNumElements"] = nil --[[ skipped inline function ]],
+["GetNumElements"] = nil --[[ skipped inline function ]],
+["GetMaxNumElements"] = nil --[[ skipped inline function ]],
+},
+},
 }

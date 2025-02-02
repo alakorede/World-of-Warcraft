@@ -66,7 +66,7 @@ end
 local GetNumFactions = C_Reputation and C_Reputation.GetNumFactions or GetNumFactions;
 local GetFactionDataByID = C_Reputation and C_Reputation.GetFactionDataByID or function (id)
     local name, _, standing, barMin, barMax, barValue, _, _, _, _, _, _, _, factionID = GetFactionInfoByID(id);
-    return {
+    return name and {
         name = name,
         factionID = factionID,
         reaction = standing,
@@ -77,7 +77,7 @@ local GetFactionDataByID = C_Reputation and C_Reputation.GetFactionDataByID or f
 end;
 local GetFactionDataByIndex = C_Reputation and C_Reputation.GetFactionDataByIndex or function (i)
     local name, _, standing, barMin, barMax, barValue, _, _, _, _, _, _, _, factionID = GetFactionInfo(i);
-    return {
+    return name and {
         name = name,
         factionID = factionID,
         reaction = standing,
@@ -98,8 +98,21 @@ for classID=1,GetNumClasses() do
     end
 end
 
+local accountPlayerLevel = 0
+local function GetAccountPlayerLevel()
+    if accountPlayerLevel == 0 then
+        for _,v in pairs(BtWQuests_Characters or {}) do
+            accountPlayerLevel = math.max(accountPlayerLevel, v.level or 0)
+        end
+    end
+    return math.max(accountPlayerLevel, UnitLevel("player") or 0)
+end
+
 BtWQuestsCharactersCharacterMixin = {}
 function BtWQuestsCharactersCharacterMixin:IsPartySync()
+    return false
+end
+function BtWQuestsCharactersCharacterMixin:IsWarband()
     return false
 end
 function BtWQuestsCharactersCharacterMixin:IsPlayer()
@@ -131,7 +144,7 @@ function BtWQuestsCharactersCharacterMixin:GetClassString()
     return ClassMap[self.t.class].classFile
 end
 function BtWQuestsCharactersCharacterMixin:GetLevel()
-    return self.t.level
+    return self.t.level or 0
 end
 function BtWQuestsCharactersCharacterMixin:GetSex()
     return self.t.sex
@@ -166,7 +179,7 @@ end
 -- @TODO Should probably just get character related info
 function BtWQuestsCharactersCharacterMixin:GetFactionInfoByID(factionID)
     local name
-    local tbl = GetFactionDataByID(factionID)
+    local tbl = GetFactionDataByID(factionID) or {}
     local factionName, standing, barMin, barMax, value = tbl.name, tbl.reaction, tbl.currentReactionThreshold, tbl.nextReactionThreshold, tbl.currentStanding
 
     if self.t.reputations then
@@ -587,7 +600,7 @@ if C_TradeSkillUI then
     end
 end
 function BtWQuestsCharactersPlayerMixin:GetFactionInfoByID(factionID)
-    local tbl = GetFactionDataByID(factionID)
+    local tbl = GetFactionDataByID(factionID) or {}
     local factionName, standing, barMin, barMax, value = tbl.name, tbl.reaction, tbl.currentReactionThreshold, tbl.nextReactionThreshold, tbl.currentStanding
 
     return factionName, standing, barMin, barMax, value
@@ -740,6 +753,26 @@ function BtWQuestsCharactersPartySyncMixin:IsQuestCompleted(questID)
     return IsQuestFlaggedCompleted(questID)
 end
 
+BtWQuestsCharactersWarbandMixin = Mixin({}, BtWQuestsCharactersPlayerMixin)
+function BtWQuestsCharactersWarbandMixin:IsWarband()
+    return true
+end
+function BtWQuestsCharactersWarbandMixin:GetName()
+    return BtWQuests.L["Warband"];
+end
+function BtWQuestsCharactersWarbandMixin:GetFullName()
+    return "", "warband"
+end
+function BtWQuestsCharactersWarbandMixin:GetDisplayName()
+    return self:GetName();
+end
+function BtWQuestsCharactersWarbandMixin:GetLevel()
+    return GetAccountPlayerLevel();
+end
+function BtWQuestsCharactersWarbandMixin:IsQuestCompleted(questID)
+    return C_QuestLog.IsQuestFlaggedCompletedOnAccount(questID)
+end
+
 BtWQuestsCharacters = {}
 local BtWQuests_CharactersMap = nil
 local function BtWQuestsCharactersUpdateMap()
@@ -821,6 +854,8 @@ function BtWQuestsCharacters:GetCharacter(name, realm)
 
         if key == "-partysync" then
             BtWQuestsCharactersMap[key] = BtWQuests_CreatePartySync(BtWQuests_CharactersMap[playerKey])
+        elseif key == "-warband" then
+            BtWQuestsCharactersMap[key] = BtWQuests_CreateWarband(BtWQuests_CharactersMap[playerKey])
         elseif playerKey == key then
             -- Insert player in to data if they are missing. This generally happens before OnEvent is called which will fill any missing details
             if not BtWQuests_CharactersMap[key] then
@@ -873,7 +908,7 @@ local function GetFactions(tbl)
     for i=1,numEntries do
         -- local name, _, standing, barMin, barMax, barValue, _, _, _, _, _, _, _, factionID = GetFactionInfo(i);
         local factionData = GetFactionDataByIndex(i);
-        if factionData.factionID ~= nil then
+        if factionData and factionData.factionID ~= nil then
             local data = temp[factionData.factionID] or {};
             if data[1] ~= nil then
                 wipe(data);
@@ -1067,14 +1102,13 @@ function BtWQuestsCharacters:OnEvent(event, ...)
     if event == "COVENANT_CHOSEN" or event == "PLAYER_LOGIN" then
         character.covenantID = C_Covenants and C_Covenants.GetActiveCovenantID() or nil
         character.friendships = GetFriendships(character.friendships, self.friendships or {});
-
     end
     if event == "PLAYER_LOGOUT" then
         character.faction = UnitFactionGroup("player");
         character.sex = UnitSex("player");
         character.class = select(3, UnitClass("player"));
         character.race = select(2, UnitRace("player"));
-        character.level = UnitLevel("player");
+        character.level = UnitLevel("player") or character.level;
         
         character.reputations = GetFactions(character.reputations);
         character.friendships = GetFriendships(character.friendships, self.friendships or {});
@@ -1120,6 +1154,10 @@ end
 
 function BtWQuests_CreatePartySync(data)
     return Mixin({t = data}, BtWQuestsCharactersPartySyncMixin)
+end
+
+function BtWQuests_CreateWarband(data)
+    return Mixin({t = data}, BtWQuestsCharactersWarbandMixin)
 end
 
 function BtWQuests_CreateCharacter(data)

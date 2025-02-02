@@ -11,7 +11,7 @@ local kAddonFolderName, private = ...
 
 local Globals = _G
 local _  -- Prevent tainting global _ .
-local GetAddOnMetadata = _G.GetAddOnMetadata
+local GetAddOnMetadata = _G.GetAddOnMetadata or _G.C_AddOns.GetAddOnMetadata
 local print = _G.print
 local UNKNOWN = _G.UNKNOWN  -- Translated word for "Unknown".
 
@@ -33,7 +33,15 @@ setfenv(1, _G.CursorTrail)  -- Everything after this uses our namespace rather t
 --:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 kHelpText_Options = [[
-The options window can be opened from the standard addons window, or by typing "/ct" or "/cursortrail".  Settings are saved separately for each of your WoW characters, so your tank (for example) can have different cursor effects than your other characters.
+The main options window can be opened from the standard addons window, or by typing "/ct" or "/cursortrail".  Settings are saved separately for each of your WoW characters, so your tank (for example) can have different cursor effects than your other characters.
+
+* Master Scale %: Controls the size of all models, shapes, and sizes on all layers.  Leave this at 100% when designing a new set of FX, then use it later to make everything bigger or smaller as desired.
+Note: Master scale is combined with each layer's scale value to calculate the final size of each FX.
+
+* Layers:  Selecting a layer tab shows the options for that layer.  Tabs for enabled layers will be slightly green instead of their standard color, indicating which layers are enabled without needing to select them.
+If layers have the same "Layer Strata" setting, layer 1 FX are drawn on top of layer 2 FX.
+
+* Enable Layer:  When on, the current layer's FX will be drawn on screen.
 
 * Shape:  A list of shape effects to choose from.
 The shape's color can be changed by clicking the color swatch button to the right of the Shape selection.
@@ -43,11 +51,11 @@ When "Sparkle" is turn on, the chosen shape color is ignored and the shape "spar
 
 * Shadow %:  Controls how intense the black background circle is.  99% is darkest, while 0% is invisible (off).
 
-* Scale %:  Controls the size of the effect.  Can be 1 to 998.
+* Scale %:  Controls the size of the effect.  Can be 2 to 998.
 
 * Opacity %:  Controls how transparent Shape and Model are.  100% is fully visible, while 0% is invisible (off).
 
-* Layer (Strata):  Controls whether shapes and models are drawn behind or in front of other UI objects.  It does not effect the Shadow option.  ("Background" is the bottom-most drawing layer, and "Tooltip" is the top-most.)
+* Layer Strata:  Controls whether shapes and models are drawn behind or in front of other UI objects.  It does not effect the Shadow option.  ("Background" is the bottom-most drawing layer, and "Tooltip" is the top-most.)
 
 * Model Offsets:  Moves the center of the Model effect.  The first number box moves it horizontally (negative numbers move left, positive move right).  The second number box moves it vertically (negative numbers move down, positive move up).
 
@@ -61,21 +69,37 @@ When "Sparkle" is turn on, the chosen shape color is ignored and the shape "spar
 ]]
 
 kHelpText_Tips = [[
-- The mouse wheel can be used to change the option under the mouse.
+* Layers:
 
-- The Up/Down arrow keys can be used to change the option that has focus.
+- Right-clicking an empty area of the UI opens a context menu at the mouse for performing various actions to the layer.
+
+- When clicking on layer tab names ...
+        Left-click              = Selects that layer.  (Normal behavior.)
+        Shift + Left-click  = Toggles that layer's enabled state without selecting it.
+        Right-click            = Opens the context menu.
+        Shift + Right-click = Selects that layer and toggles its enabled state.
+
+- Pressing Ctrl+Tab or Shift+Ctrl+Tab selects the next/previous layer.
+
+- Using the mouse wheel while hovering over a layer's tab name will cycle through all layers.
+
+* Profiles:
 
 - Right-clicking the profile name is a quick way to save it.
 
-- Right-clicking most options sets them to their default value.
-]]
+- Shift-clicking a name in the profile list keeps the list open after loading the profile.
 
-kHelpText_SlashCommands = [[
-Type "/ct help" to see a list of all slash commands.
+* Changing Values:
+
+- Right-clicking most options sets them to their default value.  Right-clicking them again changes back to their previous value.
+
+- The mouse wheel can be used to change the option under the mouse.
+
+- The Up/Down arrow keys can be used to change the option that has focus.
 ]]
 
 kHelpText_ProfileCommands = [[
-Profiles (your settings) can be saved and loaded between all your characters from the options window:
+Profiles (your settings) can be saved and loaded between all your characters from the main window:
 ]] .."\n".. (private.ProfilesUI_ProfilesHelp or "") .."\n".. [[
 Profiles can also be managed using slash commands:
         /ct save  <profile name>
@@ -85,13 +109,17 @@ Profiles can also be managed using slash commands:
 ]]
 
 kHelpText_BackupCommands = [[
-Backups of your profiles can be created and restored from the options window:
+Backups of your profiles can be created and restored from the main window:
 ]] .."\n".. (private.ProfilesUI_BackupsHelp or "") .."\n".. [[
 Backups can also be managed using slash commands:
         /ct backup  <backup name>
         /ct restore  <backup name>
         /ct deletebackup  <backup name>
         /ct listbackups
+]]
+
+kHelpText_SlashCommands = [[
+Type "/ct help" to see a list of all slash commands.
 ]]
 
 kHelpText_Troubleshooting = [[
@@ -124,18 +152,24 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
     local topMargin = 3
     local scrollDelaySecs = nil
     local ORANGE = "|cffEE5500"
+    local YELLOW = "|cffFFD200"
     local BLUE = "|cff0099DD"
     local GRAY = "|cff909090"
 
     if not HelpFrame then
-        HelpFrame = private.UDControls.CreateTextScrollFrame(parent, "*** "..kAddonFolderName.." Help ***", 750)
+        HelpFrame = private.UDControls.CreateTextScrollFrame(parent, "*** "..kAddonFolderName.." "..kAddonVersion.." Help ***", 750)
+        ----HelpFrame:SetFrameLevel( HelpFrame:GetFrameLevel()+1 )
         HelpFrame:Hide()
         HelpFrame.topicOffsets = {}
         scrollDelaySecs = 0.1  -- Required so this newly created window has its scrollbar update correctly.
 
         -- Colorize option names.
-        kHelpText_Options = kHelpText_Options:gsub("* ", "* "..BLUE)
+        kHelpText_Options = kHelpText_Options:gsub("* ", YELLOW.."* |r"..BLUE)
         kHelpText_Options = kHelpText_Options:gsub(": ", "|r: ")
+
+        -- Colorize tip sections.
+        kHelpText_Tips = kHelpText_Tips:gsub("* ", BLUE)
+        kHelpText_Tips = kHelpText_Tips:gsub(":", ":|r")
 
         ------ Colorize slash commands.
         ----kHelpText_ProfileCommands = kHelpText_ProfileCommands:gsub(" /ct ", BLUE.." /ct ")
@@ -150,9 +184,10 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
         kHelpText_BackupCommands = kHelpText_BackupCommands:gsub(">", ">|r")
 
         ------ Colorize bullet chars.
-        ----kHelpText_ProfileCommands = kHelpText_ProfileCommands:gsub("\n%- ", BLUE.."\n- |r")
-        ----kHelpText_BackupCommands = kHelpText_BackupCommands:gsub("\n%- ", BLUE.."\n- |r")
-        ----kHelpText_Troubleshooting = kHelpText_Troubleshooting:gsub("\n%- ", BLUE.."\n- |r")
+        kHelpText_Tips = kHelpText_Tips:gsub("- ", YELLOW.."- |r")
+        kHelpText_ProfileCommands = kHelpText_ProfileCommands:gsub("\n%- ", YELLOW.."\n- |r")
+        kHelpText_BackupCommands = kHelpText_BackupCommands:gsub("\n%- ", YELLOW.."\n- |r")
+        kHelpText_Troubleshooting = kHelpText_Troubleshooting:gsub("\n%- ", YELLOW.."\n- |r")
 
         -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
         local bigFont = "GameFontNormalHuge" --"OptionsFontLarge" --"GameFontNormalLarge"
@@ -172,12 +207,6 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
         HelpFrame:AddText(kHelpText_Tips, 0, lineSpacing, smallFont)
         HelpFrame:AddText(" ", 0, lineSpacing, smallFont)
 
-        -- SLASH COMMANDS:
-        ----HelpFrame.topicOffsets["SLASH_COMMANDS"] = HelpFrame:GetNextVerticalPosition()
-        HelpFrame:AddText(ORANGE.."Slash Commands", 0, 0, bigFont)
-        HelpFrame:AddText(kHelpText_SlashCommands, 0, lineSpacing, smallFont)
-        HelpFrame:AddText(" ", 0, lineSpacing, smallFont)
-
         -- PROFILE COMMANDS:
         HelpFrame.topicOffsets["PROFILE_COMMANDS"] = HelpFrame:GetNextVerticalPosition() -12
         HelpFrame:AddText(ORANGE.."Profiles", 0, 0, bigFont)
@@ -188,6 +217,12 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
         HelpFrame.topicOffsets["BACKUP_COMMANDS"] = HelpFrame:GetNextVerticalPosition() -12
         HelpFrame:AddText(ORANGE.."Backups", 0, 0, bigFont)
         HelpFrame:AddText(kHelpText_BackupCommands, 0, lineSpacing, smallFont)
+        HelpFrame:AddText(" ", 0, lineSpacing, smallFont)
+
+        -- SLASH COMMANDS:
+        ----HelpFrame.topicOffsets["SLASH_COMMANDS"] = HelpFrame:GetNextVerticalPosition()
+        HelpFrame:AddText(ORANGE.."Slash Commands", 0, 0, bigFont)
+        HelpFrame:AddText(kHelpText_SlashCommands, 0, lineSpacing, smallFont)
         HelpFrame:AddText(" ", 0, lineSpacing, smallFont)
 
         -- TROUBLESHOOTING:
@@ -226,11 +261,12 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
 
         -- EVENTS --
         HelpFrame:SetScript("OnShow", function(self)
+                self:SetFrameLevel( self:GetParent():GetFrameLevel()+10 )
                 Globals.PlaySound(829)  -- IG_SPELLBOOK_OPEN
             end)
-        HelpFrame:SetScript("OnHide", function(self) 
+        HelpFrame:SetScript("OnHide", function(self)
                 Globals.PlaySound(830)  -- IG_SPELLBOOK_CLOSE
-            end) 
+            end)
     end
 
     -- Scroll to top, or to specified topic.
@@ -245,16 +281,39 @@ function CursorTrail_ShowHelp(parent, scrollToTopic)
         end
     end
     HelpFrame:SetVerticalScroll( scrollOffset, scrollDelaySecs )
+    if ChangelogFrame and ChangelogFrame:IsShown() then
+        HelpFrame:ClearAllPoints()
+        HelpFrame:SetPoint("RIGHT", UIParent, "CENTER", -1, 0)
+        ChangelogFrame:ClearAllPoints()
+        ChangelogFrame:SetPoint("LEFT", UIParent, "CENTER", 1, 0)
+    else
+        HelpFrame:ClearAllPoints()
+        HelpFrame:SetPoint("CENTER", UIParent, "CENTER")
+    end
     HelpFrame:Show()
+    ----Globals.UIFrameFadeIn(HelpFrame, 0.3, 0, 1)
 end
 
 -------------------------------------------------------------------------------
 function CursorTrail_HideHelp()
     if HelpFrame and HelpFrame:IsShown() then
         HelpFrame:Hide()
+        if ChangelogFrame and ChangelogFrame:IsShown() then
+            ChangelogFrame:ClearAllPoints()
+            ChangelogFrame:SetPoint("CENTER", UIParent, "CENTER")
+        end
         return true
     end
     return false
+end
+
+-------------------------------------------------------------------------------
+function CursorTrail_ToggleHelp(parent)
+    if HelpFrame and HelpFrame:IsShown() then
+        CursorTrail_HideHelp()
+    else
+        CursorTrail_ShowHelp(parent)
+    end
 end
 
 --- End of File ---

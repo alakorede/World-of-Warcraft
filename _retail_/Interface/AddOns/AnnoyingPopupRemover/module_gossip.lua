@@ -2,7 +2,7 @@
 -- Written by KyrosKrane Sylvanblade (kyros@kyros.info)
 -- Copyright (c) 2023-2024 KyrosKrane Sylvanblade
 -- Licensed under the MIT License, as per the included file.
--- Addon version: v22.0.0-release
+-- Addon version: v23.19.0-release
 
 -- This file defines a module that APR can handle. Each module is one setting or popup.
 
@@ -116,6 +116,36 @@ local GossipIDList = {}
 GossipIDList[40457] = "Darkmoon Faire Alliance" -- both alliance and horde gossips are shared across all the factional Mystic Mage NPCs
 GossipIDList[40007] = "Darkmoon Faire Horde"
 
+-- Shadowlands covenant swap
+-- No idea why you get the different versions. Might be related to how high you are in the covenant paths?
+GossipIDList[53870] = "Venthyr covenant"
+GossipIDList[53868] = "Venthyr covenant v2"
+GossipIDList[54449] = "Necrolord covenant"
+GossipIDList[53984] = "Kyrian covenant"
+GossipIDList[53981] = "Kyrian covenant v2"
+GossipIDList[53989] = "Night fae covenant"
+GossipIDList[53992] = "Night fae covenant v2"
+
+-- 20th Anniversary event trainers
+GossipIDList[123241] = "Brok (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123331] = "Bordin Steadyfist (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123332] = "Goz Banefury (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123333] = "Grand Master Obalis (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123337] = "Nicki Tinytech (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123338] = "Ras'an (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123339] = "Narrok (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123340] = "Morulu the Elder (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123341] = "Major Payne (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123342] = "Nearly Headless Jacob (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123343] = "Gutwretch (Anniversary Event)" -- Tanaris, Caverns of Time
+--GossipIDList[123344] = "TBD (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123345] = "Okrut Dragonwaste (Anniversary Event)" -- Tanaris, Caverns of Time
+--GossipIDList[123346] = "TBD (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123347] = "Hyuna of the Shrines (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123348] = "Farmer Nishi (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123349] = "Mo'ruk (Anniversary Event)" -- Tanaris, Caverns of Time
+GossipIDList[123350] = "Courageous Yon (Anniversary Event)" -- Tanaris, Caverns of Time
+
 -- Eastern Kingdoms pet tamers
 GossipIDList[41781] = "Lydia Accoste" -- Deadwind Pass
 GossipIDList[40127] = "Julia Stevens" -- Elwynn Forest
@@ -147,7 +177,7 @@ GossipIDList[41246] = "Grazzle the Great" -- Dustwallow Marsh
 
 -- Outland pet tamers
 GossipIDList[40903] = "Morulu the Elder" -- Shattrath
-GossipIDList[40903] = "Bloodknight Antari" -- Shadowmoon Valley
+GossipIDList[41753] = "Bloodknight Antari" -- Shadowmoon Valley
 GossipIDList[41046] = "Nicki Tinytech" -- Hellfire Peninsula
 GossipIDList[41751] = "Narrok" -- Nagrand
 GossipIDList[40901] = "Ras'an" -- Zangarmarsh
@@ -190,12 +220,17 @@ GossipIDList[36818] = "Stable master 36818"
 GossipIDList[41280] = "Stable master 41280"
 GossipIDList[41827] = "Stable master 41827"
 GossipIDList[47842] = "Stable master 47842" -- Lead Rider Jerek in Krokuun
+GossipIDList[48013] = "Stable master 48013" -- Zam'cha in Nazmir
+GossipIDList[48409] = "Stable master 48409" -- Yash in Nazmir
+GossipIDList[49479] = "Stable master 49479" -- Vasilica in Revendreth
 GossipIDList[54986] = "Stable master 54986"
 GossipIDList[55231] = "Stable master 55231"
 GossipIDList[55630] = "Stable master 55630"
 GossipIDList[107385] = "Stable master 107385"
 GossipIDList[107788] = "Stable master 107788"
 GossipIDList[110331] = "Stable master 110331" -- Wurallie
+GossipIDList[122708] = "Stable master 122708" -- Wheat in Camp Murroch, The Ringing Deeps
+GossipIDList[131400] = "Stable master 131400" -- Zexel Fingersnap in Siren Isle
 
 -- Start of various encounters in the Dragon Soul raid
 GossipIDList[40206] = "Ultraxion trash"
@@ -211,11 +246,26 @@ GossipIDList[41867] = "Spoils of Pandaria - Horde"
 GossipIDList[41865] = "Spoils of Pandaria - Alliance"
 GossipIDList[110714] = "Skip to Garrosh"
 
+-- Start of various encounters in the Antorus raid
+GossipIDList[46681] = "Eonar"
+
+-- Start of various encounters in the Battle for Dazar'alor raid
+GossipIDList[50638] = "Talk to Otoye after Jadefire Masters (Horde)"
+GossipIDList[51135] = "Talk to Tancred after King Rastakhan (Alliance)"
+GossipIDList[51057] = "Talk to Ensign Roberts before Mekkatorque (Alliance)"
+GossipIDList[50645] = "Talk to Captain Zadari post Stormwall Blockade to start Jaina fight" -- same ID for horde LFR, horde normal, and alliance mythic. I assume it's the same for all.
+
 -- Myrrit digs
 GossipIDList[109101] = "Starting a Myrrit dig with 1 map"
 GossipIDList[109604] = "Starting a Myrrit dig with 2 maps"
 GossipIDList[109603] = "Starting a Myrrit dig with 3 maps"
 GossipIDList[109815] = "Continuing a Myrrit dig"
+
+-- World quests
+GossipIDList[122688] = "Courier Mission: Ore Delivery - bridge end improvised springboard"
+GossipIDList[123548] = "Courier Mission: Ore Delivery - improvised air control"
+GossipIDList[123529] = "Courier Mission: Ore Delivery - mid bridge improvised springboard"
+GossipIDList[123701] = "Courier Mission: Ore Delivery - fog machine"
 
 -- Start of encounters in Dragonflight raids
 -- @TODO: Implement after DF is no longer current

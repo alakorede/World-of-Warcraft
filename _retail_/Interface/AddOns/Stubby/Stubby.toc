@@ -1,18 +1,17 @@
 ## Title: Stubby |cff224477(lib)
 ## Notes: Allows AddOns to load automatically, and provides event handling support.
 ##
-## Interface: 110000
+## Interface: 110002, 40400, 11503
 ## OptionalDeps: !nLog, DebugLib
 ## SavedVariables: StubbyConfig
 ##
-## Version: 9.1.BETA.5.17 (OneMawTime)
+## Version: 11.x.BETA.4 (TheWarWithBlizzardAPIs)
 ## Revision: $Id$
 ## Author: Norganna's AddOns
 ## X-Part-Of: Libraries
 ## X-Category: Library
-## X-Max-Interface: 80100
-## X-URL: http://zip.norganna.org/libs/Stubby/
-## X-Feedback: http://forums.norganna.org
+## X-URL: http://auctioneeraddon.com/
+## X-Feedback: https://auctioneeraddon.com/slack
 ##
 Support\Load.xml
 

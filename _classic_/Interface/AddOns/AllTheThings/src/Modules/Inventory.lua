@@ -20,12 +20,7 @@ local ContainerCache
 local function ResetContainerCache()
 	ContainerCache = setmetatable({}, {
 		__index = function(t, key)
-			local bagCache = setmetatable({}, {
-				__index = function(t, key)
-					local slotCache = {}
-					t[key] = slotCache
-					return slotCache
-				end})
+			local bagCache = setmetatable({}, app.MetaTable.AutoTable)
 			t[key] = bagCache
 			return bagCache
 		end
@@ -44,7 +39,7 @@ local function RunHandlerWhenLinkAvailable(bag, slot)
 	local itemCache = ContainerCache[bag][slot]
 	local positionRetries = itemCache.Retries or 0
 	if positionRetries > 5 then
-		app.PrintDebug("Retry limit",bag,slot,iteminfo.hyperlink)
+		-- app.PrintDebug("Retry limit",bag,slot,iteminfo and iteminfo.hyperlink or "NO LINK")
 		return
 	end
 

@@ -39,7 +39,7 @@ L.Money = MONEY
 L.Sort = 'Sort Button'
 L.Search = 'Search Toggle'
 L.Options = 'Options Button'
-L.Reagents = 'Reagents Button'
+L.Deposit = 'Deposit Button'
 L.LeftTabs = 'Rulesets on Left'
 L.LeftTabsTip = [[
 If enabled, the side tabs will be
@@ -48,6 +48,7 @@ displayed on the left side of the panel.]]
 L.Appearance = 'Appearance'
 L.Layer = 'Layer'
 L.BagBreak = 'Bag Break'
+L.BreakSpace = 'Break Spacing'
 L.ByType = 'By Type'
 L.ReverseBags = 'Reverse Bag Order'
 L.ReverseSlots = 'Reverse Slot Order'
@@ -78,6 +79,7 @@ L.GlowAlpha = 'Glow Brightness'
 L.EmptySlots = 'Display Background'
 L.SlotBackground = 'Artwork'
 L.ColorSlots = 'Color by Bag Type'
+L.AccountColor = 'Warband Color'
 L.NormalColor = 'Normal Color'
 L.KeyColor = 'Keyring Color'
 L.QuiverColor = 'Quiver Color'
@@ -128,6 +130,9 @@ L.AskCommunity = 'Ask Community'
 L.JoinUs = 'Join Us'
 
 L.FAQ = {
+  'How to deposit items directly into the warband bank?',
+  'Shift right-click on the item slot and it will be placed in the warband bags instead of the normal ones.',
+
   'How to see the bank, guild or another character offline?',
   'Click on the "Offline Viewing" button in the top left of your inventory. It looks like a portrait of the character you are currently playing.',
 

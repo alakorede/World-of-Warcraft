@@ -4,7 +4,9 @@
 ---
 --- This file is part of addon Kaliel's Tracker.
 
+---@type KT
 local addonName, KT = ...
+
 KT.title = C_AddOns.GetAddOnMetadata(addonName, "Title")
 
 -- Lua API
@@ -18,7 +20,8 @@ local strlen = string.len
 local strsub = string.sub
 local tonumber = tonumber
 
-local mediaPath = "Interface\\AddOns\\"..addonName.."\\Media\\"
+-- WoW API
+local HaveQuestRewardData = HaveQuestRewardData
 
 -- Version
 function KT.IsHigherVersion(newVersion, oldVersion)
@@ -56,9 +59,27 @@ function KT.IsHigherVersion(newVersion, oldVersion)
     return result
 end
 
+-- Math
+function KT.round(x, precision)
+    precision = precision or 1
+    local n
+    if precision >= 1 then
+        n = floor(x / precision + 0.5) * precision
+    else
+        local p = floor(1 / precision + 0.5)
+        n = floor(x * p + 0.5) / p
+    end
+    return n
+end
+
 -- Table
 function KT.IsTableEmpty(table)
     return (next(table) == nil)
+end
+
+-- Tasks
+function KT.GetNumTasks()
+    return #GetTasksTable()
 end
 
 -- Recipes
@@ -94,7 +115,8 @@ end
 
 function KT.GetMapContinent(mapID)
     if mapID then
-        if mapID == 1355 then   -- Nazjatar
+        if mapID == 2369 or         -- Siren Isle
+                mapID == 1355 then  -- Nazjatar
             return C_Map.GetMapInfo(mapID) or {}
         else
             return MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true) or {}
@@ -137,6 +159,34 @@ end
 function KT.GetQuestRewardSpells(questID)
     local spellRewards = C_QuestInfoSystem.GetQuestRewardSpells(questID) or {}
     return #spellRewards, spellRewards
+end
+
+-- HaveQuestRewardData always return false for reward choices
+function KT.HaveQuestRewardData(questID)
+    local result = true
+    C_QuestLog.SetSelectedQuest(questID)
+    local numQuestChoices = GetNumQuestLogChoices(questID, true)
+    if numQuestChoices > 0 then
+        for i = 1, numQuestChoices do
+            local lootType = GetQuestLogChoiceInfoLootType(i)
+            if lootType == 0 then
+                local name = GetQuestLogChoiceInfo(i)
+                if name == "" then
+                    result = false
+                    break
+                end
+            elseif lootType == 1 then
+                local currencyInfo = C_QuestLog.GetQuestRewardCurrencyInfo(questID, i, true)
+                if currencyInfo.name == "" then
+                    result = false
+                    break
+                end
+            end
+        end
+    else
+        result = HaveQuestRewardData(questID)
+    end
+    return result
 end
 
 -- Achievements
@@ -185,7 +235,7 @@ function KT.GameTooltip_AddQuestRewardsToTooltip(tooltip, questID, isBonus)
     local xp = GetQuestLogRewardXP(questID)
     local money = GetQuestLogRewardMoney(questID)
     local artifactXP = GetQuestLogRewardArtifactXP(questID)
-    local numQuestCurrencies = GetNumQuestLogRewardCurrencies(questID)
+    local numQuestCurrencies = #C_QuestLog.GetQuestRewardCurrencies(questID)
     local numQuestRewards = GetNumQuestLogRewards(questID)
     local numQuestSpellRewards, questSpellRewards = KT.GetQuestRewardSpells(questID)
     local numQuestChoices = GetNumQuestLogChoices(questID, true)
@@ -218,10 +268,14 @@ function KT.GameTooltip_AddQuestRewardsToTooltip(tooltip, questID, isBonus)
                 color = isUsable and ITEM_QUALITY_COLORS[quality] or colorNotUsable
             elseif lootType == 1 then
                 -- currency
-                local name, texture, amount, currencyID, quality = GetQuestLogRewardCurrencyInfo(i, questID, true)
-                amount = FormatLargeNumber(amount)
-                text = format(BONUS_OBJECTIVE_REWARD_WITH_COUNT_FORMAT, texture, HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(amount), name)
-                color = ITEM_QUALITY_COLORS[quality]
+                local currencyInfo = C_QuestLog.GetQuestRewardCurrencyInfo(questID, i, true)
+                local amount = FormatLargeNumber(currencyInfo.totalRewardAmount)
+                text = format(BONUS_OBJECTIVE_REWARD_WITH_COUNT_FORMAT, currencyInfo.texture, HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(amount), currencyInfo.name)
+                local contextIcon = KT.GetBestQuestRewardContextIcon(currencyInfo.questRewardContextFlags)
+                if contextIcon then
+                    text = text..CreateAtlasMarkup(contextIcon, 12, 16, 3, -1)
+                end
+                color = ITEM_QUALITY_COLORS[currencyInfo.quality]
             end
             if text and color then
                 tooltip:AddLine(text, color.r, color.g, color.b)
@@ -254,7 +308,7 @@ function KT.GameTooltip_AddQuestRewardsToTooltip(tooltip, questID, isBonus)
 
         -- money
         if money > 0 then
-            tooltip:AddLine(GetCoinTextureString(money, 12), 1, 1, 1)
+            tooltip:AddLine(C_CurrencyInfo.GetCoinTextureString(money, 12), 1, 1, 1)
             if isWarModeDesired and isQuestWorldQuest and questHasWarModeBonus then
                 tooltip:AddLine(WAR_MODE_BONUS_PERCENTAGE_FORMAT:format(C_PvP.GetWarModeRewardBonus()))
             end
@@ -319,14 +373,6 @@ function KT.GetQuestTagInfo(questID)
     return C_QuestLog.GetQuestTagInfo(questID) or {}
 end
 
-function KT.GetQuestLogSpecialItemInfo(questLogIndex)
-    local link, item, charges, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex)
-    if charges and charges <= 0 then
-        charges = GetItemCount(link)
-    end
-    return link, item, charges, showItemWhenComplete
-end
-
 function KT.GetNumQuests()
     local numQuests = 0
     local numEntries = C_QuestLog.GetNumQuestLogEntries()
@@ -353,10 +399,63 @@ function KT.GetNumQuestWatches()
     return numWatches
 end
 
+function KT.QuestSuperTracking_ChooseClosestQuest()
+    local closestQuestID = 0
+    local minDistSqr = math.huge
+
+    for i = 1, C_QuestLog.GetNumQuestLogEntries() do
+        local questInfo = C_QuestLog.GetInfo(i)
+        if not questInfo.isHeader and questInfo.isHidden and C_QuestLog.IsWorldQuest(questInfo.questID) then
+            local distanceSq = C_QuestLog.GetDistanceSqToQuest(questInfo.questID)
+            if distanceSq and distanceSq <= minDistSqr then
+                minDistSqr = distanceSq
+                closestQuestID = questInfo.questID
+            end
+        end
+    end
+
+    if closestQuestID == 0 then
+        for i = 1, C_QuestLog.GetNumWorldQuestWatches() do
+            local watchedWorldQuestID = C_QuestLog.GetQuestIDForWorldQuestWatchIndex(i)
+            if watchedWorldQuestID then
+                local distanceSq = C_QuestLog.GetDistanceSqToQuest(watchedWorldQuestID)
+                if distanceSq and distanceSq <= minDistSqr then
+                    minDistSqr = distanceSq
+                    closestQuestID = watchedWorldQuestID
+                end
+            end
+        end
+    end
+
+    if closestQuestID == 0 then
+        for i = 1, C_QuestLog.GetNumQuestWatches() do
+            local questID = C_QuestLog.GetQuestIDForQuestWatchIndex(i)
+            if questID and QuestHasPOIInfo(questID) then
+                local distSqr, onContinent = C_QuestLog.GetDistanceSqToQuest(questID)
+                if onContinent and distSqr <= minDistSqr then
+                    minDistSqr = distSqr
+                    closestQuestID = questID
+                end
+            end
+        end
+    end
+
+    if closestQuestID > 0 then
+        C_SuperTrack.SetSuperTrackedQuestID(closestQuestID)
+    else
+        C_SuperTrack.ClearAllSuperTracked()
+    end
+end
+
+-- Bonus Objective
+function KT.GetAreaPoiID(info)
+    return info and info.areaPoiID
+end
+
 -- Scenario
 function KT.IsScenarioHidden()
     local _, _, numStages = C_Scenario.GetInfo()
-    return numStages == 0 or not ShouldShowMawBuffs() or IsOnGroundFloorInJailersTower()
+    return numStages == 0 or IsOnGroundFloorInJailersTower()
 end
 
 -- Time
@@ -420,6 +519,34 @@ function KT.InCombatBlocked()
     return blocked
 end
 
+-- Icons
+local QUEST_REWARD_CONTEXT_ICONS = {
+    [Enum.QuestRewardContextFlags.FirstCompletionBonus] = "warbands-icon",
+    [Enum.QuestRewardContextFlags.RepeatCompletionBonus] = "warbands-icon",
+}
+
+function KT.GetBestQuestRewardContextIcon(questRewardContextFlags)
+    local contextIcon
+    if questRewardContextFlags then
+        if (FlagsUtil.IsSet(questRewardContextFlags, Enum.QuestRewardContextFlags.FirstCompletionBonus)) then
+            contextIcon = QUEST_REWARD_CONTEXT_ICONS[Enum.QuestRewardContextFlags.FirstCompletionBonus]
+        elseif (FlagsUtil.IsSet(questRewardContextFlags, Enum.QuestRewardContextFlags.RepeatCompletionBonus)) then
+            contextIcon = QUEST_REWARD_CONTEXT_ICONS[Enum.QuestRewardContextFlags.RepeatCompletionBonus]
+        end
+    end
+    return contextIcon
+end
+
+-- Pixel Perfect
+function KT.GetPixelPerfectScale(frame)
+    local screenWidth = GetPhysicalScreenSize()
+    local parent = frame:GetParent()
+    -- TODO: Add code for frame without parent
+    assert(parent, "No parent for frame "..(frame:GetName() or ""))
+    local scale = parent:GetWidth() / screenWidth
+    return scale
+end
+
 -- =====================================================================================================================
 
 local function StatiPopup_OnShow(self)
@@ -439,7 +566,7 @@ local function StatiPopup_OnShow(self)
 end
 
 StaticPopupDialogs[addonName.."_Info"] = {
-    text = "|T"..mediaPath.."KT_logo:22:22:0:0|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r",
+    text = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:0:0|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r",
     subText = "...",
     button2 = CLOSE,
     OnShow = StatiPopup_OnShow,
@@ -448,7 +575,7 @@ StaticPopupDialogs[addonName.."_Info"] = {
 }
 
 StaticPopupDialogs[addonName.."_ReloadUI"] = {
-    text = "|T"..mediaPath.."KT_logo:22:22:0:0|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r",
+    text = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:0:0|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r",
     subText = "...",
     button1 = RELOADUI,
     OnShow = StatiPopup_OnShow,
@@ -460,7 +587,7 @@ StaticPopupDialogs[addonName.."_ReloadUI"] = {
 }
 
 StaticPopupDialogs[addonName.."_LockUI"] = {
-    text = "|T"..mediaPath.."KT_logo:22:22:0:0|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r",
+    text = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:0:0|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r",
     subText = "...",
     button1 = LOCK,
     OnShow = StatiPopup_OnShow,
@@ -473,7 +600,7 @@ StaticPopupDialogs[addonName.."_LockUI"] = {
 }
 
 StaticPopupDialogs[addonName.."_WowheadURL"] = {
-    text = "|T"..mediaPath.."KT_logo:22:22:0:-1|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r - Wowhead URL",
+    text = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:0:-1|t"..NORMAL_FONT_COLOR_CODE..KT.title.."|r - Wowhead URL",
     button2 = CLOSE,
     hasEditBox = 1,
     editBoxWidth = 300,
@@ -496,7 +623,7 @@ StaticPopupDialogs[addonName.."_WowheadURL"] = {
         elseif self.text.text_arg1 == "achievement" then
             name = select(2, GetAchievementInfo(self.text.text_arg2))
         elseif self.text.text_arg1 == "spell" then
-            name = GetSpellInfo(self.text.text_arg2)
+            name = C_Spell.GetSpellName(self.text.text_arg2)
         elseif self.text.text_arg1 == "activity" then
             local activityInfo = C_PerksActivities.GetPerksActivityInfo(self.text.text_arg2)
             if activityInfo then

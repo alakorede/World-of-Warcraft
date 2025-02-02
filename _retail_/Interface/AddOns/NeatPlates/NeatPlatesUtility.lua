@@ -34,7 +34,14 @@ NeatPlatesUtility.Colors = {
 	green = "|cFF60E025",
 }
 
-NeatPlatesUtility.IsFriend = function(...) end
+
+NeatPlatesUtility.IsFriend = function(guid)
+	info = C_BattleNet.GetGameAccountInfoByGUID(guid)
+	if info == nil then
+		return false
+	end
+	return true
+end
 --NeatPlatesUtility.IsHealer =
 --NeatPlatesUtility.IsGuildmate = function(...) end
 --NeatPlatesUtility.IsPartyMember = function(...) end
@@ -209,6 +216,7 @@ NeatPlatesUtility.ParseGUID = ParseGUID
 ------------------------------------------
 -- GameTooltipScanner
 ------------------------------------------
+-- TODO: Remove scanner and use C_TooltipInfo.GetUnit(unitid) instead
 local ScannerName = "NeatPlatesScanningTooltip"
 local TooltipScanner = CreateFrame( "GameTooltip", ScannerName , nil, "GameTooltipTemplate" ); -- Tooltip name cannot be nil
 TooltipScanner:SetOwner( WorldFrame, "ANCHOR_NONE" );
@@ -322,7 +330,7 @@ local function GetTooltipLineText(lineNumber)
         return tooltipText, r, g, b
 end
 
-local function GetUnitQuestInfo(unit)
+local function GetUnitQuestInfoClassic(unit)
     local unitid = unit.unitid
     local questName, questUnit, questProgress
     local questList = {}
@@ -384,6 +392,78 @@ local function GetUnitQuestInfo(unit)
 	  return {}
 end
 
+-- Enum.TooltipDataLineType.QuestTitle = 17
+-- Enum.TooltipDataLineType.QuestPlayer = 18
+-- Enum.TooltipDataLineType.QuestObjective = 8
+local function GetUnitQuestInfo(unit)
+	local unitid = unit.unitid
+	local questList = {}
+	local tooltipData = C_TooltipInfo.GetUnit(unitid)
+	local playerName = UnitName("player")
+	local lastQuestTitle = nil
+	local lastQuestPlayer = nil
+	local lastObjectiveTitle = nil
+	local lastObjectivePlayer = nil
+	local lastObjectiveLine = 0
+	local inGroup = GetNumGroupMembers() > 1 -- alone in a group does count as not in group for tooltip data
+	local lines = tooltipData and tooltipData.lines
+	if lines then
+		for i, line  in pairs(lines) do
+			-- When alone:
+			-- QuestTitle
+			-- QuestObjective
+
+			-- When in group
+			-- QuestTitle
+			-- PlayerName
+			-- QuestObjective
+			-- PlayerName
+			-- QuestObjective
+
+			local lineType = line.type
+			if lineType == Enum.TooltipDataLineType.QuestTitle then
+				lastQuestTitle = line.leftText
+				questList[lastQuestTitle] = questList[lastQuestTitle] or {}
+			elseif lineType == Enum.TooltipDataLineType.QuestPlayer then
+				lastQuestPlayer = line.leftText
+			elseif lineType == Enum.TooltipDataLineType.QuestObjective then
+				if lastQuestPlayer == nil or lastQuestPlayer == playerName then
+					questList[lastQuestTitle][line.leftText] = line.completed
+				end
+			end
+			-- Event Objective detection
+			if i > 1 and lineType == 0 then
+				local color = line.leftColor
+				if color.r > 0.99 and color.g >= 0.81 and color.b == 0 then -- QuestYellow
+					local text = line.leftText
+					if lastObjectiveTitle ~= nil and inGroup and UnitGUID(text) then
+						lastObjectivePlayer = text
+					else
+						lastObjectiveTitle = text
+						questList[lastObjectiveTitle] = questList[lastObjectiveTitle] or {}
+					end
+					lastObjectiveLine = i
+				elseif lastObjectiveTitle and lastObjectiveLine == (i - 1) then
+					if lastObjectivePlayer == nil or lastObjectivePlayer == playerName then
+						questList[lastObjectiveTitle][line.leftText] = false
+					end
+					lastObjectiveLine = i
+				else
+					lastObjectiveTitle = nil
+					lastObjectivePlayer = nil
+				end
+			end
+		end
+	end
+	-- remove quests without objectives
+	for i, objectives in pairs(questList) do
+		if next(objectives) == nil then
+			questList[i] = nil
+		end
+	end
+	return questList
+end
+
 local arenaUnitIDs = {"arena1", "arena2", "arena3", "arena4", "arena5"}
 
 local function GetArenaIndex(unitname)
@@ -398,8 +478,11 @@ local function GetArenaIndex(unitname)
 	end
 end
 
-
-NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfo
+if NEATPLATES_IS_CLASSIC then
+	NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfoClassic
+else
+	NeatPlatesUtility.GetUnitQuestInfo = GetUnitQuestInfo
+end
 NeatPlatesUtility.GetArenaIndex = GetArenaIndex
 
 ------------------------
@@ -696,7 +779,7 @@ end
 
 local function CreateSliderFrame(self, reference, parent, label, val, minval, maxval, step, mode, width, infinite)
 	local value, multiplier, minimum, maximum, current
-	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate')
+	local slider = CreateFrame("Slider", reference, parent, 'OptionsSliderTemplate2')
 	local EditBox = CreateFrame("EditBox", reference, slider)
 	slider.isActual = (mode and mode == "ACTUAL")
 
@@ -1023,56 +1106,70 @@ end
 local CreateColorBox
 do
 
+	-- For some reason alpha is inverse in some version...
+	local function CorrectAlphaValue(a)
+		if NEATPLATES_IS_CLASSIC then
+			return 1 - a
+		else
+			return a
+		end
+	end
+
 	local workingFrame
 	local function ChangeColorRetail(cancel)
 		local a, r, g, b
 		if cancel then
-			workingFrame:SetBackdropColor(ColorPickerFrame:GetPreviousValues())
+			r, g, b, a = ColorPickerFrame:GetPreviousValues()
+			a = CorrectAlphaValue(a)
+			workingFrame:SetBackdropColor(r, g, b, a)
 		else
 			a, r, g, b = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB();
+			a = CorrectAlphaValue(a)
 			workingFrame:SetBackdropColor(r,g,b,a)
 			if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
 		end
 	end
 
-	local function ChangeColorClassic(cancel)
-		local a, r, g, b
-		if cancel then
-			r,g,b,a = unpack(ColorPickerFrame.startingval )
-			workingFrame:SetBackdropColor(r,g,b,a)
-		else
-			a, r, g, b = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
-			workingFrame:SetBackdropColor(r,g,b,a)
-			if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
-		end
-	end
+	-- local function ChangeColorClassic(cancel)
+	-- 	local a, r, g, b
+	-- 	if cancel then
+	-- 		r,g,b,a = unpack(ColorPickerFrame.startingval )
+	-- 		workingFrame:SetBackdropColor(r,g,b,a)
+	-- 	else
+	-- 		a, r, g, b = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+	-- 		workingFrame:SetBackdropColor(r,g,b,a)
+	-- 		if workingFrame.OnValueChanged then workingFrame:OnValueChanged() end
+	-- 	end
+	-- end
 
 	local function ChangeColor(cancel)
-		if NEATPLATES_IS_CLASSIC then
-			ChangeColorClassic(cancel)
-		else
+		-- if NEATPLATES_IS_CLASSIC and not NEATPLATES_IS_CLASSIC_ERA then
+		-- 	ChangeColorClassic(cancel)
+		-- else
 			ChangeColorRetail(cancel)
-		end
+		-- end
 	end
 
 
-	local function ShowColorPickerClassic(frame, onOkay)
-		local r,g,b,a = frame:GetBackdropColor()
-		workingFrame = frame
-		ColorPickerFrame.swatchFunc = ChangeColor
-		ColorPickerFrame.opacityFunc = function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end
-		ColorPickerFrame.cancelFunc = ChangeColor
-		ColorPickerFrame.startingval  = {r,g,b,a}
-		ColorPickerFrame:SetColorRGB(r,g,b);
-		ColorPickerFrame.hasOpacity = true
-		ColorPickerFrame.opacity = 1 - a
-		ColorPickerFrame:SetFrameStrata(frame:GetFrameStrata())
-		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel()+1)
-		ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
-	end
+	-- local function ShowColorPickerClassic(frame, onOkay)
+	-- 	local r,g,b,a = frame:GetBackdropColor()
+	-- 	workingFrame = frame
+	-- 	ColorPickerFrame.swatchFunc = ChangeColor
+	-- 	ColorPickerFrame.opacityFunc = function() if onOkay and not ColorPickerFrame:IsShown() then onOkay(RGBToHex(ColorPickerFrame:GetColorRGB())) end; ChangeColor() end
+	-- 	ColorPickerFrame.cancelFunc = ChangeColor
+	-- 	ColorPickerFrame.startingval  = {r,g,b,a}
+	-- 	ColorPickerFrame:SetColorRGB(r,g,b);
+	-- 	ColorPickerFrame.hasOpacity = true
+	-- 	ColorPickerFrame.opacity = 1 - a
+	-- 	ColorPickerFrame:SetFrameStrata(frame:GetFrameStrata())
+	-- 	ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel()+1)
+	-- 	ColorPickerFrame:Hide(); ColorPickerFrame:Show(); -- Need to activate the OnShow handler.
+	-- end
 
 	local function ShowColorPickerRetail(frame, onOkay)
 		local r,g,b,a = frame:GetBackdropColor()
+
+		a = CorrectAlphaValue(a)
 
 		local handler = function(cancel)
 			ChangeColor(cancel)
@@ -1100,11 +1197,11 @@ do
 	end
 
 	local function ShowColorPicker(frame, onOkay)
-		if NEATPLATES_IS_CLASSIC then
-			ShowColorPickerClassic(frame, onOkay)
-		else
+		-- if NEATPLATES_IS_CLASSIC and not NEATPLATES_IS_CLASSIC_ERA then
+		-- 	ShowColorPickerClassic(frame, onOkay)
+		-- else
 			ShowColorPickerRetail(frame, onOkay)
-		end
+		-- end
 	end
 
 	function CreateColorBox(self, reference, parent, label, onOkay, r, g, b, a)
@@ -1122,8 +1219,14 @@ do
 		colorbox.Label:SetPoint("TOPLEFT", colorbox, "TOPRIGHT", 4, -7)
 		colorbox.Label:SetText(label)
 
-		colorbox.GetValue = function() local color = {}; color.r, color.g, color.b, color.a = colorbox:GetBackdropColor(); return color end
-		colorbox.SetValue = function(self, color) colorbox:SetBackdropColor(color.r, color.g, color.b, color.a); end
+		colorbox.GetValue = function()
+			local color = {};
+			color.r, color.g, color.b, color.a = colorbox:GetBackdropColor();
+			return color
+		end
+		colorbox.SetValue = function(self, color)
+			colorbox:SetBackdropColor(color.r, color.g, color.b, color.a);
+		end
 		--colorbox.tooltipText = "Colorbox"
 		return colorbox
 	end
@@ -1865,6 +1968,25 @@ end
 
 NeatPlatesUtility.SetupClassColors = SetupClassColors
 
+-- Simple Debounce
+local throttleAmount = 0 --in milliseconds
+local throttles = {}
+local function SimpleThrottle(key, callback)
+	if throttles[key] ~= nil then
+		return
+	end
+
+	-- Setup throttle
+	throttles[key] = callback
+	C_Timer.After(throttleAmount / 1000, function()
+		throttles[key]()
+		throttles[key] = nil
+	end);
+end
+NeatPlatesUtility.SimpleThrottle = SimpleThrottle
+NeatPlatesUtility.SetThrottle = function(amount) throttleAmount = amount or 0 end
+
+
 ----------------------
 -- Call In() - Registers a callback, which hides the specified frame in X seconds
 ----------------------
@@ -1932,7 +2054,7 @@ do
 			fixed = true
 		end
 
-		if Settings and not NEATPLATES_IS_CLASSIC then
+		if Settings then
 			local category = NeatPlatesPanel.Category
 			category.expanded = true
 			Settings.OpenToCategory(category.ID, panel.name)

@@ -115,7 +115,6 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "ThreatNeutralizationApplied", 350496)
 	self:Log("SPELL_AURA_REMOVED", "ThreatNeutralizationRemoved", 350496)
 
-	self:RegisterMessage("BigWigs_BarCreated", "BarCreated")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE")
 	self:GROUP_ROSTER_UPDATE()
 end
@@ -389,7 +388,7 @@ do
 		playerList[count] = args.destName
 		playerList[args.destName] = count -- Set raid marker
 		if self:Me(args.destGUID) then
-			self:Say(args.spellId, CL.bomb)
+			self:Say(args.spellId, CL.bomb, nil, "Bomb")
 			self:SayCountdown(args.spellId, 4)
 			self:PlaySound(args.spellId, "warning")
 		end

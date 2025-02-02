@@ -1,6 +1,8 @@
 
 PawnOptions = {
-["LastVersion"] = 2.0914,
+["LastVersion"] = 2.1001,
+["LastPlayerFullName"] = "Apinéia-Nemesis",
+["AutoSelectScales"] = true,
 ["ItemLevels"] = {
 {
 ["ID"] = 193663,
@@ -89,9 +91,6 @@ nil,
 ["Link"] = "|cff0070dd|Hitem:180663::::::::60:104::11:1:6706:2:9:55:28:1337:::::|h[War Scholar's Bonesaw]|h|r",
 },
 },
-["AutoSelectScales"] = true,
-["LastPlayerFullName"] = "Apinéia-Nemesis",
-["LastKeybindingsSet"] = 1,
 ["Artifacts"] = {
 [128821] = {
 ["Relics"] = {
@@ -145,6 +144,7 @@ nil,
 ["Name"] = "Fangs of Ashamane",
 },
 },
+["LastKeybindingsSet"] = 1,
 }
 PawnMrRobotScaleProviderOptions = {
 ["LastClass"] = "DEATHKNIGHT",

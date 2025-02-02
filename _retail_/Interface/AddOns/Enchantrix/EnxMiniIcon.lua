@@ -1,6 +1,6 @@
 --[[
 	Enchantrix Addon for World of Warcraft(tm).
-	Version: 9.1.BETA.5.15 (OneMawTime)
+	Version: <%version%> (<%codename%>)
 	Revision: $Id$
 	URL: http://enchantrix.org/
 
@@ -28,9 +28,9 @@
 		since that is its designated purpose as per:
 		http://www.fsf.org/licensing/licenses/gpl-faq.html#InterpreterIncompat
 ]]
-Enchantrix_RegisterRevision("$URL$", "$Rev$")
 
 local settings = Enchantrix.Settings
+local constants = Enchantrix.Constants
 
 --[[
 
@@ -59,17 +59,53 @@ local function dragStop()
 	miniIcon.enxMoving = false
 end
 
+local open2Enchanting, open2Jewelcrafting, checkProfession
+-- different versions of open2Enchanting, open2Jewelcrafting and checkProfession depending on client APIs available
+if GetProfessions and GetProfessionInfo then
+	checkProfession = function(check)
+		local prof1, prof2 = GetProfessions()
+		local _, _, _, _, _, _, skilline1 = GetProfessionInfo(prof1)
+		local _, _, _, _, _, _, skilline2 = GetProfessionInfo(prof2)
+		return skilline1 == check or skilline2 == check
+	end
+else
+	checkProfession = function()
+		return true
+	end
+end
+if C_TradeSkillUI and C_TradeSkillUI.OpenTradeSkill then
+	open2Enchanting = function()
+		C_TradeSkillUI.OpenTradeSkill(333)
+	end
+	open2Jewelcrafting = function()
+		C_TradeSkillUI.OpenTradeSkill(755)
+	end
+else
+	open2Enchanting = function()
+		CastSpellByName(_ENCH("Enchanting"))
+	end
+	open2Jewelcrafting = function()
+		CastSpellByName(_ENCH("Jewelcrafting"))
+	end
+end
+
 local function click(obj, button)
-	if (button == "LeftButton") then
-		if (IsModifierKeyDown()) then
-			CastSpellByName(_ENCH("Jewelcrafting"))
+	if button == "LeftButton" then
+		if IsModifierKeyDown() then
+			open2Jewelcrafting()
+			if not checkProfession(755) then
+				Enchantrix.Util.ChatPrint("You do not have Jewelcrafting on this character")
+			end
 		else
-			CastSpellByName(_ENCH("Enchanting"))
+			open2Enchanting()
+			if not checkProfession(333) then
+				Enchantrix.Util.ChatPrint("You do not have Enchanting on this character")
+			end
 		end
-	elseif (button == "RightButton") then
+	elseif button == "RightButton" then
 		settings.MakeGuiConfig()
 		local gui = settings.Gui
-		if (gui:IsVisible()) then
+		if gui:IsVisible() then
 			gui:Hide()
 		else
 			gui:Show()
@@ -77,13 +113,23 @@ local function click(obj, button)
 	end
 end
 
+local function addtooltiplines(tooltip)
+	tooltip:AddLine("Enchantrix",  1,1,0.5, 1)
+	tooltip:AddLine(_ENCH("EnxMMTip"),  1,1,0.5, 1)
+	tooltip:AddLine("|cff1fb3ff".._ENCH("Click").."|r ".._ENCH("TipOpenEnchant"), 1,1,0.5, 1)
+	if not constants.Classic or constants.Classic >= 2 then
+		tooltip:AddLine("|cff1fb3ff".._ENCH("ShiftClick").."|r ".._ENCH("TipOpenJewel"), 1,1,0.5, 1)
+	end
+	tooltip:AddLine("|cff1fb3ff".._ENCH("RightClick").."|r ".._ENCH("TipOpenConfig"), 1,1,0.5, 1)
+end
+
 function miniIcon.Reposition(angle)
-	if (not settings.GetSetting("miniicon.enable")) then
+	if not settings.GetSetting("miniicon.enable") then
 		miniIcon:Hide()
 		return
 	end
 	miniIcon:Show()
-	if (not angle) then angle = settings.GetSetting("miniicon.angle") or 0.5
+	if not angle then angle = settings.GetSetting("miniicon.angle") or 0.5
 	else settings.SetSetting("miniicon.angle", angle) end
 	angle = angle
 	local distance = settings.GetSetting("miniicon.distance")
@@ -120,11 +166,7 @@ local function mmButton_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_NONE")
 	GameTooltip:SetPoint("TOPLEFT", self, "BOTTOMLEFT")
 	GameTooltip:ClearLines()
-	GameTooltip:AddLine("Enchantrix",  1,1,0.5, 1)
-	GameTooltip:AddLine(_ENCH("EnxMMTip"),  1,1,0.5, 1)
-	GameTooltip:AddLine("|cff1fb3ff".._ENCH("Click").."|r ".._ENCH("TipOpenEnchant"), 1,1,0.5, 1)
-	GameTooltip:AddLine("|cff1fb3ff".._ENCH("ShiftClick").."|r ".._ENCH("TipOpenJewel"), 1,1,0.5, 1)
-	GameTooltip:AddLine("|cff1fb3ff".._ENCH("RightClick").."|r ".._ENCH("TipOpenConfig"), 1,1,0.5, 1)
+	addtooltiplines(GameTooltip)
 	GameTooltip:Show()
 end
 
@@ -168,7 +210,7 @@ miniIcon:SetScript("OnLeave", mmButton_OnLeave)
 
 --[[
 
-nSIdeBar related bits
+nSlideBar related bits
 
 ]]
 
@@ -184,11 +226,7 @@ if LibStub then
 					OnClick = function(self, button) click(self, button) end,
 					})
 		function sideIcon:OnTooltipShow()
-			self:AddLine("Enchantrix",  1,1,0.5, 1)
-			self:AddLine(_ENCH("EnxMMTip"),  1,1,0.5, 1)
-			self:AddLine("|cff1fb3ff".._ENCH("Click").."|r ".._ENCH("TipOpenEnchant"), 1,1,0.5, 1)
-			self:AddLine("|cff1fb3ff".._ENCH("ShiftClick").."|r ".._ENCH("TipOpenJewel"), 1,1,0.5, 1)
-			self:AddLine("|cff1fb3ff".._ENCH("RightClick").."|r ".._ENCH("TipOpenConfig"), 1,1,0.5, 1)
+			addtooltiplines(self)
 		end
 		function sideIcon:OnEnter()
 			GameTooltip:SetOwner(self, "ANCHOR_NONE")
@@ -200,5 +238,44 @@ if LibStub then
 		function sideIcon:OnLeave()
 			GameTooltip:Hide()
 		end
+	end
+end
+
+--[[
+
+AddonCompartment related bits
+
+]]
+
+local function doAddonCompartment()
+	if AddonCompartmentFrame and settings.GetSetting("miniicon.addcompartment") then
+		local aboutText = "Enchantrix"
+		local mouseButtonNote = "\nDisplay information in item tooltips pertaining to disenchanting, prospecting, and milling results."
+		AddonCompartmentFrame:RegisterAddon({
+			text = aboutText,
+			icon = "Interface/AddOns/Enchantrix/Skin/EnxOrb.blp",
+			notCheckable = true,
+			func = function(button, menuInputData, menu)
+				click(button, menuInputData.buttonName)
+			end,
+			funcOnEnter = function(button)
+				MenuUtil.ShowTooltip(button, function(tooltip)
+					tooltip:SetText(aboutText .. mouseButtonNote)
+				end)
+			end,
+			funcOnLeave = function(button)
+				MenuUtil.HideTooltip(button)
+			end,
+		})
+	end
+end
+
+function miniIcon.AddonLoaded()
+	miniIcon.Reposition()
+
+	if doAddonCompartment then
+		doAddonCompartment()
+		-- only call this function once
+		doAddonCompartment = nil
 	end
 end

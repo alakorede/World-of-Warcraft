@@ -218,9 +218,9 @@ local function GetFormattedLabel(label)
 end
 
 local function AddToCollection()
-  local patch = select(4,GetBuildInfo());
+  --local patch = select(4,GetBuildInfo());
   for i = 1, #db do
-    if (db[i][4] <= patch) then
+    --if (db[i][4] <= patch) then --check to make sure ptr stuff isn't used before a patch is out on retail
       local data = {};
       data.name = db[i][1];
       data.label = db[i][2];
@@ -266,7 +266,7 @@ local function AddToCollection()
       if #data.sources > 0 then
         app.AddWeaponSetToTables(data);
       end
-    end
+    --end
   end
 end
 

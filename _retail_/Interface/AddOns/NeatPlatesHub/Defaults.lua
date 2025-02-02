@@ -23,6 +23,8 @@ NeatPlatesHubDefaults = {
 	StyleFriendlyBarsOnElite = false,
 	StyleFriendlyBarsInstanceMode = false,
 	StyleFriendlyBarsOnPlayers = true,
+	StyleFriendlyBarsOnPlayersExcludePvPFlagged = false,
+	StyleFriendlyBarsOnPlayersExcludePvPNonFlagged = false,
 	StyleFriendlyBarsNoMinions = false,
 	StyleFriendlyBarsNoTotem = false,
 	StyleFriendlyBarsOnNPC = false,
@@ -34,6 +36,8 @@ NeatPlatesHubDefaults = {
 	StyleEnemyBarsNoMinions = false,
 	StyleEnemyBarsNoTotem = false,
 	StyleEnemyBarsOnPlayers = true,
+	StyleEnemyBarsOnPlayersExcludePvPFlagged = false,
+	StyleEnemyBarsOnPlayersExcludePvPNonFlagged = false,
 	StyleEnemyBarsOnNPC = true,
 	StyleEnemyBarsClickThrough = false,
 
@@ -200,6 +204,7 @@ NeatPlatesHubDefaults = {
 	ColorHostilePlayer = {r = 1, g = 0, b = 0,},
 	ColorGuildMember = {r = 60/255, g = 168/255, b = 255/255,},
 	ColorPartyMember = {r = 60/255, g = 168/255, b = 255/255,},
+	ColorBattleNetFriend = {r = 60/255, g = 168/255, b = 255/255,},
 
 	TextColorFriendlyNPC = {r = 96/255, g = 224/255, b = 37/255,},
 	TextColorFriendlyPlayer = {r = 60/255, g = 168/255, b = 255/255,},
@@ -208,6 +213,7 @@ NeatPlatesHubDefaults = {
 	TextColorHostilePlayer = {r = 255/255, g = 51/255, b = 32/255,},
 	TextColorGuildMember = {r = 60/255, g = 168/255, b = 255/255,},
 	TextColorPartyMember = {r = 60/255, g = 168/255, b = 255/255,},
+	TextColorBattleNetFriend = {r = 60/255, g = 168/255, b = 255/255,},
 	TextColorNormal = {r = .65, g = .65, b = .65, a = .4},
 	TextColorElite = {r = .9, g = .7, b = .3, a = .5},
 	TextColorBoss = {r = 1, g = .85, b = .1, a = .8},

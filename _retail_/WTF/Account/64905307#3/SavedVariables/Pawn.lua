@@ -11,7 +11,7 @@ PawnCommon = {
 ["Debug"] = false,
 ["ColorTooltipBorder"] = true,
 ["ShowTooltipIcons"] = true,
-["LastVersion"] = 2.0914,
+["LastVersion"] = 2.1008,
 ["ShowSocketingAdvisor"] = true,
 ["ShowSpecIcons"] = true,
 ["IgnoreGemsWhileLeveling"] = true,
@@ -36,6 +36,12 @@ PawnCommon = {
 ["\"MrRobot\":WARLOCK1"] = {
 ["IconTexturePath"] = 136145,
 ["PerCharacterOptions"] = {
+["Batezu-Nemesis"] = {
+["Visible"] = true,
+},
+["Uzetab-Nemesis"] = {
+["Visible"] = true,
+},
 },
 ["Color"] = "8686ec",
 ["ClassID"] = 9,
@@ -159,9 +165,6 @@ PawnCommon = {
 ["Batezu-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Uzetab-Nemesis"] = {
-["Visible"] = true,
-},
 },
 ["Color"] = "8686ec",
 ["ClassID"] = 9,
@@ -196,6 +199,12 @@ PawnCommon = {
 ["\"MrRobot\":MONK1"] = {
 ["IconTexturePath"] = 608951,
 ["PerCharacterOptions"] = {
+["Kigon-Nemesis"] = {
+["Visible"] = true,
+},
+["Maharishi-Goldrinn"] = {
+["Visible"] = true,
+},
 },
 ["Color"] = "00fe95",
 ["ClassID"] = 10,
@@ -248,9 +257,6 @@ PawnCommon = {
 ["Visible"] = true,
 },
 ["Wishy-Nemesis"] = {
-["Visible"] = true,
-},
-["Bearbull-Nemesis"] = {
 ["Visible"] = true,
 },
 ["Hanushy-Nemesis"] = {
@@ -327,6 +333,9 @@ PawnCommon = {
 ["\"MrRobot\":DRUID1"] = {
 ["IconTexturePath"] = 136096,
 ["PerCharacterOptions"] = {
+["Trunkate-Nemesis"] = {
+["Visible"] = true,
+},
 },
 ["Color"] = "fe7b09",
 ["ClassID"] = 11,
@@ -341,6 +350,9 @@ PawnCommon = {
 ["\"MrRobot\":PRIEST2"] = {
 ["IconTexturePath"] = 237542,
 ["PerCharacterOptions"] = {
+["Mafiano-Nemesis"] = {
+["Visible"] = true,
+},
 ["Hilarión-Azralon"] = {
 ["Visible"] = true,
 },
@@ -412,6 +424,9 @@ PawnCommon = {
 ["\"MrRobot\":WARLOCK2"] = {
 ["IconTexturePath"] = 136172,
 ["PerCharacterOptions"] = {
+["Batezu-Nemesis"] = {
+["Visible"] = true,
+},
 },
 ["Color"] = "8686ec",
 ["ClassID"] = 9,
@@ -498,13 +513,19 @@ PawnCommon = {
 ["\"MrRobot\":MAGE1"] = {
 ["IconTexturePath"] = 135932,
 ["PerCharacterOptions"] = {
+["Elaphe-Goldrinn"] = {
+["Visible"] = true,
+},
+["Crysthina-Goldrinn"] = {
+["Visible"] = true,
+},
+["Bankshy-Thrall"] = {
+["Visible"] = true,
+},
 ["Jeshy-Nemesis"] = {
 ["Visible"] = true,
 },
 ["Tamagoshy-Nemesis"] = {
-["Visible"] = true,
-},
-["Bankshy-Thrall"] = {
 ["Visible"] = true,
 },
 },
@@ -578,10 +599,10 @@ PawnCommon = {
 ["\"MrRobot\":WARRIOR2"] = {
 ["IconTexturePath"] = 132347,
 ["PerCharacterOptions"] = {
-["Sharashy-Nemesis"] = {
+["Skoshy-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Skoshy-Goldrinn"] = {
+["Sharashy-Nemesis"] = {
 ["Visible"] = true,
 },
 ["Turoshy-Nemesis"] = {
@@ -684,13 +705,19 @@ PawnCommon = {
 ["\"MrRobot\":DEATHKNIGHT1"] = {
 ["IconTexturePath"] = 135770,
 ["PerCharacterOptions"] = {
-["Anopheles-Azralon"] = {
+["Lvcivs-Goldrinn"] = {
+["Visible"] = true,
+},
+["Eshy-Nemesis"] = {
+["Visible"] = true,
+},
+["Átilla-Gurubashi"] = {
 ["Visible"] = true,
 },
 ["Apinéia-Nemesis"] = {
 ["Visible"] = true,
 },
-["Eshy-Nemesis"] = {
+["Anopheles-Azralon"] = {
 ["Visible"] = true,
 },
 },
@@ -710,13 +737,16 @@ PawnCommon = {
 ["Radagashy-Goldrinn"] = {
 ["Visible"] = true,
 },
+["Bearbull-Nemesis"] = {
+["Visible"] = true,
+},
 ["Dishy-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Onifade-Nemesis"] = {
+["Artheras-Goldrinn"] = {
 ["Visible"] = true,
 },
-["Artheras-Goldrinn"] = {
+["Onifade-Nemesis"] = {
 ["Visible"] = true,
 },
 },
@@ -733,6 +763,12 @@ PawnCommon = {
 ["\"MrRobot\":WARRIOR3"] = {
 ["IconTexturePath"] = 132341,
 ["PerCharacterOptions"] = {
+["Dartho-Goldrinn"] = {
+["Visible"] = true,
+},
+["Tankeabot-Nemesis"] = {
+["Visible"] = true,
+},
 ["Muruatan-Nemesis"] = {
 ["Visible"] = true,
 },

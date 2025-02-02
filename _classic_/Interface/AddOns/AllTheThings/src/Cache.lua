@@ -12,29 +12,18 @@ local contains, classIndex, raceIndex, factionID =
 
 -- Module locals
 local AllCaches, AllGamePatches, postscripts, runners, QuestTriggers = {}, {}, {}, {}, {};
-local containerMeta = {
-	__index = function(t, id)
-		if id then
-			local container = {};
-			t[id] = container;
-			return container;
-		end
-	end,
-};
 local fieldMeta = {
 	__index = function(t, field)
-		if field then
-			local container = setmetatable({}, containerMeta);
-			t[field] = container;
-			return container;
-		end
+		if field == nil then return end
+		local container = setmetatable({}, app.MetaTable.AutoTable);
+		t[field] = container;
+		return container;
 	end,
 	__newindex = function(t, field, value)
-		if field then
-			local container = setmetatable(value, containerMeta);
-			rawset(t, field, container);
-			return container;
-		end
+		if field == nil then return end
+		local container = setmetatable(value, app.MetaTable.AutoTable);
+		rawset(t, field, container);
+		return container;
 	end,
 };
 local currentCache, CacheFields;
@@ -63,9 +52,6 @@ local CreateDataCache = function(name, skipMapCaching)
 	end
 	setmetatable(cache, fieldMeta);
 	cache.npcID = cache.creatureID;	-- identical cache as creatureID (probably deprecate npcID use eventually)
-	-- cache.mountID = cache.spellID;	-- identical cache as spellID
-	cache.recipeID = cache.spellID;	-- identical cache as spellID
-	--cache.requireSkill = cache.professionID;	-- identical cache as professionID (in Retail)
 	return cache;
 end
 currentCache = CreateDataCache("default");
@@ -108,6 +94,9 @@ end;
 local cacheQuestID = function(group, questID)
 	CacheField(group, "questID", questID);
 end
+local cacheSpellID = function(group, spellID)
+	CacheField(group, "spellID", spellID);
+end
 if app.Debugging and app.Version == "[Git]" then
 	local L = app.L;
 	local referenceCounter = {};
@@ -147,7 +136,6 @@ if app.Debugging and app.Version == "[Git]" then
 			print("Header " .. id .. " has " .. data[2] .. " references" .. (data[3] or "."), header.name);
 			tinsert(data, header);
 		end
-		app.SetDataMember("CUSTOM_HEADERS", CUSTOM_HEADERS);
 	end
 	cacheCreatureID = function(group, creatureID)
 		if creatureID > 0 then
@@ -178,6 +166,7 @@ end
 local providerTypeConverters = {
 	["n"] = cacheCreatureID,
 	["o"] = cacheObjectID,
+	["s"] = cacheSpellID,
 	["c"] = function(group, providerID)
 		CacheField(group, "currencyIDAsCost", providerID);
 		--CacheField(group, "currencyID", providerID);
@@ -319,12 +308,14 @@ local function zoneTextAreasRunner(group, value)
 	-- Remap the original mapID to the new mapID when it encounters any of these artIDs.
 	local mapIDs, parentMapID, info = {}, nil, nil;
 	if group.coords then
-		parentMapID = group.coords[1][3];
-		if parentMapID then
-			mapIDs[parentMapID] = 1;
-			info = C_Map_GetMapInfo(parentMapID);
-			if info and info.parentMapID then
-				mapIDs[info.parentMapID] = 1;
+		for index,coord in ipairs(group.coords) do
+			parentMapID = coord[3];
+			if parentMapID and not mapIDs[parentMapID] then
+				mapIDs[parentMapID] = 1;
+				info = C_Map_GetMapInfo(parentMapID);
+				if info and info.parentMapID then
+					mapIDs[info.parentMapID] = 1;
+				end
 			end
 		end
 	else
@@ -339,10 +330,12 @@ local function zoneTextAreasRunner(group, value)
 	end
 	if group.maps then
 		for i,parentMapID in ipairs(group.maps) do
-			mapIDs[parentMapID] = 1;
-			info = C_Map_GetMapInfo(parentMapID);
-			if info and info.parentMapID then
-				mapIDs[info.parentMapID] = 1;
+			if not mapIDs[parentMapID] then
+				mapIDs[parentMapID] = 1;
+				info = C_Map_GetMapInfo(parentMapID);
+				if info and info.parentMapID then
+					mapIDs[info.parentMapID] = 1;
+				end
 			end
 		end
 	end
@@ -404,6 +397,10 @@ local function zoneTextNamesRunner(group, value)
 		--print("Invalid MapRemapping (name):", group.hash);
 	end
 end
+local function zoneTextHeaderIDRunner(group, value)
+	value = app.L.HEADER_NAMES[value];
+	if value then zoneTextNamesRunner(group, { value }); end
+end
 local fieldConverters = {
 	-- Simple Converters
 	["achievementID"] = cacheAchievementID,
@@ -415,8 +412,8 @@ local fieldConverters = {
 	["artifactID"] = function(group, value)
 		CacheField(group, "artifactID", value);
 	end,
-	["azeriteEssenceID"] = function(group, value)
-		CacheField(group, "azeriteEssenceID", value);
+	["azeriteessenceID"] = function(group, value)
+		CacheField(group, "azeriteessenceID", value);
 	end,
 	["creatureID"] = cacheCreatureID,
 	["currencyID"] = function(group, value)
@@ -432,14 +429,14 @@ local fieldConverters = {
 		CacheField(group, "explorationID", value);
 	end,
 	["factionID"] = cacheFactionID,
-	["flightPathID"] = function(group, value)
-		CacheField(group, "flightPathID", value);
+	["flightpathID"] = function(group, value)
+		CacheField(group, "flightpathID", value);
 	end,
 	["followerID"] = function(group, value)
 		CacheField(group, "followerID", value);
 	end,
-	["garrisonBuildingID"] = function(group, value)
-		CacheField(group, "garrisonBuildingID", value);
+	["garrisonbuildingID"] = function(group, value)
+		CacheField(group, "garrisonbuildingID", value);
 	end,
 	["guildAchievementID"] = cacheAchievementID,
 	["headerID"] = cacheHeaderID,
@@ -458,7 +455,7 @@ local fieldConverters = {
 	["otherItemID"] = function(group, value)
 		CacheField(group, "itemID", value);
 	end,
-	["drakewatcherManuscriptID"] = function(group, value)
+	["mountmodID"] = function(group, value)
 		CacheField(group, "itemID", value);
 	end,
 	["heirloomID"] = function(group, value)
@@ -466,6 +463,7 @@ local fieldConverters = {
 	end,
 	["mapID"] = cacheMapID,
 	["mountID"] = function(group, value)
+		CacheField(group, "mountID", value);
 		CacheField(group, "spellID", value);
 	end,
 	["npcID"] = cacheCreatureID,
@@ -476,14 +474,18 @@ local fieldConverters = {
 	["questID"] = cacheQuestID,
 	["questIDA"] = cacheQuestID,
 	["questIDH"] = cacheQuestID,
+	["raceID"] = function(group, value)
+		CacheField(group, "raceID", value);
+	end,
 	["recipeID"] = function(group, value)
+		CacheField(group, "recipeID", value);
 		CacheField(group, "spellID", value);
 	end,
 	["requireSkill"] = function(group, value)
-		CacheField(group, "requireSkill", value);	-- NOTE: professionID in Retail, investigate why
+		CacheField(group, "requireSkill", value);
 	end,
-	["runeforgePowerID"] = function(group, value)
-		CacheField(group, "runeforgePowerID", value);
+	["runeforgepowerID"] = function(group, value)
+		CacheField(group, "runeforgepowerID", value);
 	end,
 	["rwp"] = function(group, value)
 		CacheField(group, "rwp", value);
@@ -617,6 +619,11 @@ local fieldConverters = {
 			zoneTextContinentRunner(group, value);
 		end);
 	end,
+	["zone-text-headerID"] = function(group, value)
+		tinsert(runners, function()
+			zoneTextHeaderIDRunner(group, value);
+		end);
+	end,
 	["zone-text-names"] = function(group, value)
 		tinsert(runners, function()
 			zoneTextNamesRunner(group, value);
@@ -717,7 +724,7 @@ if app.IsRetail then
 		CacheField(group, "itemID", value);
 		cacheGroupForModItemID[#cacheGroupForModItemID + 1] = group
 	end
-	fieldConverters.drakewatcherManuscriptID = fieldConverters.itemID;
+	fieldConverters.mountmodID = fieldConverters.itemID;
 	fieldConverters.heirloomID = fieldConverters.itemID;
 	tinsert(postscripts, function()
 		if #cacheGroupForModItemID == 0 then return end
@@ -757,6 +764,16 @@ if app.IsRetail then
 	end
 	fieldConverters.up = function(group, up)
 		CacheField(group, "up", up);
+	end
+else
+	-- Classic needs a little help with instances that don't have actual maps... Thanks, SOD.
+	fieldConverters.instanceID = function(group, value)
+		CacheField(group, "instanceID", value);
+		if group.headerID then
+			tinsert(runners, function()
+				zoneTextHeaderIDRunner(group, group.headerID);
+			end);
+		end
 	end
 end
 
@@ -879,6 +896,7 @@ end
 
 -- Search for a thing that matches some requirements
 local function SearchForObject(field, id, require, allowMultiple)
+	-- app.PrintDebug("SFO",field,id,require,allowMultiple)
 	-- This method performs the SearchForField logic, but then may verifies that ONLY a specific matching, filtered-priority object is returned
 	-- require - Determine the required level of matching found objects:
 	-- * "key" - only accept objects whose key is also the field with value
@@ -936,7 +954,7 @@ local function SearchForObject(field, id, require, allowMultiple)
 		return allowMultiple and app.EmptyTable or nil
 	end
 
-	local keyMatch, fieldMatch, match = {},{},{}
+	local results = {}
 
 	-- split logic based on require to reduce conditionals within loop
 	if require == 2 then
@@ -947,7 +965,7 @@ local function SearchForObject(field, id, require, allowMultiple)
 			if fcacheObj[field] == id then
 				if fcacheObj.key == field then
 					-- with keyed-field matching key
-					keyMatch[#keyMatch + 1] = fcacheObj
+					results[#results + 1] = fcacheObj
 				end
 			end
 		end
@@ -957,36 +975,15 @@ local function SearchForObject(field, id, require, allowMultiple)
 			fcacheObj = fcache[i];
 			-- field matching id
 			if fcacheObj[field] == id then
-				if fcacheObj.key == field then
-					-- with keyed-field matching key
-					keyMatch[#keyMatch + 1] = fcacheObj
-				else
 					-- with field matching id
-					fieldMatch[#fieldMatch + 1] = fcacheObj
-				end
+					results[#results + 1] = fcacheObj
 			end
 		end
 	else
 		-- No require
-		for i=1,count,1 do
-			fcacheObj = fcache[i];
-			-- field matching id
-			if fcacheObj[field] == id then
-				if fcacheObj.key == field then
-					-- with keyed-field matching key
-					keyMatch[#keyMatch + 1] = fcacheObj
-				else
-					-- with field matching id
-					fieldMatch[#fieldMatch + 1] = fcacheObj
-				end
-			else
-				-- basic group related to search
-				match[#match + 1] = fcacheObj
-			end
-		end
+		results = fcache
 	end
-	-- app.PrintDebug("SFO",field,id,require,"?>",#keyMatch,#fieldMatch,#match)
-	local results = (#keyMatch > 0 and keyMatch) or (#fieldMatch > 0 and fieldMatch) or (#match > 0 and match) or app.EmptyTable
+	-- app.PrintDebug("SFO",field,id,require,"?>",#results)
 	-- if only 1 or no result, no point to try filtering
 	if #results <= 1 then return allowMultiple and results or results[1] end
 	-- try out accessibility sort on multiple results instead of filtering
@@ -1049,115 +1046,12 @@ local function SearchForSpecificGroups(t, group, hashes)
 end
 
 -- Source Path Generation
---[[
--- CRIEVE NOTE: Doesn't text do TryColorizeName by default? (in retail at least)
-local function GenerateColorizedSourcePath(group)
-	local line = {}
-	local cap = 100
-	while group do
-		cap = cap - 1
-		line[cap] = TryColorizeName(group, group.text or RETRIEVING_DATA)
-		group = group.sourceParent or group.parent
-	end
-	return app.TableConcat(line, nil, nil, " > ", cap, 99)
-end]]--
---[[
--- CRIEVE NOTE: This was from classic. Probably don't need this, really.
--- CRIEVE NOTE 2: This might have inspired an idea where we replace abbreviations with something like this on the object itself. Seeing "H Deadmines" instead of the achievement was kinda weird when using abbrevs.
-local achievementTooltipText = {
-	[17213] = "DPA",	-- Defense Protocol Alpha: Utgarde Keep
-	[17283] = "DPA",	-- Defense Protocol Alpha: The Nexus
-	[17285] = "DPA",	-- Defense Protocol Alpha: Azjol-Nerub
-	[17291] = "DPA",	-- Defense Protocol Alpha: Ahn'kahet: The Old Kingdom
-	[17292] = "DPA",	-- Defense Protocol Alpha: Drak'Tharon Keep
-	[17293] = "DPA",	-- Defense Protocol Alpha: The Violet Hold
-	[17295] = "DPA",	-- Defense Protocol Alpha: Gundrak
-	[17297] = "DPA",	-- Defense Protocol Alpha: Halls of Stone
-	[17299] = "DPA",	-- Defense Protocol Alpha: Halls of Lightning
-	[17300] = "DPA",	-- Defense Protocol Alpha: The Oculus
-	[17301] = "DPA",	-- Defense Protocol Alpha: Utgarde Pinnacle
-	[17302] = "DPA",	-- Defense Protocol Alpha: The Culling of Stratholme
-
-	[18590] = "DPB",	-- Defense Protocol Beta: Utgarde Keep
-	[18591] = "DPB",	-- Defense Protocol Beta: The Nexus
-	[18592] = "DPB",	-- Defense Protocol Beta: Azjol-Nerub
-	[18593] = "DPB",	-- Defense Protocol Beta: Ahn'kahet: The Old Kingdom
-	[18594] = "DPB",	-- Defense Protocol Beta: Drak'Tharon Keep
-	[18595] = "DPB",	-- Defense Protocol Beta: The Violet Hold
-	[18596] = "DPB",	-- Defense Protocol Beta: Gundrak
-	[18597] = "DPB",	-- Defense Protocol Beta: Halls of Stone
-	[18598] = "DPB",	-- Defense Protocol Beta: Halls of Lightning
-	[18599] = "DPB",	-- Defense Protocol Beta: The Oculus
-	[18600] = "DPB",	-- Defense Protocol Beta: Utgarde Pinnacle
-	[18601] = "DPB",	-- Defense Protocol Beta: The Culling of Stratholme
-	[18677] = "DPB",	-- Defense Protocol Beta: Trial of the Champion (A)
-	[18678] = "DPB",	-- Defense Protocol Beta: Trial of the Champion (H)
-
-	[19427] = "DPG",	-- Defense Protocol Gamma: Utgarde Keep
-	[19428] = "DPG",	-- Defense Protocol Gamma: The Nexus
-	[19429] = "DPG",	-- Defense Protocol Gamma: Azjol-Nerub
-	[19430] = "DPG",	-- Defense Protocol Gamma: Ahn'kahet: The Old Kingdom
-	[19431] = "DPG",	-- Defense Protocol Gamma: Drak'Tharon Keep
-	[19432] = "DPG",	-- Defense Protocol Gamma: The Violet Hold
-	[19433] = "DPG",	-- Defense Protocol Gamma: Gundrak
-	[19434] = "DPG",	-- Defense Protocol Gamma: Halls of Stone
-	[19435] = "DPG",	-- Defense Protocol Gamma: Halls of Lightning
-	[19436] = "DPG",	-- Defense Protocol Gamma: The Oculus
-	[19437] = "DPG",	-- Defense Protocol Gamma: Utgarde Pinnacle
-	[19438] = "DPG",	-- Defense Protocol Gamma: The Culling of Stratholme
-	[19426] = "DPG",	-- Defense Protocol Gamma: Trial of the Champion (A)
-	[19425] = "DPG",	-- Defense Protocol Gamma: Trial of the Champion (H)
-};
-local function GenerateSourcePath(group, l, skip)
-	if group then
-		local parent = group.sourceParent or group.parent;
-		if parent then
-			if not group.itemID and not skip and (parent.key == "filterID" or parent.key == "spellID" or ((parent.headerID or (parent.spellID and (group.categoryID or group.expansionID)))
-				and ((parent.headerID == app.HeaderConstants.VENDORS or parent.headerID == app.HeaderConstants.QUESTS or parent.headerID == app.HeaderConstants.WORLD_BOSSES) or (parent.parent and parent.parent.parent)))) then
-				return GenerateSourcePath(parent.parent, 5, skip) .. DESCRIPTION_SEPARATOR .. (group.text or RETRIEVING_DATA) .. " (" .. (parent.text or RETRIEVING_DATA) .. ")";
-			end
-			if group.headerID then
-				if group.headerID == app.HeaderConstants.ZONE_DROPS then
-					if group.crs and #group.crs == 1 then
-						local cr = group.crs[1];
-						return GenerateSourcePath(parent, l + 1, skip) .. DESCRIPTION_SEPARATOR .. (app.NPCNameFromID[cr] or RETRIEVING_DATA) .. " (Drop)";
-					end
-					return GenerateSourcePath(parent, l + 1, skip) .. DESCRIPTION_SEPARATOR .. (group.text or RETRIEVING_DATA);
-				end
-				if parent.difficultyID then
-					return GenerateSourcePath(parent, l + 1, skip);
-				end
-				if parent.parent then
-					return GenerateSourcePath(parent, l + 1, skip) .. DESCRIPTION_SEPARATOR .. (group.text or RETRIEVING_DATA);
-				end
-			end
-			if group.key == "criteriaID" and group.achievementID then
-				local tooltipText = achievementTooltipText[group.achievementID];
-				if tooltipText then
-					return GenerateSourcePath(parent, 5, group.itemID or skip) .. " (" .. tooltipText .. ")";
-				else
-					return GenerateSourcePath(parent, 5, group.itemID or skip);
-				end
-			end
-			if parent.key == "categoryID" or parent.key == "expansionID" or group.key == "filterID" or group.key == "spellID" or group.key == "encounterID" or (parent.key == "mapID" and group.key == "npcID") then
-				return GenerateSourcePath(parent, 5, skip) .. DESCRIPTION_SEPARATOR .. (group.text or RETRIEVING_DATA);
-			end
-			if l < 1 then
-				return GenerateSourcePath(parent, l + 1, group.itemID or skip);
-			else
-				return GenerateSourcePath(parent, l + 1, group.itemID or skip) .. " > " .. (group.text or RETRIEVING_DATA);
-			end
-		end
-	end
-	return group.text or RETRIEVING_DATA;
-end
-]]--
 local function GenerateSourceHash(group)
 	local parent = group.parent;
 	if parent then
 		return GenerateSourceHash(parent) .. ">" .. (group.hash or group.name or group.text);
 	else
-		return group.hash or group.name or group.text;
+		return group.hash or group.name or group.text or "NOHASH"..app.UniqueCounter.SourceHash
 	end
 end
 local function GenerateSourcePath(group, l)

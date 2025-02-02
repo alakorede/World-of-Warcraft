@@ -387,6 +387,12 @@ spec:RegisterAuras( {
         tick_time = 1,
         max_stack = 1,
     },
+    jinx_curse_elements = {
+        id = 86105,
+	copy = { 86105, 85547 },
+	duration = 4,
+        max_stack = 1,
+    },
     -- Damage taken from Shadow damage-over-time effects increased by $s3%.
     haunt = {
         id = 48181,
@@ -977,9 +983,10 @@ spec:RegisterAbilities( {
 
         spend = function() return mod_cataclysm( 0.07 ) end,
         spendType = "mana",
-
-        spend = 1,
-        spendType = "soul_shards",
+		
+		-- fix for issue #3478
+        --spend = 1,
+        --spendType = "soul_shards",
 
         talent = "chaos_bolt",
         startsCombat = true,
@@ -1725,7 +1732,8 @@ spec:RegisterAbilities( {
         end,
     },
 
-    -- Begins a ritual that creates a Soulwell.  Raid members can click the Soulwell to acquire a Healthstone.  The Soulwell lasts for 3 min or 25 charges.  Requires the caster and 2 additional party members to complete the ritual.  In order to participate, all players must right-click the soul portal and not move until the ritual is complete.
+	-- Commented out to fix issue #3441
+    --[[ Begins a ritual that creates a Soulwell.  Raid members can click the Soulwell to acquire a Healthstone.  The Soulwell lasts for 3 min or 25 charges.  Requires the caster and 2 additional party members to complete the ritual.  In order to participate, all players must right-click the soul portal and not move until the ritual is complete.
     ritual_of_souls = {
         id = 29893,
         cast = 60,
@@ -1761,7 +1769,7 @@ spec:RegisterAbilities( {
 
         handler = function()
         end,
-    },
+    }, ]]
 
     -- Inflict searing pain on the enemy target, causing 310 Fire damage.  Causes a high amount of threat.SoulburnSoulburn: Increases the critical effect chance of your next Searing Pain by 100%, and your subsequent Searing Pain casts by 50% for 6 sec.
     searing_pain = {
@@ -1895,9 +1903,10 @@ spec:RegisterAbilities( {
 
         spend = function() return mod_cataclysm( 0.2 ) end,
         spendType = "mana",
-
-        spend = 1,
-        spendType = "soul_shards",
+		
+		-- fix for issue #3478
+        --spend = 1,
+        --spendType = "soul_shards",
 
         talent = "shadowburn",
         startsCombat = true,

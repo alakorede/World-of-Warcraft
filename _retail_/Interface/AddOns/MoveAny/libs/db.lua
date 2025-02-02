@@ -220,17 +220,18 @@ function MoveAny:GetTab()
 	return MATAB["PROFILES"][MoveAny:GetCP()]
 end
 
-function MoveAny:GV(key, val)
+function MoveAny:MAGV(key, val)
 	MoveAny:CheckDB()
 	if MATAB[key] ~= nil then return MATAB[key] end
 
 	return val
 end
 
-function MoveAny:SV(key, val)
+function MoveAny:MASV(key, val)
+	local oldVal = MATAB[key]
 	MoveAny:CheckDB()
 	MATAB[key] = val
-	MoveAny:EnableSave("SV", key)
+	MoveAny:EnableSave("MASV", key, val, oldVal, true)
 end
 
 function MoveAny:FixTable(tab)
@@ -263,9 +264,10 @@ function MoveAny:SetEnabled(element, value)
 	end
 
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element] = MoveAny:GetTab()["ELES"]["OPTIONS"][element] or {}
+	local oldVal = MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"]
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element]["ENABLED"] = value
 	if element ~= "MALOCK" then
-		MoveAny:EnableSave("SetEnabled", element)
+		MoveAny:EnableSave("SetEnabled", element, value, oldVal, false)
 	end
 end
 
@@ -338,7 +340,7 @@ function MoveAny:SetEleOption(element, key, value)
 	MoveAny:GetTab()["ELES"]["OPTIONS"] = MoveAny:GetTab()["ELES"]["OPTIONS"] or {}
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element] = MoveAny:GetTab()["ELES"]["OPTIONS"][element] or {}
 	MoveAny:GetTab()["ELES"]["OPTIONS"][element][key] = value
-	MoveAny:EnableSave("SetEleOption", key)
+	MoveAny:EnableSave("SetEleOption", key, true, false, false)
 end
 
 function MoveAny:GetElePoint(key)
@@ -369,8 +371,10 @@ function MoveAny:SetElePoint(key, p1, p2, p3, p4, p5)
 	MoveAny:GetTab()["ELES"]["POINTS"][key]["PY"] = p5
 	local frame = _G[key]
 	if frame and p1 and p3 then
-		frame:ClearAllPoints()
-		frame:SetPoint(p1, MoveAny:GetMainPanel(), p3, p4, p5)
+		local cap = frame.FClearAllPoints or frame.ClearAllPoints
+		cap(frame)
+		local point = frame.FSetPointBase or frame.FSetPoint or frame.SetPointBase or frame.SetPoint
+		point(frame, p1, MoveAny:GetMainPanel(), p3, p4, p5)
 		local systemFrame = frame
 		local systemInfo = frame.systemInfo
 		if frame.GetRealEle then
@@ -409,7 +413,7 @@ function MoveAny:SetElePoint(key, p1, p2, p3, p4, p5)
 	end
 
 	if key ~= "MALock" then
-		MoveAny:EnableSave("SetElePoint", key)
+		MoveAny:EnableSave("SetElePoint", key, true, false, true)
 	end
 end
 
@@ -482,7 +486,7 @@ function MoveAny:SetEleScale(key, scale)
 	end
 
 	if key ~= "MALock" then
-		MoveAny:EnableSave("SetEleScale", key)
+		MoveAny:EnableSave("SetEleScale", key, true, false, true)
 	end
 end
 
@@ -542,15 +546,15 @@ function MoveAny:GetMinimapTable()
 end
 
 function MoveAny:GetGridSize()
-	return MoveAny:GV("GRIDSIZE", 10)
+	return MoveAny:MAGV("GRIDSIZE", 10)
 end
 
 function MoveAny:GetSnapSize()
-	return MoveAny:GV("GRIDSIZE", 10)
+	return MoveAny:MAGV("GRIDSIZE", 10)
 end
 
 function MoveAny:GetSnapWindowSize()
-	return MoveAny:GV("SNAPWINDOWSIZE", 1)
+	return MoveAny:MAGV("SNAPWINDOWSIZE", 1)
 end
 
 function MoveAny:InitDB()

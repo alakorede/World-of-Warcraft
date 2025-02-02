@@ -94,6 +94,10 @@ local function BuildHubPanel(panel)
 	panel.StyleEnemyBarsNoTotem:SetScale(.8)
 	panel.StyleEnemyBarsOnElite, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnElite", L["Elite Units"], AlignmentColumn, F, 16, 0)
 	panel.StyleEnemyBarsOnPlayers, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnPlayers", L["Players"], AlignmentColumn, F, 16, 0)
+	panel.StyleEnemyBarsOnPlayersExcludePvPFlagged, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnPlayersExcludePvPFlagged", L["Exclude PvP-Flagged"], AlignmentColumn, F, 32*(1/.8), 0)
+	panel.StyleEnemyBarsOnPlayersExcludePvPFlagged:SetScale(.8)
+	panel.StyleEnemyBarsOnPlayersExcludePvPNonFlagged, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnPlayersExcludePvPNonFlagged", L["Exclude Non PvP-Flagged"], AlignmentColumn, F, 32*(1/.8), 0)
+	panel.StyleEnemyBarsOnPlayersExcludePvPNonFlagged:SetScale(.8)
 	panel.StyleEnemyBarsOnActive, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsOnActive", L["Active/Damaged Units"], AlignmentColumn, F, 16, 0)
 	panel.StyleEnemyBarsOnActive.tooltipText = L["Requires 'All NPCs' to be unchecked"]
 	panel.StyleEnemyBarsClickThrough, F = CreateQuickCheckbutton(objectName.."StyleEnemyBarsClickThrough", L["Clickthrough"], AlignmentColumn, F, 16, 0)
@@ -108,8 +112,11 @@ local function BuildHubPanel(panel)
 	panel.StyleFriendlyBarsNoTotem, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsNoTotem", L["Exclude Totems"], AlignmentColumn, F, (OffsetColumnB+32)*(1/.8), 0)
 	panel.StyleFriendlyBarsNoTotem:SetScale(.8)
 	panel.StyleFriendlyBarsOnElite, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnElite", L["Elite Units"], AlignmentColumn, F, OffsetColumnB+16, 0)
-
 	panel.StyleFriendlyBarsOnPlayers, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnPlayers", L["Players"], AlignmentColumn, F, OffsetColumnB+16, 0)
+	panel.StyleFriendlyBarsOnPlayersExcludePvPFlagged, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnPlayersExcludePvPFlagged", L["Exclude PvP-Flagged"], AlignmentColumn, F, (OffsetColumnB+32)*(1/.8), 0)
+	panel.StyleFriendlyBarsOnPlayersExcludePvPFlagged:SetScale(.8)
+	panel.StyleFriendlyBarsOnPlayersExcludePvPNonFlagged, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnPlayersExcludePvPNonFlagged", L["Exclude Non PvP-Flagged"], AlignmentColumn, F, (OffsetColumnB+32)*(1/.8), 0)
+	panel.StyleFriendlyBarsOnPlayersExcludePvPNonFlagged:SetScale(.8)
 	panel.StyleFriendlyBarsOnActive, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsOnActive", L["Active/Damaged Units"], AlignmentColumn, F, OffsetColumnB+16, 0)
 	panel.StyleFriendlyBarsOnActive.tooltipText = L["Requires 'All NPCs' to be unchecked"]
 	panel.StyleFriendlyBarsClickThrough, F = CreateQuickCheckbutton(objectName.."StyleFriendlyBarsClickThrough", L["Clickthrough"], AlignmentColumn, F, OffsetColumnB+16, 0)
@@ -437,6 +444,7 @@ local function BuildHubPanel(panel)
 	panel.ColorHostilePlayer = CreateQuickColorbox(objectName.."ColorHostilePlayer", L["Hostile Player"], nil, AlignmentColumn, panel.ColorHostileNPC , 16)
 	panel.ColorGuildMember = CreateQuickColorbox(objectName.."ColorGuildMember", L["Guild Member"], nil, AlignmentColumn, panel.ColorHostilePlayer , 16)
 	panel.ColorPartyMember = CreateQuickColorbox(objectName.."ColorPartyMember", L["Party Member"], nil, AlignmentColumn, panel.ColorGuildMember , 16)
+	panel.ColorBattleNetFriend = CreateQuickColorbox(objectName.."ColorBattleNetFriend", L["Battle.net Friend"], nil, AlignmentColumn, panel.ColorPartyMember , 16)
     -- Text Color
     panel.TextReactionColorLabel = CreateQuickItemLabel(nil, L["Text Color"]..':', AlignmentColumn, panel.ReactionLabel, OffsetColumnB )
 	panel.TextColorFriendlyNPC = CreateQuickColorbox(objectName.."TextColorFriendlyNPC", L["Friendly NPC"], nil, AlignmentColumn, panel.ReactionColorLabel , OffsetColumnB + 16)
@@ -446,7 +454,8 @@ local function BuildHubPanel(panel)
 	panel.TextColorHostilePlayer = CreateQuickColorbox(objectName.."TextColorHostilePlayer", L["Hostile Player"], nil, AlignmentColumn, panel.TextColorHostileNPC , OffsetColumnB + 16)
 	panel.TextColorGuildMember = CreateQuickColorbox(objectName.."TextColorGuildMember", L["Guild Member"], nil, AlignmentColumn, panel.TextColorHostilePlayer , OffsetColumnB + 16)
 	panel.TextColorPartyMember = CreateQuickColorbox(objectName.."TextColorPartyMember", L["Party Member"], nil, AlignmentColumn, panel.TextColorGuildMember , OffsetColumnB + 16)
-	panel.TextColorNormal = CreateQuickColorbox(objectName.."TextColorNormal", L["Normal"], nil, AlignmentColumn, panel.TextColorPartyMember , OffsetColumnB + 16)
+	panel.TextColorBattleNetFriend = CreateQuickColorbox(objectName.."TextColorBattleNetFriend", L["Battle.net Friend"], nil, AlignmentColumn, panel.TextColorPartyMember , OffsetColumnB + 16)
+	panel.TextColorNormal = CreateQuickColorbox(objectName.."TextColorNormal", L["Normal"], nil, AlignmentColumn, panel.TextColorBattleNetFriend , OffsetColumnB + 16)
 	panel.TextColorElite = CreateQuickColorbox(objectName.."TextColorElite", L["Elite"], nil, AlignmentColumn, panel.TextColorNormal , OffsetColumnB + 16)
 	panel.TextColorBoss = CreateQuickColorbox(objectName.."TextColorBoss", L["Boss"], nil, AlignmentColumn, panel.TextColorElite , OffsetColumnB + 16)
 	-- Threat Colors
@@ -685,8 +694,8 @@ local function BuildHubPanel(panel)
 	BlizzOptionsButton:SetWidth(300)
 	BlizzOptionsButton:SetText(L["Blizzard Nameplate Motion & Visibility..."])
 	BlizzOptionsButton:SetScript("OnClick", function()
-		if Settings and not NEATPLATES_IS_CLASSIC then
-			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID)
+		if Settings then
+			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
 		else
 			InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
 		end
@@ -919,6 +928,7 @@ local function ImportSettingsPrompt()
 end
 
 local function VersionWarning()
+	local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 	local frame = CreateFrame("Frame", "VersionWarningPrompt", UIParent, NeatPlatesBackdrop)
 	local version = GetAddOnMetadata("NeatPlates", "version")
 	local versionString = "|cFF666666"..version
@@ -968,6 +978,7 @@ end
 
 local HubHandler = CreateFrame("Frame")
 HubHandler:SetScript("OnEvent", function(...)
+	local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState or GetAddOnEnableState
 	local _,_,addon = ...
 	local version, build, date, tocversion = GetBuildInfo()
 	local player = UnitName("player");

@@ -122,15 +122,11 @@ local ModelSettings = {
 	["DracthyrMaleAlt"] = { panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36, rotMain = 1.40, rotBowOffShield = 4.92, rotXbow = 1.43, rotFistGlaive = 1.65 },
 	["DracthyrFemaleAlt"]={ panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.2, panValue = 45, rotMain = 1.17, rotBowOffShield = 4.68, rotXbow = 1.06, rotFistGlaive = 1.47 },
 }
-local playerRaceSex;
-if ( not IsOnGlueScreen() ) then
-	local _;
-	_, playerRaceSex = UnitRace("player");
-	if ( UnitSex("player") == 2 ) then
-		playerRaceSex = playerRaceSex.."Male";
-	else
-		playerRaceSex = playerRaceSex.."Female";
-	end
+local _,playerRaceSex = UnitRace("player");
+if ( UnitSex("player") == 2 ) then
+  playerRaceSex = playerRaceSex.."Male";
+else
+  playerRaceSex = playerRaceSex.."Female";
 end
 --------------------------------------------------
 
@@ -1045,15 +1041,16 @@ local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
   info.checked = function() return ExS_Settings.progressBarByFilter end;
   dropdown:AddLine(info);
   
+  dropdown:AddLine({isSpacer = true;});
     --Hide Description on left list
-  info.text = "Hide Description (2nd Line) in Left List";
+  info.text = "Show Description (2nd Line) in Left List";
   info.func = function(self)
           ExS_Settings.hideListDescription = not ExS_Settings.hideListDescription;
-          self:SetCheckedState(ExS_Settings.hideListDescription);
+          self:SetCheckedState(not ExS_Settings.hideListDescription);
 
           SelectSet(WeaponSetsCollectionFrame.LeftFrame.ScrollFrame.selectedSet);
         end
-  info.checked = function() return ExS_Settings.hideListDescription end;
+  info.checked = function() return not ExS_Settings.hideListDescription end;
   dropdown:AddLine(info);
   
     --Show Favorite Button
@@ -1088,6 +1085,17 @@ local function OpenWeaponSetsFilterDropDown(frame, level, menuList)
         end
   info.checked = function() return ExS_Settings.extraButtonToggles[1] end;
   dropdown:AddLine(info);
+  
+    --Show Hide Weapons Tab Button
+  info.text = "Enable Weapon Sets (Takes effect after next reload.)";
+  info.func = function(self)
+          ExS_Settings.hideWeaponsTab = not ExS_Settings.hideWeaponsTab;
+          self:SetCheckedState(not ExS_Settings.hideWeaponsTab);
+        end
+  info.checked = function() return not ExS_Settings.hideWeaponsTab end;
+  info.keepShown = false;
+  dropdown:AddLine(info);
+  info.keepShown = true;
   
   
   dropdown:AddLine({isSpacer = true;});
@@ -1583,17 +1591,23 @@ local function ExW_SetTab(self, tabID)
 	local atTransmogrifier = C_Transmog.IsAtTransmogNPC();
 	if atTransmogrifier then
 		self.selectedTransmogTab = tabID;
-    WardrobeCollectionFrame.WeaponsTab:Hide();
+    if WardrobeCollectionFrame.WeaponsTab then
+      WardrobeCollectionFrame.WeaponsTab:Hide();
+    end
 	else
 		self.selectedCollectionTab = tabID;
-    WardrobeCollectionFrame.WeaponsTab:Show();
+    if WardrobeCollectionFrame.WeaponsTab then
+      WardrobeCollectionFrame.WeaponsTab:Show();
+    end
 	end
 	if tabID == 1 then --Items
 		self.activeFrame = self.ItemsCollectionFrame;
 		self.ItemsCollectionFrame:Show();
 		self.SetsCollectionFrame:Hide();
 		self.SetsTransmogFrame:Hide();
-		self.WeaponSetsCollectionFrame:Hide();
+    if self.WeaponSetsCollectionFrame then
+		  self.WeaponSetsCollectionFrame:Hide();
+    end
 		self.SearchBox:ClearAllPoints();
 		self.SearchBox:SetPoint("TOPRIGHT", -107, -35);
 		self.SearchBox:SetWidth(115);
@@ -1612,7 +1626,9 @@ local function ExW_SetTab(self, tabID)
 	elseif tabID == 2 then --Sets
     if self.ClassDropdown then self.ClassDropdown:Hide(); end
 		self.ItemsCollectionFrame:Hide();
-		self.WeaponSetsCollectionFrame:Hide();
+    if self.WeaponSetsCollectionFrame then
+		  self.WeaponSetsCollectionFrame:Hide();
+    end
 		self.SearchBox:ClearAllPoints();
 		if ( atTransmogrifier )  then
 			self.activeFrame = self.SetsTransmogFrame;
@@ -1874,6 +1890,10 @@ end
 WeaponSetsCollectionFrame:RegisterEvent("PLAYER_LOGIN");
 WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, arg2, arg3, arg4)
   if pEvent == "PLAYER_LOGIN" then
+    WardrobeCollectionFrame.SetTab = ExW_SetTab;
+    WardrobeCollectionFrame.ClickTab = ExW_ClickTab;
+    if ExS_Settings.hideWeaponsTab then return; end
+    
     if not C_AddOns.IsAddOnLoaded("Blizzard_Collections") then
       C_AddOns.LoadAddOn("Blizzard_Collections")
     end
@@ -2177,8 +2197,8 @@ WeaponSetsCollectionFrame:SetScript("OnEvent", function(pSelf, pEvent, pUnit, ar
                   OnSearchUpdate();
       end)
     WeaponSetsCollectionFrame.LeftFrame.FilterButton = CreateFrame("DropDownToggleButton", "WeaponSetsFilterButton", WeaponSetsCollectionFrame.LeftFrame.SearchBox, "UIMenuButtonStretchTemplate");
-    WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.SearchBox, "RIGHT", 2, -1);
-    WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetSize(68, 22);
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetPoint("LEFT", WeaponSetsCollectionFrame.LeftFrame.SearchBox, "RIGHT", 2, 0);
+    WeaponSetsCollectionFrame.LeftFrame.FilterButton:SetSize(68, 24);
     WeaponSetsCollectionFrame.LeftFrame.FilterButton.Icon = WeaponSetsCollectionFrame.LeftFrame.FilterButton:CreateTexture(nil, "ARTWORK");
     WeaponSetsCollectionFrame.LeftFrame.FilterButton.Icon:SetTexture("Interface\\ChatFrame\\ChatFrameExpandArrow");
     WeaponSetsCollectionFrame.LeftFrame.FilterButton.Icon:SetSize(10,12);

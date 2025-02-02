@@ -14,13 +14,13 @@ Prat3CharDB = {
 },
 ["ChatFrame6EditBox"] = {
 },
-["ChatFrame9EditBox"] = {
-},
-["ChatFrame2EditBox"] = {
+["ChatFrame1EditBox"] = {
 },
 ["ChatFrame3EditBox"] = {
 },
-["ChatFrame1EditBox"] = {
+["ChatFrame2EditBox"] = {
+},
+["ChatFrame9EditBox"] = {
 },
 },
 },
@@ -76,7 +76,7 @@ Prat3HighCPUPerCharDB = {
 },
 ["ChatFrame3"] = {
 ["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-["headIndex"] = 5,
+["headIndex"] = 4,
 ["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
 ["CalculateElementIndex"] = nil --[[ skipped inline function ]],
 ["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
@@ -91,22 +91,10 @@ Prat3HighCPUPerCharDB = {
 ["elements"] = {
 {
 ["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
-["g"] = 1,
-["r"] = 1,
-["extraData"] = {
-1,
-["n"] = 1,
-},
-["timestamp"] = 16311.783,
-["serverTime"] = 1722919819,
-["b"] = 0,
-},
-{
-["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
-["serverTime"] = 1722983507,
+["serverTime"] = 1729388003,
 ["r"] = 1,
 ["b"] = 0,
-["timestamp"] = 16311.783,
+["timestamp"] = 7021.074000000001,
 ["extraData"] = {
 1,
 ["n"] = 1,
@@ -115,11 +103,11 @@ Prat3HighCPUPerCharDB = {
 },
 {
 ["message"] = "0 |4day:days;, 0 |4hour:hours;, 0 |4minute:minutes;, 0 |4second:seconds;",
-["timestamp"] = 16311.783,
+["timestamp"] = 7021.074000000001,
 },
 {
 ["message"] = "========== End of Scrollback ==========",
-["timestamp"] = 16311.783,
+["timestamp"] = 7021.074000000001,
 },
 {
 ["message"] = "Speech to text allows you to add closed captioning in a voice channel.",
@@ -128,7 +116,7 @@ Prat3HighCPUPerCharDB = {
 1,
 ["n"] = 1,
 },
-["timestamp"] = 16300.617,
+["timestamp"] = 7008.835,
 ["g"] = 1,
 ["b"] = 0,
 },
@@ -185,26 +173,6 @@ Prat3HighCPUPerCharDB = {
 ["SetMaxNumElements"] = nil --[[ skipped inline function ]],
 ["GetNumElements"] = nil --[[ skipped inline function ]],
 ["GetMaxNumElements"] = nil --[[ skipped inline function ]],
-},
-["ChatFrame11"] = {
-["maxElements"] = 128,
-["elements"] = {
-{
-["message"] = "|cff979797|Hpratcopy|h[11:42:52]|h|r [W To] |cffd8d8d8[|r|HBNplayer:|Kq11|k:11:1:BN_WHISPER:|Kq11|k:Tristam#1808|h|A:UI-ChatIcon-WoW:0:0:0:0|a|cffff7c0a|Kq11|k|r|h|cffd8d8d8]|r: oieee",
-["r"] = 0,
-["b"] = 0.9647059440612793,
-["g"] = 1,
-["timestamp"] = 4402.841,
-["extraData"] = {
-53,
-1,
-2,
-["n"] = 3,
-},
-["serverTime"] = 1714574572,
-},
-},
-["headIndex"] = 1,
 },
 ["ChatFrame8"] = {
 ["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
@@ -277,7 +245,7 @@ Prat3HighCPUPerCharDB = {
 },
 ["ChatFrame1"] = {
 ["EnumerateIndexedEntries"] = nil --[[ skipped inline function ]],
-["headIndex"] = 40,
+["headIndex"] = 32,
 ["GetEntryAtIndex"] = nil --[[ skipped inline function ]],
 ["CalculateElementIndex"] = nil --[[ skipped inline function ]],
 ["CalculateElementIndexFromGlobalIndex"] = nil --[[ skipped inline function ]],
@@ -291,238 +259,160 @@ Prat3HighCPUPerCharDB = {
 ["IsFull"] = nil --[[ skipped inline function ]],
 ["elements"] = {
 {
-["message"] = "|cff979797|Hpratcopy|h[01:50:18]|h|r Guild Message of the Day: \"A Máfia sempre sobrevive!!!\"",
-["serverTime"] = 1722983507,
-["r"] = 0.250980406999588,
-["b"] = 0.250980406999588,
-["timestamp"] = 16311.783,
-["extraData"] = {
-5,
-["n"] = 1,
-},
-["g"] = 1,
-},
-{
-["message"] = "0 |4day:days;, 0 |4hour:hours;, 0 |4minute:minutes;, 0 |4second:seconds;",
-["timestamp"] = 16311.783,
-},
-{
-["message"] = "========== End of Scrollback ==========",
-["timestamp"] = 16311.783,
-},
-{
 ["message"] = "|cffffaa11Swatter is not loaded, because you are running BugGrabber|r",
-["timestamp"] = 16300.957,
+["timestamp"] = 7009.309,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a1149f70:|h|cffff0000[Error 0x7fc6a1149f70]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.074,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828e9ce0:|h|cffff0000[Error 0x7fd1828e9ce0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.352,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a114a060:|h|cffff0000[Error 0x7fc6a114a060]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.129,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828e9d30:|h|cffff0000[Error 0x7fd1828e9d30]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.475,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a114a060:|h|cffff0000[Error 0x7fc6a114a060]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.135,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f4a30:|h|cffff0000[Error 0x7fd1828f4a30]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.482,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a114a060:|h|cffff0000[Error 0x7fc6a114a060]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.15,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f4a80:|h|cffff0000[Error 0x7fd1828f4a80]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.484,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a114a060:|h|cffff0000[Error 0x7fc6a114a060]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.207,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f5340:|h|cffff0000[Error 0x7fd1828f5340]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.484,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a114a060:|h|cffff0000[Error 0x7fc6a114a060]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.234,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f5930:|h|cffff0000[Error 0x7fd1828f5930]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.484,
 },
 {
-["message"] = "|Hbuggrabber:Onifade:0x7fc6a114a060:|h|cffff0000[Error 0x7fc6a114a060]|r|h |cffffff00captured, click the link for more information.|r",
-["timestamp"] = 16301.249,
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f5390:|h|cffff0000[Error 0x7fd1828f5390]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.487,
+},
+{
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f53e0:|h|cffff0000[Error 0x7fd1828f53e0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.511,
+},
+{
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f5430:|h|cffff0000[Error 0x7fd1828f5430]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.528,
+},
+{
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f5480:|h|cffff0000[Error 0x7fd1828f5480]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.538000000001,
+},
+{
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f54d0:|h|cffff0000[Error 0x7fd1828f54d0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.577,
+},
+{
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f5570:|h|cffff0000[Error 0x7fd1828f5570]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.579,
+},
+{
+["message"] = "|cffffff00There are too many errors in your UI. As a result, your game experience may be degraded. Disable or update the failing addons if you don't want to see this message again.|r",
+["timestamp"] = 7009.583000000001,
+},
+{
+["message"] = "|Hbuggrabber:Onifade:0x7fd1828f55c0:|h|cffff0000[Error 0x7fd1828f55c0]|r|h |cffffff00captured, click the link for more information.|r",
+["timestamp"] = 7009.683,
 },
 {
 ["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Bartender4 Detected, please make sure that an element is only controlled by one addon at a time!",
-["timestamp"] = 16301.905,
+["timestamp"] = 7011.028,
 },
 {
 ["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Click the MoveAny Minimap Button to open the settings.",
-["timestamp"] = 16301.905,
+["timestamp"] = 7011.028,
 },
 {
-["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Or tap /move or /moveany in chat to open the settings.",
-["timestamp"] = 16301.905,
+["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Or type /move or /moveany in chat to open the settings.",
+["timestamp"] = 7011.028,
 },
 {
 ["message"] = "|cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r To hide these messages deactivate tips in the MoveAny menu.",
-["timestamp"] = 16301.905,
+["timestamp"] = 7011.028,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r Registering category with Settings API.",
-["timestamp"] = 16301.905,
+["message"] = "|cff979797|Hpratcopy|h[22:33:14]|h|r |CFF9482C9Quest Completist:|r Thanks for using Quest Completist. Spot a quest inaccuracy? Please report it on Curse.",
+["timestamp"] = 7011.028,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |CFF9482C9Quest Completist:|r Thanks for using Quest Completist. Spot a quest inaccuracy? Please report it on Curse.",
-["timestamp"] = 16301.905,
+["message"] = "|cff979797|Hpratcopy|h[22:33:14]|h|r |CFF9482C9Quest Completist:|r Map Pins are back. There are some hickups still, see bug list on CF",
+["timestamp"] = 7011.028,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |CFF9482C9Quest Completist:|r Map Pins are back. There are some hickups still, see bug list on CF",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |c0000FF00Roth_UI loaded.|r",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |c0000FF00/rabs|r to display the command list",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |c00FFAA00Roth_UI loaded.|r",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |c00FFAA00/rmm|r to display the command list",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |c00FF00AARoth_UI loaded.|r",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:37]|h|r |c00FF00AA/rot|r to display the command list",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:38]|h|r |c00FF3300Roth_UI loaded.|r",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:38]|h|r |c00FF3300/roth|r to display the command list",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:38]|h|r |c00FF00AARoth_UI loaded.|r",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:38]|h|r |c00FF00AA/rot|r to display the command list",
-["timestamp"] = 16301.905,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:31:46]|h|r Guild Message of the Day: \"A Máfia sempre sobrevive!!!\"",
+["message"] = "|cff979797|Hpratcopy|h[22:33:22]|h|r Guild Message of the Day: \"A Máfia sempre sobrevive!!!\"",
 ["r"] = 0.250980406999588,
 ["extraData"] = {
 5,
 ["n"] = 1,
 },
-["timestamp"] = 16311.541,
+["timestamp"] = 7020.81,
 ["g"] = 1,
 ["b"] = 0.250980406999588,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:47]|h|r |cff7fff7fFIS|r: Add-on activated for the class DRUID",
-["timestamp"] = 16311.783,
+["message"] = "|cff979797|Hpratcopy|h[22:33:23]|h|r |cff7fff7fFIS|r: Add-on activated for the class DRUID",
+["timestamp"] = 7021.074000000001,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:47]|h|r |cff0066ffAPR:|r v22.0.0-release loaded. For help and options, type /apr",
-["timestamp"] = 16311.783,
-["serverTime"] = 1722983507,
+["message"] = "|cff979797|Hpratcopy|h[22:33:23]|h|r |cff0066ffAPR:|r v23.1.0-release loaded. For help and options, type /apr",
+["timestamp"] = 7021.074000000001,
+["serverTime"] = 1729388003,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:47]|h|r Enchantrix v9.1.BETA.5.15-0 loaded",
-["serverTime"] = 1722983507,
+["message"] = "|cff979797|Hpratcopy|h[22:33:23]|h|r Enchantrix v4.0.DEV-0 loaded",
+["serverTime"] = 1729388003,
 ["r"] = 0.8,
 ["extraData"] = {
 ["n"] = 2,
 },
-["timestamp"] = 16311.783,
+["timestamp"] = 7021.074000000001,
 ["g"] = 0.8,
 ["b"] = 0.2,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:47]|h|r Informant v9.1.BETA.5.15 loaded",
+["message"] = "|cff979797|Hpratcopy|h[22:33:24]|h|r Informant v6.1.DEV loaded",
 ["r"] = 0.25,
-["serverTime"] = 1722983507,
-["timestamp"] = 16311.783,
+["serverTime"] = 1729388004,
+["timestamp"] = 7021.074000000001,
 ["g"] = 0.55,
 ["b"] = 1,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:49]|h|r |cffEE5500<|cffFDDA0DCursorTrail|cffEE5500> |cff7F7FFF|cff00FF00NEW FEATURES available!|cff7F7FFF  (Type either |cffFFFFFF/ct|r or |cffFFFFFF/CursorTrail|r to see them.)",
-["timestamp"] = 16311.783,
-["serverTime"] = 1722983509,
+["message"] = "|cff979797|Hpratcopy|h[22:33:30]|h|r |cFFFF0000Grail|r automatically initializing a server query for completed quests",
+["timestamp"] = 7028.396,
+["serverTime"] = 1729388010,
 },
 {
-["message"] = "|cff979797|Hpratcopy|h[19:31:52]|h|r AutoDisenchant inactive",
+["message"] = "|cff979797|Hpratcopy|h[22:33:30]|h|r |cFF00FF00Grail|r: starting to process completed query results",
+["timestamp"] = 7028.396,
+["serverTime"] = 1729388010,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[22:33:30]|h|r |cFFFF0000Grail|r: abandoned processing completed query results because currently complete 5415 but server only thinks 1226",
+["timestamp"] = 7028.396,
+["serverTime"] = 1729388010,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[22:33:30]|h|r |cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r Please switch LAYOUT in Editmode (from Blizzard) to a CUSTOM LAYOUT. MoveAny doesn't work with a Preset Profile, it's mostly readonly. ESC -> Editmode -> Layout: [CUSTOM-LAYOUT] (no Preset Layout)",
+["timestamp"] = 7028.396,
+["serverTime"] = 1729388010,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[22:33:30]|h|r |cFFFFFF00[|r|cFFA0A0FFMoveAny|r |T135994:0:0:0:0|t|cFFFFFF00]|r FAILED TO ADD !KalielsTrackerButtons",
+["timestamp"] = 7028.396,
+["serverTime"] = 1729388010,
+},
+{
+["message"] = "|cff979797|Hpratcopy|h[22:33:31]|h|r AutoDisenchant inactive",
 ["r"] = 1,
-["serverTime"] = 1722983512,
-["timestamp"] = 16317.136,
+["serverTime"] = 1729388011,
+["timestamp"] = 7029.432,
 ["g"] = 0.5,
 ["b"] = 0.25,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:32:00]|h|r Cataloger Alexia says: Druid! You've got a look that says you know a thing or two about style!",
-["serverTime"] = 1722983520,
-["r"] = 1,
-["extraData"] = {
-13,
-1,
-2,
-["n"] = 3,
-},
-["timestamp"] = 16325.574,
-["g"] = 1,
-["b"] = 0.6235294342041016,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:32:32]|h|r You receive item: |cffa335ee|Hitem:193751::::::::70:104::102:8:10344:9636:6652:10533:10870:9144:3168:8767::::::|h[Crown of Roaring Storms]|h|r",
-["serverTime"] = 1722983552,
-["r"] = 0,
-["extraData"] = {
-28,
-3,
-4,
-["n"] = 3,
-},
-["timestamp"] = 16357.812,
-["g"] = 0.6666666865348816,
-["b"] = 0,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:32:55]|h|r You sold your junk for 24g 47s 43c",
-["serverTime"] = 1722983575,
-["r"] = 1,
-["extraData"] = {
-29,
-5,
-5,
-["n"] = 3,
-},
-["timestamp"] = 16380.034,
-["g"] = 1,
-["b"] = 0,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:32:56]|h|r Sold junk for 24 Gold, 33 Silver, 73 Copper.",
-["r"] = 1,
-["serverTime"] = 1722983576,
-["timestamp"] = 16381.276,
-["g"] = 0.85,
-["b"] = 0,
-},
-{
-["message"] = "|cff979797|Hpratcopy|h[19:33:29]|h|r You gained: |cffffffff525g 4s 55c|r",
-["serverTime"] = 1722983609,
-["r"] = 1,
-["extraData"] = {
-1,
-["n"] = 1,
-},
-["timestamp"] = 16414.02,
-["g"] = 1,
-["b"] = 0,
 },
 },
 ["maxElements"] = 128,

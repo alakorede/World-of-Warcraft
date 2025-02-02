@@ -57,15 +57,17 @@ do
 	local function HasHigherHeirloomUnlockIDSaved(itemID)
 	end
 	local CreateHeirloomUnlock = app.CreateClass("HeirloomUnlock", "heirloomUnlockID", {
+		-- CACHE = function() return "HeirloomRanks" end,
 		name = function(t)
 			return L.HEIRLOOM_TEXT;
 		end,
 		icon = function(t)
-			return "Interface/ICONS/Achievement_GuildPerk_WorkingOvertime_Rank2";
+			return 648901;
 		end,
 		description = function(t)
 			return L.HEIRLOOM_TEXT_DESC;
 		end,
+		RefreshCollectionOnly = true,	-- remove when fixing event-collection & cache
 		collectible = function(t)
 			return app.Settings.Collectibles.Heirlooms;
 		end,
@@ -75,28 +77,28 @@ do
 		saved = function(t)
 			return C_Heirloom_PlayerHasHeirloom(t.heirloomUnlockID);
 		end,
-		trackable = app.ReturnTrue,
 	});
 
 	local armorTextures = {
-		"Interface/ICONS/INV_Icon_HeirloomToken_Armor01",
-		"Interface/ICONS/INV_Icon_HeirloomToken_Armor02",
-		"Interface/ICONS/Inv_leather_draenordungeon_c_01shoulder",
-		"Interface/ICONS/inv_mail_draenorquest90_b_01shoulder",
-		"Interface/ICONS/inv_leather_warfrontsalliance_c_01_shoulder",
-		"Interface/ICONS/inv_shoulder_armor_dragonspawn_c_02",
+		1097737,
+		1097738,
+		960150,
+		929921,
+		1805932,
+		4673926,
 	};
 	local weaponTextures = {
-		"Interface/ICONS/INV_Icon_HeirloomToken_Weapon01",
-		"Interface/ICONS/INV_Icon_HeirloomToken_Weapon02",
-		"Interface/ICONS/inv_weapon_shortblade_112",
-		"Interface/ICONS/inv_weapon_shortblade_111",
-		"Interface/ICONS/inv_weapon_shortblade_102",
-		"Interface/ICONS/inv_weapon_shortblade_84",
+		1097739,
+		1097740,
+		353645,
+		353136,
+		314894,
+		135718,
 	};
 
 	local weaponFilterIDs = { 20, 29, 28, 21, 22, 23, 24, 25, 26, 50, 57, 34, 35, 27, 33, 32, 31 };
 	local hierloomLevelFields = {
+		-- CACHE = function() return "HeirloomRanks" end,
 		["level"] = function(t)
 			return 1;
 		end,
@@ -110,6 +112,7 @@ do
 		["description"] = function(t)
 			return L.HEIRLOOMS_UPGRADES_DESC;
 		end,
+		RefreshCollectionOnly = true,	-- remove when fixing event-collection & cache
 		["collectible"] = function(t)
 			return app.Settings.Collectibles.Heirlooms and app.Settings.Collectibles.HeirloomUpgrades;
 		end,
@@ -124,7 +127,6 @@ do
 				end
 			end
 		end,
-		["trackable"] = app.ReturnTrue,
 		["isWeapon"] = function(t)
 			local isWeapon = t.f and contains(weaponFilterIDs, t.f);
 			t.isWeapon = isWeapon;
@@ -146,6 +148,10 @@ do
 		saved = function(t)
 			return t.collected == 1;
 		end,
+		isWeapon = hierloomLevelFields.isWeapon,
+		variants = {
+			app.GlobalVariants.AndAppearance,
+		},
 		g = function(t)
 			-- unlocking the heirloom is the only thing contained in the heirloom
 			if C_Heirloom_GetHeirloomMaxUpgradeLevel(t.itemID) then
@@ -161,17 +167,6 @@ do
 			end
 		end
 	},
-	"WithSource", {
-		collectible = function(t) return app.Settings.Collectibles.Transmog end,
-		collected = function(t)
-			return app.IsAccountCached("Sources", t.sourceID)
-		end,
-		trackable = app.ReturnTrue,
-		saved = function(t)
-			return t.collected == 1
-		end,
-		isWeapon = hierloomLevelFields.isWeapon,
-	}, function(t) return t.sourceID end,
 	"WithFaction", {
 		collectible = function(t) return app.Settings.Collectibles.Reputations end,
 		collected = function(t)
@@ -188,6 +183,8 @@ do
 				end
 			end
 		end,
+		-- don't inherit variants from Heirloom
+		variants = app.EmptyTable,
 	}, function(t) return t.factionID end);
 
 	local heirloomIDs = {};
@@ -312,9 +309,30 @@ do
 
 		heirloomIDs = nil
 	end
+
 	if C_Heirloom_GetHeirloomMaxUpgradeLevel then
 		app.AddEventHandler("OnInit", CacheHeirlooms)
 	end
+
+	-- app.AddCollectionReportFormatFunc("HeirloomLevel", function(t)
+	-- 	local itemID, link = t.itemID, t.link or t.silentLink
+	-- 	app.print(L.ITEM_ID_ADDED_RANK:format(link, itemID, (select(5, C_Heirloom_GetHeirloomInfo(itemID)) or 1)))
+	-- end)
+	app.AddEventRegistration("HEIRLOOMS_UPDATED", function(itemID, kind, ...)
+		-- app.PrintDebug("HEIRLOOMS_UPDATED",itemID,kind,...)
+		if itemID then
+			-- local heirloom = app.SearchForObject("heirloomID", itemID, "field")
+			-- TODO: Heirlooms aren't cached when collected so can't use typical logic
+			-- app.SetThingCollected("itemID", itemID, true, true)
+			app.UpdateRawID("itemID", itemID);
+			app.HandleEvent("OnThingCollected", "Heirlooms")
+
+			if app.Settings:GetTooltipSetting("Report:Collected") then
+				local _, link = GetItemInfo(itemID);
+				if link then app.print(L.ITEM_ID_ADDED_RANK:format(link, itemID, (select(5, C_Heirloom_GetHeirloomInfo(itemID)) or 1))); end
+			end
+		end
+	end)
 end
 
 app.AddEventHandler("OnSavedVariablesAvailable", function(currentCharacter, accountWideData)

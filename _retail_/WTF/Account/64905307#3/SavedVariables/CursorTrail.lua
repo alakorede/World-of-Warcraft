@@ -1,15 +1,21 @@
 
 CursorTrail_Config = {
 ["NewFeaturesSeen"] = {
-["DefaultsBtn11"] = true,
-["SparkleCheckbox"] = true,
 },
 ["ProfileOptions"] = {
+["bSaveOnOkay"] = false,
+["bConfirmDelete"] = true,
+["bConfirmCopy"] = true,
+["bUseAccountProfile"] = false,
 },
 ["Profiles"] = {
 ["_SelectedName"] = {
 },
 },
 ["ProfileBackups"] = {
+["@v11.0.2.3"] = {
+["_SelectedName"] = {
+},
+},
 },
 }

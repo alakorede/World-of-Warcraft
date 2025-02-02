@@ -154,6 +154,9 @@ local EVENTS = {
     "TRADE_SKILL_SHOW",
     "NEW_TOY_ADDED",
     "NEW_MOUNT_ADDED",
+    "ITEM_LOCK_CHANGED",
+    "LOADING_SCREEN_ENABLED",
+    "LOADING_SCREEN_DISABLED",
 }
 
 if CanIMogIt.isRetail then
@@ -169,63 +172,107 @@ for i, event in pairs(EVENTS) do
     CanIMogIt.frame:RegisterEvent(event);
 end
 
+CanIMogIt.Events = {}
+CanIMogIt.EventsList = EVENTS
+
+for i, event in pairs(EVENTS) do
+    CanIMogIt.Events[event] = true
+end
+
 
 -- Skip the itemOverlayEvents function until the loading screen is disabled.
-local lastOverlayEventCheck = 0
-local overlayEventCheckThreshold = .01 -- once per frame at 100 fps
-local futureOverlayPrepared = false
+local ifNotBusyLimit = .008
+-- a list of functions to run if we are not busy.
+local ifNotBusyEvents = {}
 
-local function futureOverlay(event)
-    -- Updates the overlay in ~THE FUTURE~. If the overlay events had multiple
-    -- requests in the same frame, then this gets called.
-    futureOverlayPrepared = false
-    local currentTime = GetTime()
-    if currentTime - lastOverlayEventCheck > overlayEventCheckThreshold then
-        lastOverlayEventCheck = currentTime
-        CanIMogIt.frame:ItemOverlayEvents(event)
+local loadingScreenEnabled = true
+-- These events should be run during the loading screen, if it's enabled.
+local loadingScreenEvents = {
+    ["PLAYER_LOGIN"] = true,
+    ["ADDON_LOADED"] = true,
+}
+
+
+local function RunIfNotBusy(func, ...)
+    -- Sets the function to run the next time we aren't busy.
+    local args = {...}
+    -- only add it to the dict if it's not already in the there.
+    table.insert(ifNotBusyEvents, {func, args})
+end
+
+
+local function RunIfNotBusyEvents()
+    if #ifNotBusyEvents == 0 or loadingScreenEnabled then
+        return
+    end
+    local startTime = GetTimePreciseSec()
+    while #ifNotBusyEvents > 0 do
+        local currentTime = GetTimePreciseSec()
+        if currentTime - startTime > ifNotBusyLimit then
+            break
+        end
+        local eventData = ifNotBusyEvents[1]
+        table.remove(ifNotBusyEvents, 1)
+        local func, args = eventData[1], eventData[2]
+        func(unpack(args))
     end
 end
+
+
+CanIMogIt.frame:SetScript("OnUpdate", RunIfNotBusyEvents)
 
 
 CanIMogIt.frame.eventFunctions = {}
 
 
-function CanIMogIt.frame:AddEventFunction(func)
-    -- Adds the func to the list of functions that are called for all events.
-    table.insert(CanIMogIt.frame.eventFunctions, func)
+-- a dictionary of event names to a list of functions to run.
+-- {event, {func}}
+CanIMogIt.frame.smartEventFunctions = {}
+
+
+function CanIMogIt.frame:AddSmartEvent(func, events)
+    -- Smart events only run if there is enough time in the frame, otherwise,
+    -- it pushes it off to the next frame to run.
+    for i, event in ipairs(events) do
+        if not CanIMogIt.frame.smartEventFunctions[event] then
+            CanIMogIt.frame.smartEventFunctions[event] = {}
+        end
+        table.insert(CanIMogIt.frame.smartEventFunctions[event], func)
+    end
 end
 
 
-CanIMogIt.frame:HookScript("OnEvent", function(self, event, ...)
-    --[[
-        To add functions you want to run with CIMI's "OnEvent", do:
+local function RunSmartEvent(event, ...)
+    -- Run the overlay events if we are not busy.
+    for i, func in ipairs(CanIMogIt.frame.smartEventFunctions[event]) do
+        RunIfNotBusy(func, event, ...)
+    end
+end
 
-        local function MyOnEventFunc(event, ...)
-            Do stuff here
-        end
-        CanIMogIt.frame:AddEventFunction(MyOnEventFunc)
-        ]]
 
-    for i, func in ipairs(CanIMogIt.frame.eventFunctions) do
-        func(event, ...)
+local function SmartEventHook(self, event, ...)
+    if event == "LOADING_SCREEN_ENABLED" then
+        loadingScreenEnabled = true
+    elseif event == "LOADING_SCREEN_DISABLED" then
+        loadingScreenEnabled = false
     end
 
-    -- TODO: Move this to it's own event function.
-    -- Prevent the ItemOverlayEvents handler from running more than is needed.
-    -- If more than one occur in the same frame, we update the first time, then
-    -- prepare a future update in a couple frames.
-    local currentTime = GetTime()
-    if currentTime - lastOverlayEventCheck > overlayEventCheckThreshold then
-        lastOverlayEventCheck = currentTime
-        self:ItemOverlayEvents(event, ...)
-    else
-        -- If we haven't already, plan to update the overlay in the future.
-        if not futureOverlayPrepared then
-            futureOverlayPrepared = true
-            C_Timer.After(.02, function () futureOverlay(event) end)
-        end
+    -- If the event is a loading screen event, run it and return.
+    if loadingScreenEvents[event] then
+        RunSmartEvent(event, ...)
+        return
     end
-end)
+
+    if loadingScreenEnabled then
+        return
+    end
+
+    -- Smart events
+    if CanIMogIt.frame.smartEventFunctions[event] then
+        RunSmartEvent(event, ...)
+    end
+end
+CanIMogIt.frame:HookScript("OnEvent", SmartEventHook)
 
 
 function CanIMogIt.frame.AddonLoaded(event, addonName)
@@ -233,7 +280,7 @@ function CanIMogIt.frame.AddonLoaded(event, addonName)
         CanIMogIt.frame.Loaded()
     end
 end
-CanIMogIt.frame:AddEventFunction(CanIMogIt.frame.AddonLoaded)
+CanIMogIt.frame:AddSmartEvent(CanIMogIt.frame.AddonLoaded, {"ADDON_LOADED"})
 
 
 local transmogEvents = {
@@ -248,7 +295,7 @@ local function TransmogCollectionUpdated(event, ...)
     end
 end
 
-CanIMogIt.frame:AddEventFunction(TransmogCollectionUpdated)
+CanIMogIt.frame:AddSmartEvent(TransmogCollectionUpdated, {"TRANSMOG_COLLECTION_SOURCE_ADDED", "TRANSMOG_COLLECTION_SOURCE_REMOVED", "TRANSMOG_COLLECTION_UPDATED"})
 
 
 local changesSavedStack = {}

@@ -4,8 +4,8 @@
 ---
 --- This file is part of addon Kaliel's Tracker.
 
+---@type KT
 local addonName, KT = ...
-KT.forcedUpdate = false
 
 local ACD = LibStub("MSA-AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
@@ -27,8 +27,7 @@ local strsplit = string.split
 local strsub = string.sub
 
 local db, dbChar
-local mediaPath = "Interface\\AddOns\\"..addonName.."\\Media\\"
-local anchors = { "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT" }
+local anchors = { ["TOPLEFT"] = "Top Left", ["TOPRIGHT"] = "Top Right", ["BOTTOMLEFT"] = "Bottom Left", ["BOTTOMRIGHT"] = "Bottom Right" }
 local strata = { "BACKGROUND", "LOW", "MEDIUM", "HIGH" }
 local flags = { [""] = "None", ["OUTLINE"] = "Outline", ["OUTLINE, MONOCHROME"] = "Outline Monochrome" }
 local textures = { "None", "Default (Blizzard)", "One line", "Two lines" }
@@ -45,25 +44,25 @@ local warning = cWarning.."Warning:|r UI will be re-loaded!"
 local KTF = KT.frame
 local OTF = KT_ObjectiveTrackerFrame
 
-local overlay
-local overlayShown = false
+local KTSetHeight = KTF.SetHeight
 
-local OverlayFrameUpdate, OverlayFrameHide, GetModulesOptionsTable, MoveModule, SetSharedColor, IsSpecialLocale, UpdateOptions  -- functions
+local GetModulesOptionsTable, MoveModule, SetSharedColor, IsSpecialLocale  -- functions
 
 local defaults = {
 	profile = {
 		anchorPoint = "TOPRIGHT",
 		xOffset = -115,
 		yOffset = -280,
-		width = 280,
-		maxHeight = 400,
-		frameScrollbar = true,
+		width = 305,
+		maxHeight = 600,
+		frameScale = 1,
 		frameStrata = "LOW",
+		frameScrollbar = true,
 		
 		bgr = "Solid",
 		bgrColor = { r=0, g=0, b=0, a=0.7 },
 		border = "None",
-		borderColor = { r=1, g=0.82, b=0 },
+		borderColor = KT.TRACKER_DEFAULT_COLOR,
 		classBorder = false,
 		borderAlpha = 1,
 		borderThickness = 16,
@@ -79,19 +78,20 @@ local defaults = {
 		objNumSwitch = false,
 
 		hdrBgr = 2,
-		hdrBgrColor = { r=1, g=0.82, b=0 },
+		hdrBgrColor = KT.TRACKER_DEFAULT_COLOR,
 		hdrBgrColorShare = false,
-		hdrTxtColor = { r=1, g=0.82, b=0 },
+		hdrTxtColor = KT.TRACKER_DEFAULT_COLOR,
 		hdrTxtColorShare = false,
-		hdrBtnColor = { r=1, g=0.82, b=0 },
+		hdrBtnColor = KT.TRACKER_DEFAULT_COLOR,
 		hdrBtnColorShare = false,
 		hdrQuestsTitleAppend = true,
 		hdrAchievsTitleAppend = true,
 		hdrPetTrackerTitleAppend = true,
-		hdrCollapsedTxt = 3,
+		hdrTrackerBgrShow = true,
+		hdrCollapsedTxt = 2,
 		hdrOtherButtons = true,
 		keyBindMinimize = "",
-		
+
 		qiBgrBorder = false,
 		qiXOffset = -5,
 		qiActiveButton = true,
@@ -107,6 +107,8 @@ local defaults = {
         questDefaultActionMap = true,
 		questShowTags = true,
 		questShowZones = true,
+		taskShowFactions = true,
+		questAutoFocusClosest = true,
 
 		messageQuest = true,
 		messageAchievement = true,
@@ -115,11 +117,12 @@ local defaults = {
 		soundQuest = true,
 		soundQuestComplete = "KT - Default",
 
-		modulesOrder = KT.BLIZZARD_MODULES,
+		modulesOrder = KT.MODULES,
 
 		addonMasque = false,
 		addonPetTracker = false,
 		addonTomTom = false,
+		addonAuctionator = false,
 
 		hackLFG = true,
 		hackWorldMap = true,
@@ -133,12 +136,320 @@ local defaults = {
 		},
 		achievements = {
 			favorites = {}
-		},
+		}
 	}
 }
 
+-- Edit Mode - Mover
+local moverOptions
+local mover = KT:Mover_Create(addonName, KTF)
+mover.editAnchors = true
+
+local function Mover_SetPositionVars(frame)
+	local left = frame:GetLeft() * db.frameScale
+	local top = frame:GetTop() * db.frameScale
+	local bottom = frame:GetBottom() * db.frameScale
+	local width = frame:GetWidth() * db.frameScale
+	if db.anchorPoint == "TOPLEFT" then
+		db.xOffset = round(left)
+		db.yOffset = round(top - UIParent:GetHeight())
+	elseif db.anchorPoint == "TOPRIGHT" then
+		db.xOffset = round(left + width - UIParent:GetWidth())
+		db.yOffset = round(top - UIParent:GetHeight())
+	elseif db.anchorPoint == "BOTTOMLEFT" then
+		db.xOffset = round(left)
+		db.yOffset = round(bottom)
+	elseif db.anchorPoint == "BOTTOMRIGHT" then
+		db.xOffset = round(left + width - UIParent:GetWidth())
+		db.yOffset = round(bottom)
+	end
+end
+
+local function Mover_UpdateOptions(updateValues, stopUpdateUI)
+	local opt = moverOptions.args.tracker.args
+	local screenWidth = round(GetScreenWidth())
+	local screenHeight = round(GetScreenHeight())
+	local xOffsetMax = round(screenWidth - (db.width * db.frameScale))
+	local yOffsetMax = round(screenHeight - (opt.maxHeight.min * db.frameScale))
+	local anchorLeft = (db.anchorPoint == "TOPLEFT" or db.anchorPoint == "BOTTOMLEFT")
+	local directionUp = (db.anchorPoint == "BOTTOMLEFT" or db.anchorPoint == "BOTTOMRIGHT")
+
+	if anchorLeft then
+		opt.xOffset.min = 0
+		opt.xOffset.max = xOffsetMax
+	else
+		opt.xOffset.min = xOffsetMax * -1
+		opt.xOffset.max = 0
+	end
+
+	if directionUp then
+		opt.yOffset.min = 0
+		opt.yOffset.max = yOffsetMax
+	else
+		opt.yOffset.min = yOffsetMax * -1
+		opt.yOffset.max = 0
+	end
+
+	opt.maxHeight.max = round((screenHeight - abs(db.yOffset)) / db.frameScale)
+	if opt.maxHeight.max < opt.maxHeight.min then
+		opt.maxHeight.max = opt.maxHeight.min
+	end
+
+	if updateValues then
+		if round(abs(db.xOffset) + (db.width * db.frameScale)) > screenWidth then
+			if opt.width.min == opt.width.max then
+				db.xOffset = anchorLeft and opt.xOffset.max or opt.xOffset.min
+			end
+		end
+
+		if round(abs(db.yOffset) + (db.maxHeight * db.frameScale)) > screenHeight then
+			db.maxHeight = opt.maxHeight.max
+			if opt.maxHeight.min == opt.maxHeight.max then
+				db.yOffset = directionUp and opt.yOffset.max or opt.yOffset.min
+			end
+		end
+	end
+	if not stopUpdateUI then
+		ACR:NotifyChange(addonName.."EditMode")
+	end
+end
+
+local function Mover_SetScale()
+	if db.pixelPerfectScale then
+		db.frameScale = KT.GetPixelPerfectScale(KTF)
+		KT:SetScale(db.frameScale)
+	end
+	Mover_UpdateOptions(true, true)
+	KT:MoveTracker()
+	KT:Update()
+	mover:Update()
+end
+
+function mover:Anchor_OnEnter()
+	if self.value == "TOPLEFT" or self.value == "TOPRIGHT" then
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 5 * db.frameScale)
+	elseif self.value == "BOTTOMLEFT" or self.value == "BOTTOMRIGHT" then
+		GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -5 * db.frameScale)
+	end
+	GameTooltip:AddLine("Anchor - "..anchors[self.value], 1, 0.82, 0)
+	local leftText = "- Tracker expand direction:\n- Tooltips position:\n- Quest item buttons position:"
+	local rightText = ""
+	if self.value == "TOPLEFT" then
+		rightText = "Down\nRight\nRight"
+	elseif self.value == "TOPRIGHT" then
+		rightText = "Down\nLeft\nLeft"
+	elseif self.value == "BOTTOMLEFT" then
+		rightText = "Up\nRight\nRight"
+	elseif self.value == "BOTTOMRIGHT" then
+		rightText = "Up\nLeft\nLeft"
+	end
+	GameTooltip:AddDoubleLine(leftText, rightText, 1, 1, 1, 0, 1, 0.89)
+	GameTooltip:Show()
+end
+
+function mover:Anchor_OnClick()
+	db.anchorPoint = self.value
+	Mover_SetPositionVars(self.obj.mover)
+	Mover_UpdateOptions(true)
+	KT:MoveTracker()
+	KT:SetSize(true)
+end
+
+function mover:OnDragStart(frame)
+	if frame.Buttons.num > 0 then
+		frame.Buttons:Hide()
+	end
+	if not db.directionUp then
+		KTSetHeight(KTF, KTF.height)
+	end
+end
+
+function mover:OnDragStop(frame)
+	if frame.Buttons.num > 0 then
+		frame.Buttons:Show()
+	end
+	Mover_SetPositionVars(self.mover)
+	Mover_UpdateOptions(true)
+	KT:MoveTracker()
+	KT:SetSize(true)
+end
+
+function mover:OnMouseUp(frame, button)
+	if button == "RightButton" then
+		db.anchorPoint = defaults.profile.anchorPoint
+		db.xOffset = defaults.profile.xOffset
+		db.yOffset = defaults.profile.yOffset
+		db.maxHeight = defaults.profile.maxHeight
+
+		Mover_UpdateOptions(true)
+		KT:MoveTracker()
+		KTF.height = 0  -- force update
+		KT:Update()
+	end
+end
+
+function mover:Update()
+	self.anchorPoint = db.anchorPoint
+	self.mixin.Update(self)
+
+	local frame = self.mover
+	if frame then
+		frame:SetSize(db.width, db.maxHeight)
+		frame:ClearAllPoints()
+		frame:SetPoint(db.anchorPoint)
+	end
+end
+
+-- Edit Mode - Options
+moverOptions = {
+	name = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:0:0|t"..KT.title.."|cffffffff - Edit Mode",
+	type = "group",
+	get = function(info) return db[info[#info]] end,
+	args = {
+		tracker = {
+			name = "Tracker",
+			type = "group",
+			args = {
+				intro = {
+					name = "\n"..KT.ICONS.MouseLeft.markup..cBold.."Left Click|r on mover to drag the tracker element.\n"..
+							KT.ICONS.MouseRight.markup..cBold.."Right Click|r on mover to restore the default position and size.\n",
+					type = "description",
+					justifyH = "CENTER",
+					order = 0,
+				},
+				xOffset = {
+					name = "X offset",
+					desc = "Horizontal position\n- Default: "..defaults.profile.xOffset.."\n- Step: 1",
+					type = "range",
+					min = 0,
+					max = 0,
+					step = 1,
+					set = function(_, value)
+						db.xOffset = value
+						KT:MoveTracker()
+						mover:Update()
+					end,
+					order = 1,
+				},
+				yOffset = {
+					name = "Y offset",
+					desc = "Vertical position\n- Default: "..defaults.profile.yOffset.."\n- Step: 1",
+					type = "range",
+					min = 0,
+					max = 0,
+					step = 1,
+					set = function(_, value)
+						db.yOffset = value
+						Mover_UpdateOptions(true, true)
+						KT:MoveTracker()
+						KT:SetSize(true)
+						mover:Update()
+					end,
+					order = 2,
+				},
+				width = {
+					name = "Width",
+					desc = "- Default: "..defaults.profile.width.."\n- Step: 1",
+					type = "range",
+					min = defaults.profile.width,
+					max = defaults.profile.width,
+					step = 1,
+					disabled = true,
+					set = function(_, value)
+						db.width = value
+						KT:SetSize()
+						mover:Update()
+					end,
+					order = 3,
+				},
+				maxHeight = {
+					name = "Max. height",
+					desc = "- Default: "..defaults.profile.maxHeight.."\n- Step: 1",
+					type = "range",
+					min = 130,
+					max = 130,
+					step = 1,
+					set = function(_, value)
+						db.maxHeight = value
+						KT:SetSize(true)
+						mover:Update()
+					end,
+					order = 4,
+				},
+				notes = {
+					name = cBold.." Width|r is disabled, because it is not implemented now.\n\n"..
+							cBold.." Max. height|r is related with Y offset (top/bottom) of tracker.\n"..
+							" - Content is lesser ... tracker height is automatically increases.\n"..
+							" - Content is greater ... tracker enables scrolling.",
+					type = "description",
+					order = 5,
+				},
+				frameScale = {
+					name = "Scale",
+					desc = "- Default: "..defaults.profile.frameScale.."\n- Step: 0.001",
+					type = "range",
+					min = 0.4,
+					max = 1.7,
+					step = 0.001,
+					isRaw = true,
+					disabled = function()
+						return db.pixelPerfectScale
+					end,
+					set = function(_, value)
+						db.frameScale = value
+						KT:SetScale(db.frameScale)
+						Mover_UpdateOptions(true, true)
+						KT:MoveTracker()
+						KTF.height = 0  -- force update
+						KT:Update()
+						mover:Update()
+					end,
+					order = 6,
+				},
+				pixelPerfectScale = {
+					name = "Pixel Perfect Scale",
+					desc = "Constant pixel perfect scale, relative to global UI scale.",
+					type = "toggle",
+					set = function()
+						db.pixelPerfectScale = not db.pixelPerfectScale
+						Mover_SetScale()
+					end,
+					order = 7,
+				},
+				frameStrata = {
+					name = "Strata",
+					desc = "- Default: "..defaults.profile.frameStrata,
+					type = "select",
+					values = strata,
+					get = function()
+						for k, v in ipairs(strata) do
+							if db.frameStrata == v then
+								return k
+							end
+						end
+					end,
+					set = function(_, value)
+						db.frameStrata = strata[value]
+						KT:SetFrameStrata(db.frameStrata)
+					end,
+					order = 8,
+				},
+			},
+		},
+	},
+}
+KT.EditMode = KT:EditMode_Create(addonName, moverOptions, "tracker", 440, 420)
+
+local function EditMode_Enter()
+	if not KT.InCombatBlocked() then
+		KT.EditMode:ShowMover()
+		KT.EditMode:OpenOptions()
+	end
+end
+
+-- Options
 local options = {
-	name = "|T"..mediaPath.."KT_logo:22:22:-1:7|t"..KT.title,
+	name = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:-1:7|t"..KT.title,
 	type = "group",
 	get = function(info) return db[info[#info]] end,
 	args = {
@@ -203,10 +514,11 @@ local options = {
 							order = 0.51,
 						},
 						supportersLabel = {
-							name = "                |cff00ff00Become a Patron",
+							name = "|cff00ff00Become a Patron",
 							type = "description",
 							width = "normal",
 							fontSize = "medium",
+							justifyH = "RIGHT",
 							order = 0.52,
 						},
 						supporters = {
@@ -228,102 +540,18 @@ local options = {
 					inline = true,
 					order = 1,
 					args = {
-						anchorPoint = {
-							name = "Anchor point",
-							desc = "- Default: "..defaults.profile.anchorPoint,
-							type = "select",
-							values = anchors,
-							get = function()
-								for k, v in ipairs(anchors) do
-									if db.anchorPoint == v then
-										return k
-									end
-								end
-							end,
-							set = function(_, value)
-								db.anchorPoint = anchors[value]
-								db.xOffset = 0
-								db.yOffset = 0
-								UpdateOptions()
-								KT:MoveTracker()
-								OverlayFrameUpdate()
-								KT_ObjectiveTracker_Collapse()
-								KT_ObjectiveTracker_Expand()
-							end,
+						editMode = {
+							name = "Edit Mode",
+							desc = "Unlock addon UI elements.",
+							type = "execute",
+							func = EditMode_Enter,
 							order = 1.1,
 						},
-						xOffset = {
-							name = "X offset",
-							desc = "- Default: "..defaults.profile.xOffset.."\n- Step: 1",
-							type = "range",
-							min = 0,
-							max = 0,
-							step = 1,
-							set = function(_, value)
-								db.xOffset = value
-								KT:MoveTracker()
-							end,
-							order = 1.2,
-						},
-						yOffset = {
-							name = "Y offset",
-							desc = "- Default: "..defaults.profile.yOffset.."\n- Step: 2",
-							type = "range",
-							min = 0,
-							max = 0,
-							step = 2,
-							set = function(_, value)
-								db.yOffset = value
-								UpdateOptions(true)
-								KT:MoveTracker()
-								KT:SetSize()
-								OverlayFrameUpdate()
-							end,
-							order = 1.3,
-						},
-						maxHeight = {
-							name = "Max. height",
-							desc = "- Default: "..defaults.profile.maxHeight.."\n- Step: 2",
-							type = "range",
-							min = 100,
-							max = 100,
-							step = 2,
-							set = function(_, value)
-								db.maxHeight = value
-								KT:SetSize()
-								OverlayFrameUpdate()
-							end,
-							order = 1.4,
-						},
-						maxHeightShowOverlay = {
-							name = "Show Max. height overlay",
-							desc = "Show overlay, for better visualisation Max. height value.",
-							type = "toggle",
-							width = 1.3,
-							get = function()
-								return overlayShown
-							end,
-							set = function()
-								overlayShown = not overlayShown
-								if overlayShown and not overlay then
-									overlay = CreateFrame("Frame", KTF:GetName().."Overlay", KTF)
-									overlay:SetFrameLevel(KTF:GetFrameLevel() + 12)
-									overlay:EnableMouse(true)
-									overlay.texture = overlay:CreateTexture(nil, "BACKGROUND")
-									overlay.texture:SetAllPoints()
-									overlay.texture:SetColorTexture(0, 1, 0, 0.3)
-									OverlayFrameUpdate()
-								end
-								overlay:SetShown(overlayShown)
-							end,
-							order = 1.5,
-						},
-						maxHeightNote = {
-							name = cBold.."\n  Max. height is related with value Y offset.\n"..
-								"  Content is lesser ... tracker height is automatically increases.\n"..
-								"  Content is greater ... tracker enables scrolling.",
+						editModeNote = {
+							name = cBold.." Set position, size, scale and strata of addon UI elements.",
 							type = "description",
-							order = 1.6,
+							width = "double",
+							order = 1.2,
 						},
 						frameScrollbar = {
 							name = "Show scroll indicator",
@@ -334,26 +562,7 @@ local options = {
 								KTF.Bar:SetShown(db.frameScrollbar)
 								KT:SetSize()
 							end,
-							order = 1.7,
-						},
-						frameStrata = {
-							name = "Strata",
-							desc = "- Default: "..defaults.profile.frameStrata,
-							type = "select",
-							values = strata,
-							get = function()
-								for k, v in ipairs(strata) do
-									if db.frameStrata == v then
-										return k
-									end
-								end
-							end,
-							set = function(_, value)
-								db.frameStrata = strata[value]
-								KTF:SetFrameStrata(strata[value])
-								KTF.Buttons:SetFrameStrata(strata[value])
-							end,
-							order = 1.8,
+							order = 1.3,
 						},
 					},
 				},
@@ -493,12 +702,10 @@ local options = {
 							values = WidgetLists.statusbar,
 							set = function(_, value)
 								db.progressBar = value
-								KT.forcedUpdate = true
-								KT_ObjectiveTracker_Update()
+								KT:Update(true)
 								if PetTracker then
 									PetTracker.Objectives:Update()
 								end
-								KT.forcedUpdate = false
 							end,
 							order = 2.9,
 						},
@@ -517,31 +724,27 @@ local options = {
 							values = WidgetLists.font,
 							set = function(_, value)
 								db.font = value
-								KT.forcedUpdate = true
-								KT:SetText()
-								KT_ObjectiveTracker_Update()
+								KT:SetText(true)
+								KT:Update()
 								if PetTracker then
 									PetTracker.Objectives:Update()
 								end
-								KT.forcedUpdate = false
 							end,
 							order = 3.1,
 						},
 						fontSize = {
 							name = "Font size",
 							type = "range",
-							min = 8,
-							max = 24,
+							min = 10,
+							max = 20,
 							step = 1,
 							set = function(_, value)
 								db.fontSize = value
-								KT.forcedUpdate = true
-								KT:SetText()
-								KT_ObjectiveTracker_Update()
+								KT:SetText(true)
+								KT:Update()
 								if PetTracker then
 									PetTracker.Objectives:Update()
 								end
-								KT.forcedUpdate = false
 							end,
 							order = 3.2,
 						},
@@ -558,13 +761,11 @@ local options = {
 							end,
 							set = function(_, value)
 								db.fontFlag = value
-								KT.forcedUpdate = true
-								KT:SetText()
-								KT_ObjectiveTracker_Update()
+								KT:SetText(true)
+								KT:Update()
 								if PetTracker then
 									PetTracker.Objectives:Update()
 								end
-								KT.forcedUpdate = false
 							end,
 							order = 3.3,
 						},
@@ -589,7 +790,7 @@ local options = {
 							type = "toggle",
 							set = function()
 								db.colorDifficulty = not db.colorDifficulty
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 								QuestMapFrame_UpdateAll()
 							end,
 							order = 3.5,
@@ -600,10 +801,7 @@ local options = {
 							type = "toggle",
 							set = function()
 								db.textWordWrap = not db.textWordWrap
-								KT.forcedUpdate = true
-								KT_ObjectiveTracker_Update()
-								KT_ObjectiveTracker_Update()
-								KT.forcedUpdate = false
+								KT:Update(true)
 							end,
 							order = 3.6,
 						},
@@ -619,7 +817,7 @@ local options = {
 							end,
 							set = function()
 								db.objNumSwitch = not db.objNumSwitch
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 							end,
 							order = 3.7,
 						},
@@ -636,7 +834,7 @@ local options = {
 							type = "description",
 							width = "half",
 							fontSize = "medium",
-							order = 4.1,
+							order = 4.01,
 						},
 						hdrBgr = {
 							name = "",
@@ -653,7 +851,7 @@ local options = {
 								db.hdrBgr = value
 								KT:SetBackground()
 							end,
-							order = 4.11,
+							order = 4.011,
 						},
 						hdrBgrColor = {
 							name = "Color",
@@ -672,7 +870,7 @@ local options = {
 								db.hdrBgrColor.b = b
 								KT:SetBackground()
 							end,
-							order = 4.12,
+							order = 4.012,
 						},
 						hdrBgrColorShare = {
 							name = "Use border color",
@@ -685,14 +883,39 @@ local options = {
 								db.hdrBgrColorShare = not db.hdrBgrColorShare
 								KT:SetBackground()
 							end,
-							order = 4.13,
+							order = 4.013,
+						},
+						hdrTrackerBgrSpacer1 = {
+							name = " ",
+							type = "description",
+							width = "half",
+							order = 4.014,
+						},
+						hdrTrackerBgrShow = {
+							name = "Show tracker header texture",
+							type = "toggle",
+							width = "normal+half",
+							disabled = function()
+								return (db.hdrBgr == 1)
+							end,
+							set = function()
+								db.hdrTrackerBgrShow = not db.hdrTrackerBgrShow
+								KT:SetBackground()
+							end,
+							order = 4.015,
+						},
+						hdrTrackerBgrSpacer2 = {
+							name = " ",
+							type = "description",
+							width = "normal",
+							order = 4.016,
 						},
 						hdrTxtLabel = {
 							name = " Text",
 							type = "description",
 							width = "half",
 							fontSize = "medium",
-							order = 4.2,
+							order = 4.02,
 						},
 						hdrTxtColor = {
 							name = "Color",
@@ -712,7 +935,7 @@ local options = {
 								db.hdrTxtColor.b = b
 								KT:SetText()
 							end,
-							order = 4.21,
+							order = 4.021,
 						},
 						hdrTxtColorShare = {
 							name = "Use border color",
@@ -725,20 +948,20 @@ local options = {
 								db.hdrTxtColorShare = not db.hdrTxtColorShare
 								KT:SetText()
 							end,
-							order = 4.22,
+							order = 4.022,
 						},
 						hdrTxtSpacer = {
 							name = " ",
 							type = "description",
 							width = "normal",
-							order = 4.23,
+							order = 4.023,
 						},
 						hdrBtnLabel = {
 							name = " Buttons",
 							type = "description",
 							width = "half",
 							fontSize = "medium",
-							order = 4.3,
+							order = 4.03,
 						},
 						hdrBtnColor = {
 							name = "Color",
@@ -746,7 +969,7 @@ local options = {
 							type = "color",
 							width = "half",
 							disabled = function()
-								return db.hdrBtnColorShare
+								return (db.hdrBgr == 2 or db.hdrBtnColorShare)
 							end,
 							get = function()
 								return db.hdrBtnColor.r, db.hdrBtnColor.g, db.hdrBtnColor.b
@@ -757,28 +980,31 @@ local options = {
 								db.hdrBtnColor.b = b
 								KT:SetBackground()
 							end,
-							order = 4.32,
+							order = 4.032,
 						},
 						hdrBtnColorShare = {
 							name = "Use border color",
 							desc = "The color of all header buttons is shared with the border color.",
 							type = "toggle",
+							disabled = function()
+								return (db.hdrBgr == 2)
+							end,
 							set = function()
 								db.hdrBtnColorShare = not db.hdrBtnColorShare
 								KT:SetBackground()
 							end,
-							order = 4.33,
+							order = 4.033,
 						},
 						hdrBtnSpacer = {
 							name = " ",
 							type = "description",
 							width = "normal",
-							order = 4.34,
+							order = 4.034,
 						},
 						sec4SpacerMid1 = {
 							name = " ",
 							type = "description",
-							order = 4.35,
+							order = 4.035,
 						},
 						hdrQuestsTitleAppend = {
 							name = "Show number of Quests",
@@ -789,7 +1015,7 @@ local options = {
 								db.hdrQuestsTitleAppend = not db.hdrQuestsTitleAppend
 								KT:SetQuestsHeaderText(true)
 							end,
-							order = 4.4,
+							order = 4.04,
 						},
 						hdrAchievsTitleAppend = {
 							name = "Show Achievement points",
@@ -800,9 +1026,9 @@ local options = {
 								db.hdrAchievsTitleAppend = not db.hdrAchievsTitleAppend
 								KT:SetAchievsHeaderText(true)
 							end,
-							order = 4.5,
+							order = 4.05,
 						},
-						hdrPetTrackerTitleAppend = {	-- Addon - PetTracker
+						hdrPetTrackerTitleAppend = {  -- Addon - PetTracker
 							name = "Show number of owned Pets",
 							desc = "Show number of owned Pets inside the PetTracker header.",
 							type = "toggle",
@@ -814,19 +1040,19 @@ local options = {
 								db.hdrPetTrackerTitleAppend = not db.hdrPetTrackerTitleAppend
 								KT.AddonPetTracker:SetPetsHeaderText(true)
 							end,
-							order = 4.6,
+							order = 4.06,
 						},
 						sec4SpacerMid2 = {
 							name = " ",
 							type = "description",
-							order = 4.65,
+							order = 4.07,
 						},
 						hdrCollapsedTxtLabel = {
 							name = " Collapsed tracker text",
 							type = "description",
 							width = "normal",
 							fontSize = "medium",
-							order = 4.7,
+							order = 4.09,
 						},
 						hdrCollapsedTxt1 = {
 							name = "None",
@@ -838,34 +1064,22 @@ local options = {
 							end,
 							set = function()
 								db.hdrCollapsedTxt = 1
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 							end,
-							order = 4.71,
+							order = 4.091,
 						},
 						hdrCollapsedTxt2 = {
-							name = ("%d/%d"):format(0, MAX_QUESTS),
+							name = "|T"..KT.MEDIA_PATH.."KT_logo:22:22:2:0|t "..KT.title,
 							type = "toggle",
-							width = "half",
+							width = "normal",
 							get = function()
 								return (db.hdrCollapsedTxt == 2)
 							end,
 							set = function()
 								db.hdrCollapsedTxt = 2
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 							end,
-							order = 4.72,
-						},
-						hdrCollapsedTxt3 = {
-							name = ("%d/%d Quests"):format(0, MAX_QUESTS),
-							type = "toggle",
-							get = function()
-								return (db.hdrCollapsedTxt == 3)
-							end,
-							set = function()
-								db.hdrCollapsedTxt = 3
-								KT_ObjectiveTracker_Update()
-							end,
-							order = 4.73,
+							order = 4.092,
 						},
 						hdrOtherButtons = {
 							name = "Show Quest Log and Achievements buttons",
@@ -875,9 +1089,9 @@ local options = {
 								db.hdrOtherButtons = not db.hdrOtherButtons
 								KT:SetOtherButtons()
 								KT:SetBackground()
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 							end,
-							order = 4.8,
+							order = 4.10,
 						},
 						keyBindMinimize = {
 							name = "Key - Minimize button",
@@ -894,7 +1108,7 @@ local options = {
 								end
 								db.keyBindMinimize = value
 							end,
-							order = 4.9,
+							order = 4.11,
 						},
 					},
 				},
@@ -983,7 +1197,7 @@ local options = {
 							set = function()
 								db.qiActiveButtonBindingShow = not db.qiActiveButtonBindingShow
 								KTF.ActiveFrame:Hide()
-								KT.ActiveButton:Update()
+								KT:Update()
 							end,
 							order = 5.5,
 						},
@@ -992,19 +1206,6 @@ local options = {
 							type = "description",
 							width = "half",
 							order = 5.51,
-						},
-						qiActiveButtonUnlock = {
-							name = UNLOCK,
-							type = "execute",
-							disabled = function()
-								return not db.qiActiveButton
-							end,
-							func = function()
-								HideUIPanel(SettingsPanel)
-								KTF.ActiveFrame.overlay:Show()
-								StaticPopup_Show(addonName.."_LockUI", nil, "Addon UI elements unlocked.\nMove them and click Lock when you are done.\n\n"..cBold.."Right Click|r on mover restore the default position.")
-							end,
-							order = 5.6,
 						},
 						addonMasqueLabel = {
 							name = " Skin options - for Quest item buttons or Active button",
@@ -1043,7 +1244,7 @@ local options = {
 							type = "toggle",
 							set = function()
 								db.hideEmptyTracker = not db.hideEmptyTracker
-								KT:ToggleEmptyTracker()
+								OTF:Update()
 							end,
 							order = 6.11,
 						},
@@ -1146,9 +1347,10 @@ local options = {
 							name = "Show Quest tags",
 							desc = "Show / Hide Quest tags (quest level, quest type) inside the tracker.",
 							type = "toggle",
+							width = "normal+half",
 							set = function()
 								db.questShowTags = not db.questShowTags
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 							end,
 							order = 6.42,
 						},
@@ -1156,16 +1358,29 @@ local options = {
 							name = "Show Quest Zones",
 							desc = "Show / Hide Quest Zones inside the tracker.",
 							type = "toggle",
+							width = "normal+half",
 							set = function()
 								db.questShowZones = not db.questShowZones
-								KT_ObjectiveTracker_Update()
+								OTF:Update()
 							end,
 							order = 6.43,
+						},
+						taskShowFactions = {
+							name = "Show World Quest Factions",
+							desc = "Show / Hide World Quest Factions inside the tracker.",
+							type = "toggle",
+							width = "normal+half",
+							set = function()
+								db.taskShowFactions = not db.taskShowFactions
+								OTF:Update()
+							end,
+							order = 6.44,
 						},
 						questAutoTrack = {
 							name = "Auto Quest tracking",
 							desc = "Quests are automatically watched when accepted. Uses Blizzard's value \"autoQuestWatch\".\n"..warning,
 							type = "toggle",
+							width = "normal+half",
 							confirm = true,
 							confirmText = warning,
 							get = function()
@@ -1175,7 +1390,7 @@ local options = {
 								SetCVar("autoQuestWatch", value)
 								ReloadUI()
 							end,
-							order = 6.44,
+							order = 6.45,
 						},
 						questProgressAutoTrack = {
 							name = "Auto Quest progress tracking",
@@ -1191,7 +1406,22 @@ local options = {
 								SetCVar("autoQuestProgress", value)
 								ReloadUI()
 							end,
-							order = 6.45,
+							order = 6.46,
+						},
+						questAutoFocusClosest = {
+							name = "Auto focus closest Quest                            ",  -- space for a wider tooltip
+							desc = "Closest Quest is automatically focussed in specific situations:\n"..
+									"- Quest was turned in and was focused,\n"..
+									"- Quest was abandoned and was focused,\n"..
+									"- Quest was untracked and was focused,\n"..
+									"- World Quest was untracked and was focus,\n"..
+									"- you manually or automatically select a Zone Filter and nothing is focused.",
+							type = "toggle",
+							width = "normal+half",
+							set = function()
+								db.questAutoFocusClosest = not db.questAutoFocusClosest
+							end,
+							order = 6.47,
 						},
 					},
 				},
@@ -1328,7 +1558,7 @@ local options = {
 							order = 1.21,
 						},
 						addonPetTrackerDesc = {
-							name = "PetTracker support adjusts display of zone pet tracking inside "..KT.title..". It also fix some visual bugs.",
+							name = "PetTracker support adjusts display of zone pet tracking inside the tracker. It also fix some visual bugs.",
 							type = "description",
 							width = "double",
 							order = 1.22,
@@ -1355,6 +1585,29 @@ local options = {
 							type = "description",
 							width = "double",
 							order = 1.32,
+						},
+						addonAuctionator = {
+							name = "Auctionator",
+							desc = "Version: %s",
+							descStyle = "inline",
+							type = "toggle",
+							width = 1.05,
+							confirm = true,
+							confirmText = warning,
+							disabled = function()
+								return not C_AddOns.IsAddOnLoaded("Auctionator")
+							end,
+							set = function()
+								db.addonAuctionator = not db.addonAuctionator
+								ReloadUI()
+							end,
+							order = 1.41,
+						},
+						addonAuctionatorDesc = {
+							name = "Support for Auctionator search button inside the Profession module header.",
+							type = "description",
+							width = "double",
+							order = 1.42,
 						},
 					},
 				},
@@ -1435,7 +1688,7 @@ local options = {
 									"function SetPassThroughButtons. When the hack is inactive World Map display causes errors. "..
 									"It is not possible to get rid of these errors, since the tracker has a lot of interaction "..
 									"with the game frames.\n\n"..
-									cWarning2.."Negative impacts:|r unknown in WoW 10.2.7\n",
+									cWarning2.."Negative impacts:|r unknown in WoW 11.0.7\n",
 							descStyle = "inline",
 							type = "toggle",
 							width = "full",
@@ -1508,6 +1761,7 @@ function KT:SetupOptions()
 
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	options.args.profiles.confirm = true
+	options.args.profiles.args.current.width = "double"
 	options.args.profiles.args.reset.confirmText = warning
 	options.args.profiles.args.new.confirmText = warning
 	options.args.profiles.args.choose.confirmText = warning
@@ -1533,7 +1787,7 @@ function KT:SetupOptions()
 				end
 				self:SetBackground()
 				KT.QuestsCache_Init()
-				KT_ObjectiveTracker_Update()
+				OTF:Update()
 			end,
 			order = 0.2,
 		},
@@ -1550,7 +1804,7 @@ function KT:SetupOptions()
 		}
 	}
 
-	ACR:RegisterOptionsTable(addonName, options, nil)
+	ACR:RegisterOptionsTable(addonName, options, true)
 	
 	self.optionsFrame = {}
 	self.optionsFrame.general = ACD:AddToBlizOptions(addonName, self.title, nil, "general")
@@ -1569,25 +1823,6 @@ function KT:SetupOptions()
 	end
 end
 
-SettingsPanel:HookScript("OnHide", function(self)
-	OverlayFrameHide()
-end)
-
-function OverlayFrameUpdate()
-	if overlay then
-		overlay:SetSize(db.width, db.maxHeight)
-		overlay:ClearAllPoints()
-		overlay:SetPoint(db.anchorPoint, 0, 0)
-	end
-end
-
-function OverlayFrameHide()
-	if overlayShown then
-		overlay:Hide()
-		overlayShown = false
-	end
-end
-
 function GetModulesOptionsTable()
 	local numModules = #db.modulesOrder
 	local text
@@ -1602,7 +1837,7 @@ function GetModulesOptionsTable()
 			order = 0.1,
 		},
 		descDefOrder = {
-			name = "|T:1:40|t"..cTitle.."Default Order",
+			name = "|T:1:20|t"..cTitle.."Default Order",
 			type = "description",
 			width = "normal",
 			fontSize = "medium",
@@ -1618,17 +1853,17 @@ function GetModulesOptionsTable()
 	for i, module in ipairs(db.modulesOrder) do
 		if _G[module].Header then
 			text = _G[module].Header.Text:GetText()
-			if module == "KT_SCENARIO_CONTENT_TRACKER_MODULE" then
+			if module == "KT_ScenarioObjectiveTracker" then
 				text = text.." *"
-			elseif module == "KT_UI_WIDGET_TRACKER_MODULE" then
+			elseif module == "KT_UIWidgetObjectiveTracker" then
 				text = "[ "..ZONE.." ]"
 			end
 
-			defaultModule = numSkipped == 0 and OTF.MODULES_UI_ORDER[i] or OTF.MODULES_UI_ORDER[i - numSkipped]
+			defaultModule = numSkipped == 0 and _G[KT.MODULES[i]] or _G[KT.MODULES[i - numSkipped]]
 			defaultText = defaultModule.Header.Text:GetText()
-			if defaultModule == KT_SCENARIO_CONTENT_TRACKER_MODULE then
+			if defaultModule == KT_ScenarioObjectiveTracker then
 				defaultText = defaultText.." *"
-			elseif defaultModule == KT_UI_WIDGET_TRACKER_MODULE then
+			elseif defaultModule == KT_UIWidgetObjectiveTracker then
 				defaultText = "[ "..ZONE.." ]"
 			end
 
@@ -1660,7 +1895,7 @@ function GetModulesOptionsTable()
 				order = i + 0.2,
 			}
 			args["pos"..i.."default"] = {
-				name = "|T:1:44|t|cff808080"..defaultText,
+				name = "|T:1:24|t|cff808080"..defaultText,
 				type = "description",
 				width = "normal",
 				fontSize = "medium",
@@ -1687,9 +1922,10 @@ function MoveModule(idx, direction)
 	local module = tremove(db.modulesOrder, idx)
 	tinsert(db.modulesOrder, tmpIdx, module)
 
-	module = tremove(OTF.MODULES_UI_ORDER, idx)
-	tinsert(OTF.MODULES_UI_ORDER, tmpIdx, module)
-	KT_ObjectiveTracker_Update()
+	OTF.modules[tmpIdx].uiOrder = idx
+	OTF.modules[idx].uiOrder = tmpIdx
+	OTF.needsSorting = true
+	OTF:Update()
 end
 
 function SetSharedColor(color)
@@ -1707,55 +1943,66 @@ function IsSpecialLocale()
 			KT.locale == "ruRU")
 end
 
-function UpdateOptions(updateValues)
-	local options = options.args.general.args.sec1.args
-	local screenWidth = round(GetScreenWidth())
-	local screenHeight = round(GetScreenHeight())
-	local xOffsetMax = screenWidth - db.width
-	local yOffsetMax = screenHeight - options.maxHeight.min
-	local anchorLeft = (db.anchorPoint == "TOPLEFT" or db.anchorPoint == "BOTTOMLEFT")
-	local directionUp = (db.anchorPoint == "BOTTOMLEFT" or db.anchorPoint == "BOTTOMRIGHT")
+local function SetAlert(type)
+	if not type then return end
 
-	if anchorLeft then
-		options.xOffset.min = 0
-		options.xOffset.max = xOffsetMax
-	else
-		options.xOffset.min = xOffsetMax * -1
-		options.xOffset.max = 0
-	end
-
-	if directionUp then
-		options.yOffset.min = 0
-		options.yOffset.max = yOffsetMax
-	else
-		options.yOffset.min = yOffsetMax * -1
-		options.yOffset.max = 0
-	end
-
-	options.maxHeight.max = screenHeight - abs(db.yOffset)
-
-	if updateValues then
-		if abs(db.yOffset) + db.maxHeight > screenHeight then
-			db.maxHeight = options.maxHeight.max
+	if type == "trackedQuests" then
+		local trackedQuests = GetCVar("trackedQuests")
+		if trackedQuests ~= "" and trackedQuests ~= "v11" then
+			local character = UnitName("player")
+			local realm = GetRealmName()
+			general.alert = {
+				name = "Alert - Automatically tracked quests",
+				type = "group",
+				inline = true,
+				order = 0.1,
+				args = {
+					alertIcon = {
+						name = "|T"..STATICPOPUP_TEXTURE_ALERT..":36:36:8:-2|t",
+						type = "description",
+						width = 0.2,
+						order = 1.1,
+					},
+					alertText = {
+						name = "You are probably having problem with automatically tracked quests after every Login or Reload UI. Try the following steps to fix it.",
+						type = "description",
+						width = 2.8,
+						fontSize = "medium",
+						order = 1.2,
+					},
+					alertSpacer = {
+						name = " ",
+						type = "description",
+						width = 0.2,
+						order = 2.1,
+					},
+					alertText2 = {
+						name = "- Go to the directory:  ...\\World of Warcraft\\_retail_\\WTF\\Account\\...ACCOUNT...\\"..realm.."\\"..character.."\n"..
+								"- Open the file:  "..cBold.."config-cache.wtf|r\n"..
+								"- Search for the string:  "..cBold.."SET trackedQuests \""..trackedQuests.."\"|r\n"..
+								"- Change it to:  "..cBold.."SET trackedQuests \"v11\"|r\n"..
+								"- Restart WoW",
+						type = "description",
+						width = 2.8,
+						order = 2.2,
+					},
+				},
+			}
 		end
 	end
 end
 
 -- Init
-OTF:HookScript("OnEvent", function(self, event)
-	if event == "PLAYER_ENTERING_WORLD" and not KT.initialized then
-		modules.sec1.args = GetModulesOptionsTable()
-	end
-end)
-
 KT:RegEvent("PLAYER_ENTERING_WORLD", function(eventID)
-	UpdateOptions()
+	SetAlert("trackedQuests")
+	modules.sec1.args = GetModulesOptionsTable()
+	Mover_UpdateOptions()
 	KT:RegEvent("UI_SCALE_CHANGED", function()
-		UpdateOptions()
+		Mover_SetScale()
 	end)
 	KT:UnregEvent(eventID)
 end)
 
 hooksecurefunc(UIParent, "SetScale", function(self)
-	UpdateOptions()
+	Mover_SetScale()
 end)

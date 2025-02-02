@@ -149,14 +149,14 @@
 			<Frame parentKey="AltItemtems" hidden="true" >
 				<Size x="25" y="25"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" X='8' Y='-15'/>
+					<Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x='8' y='-15'/>
 				</Anchors>
 					<Layers>
 						<Layer level="OVERLAY">		
 						<Texture parentKey="AltIconRight" file="Interface\FriendsFrame\UI-Toast-ChatInviteIcon" >
 							<Size x="25" y="25"/>
 							<Anchors>
-								<Anchor point="CENTER" X='0' Y='0'/>
+								<Anchor point="CENTER" x='0' y='0'/>
 							</Anchors>
 
 						</Texture>
@@ -322,7 +322,7 @@
 		<Frames>
 
 			<Frame parentKey="Variants" mixin = "BetterWardrobeSetsDetailsAltItemMixin" hidden="false">
-				<Size x="20" y="35"/>
+				<Size x="35" y="15"/>
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativeKey="$parent" x="5" y = "5"/>
 				</Anchors>
@@ -331,13 +331,13 @@
 						<Texture parentKey="Icon" file="Interface\CHATFRAME\UI-InChatFriendsArrow">
 							<Size x="15" y="15"/>
 							<Anchors>
-								<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="0" y="3"/>
+								<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="2" y="-7"/>
 							</Anchors>
 						</Texture>
 						<FontString parentKey="Count" inherits="GameFontDisableSmallLeft" justifyH="CENTER" maxLines="1" text="0">
 							<Size x="20" y="20"/>
 							<Anchors>
-								<Anchor point="RIGHT" relativeKey="$parent.IconFrame" relativePoint="LEFT"  x="7" y="1"/>
+								<Anchor point="TOPRIGHT" relativeKey="$parent.IconFrame" relativePoint="TOPRIGHT"  x="-7" y="-3"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -388,7 +388,7 @@
 				</Layers>
 			</Frame>
 			<Frame inherits="BetterWardrobeIconsTemplate" />
-			<Button parentKey="EditButton" inherits="BetterWardrobeOutfitButtonButtonTemplate">
+			<Button parentKey="EditButton" inherits="BetterWardrobeOutfitButtonButtonTemplate" hidden = "true">
 				<KeyValues>
 					<KeyValue key="tooltipText" value="Options" type="string"/>
 				</KeyValues>
@@ -404,7 +404,7 @@
 				<Scripts>
 					<OnClick>
 						local name = self:GetParent().Name:GetText()
-						--print(self:GetParent().setID)
+						print(self:GetParent().setID)
 						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 						BetterWardrobeOutfitEditFrame:ShowForOutfit(self:GetParent().setID, name, self);
 					</OnClick>
@@ -449,11 +449,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture parentKey="Replacement" atlas="transmog-icon-revert-small" useAtlasSize="true" hidden="true">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativeKey="$parent" x="-10" y = "-15"/>
-					</Anchors>
-				</Texture>
+
 				<Texture parentKey="IconBorder" atlas="loottab-set-itemborder-green" useAtlasSize="true">
 					<Anchors>
 						<Anchor point="RIGHT" relativeKey="$parent.Icon" relativePoint="CENTER" x="20" y="1"/>
@@ -472,12 +468,26 @@
 					</Animations>
 				</Texture>
 
-
-
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame parentKey="CanUse" mixin = "BetterWardrobeSetsDetailsItemUseabiltiyMixin" >
+			<Frame parentKey="Replacement"  frameLevel="75" hidden="true">
+				<Size x="60" y="60"/>
+
+				<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.Icon" relativePoint="CENTER" x="0" y = "0" />
+				</Anchors>
+					<Layers>
+						<Layer level="OVERLAY">
+					<Texture  file="Interface\artifacts\ArtifactPower-QuestBorder"  alphaMode="BLEND" >
+					<Size x="60" y="60"/>
+					<Anchors>
+					</Anchors>
+				</Texture>						
+			</Layer>
+					</Layers>
+			</Frame>
+			<Frame parentKey="CanUse" mixin = "BetterWardrobeSetsDetailsItemUseabiltiyMixin" hidden="true">
 				<Size x="25" y="25"/>
 
 				<Anchors>
@@ -494,7 +504,7 @@
 				</Scripts>
 			</Frame>
 
-			<Frame parentKey="AltItem" mixin = "BetterWardrobeSetsDetailsAltItemMixin" hidden="false">
+			<Frame parentKey="AltItem" mixin = "BetterWardrobeSetsDetailsAltItemMixin" hidden="true">
 				<Size x="25" y="10"/>
 
 				<Anchors>
@@ -506,14 +516,14 @@
 						<Texture parentKey="AltIconRight" file="Interface\BUTTONS\UI-SpellbookIcon-NextPage-Up" >
 							<Size x="15" y="15"/>
 							<Anchors>
-								<Anchor point="BOTTOMRIGHT" relativeKey="$parent.IconFrame" relativePoint="BOTTOMRIGHT" X='0' Y='-5'/>
+								<Anchor point="BOTTOMRIGHT" relativeKey="$parent.IconFrame" relativePoint="BOTTOMRIGHT" x='0' y='-5'/>
 							</Anchors>
 
 						</Texture>
 							<Texture parentKey="AltIconLeft" file="Interface\BUTTONS\UI-SpellbookIcon-PrevPage-Up" >
 							<Size x="15" y="15"/>
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativeKey="$parent.IconFrame" relativePoint="BOTTOMLEFT" X='0' Y='-5'/>
+								<Anchor point="BOTTOMLEFT" relativeKey="$parent.IconFrame" relativePoint="BOTTOMLEFT" x='0' y='-5'/>
 							</Anchors>
 
 						</Texture>
@@ -932,7 +942,7 @@
 
 			<DropdownButton parentKey="SavedOutfitDropDown" name = "BW_SavedOutfitDropDown" inherits="WowStyle1DropdownTemplate" mixin="BetterWardrobeCollectionSavedOutfitDropdownMixin">
 				<Anchors>
-					<Anchor point="Right" relativeKey="$parent.ClassDropdown" relativePoint="RIGHT" x="0" y="0"/>
+					<Anchor point="RIGHT" relativeKey="$parent.ClassDropdown" relativePoint="RIGHT" x="0" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad method="OnLoad"/>
@@ -944,7 +954,7 @@
 			<DropdownButton parentKey="TransmogOptionsButton" name="BW_TransmogOptionsButton" inherits="WowStyle1FilterDropdownTemplate" text="Options" hidden="false" mixin="BetterWardrobeTransmogOptionsDropdownMixin">
 				<Size x="93" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-53" y="80"/>
+					<Anchor point="BOTTOMRIGHT" x="-53" y="20"/>
 				</Anchors>
 				<Scripts>
 					<OnEnable>
@@ -955,39 +965,7 @@
 					</OnDisable>
 				</Scripts>
 			</DropdownButton>
-			<Button parentKey="BW_SetsHideSlotButton" inherits="SquareIconButtonTemplate" >
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.TransmogOptionsButton" relativePoint="BOTTOMRIGHT" x="-30" y="-5"/>
-				</Anchors>					
-				<Layers>
-					<Layer level="ARTWORK" textureSubLevel="5">
-						<Texture parentKey="Icon" file="Interface\PvPRankBadges\PvPRank12">
-							<Size x="16" y="16"/>
-							<Anchors>
-								<Anchor point="CENTER" />
-							</Anchors>
-						</Texture>
-					</Layer>
-				</Layers>
-				<Scripts>
-					<OnShow> 
-						self.buttonID = "HideSlot" 
-						local level = self:GetParent().SetsCollectionFrame.Model:GetFrameLevel() + 5
-						self:SetFrameLevel(level);
-					</OnShow>
-					<OnEnter>
-						BW_DressingRoomButtonMixin.OnEnter(self)  
-					</OnEnter>
-					<OnLeave>
-						BW_DressingRoomButtonMixin.OnLeave()
-					</OnLeave>
-					<OnClick>
-						BW_JournalHideSlotMenu_OnClick(self)
-					</OnClick>
 
-				</Scripts>
-			</Button>
 			<Frame parentKey="ItemsCollectionFrame" parentArray="ContentFrames" mixin="BetterWardrobeItemsCollectionMixin" inherits="BW_CollectionsBackgroundTemplate">
 				<KeyValues>
 					<KeyValue key="searchType" value="Enum.TransmogSearchType.Items" type="global"/>
@@ -1497,6 +1475,39 @@
 									</OnClick>
 								</Scripts>
 							</Button>
+							<Button parentKey="BW_SetsHideSlotButton" inherits="SquareIconButtonTemplate" >
+								<Size x="32" y="32"/>
+								<Anchors>
+									<Anchor point="TOPRIGHT" x="-49.5" y="0"/>
+								</Anchors>					
+								<Layers>
+									<Layer level="ARTWORK" textureSubLevel="5">
+										<Texture parentKey="Icon" file="Interface\PvPRankBadges\PvPRank12">
+											<Size x="16" y="16"/>
+											<Anchors>
+												<Anchor point="CENTER" />
+											</Anchors>
+										</Texture>
+									</Layer>
+								</Layers>
+								<Scripts>
+									<OnShow> 
+										self.buttonID = "HideSlot" 
+										--local level = self:GetParent().SetsCollectionFrame.Model:GetFrameLevel() + 5
+										--self:SetFrameLevel(level);
+									</OnShow>
+									<OnEnter>
+										BW_DressingRoomButtonMixin.OnEnter(self)  
+									</OnEnter>
+									<OnLeave>
+										BW_DressingRoomButtonMixin.OnLeave()
+									</OnLeave>
+									<OnClick>
+										BW_JournalHideSlotMenu_OnClick(self)
+									</OnClick>
+
+								</Scripts>
+							</Button>
 							<Button parentKey="BW_OpenDressingRoomButton" inherits="SquareIconButtonTemplate" >
 								<Size x="32" y="32"/>
 								<Anchors>
@@ -1529,9 +1540,39 @@
 
 							<DropdownButton parentKey="VariantSetsDropdown" inherits="WowStyle1DropdownTemplate" frameLevel="80">
 								<Anchors>
-									<Anchor point="TOPRIGHT" x="-60" y="-3"/>
+									<Anchor point="TOPRIGHT" x="-80" y="-3"/>
 								</Anchors>
 							</DropdownButton>
+							<Frame parentKey="Faction" hidden="false">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeKey="$parent" x="0" y = "-120"/>
+									<Anchor point="BOTTOMRIGHT" relativeKey="$parent" x="0" y = "10"/>
+								</Anchors>
+								<Layers>
+									<Layer level="ARTWORK">
+										<Texture parentKey="Horde" file="Interface\PvPRankBadges\PvPRankHorde" hidden="true">
+											<Anchors>
+												<Anchor point="TOPLEFT" relativeKey="$parent" x="0" y = "0"/>
+												<Anchor point="BOTTOMRIGHT" relativeKey="$parent" x="0" y = "0"/>
+											</Anchors>
+										</Texture>	
+									</Layer>									
+									<Layer level="ARTWORK">
+										<Texture parentKey="Alliance" file="Interface\PvPRankBadges\PvPRankAlliance" hidden="true">
+											<Anchors>
+												<Anchor point="TOPLEFT" relativeKey="$parent" x="0" y = "0"/>
+												<Anchor point="BOTTOMRIGHT" relativeKey="$parent" x="0" y = "0"/>
+											</Anchors>
+										</Texture>	
+									</Layer>
+								</Layers>
+								<Scripts>
+									<OnShow> 
+										local level = self:GetParent():GetParent().Model:GetFrameLevel()-1
+										self:SetFrameLevel(level);
+									</OnShow>
+								</Scripts>
+							</Frame>
 						</Frames>
 					</Frame>
 				</Frames>
@@ -1559,12 +1600,12 @@
 				<Frames>
 					<Frame parentKey="PagingFrame" inherits="BW_CollectionsPagingFrameTemplate">
 						<Anchors>
-							<Anchor point="BOTTOM" x="22" y="38"/>
+							<Anchor point="BOTTOM" x="22" y="10"/>
 						</Anchors>
 					</Frame>
 					<DressUpModel parentArray="Models" parentKey="ModelR1C1" inherits="BetterWardrobeSetsTransmogModelTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="50" y="-50"/>
+							<Anchor point="TOPLEFT" x="50" y="-20"/>
 						</Anchors>
 					</DressUpModel>
 					<DressUpModel parentArray="Models" parentKey="ModelR1C2" inherits="BetterWardrobeSetsTransmogModelTemplate">
@@ -1584,7 +1625,7 @@
 					</DressUpModel>
 					<DressUpModel parentArray="Models" parentKey="ModelR2C1" inherits="BetterWardrobeSetsTransmogModelTemplate">
 						<Anchors>
-							<Anchor point="TOPLEFT" relativeKey="$parent.ModelR1C1" relativePoint="BOTTOMLEFT" x="0" y="-14"/>
+							<Anchor point="TOPLEFT" relativeKey="$parent.ModelR1C1" relativePoint="BOTTOMLEFT" x="0" y="-55"/>
 						</Anchors>
 					</DressUpModel>
 					<DressUpModel parentArray="Models" parentKey="ModelR2C2" inherits="BetterWardrobeSetsTransmogModelTemplate">

@@ -2,7 +2,10 @@
 Details_StreamerDB = {
 	["characters"] = {
 		["Dishy - Pagle"] = "Dishy - Pagle",
+		["Osó - Pagle"] = "Dishy - Pagle",
 		["Carniça - Pagle"] = "Dishy - Pagle",
+		["Vedronys - Pagle"] = "Dishy - Pagle",
+		["Mulungu - Pagle"] = "Dishy - Pagle",
 	},
 	["profiles"] = {
 		["Dishy - Pagle"] = {
@@ -15,7 +18,10 @@ Details_StreamerDB = {
 				0.5, -- [4]
 			},
 			["scale"] = 1,
-			["arrow_anchor_y"] = 0,
+			["main_frame_size"] = {
+				300, -- [1]
+				500.0000305175781, -- [2]
+			},
 			["minimap"] = {
 				["minimapPos"] = 160,
 				["radius"] = 160,
@@ -36,7 +42,17 @@ Details_StreamerDB = {
 			["square_amount"] = 5,
 			["enabled"] = false,
 			["arrow_size"] = 10,
-			["y"] = -1.52587890625e-05,
+			["per_second"] = {
+				["enabled"] = false,
+				["point"] = "CENTER",
+				["scale"] = 1,
+				["font_shadow"] = true,
+				["y"] = 0.00018310546875,
+				["x"] = -3.0517578125e-05,
+				["size"] = 32,
+				["update_speed"] = 0.05,
+				["attribute_type"] = 1,
+			},
 			["row_spacement"] = 21,
 			["main_frame_color"] = {
 				0, -- [1]
@@ -44,35 +60,22 @@ Details_StreamerDB = {
 				0, -- [3]
 				0.2, -- [4]
 			},
+			["author"] = "Terciob",
+			["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
+			["y"] = 0,
+			["font_size"] = 10,
+			["x"] = -3.0517578125e-05,
+			["font_face"] = "Friz Quadrata TT",
+			["square_size"] = 32,
 			["row_color"] = {
 				0.1, -- [1]
 				0.1, -- [2]
 				0.1, -- [3]
 				0.4, -- [4]
 			},
-			["arrow_texture"] = "Interface\\CHATFRAME\\ChatFrameExpandArrow",
 			["use_spark"] = true,
-			["per_second"] = {
-				["enabled"] = false,
-				["point"] = "CENTER",
-				["scale"] = 1,
-				["font_shadow"] = true,
-				["y"] = -1.52587890625e-05,
-				["x"] = -6.103515625e-05,
-				["size"] = 32,
-				["update_speed"] = 0.05,
-				["attribute_type"] = 1,
-			},
-			["x"] = 3.0517578125e-05,
-			["font_face"] = "Friz Quadrata TT",
-			["square_size"] = 32,
-			["font_size"] = 10,
-			["author"] = "Terciob",
 			["main_frame_locked"] = false,
-			["main_frame_size"] = {
-				300, -- [1]
-				500.0000305175781, -- [2]
-			},
+			["arrow_anchor_y"] = 0,
 		},
 	},
 }

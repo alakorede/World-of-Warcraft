@@ -1,21 +1,20 @@
 ## Title: Informant
-## Notes: Displays detailed item information in tooltips, such as use, vendor sales information, and more.
+## Notes: Displays detailed item information in tooltips, such as use, vendor sales information, and more. [11.x.BETA.4]
 ##
-## Interface: 110000
+## Interface: 110002, 40400, 11503
 ## LoadOnDemand: 1
 ## Dependencies: Stubby
 ## OptionalDeps: !nLog, Babylonian, DebugLib, Configator, SlideBar, LibExtraTip, TipHelper, LibDataBroker
 ## SavedVariables: InformantConfig, InformantLocalUpdates
 ## IconTexture: Interface/Addons/Informant/inficon.blp
 ##
-## Version: 9.1.BETA.5.17 (OneMawTime)
+## Version: 11.x.BETA.4 (TheWarWithBlizzardAPIs)
 ## Revision: $Id$
 ## Author: Norganna's AddOns
 ## X-Part-Of: Auctioneer
 ## X-Category: Item Data
-## X-Max-Interface: 80100
 ## X-URL: http://auctioneeraddon.com/
-## X-Feedback: http://forums.norganna.org
+## X-Feedback: https://auctioneeraddon.com/slack
 ##
 InfManifest.lua
 

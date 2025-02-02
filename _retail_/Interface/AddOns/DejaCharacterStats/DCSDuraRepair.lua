@@ -16,7 +16,7 @@ local DCSITEM_SLOT_FRAMES = {
 	CharacterHeadSlot,CharacterNeckSlot,CharacterShoulderSlot,CharacterBackSlot,CharacterChestSlot,CharacterWristSlot,
 	CharacterHandsSlot,CharacterWaistSlot,CharacterLegsSlot,CharacterFeetSlot,
 	CharacterFinger0Slot,CharacterFinger1Slot,CharacterTrinket0Slot,CharacterTrinket1Slot,
-	CharacterMainHandSlot,CharacterSecondaryHandSlot,
+	CharacterMainHandSlot,CharacterSecondaryHandSlot,CharacterShirtSlot,CharacterTabardSlot
 }
 
 local DCSITEM_SLOT_FRAMES_RIGHT = {
@@ -30,7 +30,7 @@ local DCSITEM_SLOT_NECK_BACK_SHIRT = {
 local DCSITEM_TWO_HANDED_WEAPONS = {
 	"Bows","Crossbows","Guns","Fishing Poles","Polearms","Staves","Two-Handed Axes","Two-Handed Maces","Two-Handed Swords",
 }
-	
+
 --local duraMean
 local duraTotal
 local duraMaxTotal
@@ -44,13 +44,13 @@ local duraMeanFS = DCS_CharacterShirtSlot:CreateFontString("FontString","OVERLAY
 	duraMeanFS:SetFont("Fonts\\FRIZQT__.TTF", 15, "THINOUTLINE")
 	duraMeanFS:SetFormattedText("")
 
-local duraMeanTexture = DCS_CharacterShirtSlot:CreateTexture(nil,"ARTWORK") --bar for average durability on shirt 
+local duraMeanTexture = DCS_CharacterShirtSlot:CreateTexture(nil,"ARTWORK") --bar for average durability on shirt
 
 local duraDurabilityFrameFS = DurabilityFrame:CreateFontString("FontString","OVERLAY","GameTooltipText")
 	duraDurabilityFrameFS:SetPoint("CENTER",DurabilityFrame,"CENTER",0,0)
 	duraDurabilityFrameFS:SetFont("Fonts\\FRIZQT__.TTF", 16, "THINOUTLINE")
 	duraDurabilityFrameFS:SetFormattedText("")
-	
+
 for _, v in ipairs(DCSITEM_SLOT_FRAMES) do
 	v.duratexture = v:CreateTexture(nil,"ARTWORK")
 
@@ -59,7 +59,7 @@ for _, v in ipairs(DCSITEM_SLOT_FRAMES) do
 
     v.itemrepair = v:CreateFontString("FontString","OVERLAY","GameTooltipText")
     v.itemrepair:SetFormattedText("")
-	
+
     v.ilevel = v:CreateFontString("FontString","OVERLAY","GameTooltipText")
     v.ilevel:SetFormattedText("")
 
@@ -112,7 +112,7 @@ local function putcenter(fontstring,slot,size)
 	else
 		if (slot == CharacterNeckSlot) then
 			fontstring:SetPoint("CENTER",slot,"CENTER",1,3)
-		else			
+		else
 			fontstring:SetPoint("CENTER",slot,"CENTER",1,-2)
 		end
 	end
@@ -126,7 +126,7 @@ local function DCS_Set_Dura_Item_Positions()
 		v.itemrepair:ClearAllPoints()
 		v.ilevel:ClearAllPoints()
 		if showitemlevel then
-			if showdura then 
+			if showdura then
 				puttop(v.durability,v,11)
 			end
 			if showrepair then
@@ -138,7 +138,7 @@ local function DCS_Set_Dura_Item_Positions()
 				putcenter(v.ilevel,v,14)
 			end
 		else
-			if showdura then 
+			if showdura then
 				if showrepair then
 					puttop(v.durability,v,11)
 					putbottom(v.itemrepair,v,11)
@@ -150,7 +150,7 @@ local function DCS_Set_Dura_Item_Positions()
 					putcenter(v.itemrepair,v,12)
 				end
 			end
-		end		
+		end
 	end
 end
 
@@ -169,16 +169,16 @@ function DCS_Mean_DurabilityCalc()
 		-- --------------------------
 		if durCur == nil then durCur = 0 end
 		if durMax == nil then durMax = 0 end
-		
+
 		duraTotal = duraTotal + durCur
 		duraMaxTotal = duraMaxTotal + durMax
 	end
-	if duraMaxTotal == 0 then 
+	if duraMaxTotal == 0 then
 		duraMaxTotal = 1
 		duraTotal = 1 --if nothing to break then durability should be 100%
 	end
 	addon.duraMean = ((duraTotal/duraMaxTotal)*100)
-end		
+end
 
 -----------------------------------
 -- Durability Frame Mean Display --
@@ -248,7 +248,7 @@ end
 
 gdbprivate.gdbdefaults.gdbdefaults.dejacharacterstatsShowDuraChecked = {
 	ShowDuraSetChecked = true,
-}	
+}
 
 local DCS_ShowDuraCheck = CreateFrame("CheckButton", "DCS_ShowDuraCheck", DejaCharacterStatsPanel, "InterfaceOptionsCheckButtonTemplate")
 	DCS_ShowDuraCheck:RegisterEvent("PLAYER_LOGIN")
@@ -328,13 +328,13 @@ local function DCS_Durability_Bar_Textures()
 		    v.duratexture:Show()
 		end
 	end
-	if duraMaxTotal == 0 then 
+	if duraMaxTotal == 0 then
 		duraMaxTotal = 1
 		duraTotal = 1 --if nothing to break then durability should be 100%
 	end
 	local duraMean = duraTotal/duraMaxTotal
 	duraMeanTexture:SetSize(4, 31*duraMean)
-	if duraMean == 1 then 
+	if duraMean == 1 then
 		duraMeanTexture:SetColorTexture(0, 0, 0, 0)
 	elseif duraMean < 0.10 then
 		duraMeanTexture:SetColorTexture(1, 0, 0, 0.15)
@@ -348,7 +348,7 @@ local function DCS_Durability_Bar_Textures()
 		duraMeanTexture:SetColorTexture(0.753, 0.753, 0.753)
 	end
 	duraMeanTexture:ClearAllPoints()
-	if duraMean > 0.10 then 
+	if duraMean > 0.10 then
 		duraMeanTexture:SetPoint("BOTTOMLEFT",DCS_CharacterShirtSlot,"BOTTOMRIGHT",1,3)
 	else
 		duraMeanTexture:SetAllPoints(DCS_CharacterShirtSlot)
@@ -357,7 +357,7 @@ end
 
 gdbprivate.gdbdefaults.gdbdefaults.dejacharacterstatsShowDuraTextureChecked = {
 	ShowDuraTextureSetChecked = true,
-}	
+}
 
 local DCS_ShowDuraTextureCheck = CreateFrame("CheckButton", "DCS_ShowDuraTextureCheck", DejaCharacterStatsPanel, "InterfaceOptionsCheckButtonTemplate")
 	DCS_ShowDuraTextureCheck:RegisterEvent("PLAYER_LOGIN")
@@ -365,10 +365,10 @@ local DCS_ShowDuraTextureCheck = CreateFrame("CheckButton", "DCS_ShowDuraTexture
 	DCS_ShowDuraTextureCheck:RegisterEvent("PLAYER_EQUIPMENT_CHANGED") --seems like UPDATE_INVENTORY_DURABILITY doesn't get triggered by equipping an item with the same name
 	DCS_ShowDuraTextureCheck:ClearAllPoints()
 	DCS_ShowDuraTextureCheck:SetPoint("TOPLEFT", "dcsItemsPanelCategoryFS", 7, -35)
-	DCS_ShowDuraTextureCheck:SetScale(1) 
+	DCS_ShowDuraTextureCheck:SetScale(1)
 	DCS_ShowDuraTextureCheck.tooltipText = L["Displays a durability bar next to each item."] --Creates a tooltip on mouseover.
 	_G[DCS_ShowDuraTextureCheck:GetName() .. "Text"]:SetText(L["Durability Bars"])
-	
+
 DCS_ShowDuraTextureCheck:SetScript("OnEvent", function(self, ...)
 	event = ...
 	if event == "PLAYER_LOGIN" then
@@ -407,7 +407,7 @@ end)
 ------------------------
 gdbprivate.gdbdefaults.gdbdefaults.dejacharacterstatsShowAverageRepairChecked = {
 	ShowAverageRepairSetChecked = true,
-}	
+}
 
 local DCS_ShowAverageDuraCheck = CreateFrame("CheckButton", "DCS_ShowAverageDuraCheck", DejaCharacterStatsPanel, "InterfaceOptionsCheckButtonTemplate")
 	DCS_ShowAverageDuraCheck:RegisterEvent("PLAYER_LOGIN")
@@ -418,7 +418,7 @@ local DCS_ShowAverageDuraCheck = CreateFrame("CheckButton", "DCS_ShowAverageDura
 	DCS_ShowAverageDuraCheck:SetScale(1)
 	DCS_ShowAverageDuraCheck.tooltipText = L["Displays average item durability on the character shirt slot and durability frames."] --Creates a tooltip on mouseover.
 	_G[DCS_ShowAverageDuraCheck:GetName() .. "Text"]:SetText(L["Average Durability"])
-	
+
 	DCS_ShowAverageDuraCheck:SetScript("OnEvent", function(self, ...)
 		event = ...
 		if event == "PLAYER_LOGIN" then
@@ -462,7 +462,7 @@ local function DCS_Item_RepairCostBottom()
 		local slotId = v:GetID()
 		local repairitemCost = C_TooltipInfo.GetInventoryItem("player", slotId)
 		if (repairitemCost) then
-			TooltipUtil.SurfaceArgs(repairitemCost)
+			-- TooltipUtil.SurfaceArgs(repairitemCost)
 			repairitemCost = repairitemCost.repairCost
 			if (repairitemCost == nil or repairitemCost<=0) then
 				v.itemrepair:SetFormattedText("")
@@ -485,7 +485,7 @@ end
 
 gdbprivate.gdbdefaults.gdbdefaults.dejacharacterstatsShowItemRepairChecked = {
 	ShowItemRepairSetChecked = true,
-}	
+}
 
 local DCS_ShowItemRepairCheck = CreateFrame("CheckButton", "DCS_ShowItemRepairCheck", DejaCharacterStatsPanel, "InterfaceOptionsCheckButtonTemplate")
 	DCS_ShowItemRepairCheck:RegisterEvent("PLAYER_LOGIN")
@@ -498,7 +498,7 @@ local DCS_ShowItemRepairCheck = CreateFrame("CheckButton", "DCS_ShowItemRepairCh
 	DCS_ShowItemRepairCheck:SetScale(1)
 	DCS_ShowItemRepairCheck.tooltipText = L["Displays each equipped item's repair cost."] --Creates a tooltip on mouseover.
 	_G[DCS_ShowItemRepairCheck:GetName() .. "Text"]:SetText(L["Item Repair Cost"])
-	
+
 DCS_ShowItemRepairCheck:SetScript("OnEvent", function(self, ...)
 	event = ...
 	if event == "PLAYER_LOGIN" then
@@ -538,7 +538,11 @@ local function attempt_ilvl(v,attempts)
 			if value > 0 then --ilvl of 0 probably indicates that item is not fully loaded
 				local r, g, b = GetItemQualityColor(nItem:GetItemQuality());
 				v.ilevel:SetTextColor(r, g, b, 1) --upvalue call
-				v.ilevel:SetText(value)
+				if ( v==CharacterShirtSlot ) or ( v==CharacterTabardSlot ) then
+					v.ilevel:SetText("")
+				else
+					v.ilevel:SetText(value)
+				end
 			else
 				C_Timer.After(0.2, function() attempt_ilvl(v,attempts-1) end)
 			end
@@ -565,7 +569,7 @@ local DCS_ShowItemLevelCheck = CreateFrame("CheckButton", "DCS_ShowItemLevelChec
 	DCS_ShowItemLevelCheck:SetScale(1)
 	DCS_ShowItemLevelCheck.tooltipText = L["Displays the item level of each equipped item."] --Creates a tooltip on mouseover.
 	_G[DCS_ShowItemLevelCheck:GetName() .. "Text"]:SetText(L["Item Level"])
-	
+
 DCS_ShowItemLevelCheck:SetScript("OnEvent", function(self, ...)
 	showitemlevel = gdbprivate.gdb.gdbdefaults.dejacharacterstatsShowItemLevelChecked.ShowItemLevelSetChecked
 	self:SetChecked(showitemlevel)
@@ -588,7 +592,7 @@ end)
 local DCS_ShowItemLevelChange = CreateFrame("Frame", "DCS_ShowItemLevelChange", UIParent)
 	DCS_ShowItemLevelChange:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	DCS_ShowItemLevelChange:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
-	
+
 DCS_ShowItemLevelChange:SetScript("OnEvent", function(self, ...)
 	if PaperDollFrame:IsVisible() then
 		if showitemlevel then
@@ -668,7 +672,7 @@ end)
 local DCS_SimpleItemColor = CreateFrame("Frame", "DCS_SimpleItemColor", UIParent)
 	DCS_ShowItemLevelChange:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	DCS_ShowItemLevelChange:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
-	
+
 DCS_SimpleItemColor:SetScript("OnEvent", function(self, ...)
 	if PaperDollFrame:IsVisible() then
 		paintblack()
@@ -698,6 +702,145 @@ DCS_AlternateInfoPlacementCheck:SetScript("OnClick", function(self)
 	gdbprivate.gdb.gdbdefaults.dejacharacterstatsAlternateInfoPlacement.AlternateInfoPlacementChecked = otherinfoplacement
 	DCS_Set_Dura_Item_Positions()
 end)
+
+--------------------------
+-- Center Item Tooltips --
+--------------------------
+local centerItemTooltips, DCS_CenterItemTooltipScale
+
+local DCS_ItemTooltipAnchor = CreateFrame("Frame", "DCS_ItemTooltipAnchor", CharacterFrame)
+	DCS_ItemTooltipAnchor:RegisterEvent("MODIFIER_STATE_CHANGED")
+	DCS_ItemTooltipAnchor:ClearAllPoints()
+	DCS_ItemTooltipAnchor:SetPoint("BOTTOMRIGHT", CharacterModelScene, "TOPLEFT")
+	DCS_ItemTooltipAnchor:SetSize(1,1)
+
+	DCS_ItemTooltipAnchor:SetScript("OnEvent", function(self, event, key, down, ...)
+		for _, v in ipairs(DCSITEM_SLOT_FRAMES) do
+			if ( v:IsMouseOver() ) then
+				EquipmentFlyout_UpdateFlyout(v)
+			end
+		end
+	end)
+
+local function DCS_ShowCenterItemTooltip(frame)
+	local slotID = frame:GetID()
+	DCS_CenterItemTooltipScale = gdbprivate.gdb.gdbdefaults.DCS_SetItemTooltipScaleSliderValue.DCS_ItemTooltipScaleSliderValue
+
+	GameTooltip:SetScale(DCS_CenterItemTooltipScale)
+
+	if ( centerItemTooltips ) then
+		GameTooltip:SetOwner(DCS_ItemTooltipAnchor, "ANCHOR_BOTTOMRIGHT");
+	else
+		GameTooltip:SetOwner(frame, "ANCHOR_RIGHT");
+	end
+	GameTooltip:SetInventoryItem("player", slotID);
+	GameTooltip:Show()
+end
+
+local function DCS_ItemSlotIsMouseOver(frame)
+	local itemLink  = GetInventoryItemLink("player", frame:GetID())
+	if ( itemLink ) and ( frame:IsMouseOver() ) then --{ Don't extend pixel range or DCS_CenterItemTooltip may hang and not close OnLeave; I.E. dont use: frame:IsMouseOver(2, -2, -2, 2)
+		DCS_ShowCenterItemTooltip(frame)
+	else
+		GameTooltip_Hide()
+	end
+	if ( IsModifierKeyDown() ) then
+		EquipmentFlyout_UpdateFlyout(frame)
+	end
+end
+
+local function DCS_CenterItemTooltips()
+	for _, v in ipairs(DCSITEM_SLOT_FRAMES) do
+		v:SetScript("OnEnter", function()
+			DCS_ItemSlotIsMouseOver(v)
+		end)
+		v:SetScript("OnLeave", GameTooltip_Hide)
+	end
+end
+
+gdbprivate.gdbdefaults.gdbdefaults.DCS_CenterItemTooltips = {
+	centerItemTooltips = true,
+	DCS_CenterItemTooltipScale = 1,
+}
+
+local DCS_CenterItemTooltipsCheck = CreateFrame("CheckButton", "DCS_CenterItemTooltipsCheck", DejaCharacterStatsPanel, "InterfaceOptionsCheckButtonTemplate")
+	DCS_CenterItemTooltipsCheck:RegisterEvent("PLAYER_LOGIN")
+	DCS_CenterItemTooltipsCheck:ClearAllPoints()
+	DCS_CenterItemTooltipsCheck:SetPoint("TOPLEFT", "dcsItemsPanelCategoryFS", 150, -15)
+	DCS_CenterItemTooltipsCheck:SetScale(1)
+	DCS_CenterItemTooltipsCheck.tooltipText = L["Centers the tooltip of equipped items over the character model."] --Creates a tooltip on mouseover.
+	_G[DCS_CenterItemTooltipsCheck:GetName() .. "Text"]:SetText(L["Center Equipped Item Tooltips"])
+
+DCS_CenterItemTooltipsCheck:SetScript("OnEvent", function(self, ...)
+	centerItemTooltips = gdbprivate.gdb.gdbdefaults.DCS_CenterItemTooltips.centerItemTooltips
+	self:SetChecked(centerItemTooltips)
+	DCS_CenterItemTooltips()
+end)
+
+DCS_CenterItemTooltipsCheck:SetScript("OnClick", function(self)
+	centerItemTooltips = not centerItemTooltips
+	gdbprivate.gdb.gdbdefaults.DCS_CenterItemTooltips.centerItemTooltips = centerItemTooltips
+	DCS_CenterItemTooltips()
+end)
+
+gdbprivate.gdbdefaults.gdbdefaults.DCS_SetItemTooltipScaleSliderValue = {
+	DCS_ItemTooltipScaleSliderValue = 1.00,
+}
+
+-- Quality Color Outlines Alpha Slider:
+local DCS_ItemTooltipScaleSlider = CreateFrame("Slider", "DCS_ItemTooltipScaleSlider", DejaCharacterStatsPanel, "UISliderTemplateWithLabels")
+	DCS_ItemTooltipScaleSlider:RegisterEvent("PLAYER_LOGIN")
+	DCS_ItemTooltipScaleSlider:SetPoint("TOPLEFT", DCS_CenterItemTooltipsCheck, 2, -40)
+	DCS_ItemTooltipScaleSlider:SetWidth(180)
+	DCS_ItemTooltipScaleSlider:SetHeight(16)
+	DCS_ItemTooltipScaleSlider:SetOrientation('HORIZONTAL')
+	DCS_ItemTooltipScaleSlider:SetMinMaxValues(0.5, 2.0)
+	DCS_ItemTooltipScaleSlider.minValue, DCS_ItemTooltipScaleSlider.maxValue = DCS_ItemTooltipScaleSlider:GetMinMaxValues()
+	DCS_ItemTooltipScaleSlider:SetValueStep(0.05)
+	DCS_ItemTooltipScaleSlider:SetObeyStepOnDrag(true)
+
+	DCS_ItemTooltipScaleSlider.tooltipText = "Set the intensity (alpha) of your equipped items' quality colored border glow in increments or decrements of 5. Default is 75." --Creates a tooltip on mouseover.
+
+	DCS_ItemTooltipScaleSlider.Low:SetText(DCS_ItemTooltipScaleSlider.minValue); --Sets the left-side slider text (default is "Low").
+	DCS_ItemTooltipScaleSlider.High:SetText(DCS_ItemTooltipScaleSlider.maxValue); --Sets the right-side slider text (default is "High").
+
+	DCS_ItemTooltipScaleSlider:Show()
+
+	DCS_ItemTooltipScaleSlider:SetScript("OnEvent", function(self, event, arg1)
+		if event == "PLAYER_LOGIN" then
+		local slideValue = gdbprivate.gdb.gdbdefaults.DCS_SetItemTooltipScaleSliderValue.DCS_ItemTooltipScaleSliderValue
+			self:SetValue(slideValue)
+			getglobal(DCS_ItemTooltipScaleSlider:GetName() .. 'Text'):SetFormattedText("Item Tooltip Scale".." = (%.2f)", (slideValue)); --Sets the "title" text (top-centre of slider).
+		end
+	end)
+
+local function DCS_UpdateTooltipScale(frame)
+	local foci = GetMouseFoci()
+	for i = 1, #foci do
+		if ( foci[i] == frame ) then
+			for _, v in ipairs(DCSITEM_SLOT_FRAMES) do
+				local itemLink  = GetInventoryItemLink("player", v:GetID())
+				if ( itemLink ) then
+					DCS_ShowCenterItemTooltip(v)
+					return --{ Display first found item's tooltip then stop
+				end
+			end
+		end
+	end
+end
+
+	DCS_ItemTooltipScaleSlider:SetScript("OnValueChanged", function(self, value)
+	local slideValue = DCS_ItemTooltipScaleSlider:GetValue()
+		DCS_ItemTooltipScaleSlider.Text:SetFormattedText("Item Tooltip Scale".." = (%.2f)", (slideValue)); --Sets the "title" text (top-centre of slider).
+		gdbprivate.gdb.gdbdefaults.DCS_SetItemTooltipScaleSliderValue.DCS_ItemTooltipScaleSliderValue = slideValue
+		DCS_UpdateTooltipScale(self)
+	end)
+
+	DCS_ItemTooltipScaleSlider:SetScript("OnEnter", function(self)
+		DCS_UpdateTooltipScale(self)
+	end)
+
+	DCS_ItemTooltipScaleSlider:SetScript("OnLeave", GameTooltip_Hide)
 
 PaperDollFrame:HookScript("OnShow", function(self)
 	if showitemlevel then
@@ -741,4 +884,7 @@ PaperDollFrame:HookScript("OnShow", function(self)
 		end
 		duraMeanTexture:Hide()
 	end
+	DCS_CenterItemTooltips()
 end)
+
+CharacterFrame:HookScript("OnHide", GameTooltip_Hide)

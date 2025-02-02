@@ -3,6 +3,7 @@ local BigWigs = {}
 do
 	local _, tbl =...
 	tbl.core = BigWigs
+	tbl.plugins = {}
 end
 
 local C = {}
@@ -22,7 +23,7 @@ end
 -- Option bitflags
 local coreToggles = {
 	"BAR", "MESSAGE", "ICON", "PULSE", "SOUND", "SAY", "PROXIMITY", "FLASH", "ME_ONLY", "EMPHASIZE", "TANK", "HEALER", "TANK_HEALER",
-	"DISPEL", "ALTPOWER", "VOICE", "COUNTDOWN", "INFOBOX", "CASTBAR", "SAY_COUNTDOWN", "ME_ONLY_EMPHASIZE", "NAMEPLATEBAR", "PRIVATE",
+	"DISPEL", "ALTPOWER", "VOICE", "COUNTDOWN", "INFOBOX", "CASTBAR", "SAY_COUNTDOWN", "ME_ONLY_EMPHASIZE", "NAMEPLATE", "PRIVATE",
 	"CASTBAR_COUNTDOWN"
 }
 for i, toggle in next, coreToggles do

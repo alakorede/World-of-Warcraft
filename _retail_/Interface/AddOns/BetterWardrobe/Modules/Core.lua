@@ -30,6 +30,7 @@ local playerNme
 local realmName
 local playerClass, classID,_
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
+local GetItemInfoInstant = C_Item and C_Item.GetItemInfoInstant
 
 --ACE3 Option Handlers
 local optionHandler = {}
@@ -61,9 +62,7 @@ function optionHandler:Setter(info, value)
 			addon:DressingRoom_Enable()
 		end
 	elseif info.arg == IgnoreClassRestrictions or info.arg == IgnoreClassLookalikeRestrictions then
-		--addon.extraSetsCache = nil
-		addon.Init:BuildDB()
-
+		addon.Init:InitDB()
 	elseif info.arg == "ShowAdditionalSourceTooltips" then
 		---C_TransmogCollection.SetShowMissingSourceInItemTooltips(value)
 		SetCVar("missingTransmogSourceInItemTooltips",value)
@@ -82,13 +81,13 @@ function optionHandler:Getter(info)
 end
 
 function optionHandler:TSMDisable(info)
-	return not IsAddOnLoaded("TradeSkillMaster")
+	return not C_AddOns.IsAddOnLoaded("TradeSkillMaster")
 end
 
 function optionHandler:TSMSources(info)
 	local sources = {}
 	local table = {}
-	if (IsAddOnLoaded("TradeSkillMaster")) then
+	if (C_AddOns.IsAddOnLoaded("TradeSkillMaster")) then
 		TSM_API.GetPriceSourceKeys(sources)
 	end
 
@@ -1037,6 +1036,7 @@ local defaults = {
 		TooltipPreview_CustomGender = 0,
 		TooltipPreview_DressingDummy = false,
 		IgnoreClassRestrictions = false,
+		CurrentFactionSets = true,
 		ExtraLargeTransmogArea = false,
 		ExtraLargeTransmogAreaMax = screenWidth,
 		AutoApply = false,
@@ -1348,6 +1348,7 @@ function addon:OnInitialize()
 	--local PATRONS = {{},{title = 'Patrons', people = addon.Patrons},}
 	--local Credits = LibStub('Sushi-3.1').CreditsGroup(self.optionsFrame, PATRONS, 'Patrons |TInterface/Addons/BetterWardrobe/Images/Patreon:12:12|t')
 	--Credits:SetSubtitle(addonName .. ' is distributed for free and supported trough donations. A massive thank you to all the supporters on Patreon and Paypal who keep development alive. You can become a patron too at |cFFF96854patreon.com/SLOKnightfall|r.', 'https://www.patreon.com/SLOKnightfall')
+	self.OutfitDB.char.lastTransmogOutfitIDSpec = {}
 
 	if firstRun then
 		listDB.lastUpdte = 1
@@ -1463,11 +1464,13 @@ function addon.Init:LoadModules()
 		addon.Init:BuildTransmogVendorUI()
 		addon:UpdateCanIMogIt()
 		addon:InitExtendedSetsSwap()
+		addon.Init:InitFilterButtons()
+
 
 		local selected = CollectionsJournal_GetTab(CollectionsJournal)
 		BetterWardrobeCollectionFrame:SetShown(selected == 5) 
 
-		if IsAddOnLoaded("ElvUI") then 
+		if C_AddOns.IsAddOnLoaded("ElvUI") then 
 			addon.ApplyElvUISkin()
 		end
 

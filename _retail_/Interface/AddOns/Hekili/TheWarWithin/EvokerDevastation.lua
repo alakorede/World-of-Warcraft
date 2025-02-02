@@ -17,147 +17,147 @@ spec:RegisterResource( Enum.PowerType.Mana )
 -- Talents
 spec:RegisterTalents( {
     -- Evoker
-    aerial_mastery                  = { 93352, 365933, 1 }, -- Hover gains 1 additional charge.
-    ancient_flame                   = { 93271, 369990, 1 }, -- Casting Emerald Blossom or Verdant Embrace reduces the cast time of your next Living Flame by 40%.
-    attuned_to_the_dream            = { 93292, 376930, 2 }, -- Your healing done and healing received are increased by 3%.
-    blast_furnace                   = { 93309, 375510, 1 }, -- Fire Breath's damage over time lasts 4 sec longer.
-    bountiful_bloom                 = { 93291, 370886, 1 }, -- Emerald Blossom heals 2 additional allies.
-    cauterizing_flame               = { 93294, 374251, 1 }, -- Cauterize an ally's wounds, removing all Bleed, Poison, Curse, and Disease effects. Heals for 41,237 upon removing any effect.
-    clobbering_sweep                = { 93296, 375443, 1 }, -- Tail Swipe's cooldown is reduced by 45 sec.
-    draconic_legacy                 = { 93300, 376166, 1 }, -- Your Stamina is increased by 8%.
-    enkindled                       = { 93295, 375554, 2 }, -- Living Flame deals 3% more damage and healing.
-    expunge                         = { 93306, 365585, 1 }, -- Expunge toxins affecting an ally, removing all Poison effects.
-    extended_flight                 = { 93349, 375517, 2 }, -- Hover lasts 4 sec longer.
-    exuberance                      = { 93299, 375542, 1 }, -- While above 75% health, your movement speed is increased by 10%.
-    fire_within                     = { 93345, 375577, 1 }, -- Renewing Blaze's cooldown is reduced by 30 sec.
-    foci_of_life                    = { 93345, 375574, 1 }, -- Renewing Blaze restores you more quickly, causing damage you take to be healed back over 4 sec.
-    forger_of_mountains             = { 93270, 375528, 1 }, -- Landslide's cooldown is reduced by 30 sec, and it can withstand 200% more damage before breaking.
-    heavy_wingbeats                 = { 93296, 368838, 1 }, -- Wing Buffet's cooldown is reduced by 45 sec.
-    inherent_resistance             = { 93355, 375544, 2 }, -- Magic damage taken reduced by 4%.
-    innate_magic                    = { 93302, 375520, 2 }, -- Essence regenerates 5% faster.
-    instinctive_arcana              = { 93310, 376164, 2 }, -- Your Magic damage done is increased by 2%.
-    landslide                       = { 93305, 358385, 1 }, -- Conjure a path of shifting stone towards the target location, rooting enemies for 15 sec. Damage may cancel the effect.
-    leaping_flames                  = { 93343, 369939, 1 }, -- Fire Breath causes your next Living Flame to strike 1 additional target per empower level.
-    lush_growth                     = { 93347, 375561, 2 }, -- Green spells restore 5% more health.
-    natural_convergence             = { 93312, 369913, 1 }, -- Disintegrate channels 20% faster.
-    obsidian_bulwark                = { 93289, 375406, 1 }, -- Obsidian Scales has an additional charge.
-    obsidian_scales                 = { 93304, 363916, 1 }, -- Reinforce your scales, reducing damage taken by 30%. Lasts 12 sec.
-    oppressing_roar                 = { 93298, 372048, 1 }, -- Let out a bone-shaking roar at enemies in a cone in front of you, increasing the duration of crowd controls that affect them by 50% in the next 10 sec.
-    overawe                         = { 93297, 374346, 1 }, -- Oppressing Roar removes 1 Enrage effect from each enemy, and its cooldown is reduced by 30 sec.
-    panacea                         = { 93348, 387761, 1 }, -- Emerald Blossom and Verdant Embrace instantly heal you for 21,170 when cast.
-    permeating_chill                = { 93303, 370897, 1 }, -- Your damaging Blue spells reduce the target's movement speed by 50% for 3 sec.
-    potent_mana                     = { 93715, 418101, 1 }, -- Source of Magic increases the target's healing and damage done by 3%.
-    protracted_talons               = { 93307, 369909, 1 }, -- Azure Strike damages 1 additional enemy.
-    quell                           = { 93311, 351338, 1 }, -- Interrupt an enemy's spellcasting and prevent any spell from that school of magic from being cast for 4 sec.
-    recall                          = { 93301, 371806, 1 }, -- You may reactivate Deep Breath within 3 sec after landing to travel back in time to your takeoff location.
-    regenerative_magic              = { 93353, 387787, 1 }, -- Your Leech is increased by 4%.
-    renewing_blaze                  = { 93354, 374348, 1 }, -- The flames of life surround you for 8 sec. While this effect is active, 100% of damage you take is healed back over 8 sec.
-    rescue                          = { 93288, 370665, 1 }, -- Swoop to an ally and fly with them to the target location.
-    scarlet_adaptation              = { 93340, 372469, 1 }, -- Store 20% of your effective healing, up to 23,667. Your next damaging Living Flame consumes all stored healing to increase its damage dealt.
-    sleep_walk                      = { 93293, 360806, 1 }, -- Disorient an enemy for 20 sec, causing them to sleep walk towards you. Damage has a chance to awaken them.
-    source_of_magic                 = { 93344, 369459, 1 }, -- Redirect your excess magic to a friendly healer for 1 |4hour:hrs;. When you cast an empowered spell, you restore 0.25% of their maximum mana per empower level. Limit 1.
-    spatial_paradox                 = { 93351, 406732, 1 }, -- Evoke a paradox for you and a friendly healer, allowing casting while moving and increasing the range of most spells by 100% for 10 sec. Affects the nearest healer within 60 yds, if you do not have a healer targeted.
-    tailwind                        = { 93290, 375556, 1 }, -- Hover increases your movement speed by 70% for the first 4 sec.
-    terror_of_the_skies             = { 93342, 371032, 1 }, -- Deep Breath stuns enemies for 3 sec.
-    time_spiral                     = { 93351, 374968, 1 }, -- Bend time, allowing you and your allies within 40 yds to cast their major movement ability once in the next 10 sec, even if it is on cooldown.
-    tip_the_scales                  = { 93350, 370553, 1 }, -- Compress time to make your next empowered spell cast instantly at its maximum empower level.
-    twin_guardian                   = { 93287, 370888, 1 }, -- Rescue protects you and your ally from harm, absorbing damage equal to 30% of your maximum health for 5 sec.
-    unravel                         = { 93308, 368432, 1 }, -- Sunder an enemy's protective magic, dealing 88,285 Spellfrost damage to absorb shields.
-    verdant_embrace                 = { 93341, 360995, 1 }, -- Fly to an ally and heal them for 84,954, or heal yourself for the same amount.
-    walloping_blow                  = { 93286, 387341, 1 }, -- Wing Buffet and Tail Swipe knock enemies further and daze them, reducing movement speed by 70% for 4 sec.
-    zephyr                          = { 93346, 374227, 1 }, -- Conjure an updraft to lift you and your 4 nearest allies within 20 yds into the air, reducing damage taken from area-of-effect attacks by 20% and increasing movement speed by 30% for 8 sec.
+    aerial_mastery                  = {  93352, 365933, 1 }, -- Hover gains 1 additional charge.
+    ancient_flame                   = {  93271, 369990, 1 }, -- Casting Emerald Blossom or Verdant Embrace reduces the cast time of your next Living Flame by 40%.
+    attuned_to_the_dream            = {  93292, 376930, 2 }, -- Your healing done and healing received are increased by 3%.
+    blast_furnace                   = {  93309, 375510, 1 }, -- Fire Breath's damage over time lasts 4 sec longer.
+    bountiful_bloom                 = {  93291, 370886, 1 }, -- Emerald Blossom heals 2 additional allies.
+    cauterizing_flame               = {  93294, 374251, 1 }, -- Cauterize an ally's wounds, removing all Bleed, Poison, Curse, and Disease effects. Heals for 41,237 upon removing any effect.
+    clobbering_sweep                = { 103844, 375443, 1 }, -- Tail Swipe's cooldown is reduced by 2 min.
+    draconic_legacy                 = {  93300, 376166, 1 }, -- Your Stamina is increased by 8%.
+    enkindled                       = {  93295, 375554, 2 }, -- Living Flame deals 3% more damage and healing.
+    expunge                         = {  93306, 365585, 1 }, -- Expunge toxins affecting an ally, removing all Poison effects.
+    extended_flight                 = {  93349, 375517, 2 }, -- Hover lasts 4 sec longer.
+    exuberance                      = {  93299, 375542, 1 }, -- While above 75% health, your movement speed is increased by 10%.
+    fire_within                     = {  93345, 375577, 1 }, -- Renewing Blaze's cooldown is reduced by 30 sec.
+    foci_of_life                    = {  93345, 375574, 1 }, -- Renewing Blaze restores you more quickly, causing damage you take to be healed back over 4 sec.
+    forger_of_mountains             = {  93270, 375528, 1 }, -- Landslide's cooldown is reduced by 30 sec, and it can withstand 200% more damage before breaking.
+    heavy_wingbeats                 = { 103843, 368838, 1 }, -- Wing Buffet's cooldown is reduced by 2 min.
+    inherent_resistance             = {  93355, 375544, 2 }, -- Magic damage taken reduced by 4%.
+    innate_magic                    = {  93302, 375520, 2 }, -- Essence regenerates 5% faster.
+    instinctive_arcana              = {  93310, 376164, 2 }, -- Your Magic damage done is increased by 2%.
+    landslide                       = {  93305, 358385, 1 }, -- Conjure a path of shifting stone towards the target location, rooting enemies for 15 sec. Damage may cancel the effect.
+    leaping_flames                  = {  93343, 369939, 1 }, -- Fire Breath causes your next Living Flame to strike 1 additional target per empower level.
+    lush_growth                     = {  93347, 375561, 2 }, -- Green spells restore 5% more health.
+    natural_convergence             = {  93312, 369913, 1 }, -- Disintegrate channels 20% faster.
+    obsidian_bulwark                = {  93289, 375406, 1 }, -- Obsidian Scales has an additional charge.
+    obsidian_scales                 = {  93304, 363916, 1 }, -- Reinforce your scales, reducing damage taken by 30%. Lasts 12 sec.
+    oppressing_roar                 = {  93298, 372048, 1 }, -- Let out a bone-shaking roar at enemies in a cone in front of you, increasing the duration of crowd controls that affect them by 50% in the next 10 sec.
+    overawe                         = {  93297, 374346, 1 }, -- Oppressing Roar removes 1 Enrage effect from each enemy, and its cooldown is reduced by 30 sec.
+    panacea                         = {  93348, 387761, 1 }, -- Emerald Blossom and Verdant Embrace instantly heal you for 21,170 when cast.
+    potent_mana                     = {  93715, 418101, 1 }, -- Source of Magic increases the target's healing and damage done by 3%.
+    protracted_talons               = {  93307, 369909, 1 }, -- Azure Strike damages 1 additional enemy.
+    quell                           = {  93311, 351338, 1 }, -- Interrupt an enemy's spellcasting and prevent any spell from that school of magic from being cast for 4 sec.
+    recall                          = {  93301, 371806, 1 }, -- You may reactivate Deep Breath within 3 sec after landing to travel back in time to your takeoff location.
+    regenerative_magic              = {  93353, 387787, 1 }, -- Your Leech is increased by 4%.
+    renewing_blaze                  = {  93354, 374348, 1 }, -- The flames of life surround you for 8 sec. While this effect is active, 100% of damage you take is healed back over 8 sec.
+    rescue                          = {  93288, 370665, 1 }, -- Swoop to an ally and fly with them to the target location.
+    scarlet_adaptation              = {  93340, 372469, 1 }, -- Store 20% of your effective healing, up to 23,667. Your next damaging Living Flame consumes all stored healing to increase its damage dealt.
+    sleep_walk                      = {  93293, 360806, 1 }, -- Disorient an enemy for 20 sec, causing them to sleep walk towards you. Damage has a chance to awaken them.
+    source_of_magic                 = {  93344, 369459, 1 }, -- Redirect your excess magic to a friendly healer for 1 |4hour:hrs;. When you cast an empowered spell, you restore 0.25% of their maximum mana per empower level. Limit 1.
+    spatial_paradox                 = {  93351, 406732, 1 }, -- Evoke a paradox for you and a friendly healer, allowing casting while moving and increasing the range of most spells by 100% for 10 sec. Affects the nearest healer within 60 yds, if you do not have a healer targeted.
+    tailwind                        = {  93290, 375556, 1 }, -- Hover increases your movement speed by 70% for the first 4 sec.
+    terror_of_the_skies             = {  93342, 371032, 1 }, -- Deep Breath stuns enemies for 3 sec.
+    time_spiral                     = {  93351, 374968, 1 }, -- Bend time, allowing you and your allies within 40 yds to cast their major movement ability once in the next 10 sec, even if it is on cooldown.
+    tip_the_scales                  = {  93350, 370553, 1 }, -- Compress time to make your next empowered spell cast instantly at its maximum empower level.
+    twin_guardian                   = {  93287, 370888, 1 }, -- Rescue protects you and your ally from harm, absorbing damage equal to 30% of your maximum health for 5 sec.
+    unravel                         = {  93308, 368432, 1 }, -- Sunder an enemy's protective magic, dealing 120,204 Spellfrost damage to absorb shields.
+    verdant_embrace                 = {  93341, 360995, 1 }, -- Fly to an ally and heal them for 84,954, or heal yourself for the same amount.
+    walloping_blow                  = {  93286, 387341, 1 }, -- Wing Buffet and Tail Swipe knock enemies further and daze them, reducing movement speed by 70% for 4 sec.
+    zephyr                          = {  93346, 374227, 1 }, -- Conjure an updraft to lift you and your 4 nearest allies within 20 yds into the air, reducing damage taken from area-of-effect attacks by 20% and increasing movement speed by 30% for 8 sec.
 
     -- Devastation
-    animosity                       = { 93330, 375797, 1 }, -- Casting an empower spell extends the duration of Dragonrage by 4 sec, up to a maximum of 16 sec.
-    arcane_intensity                = { 93274, 375618, 2 }, -- Disintegrate deals 8% more damage.
-    arcane_vigor                    = { 93315, 386342, 1 }, -- Shattering Star grants Essence Burst.
-    azure_essence_burst             = { 93333, 375721, 1 }, -- Azure Strike has a 15% chance to cause an Essence Burst, making your next Disintegrate or Pyre cost no Essence.
-    burnout                         = { 93314, 375801, 1 }, -- Fire Breath damage has 16% chance to cause your next Living Flame to be instant cast, stacking 2 times.
-    catalyze                        = { 93280, 386283, 1 }, -- While channeling Disintegrate your Fire Breath on the target deals damage 100% more often.
-    causality                       = { 93366, 375777, 1 }, -- Disintegrate reduces the remaining cooldown of your empower spells by 0.50 sec each time it deals damage. Pyre reduces the remaining cooldown of your empower spells by 0.40 sec per enemy struck, up to 2.0 sec.
-    charged_blast                   = { 93317, 370455, 1 }, -- Your Blue damage increases the damage of your next Pyre by 5%, stacking 20 times.
-    dense_energy                    = { 93284, 370962, 1 }, -- Pyre's Essence cost is reduced by 1.
-    dragonrage                      = { 93331, 375087, 1 }, -- Erupt with draconic fury and exhale Pyres at 3 enemies within 25 yds. For 18 sec, Essence Burst's chance to occur is increased to 100%, and you gain the maximum benefit of Mastery: Giantkiller regardless of targets' health.
-    engulfing_blaze                 = { 93282, 370837, 1 }, -- Living Flame deals 25% increased damage and healing, but its cast time is increased by 0.3 sec.
-    essence_attunement              = { 93319, 375722, 1 }, -- Essence Burst stacks 2 times.
-    eternity_surge                  = { 93275, 359073, 1 }, -- Focus your energies to release a salvo of pure magic, dealing 75,951 Spellfrost damage to an enemy. Damages additional enemies within 12 yds of the target when empowered. I: Damages 2 enemies. II: Damages 4 enemies. III: Damages 6 enemies.
-    eternitys_span                  = { 93320, 375757, 1 }, -- Eternity Surge and Shattering Star hit twice as many targets.
-    event_horizon                   = { 93318, 411164, 1 }, -- Eternity Surge's cooldown is reduced by 3 sec.
-    eye_of_infinity                 = { 93318, 411165, 1 }, -- Eternity Surge deals 15% increased damage to your primary target.
-    feed_the_flames                 = { 93313, 369846, 1 }, -- After casting 9 Pyres, your next Pyre will explode into a Firestorm. In addition, Pyre and Disintegrate deal 20% increased damage to enemies within your Firestorm.
-    firestorm                       = { 93278, 368847, 1 }, -- An explosion bombards the target area with white-hot embers, dealing 34,610 Fire damage to enemies over 12 sec.
-    focusing_iris                   = { 93315, 386336, 1 }, -- Shattering Star's damage taken effect lasts 2 sec longer.
-    font_of_magic                   = { 93279, 411212, 1 }, -- Your empower spells' maximum level is increased by 1, and they reach maximum empower level 20% faster.
-    heat_wave                       = { 93281, 375725, 2 }, -- Fire Breath deals 20% more damage.
-    hoarded_power                   = { 93325, 375796, 1 }, -- Essence Burst has a 20% chance to not be consumed.
-    honed_aggression                = { 93329, 371038, 2 }, -- Azure Strike and Living Flame deal 5% more damage.
-    imminent_destruction            = { 93326, 370781, 1 }, -- Deep Breath reduces the Essence costs of Disintegrate and Pyre by 1 and increases their damage by 10% for 12 sec after you land.
-    imposing_presence               = { 93332, 371016, 1 }, -- Quell's cooldown is reduced by 20 sec.
-    inner_radiance                  = { 93332, 386405, 1 }, -- Your Living Flame and Emerald Blossom are 30% more effective on yourself.
-    iridescence                     = { 93321, 370867, 1 }, -- Casting an empower spell increases the damage of your next 2 spells of the same color by 20% within 10 sec.
-    lay_waste                       = { 93273, 371034, 1 }, -- Deep Breath's damage is increased by 20%.
-    onyx_legacy                     = { 93327, 386348, 1 }, -- Deep Breath's cooldown is reduced by 1 min.
-    power_nexus                     = { 93276, 369908, 1 }, -- Increases your maximum Essence to 6.
-    power_swell                     = { 93322, 370839, 1 }, -- Casting an empower spell increases your Essence regeneration rate by 100% for 4 sec.
-    pyre                            = { 93334, 357211, 1 }, -- Lob a ball of flame, dealing 21,320 Fire damage to the target and nearby enemies.
-    ruby_embers                     = { 93282, 365937, 1 }, -- Living Flame deals 4,198 damage over 12 sec to enemies, or restores 8,755 health to allies over 12 sec. Stacks 3 times.
-    ruby_essence_burst              = { 93285, 376872, 1 }, -- Your Living Flame has a 20% chance to cause an Essence Burst, making your next Disintegrate or Pyre cost no Essence.
-    scintillation                   = { 93324, 370821, 1 }, -- Disintegrate has a 15% chance each time it deals damage to launch a level 1 Eternity Surge at 50% power.
-    scorching_embers                = { 93365, 370819, 1 }, -- Fire Breath causes enemies to take 20% increased damage from your Red spells.
-    shattering_star                 = { 93316, 370452, 1 }, -- Exhale bolts of concentrated power from your mouth at 2 enemies for 28,251 Spellfrost damage that cracks the targets' defenses, increasing the damage they take from you by 20% for 4 sec. Grants Essence Burst.
-    snapfire                        = { 93277, 370783, 1 }, -- Pyre and Living Flame have a 15% chance to cause your next Firestorm to be instantly cast without triggering its cooldown, and deal 100% increased damage.
-    spellweavers_dominance          = { 93323, 370845, 1 }, -- Your damaging critical strikes deal 230% damage instead of the usual 200%.
-    titanic_wrath                   = { 93272, 386272, 2 }, -- Essence Burst increases the damage of affected spells by 8.0%.
-    tyranny                         = { 93328, 376888, 1 }, -- During Deep Breath and Dragonrage you gain the maximum benefit of Mastery: Giantkiller regardless of targets' health.
-    volatility                      = { 93283, 369089, 2 }, -- Pyre has a 15% chance to flare up and explode again on a nearby target.
+    animosity                       = {  93330, 375797, 1 }, -- Casting an empower spell extends the duration of Dragonrage by 5 sec, up to a maximum of 20 sec.
+    arcane_intensity                = {  93274, 375618, 2 }, -- Disintegrate deals 8% more damage.
+    arcane_vigor                    = {  93315, 386342, 1 }, -- Shattering Star grants Essence Burst.
+    azure_essence_burst             = {  93333, 375721, 1 }, -- Azure Strike has a 15% chance to cause an Essence Burst, making your next Disintegrate or Pyre cost no Essence.
+    burnout                         = {  93314, 375801, 1 }, -- Fire Breath damage has 16% chance to cause your next Living Flame to be instant cast, stacking 2 times.
+    catalyze                        = {  93280, 386283, 1 }, -- While channeling Disintegrate your Fire Breath on the target deals damage 100% more often.
+    causality                       = {  93366, 375777, 1 }, -- Disintegrate reduces the remaining cooldown of your empower spells by 0.50 sec each time it deals damage. Pyre reduces the remaining cooldown of your empower spells by 0.40 sec per enemy struck, up to 2.0 sec.
+    charged_blast                   = {  93317, 370455, 1 }, -- Your Blue damage increases the damage of your next Pyre by 5%, stacking 20 times.
+    dense_energy                    = {  93284, 370962, 1 }, -- Pyre's Essence cost is reduced by 1.
+    dragonrage                      = {  93331, 375087, 1 }, -- Erupt with draconic fury and exhale Pyres at 3 enemies within 25 yds. For 18 sec, Essence Burst's chance to occur is increased to 100%, and you gain the maximum benefit of Mastery: Giantkiller regardless of targets' health.
+    engulfing_blaze                 = {  93282, 370837, 1 }, -- Living Flame deals 25% increased damage and healing, but its cast time is increased by 0.3 sec.
+    essence_attunement              = {  93319, 375722, 1 }, -- Essence Burst stacks 2 times.
+    eternity_surge                  = {  93275, 359073, 1 }, -- Focus your energies to release a salvo of pure magic, dealing 91,088 Spellfrost damage to an enemy. Damages additional enemies within 12 yds of the target when empowered. I: Damages 2 enemies. II: Damages 4 enemies. III: Damages 6 enemies.
+    eternitys_span                  = {  93320, 375757, 1 }, -- Eternity Surge and Shattering Star hit twice as many targets.
+    event_horizon                   = {  93318, 411164, 1 }, -- Eternity Surge's cooldown is reduced by 3 sec.
+    eye_of_infinity                 = {  93318, 411165, 1 }, -- Eternity Surge deals 15% increased damage to your primary target.
+    feed_the_flames                 = {  93313, 369846, 1 }, -- After casting 9 Pyres, your next Pyre will explode into a Firestorm. In addition, Pyre and Disintegrate deal 20% increased damage to enemies within your Firestorm.
+    firestorm                       = {  93278, 368847, 1 }, -- An explosion bombards the target area with white-hot embers, dealing 37,725 Fire damage to enemies over 10 sec.
+    focusing_iris                   = {  93315, 386336, 1 }, -- Shattering Star's damage taken effect lasts 2 sec longer.
+    font_of_magic                   = {  93279, 411212, 1 }, -- Your empower spells' maximum level is increased by 1, and they reach maximum empower level 20% faster.
+    heat_wave                       = {  93281, 375725, 2 }, -- Fire Breath deals 20% more damage.
+    hoarded_power                   = {  93325, 375796, 1 }, -- Essence Burst has a 20% chance to not be consumed.
+    honed_aggression                = {  93329, 371038, 2 }, -- Azure Strike and Living Flame deal 5% more damage.
+    imminent_destruction            = {  93326, 370781, 1 }, -- Deep Breath reduces the Essence costs of Disintegrate and Pyre by 1 and increases their damage by 10% for 12 sec after you land.
+    imposing_presence               = {  93332, 371016, 1 }, -- Quell's cooldown is reduced by 20 sec.
+    inner_radiance                  = {  93332, 386405, 1 }, -- Your Living Flame and Emerald Blossom are 30% more effective on yourself.
+    iridescence                     = {  93321, 370867, 1 }, -- Casting an empower spell increases the damage of your next 2 spells of the same color by 20% within 10 sec.
+    lay_waste                       = {  93273, 371034, 1 }, -- Deep Breath's damage is increased by 20%.
+    onyx_legacy                     = {  93327, 386348, 1 }, -- Deep Breath's cooldown is reduced by 1 min.
+    power_nexus                     = {  93276, 369908, 1 }, -- Increases your maximum Essence to 6.
+    power_swell                     = {  93322, 370839, 1 }, -- Casting an empower spell increases your Essence regeneration rate by 100% for 4 sec.
+    pyre                            = {  93334, 357211, 1 }, -- Lob a ball of flame, dealing 23,239 Fire damage to the target and nearby enemies.
+    ruby_embers                     = {  93282, 365937, 1 }, -- Living Flame deals 4,576 damage over 12 sec to enemies, or restores 8,755 health to allies over 12 sec. Stacks 3 times.
+    ruby_essence_burst              = {  93285, 376872, 1 }, -- Your Living Flame has a 20% chance to cause an Essence Burst, making your next Disintegrate or Pyre cost no Essence.
+    scintillation                   = {  93324, 370821, 1 }, -- Disintegrate has a 15% chance each time it deals damage to launch a level 1 Eternity Surge at 50% power.
+    scorching_embers                = {  93365, 370819, 1 }, -- Fire Breath causes enemies to take 20% increased damage from your Red spells.
+    shattering_star                 = {  93316, 370452, 1 }, -- Exhale bolts of concentrated power from your mouth at 2 enemies for 30,793 Spellfrost damage that cracks the targets' defenses, increasing the damage they take from you by 20% for 4 sec. Grants Essence Burst.
+    snapfire                        = {  93277, 370783, 1 }, -- Pyre and Living Flame have a 15% chance to cause your next Firestorm to be instantly cast without triggering its cooldown, and deal 100% increased damage.
+    spellweavers_dominance          = {  93323, 370845, 1 }, -- Your damaging critical strikes deal 230% damage instead of the usual 200%.
+    titanic_wrath                   = {  93272, 386272, 1 }, -- Essence Burst increases the damage of affected spells by 15.0%.
+    tyranny                         = {  93328, 376888, 1 }, -- During Deep Breath and Dragonrage you gain the maximum benefit of Mastery: Giantkiller regardless of targets' health.
+    volatility                      = {  93283, 369089, 2 }, -- Pyre has a 15% chance to flare up and explode again on a nearby target.
 
     -- Flameshaper
-    burning_adrenaline              = { 94946, 444020, 1 }, -- Engulf quickens your pulse, reducing the cast time of your next spell by $444019s1%. Stacks up to $444019u charges.
-    conduit_of_flame                = { 94949, 444843, 1 }, -- Critical strike chance against targets $?c1[above][below] $s2% health increased by $s1%.
-    consume_flame                   = { 94922, 444088, 1 }, -- Engulf consumes $s1 sec of $?c1[Fire Breath][Dream Breath] from the target, detonating it and $?c1[damaging][healing] all nearby targets equal to $s3% of the amount consumed, reduced beyond $s2 targets.
-    draconic_instincts              = { 94931, 445958, 1 }, -- Your wounds have a small chance to cauterize, healing you for $s1% of damage taken. Occurs more often from attacks that deal high damage.
-    engulf                          = { 94950, 443328, 1, "flameshaper" }, -- Engulf your target in dragonflame, damaging them for $443329s1 Fire or healing them for $443330s1. For each of your periodic effects on the target, effectiveness is increased by $s1%.
-    enkindle                        = { 94956, 444016, 1 }, -- Essence abilities are enhanced with Flame, dealing $s1% of healing or damage done as Fire over 8 sec.
-    expanded_lungs                  = { 94923, 444845, 1 }, -- Fire Breath's damage over time is increased by $s1%. Dream Breath's heal over time is increased by $s1%.
-    fan_the_flames                  = { 94923, 444318, 1 }, -- Casting Engulf reignites all active Enkindles, increasing their remaining damage or healing over time by $s1%.
-    lifecinders                     = { 94931, 444322, 1 }, -- Renewing Blaze also applies to your target or $s1 nearby injured $Lally:allies; at $s2% value.
-    red_hot                         = { 94945, 444081, 1 }, -- Engulf gains $s2 additional charge and deals $s1% increased damage and healing.
-    shape_of_flame                  = { 94937, 445074, 1 }, -- Tail Swipe and Wing Buffet scorch enemies and blind them with ash, causing their next attack within $445134d to miss.
-    titanic_precision               = { 94920, 445625, 1 }, -- Living Flame and Azure Strike have $s1 extra chance to trigger Essence Burst when they critically strike.
-    trailblazer                     = { 94937, 444849, 1 }, -- $?c1[Hover and Deep Breath][Hover, Deep Breath, and Dream Flight] travel $s1% faster, and Hover travels $s1% further.
-    traveling_flame                 = { 99857, 444140, 1 }, -- Engulf increases the duration of $?c1[Fire Breath][Fire Breath or Dream Breath] by $s1 sec and causes it to spread to a target within $?c1[$s2][$s3] yds.
+    burning_adrenaline              = {  94946, 444020, 1 }, -- Engulf quickens your pulse, reducing the cast time of your next spell by $444019s1%. Stacks up to $444019u charges.
+    conduit_of_flame                = {  94949, 444843, 1 }, -- Critical strike chance against targets $?c1[above][below] $s2% health increased by $s1%.
+    consume_flame                   = {  94922, 444088, 1 }, -- Engulf consumes $s1 sec of $?c1[Fire Breath][Dream Breath] from the target, detonating it and $?c1[damaging][healing] all nearby targets equal to $s3% of the amount consumed, reduced beyond $s2 targets.
+    draconic_instincts              = {  94931, 445958, 1 }, -- Your wounds have a small chance to cauterize, healing you for $s1% of damage taken. Occurs more often from attacks that deal high damage.
+    engulf                          = {  94950, 443328, 1, "flameshaper" }, -- Engulf your target in dragonflame, damaging them for $443329s1 Fire or healing them for $443330s1. For each of your periodic effects on the target, effectiveness is increased by $s1%.
+    enkindle                        = {  94956, 444016, 1 }, -- Essence abilities are enhanced with Flame, dealing $s1% of healing or damage done as Fire over 8 sec.
+    expanded_lungs                  = {  94923, 444845, 1 }, -- Fire Breath's damage over time is increased by $s1%. Dream Breath's heal over time is increased by $s1%.
+    fan_the_flames                  = {  94923, 444318, 1 }, -- Casting Engulf reignites all active Enkindles, increasing their remaining damage or healing over time by $s1%.
+    lifecinders                     = {  94931, 444322, 1 }, -- Renewing Blaze also applies to your target or $s1 nearby injured $Lally:allies; at $s2% value.
+    red_hot                         = {  94945, 444081, 1 }, -- Engulf gains $s2 additional charge and deals $s1% increased damage and healing.
+    shape_of_flame                  = {  94937, 445074, 1 }, -- Tail Swipe and Wing Buffet scorch enemies and blind them with ash, causing their next attack within $445134d to miss.
+    titanic_precision               = {  94920, 445625, 1 }, -- Living Flame and Azure Strike have $s1 extra chance to trigger Essence Burst when they critically strike.
+    trailblazer                     = {  94937, 444849, 1 }, -- $?c1[Hover and Deep Breath][Hover, Deep Breath, and Dream Flight] travel $s1% faster, and Hover travels $s1% further.
+    traveling_flame                 = {  99857, 444140, 1 }, -- Engulf increases the duration of $?c1[Fire Breath][Fire Breath or Dream Breath] by $s1 sec and causes it to spread to a target within $?c1[$s2][$s3] yds.
 
     -- Scalecommander
-    bombardments                    = { 94936, 434300, 1 }, -- Mass Disintegrate marks your primary target for destruction for the next 10 sec. You and your allies have a chance to trigger a Bombardment when attacking marked targets, dealing 15,929 Volcanic damage split amongst all nearby enemies.
-    diverted_power                  = { 94928, 441219, 1 }, -- Bombardments have a chance to generate Essence Burst.
-    extended_battle                 = { 94928, 441212, 1 }, -- Essence abilities extend Bombardments by 1 sec.
-    hardened_scales                 = { 94933, 441180, 1 }, -- Obsidian Scales reduces damage taken by an additional 5%.
-    maneuverability                 = { 94941, 433871, 1 }, -- Deep Breath can now be steered in your desired direction. In addition, Deep Breath burns targets for 92,245 Volcanic damage over 12 sec.
-    mass_disintegrate               = { 94939, 436335, 1, "scalecommander" }, -- Empower spells cause your next Disintegrate to strike up to 3 targets. When striking less than 3 targets, Disintegrate damage is increased by 25% for each missing target.
-    melt_armor                      = { 94921, 441176, 1 }, -- Deep Breath causes enemies to take 20% increased damage from Bombardments and Essence abilities for 12 sec.
-    menacing_presence               = { 94933, 441181, 1 }, -- Knocking enemies up or backwards reduces their damage done to you by 15% for 8 sec.
-    might_of_the_black_dragonflight = { 94952, 441705, 1 }, -- Black spells deal 20% increased damage.
-    nimble_flyer                    = { 94943, 441253, 1 }, -- While Hovering, damage taken from area of effect attacks is reduced by 10%.
-    onslaught                       = { 94944, 441245, 1 }, -- Entering combat grants a charge of Burnout, causing your next Living Flame to cast instantly.
-    slipstream                      = { 94943, 441257, 1 }, -- Deep Breath resets the cooldown of Hover.
-    unrelenting_siege               = { 94934, 441246, 1 }, -- For each second you are in combat, Azure Strike, Living Flame, and Disintegrate deal 1% increased damage, up to 15%.
-    wingleader                      = { 94953, 441206, 1 }, -- Bombardments reduce the cooldown of Deep Breath by 1 sec for each target struck, up to 3 sec.
+    bombardments                    = {  94936, 434300, 1 }, -- Mass Disintegrate marks your primary target for destruction for the next 6 sec. You and your allies have a chance to trigger a Bombardment when attacking marked targets, dealing 46,562 Volcanic damage split amongst all nearby enemies.
+    diverted_power                  = {  94928, 441219, 1 }, -- Bombardments have a chance to generate Essence Burst.
+    extended_battle                 = {  94928, 441212, 1 }, -- Essence abilities extend Bombardments by 1 sec.
+    hardened_scales                 = {  94933, 441180, 1 }, -- Obsidian Scales reduces damage taken by an additional 10%.
+    maneuverability                 = {  94941, 433871, 1 }, -- Deep Breath can now be steered in your desired direction. In addition, Deep Breath burns targets for 100,547 Volcanic damage over 12 sec.
+    mass_disintegrate               = {  94939, 436335, 1, "scalecommander" }, -- Empower spells cause your next Disintegrate to strike up to $s1 targets. When striking fewer than $s1 targets, Disintegrate damage is increased by $s2% for each missing target.
+    melt_armor                      = {  94921, 441176, 1 }, -- Deep Breath causes enemies to take 20% increased damage from Bombardments and Essence abilities for 12 sec.
+    menacing_presence               = {  94933, 441181, 1 }, -- Knocking enemies up or backwards reduces their damage done to you by 15% for 8 sec.
+    might_of_the_black_dragonflight = {  94952, 441705, 1 }, -- Black spells deal 20% increased damage.
+    nimble_flyer                    = {  94943, 441253, 1 }, -- While Hovering, damage taken from area of effect attacks is reduced by 10%.
+    onslaught                       = {  94944, 441245, 1 }, -- Entering combat grants a charge of Burnout, causing your next Living Flame to cast instantly.
+    slipstream                      = {  94943, 441257, 1 }, -- Deep Breath resets the cooldown of Hover.
+    unrelenting_siege               = {  94934, 441246, 1 }, -- For each second you are in combat, Azure Strike, Living Flame, and Disintegrate deal 1% increased damage, up to 15%.
+    wingleader                      = {  94953, 441206, 1 }, -- Bombardments reduce the cooldown of Deep Breath by 1 sec for each target struck, up to 3 sec.
 } )
 
 
 -- PvP Talents
 spec:RegisterPvpTalents( {
-    chrono_loop          = 5456, -- (383005) Trap the enemy in a time loop for 5 sec. Afterwards, they are returned to their previous location and health. Cannot reduce an enemy's health below 20%.
-    crippling_force      = 5471, -- (384660)
-    divide_and_conquer   = 5556, -- (384689) Deep Breath forms curtains of fire, preventing line of sight to enemies outside its walls and burning enemies who walk through them for 88,223 Fire damage. Lasts 6 sec.
-    dream_catcher        = 5599, -- (410962) Sleep Walk no longer has a cooldown, but its cast time is increased by 0.2 sec.
-    dreamwalkers_embrace = 5617, -- (415651) Verdant Embrace tethers you to an ally, increasing movement speed by 40% and slowing and siphoning 15,316 life from enemies who come in contact with the tether. The tether lasts up to 10 sec or until you move more than 30 yards away from your ally.
-    nullifying_shroud    = 5467, -- (378464) Wreathe yourself in arcane energy, preventing the next 3 full loss of control effects against you. Lasts 30 sec.
-    obsidian_mettle      = 5460, -- (378444) While Obsidian Scales is active you gain immunity to interrupt, silence, and pushback effects.
-    scouring_flame       = 5462, -- (378438) Fire Breath burns away 1 beneficial Magic effect per empower level from all targets.
-    swoop_up             = 5466, -- (370388) Grab an enemy and fly with them to the target location.
-    time_stop            = 5464, -- (378441) Freeze an ally's timestream for 5 sec. While frozen in time they are invulnerable, cannot act, and auras do not progress. You may reactivate Time Stop to end this effect early.
-    unburdened_flight    = 5469, -- (378437) Hover makes you immune to movement speed reduction effects.
+    born_in_flame        = 5612, -- (414937) Casting Ebon Might grants 2 charges of Burnout, reducing the cast time of Living Flame by 100%.
+    chrono_loop          = 5564, -- (383005) Trap the enemy in a time loop for 5 sec. Afterwards, they are returned to their previous location and health. Cannot reduce an enemy's health below 20%.
+    divide_and_conquer   = 5557, -- (384689) Deep Breath forms curtains of fire, preventing line of sight to enemies outside its walls and burning enemies who walk through them for 88,223 Fire damage. Lasts 6 sec.
+    dream_catcher        = 5613, -- (410962) Sleep Walk no longer has a cooldown, but its cast time is increased by 0.2 sec.
+    dream_projection     = 5559, -- (377509) Summon a flying projection of yourself that heals allies you pass through for 27,099. Detonating your projection dispels all nearby allies of Magical effects, and heals for 134,138 over 20 sec.
+    dreamwalkers_embrace = 5615, -- (415651) Verdant Embrace tethers you to an ally, increasing movement speed by 40% and slowing and siphoning 15,316 life from enemies who come in contact with the tether. The tether lasts up to 10 sec or until you move more than 30 yards away from your ally.
+    nullifying_shroud    = 5558, -- (378464) Wreathe yourself in arcane energy, preventing the next 3 full loss of control effects against you. Lasts 30 sec.
+    obsidian_mettle      = 5563, -- (378444) While Obsidian Scales is active you gain immunity to interrupt, silence, and pushback effects.
+    scouring_flame       = 5561, -- (378438) Fire Breath burns away 1 beneficial Magic effect per empower level from all targets.
+    swoop_up             = 5562, -- (370388) Grab an enemy and fly with them to the target location.
+    time_stop            = 5619, -- (378441) Freeze an ally's timestream for 5 sec. While frozen in time they are invulnerable, cannot act, and auras do not progress. You may reactivate Time Stop to end this effect early.
+    unburdened_flight    = 5560, -- (378437) Hover makes you immune to movement speed reduction effects.
 } )
 
 
@@ -213,7 +213,7 @@ spec:RegisterAuras( {
     -- Damage taken has a chance to summon air support from the Dracthyr.
     bombardments = {
         id = 434473,
-        duration = 10.0,
+        duration = 6.0,
         pandemic = true,
         max_stack = 1,
     },
@@ -793,7 +793,7 @@ spec:RegisterHook( "reset_precast", function()
     max_empower = talent.font_of_magic.enabled and 4 or 3
 
     if essence.current < essence.max and lastEssenceTick > 0 then
-        local partial = min( 0.95, ( query_time - lastEssenceTick ) * essence.regen )
+        local partial = min( 0.99, ( query_time - lastEssenceTick ) * essence.regen )
         gain( partial, "essence" )
         if Hekili.ActiveDebug then Hekili:Debug( "Essence increased to %.2f from passive regen.", partial ) end
     end
@@ -883,7 +883,7 @@ spec:RegisterAbilities( {
         school = "arcane",
         color = "bronze",
 
-        spend = 0.04,
+        spend = 0.01,
         spendType = "mana",
 
         startsCombat = false,
@@ -927,7 +927,11 @@ spec:RegisterAbilities( {
 
     -- Take in a deep breath and fly to the targeted location, spewing molten cinders dealing 6,375 Volcanic damage to enemies in your path. Removes all root effects. You are immune to movement impairing and loss of control effects while flying.
     deep_breath = {
-        id = function () return buff.recall.up and 371807 or 357210 end,
+        id = function ()
+            if buff.recall.up then return 371807 end
+            if talent.maneuverability.enabled then return 433874 end
+            return 357210
+        end,
         cast = 0,
         cooldown = function ()
             return talent.onyx_legacy.enabled and 60 or 120
@@ -960,7 +964,7 @@ spec:RegisterAbilities( {
             if talent.terror_of_the_skies.enabled then applyDebuff( "target", "terror_of_the_skies" ) end
         end,
 
-        copy = { "recall", 371807, 357210 },
+        copy = { "recall", 371807, 357210, 433874 },
     },
 
     -- Tear into an enemy with a blast of blue magic, inflicting 4,930 Spellfrost damage over 2.1 sec, and slowing their movement speed by 50% for 3 sec.
@@ -975,6 +979,8 @@ spec:RegisterAbilities( {
 
         spend = function () return buff.essence_burst.up and 0 or ( buff.imminent_destruction.up and 2 or 3 ) end,
         spendType = "essence",
+
+        cycle = function() if talent.bombardments.enabled and buff.mass_disintegrate_stacks.up then return "bombardments" end end,
 
         startsCombat = true,
 
@@ -1018,7 +1024,7 @@ spec:RegisterAbilities( {
         id = 375087,
         cast = 0,
         cooldown = 120,
-        gcd = "spell",
+        gcd = "off",
         school = "physical",
         color = "red",
 
@@ -1136,7 +1142,7 @@ spec:RegisterAbilities( {
                 setCooldown( "tip_the_scales", action.tip_the_scales.cooldown )
             end
 
-            if talent.animosity.enabled and buff.dragonrage.up then buff.dragonrage.expires = buff.dragonrage.expires + 4 end
+            if talent.animosity.enabled and buff.dragonrage.up then buff.dragonrage.expires = min( buff.dragonrage.applied + class.auras.dragonrage.duration + 20, buff.dragonrage.expires + 5 ) end
             -- TODO: Determine if we need to model projectiles instead.
             if talent.charged_blast.enabled then addStack( "charged_blast", nil, spell_targets.eternity_surge ) end
             if talent.iridescence.enabled then addStack( "iridescence_blue", nil, 2 ) end
@@ -1198,12 +1204,14 @@ spec:RegisterAbilities( {
         critical_damage = function () return talent.tyranny.enabled and 2.2 or 2 end,
 
         handler = function()
-            if talent.animosity.enabled and buff.dragonrage.up then buff.dragonrage.expires = buff.dragonrage.expires + 6 end
+            if talent.animosity.enabled and buff.dragonrage.up then buff.dragonrage.expires = min( buff.dragonrage.applied + class.auras.dragonrage.duration + 20, buff.dragonrage.expires + 5 ) end
             if talent.iridescence.enabled then applyBuff( "iridescence_red", nil, 2 ) end
             if talent.leaping_flames.enabled then applyBuff( "leaping_flames", nil, empowerment_level ) end
             if talent.mass_disintegrate.enabled then addStack( "mass_disintegrate_stacks" ) end
+            if talent.mass_eruption.enabled then applyBuff( "mass_eruption_stacks" ) end -- ???
 
             applyDebuff( "target", "fire_breath" )
+            applyDebuff( "target", "fire_breath_damage" )
 
             if buff.tip_the_scales.up then
                 removeBuff( "tip_the_scales" )
@@ -1309,7 +1317,7 @@ spec:RegisterAbilities( {
 
     -- Send a flickering flame towards your target, dealing 2,625 Fire damage to an enemy or healing an ally for 3,089.
     living_flame = {
-        id = 361469,
+        id = function() return talent.chrono_flame.enabled and 431443 or 361469 end,
         cast = function() return ( talent.engulfing_blaze.enabled and 2.3 or 2 ) * ( buff.ancient_flame.up and 0.6 or 1 ) * haste end,
         cooldown = 0,
         gcd = "spell",
@@ -1345,6 +1353,8 @@ spec:RegisterAbilities( {
             removeBuff( "leaping_flames" )
             removeBuff( "scarlet_adaptation" )
         end,
+
+        copy = { 361469, "chrono_flame", 431443 }
     },
 
     -- Talent: Reinforce your scales, reducing damage taken by 30%. Lasts 12 sec.
@@ -1639,11 +1649,10 @@ spec:RegisterAbilities( {
     tail_swipe = {
         id = 368970,
         cast = 0,
-        cooldown = function() return talent.clobbering_sweep.enabled and 45 or 90 end,
+        cooldown = function() return 180 - ( talent.clobbering_sweep.enabled and 120 or 0 ) end,
         gcd = "spell",
 
         startsCombat = true,
-
         toggle = "interrupts",
 
         handler = function()
@@ -1731,6 +1740,7 @@ spec:RegisterAbilities( {
 
         handler = function ()
             removeDebuff( "all_absorbs" )
+            if buff.iridescence_blue.up then removeStack( "iridescence_blue" ) end
             if talent.charged_blast.enabled then addStack( "charged_blast" ) end
         end,
     },
@@ -1764,7 +1774,7 @@ spec:RegisterAbilities( {
     wing_buffet = {
         id = 357214,
         cast = 0,
-        cooldown = function() return talent.heavy_wingbeats.enabled and 45 or 90 end,
+        cooldown = function() return 180 - ( talent.heavy_wingbeats.enabled and 120 or 0 ) end,
         gcd = "spell",
 
         startsCombat = true,
@@ -1884,10 +1894,10 @@ spec:RegisterOptions( {
     damageOnScreen = true,
     damageExpiration = 8,
 
-    potion = "spectral_intellect",
+    potion = "tempered_potion",
 
     package = "Devastation",
 } )
 
 
-spec:RegisterPack( "Devastation", 20240805, [[Hekili:S33EZTTrsI)zr1vHwmwMsKsY2x(jQRSIL3Ku7LnLP3C19pIcKyifodcGfpSSsPIF2)1DppWGbZaa(qXoB56U1rsaONE6PF39mZndV5d3mX3lNDZVo6KrNDYRp58bN8QHV(8ZUzs(djSBMK4n)JElHFiYBf8VVL9jVSCV8G4i8zpeg75JWilUiDo887YZtY(HJpEzq(DfZgmpE1XzbRkcPVyEQ3IC83NF8SW4zhNFh7EV07Hxni6yw0YGi2XZd9YYMUk2ViKLDSxsi()MY(u8hzPdMNKCZKzfbH5)C0nZSJ5NcitcB(n)6WZE5RaekW3NXFzw28BMGV8lo5vVy0R(H13(ptqiKT(2fPXRwF7KGv)46Fz9VOENtH35d3XwF7)Jxk8peIEZKWGS8mCsZW)9xjAilYBwiZ)MRUzI3Co1HLZsJcYFyAwrksazRsIVNLonp(MjdVzY8hMhYMM7bpdG2VI)L0a4tc84G4tSPSi2Qae9Uy86BhU(2NV(2CVqwu(ajSZMML4fnqm6RV9XhxF7SIflg4N6Tmoc(h2Gu2kVGiekaqg8QZxF73V(wGefgo9oyTeMD9A4JUKp0MFITbQiHa1HRV1e)byCo9SduZGfXr5tJxmDL3YG5vNaMF9LempvF(74R7ti6HDKy1N()ToIac)sde2ou4SvPbj818RfVeWlHl6hT(2ImGAL6f9X13UkolhgRKKWG54hdGogbpXbm4MCGtElyLgT5SsJiQZiIyTJmuJgSn8tw4cXP)PBX0)0nF6Z5KoTRt)oXZ6MgHd4GrBbvYcPfjsNzqK0jgN5MMvJiLd)FtwMYaLJwuIvHR(VHVfWsJisgXs7l4DtdwUKbQgFt08aGcT(23fsMjuyXkwQxO)uqDFww8kfpU85FIL67bev2QzPEO9JsuGWpF2cVIW8MuZMeZ)VvW43Yc9aHq4zRVnar9pa)3fRV9H4cqcmfO(EZIlY5ZIjtwF7l4INHWhLYcbJC4Kzrmm1ItaMh4)E)Dm87iiCp943((xC57U6fxozYlUmnwAuSK3ZT(rGLAECCOF89rdYUZlh)GOLtbdRP0B5sN0iLgRza9KG2IGL3LpvxK80ZTPkjgSCMXY1i9Eascpf)PWcKdrIrwzJ)Viex9ovzVkFpGoEgHKMFWIGu20zPmV87Q92glE)UaZGvhG2S(wgIGC70WIaSAgX(m8NlrtyTfE2myT7(40pcusyvJwCrt3R8(m4acyDFgl)EIpM(Z6F9CGD2lYNwCHvAHevgO9oyzuCkbWF8TVhEYIfS5igLLhScXObeDCk33ieTMwcxBA0kzo4sId8zexYCq6gggGYalp3mbKWa9mlMUCUpPptUM9VkajqdQ17lse8XR8(itm7s9c8dzE(iJ7DGfNhSP5qc15EG(f(Vmf9TH7HJysbI4rFevzaa4CNZgBmROJyWxdZh9PqArKZXYlMiAV0bE20NMLZvyKKYaFoN5zvLr7YaIz7G8HdafUtX1bC9HlZ9f(HbzdwfKMgNIMGwaQlZlsz(GE)vXWF9(mDwrXNnDibQSTtHGASh1eI9L5HBdXyujXWuUuqmcwOZuljidmOMsT4ARnL6olsj7aRV970u(PPrT8farKt4ZRMFVVRTrIditTOVLnpWNHQmdMFNceCnfjEbOfniEgWkMAmb9DG4ZcuNbyOzvqub6McPyCy5VRuiyLDl7HO5ozPMYcZGF(KbNR4XgAtXK2QHnivFDLpQnSYnYXk3O)0w5SosQvUgjpMQD3ajxsRXmwiiua)t2uW4ayXoc14JlZ11We9WQcgi3btLpXcjNsscI8dz2E5SKhwHULMMn9E2mZqHK2ibwOsUM13sOi3AnOPoXJBELSAjPqG57fI)K47awt)Gpb8Z(8VKBcxrhvVoxxrqoYjhJVF2G13(tECCiikhmFsgWxf7hSiajbhoVaOnrKNFdhC(N7ZLqwcMZOp6oW)k89ssdapbWi7WhRbk5mBGivbwhLS7IlcrChNL35fTeNiiAP92LJqq0CWrGmK0HEG6Ze)kmeVbDcc(c(x7PpgK3QOtUEAs73hGVBCQ8NIqpIrXfP4VKMx1vMsb6vErfEH2mlVbSHJ2a2WrBcB4iBSH20quonE12pniM(0Izpmf8dnmzA2D0krDbdqNle1gYzpfwl9sJa5GPbZfqVgnM955Hf(KVpVE7XUrDa7gTXy3iDS7)C3uul5W1vvFaQrOb7SUvLJtS2u03QU(JR8c43oT8HLPtcdf)5n4DI6nTGqCPnEYMUSgwz1I(XvEHoJvMoq6gRgQHvvT(muXyncxXhEYgZqoCWj1YBHrilu6WgQI0s8UGYipmdzGDJkSpPdNIpyk93rCYMF9PmNyLeo(PahilHGZumwdv6fWeN4ieusRkpStuXpgIoGI3blzKDlzSIIxSibSPrpadxeZ8WBIVEafO77OumVcnGWOG9GyFZyWAqgJTc((Wav0BzqCQ5zjXOzVzyGSb5pdTCYsFG8dJmkeGRWzakTaZnnma)KeNimb8dMhaDeLktyKIJ8Z42gNXwsHFJtOzy8sCtDyoAO0qo0wScBkbotl9nta2ONkc8KpWXzhU03LeEeeHLxykppAbrlkYWymprtGeKBprFMIYzq0(mq3z40KacbCfEDTCCvn3AOv6j0saeiEAi(RVX3ljxmY)gqqlWG(1tDaLnYm(Rp1t92QKsJOJ7G1LzZmawsZJtxvMjtv2PKPfnAzr4cxPdLS1aZky1rlP6LtC1aq4JP7dvmb4gLiZx2XMEnHjLOri44iyQBbLzskjbOSFdzu0iJCnNGzBrauKySi)M)X18e6HROywlocDwetAf()(yagIvm3ZTvmmXEEl9qEBk2lPVJGhTHOxQOpKPS7bmihfAqNOb2ag(O)rc(x4o2HOo(YlifbO0cjE5j8RDzy8mVq5qWf64FOhwomg8wxFvt1KOC1T6CDcGd(yEjfpMq85WC6ntEZVvl9OzrEj4RI0SgQaGRb7N8s9LMnIJqsqCrEgf3lspXm7stqC6FpqMPmduHZZrsAf5LZGvyQ4pZdsPK)BbdZ9a4ulXKLzkqvrMsBSQWK3y6xPQMCczVMdsGlHfnNjY0Mwniepa8ainlxLmzPkdJCnRJNotiDLsz8svgOBy60RLzdciLf9QVU10eFHSACTM(zSeNJKKPdulJbrtlvTW50m1wxt9ieXaRa0D7nliegjBQDwXcb1VPGPwZvCXleh9WNNgYw6n)HnyXwuIofVtxiovaAduNxQPKhSooDwCur2G87VF40ZsMBQHFfwlE)Gmmk1LGTqMzXt71neezD71TciiEBepSHF92ACZNbEMyIBxwoAh04YAFXqtjTN8VjpggDPa4O2RkZiP32sDAAiuZjxFxg1t0gVkvMWvs2Zds4HNdbNZYmu3(pXIzdVb3wYskDIujAipwrZwltJ7wjWmRyW2vywRCE4G03wO(vMl)iz04DbO1XROpK8Igu5XlPj5UzgMRLJNf69hKpNGQXu0jALrg0UYBNGfjewDc(dYlSFaSdtMI4MLWmYiYXKyfsMlMq65Vo758e0aQTJlaMz6hjx1rNfi3b4UXF6jznv0MsQENS3OIj0OSvKqH6HMXmzkR4ffSkoRI(rDJdWsCAoyBKCTU7giUK3Wi91ucsCsCp0PfLkAmuOREOICmPcT4tXyJivtDUjViNvuPfHgAbpWuolqxhDB8)9lnsyxU(1DqSwzgweFew8qnzGk1gBXmBzwYIWGr3R8VnYd2wfQYg7siz)Whl4dB(vBuOR3FrLbEY41nBVfn2DwMTuvAZQRnzG3EfNfns26iilnfdb9xwgZlxby(lg4jwegFVYz8bDl0c5B7ZwemhthZLyTYTLRTTkGulrbaF08psetlpCL3NNkEbdv7PZbxGN(PGLLoczgRhfQhgLfpbo4SXpMLf9SCD6Z1xDep4sQRmiaIE3rr9gHTwH1S6voL8JZ1vUn13BfspZdMZB2JEgS4odZbNGnhzxPc6wfSh9QYviEQjSM7S2cHT0per4YYq2ZWaPP5h8iE)1Mzlnonh7z7tJgkLzLqsQe)zdXAwj00rBgWv2mnYlqTS7PeN1caOMuqTqe4m6zsjX2IKWAxZ5orFjpKYAw20ujlsHmt98V9aU4hgVmac3H)lN9HNl)XtXFe1pLe69aXC87k95Y3HNgNHNtgVHPlpxi)4vwtlObY3Ch9Ot1QBhXb5YvKgMJiTKn)o8JXgg0RuXfL9JZDaEtN8TM2VgxvQO7a4LJa1uv1zWT(jEstnO3zvvDypEy49wo3hv8sr6ON9gl50TuJe9gHmVe18sXjFGtjYEAcKxuA8HgCW9UHw1g93FNKlsmCGHzA8WeWJ8F)GWCOIluqCos9t8uBwKCu1srCg6mhrWoI7LxMmP3EAj9M)P886B63kWHGnHVjI))gJv2YFTO1a0KMvctIM8)d24gW3onTijFkwmtX2naRK28WGeKc0RU18EObOSlhpQ3Hy)2nL9jsBcy3Bf(dbrxo6XhPp7o0wi8fq0)my6(WuAsyouApchqf0TmYBWawYNB)Bi)pgPXdk)whkzX1exox1DzoPLAPAEDRwgsBTWHQ434zYwaqEwNfrTaoEGjU4)Riyo1DfGAfTeuZ7ootFVQxKMQ94mVbmExa2bdDlkeveZey4ePkZBPqC13Wqc3OmdA(9Y7LBCU4QWgE)rrkAdmn4JMLH6DaIpJu2UqmLS3W4YUDPP6N4dk8wnliYhItjmoEf2IEOdklrfHtj4wVfxLvqSdFAjjfvJQhbf16u1Zy1BlHQUhNU8ulinW3lKgxqKm)USP82lXghT9PrdqOrCVHkGy2Klg2n1Eme5yCQY25yQq79CgnIKVQk8vg5CNaV6rQnuluTdBiMoBoDkQTxvhZSuWplW6St6M)6NXB1or)cxLCAPGavyJ(vQFKegMOT)GQWAPLjoRiINEcApcChvPTF7NfkMU(tKUJFkon4pIJoIStjIyQeOiVjOkEIMBBxZ3bfRV9dPEOH713(Z8UkW8BlR03a5K0zxuz49d31bXw1iNghUNYyK2A(GXlkHkuFJIGxzLdNTtVJpz3WsFCATqxCvwHZmzIYDwtHZ2KYv86Qmuna2x3LkdOcpTrkNTeIpYmM8gORvlOtal90HthLO68OnG07W1)gZtdjtxQTYnNNLkDurs7kvxcAky8JVvlZmkhp5sMhzkn4Tihv2RKBxu(c4NY8hGzLuiir7rpXxeNtT7j9NKnwLuEYvhmAioDy1o8sRVZu0lXcM72xRmXzwAuSwbZqnWylufbVvDjcNRB1gt2)QaCmgOJn0QMLCEDLVXjfUPkwXN0GX3SW4C9FV5ma3RsPf6G6pEWDofYeM9ASLeBQKv9AFFH1RZK(ETWa2xpZW7ok1irXH(K(AAgnASs5ikscFBss1i5LTsn39hRVKQZwLOIDjjENdBGj1AktCozWBB8bLkFvFe1qfQsJ3yb5gvRk12kzHoj1glFNiwMBKKpO1h(YGUOGSPwJhdgtUD48fD3)rYk6GTQexFmWzLjJrd39j4FZC)NGDqVi8I18nPzPY)ZQMmldVIoQ03lLHb)4IzOKashwRTpc4(DfhXSyUyYKJF3vcSKMI8DAi36dAXivH1LT3PTknBOBA0xl6Ig(LwxKnRyFTQlAyt6ICzoUzXRroEPHDrx0i76IQ126TPlYAJW)vOUOrKUOkg1hzRs21De4RdHTVz4Fde2(3id)9K(7(xwpaALQuZx7gQ4(3Sb(nBGFnyd0Uy5FLmg2kvXM1sNDvsP5s3XnBxhqP8Z(lph7nICZQTQezZpVqTRbWWbWvE98(uUjIPnfbIXYd0jk4arQIWptnZ5XiqPPIfWFE7qBwmgsrf4yTJyAsJAJu5E7Nuj9NWkvdCY5uNm2qDNQ0)JBWPT2H1LjRuwJ91zMMd1VJRxfE9UsU6ziMxcWfbkgO6AxE8HHCofr5hZP5nFyI5KmTHNKyLQYBHaU3oJWwZBR7M2KqwNyTCgHvYR2Wb8vJZXX7XZ4lXKSJhZxvMZ2lzBM1ZcNQ9X3hwF7BMZT9935Bpn(wovSH0QUpubOZ3)QZyO7hhitp(hVd3l5HSpZBhnmJptdrBW30P(ISJB5Qg6IHxwsxCJlwKmAVfjUqw8lj6x2KeUoRMO3WGo)FlGjqLXwsb3fGuBYcUjMI(0iAuLv8UIoIHmFz0Edn)EMhVzh5WpdCe(5JpMVtBPV(OGfJTJ(xCApL(EoEl4bVC8P9oO60PfXR9(g(ZvV05AW(2g(tVACuGsFBd)P5qH7n8xR7h6VTH)28nvNle8BB4V23WFUQNzjhIHUV3Zc9(mIB69CY1r54PcX7XKqKsA8rR1Z9IOYKNYcr)RPt1sp6ya7Uaubk28bOAYcEprfbIjO9h8mIiGmVaKYRcJJ9dlqnTy7hZpOo(zXPJWX)oDyuGLacB1fYVLLmV0(78()50rB2gaQIF8TYyUzTmYxajNxVjcoVEFj3St85nwaSM2oPFa3jP8tMK13(URS1EhOh5Ct7Kp5CgJk9)(1x9UJeXIFFGA)PE9Kb34QfVDzq2MNbDFHR11lrueT(Ex02G1RT4v6lIHWvHsQTFImQ3BkUPDWTDSS0Nab(TXQn1ZCVezzqFdThHwF7VtBsiRTv2t0orQAo1CruLUd1qA3khghnxvpd)5Yvz31OfEfqRexk7Pr7gOC5335gkPSYfOV75CMn9w4AhRTte6jGtvjwfzsbjJNxdZ7vsTTaQ(MeDNutRlVMjexn7Tnu2kkr7NkqvwRNHNLSP(Kz1Ql0sEgYqkUHvarQqdMbHZOvasfI)RQqUAC7k5ubLfpzTH16NErApF68qpicwRjkEdvF2yEbvp04mIQMOE99tUIrGtm349GARQ27M(Jwvs0bE6guf1VmsIDCNYAQVYnpSIGvNHqHRTT3lfc0U2g6sXSgpJP5Bq9AP7UIvPA7nDkxjdahtPt6DVuWvryAvBRPJ(kujfbV99d2zFuFc2J6FrfX2vNiFALpBrI4pdbbBeN6C(TUP0RT5GRWI))4HTOmTJLE3vhFnWIYpG(OG38FGZwwURG9IefG6VHDg998djSuwwryoNpKksfNHokgfyI4hKdbI03cKlnPc0UiEik3GhdLCY3dOQfdpwyT6509KMkzGYRKN7KT57TB5xLPoNG)fT5weYBT5dkT(AM70QKu7E8)vfvTReoxbVC5wt6CLj4Q7PqBzEM4Z5kMhYvlpIekYKS28Wy4BSTmUuf7ZbQMzDegezwhApLMOT2J3rlKMx0uar9j6tnFX12eK5w272FTGWo2HH5w283LOCBowyQ9Mf9r(orOQl2XApX4BbJGFcllZGHdQUFGXpu7H840m(ZJS8nLiZcViRP)hFRATxJSNQSysY6rOPCEPZ5BZVltG9f9yVOBBdFBIVQnWROSrQdkerUg47)CWWw9JaddHKsE(TyxYxxeIMx12(5DOwshQwscwTkicDMaM45PfenXmOH2xz0I30rfiuEP5OegUZcTZ9Yn)4zW2cwcDktGoJatAHNelaZbXY5cVZ65YbRv3SoYTej2Iizvoyk46Nh9HkQhSwih9jBt1GJ(wRNLeJ5iqp7TbhLlZM3l4VfNBIc1EnUJ9HzaUL9LD9dJUKciV4u8Sy2lJageQGSW7hIPOuSNduNXq8FvKGEuoFT(j5CWkCx9s37uZkYZJPdS)YZcH2p)coSoZ6JpkJ3OY5Bv)T4Gnquh56PWGafkmTnN8bBco3zu1iQRn8urqtZ7HAvL9y5PxyJMmVu1uYDjQKgtF0LvRc82M7iLwbJJ4bNNHaUp)S4B1E4XLNNICXATDNJNVFMmuA(5oUCBlhK)m5ogseTJ4mqwMWFo5cPn)8B74jTLvjCTvpTLEeX4l7yAmfAikxKSwxxraGnairpK2cqOevoYDtP8vJHg9hV5wAg10LHMiqND6OXOHjw5IG7tn9kWQoT(G6(K3TSBvEUCSfH4uEANyKeRJ4hea8GBkZCfpIMFof7Z05D9qPtWfZn4w(PttzvpIkyFMnVG0PVQMhXCxbXPbMbiBvwthYZclyvvnzE6k1GBCTxud1zhQPgaQxlfxvCa3lwjBX9h8Rq)AV3lfnaLj20JCBUcZWpJL9mu3evNDFzFz5vKhl26J871NSbR)L)EawtSH)ayPpoIBLc(EjHkx)eT9z8WrT)qjreEPdh(5(Tb5kvd0aWwRu4xy4(0rj2)qooHX3CaIC8(SQCwxmE4ZBe8cNqQhu1fyJU(9A9)zTJ7jXlE54H6VwDaIhluvXQXJpV3bnTq94Jv)Glp80N3073)7pSL5z)(1G54xQqcNKEA95VeK0)AqrvSXJEYeqo9pBiVdQHw)lw0NNLVz6ZpZbAvnmuteZEqQMtzhWUKv0aS1lquhHOHpsgG1rgK6iS3bS9C7q0WltdW6Wh0UcBLdUMGTMNVDeIA(3BaslE(3rywlUUA0ah1L7Rf4V9u5x(eJXp1W)v7DPehqChumYH7RTdx92UYaS26iRoc1knqHbyT2CfDeUgnDHbKD0sg)zc7)t7Wwp9oga2wQH6iun6ljt6S9UwQJWEhX4HNS3fmCbsvLtnzFnROAxb4oZ86cW7fomxaFxxWCeL1USG5aKB)cMdaU30M7Aa2vARdh03EcHdVN3Ea6WoPSQRMsbgLPTRGRAfvnaQ9YT2vqRvKvd4AP8RDfO7fhPh6WEJTS5AmcnLW3Uom7GZzob5(WJ9Hom8Sxc1Ye41YSJ9kp2R5rPNRkooE8Ot6zg)(ijQVNhlRdLAMp6PX8GjyRrq7CL56D4HIkN9DN(CxfsR)LdF8XdAa)E8XgkC2LNkg0gkyMT8a1xsy2IjZXF9nzkx8CywBNIL9PbOoSuUN1v6Ay2bDLob5(qx5iN271QuwnB(wQZwxbC9cOzA7Zzf2QneosKKrTKEMPhgwR0uBaVMAPdQly84Jh2urWUuVayLYToqiHKNLYEjEszjVe)HAL7QxtL66IXN3VNzc)hkjw)74SBiQ3YAUCtsXRXCiA2NTrP0TMEkXjKd)uVsyAoNfgYMNR4ctRC0yv7LQ6SXUpaYRZ)Ta08t4(hAcZlFL9lW3bSgEwM4MfQjmV6RT)hKDygqvtQjCx(c7taVd4l2GanHUINVhb7MJSbzdwfKMgNIzZCrkOzOif9oogm8MgFFMLbQdFsvlgog8rDry1XlTVhaxeUoaAxcSwFL9lW3bSUjbvNV2(Fq2HzGDHwlVW(eW7a(AvST(Z3JGDZr2oiABoqD4tQm41C)vPkQSf5fhyKw09y7DEsb)tgG)cH31Cx31jtyVdBc(F33zBdniF64tE8XME(39Dnb7XNOYkWwIC7eU1gQPOS1IYsjg1(sM93PchX(g8pza(leE3oN8OAmlwG)EJt2cSBItUBi3oHBTHAkkBTMmqP8b0U76UJXIAOMF7kCjnoKopWNTpMn96DFqRE1LzFKQ9ovaFTsAO483eYyBVD3hYUtgB917(G2cz0(7ub81Ahd9vjQ0s3FhlmzAg8VH2xNS8wDFiU)UGSeErMcaYEAeM43G5wn82YRxzqRvAhDYwRZlxVv3hIUpVA91RmO1QQ0oQW)jg8DaW4oMCGx0dt9tYAc4UEVoI)DDyqdft3CW35GFBo669Wa4kqexGEBD69jg8DaWDBj1971r8VRdZwX5SbjrD74C2GbOJCo1lcHZihC5i2Jp62fTM9rZLKk2d6do)5oKfGNAzaZEiAE)(xEyZX34Af2Ceh26ioumIsY)FI0TJ)tNUD8taDtXro0vNHV)QR3qhndSQhhmGCzVpSHaKxBkdOv9wdURG6jPjH2(jSZMUAZNW73UIIk(2I4WW47dOtHiG1e3sVSY7Rp1zpeF)nU(wCZqsBBD57rNXNl4NyxLVTVp(Y(E5EZ8Yy)W6FHFKZKgK7OQFEXOl)Bq9(CTZs2h9vKdyVdnjPRcWVp68S9p26qTYEPjhCb7TVNmCaXDQdvCsb2tTG6xk4V9uzxAX299i2FABUITUVzDHHvo2kmXYkpCdH8NId9YTjKv(axq0rZCUdutxqC3N9oG8om7DU7b2T9)IRogFVO)2vFJVxmL5QhY3BAAC5e2USi6qQq0gsgWt2CsUaMJgqwE5LyUMjVttCaoxnE7o0JEw9hs40)gEof4AJ8U5UA6QD(21nnZtfCDLM963KDkOBjoXYx5je4Tc263PB1aR1xPt482b8wbRZe57C4u)D3FATr3DvaADs1(Q8(f4DaSya)YVZcinE8tiU(Kc8wbB3tTyNYG5UpmnMbt3GF7sW7tm4Dd4D2Vq3f0Qv2K2vFTFbEhaBJcJ1E8tiU(Kc8wbB3RquNeg39HPrHr3GVDPLougW9n4Dd4Dwy0DvyBLnPDdc7xG3bWUdwg3V46tkWBfSD3KvNeg39HPrHr3GVDPLoyzCFdE3aENfg7qrG3aD2pPaVdGDhSmUFX1NuG3ky7UjRojmU7dZwvO9T101tm4Dd4DwySEkb3jL2pTqVb4U7ec37iNwr12Lg3ZqVb4UdecRPABb2nG7Es22HJUP1)YptyecUxxTwR4WEZeqLWIa8InJ)OSbQnj5ZhFSSrbocpJAhliQYEO4i6QqBCvT5vBdMhF0YtfBciRp7tLBXgRp)o(jWOLNGfaw)bTTrow)lDFcpY6e2whJvIb131twFM1jS5U3X6tQoHBFNRS(x(pWdE750Pd893fq3ZR8VMZrL4fKkpAGlV7ypIUTlwW43xkRcIkW75c606Fy5Vla0grv5nDYrXjJZy5bleu3H8)7uwygB8jdo)i1Tn7423(ewCgBF1q8wa94t6VjZ3r788Twt2BXE3(A(Ab008fyIUolpavGLr38)QL(BPjY6BN9aDQTNayp26h87xkbS4Nl10Fs8Da)LFWNcORdb8lPNjhrTxhN545)oDbGGVpO(62FYJJdk5p8EqWpyraYUEO4Uzdp2Rho48p3NZMVKFDtWVvIX3ljnigKLEG)ynqjNzWaX1TBBuYUJFLAHhj9C15WV4Lv5TlhHGO5PmVmK0Hgi8zIFfgI3q9hdE62lMuLJXc5PBVNMil)4Xpov(tu3YGCyszyjnh1Z3DU0HGLKOcVWAA3BOn(n076mR7gVx1(MFtqYr2rYg3Rbg6k7asAP5(3eKC4u2NNhw4ZSrknB9DdsJZUvFtqGroqaR9EVX0EVGas(EtDEJ015nutJ3tu)AAtnz5ZSguKrpuAZwFhBDtB2KkFwxgCBEw1uxCskPFVx0hjt0IBEq6obKUqnOBaa6W5VdlL63oBslwdor)8WMgTFx8rcDvaFvexDk2DcWWDhqbiRbcSjt8IfjW4spaVIcWM87nXxpG6OV3LgVcucIQLzz8RIWZYyZXBzr2k8Y1j4JmHTHS7zGA6Ky0yc1)Gb5pdThrx(8a4jvTbO9JmaLwG3y1Wa8tsCs7(ZHFDC(s59nEg3IZm2YaSxSXj0mg)gjXdVEFY6MU1kx1MEXSJ8zl8kcZhFgkzKYazJ9mvCYh2CellxHxdprdXAhmi7jEyHcAjcNMei4tuS9br4D4dVFDaTjlkWluHPNOy3V8eA2)3qRAtiI7eEtedCdQUiE9T)gGPfahSDeIL67brcXwndC9LDuWIXY2UOwdjBhcQUTv7Bv)TEhw9GUP8GVrRnyD4nO(92bc7dmbU6YkId7E1Hmghh59oDl2MGw65RYC3cORnlpK)1BgDNOH8mtMqC5RIZipGalISprxmueltCclIX5XWVJGW90JF77FXLV7QxC5KjV4Y0ydkgmDGrh(jCIqAK0CIeph8pqTQB2Is4j8tTJDU(p(iEvf3RYTZ6fNEUH4aiwcygd5R4(DYfnW73wqYwHbRPBum0lY7Jt5xaECYbQKyL3NdwvScLGZb9fY(jw)RN7xEpKLwkLbAvcwckria(JOigBXcYXoM0t4b6uOQchgxcVMchA0p50))6q1tTFbA(IZ6R)swoxKG3aiH)h4T)ck7b(SlepbXiU1GFwihMjU3KUJ9WZioOp5feYP6G8jnL1iremlNPcjBLSpYrWN1vf2DXTq)n2kwQxiePAQhE(qrNjDW4Yp67UC8P90UwDb3HpD40rjZbbqRZFaQnXccmOoGMTocsAkTiritTYtzZbpG)czE(iT8oVKKh05a(xfG5XJWDCr8If4ffj4LdPvHUIIfNvFODvCEci(8C9V28EcQItvz6VzAru9xenWG3TMZZ5JQPq3PTcHSCHcN38pUUAoJ()HHcHcz4)dpcx5rOHrRWV5U43gxKqKmYiWfNqude)s76EWHWCu6ddre0lZWh9psW)cpSfCLQ8c)cL2ilGEIO2wggpdzJ5db3Ui)dHhUiLH86xvQigigWS0Gr4O5pmpKnLVCKXPs2eilsiQG4cnuPVwDhu(MjV53mhQkMrO1zvF)ja3p5HxDFC3W4xktvU0Mq920KdN63dK4kjRYYGy5mCRxZxIx480XPhk418b1Y2P9Cgiu1Cj4Tq)EYtXsG9sCqUzE9zQSYzGu9CkUk1ho(L9lVp)uJFVMuHow50AZhFCVSxlQAVy4O(9oWX1mPXQI2nzMMpegBEbjDVST47DO4pPT5bAKIFbENh2O6)lEPgaCmXEzvDHIlS8snH1At3(WQCJd6Wt61MLl4DE8X6JAVonMA0xfZhcVdQrs73R(TbpWzoYU3gJ63V2szP96s92DcyCFzPB5WC8(7Ks5eLIvYhgkufup5Y0yZbT6DETlBMvvNFX4tF(PFV04vLnfHBtKCZA8lnU3fGQzLxfJVG0PUCPkRtzykPowCD9J60X7RFnnwOsQ3ob9NeOob)b5T4pak01US5q3lePItCn8ltzf)24(1zpNNhlqDrCbSYt)OVyVVYVri5XLD6j10eA3w5Izi1ZQMmvuZg(LDP6bMrRvYGP2nhoUErBsL0L4jv5HCpE4ohrKwLGHA41J4(XhvZHYEB388U8uqiHaRyvAkFrQnixN3QpQjQoN(RDWOdkLfEiJEXOXHPXDDTGJemRHQb(3ggmxINL8k68CBdZcS030l4KBT3xnSy7e7uvZhACuV9k(cEKmiy6wrg9xI(llJ5fDiMFXGVim(E19V7GwmyBZrk5N6Zwempi)Yt5EesoeIEQXdeftsKFmll6z56J71xDK2fvoTnGWmlrEnhHHsUf(PAX3kkqPlS8a110VMkmTTKK5OZt)aoinFR7xMmed8vDmK78owTFZC9JELHLjH)2YObYqpXdex07YBn7M8n2LtUnJfoksMY9lYHxho5Q8dEu7arOeUsacgCOA(c5KBOHZ1DNowr05FJUI2f3s58F5Sp8C5pEk(JOOwsO3der)3vkiKVdpYRHNx7UA3yEGxg82WFZytpBB)Wt7vtjwxbfpy863tcqGnNRXoI3UU8PR4iQgS1qCty(xrc1piubPixITp2rQFIh2CrYrvt38zO5iAECe3ovMm9NA5Su8P10Hvj7IwMDkzvboy5C3U2Iqlh52lN7JQw(EzKEwoYhqjD6z1poVpWQGJur7fsfUWa8IHe5))ngt8HVmFD6mXsE3fuTcM8Hns8HUi5H)B1BC(XD4cN3MB5D9cF4ieHK3b)JTDf8Bb6B(nTpU03X31kpUIJLNNfHgkEMpeEUbM1WOC()kcMtv2geA0sssn9YTXOknPigQEgSPLLi4n898iyGabfVC5VlalXB38DJUPT1gXk7Hsb7P5niEpl(gqy07GHygDX9VWkk49hfPO(40GpwBwlsYMHpYhrhqgycgXc4HPVhMIjjHbZf5chCTracnLbmmzEvDA6iH7uGNxi3EB6qDEt6(L5g011vOBxV6CDFL5UjxvUDMapQle4rpFKRq1DrIhnORuyJ1IoJ5N2fmVPKmyFvY1eA8Pdg1XPKXCVZZOZCiOPNQJQszG8vACcedtEfbmmj1q8IhZNH6IBlMj80ug(qBYAhUNLHQXdJZYUGDDGrfDD1j(U1mK97g(zLD0bpMtKC7zY6iw6If7VLsvwCccWm5jDeXqLgWt6HH1l1OrwLq2Ar1WMHDxa4vtTxWOs3Ibglf8BMZ9u8VJM6KnbHO0mv7mcaN5DuXmggN2bLJsgwXA0DKGC2kU9YpEh2(pHSpZJGkaCydSMcbVVdfFWHRjVKMl)3I)cmtq37au)dy3Qar)fKIL(r403kEMEIyLTwD(9mpEDFRmF4T3a91U9l6ItlD7L7AKIh5uH5)spMQaE6pxVAFogMr1aw3lXuwTgvGtP3NvyQ(ySLRXUI9(BfyAZlWeTO8T6l9x46lH9ral07ZOYQYURh8(pkh7sT3Z3Ki0f33rOSBeLlHuwiMyvQ)D8Oo2)Uau2MF1mdgyIOgqic4xqnJQoPe0CC4vHXX(HfOsGNxRTpo(3PMJd7bAS)fq3RaRcEP9RNT9))T312YjUrq0VL8qiOD9YIKXj(bJRA9cBI3hsLk4k5nBKn4yQaixGyVu1w8TNP7EUFtsymjBQT8tgKgntRZ0tpN(mnnKT9JZ2n62jiU0YGbnffo0RAmyV9og80QHGN2ueyJWsis6kiZIKefzbsOZiUK8jiujYDpgSe9gXGnVHx8oGVjMR5vFCMmFLdh1X6DIBAj96b3DrIQSLvyi1ZasatDSMVL3DfsZeV6Hva)8JkbPMquXZmfdkK83Fx(JcMqEdYy(2X)bwfVSSn2e2lJ0F)WqFIUG6SSbyYMCn6bKYKIZERFLW1ZsmVUnXEZLubf5PNOn5ZJXNsZJND5xjZIuK6MyoCyjVtRVtRpXJSY5MtugfRrVHb2mj58(VBJzbbmv7N2paR3C38CwqHCb)123VFRkLFA(tTF0FpxpR)pXhOn9h0vTOg0B4TV)LYDhZZGlfJDh2YgOItZxrvHvN00coumITCWV35jVcYoMVw8TXZTEawx6roaISb1KSJgWHz8P7ENzhEIT3NqJYjBRaWw5qYfVZEUXtFyCDd4OyG)FHeJSa6(aj2Sqp2FW2aGQ9dEYDivPwb(ZCiL8yAkE3fVE4iXz3aJJEYNP38QSjNVeddA74F(TdaXJJ6wLTpSnZl3Qk90eMzzbGjxskyzgNhf2Wtd4zHe(iRZCelAT(Xw8ZiHe83M(sfuikV4jL7LEFR9cFlLHBspqZ9Q4lU3ShsLMd)r39SArQEG7VtDEth6kYDqme5xjL8QKHaU1sydgkkLhP1eID6NMvkcendcz32lJ9HlPb2hFbQkJh9vHIIn5fC7QBc6m6ygj(6G2XS6inxvltx(38tckChI)tDDmFWFaO5RtAhD3PF5lAFH4ycj)OmRRvsPD(sn2XCYmvAIMptTtee130F7BVk7ZUkD4WAzMI5mwk17eFFuKujyotTLRty8Rcu1qre4cYItHMpMnfSLnBXIzlHLHMmLHI3GTIKOUGMoze9A8Vjx)1GOUeDJ4JOAAGfLyDd(kk3Z8)uaNrCOPj9FqGd1HucOUb()SUocWb9LKDL14h1admvWlFJHOSfVwpkKPF)SUwsfKHoWX1aO7YjQFiiJcwNc0rbNQc2daicdxGwbngZmrS3cit5SRFoWhr(9yuxsL(r)lNgmaRBC(nPYVcEo2UDtzjmUTragsczNLaItQN0E1BQZZKMiAJQ0gstESnx0ib3wj2uSRaJDT2TwBbN9F)XVmOx7Ztv(cnJjmYwGpxKdGMUdyL48hW8eO09onzbsk8skQ(8jtwl2laDGFfAqCw5paFOwSK8d9KGGnAWaW7lh4G(Q2)JZ8jMDuZKdDmWC3pLn3ty40y2NfAS3l)h72YZfBtMrn6F7D)JQpYXb52Xnr0pr221tqZpbhkc7PR838Pwi(NzjOjLSRS276rav9IGcvByLIe8Yvq9p5olnn7D9uVmesErMPAf2w0MiNBn9ttVBdoPFHwCkuanqBdBxuSpq92425BMQM3PlWWalIhNlWtsSvHoML9XMIUIC9ZZx87TY7REmO88KtZ9zpQf3oJYDITsSfNZsN8GprDx3mVOybqQmSi5FbD8Bq9a4Meyi0pHHTBNtI)yCK(a(CbBC(C8rXwnQ8H13qfKKN4dJoPNgv3evcLvF8QPWkQ817t9T)RVZ(wyTua)VTABYiqkk7)2E4EYue2sIPBzGgTVNEDJh4ApEbm6xXA)cxsTOenKh3u5DPwkqloRF7sESxd)a6m6xik4oc3Ch)CaOAuCrfmldYaZgsQ7y74RWd7ChAw(BkgAFVQZ)ANA8AmyXSrlHeXpL1zQkSIv1COLpshRi)Xhxbr)1j1DvL9OtRmZ6Ngk1ASTgfC0A6Z5mqluEPDL9X(oj5G4cRW0yVa)XEjFLnbaXQxilNr2qlGQk38(ry7JSXt84MLi)7vxaCRm3)aZOCOiQmo(DWjgd)irbPPgiYqvHjeq6TY8Wh4m7AOk6tI3c9wK7Jx8GC0khZ4Q1w1)3xc2Zast)JpYmxbVRe)10cX7ZR0Q9zI1ZrMHWYrgSgVOOsmHxr1osehkeYj92efHf3veu2(GpZUW9bvTm(BNTuXbrbD6zUDrlVsAHblHvtk2GQpgmOB1QDBKFVcibPoGTrJEnKB6Cj5xu96GWUaEBLSxRk(pXXwRNxukQecPbOvQDTC41ZBzLawnkybLA3Q4e1aY0k80bOdTJp3aJph3pitrR0RZvIMvVMG5oxWXojk3x9t9wvU4fJm2Um9mrLQNB6vbnVvgRZ7BmRs)6vED5x7zWEEAhmRkzD9DynbJHVqMJmytQpKn7qbztpyqwxpXhyiBAaiRVLic)wmZZxMgdYM5azduj5ccz9uv6oqq2Sgaz)Mx29pK9RmVSTGWz(VHR2iJQ6dP)Mx49pK(RmVWwq6)nDfhzuHBy4Y7fuaIrzdrpRVzmv9qgpRhWtxC2MWyU57FdUn5yKc9MseZm67RU1UTqquUQDQ9uo6u8eCcYoVFWg)(zV5)iyVAx3K6EzWiqoxpkFt5dfRUE0OzlE71LS)U(Fc]] )
+spec:RegisterPack( "Devastation", 20240921, [[Hekili:S3xBZTnosc)BX1vJI1eBzjA7KSZJL3ko2ENm1UZmvuUzR7lwIscsIvOi1sszzVLl9B)P7gGKaGaKuV5j1ExD3oo2eSrJg97DdIh68WxFO3y3e2d)QtBNlA)xC60Q977CzBNh6L88c2d9w4o6BUtH)rG7C4)El7r34e3eVWa8zp7h6ogHrC4YOrWZNLKSi(No7SPEjZwoS1OW5Nf7nFPp9gJICNKG)(OZg6ho8SKzSvUrRGH6fCglyQxa7Sr(UXX9NhoEPpl(m3f(4)Rp7XWVXIAnAXIh6nCPNFYNdEyOjm)IZVaqMfSrp8RDU4DVhqiVXJz8bZIh9qpCWN2(VCQtNFA9GEEZ)06blxGWjE9VS(xsFANlHN(rF)WvRhCBK70Wa4)WwpWla(Z)2D5d99N68(twpaEL2xi(5hGx9)waYbtIcNlMh535CymFDgaW)PBe8FikWd989ItIrQjd)V)kT5WcCh6Zg)Wnp0ZDeNSZsyrbEjp3pEzeUZWMViCflQFs4d968qVrppYN1pXfEgaTFf)lrEWR45YbXJS(Sa2Cpe9UQ76bDwp4TRhK46ZcsALc74(XlCdAjM91dE5L1dgUCYKwJZOgTIyZD9cqOaaP17VC9GFC9aG2773FgWKaRUgL8sxZNA9xX0eTCbbQJxpqh)VM(RNlVcMegK0pCs)5Ut9gLVaAst1X1C52K()rCPWmcO97i05OkGcNJlYBbFx7oXGaUbCBdywwgdR3i3GVTEW8W4eyUwSW3Be(YaOdrWt7HTEibyY3cMbNnNzWHOooeXAhzjCATnCeg4JWL)5BXY)8nF5Z5KoVUl)JQIRRCAeoHTC2cQKbslsKUqJijtmUWonRarkb()6nzyz6GM4fX6pmI5MmROcOms8XVsknSiRYhm(eXUu8OWOrGQ2P9zZhYIIZ3O4YZJdHDY8vw)XUZXPpXB03GxstG(EyGRhCdnsvPzqookCbqbsueKxpyu4YGKZ4it5I1k0x78SCjwCfwbPEVjmMrSRGKQRjQezylR1AjCv6YEFkFTDR7ZnjwwPm0fCjWXSjUl9tktmCri)NkmM3Y8DbZmWZ4oS07RWpNSEWZHlbEtKP1Dy4YeoRzVERhCk3aKp8srmFWdVa4HtcbptcxaSAWpxnJHVhbHv0JV9lNE993C6196D61rHPEeMV7z3g(rOCqO)4WvbTIN5MGVaqgbVkJOrzZQRt2wWWW4ycAt8MolPVmF(5xAsQkeCBmMLKt3E0fqs4P4)YFjQdmfJmYi9xje)yjexvhA(qbs5hi886)Q6liTzBy0n12c)db(b7rafA9agIMCpkHTcypnG9e8Nhl7Ak8SHWo4QWiuzfS3rBXOtMZDFc8bh8dDilzfdFD6pl)2Ja5j3GX0wmSFl4gJb9AEtdcJia(PB)c8KjtyJqmkoXBoIrTiQzFE4biA1phUMK6lDVifolaYwFGdSV3yzMkHSN385qOcGobGMLeTKGJIQCX4MZ8t67gnpmY4tDdylFKf5o0Zh2jLDBJl31RTb2dgBrHTXROTXgirjMfmIbJAI3iVKm7vCRlKiHyi9hUmkob43nPGqHv4llxievN7(nMyRlY1BSpZDmkBodm38Co58FTe0z9qpWCeOYCs)PJgZnP)RxIZs6Owc7ppY8LNwyiVZIAMrUGAq(V0hdsHhQIyVkb4o(g65aaG3Rba7wUqkd4GgS)5nkH8mlDYIwgyDUCdjEQpybpl7vJt4AvxeXGOsh6AuVA1kkeR2wjDAb2f6JKzCFvyB4p3h6f3AUxuei2aglNebRHLrSXGjfqcikCvSSeM4163Hav82P1mBUDkdX(Z5HBdXWjNyyrTL3ezM6ucslnQzQPoP9MCnilJiJLRh8dsMhKm7KpaqePnFDv(4(HQMjoG0nYClBK3ygArXB0SmqW11SW1dn77LmtobiG5aq8zcQ1bSgdkHxIogr2n6K)7zkemYUf)CWiRSu9z(XW)UDRlZ4X6ysdP0UrzMrY3x5ZAj7Cow25CE125motz7CLsEUC7LCjTgdz(Gqb8FI7dMxaFAcqn(42CrnmbppFjdK74gqip3w4fm2NzAWXlEEo69CuC)vSH6zej1fcGfkNRz9acf5oZaAQx4Y9(GS7LsHaVBMi(tI3dynh79iWppM)MCpCYOJzdNRRaTndXOHJpU16b)Slhh8csaJNK)nZdh7nXdjbhpAjqBci3J706YNAYLqMcMZOxAg4ekooiGpWrjmbp4JLav6kRLiNFgNL4zHl9rChxLZCdMIleeTKgD(m4fmc8bjgjDOB6JzIFfMIpI(icVb)TDLNdYLEmsaxjP9vE4ydJs)xbyydO4sQ4Fknx1tVCbAWpQLU(MCFydydD2a2qNnHn0XeBOjne5ldDNyQEz02mLjeC(Q)ixYZJc(SSLq1rfQ)LngQQcOrlh(CFiKc)f9JNrCnffIb7dqGWOuyFGVZnkaKz77nsa9cRA2tJ8xoM8tRt7Th9CQb65SXONJc6zX9V6AwjvEulRfL6vGDdp4kRkZsvAz6mLbGVB)8hMNdCm)gVTeFPYgPbeIRBGNH8RlGvg9)4mLbuBSs3Dx7yvhjSs1wzNmolkhuDS4KBvB58mb2Fx25n9C5TxzUA)h95Hijljc)XYxBBuO2CVhA1UqIK1c)KYOzNSuciglywWflzbybxHof1Hun1N(7iozYZTiwLjayCeqJHqTr40hJ6lpQ8lSMReY(gp)iOjymJsakodyhjpistQHyGlxaExqpaZRbvzVW7ArjL5EQQDZrt5yEoWXCrmd4VIzS5W777LfjE8kgyAFri6aYqmJlEjVb9HHf9m5rmzE2d5EJbuAcwUpyc(5uCIWeiIeEMEcOAlbZuyW4yUxkdztPCmGlOHyKRCNoaBK8ei3XKVFBkbowkBJ9(WbJ(27RCuEZ9titNIxawj4(8CL6fmzzm8c9BlPRbujPy4evHWEctxNRF)fEecOBHpBEzrJDdsWu6cbmQlk83q3L6r7a9a7m(4V(XXUlseZ8Vd0ZLyUxkKWQy(W77Mn6SSnHOJURbfEFm5HXjHrZvYJ1Xk1Gmy6s)j2kpfzhvVMhnvtfnnbe(O7uHXCYxeLKYoUo20Ommjhn8bp4bZ4t8DjThj8e(us(V1YFC5f8ZuOyI0slqo3OrUbS(p6nvoLHYRllfdSrXuwFfpbxkCqyRdmGJ7OsKyuPXVTaLN4UAJRbumFcPqafBi5mxrKgt9dh66lc4wi9XFrxStdyWOU7gtzYjNgGjoSp7rk)NHpYMtPtnGsH57uYt5m4PrPKhWJt1cK0gnv3iV8lZXM2ySxmgSY0i0bma9g9Tyn6BHHPsKnrcVqHpLWktj3SSAlXzSv3j6bu9XybeepMchCemNFS3h)9c1XioWDboul5RTQj7JJ(xl9IsTyGq0KmodZofe2dX9hlRGqxfVQwPi3HRh85ipy58fk63u2hP07JCju9aMg5XMW1wd6edIjqKI)ftZBbSus0rM5VArlVimw7ru6Xv20fwnaCQLsbXKsD7KHMIUSaUzjH(LxrG8vVuQ9ZIcm7z5L0qnJ52YeDI3cEmSanLfRTL9vpG0CxpGHpjTyXIAflxNyrq5K52f(Upt7A3tmhZCxGEIfcZq0kpSWZeiV)M6vbodnsZg28dnkZ0tZmRpgR(fIhnnf7Qcn6tK7LY1yh4O7HvKe8yX7Ftgr)jq7zaMwgUVOyMne5QruAW0CA4tp)dXVLttbMqKaZO)j5OfQoMHfvK7e25TJRNuHIjytYgu5knSryl1G5AzLIwq3zyDR7UbEZdJvy5BMUxRvIuu59h4VVHINYt1ybjVcHXByNsR9M()2S2MnlU8Fl6vtcblLS6SJvqpQEd(iTHYInM4dt6anTlF7n8DUG0Ela9rHChH(ltd5PQfCAbnupH6FY0IIQ5hPf1tflHk6gLPi33kFaPzvTgSKNke10WdN7(uFXaE9CtSh5Bc2zgCT)izyCilo4njYe27U5ejl7e2GbpIVl6F5NU1ysbYPfL3TtfdXqVznuw5JzCpLuhtFXFM05B1tb1EV595BTCllgZJqghRK3K1yRF3DuvYR3rZWjAC)HOklj(OoT1f6vhzUGV2g))nAk)F4I62UvAY5YCF6gS5ocsszcg5UWycasPmlEoQckIPgQL7YTeV8JHyZB7BwHvvAfXahariYLIlQjrP8Wiv4ifcIiHkqvLQ6mvEB(QLBoLEprz753Fg9g5IV(wkhoNJ)Kh(1FKrJON0XHcpdyR4fEc35G)8VdaM)lu(rU9lgtgI22Nk7RrooQjtCQH0L2(HbMJYsoIsW5vXxLt7b9ObGckdwztFsbtSg7vkurPm6FPeKmKFLuGsp3nyKhGlCCxsze9qFM7ISfwMIaB9RJvJuDmAW8VFFkpIyAGnFAEW8JHY1)KW0zMh(cQYjz)lERDHJg5AOqi5D)fsMgkCnghsCiSUnNqPzU45lqhf)FcXKlpwa0XkAC8dN6nk78l8vtB44OJIwUiPpM9CXr0adnFKV3cCT2OOn(gO1L4R7604yZPI4ANxErjbeGosgS7(CFArOpvspcNWTb6k8T2YpY1znARw2rQq)HrZuMYX2MlLLAvon3eYAj1KVQG1mJrdDCBIx8mHgQuqlsocLzPsdfGYq6h5cBIyv5LH(EpSoU1Zn9m)KLLz1I80IuT0dv46uCbEAeJfqRfBEb7(VxgHoge59n9CaFpG4djTUteljZDpVOUnLEoE0RkDDcDVyiaDeXaKURlbvimKWivZecTMOhm2AIw0hm9Mxryiw1jjdwNnaRlAxdltIX1m9yMPrAmKsZSeTWj0GKrSFyI8VxhYP5kCQuZoR5WOr1TYmsRmuU2S1DZSDJDCIk5WkDUK7AhTwVKV5nud52vziloGceR8wsj)WwyGIkk6Uj1L5LkL3bgAysHYfJRjn2mTxWqbOrgX31oLmKn3ATRmxnFbN3nLQazsQTugujXQAIHEIdLA4PuL3KTBQhKqL6PTL9yrBuDsAwvW(kcmyYZ5nDyZW4eX28d)B6n6h2QscnyIJma)DrA5fQo3E3CwKl25sFncuitNRTaE6zYCPzC4YH(S0EVsG)NqOo2AwbmHlo0u4oHY1tVEND)ncSuYNhEGTa69B5TNyE1BlRsaIP1z7vm05WOyOZ3zkg6uMIbtiB186owguN6OyWXSIHcD3svkgm2VmFhQyWPoednZDoLvwk7Mi1QJ2o2ml5AW1OMwAEgLdOxvwEKgqHg6RoB0IgPnf3uROjwqZSJPXIi2JifPvh5t7H07Uh4seJWUVhvVKBKNhkRU8DvwyYgkda544BlB50SygQ(8euhmMgFsTnszPd(yMrP0UQLQjnIDPhnssjovXk(RLThX1LtzvM5XFE1qByiULOahtvkTOYFnXMnueWPY(5AlebCQPowPbuLiqzNcGVZfb6yueW4s(1seWqXNlQB9)9O70m(N1wYVoSjFpQPuZ8AsXwjVmNr)pD9nMX)xz2MVd1Uu0tUe60kAiZrQvj8RqmpJ4K6)oVxY49EkEMpGaWuBi1PSeEJSoKHbjCuAMw(2mSJ59zpX79im2W((4APELRT8Y(XdGOrPPv9D5sf2XLxPEARO7aPOMOXZu2a(hIjdi)yYYpb7chmHNXl8Iqrsrk0NZBUHagYxgtTpAYkMlVgRC4dmFjVT7z8EXLE7t8M01866QZBKjRXxqIvX1DpVXrkRttHdxipR73UMYAzAZ4C0iIFH57(eoDYTR2Dbjy7t)fg13C4ch5Mh5gqLkjI5JYt0xRax6KloZlASOJ2gJ5FGox0bHrZXTbSzQ9iQmiqFJFy4y)LO6M3IvKJ6O9pl6J4Z(dQRTXKPGhRA6R(WuMBuZDUBwo3zZANfLAsurDXYQSAE2Atm)XjGp0mTXXG(WHHblJBLSAvN(xSyKUM1skdEZ1gQcSne8dfgzjOOOzxmHDn2imZw30CEALCk5ZiHtPrtuzZ9XBHFSJ8K6xMS8HHFpt4jpJ(IMWzmWHLnI7U5(tu6VVeEld2AV0pt1FJRY9lCkQ5(A5tw(wR9pGxL6jEH2aslZPrylZ0JAWAEsebc8THbsDtrAcf)i1vbRh8hu)9OrXj6521arQYwMBIizVLSruttJujzyQAPevKHSY0Fg4J4)w7tPHctws2HTuRQCcOLJX51lYOIcBfbkT(uLZRi1sC2ZGBf82YDtqdbCuLRBvOVe0EEbmxYvddGQPor3k10itGEYFZw9MMktXEu9PSrzVEi(rYiAmz81CZ5qMBXMrbe881ygeoaQaefI)7vixL2wwwvJzWBgtyT8Pbs659h57cU7zQlUvl5lvb80uGqo11cCDG(gl5gbgZHL8qF3)nP4g0cfrw1X8KTmjM(alGA6V9lT2zVi(ZQNylnES8qovprzf03vsFVwpLDvQRQgIwBKYXsTDUN6v3YpZdL2I8fA56)pEZ9hV5U6c6ELjP6g6U02Y5F6I9Og1sp3FZz4bpHFAsPaOg)mFZngpru8ysdePP)V9PBXwoL(UueXIx6NW3n5FkoOT9GqKTlyk95LWtKIbyXiXBHwDWV9kLypoNFyfGQgBgOcBqnSA8x)pltFZS5lNxg5dTm1BHMSRMLldRG)0QC6a3538j1yd7Rssn7193vu16s4SfaX1BnPZwNdP2PDMoDGeFox9whUYnhsOioL1MhkbVtWI5svSN8ssdKWbdKlUgnCqz0wZXCifwXPLfustI(uWtxPwdS8ZiWFUiSLwYZ05bihL30J1al4B0hognhydLEI27kxEmLMMfFrPhYJcs7p7y4DYrMjUbgoeO8rvOjosBIOMfxugpW3PRlzo)cKhda7p1d(HTKWuT4BwBTkoAVzhvgr8(82XgmSrF76lkNk3F6P88BrZIxueQ0((32Hi(NDXCCYT6kQaVSpC4PfIAwkuR0kGTL(e3ThtHFkdQ5JPCkttT8zRswHoY1nsquZAAPSWblsTL8U3kpRmRO(GuIq9DzEIvYYPkgBeqQwbRmNBVtDyLKrToYTkKy)YlOF(NMbbRM9VkN25kooBzx5xB1JQIhspRuBZNL11YFga0k6qHZ7q644NHgt6gwqhLh0VxyrlCADcqOdtxl8wsKRYDD2NgxSSa4VJfHu)e(GUc48vflrg3sQR0e9UgpWpD5iqdZ91NtPNVGQoVC6N1c6evicr5QUD4hPJssxZd7LZtrvZIkdJL4W0lxxHZvN5t0GLdlZTi)GOKE3HejyxhhzARlXOp9GuqwzMuWe8hacv0YggVpMfFrdUMD6z5)QOgwi5ET8xfiV5y9MPp52dxMKesFg(2MZIZ2C0y(pWdEJ1d9Hn7UB9xkKmx72A1ae(Al8f7hvB6uKEl848VCcCDts9MT74XXPjWH)rLk9ZgIxYBs7xCr2bCNsS5PfPIJZiZ(NVTMhQBJQPKCzqAZhrm(gp6hGqnxUlfHbp)uFF2u3rQ5rej1Lairl(wbqO0M7ypyOVBSwQKfZn2CPJ9yNYsmWoD2RkzHLVjy)BILcSksRpQymSLKorJh8RTiMI8ZmNwQtpb7FG0KbKNVuEga(S0x9MAWjj4I5QlYFvW8RARAYEInAjypK7uPw6XPqNWLbM4xtvdwgYd9xMp1AKvP)O5WEQUeBxMQNwxdakCtBfuyqgJYxAdIAjk(2xvDf1FlIUGd6HFKcJtptj0DWsK3uknLQNprPyo5hKfGKeghhopRNJYkxM(hhov8lHgb9bvsCJKbHU2BLBeAFmwC2D4wZfg4Fdl(nOswQjxgN2BqUltcfNGh(3b44wR)L)UhwqA8kl7tHbW0qp(nP74jYNU93WxUMFyk3amOJ78uZQGSsP41aSXY0xt4E4W49aKDoyq(8xBiVd7FR)fdmSXjBgdRf0sZMLgIzXIwnxY5Ml1bBb7O6q8cByRw8ffWxlXF8Ad)lnd)CBmAaUy(mQje3b2koCFNz4k3smAG1u3YutOU3OVwGVs9O1LEnvR6AcxTAyRbzlv4(1e2V3mSLBbdnaBQ7mQju162eD6S5ErPMWEhX4pS3L7SaXS61PlCOxhVAcVDMZ1cC3lCxwG9EtA(VS331SaXTExZc82BuGoT3ZiChloLT9a0IjZ0cZPZZQvjV6co1IUPbuZvKRUGwQoCAW1qf6Qlq1IVwdWwQ8rbGBX0GwUO0PgMZuvDb(oiDzdKhuIXUGVwm2ykbrAaVSCiv3Pzh8d2ki3hUT3XIE99dBNgWdxW4hgTyE(2FJ5uX2O8zPHTkX0TRt7gQz246UoPO(EEUmov5R8dTXchBPiyFSV5yjMBPe1QbydPW91bOwc7CplvBBA2bPARGCFiv7yXsLsAIFJU1FdjzUUaUy2J1v8Bn9YfMclr5QLi13O7RHX0SMdCJjqrCjB8M9rwu2ZSC7FoUdddNr6A2L65MrzlOttCGG5FcCeQVfx)Az4z(Hg24GuniT7tq61F0waA(zw(5YW88HSFb(oG1WZIfFnvldZvh2(Fs2HvaD0rld3thW(eW7a(I1LQm0v889iy3CKTQRZvdtunEfvdbwMCN6iSAzq77jWgHRgG2MaRXHSFb(oG1LjOADy7)jzhwbMfAnmG9jG3b81OyBXNVhb7MJS1q0wFIQXRuU3lzQIk8PoXGUhtJ5Gc(dgG)tcVle6UTpLlnoUm4)d)GP2Zn9PDB)YlL98F4hkd2DB3mDjULi3oHBvHAzu2cHqLjgv9wM5XOWrSVb)bdW)jH3vZj7uGzXa83BCYgGDzCY1d52jCRkulJYwis9mLpLC7rBqnu5JwHlP0P06LqT55SSHx)jv97uL5zQWyuaFHKDNX5VjKXQgD9NY6tgRC41FsRGmAEmkGVqkxL3L0V5QnVpzyu1FkSEXxBEUkB4QbHvOUGY0Tkxy2g1gmh1FLv5WvNvBXxUT68p0WVoqgBh9wUbp3F8I4YGUTXv3vqDNh0Cr)Ta(1og4YdYEFmdwtpH98tu9(BnCUEVd)6a56TVAFC1Dfu35z74F2GmQUL8pBWmux(NcUgEK1ajS5x2lVy3JTYDzZMiBZF84oTU8TwejGNAycXBF)MnV(4Yd3X2MS(m2PYzSJygtP)VI0TZE1PBNDaOB5SKLKKf)hnADN)NvzSTbLoMHshZqXsJhShl2N12piTe9AqoV09Bia51hudAQ3yo1fu7wpezPXa2(fSfaUnlylGAlxWuDbNe67hUIorVUGycEi3y53FjzF9A4hQd(LWoDYkthh9LACc)lNu(Ohpgh8y3e3HUXSFA9VW)OLe5LyPGKUHy0i7sPiffjF3Aj6x9tjXERFtS1QE7J2n5vRr5LoPvAG0W1HUomT2o77u5Zlh2BFX(TPgC3502Fky)(VLFT1sU7akU)7YxlI(7QQQd35UQJLorz)06Oh6J1JTjqPjb1aUXRw3ca2IwR8B8xnOw8QaUUG8GHRBHwaBGs)Ye2mpC2J3uWVp4JTD(v4hzxnyQDX7wayw0DL(fmqxAq7AgvhCowvZS1DaOrhReHqSNo5SBo3J9WLYIBtCcOZaRHGjZhYbe41aSy8IPVNbqQ94diUEqbELGT(jNQwjbB3NMsZbMDWVDjj8adE7aEN9TPgnJGn2eJd5ac8Aa2sfgl84diUEqbELGT(vAOwcJ7(0uQWODWxT0snQO0(g82b8olmwJ(Pyd0zFqbEna7EPcX1aR3ODVdm4Td4diZXEHqBVHjQK9OA9F7xGxdWwnjPgn5rnW6nYm(bg82b8oZ7DGj027YKkzpQwV3(f41aSvtsQH4ynW6nsX0bg82b8oZ7DGj0fsiWoPA6Gc8Aa2Qjj1qCSgy9gPy6adE7aEN59oyeAJjMzcoGDpLmXJcJgndt6QXcaQ)4ANMM9k03)FUTkfU7mwV(x(mTxHa9dQf)e3qEOhSpnlm6HE98M)Ph6bbgnXZp7tJxCRSJx5B7EwApfCc(rvSRGHjTDloHUjP6MZPvSLzE5fdpvC8Hm(ShZpCogFoDmym(eS(SYpWRIJaY6FP(lyhJlyt9ywogu88sz8zgxW6N7hJprDbx9zEz9V8FHFPyhrFolxnZJUmn5VnNfBHRxu63YY8lOZtORZGjm(fIXCVGL4fza9nYUt(Vla0grv59NYjHl6gZs8MiOUD4)SpZpM1TDRlpj7k9SB1h8ctnI0U1U6)qjGUB7MBY61zNxVfApFtT61EA9Aa006fyIUloXdv0htx)WzB9dOfY6bdFM(mdVaWESZm4xGqcyX)qQs)jX7b8xJ9W79)X83KEw6mknCCLJFWIPpjZ44bLzd(zxooKj)HFjTh7nXdzxpwCfwHFNw706YNAYzZNY)iVZV6xXXLFFzJpwcuPRmyI42annlXZ43zs43qzUzp4xCJvgD(m4fmkI5gJKo0q6yM4xHP4Ju7RGFoMflQ85ys6NJzxjrw(3Z5WO0)f1mlihwQmCknh16xFU00lN(cA3l5aaOP31Ap7RnoTlH7najDmJKLEkf00vwdK00fm)gGKsxt(c8S9M86o72R3Pp7Pr(lhZmTrQ3X(ABmw7X(nbbCSGagpYaAe99ccKk1PRX1rwJBhj9ThOglTS(X1sIP1A2ttEAuZEmTSwZ1sjQ0MCt(1vw7MwNTi(9qu)dWovXNKUHiXG5)O)1YceWVtg2(IBW3i3AexhF0fLh9vZ3f7Cq6lWDnwDYxzzPw5B1(hjy1NCOJMT)q8sc97G0qa3ee2bkW0nd23ilOcSjwmWLlG5LEa(Dih7BXpgExlQjfVpkCoy4anLXI53pFxeZgH3UHS54vAH33yc7PXRyGPTfHObyQLi9sEdAdNUv0bWtMN8qBUXaknbVkLHj4NtXjPBTc(n947sViSJ5wPhYM6HT6oUGgY4x7aU4LQrC9ShPClo6gYor850P7fixsed4t2ZuXEFDZrmq3CkE9bj8QAOGYu4hYuq1MF)fEc2KmzvVa823OpHXGkq(vwF)2zYOx3Mw8)n0rGEeTThVTObMHS(IE9GFhq0LadSzes9BC(jEt6MfKPElwBgcz9pS07M93AC8rknzXlVK(7sn2RfTfYFB(ryFKoWb7fYWUrriJbctb8q3pQlqNJ4BYCpPO73hxK91DiDpHHSm49Q1PiBDm50i4eb7r62yH4ycxWcyCwm89iiSIE8TF50RV)MtVUxVtVokuJIblhy2H)fUqi1Os(DVCbqMY2117cTLlE5LcFh4A(Yl4LzFdL7t0Ro)snPbqQeWmgYxXDvNlzG3CQGGDggWV6JqhVxfgXVu44KduhXC3N8MVCokaNSI(u7Z9ox6Thno)ctkkxiduQ4nf0Hqa8tOegBYeYxywAWdTKPqQchAxVR6chs0V0L)F94JZES5lrRt)qZR)R5dYWTyamcm(M)l8oEaL(GaDecOGGe3CWNfsIXIBhLzSNFdXd9ORNpNUdsO0IwIirWmFTkKTZK(rEc(6wvC3c)YrgxdkpOiFKDAT0fPJKuSPpMyPcz59hC2FrTrKZuj2wyqVWgy(Dus2o4hAiUI3GNoXBKxY1D704iA9x4UFJSvVCHqQDUBMrn8kHXN5og3RM5UyXZYR7)1sW(7j4jMjCYe86zSBh5hlIeq(pPFdJO4FzS8iJwguCGOvl8(Tyuc48cqB1fLpVsieNiuJ9XF7o1u59)B9GFBbkrYJ1d3MZVwFq5nYeORiu3P(Hdr2yssvyyK)IWdNeXqE9BYvfdioGrACrNOCruXxrMejZ)Sxk3jW5kSv6(rTpZLxjrteybDjqPURHZS5RqQRENGLj9QJQbElCkyXUgtVsJJttjNTRBSCMATHORl(QUxWZhsP3Au6RhfBMeUiFnsr71JO8QlN3JYGrQPr1Jdb39aqIKFV0aYlucwszqK0GNDtzonYJnH7Q0tuFVkB2NpXMfiMmucpY5eAuo3H0PI4LxmFjPRp9s6nKMrnTpfvtvamYQMxp4R4f1gErzJgmbLgrHl8CPKAsS6yIuwIw5ZDVCb4tbrOOBvgqozbQWHUiTx5HxixeiVVGeL6TwSn)boUGmXBp)hnl9O6Hf4zGnJdCgv(9A09eZv6Tf2R5vb)MWoL59yo1rCRYPqUmNoZuj(SGb1JMi3z0SJarZghR4s11D)WlVO5KvBz6yHRK)V)iLCMS)miLfVm8ntpve9v9CtIuF7nCYxqQB80LPiQ0L(ltd5zAoKFD)oXpCv2vjBRkuICKbrqDproNRMN0YJXiW1cGr5ooKfh8Me559UBorsPkz8ddngFx049NUDlSZAWniYE1vgEq2LV9E1mmxddIlLFLBNh1N2Y6LxQ6MWRPrdgzsJoVN2fOl8WIxVNC(d8QzDvyqs6oYi3ff2(LEjRK6TX9aHNfg(CEFvN25cjkpNRo53P7N2l(6BPOpph)j35S)i7m4qpbVcG1ViApfJnj0N)luyQGOH2sgV)BnTupw3H0lYypYp9pGSCzBlIlV9F8clRq9a1Zyp0pIn5VVkRzZMs50tkyL6UiTTPaHx4ukdx2ktspeELaY3AexsEanN7U1a8AYZBYpj0iL5HG4G5CY68BOCpXOXnlYfpEm5OmLWThAiXHHbfuEPKyetBPPerXSj0ZNFp)jPK3qiWx1nDvFP4nnCA7rGqpt)EHSj)dAFH7pqlHXvqnBhIs))eIHxnonxdkY4IRK3juAo791ns2MU(AHFQEp32DFEn3Eco7P3mVDnDX8AWyZ2mnWgDDhSnPhd80zCOOH0jEXZeAusdqjnUMnKNm1EGakn04iZtKP6L1iVoO37H1UREE7qxAKsZOc)PGjuNNTHb7)egDpmfdPBG7jgrb5RVs9vTiODnhepH(WeGjPaRYaMKrkCdFVrIm2fMgYHCgYzyYbuDm6eHltGJviFDrkUU18oV1OQ1IobMQgOtR3FPC9kkW3MzvUJ8Wm5vzdDRmhFEk2O0MuyvNmJMnBwmlOVRHzRf1MU5uh6MZBDmh4LDkNtR6s40iX1gZpVoyU1qgZnZQq9TVG6EElNAUK0w71EfDHf5h5avvfE4rPhjctpulu9Z4RqzPOjdfPnj1ZFfriuF6EwuOapB3ozUcP3dFnoQCFQR3YWPiFqxWAG1f2wZP206cPEi65kv0rLl0k2U9SH7k6EHGBCtVSHZHozxcLauV0HloaTkYjMySKvFKgjySgn2LwRwShHaFOulGligWl87qggM1r5Zsmwzn0BeVe2CUfZVnd7TcF2t8mh6boMb2tHq0TfzC5XWHUv2WIJjVJwl)dXFbwjORCNGPkdn1hVWlctqTWbV58SJeWY7U4KvmxE9Puwp8QWsVDjPf(8Cp95ogLXSCUwcJ1ix75SpRb9ToFMy9py(UpHKh5C5Exqcw((VW7mB6IS8em9tbuqjrmF0rqQYMUu7FoZlASiDVWpxgqfojimAoUxK1Ufax1X34hgo2Fj6ZYBluoSZ(dQRbWgQdR7cQ7h4dDJAUZ5e7CNTlPyCYBgLH0WxAGpxifyK5ciE1fqWRXqOqdddwg3kz1Qo9VyXOCdQfYiqt5yNnnPFOrvvT8Qp8YlfNtR5GaMrtjE7ChZ1m2jp)38E3GsADEM2YIIf1sZZ5aPNMVJGdlBe3DZ9NOKc8eEw1BPTNumf41m7KvrlRGqcMwQIuxg4By0LvE6B(6SimVF9OsWXtXhqkUnmqoluIqS(iL1J1d(d6RJJgTrprGzULSPz(tkLSs5(RPCRgOrdWy6nOVpZ0PHIHL5aU8LhBE(D0U5xLlnH4JUbSNwrYL625YYZxbLtztXCuzso4UpOYnQMEeTNjHtcT8fE5M5efTvVcPxTYmc8ViW0youRAV0vvC)r(UGbkrn2ZtaK0LzCEs4uV6KZYjRYnFCgz69IfAjzd1OKQKTmzal5tFAEUiZ9Ta7jut64gX)u8HxYAKsfqGiASOxlcxMethDbul0TFP1oBAzll3cTzSXfUklhmAT2ILYQG5n1uvvkx(1OaPv5XsKSnQ9DRQOJsXClMsK)tJdOelA7doGnZxGTClZqr4(NUyTUOCbE)nNHLkN3vNKJKJFMtPJXUGG7GEa5haeY0NUfRhdD(iIyXl9twN)D2KVhfeI8abu8tt8eHUaOL0gTgLFfGmNaUR0TmD8kzbuq9mL8vBHBksd(BZ2CK7P3F0KgBk2hlG70YTHTztsLKdZU3CqPivVWnJuxVPl98UTH4H4YXD4sXoedxCgBd5lgp5TI(qM9KxsQNyoOpR6s169D6gqFm5PwMdzNAZnUM)OGUwmR4kiMs2MFvrmnezZRdC6f1o4Sry(VLpoqN3JyK1T60s1mK0ds7G4S)KtlZoJQEbUxiVXDqpon0gYCCtE3xB508GxxBbBDwnyeTqwwJeicKGx0rqzA4YOrSAX)MZuTH1NRitgHP)SlM0aU67qYCRILzSbjOwZafbxbB2kh224c9n(wMMP0nC12ERXXgn(wEqgTHDxXIhIvw4sRo1iplIQiv(MREx3M5h97Ytbz(8xgtXvDZ1SwAKmVRrvb12XPzJJmF7KxEYOmTTCSyvyS7GpQk5GCxoRQbIvARYfu3rGEyaOHW9GjWAnep(KiO5LlNlPN3m6yIOWF3PDXMManm48vT1p1abOETn5QCFdVU455aTqZRuiXvLvhBT6xtLpw4m3vD7WrOsIyBZkECvqZQ3N0k9wCJrKs37q0gi)iElsXeqkXeys(vMRrBaWma8BeobJ3hZJK7eY58So)I)RI0xIuaLdKe)BvbDYmgUmjbjRBcb(7IgfyBG5MSXAVRaQz3mxurox6pVzMbRYBKSuE7DDlOkkVdv5sRybad4XK5oECCAKC8dwwAFn7L8g8pkfzI7uIFlnFL8zg56(8TfykQwbybbAWEJejhrmKC3Tdi8NAhkm45N67ZM6o6zWoGXH)U2nmmy9mavd8Ref0))7MRNEsOyy4Fw8crIe9TbCd8Mh4Kh4obrEgjHes4pjEIp7UUTU13wxLhIOX4T3J3SBTRRR9x)DEoOjPji1d9X5Tb3gcxA(BaBJItfC9mh(sCa(W)SemPeHhtsMh6bv(aVIrmDdU7vmHq2)Fr0zSjC1fUobC8gF7XIiv)r9RhmoGHqdiz8XgEmm2qItW0NthJfRp4g(KjQ)b5HekNa1HDt2kyRz)8MWMX5q2xVVYxNbQYj(sS1AYkuzZUWVWnGAIF7rQ(v(dWiF92A4SHaeahcl45vgXC4nTEqy(Q70y9o9BgujhO)GkSEb1hP04W(393M1sifGLe2JCl9CQrp0Bh4yZv4zBTA9r7ae3c8SuQBb4TcSxLC96O7BbhQdAgv0tUstdFGzRwnXzBOcpl3CWctjxixE5VNv0bhSqvnwfQlU)e6PtFakO0lHlS7G6ORijgX75TbPo2kZYMd7wVzp2cwQsgcCTgp872DEDpxhMw53Rwbx6N1yYaQP(2BzUL2Z)4aq5hHurGHecWgQhaDcZsHNyg6Y0T8i9Fqzecwwc4XXnm)P)(4Ua)VDeCc3TfZaQMap64JHfdohKctwPj0PBvPpDRk1fXQkNa9(XSQufSQYfbPfAnZlvswv6mRQceFrrRkgs04kzvPLMqwh6tElKieWli4DZIvTGpEKXISq2b(VJOzZ6t0NSC4ZcZrNRr3TKw5E)xpAl2GHlhhhrR(M4AjZZAByzdCBgrHuGKpSaHtWzw8DzSVJO5Wyinoua3uDVQZn0SlgJFUBRTBmpR0zkIISVRqkebYOHjvJXess)Q7kjB0Re0o9PMxFQfynLtwFQLDJeFNG(KND1UY6tvQ(KrKVQ6Z)d7i5eSaXwDz0B)52h(FyNhNGDH1B)c73MT383Sp)d]] )

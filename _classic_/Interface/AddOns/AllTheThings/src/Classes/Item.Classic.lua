@@ -66,7 +66,7 @@ local collectibleAsCostForItem = function(t)
 							costTotal = costTotal + 1;
 						end
 					elseif (ref.collectible and not ref.collected) or (ref.total and ref.total > ref.progress) then
-						if ref.cost then
+						if ref.cost and type(ref.cost) == "table" then
 							for k,v in ipairs(ref.cost) do
 								if v[2] == id and v[1] == "i" then
 									costTotal = costTotal + (v[3] or 1);
@@ -157,7 +157,7 @@ local itemFields = {
 		return t.link;
 	end,
 	["icon"] = function(t)
-		return GetItemIcon(t.itemID) or "Interface\\Icons\\INV_Misc_QuestionMark";
+		return GetItemIcon(t.itemID) or 134400;
 	end,
 	["link"] = function(t)
 		return BestItemLinkPerItemID[t.itemID];
@@ -182,6 +182,7 @@ local itemFields = {
 	["GetItemCount"] = function(t)
 		return baseGetItemCount;
 	end,
+	RefreshCollectionOnly = true,
 	["collectible"] = function(t)
 		return t.collectibleAsCost;
 	end,
@@ -195,11 +196,13 @@ app.CreateItem = app.CreateClass("Item", "itemID", itemFields,
 "AsTransmog", {
 	collectible = app.GameBuildVersion >= 40000 and function(t)
 		if t.collectibleAsCost then return true; end
+		if app.Settings.OnlyNotTrash and (not t.q or t.q < 2) then return false; end
 		return app.Settings.Collectibles.Transmog;
 	end or function(t)
 		if t.collectibleAsCost then return true; end
 		if app.Settings.Collectibles.Transmog then
 			if app.Settings.OnlyRWP and not t.rwp then return false; end
+			if app.Settings.OnlyNotTrash and (not t.q or t.q < 2) then return false; end
 			return true;
 		end
 	end,
@@ -210,7 +213,7 @@ app.CreateItem = app.CreateClass("Item", "itemID", itemFields,
 		return collectedAsTransmog(t);
 	end,
 	["description"] = app.GameBuildVersion > 40000 and function(t)
-		return "Blizzard isn't detecting white/grey quality transmogs as collectible, so for the meantime, send this item to an alt to hold on to until they fix it. If its soulbound and from a quest, you're probably okay to vendor it.";
+		return t.collectible and "Blizzard isn't detecting white/grey quality transmogs as collectible, so for the meantime, send this item to an alt to hold on to until they fix it. If its soulbound and from a quest, you're probably okay to vendor it.";
 	end or nil,
 }, isCollectibleTransmog,
 "WithQuest", {
@@ -257,6 +260,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 		description = function(t)
 			return L["HEIRLOOM_TEXT_DESC"];
 		end,
+		RefreshCollectionOnly = true,
 		collectible = function(t)
 			return app.Settings.Collectibles.Heirlooms;
 		end,
@@ -283,20 +287,20 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 	if gameBuildVersion > 60100 then
 		-- Extend the heirloom lib to account for upgrade levels.
 		local armorTextures = {
-			"Interface/ICONS/INV_Icon_HeirloomToken_Armor01",
-			"Interface/ICONS/INV_Icon_HeirloomToken_Armor02",
-			"Interface/ICONS/Inv_leather_draenordungeon_c_01shoulder",
-			"Interface/ICONS/inv_mail_draenorquest90_b_01shoulder",
-			"Interface/ICONS/inv_leather_warfrontsalliance_c_01_shoulder",
-			"Interface/ICONS/inv_shoulder_armor_dragonspawn_c_02",
+			1097737,
+			1097738,
+			960150,
+			929921,
+			1805932,
+			4673926,
 		};
 		local weaponTextures = {
-			"Interface/ICONS/INV_Icon_HeirloomToken_Weapon01",
-			"Interface/ICONS/INV_Icon_HeirloomToken_Weapon02",
-			"Interface/ICONS/inv_weapon_shortblade_112",
-			"Interface/ICONS/inv_weapon_shortblade_111",
-			"Interface/ICONS/inv_weapon_shortblade_102",
-			"Interface/ICONS/inv_weapon_shortblade_84",
+			1097739,
+			1097740,
+			353645,
+			353136,
+			314894,
+			135718,
 		};
 
 		local weaponFilterIDs = { 20, 29, 28, 21, 22, 23, 24, 25, 26, 50, 57, 34, 35, 27, 33, 32, 31 };
@@ -317,6 +321,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 			["description"] = function(t)
 				return L["HEIRLOOMS_UPGRADES_DESC"];
 			end,
+			RefreshCollectionOnly = true,
 			["collectible"] = function(t)
 				return app.Settings.Collectibles.Heirlooms and app.Settings.Collectibles.HeirloomUpgrades;
 			end,
@@ -463,7 +468,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 			wipe(heirloomIDs);
 		end
 	end
-	
+
 	-- Heirlooms are containers for unlocks & upgrade levels.
 	local heirloomDefinition = { "Item", "Heirloom", "heirloomID", heirloomFields };
 	if gameBuildVersion < 40000 then
@@ -508,7 +513,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 			end
 		end);
 	end
-	
+
 	-- Faction Extension.
 	tinsert(heirloomDefinition, "WithFaction");
 	tinsert(heirloomDefinition, {
@@ -536,7 +541,7 @@ if C_Heirloom and app.GameBuildVersion >= 30000 then
 		end,
 	});
 	tinsert(heirloomDefinition, function(t) return t.factionID; end);
-	
+
 	local CreateHeirloom = app.ExtendClass(unpack(heirloomDefinition));
 	app.CreateHeirloom = function(id, t)
 		t = CreateHeirloom(id, t);

@@ -1,7 +1,7 @@
 --[[
     This file is part of Decursive.
 
-    Decursive (v 2.7.20) add-on for World of Warcraft UI
+    Decursive (v 2.7.25) add-on for World of Warcraft UI
     Copyright (C) 2006-2019 John Wellesz (Decursive AT 2072productions.com) ( http://www.2072productions.com/to/decursive.php )
 
     Decursive is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
     Decursive is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY.
 
-    This file was last updated on 2024-07-16T09:27:29Z
+    This file was last updated on 2024-10-20T21:50:55Z
 --]]
 -------------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ local abs               = _G.math.abs;
 local GetNumRaidMembers = DC.GetNumRaidMembers;
 local GetNumPartyMembers= _G.GetNumSubgroupMembers;
 local InCombatLockdown  = _G.InCombatLockdown;
-local GetSpellBookItemInfo  = _G.C_SpellBook and _G.C_SpellBook.GetSpellBookItemInfo or _G.GetSpellBookItemInfo;
+local GetItemInfo           = _G.C_Item and _G.C_Item.GetItemInfo or _G.GetItemInfo;
 local GetSpellInfo          = _G.C_Spell and _G.C_Spell.GetSpellInfo or _G.GetSpellInfo;
 local GetSpellName          = _G.C_Spell and _G.C_Spell.GetSpellName or function (spellId) return (GetSpellInfo(spellId)) end;
 local GetSpellDescription = _G.C_Spell and _G.C_Spell.GetSpellDescription or _G.GetSpellDescription;
@@ -601,12 +601,12 @@ local function GetStaticOptions ()
             -- We got a item link!
             isItem = true;
             v = D:GetItemFromLink(v);
-        elseif type(v) == 'string' and (GetSpellBookItemInfo(v)) then -- not a number, not a spell link, then a spell name?
+        elseif type(v) == 'string' and (D:GetSpellUsefulInfoIfKnown(v)) then -- not a number, not a spell link, then a spell name?
             -- We got a spell name!
-            D:Debug(v, "is a spell name in our book:", GetSpellBookItemInfo(v));
-            local SPItype, id = GetSpellBookItemInfo(v);
+            D:Debug(v, "is a spell name in our book:", D:GetSpellUsefulInfoIfKnown(v));
+            local id, isPet = D:GetSpellUsefulInfoIfKnown(v);
             v = id;
-            isPetAbility = SPItype == "PETACTION" and true or false;
+            isPetAbility = isPet;
         elseif type(v) == 'string' and (GetItemInfo(v)) then
             D:Debug(v, "is a item name:", GetItemInfo(v));
             -- We got an item name!
@@ -616,8 +616,8 @@ local function GetStaticOptions ()
             return error(L["OPT_INPUT_SPELL_BAD_INPUT_NOT_SPELL"]);
         end
 
-        if not isItem and v > 0xffffff then
-            v = bit.band(0xffffff, v); -- XXX does not seem to yield the expected results in wotlk for pet spells...
+        if not isItem and v > 0xfffff then
+            v = bit.band(0xfffff, v);
         end
 
         -- avoid spellID/itemID collisions
@@ -1941,7 +1941,7 @@ local function GetStaticOptions ()
                                     "\n\n|cFFDDDD00 %s|r:\n   %s"..
                                     "\n\n|cFFDDDD00 %s|r:\n   %s\n\n   %s"
                                 ):format(
-                                    "2.7.20", "John Wellesz", ("2024-07-19T13:31:22Z"):sub(1,10),
+                                    "2.7.25", "John Wellesz", ("2025-01-06T11:04:21Z"):sub(1,10),
                                     L["ABOUT_NOTES"],
                                     L["ABOUT_LICENSE"],         GetAddOnMetadata("Decursive", "X-License") or 'All Rights Reserved',
                                     L["ABOUT_SHAREDLIBS"],      GetAddOnMetadata("Decursive", "X-Embeds")  or 'GetAddOnMetadata() failure',
@@ -2021,7 +2021,7 @@ local function GetOptions()
     options.args.general.args.profiles.hidden = function() return not D:IsEnabled(); end;
     options.args.general.args.profiles.disabled = function() return D.Status.Combat or not D:IsEnabled(); end;
 
-    if DC.WOTLK or not DC.WOWC then
+    if DC.CATACLYSM or not DC.WOWC then
         -- Add dual-spec support
         local LibDualSpec = LibStub('LibDualSpec-1.0');
         LibDualSpec:EnhanceDatabase(D.db, "DecursiveDB");
@@ -2130,7 +2130,7 @@ function D:CheckCureOrder ()
         [DC.BLEED]          = 7,
     };
     local AuthorizedValues = {
-        [false] = true; -- LOL Yes, it's TRUE tnat FALSE is an authorized value xD
+        [false] = true; -- LOL Yes, it's TRUE that FALSE is an authorized value xD
         -- Other <0  values are used when there used to be a spell...
         [1]     = DC.ENEMYMAGIC,
         [-11]   = DC.ENEMYMAGIC,
@@ -3750,6 +3750,6 @@ function D:QuickAccess (CallingObject, button) -- {{{
 end -- }}}
 
 
-T._LoadedFiles["Dcr_opt.lua"] = "2.7.20";
+T._LoadedFiles["Dcr_opt.lua"] = "2.7.25";
 
 -- Closer

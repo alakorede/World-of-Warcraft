@@ -178,9 +178,9 @@ local function GetSourceInfo(itemID)
 end
 
 local function BuildSourceList(visualID)
-	if not IsAddOnLoaded("BetterWardrobe_SourceData") then
-		EnableAddOn("BetterWardrobe_SourceData")
-		LoadAddOn("BetterWardrobe_SourceData")
+	if not C_AddOns.IsAddOnLoaded("BetterWardrobe_SourceData") then
+		C_AddOns.EnableAddOn("BetterWardrobe_SourceData")
+		C_AddOns.LoadAddOn("BetterWardrobe_SourceData")
 		vendorDB = (_G.BetterWardrobeData and _G.BetterWardrobeData.vendorDB) or {}
 		locationDB = (_G.BetterWardrobeData and _G.BetterWardrobeData.locationDB) or {}
 	end
@@ -191,6 +191,7 @@ local function BuildSourceList(visualID)
 	local sourceID = sources and sources.sourceID
 	local data = {}
 	local data_index = 1
+
 	if sources then
 		for i=1,#sources do
 			local sourceInfo = C_TransmogCollection.GetSourceInfo(sources[i])
@@ -201,16 +202,16 @@ local function BuildSourceList(visualID)
 				local sourceData = itemID and itemSourceDB[itemID] or sourceInfo
 				local sourceType = sourceInfo.sourceType
 				--Don't want to list items with hidden sources
-				if sourceType then 
+				--if sourceType then 
 					data[data_index] = {
 						["itemID"] = itemID ,
-						["itemLink"] = itemLink,
-						["sourceType"] = sourceType,
-						["sourceData"] = sourceData,
-						["sourceID"] = sources[i],
+						["itemLink"] = itemLink or nil,
+						["sourceType"] = sourceType or nil,
+						["sourceData"] = sourceData or nil,
+						["sourceID"] = sources[i] or nil,
 					}
 					data_index = data_index + 1
-				end
+				--end
 			end
 		end
 	end
@@ -332,8 +333,8 @@ local function AddAdditional(parent, index, data, itemID)
 		spellID = data[1]
 		profession = data[2]
 		link = GetSpellLink(spellID)
-
-		local name, rank, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID)
+		local spellinfo = C_Spell and C_Spell.GetSpellInfo(spellID)
+		local name, rank, icon, castTime, minRange, maxRange, spellId = spellinfo.name, spellinfo.iconID, spellinfo.originalIconID, spellinfo.castTime, spellinfo.minRange, spellinfo.maxRange, spellinfo.spellID
 		--local id, name, points = GetAchievementInfo(sourceName)
 		sourceName = name
 		sourceName = ACHIEVEMENT_COLOR_CODE..sourceName..L.ENDCOLOR
@@ -356,7 +357,7 @@ local function AddAdditional(parent, index, data, itemID)
 		price_text = ""
 		local goldCost = tonumber(prices)
 		if goldCost > 0 then
-			price_text = price_text .. GetCoinTextureString(goldCost).."   "
+			price_text = price_text .. C_CurrencyInfo.GetCoinTextureString(goldCost).."   "
 			SourceInfo:SetText(("-%s: %s - %s: %s - Price: %s"):format( transmogSource, L[vendorName] or L["No Data Available"], L["Zone"], zones or "?", price_text))
 		end
 
@@ -455,7 +456,6 @@ function CollectionList:GenerateSourceListView(visualID)
 	scroll:SetFullWidth(true)
 	scroll:SetFullHeight(true)
 	scrollcontainer:AddChild(scroll)	
-
 	local list = BuildSourceList(visualID)
 	for i, data in ipairs(list) do
 		if data then
@@ -467,7 +467,7 @@ function CollectionList:GenerateSourceListView(visualID)
 			else
 				collectedStatus = RED_FONT_COLOR_CODE.."["..L["Not Collected"].."]"..L.ENDCOLOR
 			end
-
+			local GetItemInfo = C_Item and C_Item.GetItemInfo
 			local itemName, _, itemQuality = GetItemInfo(itemLink)
 			--local itemID =GetItemInfoFromHyperlink(itemLink)
 			local nameColor = ITEM_QUALITY_COLORS[itemQuality] or ""

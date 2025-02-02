@@ -53,10 +53,12 @@ Roth_UI_DB = {
 ["profileKeys"] = {
 ["Shamanjuba - Nemesis"] = "Shamanjuba - Nemesis",
 ["Mitráculo - Nemesis"] = "Mitráculo - Nemesis",
+["Kigon - Nemesis"] = "Kigon - Nemesis",
 ["Chishy - Goldrinn"] = "Chishy - Goldrinn",
 ["Kirashy - Dentarg"] = "Kirashy - Dentarg",
 ["Migoshy - Aerie Peak"] = "Migoshy - Aerie Peak",
 ["Nostradamus - Goldrinn"] = "Nostradamus - Goldrinn",
+["Maharishi - Goldrinn"] = "Maharishi - Goldrinn",
 ["Eshy - Nemesis"] = "Eshy - Nemesis",
 ["Sifú - Goldrinn"] = "Sifú - Goldrinn",
 ["Hilarión - Azralon"] = "Hilarión - Azralon",
@@ -64,6 +66,8 @@ Roth_UI_DB = {
 ["Vacalactika - Nemesis"] = "Vacalactika - Nemesis",
 ["Apoena - Azralon"] = "Apoena - Azralon",
 ["Eshy - Steamwheedle Cartel"] = "Eshy - Steamwheedle Cartel",
+["Elaphe - Goldrinn"] = "Elaphe - Goldrinn",
+["Lvcivs - Goldrinn"] = "Lvcivs - Goldrinn",
 ["Eshy - Goldrinn"] = "Eshy - Goldrinn",
 ["Bankshy - Thrall"] = "Bankshy - Thrall",
 ["Tamagoshy - Nemesis"] = "Tamagoshy - Nemesis",
@@ -75,6 +79,7 @@ Roth_UI_DB = {
 ["Migoshy - Goldrinn"] = "Migoshy - Goldrinn",
 ["Goroshy - Nemesis"] = "Goroshy - Nemesis",
 ["Elshy - Goldrinn"] = "Elshy - Goldrinn",
+["Átilla - Gurubashi"] = "Átilla - Gurubashi",
 ["Muruatan - Nemesis"] = "Muruatan - Nemesis",
 ["Muligan - Nemesis"] = "Muligan - Nemesis",
 ["Belashy - Goldrinn"] = "Belashy - Goldrinn",
@@ -83,6 +88,7 @@ Roth_UI_DB = {
 ["Aimekalo - Goldrinn"] = "Aimekalo - Goldrinn",
 ["Uzetab - Nemesis"] = "Uzetab - Nemesis",
 ["Aleshy - Goldrinn"] = "Aleshy - Goldrinn",
+["Crysthina - Goldrinn"] = "Crysthina - Goldrinn",
 ["Muligan - Goldrinn"] = "Muligan - Goldrinn",
 ["Dishy - Goldrinn"] = "Dishy - Goldrinn",
 ["Apinéia - Nemesis"] = "Apinéia - Nemesis",
@@ -103,25 +109,28 @@ Roth_UI_DB = {
 ["Satishy - Goldrinn"] = "Satishy - Goldrinn",
 ["Verdessauro - Azralon"] = "Verdessauro - Azralon",
 ["Keishy - Aerie Peak"] = "Keishy - Aerie Peak",
-["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
 ["Trystam - Goldrinn"] = "Trystam - Goldrinn",
+["Skoshy - Goldrinn"] = "Skoshy - Goldrinn",
 ["Vedronys - Azralon"] = "Vedronys - Azralon",
 ["Sharan - Goldrinn"] = "Sharan - Goldrinn",
+["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Trystam - Nemesis"] = "Trystam - Nemesis",
+["Batezu - Nemesis"] = "Batezu - Nemesis",
 ["Lilishy - Goldrinn"] = "Lilishy - Goldrinn",
-["Yashy - Nemesis"] = "Yashy - Nemesis",
 ["Melishy - Goldrinn"] = "Melishy - Goldrinn",
 ["Satishy - Nemesis"] = "Satishy - Nemesis",
-["Batezu - Nemesis"] = "Batezu - Nemesis",
+["Yashy - Nemesis"] = "Yashy - Nemesis",
 ["Kuradis - Nemesis"] = "Kuradis - Nemesis",
-["Aishy - Nemesis"] = "Aishy - Nemesis",
 ["Dishy - Nemesis"] = "Dishy - Goldrinn",
 ["Wishy - Nemesis"] = "Wishy - Nemesis",
+["Dartho - Goldrinn"] = "Dartho - Goldrinn",
 },
 ["profiles"] = {
 ["Shamanjuba - Nemesis"] = {
 },
 ["Mitráculo - Nemesis"] = {
+},
+["Kigon - Nemesis"] = {
 },
 ["Chishy - Goldrinn"] = {
 },
@@ -130,6 +139,8 @@ Roth_UI_DB = {
 ["Migoshy - Aerie Peak"] = {
 },
 ["Nostradamus - Goldrinn"] = {
+},
+["Maharishi - Goldrinn"] = {
 },
 ["Eshy - Nemesis"] = {
 },
@@ -144,6 +155,10 @@ Roth_UI_DB = {
 ["Apoena - Azralon"] = {
 },
 ["Eshy - Steamwheedle Cartel"] = {
+},
+["Elaphe - Goldrinn"] = {
+},
+["Lvcivs - Goldrinn"] = {
 },
 ["Eshy - Goldrinn"] = {
 },
@@ -167,6 +182,8 @@ Roth_UI_DB = {
 },
 ["Elshy - Goldrinn"] = {
 },
+["Átilla - Gurubashi"] = {
+},
 ["Muruatan - Nemesis"] = {
 },
 ["Muligan - Nemesis"] = {
@@ -182,6 +199,8 @@ Roth_UI_DB = {
 ["Uzetab - Nemesis"] = {
 },
 ["Aleshy - Goldrinn"] = {
+},
+["Crysthina - Goldrinn"] = {
 },
 ["Muligan - Goldrinn"] = {
 },
@@ -223,33 +242,35 @@ Roth_UI_DB = {
 },
 ["Keishy - Aerie Peak"] = {
 },
-["Skoshy - Goldrinn"] = {
-},
 ["Trystam - Goldrinn"] = {
+},
+["Skoshy - Goldrinn"] = {
 },
 ["Vedronys - Azralon"] = {
 },
 ["Sharan - Goldrinn"] = {
 },
+["Aishy - Nemesis"] = {
+},
 ["Trystam - Nemesis"] = {
 },
-["Lilishy - Goldrinn"] = {
+["Batezu - Nemesis"] = {
 },
-["Yashy - Nemesis"] = {
+["Lilishy - Goldrinn"] = {
 },
 ["Melishy - Goldrinn"] = {
 },
 ["Satishy - Nemesis"] = {
 },
-["Batezu - Nemesis"] = {
+["Yashy - Nemesis"] = {
 },
 ["Kuradis - Nemesis"] = {
-},
-["Aishy - Nemesis"] = {
 },
 ["Dishy - Nemesis"] = {
 },
 ["Wishy - Nemesis"] = {
+},
+["Dartho - Goldrinn"] = {
 },
 },
 }

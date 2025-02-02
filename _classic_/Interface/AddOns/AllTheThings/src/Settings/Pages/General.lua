@@ -208,9 +208,6 @@ function(self)
 end,
 function(self)
 	settings:Set("Thing:Transmog", self:GetChecked())
-	if self:GetChecked() then
-		app.DoRefreshAppearanceSources = true
-	end
 	settings:UpdateMode(1)
 end)
 local tooltip = L.APPEARANCES_CHECKBOX_TOOLTIP;
@@ -263,6 +260,27 @@ if app.GameBuildVersion >= 40000 then	-- Transmog officially supported with Cata
 	end)
 	checkboxMainOnlyMode:SetATTTooltip(L.MAIN_ONLY_TOOLTIP)
 	checkboxMainOnlyMode:AlignBelow(checkboxTransmog, 1)
+
+	if app.IsClassic then
+		local checkboxQualityFilter = child:CreateCheckBox(L.ONLY_NOT_TRASH,
+		function(self)
+			self:SetChecked(settings:Get("Only:NotTrash"))
+			if not settings:Get("Thing:Transmog") and not app.MODE_DEBUG then
+				self:Disable()
+				self:SetAlpha(0.4)
+			else
+				self:Enable()
+				self:SetAlpha(1)
+			end
+		end,
+		function(self)
+			settings:Set("Only:NotTrash", self:GetChecked());
+			settings:UpdateMode(1);
+		end)
+		checkboxQualityFilter:SetATTTooltip(L.ONLY_NOT_TRASH_TOOLTIP)
+		checkboxQualityFilter:AlignAfter(checkboxMainOnlyMode)
+		checkboxQualityFilter:SetScale(0.8);
+	end
 else
 	local checkboxOnlyRWP = child:CreateCheckBox(L.ONLY_RWP,
 	function(self)
@@ -281,6 +299,26 @@ else
 	end)
 	checkboxOnlyRWP:SetATTTooltip(L.ONLY_RWP_TOOLTIP)
 	checkboxOnlyRWP:AlignAfter(checkboxTransmog)
+	checkboxOnlyRWP:SetScale(0.8);
+
+	local checkboxQualityFilter = child:CreateCheckBox(L.ONLY_NOT_TRASH,
+	function(self)
+		self:SetChecked(settings:Get("Only:NotTrash"))
+		if not settings:Get("Thing:Transmog") and not app.MODE_DEBUG then
+			self:Disable()
+			self:SetAlpha(0.4)
+		else
+			self:Enable()
+			self:SetAlpha(1)
+		end
+	end,
+	function(self)
+		settings:Set("Only:NotTrash", self:GetChecked());
+		settings:UpdateMode(1);
+	end)
+	checkboxQualityFilter:SetATTTooltip(L.ONLY_NOT_TRASH_TOOLTIP)
+	checkboxQualityFilter:AlignBelow(checkboxOnlyRWP)
+	checkboxQualityFilter:SetScale(0.8);
 end
 
 -- Heirlooms aren't in the game until late Wrath Classic.
@@ -368,13 +406,13 @@ local accwideCheckboxDeaths;
 if app.IsClassic then
 -- Classic wants you to collect these, but Retail doesn't yet.
 accwideCheckboxDeaths =
-child:CreateAccountWideCheckbox("DEATHS", "Deaths")
+child:CreateAccountWideCheckbox("DEATHS", "DeathTracker")
 	:AlignBelow(accwideCheckboxCharacterUnlocks or accwideCheckboxAchievements)
-child:CreateTrackingCheckbox("DEATHS", "Deaths", true)
+child:CreateTrackingCheckbox("DEATHS", "DeathTracker", true)
 	:AlignAfter(accwideCheckboxDeaths)
 end
 
-accwideCheckboxExploration =
+local accwideCheckboxExploration =
 child:CreateAccountWideCheckbox("EXPLORATION", "Exploration")
 	:AlignBelow(accwideCheckboxDeaths or accwideCheckboxCharacterUnlocks or accwideCheckboxAchievements)
 local explorationCheckbox = child:CreateTrackingCheckbox("EXPLORATION", "Exploration", true)
@@ -395,8 +433,13 @@ child:CreateAccountWideCheckbox("QUESTS", "Quests")
 local checkboxQuests =
 child:CreateTrackingCheckbox("QUESTS", "Quests", true)
 	:AlignAfter(accwideCheckboxQuests)
+local checkboxQuestsLocked =
 child:CreateTrackingCheckbox("QUESTS_LOCKED", "QuestsLocked", true)
 	:AlignAfter(checkboxQuests)
+if app.IsRetail then
+	child:CreateTrackingCheckbox("QUESTS_HIDDEN_TRACKER", "QuestsHidden", true)
+		:AlignAfter(checkboxQuestsLocked)
+end
 
 local accwideCheckboxRecipes =
 child:CreateAccountWideCheckbox("RECIPES", "Recipes")
@@ -658,18 +701,11 @@ if app.GameBuildVersion >= 60000 then
 	child:CreateTrackingCheckbox("FOLLOWERS", "Followers", true)
 		:AlignAfter(accwideCheckboxFollowers)
 
-	-- Music Rolls & Selfie Filters (Warlords+) [TODO: Do we want to split these up?]
-	local accwideCheckboxMusicRollsAndSelfieFilters =
-	child:CreateAccountWideCheckbox("MUSIC_ROLLS_SELFIE_FILTERS", "MusicRollsAndSelfieFilters")
-		:AlignBelow(accwideCheckboxFollowers)
-	child:CreateTrackingCheckbox("MUSIC_ROLLS_SELFIE_FILTERS", "MusicRollsAndSelfieFilters", true)
-		:AlignAfter(accwideCheckboxMusicRollsAndSelfieFilters)
-
 	if app.GameBuildVersion >= 80000 then
 		-- Azerite Essences (BFA+)
 		local accwideCheckboxAzeriteEssences =
 		child:CreateAccountWideCheckbox("AZERITE_ESSENCES", "AzeriteEssences")
-			:AlignBelow(accwideCheckboxMusicRollsAndSelfieFilters)
+			:AlignBelow(accwideCheckboxFollowers)
 		child:CreateTrackingCheckbox("AZERITE_ESSENCES", "AzeriteEssences", true)
 			:AlignAfter(accwideCheckboxAzeriteEssences)
 
@@ -688,13 +724,13 @@ if app.GameBuildVersion >= 60000 then
 			child:CreateTrackingCheckbox("RUNEFORGELEGENDARIES", "RuneforgeLegendaries", true)
 				:AlignAfter(accwideCheckboxRunecarvingPowers)
 
-			if app.GameBuildVersion >= 90000 then
-				-- Drakewatcher Manuscripts (Dragonflight+)
-				local accwideCheckboxDrakewatcherManuscripts =
+			if app.GameBuildVersion >= 100000 then
+				-- Mount Mods (Dragonflight+)
+				local accwideCheckboxMountMods =
 				child:CreateForcedAccountWideCheckbox()
 					:AlignBelow(accwideCheckboxRunecarvingPowers)
-				child:CreateTrackingCheckbox("DRAKEWATCHERMANUSCRIPTS", "DrakewatcherManuscripts", true)
-					:AlignAfter(accwideCheckboxDrakewatcherManuscripts)
+				child:CreateTrackingCheckbox("MOUNTMODS", "MountMods", true)
+					:AlignAfter(accwideCheckboxMountMods)
 			end
 		end
 	end

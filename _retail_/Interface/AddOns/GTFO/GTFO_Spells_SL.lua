@@ -120,6 +120,7 @@ GTFO.SpellID["338085"] = {
 GTFO.SpellID["323800"] = {
   --desc = "Putrid Bile";
   sound = 1;
+  ignoreApplication = true;
 };
 
 GTFO.SpellID["338410"] = {
@@ -413,6 +414,11 @@ GTFO.SpellID["326309"] = {
   sound = 1;
 };
 
+GTFO.SpellID["463257"] = {
+  --desc = "Mist Ward (Mistveil Defender)";
+  sound = 1;
+};
+
 --- *******************
 --- * Theater of Pain *
 --- *******************
@@ -628,6 +634,7 @@ GTFO.SpellID["328579"] = {
 
 GTFO.SpellID["346945"] = {
   --desc = "Manifest Pain (Baroness Frieda)";
+  ignoreApplication = true;
   sound = 1;
 };
 
@@ -717,6 +724,7 @@ GTFO.SpellID["335873"] = {
 GTFO.SpellID["350809"] = {
   --desc = "Jailer's Misery (Deathseeker Eye)";
   sound = 1;
+  ignoreApplication = true;
 };
 
 GTFO.SpellID["355077"] = {

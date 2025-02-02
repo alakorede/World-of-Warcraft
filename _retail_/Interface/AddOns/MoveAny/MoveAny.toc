@@ -1,6 +1,6 @@
-## Interface: 100207, 110000
+## Interface: 110007, 110100
 
-## Version: 1.6.248
+## Version: 1.8.3
 ## Title: MoveAny by |cff3FC7EBD4KiR |T132115:16:16:0:0|t 
 ## Notes: Move Any Ui or Frame
 ## Author: D4KiR
@@ -15,13 +15,13 @@ libs\D4Lib\D4Lib.xml
 
 libs\math.lua
 libs\db.lua
-profiles\emp.lua
 
 locale\enUS.lua
 locale\deDE.lua
 locale\esES.lua
 locale\frFR.lua
 locale\itIT.lua
+locale\koKR.lua
 locale\ptBR.lua
 locale\ruRU.lua
 locale\zhCN.lua

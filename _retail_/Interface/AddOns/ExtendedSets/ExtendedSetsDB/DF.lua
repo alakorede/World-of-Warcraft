@@ -17,6 +17,10 @@ local altLabelDB = {
 [3443]="Plunderstorm",
 }
 
+local altPatchID = {
+[3443] = 110007; --Plunderstorm, bumping to TWW 11.0.7
+}
+
 --Used to add alternate appearances to blizzard sets
 --SetID, OriginalSourceID, AlternateApperanceID
 local altAppearancesDB = {
@@ -645,7 +649,7 @@ local altAppearancesDB = {
 
 function AddToCollection()
   for i = 1, #db do
-    if (C_TransmogCollection.GetSourceInfo(db[i][6][1])) then --checks if this is an actual set. Only needed for checking sets that are only viewable on the ptr but not yet live.
+    --if (C_TransmogCollection.GetSourceInfo(db[i][6][1])) then --checks if this is an actual set. Only needed for checking sets that are only viewable on the ptr but not yet live.
       local data = {};
       data.classMask = db[i][4];
       data.note = db[i][2];
@@ -666,18 +670,39 @@ function AddToCollection()
       for j=1,#db[i][6] do 
         if type(db[i][6][j]) == "table" then
           if not data.altSources then data.altSources = {}; data.altSourceNumbers = {}; end
-          data.sources[db[i][6][j][1]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).isCollected;
-          data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j][1]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j][1]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j][1]] = isKnown;
+          --data.altSources[db[i][6][j][1]] = {db[i][6][j][1], db[i][6][j][2]};
+          data.altSources[db[i][6][j][1]] = {}
+          for k=1,#db[i][6][j] do
+            app.AppID(db[i][6][j][k])
+            tinsert(data.altSources[db[i][6][j][1]], db[i][6][j][k]);
+          end
           data.altSourceNumbers[db[i][6][j][1]] = 1;
         else
-          data.sources[db[i][6][j]] = false--C_TransmogCollection.GetSourceInfo(db[i][6][j]).isCollected;
+          local isKnown = false;
+          --for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(C_TransmogCollection.GetSourceInfo(db[i][6][j]).visualID)) do
+          for a,b in pairs(C_TransmogCollection.GetAllAppearanceSources(app.AppID(db[i][6][j]))) do
+            if C_TransmogCollection.PlayerKnowsSource(b) then
+              isKnown = true;
+              break;
+            end
+          end
+          data.sources[db[i][6][j]] = isKnown;
         end
       end
       
       data.description = data.note; --remove this later
       
       app.SetsFrame.AddSetToTables(data);
-    end
+    --end
   end
   
   for i = 1, #altAppearancesDB do
@@ -688,6 +713,7 @@ end
 app.ExpandedCallbacks[expansionID] = AddToCollection;
 app.altAppearancesDB[expansionID] = altAppearancesDB;
 app.altLabelDB[expansionID] = altLabelDB;
+app.altPatchID[expansionID] = altPatchID;
 --do
 --  for i = 1, #altAppearancesDB do
 --    app.ExpandedAltAppearances[altAppearancesDB[i][1]] = {altAppearancesDB[i][2],altAppearancesDB[i][3]};

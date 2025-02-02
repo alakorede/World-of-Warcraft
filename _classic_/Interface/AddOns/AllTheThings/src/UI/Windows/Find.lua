@@ -107,8 +107,8 @@ app:CreateWindow("AchievementFinder", {
 	Commands = { "attfindachievements" },
 	OnRebuild = function(self, ...)
 		if not self.data then
-			local HarvestedItemDatabase = {};
 			local CreateAchievementHarvester = app.ExtendClass("Achievement", "AchievementHarvester", "achievementID", {
+				IsClassIsolated = true,
 				collectible = app.ReturnTrue,
 				collected = app.ReturnFalse,
 				text = function(t) return t.name; end,
@@ -365,7 +365,7 @@ app:CreateWindow("AchievementFinder", {
 				total = 0,
 				back = 1,
 				current = 0,
-				limit = 19451,
+				limit = 45000,
 				g = { },
 				OnUpdate = function(header)
 					local g = header.g;
@@ -410,9 +410,9 @@ app:CreateWindow("ItemFinder", {
 	Commands = { "attfinditems" },
 	OnRebuild = function(self, ...)
 		if not self.data then
-			local HarvestedItemDatabase = {};
 			local ItemHarvester = CreateFrame("GameTooltip", "ATTCItemHarvester", UIParent, "GameTooltipTemplate");
 			local CreateItemHarvester = app.ExtendClass("Item", "ItemHarvester", "itemID", {
+				IsClassIsolated = true,
 				collectible = app.ReturnTrue,
 				collected = app.ReturnFalse,
 				text = function(t)
@@ -460,8 +460,7 @@ app:CreateWindow("ItemFinder", {
 								t.itemSubType = itemSubType;
 								t.info = info;
 								t.retries = nil;
-								HarvestedItemDatabase[t.itemID] = info;
-								AllTheThingsAD.HarvestedItemDatabase = HarvestedItemDatabase;
+								self.HarvestedItemDatabase[t.itemID] = info;
 								if link then
 									ItemHarvester:SetOwner(UIParent,"ANCHOR_NONE")
 									ItemHarvester:SetHyperlink(link);
@@ -533,18 +532,18 @@ app:CreateWindow("ItemFinder", {
 										if #requirements > 0 then
 											info.otherRequirements = requirements;
 										end
-										rawset(t, "text", link);
+										rawset(t, "text", itemName);
 										rawset(t, "collected", true);
 									end
 									ItemHarvester:Hide();
-									return link;
+									return itemName;
 								end
-								return link;
+								return link or itemName;
 							end
 						end
 						
 						t.retries = (t.retries or 0) + 1;
-						if t.retries > 10 then
+						if t.retries > 3 then
 							rawset(t, "collected", true);
 						end
 					else
@@ -562,24 +561,15 @@ app:CreateWindow("ItemFinder", {
 				progress = 0,
 				total = 0,
 				back = 1,
-				currentItemID = 228955,
-				minimumItemID = 0,
-				g = { },
+				currentItemID = 237826,
+				minimumItemID = 1,
 				OnUpdate = function(header)
 					local g = header.g;
-					if g then
-						local count = #g;
-						if count > 0 then
-							for i=count,1,-1 do
-								if g[i].collected then
-									tremove(g, i);
-								end
-							end
-						end
-						for count=#g,100 do
-							local i = header.currentItemID - 1;
-							if i > header.minimumItemID then
-								header.currentItemID = i;
+					if not g then
+						g = {};
+						header.g = g;
+						for i=header.currentItemID,header.minimumItemID,-1 do
+							if not self.HarvestedItemDatabase[i] then
 								tinsert(g, CreateItemHarvester(i, {
 									parent = header
 								}));
@@ -597,9 +587,20 @@ app:CreateWindow("ItemFinder", {
 		self:DefaultUpdate(...);
 		if self.data.OnUpdate then self.data.OnUpdate(self.data); end
 	end,
+	--[[
 	OnRefresh = function(self, ...)
 		self:DelayedCall("Update", 5);
 		return true;
+								
+	end,
+	]]--
+	OnLoad = function(self, settings)
+		self.HarvestedItemDatabase = AllTheThingsAD.HarvestedItemDatabase or {};
+	end,
+	OnSave = function(self, settings)
+		if self.HarvestedItemDatabase then
+			AllTheThingsAD.HarvestedItemDatabase = self.HarvestedItemDatabase;
+		end
 	end,
 });
 app:CreateWindow("QuestFinder", {
@@ -608,6 +609,7 @@ app:CreateWindow("QuestFinder", {
 	OnRebuild = function(self, ...)
 		if not self.data then
 			local CreateQuestHarvester = app.ExtendClass("Quest", "QuestHarvester", "questID", {
+				IsClassIsolated = true,
 				collectible = app.ReturnFalse,
 				collected = app.ReturnTrue,
 			},
@@ -639,7 +641,7 @@ app:CreateWindow("QuestFinder", {
 				progress = 0,
 				total = 0,
 				back = 1,
-				currentID = 90000,
+				currentID = 88749,
 				minimumID = 78295,
 				g = { },
 				OnUpdate = function(header)
@@ -685,6 +687,7 @@ app:CreateWindow("SpellFinder", {
 	OnRebuild = function(self, ...)
 		if not self.data then
 			local CreateSpellHarvester = app.ExtendClass("Spell", "SpellHarvester", "spellID", {
+				IsClassIsolated = true,
 				collectible = app.ReturnFalse,
 				collected = app.ReturnTrue,
 			},

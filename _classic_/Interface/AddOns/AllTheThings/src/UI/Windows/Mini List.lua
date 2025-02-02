@@ -77,7 +77,7 @@ local CachedMapData = setmetatable({}, {
 			local function MergeIntoHeader(headerID, o)
 				MergeObject(headers[headerID].g, o);
 			end
-			
+
 			-- If there's a timerunning event going on...
 			local timerunningSeasonEventID = GetTimerunningSeasonEventID();
 			if timerunningSeasonEventID and app.Settings:GetTooltipSetting("Filter:MiniList:Timerunning") then
@@ -89,7 +89,7 @@ local CachedMapData = setmetatable({}, {
 				end
 				results = refined;
 			end
-			
+
 			local header = {};
 			header.mapID = mapID;
 			header.g = groups;
@@ -138,7 +138,7 @@ local CachedMapData = setmetatable({}, {
 					MergeIntoHeader(app.HeaderConstants.FACTIONS, clone);
 				elseif key == "explorationID" then
 					MergeIntoHeader(app.HeaderConstants.EXPLORATION, clone);
-				elseif key == "flightPathID" then
+				elseif key == "flightpathID" then
 					MergeIntoHeader(app.HeaderConstants.FLIGHT_PATHS, clone);
 				elseif key == "itemID" or key == "spellID" then
 					if GetRelativeField(group, "headerID", app.HeaderConstants.ZONE_DROPS) then
@@ -157,7 +157,11 @@ local CachedMapData = setmetatable({}, {
 						end
 					end
 				elseif key == "headerID" then
-					MergeObject(groups, clone);
+					if clone.parent and clone.parent.headerID then
+						MergeIntoHeader(clone.parent.headerID, clone);
+					else
+						MergeObject(groups, clone);
+					end
 				else
 					local headerID = GetRelativeValue(group, "headerID");
 					if headerID then
@@ -192,7 +196,7 @@ local CachedMapData = setmetatable({}, {
 					end
 				end
 			end
-			
+
 			for i,o in ipairs(header.g) do
 				if o.key == "headerID" then
 					o.SortType = SortTypeByHeaderID[o.headerID];
@@ -256,10 +260,13 @@ app:CreateWindow("MiniList", {
 			wipe(CachedMapData);
 			self:Rebuild();
 		end
-		self.SetMapID = function(self, mapID)
+		self.SetMapID = function(self, mapID, show)
 			if mapID and mapID ~= self.mapID then
 				self.mapID = mapID;
 				self:Rebuild();
+			end
+			if show then
+				self:Show();
 			end
 		end
 		app.ToggleMiniListForCurrentZone = function()

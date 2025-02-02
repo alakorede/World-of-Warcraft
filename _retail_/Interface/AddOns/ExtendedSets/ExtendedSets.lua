@@ -1,6 +1,8 @@
 local app = select(2, ...);
 local SetsFrame;
 
+app.devMode = false;
+
 local LDD = LibStub('LibDropDown');
 local currToc = select(4,GetBuildInfo());
 
@@ -32,20 +34,21 @@ local factionNames = { playerFaction = "", opposingFaction = "" };
 
 local ClassName;
 local ClassIndex = nil;
+local playerClassInd;
 local ClassMaskMap = {
     [1] = {1, 2, 32, 35}, -- Plate Wearer
     [2] = {1, 2, 32, 35}, -- Plate Wearer
-    [3] = {4, 64, 4096, 4164},    -- Mail Wearer
+    [3] = {4, 64, 4096, 4164, 68},    -- Mail Wearer
     [4] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
     [5] = {16, 128, 256, 400}, -- Cloth Wearer
     [6] = {1, 2, 32, 35}, -- Plate Wearer
-    [7] = {4, 64, 4096, 4164},    -- Mail Wearer
+    [7] = {4, 64, 4096, 4164, 68},    -- Mail Wearer
     [8] = {16, 128, 256, 400}, -- Cloth Wearer
     [9] = {16, 128, 256, 400}, -- Cloth Wearer
     [10] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
     [11] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
     [12] = {8, 512, 1024, 2048, 3592, 11784}, -- Leather Wearer
-    [13] = {4, 64, 4096, 4164},    -- Mail Wearer
+    [13] = {4, 64, 4096, 4164, 68},    -- Mail Wearer
 }
 local ClassNameMask = {
     [1] = "Warrior",
@@ -170,12 +173,9 @@ local heritageSets = {
     [3350] = 8, -- Troll
     [3346] = 11, -- Draenei
     [3347] = 11, -- Draenei
-    [3700] = 84, -- Earthen1
-    [3701] = 84, -- Earthen1
-    [3702] = 84, -- Earthen1
-    [3700] = 85, -- Earthen2
-    [3701] = 85, -- Earthen2
-    [3702] = 85, -- Earthen2
+    [3700] = {[84]=true,[85]=true}, -- Earthen
+    [3701] = {[84]=true,[85]=true}, -- Earthen
+    [3702] = {[84]=true,[85]=true}, -- Earthen
 }
 local hiddenVisuals = {
     [1] = {77344,134110},
@@ -203,7 +203,7 @@ local ScrollFrameUpdate;
 local ExS_ScrollFrame = nil;
 local _FavoriteDropDown = nil;
 local _ButtonHeight = nil;
-local _ButtonsInFrame = nil;
+local ExS_ButtonCount = nil;
 local ArmorTypeRadioIsChecked = { false, false, false, false };
 local CurrArmorType = 1;
 
@@ -227,6 +227,7 @@ app.altAppearancesDB = {};
 app.altLabelDB = {};
 app.altLabelAppendDB = {};
 app.altNoteDB = {};
+app.altPatchID = {};
 --local ExpandedAltAppearances = {};
 --app.ExpandedAltAppearances = ExpandedAltAppearances;
 
@@ -323,6 +324,9 @@ local function GetSetByID(SetID)
   end
   
 	return nil;
+end
+function ExS_GetSetByID(SetID)
+  return GetSetByID(SetID);
 end
 
 local function GetAlternateBaseSourceID(set, sourceID)
@@ -515,7 +519,7 @@ local function SetHasNewSources(setID, givenSources)
   if setID and setID >= ExpandedID then
     local sources = givenSources or SetsFrame.GetSetSources(setID);
     for sourceID,_ in pairs(sources) do
-      local visID = C_TransmogCollection.GetSourceInfo(sourceID).visualID;
+      local visID = app.AppID(sourceID)--C_TransmogCollection.GetSourceInfo(sourceID).visualID;
       for i=1,#SetsFrame.NewVisualIDs do
         if visID == SetsFrame.NewVisualIDs[i] then
           return true;
@@ -573,50 +577,40 @@ end
 
 --Returns if the set is complete.
 --Used for determining if a new source should create a set link for the custom sets.
-local function IsSetCompleted(setID, givenSet)
+local function IsSetCompleted(setID, givenSet)  
   local sources = SetsFrame.GetSetSources(setID, givenSet);
-  for sourceID,collected in pairs(sources) do
-    local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
-    if sourceInfo then
-      local appearanceID = sourceInfo.visualID;
-      
-      local thisCollected = false;
-      if sourceInfo.isCollected then
-        thisCollected = true;
-      elseif appearanceID then
-        local appSources = C_TransmogCollection.GetAllAppearanceSources(appearanceID);
-        
-        for _,sourceID2 in pairs(appSources) do
-          
-          local sourceInfos = C_TransmogCollection.GetSourceInfo(sourceID2);
-          if sourceInfos ~= nil then
-            if sourceInfos.isCollected then
-              thisCollected = true;
-              break;
-            end
-          end
-        end
-      end
-      if not thisCollected then 
-        return false;
-      end
+  for source,collected in pairs(sources) do
+    if not collected then
+      return false;
     end
   end
   return true;
 end
 
 --Trying to apply a sourceID in the transmog window. If it doesn't apply it isn't a valid source, gg.
-local tmogLocation, pendInfo;
-local function TransmogrifySourceTest(sourceInfo) 
-  local slot = C_Transmog.GetSlotForInventoryType(sourceInfo.invType)
-  local tmogLocation = TransmogUtil.CreateTransmogLocation(slot, Enum.TransmogType.Appearance, Enum.TransmogModification.Main);
-  local slotSources = C_TransmogCollection.GetAppearanceSources(sourceInfo.visualID, sourceInfo.categoryID, tmogLocation);
+--local tmogLocation, pendInfo;
+local function TransmogrifySourceTest(sourceID) 
+  --local slot = C_Transmog.GetSlotForInventoryType(sourceInfo.invType)
+  --local tmogLocation = TransmogUtil.CreateTransmogLocation(slot, Enum.TransmogType.Appearance, Enum.TransmogModification.Main);
+  local visualID = app.AppID(sourceID);
+  local slotSources = C_TransmogCollection.GetAppearanceSources(visualID)--, sourceInfo.categoryID, tmogLocation);
   if slotSources == nil then return false; end
-  CollectionWardrobeUtil.SortSources(slotSources, sourceInfo.visualID);
+  CollectionWardrobeUtil.SortSources(slotSources, visualID);
   local index = CollectionWardrobeUtil.GetDefaultSourceIndex(slotSources, sourceID);
   if slotSources[index].isCollected and C_TransmogCollection.GetAppearanceInfoBySource(slotSources[index].sourceID).appearanceIsUsable then
     return true;
   else return false; end
+  --local apps = C_TransmogCollection.GetValidAppearanceSourcesForClass(sourceInfo.visualID, playerClassInd);
+  --local isUsable = false;
+  --if apps then
+  --  for a,b in pairs(apps) do
+  --    if b.isCollected and b.isValidSourceForPlayer then
+  --      isUsable = true;
+  --      break;
+  --    end
+  --  end
+  --end
+  --return isUsable;
 end
 
 --Returns if the set is complete and usable.
@@ -650,14 +644,14 @@ local function IsSetCompletedAndUsable(setID, givenSet)
   for sourceID,collected in pairs(sources) do
     local usableSource = false;
     if not set.altSources or not set.altSources[sourceID] then
-      local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
-      if sourceInfo and TransmogrifySourceTest(sourceInfo) then
+      --local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
+      if TransmogrifySourceTest(sourceID) then
         usableSource = true;
       end
     else
       for i=#set.altSources[sourceID],1,-1 do
-        local sourceInfo = C_TransmogCollection.GetSourceInfo(set.altSources[sourceID][i]);
-        if sourceInfo and TransmogrifySourceTest(sourceInfo) then
+        --local sourceInfo = C_TransmogCollection.GetSourceInfo(set.altSources[sourceID][i]);
+        if TransmogrifySourceTest(sourceID) then
           usableSource = true;
         else
           table.remove(set.altSources[sourceID], i);
@@ -726,9 +720,9 @@ end
 
 --Check to see if this is giving a new source for an already obtained appearance.
 local function IsNewSourceOnlyObtainedSource(sourceID)
-  local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
-  if sourceInfo then
-    local appearanceID = sourceInfo.visualID;
+  --local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
+  --if sourceInfo then
+    local appearanceID = app.AppID(sourceID)--sourceInfo.visualID;
     
     if appearanceID then
       local appSources = C_TransmogCollection.GetAllAppearanceSources(appearanceID);
@@ -745,13 +739,13 @@ local function IsNewSourceOnlyObtainedSource(sourceID)
       end
     end
     return true;
-  end
+  --end
 end
 
 --Helper for filling in the SourceID to SetID map.
 local function AddSourcesToSetsMap(setID, sources)
   for sourceID,_ in pairs(sources) do
-    local visID = C_TransmogCollection.GetSourceInfo(sourceID).visualID;
+    local visID = app.AppID(sourceID)--C_TransmogCollection.GetSourceInfo(sourceID).visualID;
     if SetIDForSource[visID] ~= nil then
       table.insert(SetIDForSource[visID], setID);
     else
@@ -763,7 +757,7 @@ end
 --Helper for getting a SetId from the given SourceID.
 --Returns a table of all Sets with the given Source, or nil if no sets for source exist.
 local function GetSetIDsBySourceID(sourceID)
-  local visID = C_TransmogCollection.GetSourceInfo(sourceID).visualID;
+  local visID = app.AppID(sourceID)--C_TransmogCollection.GetSourceInfo(sourceID).visualID;
   return SetIDForSource[visID];
 end
 
@@ -882,10 +876,10 @@ local function GetSetSourceData(setID, givenSources, quick, forceUpdate)
 		local numTotal = 0;
     local numUsable = 0;
 		for sourceID,collected in pairs(sources) do
-      local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
-      if sourceInfo then
-        local appearanceID = sourceInfo.visualID;
-        
+      --local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
+      --if sourceInfo then
+      --  local appearanceID = sourceInfo.visualID;
+        local appearanceID = app.AppID(sourceID);
         local thisCollected = false;
         --if sourceInfo.isCollected then
         --  numCollected = numCollected + 1;
@@ -907,7 +901,7 @@ local function GetSetSourceData(setID, givenSources, quick, forceUpdate)
                 thisCollected = true;
                 isCollectedChecked = true;
               end
-              if not isTransmogrifyChecked and TransmogrifySourceTest(sourceInfos) then
+              if not isTransmogrifyChecked and TransmogrifySourceTest(sourceID2) then
                 numUsable = numUsable + 1;
                 isTransmogrifyChecked = true;
               end
@@ -922,7 +916,7 @@ local function GetSetSourceData(setID, givenSources, quick, forceUpdate)
           SetsFrame.sourceData[setID] = sourceData;
           return sourceData;
         end
-      end
+      --end
       numTotal = numTotal + 1;
 		end
 		sourceData = { numCollected = numCollected, numUsable = numUsable, numTotal = numTotal, sources = sources, collected = numCollected == numTotal };
@@ -1016,20 +1010,11 @@ local function GetBaseSetData(setID, forceUpdate)
 	end
 	return BaseSetsData[setID];
 end
-
---CreateFrame( "GameTooltip", "ExS_GameTooltip", nil, "GameTooltipTemplate" );
---ExS_GameTooltip:SetOwner( WorldFrame, "ANCHOR_NONE" );
----- Allow tooltip SetX() methods to dynamically add new lines based on these
---ExS_GameTooltip:AddFontStrings(
---    ExS_GameTooltip:CreateFontString( "$parentTextLeft1", nil, "GameTooltipText" ),
---    ExS_GameTooltip:CreateFontString( "$parentTextRight1", nil, "GameTooltipText" ) );
     
 --Helper function. Makes an invisible tooltip for the item and parses it to see if it has 
 --red error text related to class requirements.
-local function IsForClass(itemLink)
-  --ExS_GameTooltip:ClearLines();
-  --ExS_GameTooltip:SetHyperlink(itemLink);
-  local tooltipInfo = C_TooltipInfo.GetHyperlink(itemLink);
+local function IsForClass(itemID)
+  local tooltipInfo = C_TooltipInfo.GetItemByID(itemID)
   
   if tooltipInfo.lines[1].leftText == "Retrieving item information" then return nil; end
   
@@ -1039,7 +1024,8 @@ local function IsForClass(itemLink)
     if text then
       if string.find(text, "Classes:") then
         local r,g,b = tooltipInfo.lines[i].leftColor.r,tooltipInfo.lines[i].leftColor.g,tooltipInfo.lines[i].leftColor.b;
-        if math.floor(r*255) == 255 and math.floor(g*255) == 32 and math.floor(b*255) == 32 then
+
+        if r == 1 and g > 0.125 and g < 0.126 and b > 0.125 and b < 0.126 then
           return false;
         else
           return true, true;
@@ -1048,17 +1034,6 @@ local function IsForClass(itemLink)
     end
   end
   return true;
-end
-
-local function testSourceInfos(setID)
-  local sources = SetsFrame.GetSetSources(setID);
-  for sourceID,_ in pairs(sources) do
-    local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceID);
-    if sourceInfo == nil then
-      local set = GetSetByID(setID);
-      SilentError("Failed to get setInfo\n Set: ",set.name,"\n Label: ",set.label,"\n sourceID:",sourceID)
-    end
-  end
 end
 
 --Get the items in the set, sorted.
@@ -1104,30 +1079,61 @@ local function GetSortedSetSources(setID, givenSet)
       --GetAppearanceSources will only return sources that the character could use (so nil for other weight classes,
       --but also nil for cases such as a source being from a quest given to the other faction).
       --GetAllAppearanceSources will return all the sources regardless of ability to use.
-      local appSources = C_TransmogCollection.GetAllAppearanceSources(sourceInfo.visualID);
-      local tmogLocation = TransmogUtil.CreateTransmogLocation(C_Transmog.GetSlotForInventoryType(sourceInfo.invType), Enum.TransmogType.Appearance, Enum.TransmogModification.Main);
-      local appSources2 = C_TransmogCollection.GetAppearanceSources(sourceInfo.visualID, sourceInfo.categoryID, tmogLocation);
+      local appSources = C_TransmogCollection.GetAllAppearanceSources(app.AppID(sourceID));--(sourceInfo.visualID);
+      --local tmogLocation = TransmogUtil.CreateTransmogLocation(C_Transmog.GetSlotForInventoryType(sourceInfo.invType), Enum.TransmogType.Appearance, Enum.TransmogModification.Main);
+      --local appSources2 = C_TransmogCollection.GetAppearanceSources(sourceInfo.visualID)--, sourceInfo.categoryID, tmogLocation);
+      --print(sourceInfo.visualID,"   ",#appSources,"  ",#appSources2)
+      
+      --local isCollectedAccount = false;
+      --local canCharCollectIt = false;
+      --local isCollectedChar = false;
+      --local otherClassCanCollect = 0;
+      --for i=1,#appSources do
+      --  local sourceInfo = C_TransmogCollection.GetSourceInfo(appSources[i]);
+      --  
+      --  if sourceInfo.isCollected then isCollectedAccount = true end
+      --  if sourceInfo.playerCanCollect then canCharCollectIt = true; end
+      --  if sourceInfo.playerCanCollect and sourceInfo.isCollected then isCollectedChar = true; end
+      --  print(sourceInfo.isCollected,"  isC -- playCanC  ",sourceInfo.playerCanCollect)
+      --
+      --  --local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(appSources[i]));
+      --  local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo.itemID));
+      --  local isPlayerArmorWeight = (sourceInfo.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
+      --  
+      --  if isPlayerArmorWeight then
+      --    local isForClass, hasClassRestriction = IsForClass(sourceInfo.itemID);
+      --    
+      --    if not hasClassRestriction then
+      --      if sourceInfo.isCollected then
+      --        otherClassCanCollect = 2;
+      --      else
+      --        otherClassCanCollect = 1;
+      --      end
+      --    end
+      --  end
+      --  
+      --  if otherClassCanCollect == 2 and isCollectedChar then break; end
+      --end
+      
+      --local sourceCollectPairs = {}
+      --if appSources2 then
+      --  for _,appInfo in pairs(appSources2) do
+      --    sourceCollectPairs[appInfo.sourceID] = { appInfo.isCollected, appInfo.isCollected};
+      --  end
+      --end
+      --
+      --for i=1,#appSources do
+      --  local appInfo = C_TransmogCollection.GetSourceInfo(appSources[i]);
+      --  if sourceCollectPairs[appInfo.sourceID] then
+      --    if not sourceCollectPairs[appInfo.sourceID][1] then
+      --      sourceCollectPairs[appInfo.sourceID][2] = appInfo.isCollected;
+      --    end
+      --  else
+      --    sourceCollectPairs[appInfo.sourceID] = {false, appInfo.isCollected};
+      --  end
+      --end
       
       
-      local sourceCollectPairs = {}
-      if appSources2 then
-        for _,appInfo in pairs(appSources2) do
-          sourceCollectPairs[appInfo.sourceID] = { appInfo.isCollected, appInfo.isCollected};
-        end
-      end
-      
-      for i=1,#appSources do
-        local appInfo = C_TransmogCollection.GetSourceInfo(appSources[i]);
-        if sourceCollectPairs[appInfo.sourceID] then
-          if not sourceCollectPairs[appInfo.sourceID][1] then
-            sourceCollectPairs[appInfo.sourceID][2] = appInfo.isCollected;
-          end
-        else
-          sourceCollectPairs[appInfo.sourceID] = {false, appInfo.isCollected};
-        end
-      end
-      
-        
       local isCollectedAccount = false;
       local canCharCollectIt = nil;
       if not factionCheck then
@@ -1138,26 +1144,33 @@ local function GetSortedSetSources(setID, givenSet)
       local anyNotPending = false;
       local otherClassCanCollect = 0;
       
-      for source,CollectInfo in pairs(sourceCollectPairs) do
-        if CollectInfo[2] then
-          isCollectedAccount = true;
-        end
-        if CollectInfo[1] then
-          isCollectedChar = true;
-        end
+      --for source,CollectInfo in pairs(sourceCollectPairs) do
+      for i=1,#appSources do
+        local sourceInfo = C_TransmogCollection.GetSourceInfo(appSources[i]);
+        
+        if sourceInfo.isCollected then isCollectedAccount = true; end
+        if sourceInfo.isValidSourceForPlayer and sourceInfo.isCollected then isCollectedChar = true; end
+        --if CollectInfo[2] then
+        --  isCollectedAccount = true;
+        --end
+        --if CollectInfo[1] then
+        --  isCollectedChar = true;
+        --end
         if canCharCollectIt == nil then
-          local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(source));
+          --local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(source));
+          --local isForClass, hasClassRestriction = IsForClass(link);
+          --local isForClass, hasClassRestriction = IsForClass(sourceInfo.itemID);
           --if isPlayerArmorWeight and IsForClass(link) then
           --  canCharCollectIt = true;
           --end
-          local sourceInfo2 = C_TransmogCollection.GetSourceInfo(source);
-          local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo2.itemID));
+          --local sourceInfo2 = C_TransmogCollection.GetSourceInfo(source);
+          local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo.itemID));
           
-          local isPlayerArmorWeight = (sourceInfo2.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
+          local isPlayerArmorWeight = (sourceInfo.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
           
           
           if isPlayerArmorWeight then
-            local isForClass, hasClassRestriction = IsForClass(link);
+            local isForClass, hasClassRestriction = IsForClass(sourceInfo.itemID);
             if isForClass == nil then
               updatePending = true;
             else
@@ -1169,20 +1182,25 @@ local function GetSortedSetSources(setID, givenSet)
           end
         end
         if otherClassCanCollect < 2 then
-          local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(source));
+          --local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(source));
           
-          local sourceInfo2 = C_TransmogCollection.GetSourceInfo(source);
-          local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo2.itemID));
-          local isPlayerArmorWeight = (sourceInfo2.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
+          --local sourceInfo2 = C_TransmogCollection.GetSourceInfo(source);
+          local itemArmorType = select(7,C_Item.GetItemInfoInstant(sourceInfo.itemID));
+          local isPlayerArmorWeight = (sourceInfo.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or (ClassArmorType[select(3,UnitClass('player'))] == itemArmorType);
           
           if isPlayerArmorWeight then
-            local isForClass, hasClassRestriction = IsForClass(link);
+            local isForClass, hasClassRestriction = IsForClass(sourceInfo.itemID);
             if isForClass == nil then
               updatePending = true;
             else
               anyNotPending = true;
               if isForClass and not hasClassRestriction then
-                if CollectInfo[1] then
+                --if CollectInfo[1] then
+                --  otherClassCanCollect = 2;
+                --else
+                --  otherClassCanCollect = 1;
+                --end
+                if sourceInfo.isValidSourceForPlayer and sourceInfo.isCollected then
                   otherClassCanCollect = 2;
                 else
                   otherClassCanCollect = 1;
@@ -1234,7 +1252,7 @@ local function GetSetSourcesForSlot(setID, slot, givenSources, firstAppID)
     
     if (slot == sourceInvType) then
       if not firstAppID then
-        local appSourcesIDs = C_TransmogCollection.GetAllAppearanceSources(sourceInfo.visualID);
+        local appSourcesIDs = C_TransmogCollection.GetAllAppearanceSources(app.AppID(sourceID));--(sourceInfo.visualID);
         
         local appSources = {};
         for i=1,#appSourcesIDs do
@@ -1247,7 +1265,7 @@ local function GetSetSourcesForSlot(setID, slot, givenSources, firstAppID)
         
         return appSources;
       else
-        return sourceInfo.visualID
+        return app.AppID(sourceID)--sourceInfo.visualID
       end
     end
   end
@@ -1280,12 +1298,25 @@ local function GetSetSources(setID, givenSet)
     set = GetSetByID(setID);
   end
   if set == nil then SilentError("Failed to find set for setID of ",setID); set = {} end
+  if setID == nil then
+    setID = set.setID;
+  end
   
   if set.sources == nil then
     set.sources = {};
 		local setAppearances = C_TransmogSets.GetSetPrimaryAppearances(setID);
 		for i, appearanceInfo in ipairs(setAppearances) do
-			set.sources[appearanceInfo.appearanceID] = appearanceInfo.collected;
+      --if not (ExS_Settings.hideMopRemix and app.mopItemRemixFlag[data.setID] and app.mopItemRemixFlag[data.setID][appearanceInfo.appearanceID]) then
+        set.sources[appearanceInfo.appearanceID] = appearanceInfo.collected;
+      --elseif set.expansionID == 4 then
+      --  for i=1,#app.altAppearancesDB[4] do
+      --    if app.altAppearancesDB[4][i][1] == setID and app.altAppearancesDB[4][i][2] == appearanceInfo.appearanceID then
+      --      if not (app.mopItemRemixFlag[data.setID] and app.mopItemRemixFlag[data.setID][app.altAppearancesDB[4][i][2]]) then
+      --        set.sources[app.altAppearancesDB[4][i][2]] = C_TransmogCollection.GetSourceInfo(app.altAppearancesDB[4][i][2]).isCollected;
+      --      end
+      --    end
+      --  end
+      --end
 		end
   end
   
@@ -1294,7 +1325,7 @@ end
 
 --Loops through the baseList and checks all of their variants to find the set that contains the source item.
 local function GetSetContainingSourceID(sourceID)
-  local visualID = C_TransmogCollection.GetSourceInfo(sourceID).visualID;
+  local visualID = app.AppID(sourceID)--C_TransmogCollection.GetSourceInfo(sourceID).visualID;
   
   for i = 1, #BaseList do
     local variantSets = GetVariantSets(BaseList[i].setID, false);
@@ -1304,7 +1335,7 @@ local function GetSetContainingSourceID(sourceID)
         GetSetSources(set.setID);
       end
       for sourceID2,_ in pairs(set.sources) do
-        local visID = C_TransmogCollection.GetSourceInfo(sourceID2).visualID;
+        local visID = app.AppID(sourceID2)--C_TransmogCollection.GetSourceInfo(sourceID2).visualID;
         if visualID == visID then
           return set.setID;
         end
@@ -1330,10 +1361,11 @@ local function OnShow()
 		SetsFrame.CreateScrollbar(frame);
     isCollectionSetup = true;
   end
-  
+  --debugprofilestart()
   if(not alreadyFilled) then
     SetsFrame.InitializeSets();
   end
+  --print(debugprofilestop())
   -- select the first set if not init
 	if ( not WardrobeCollectionFrame.SetsCollectionFrame.init ) then
 		WardrobeCollectionFrame.SetsCollectionFrame.init = true;
@@ -1442,7 +1474,7 @@ local function OnEvent(self, event, ...)
 		WardrobeCollectionFrame.SetsCollectionFrame:UpdateProgressBar();
 		WardrobeCollectionFrame.SetsCollectionFrame:ClearLatestSource();
   elseif ( event == "TRANSMOG_COLLECTION_SOURCE_ADDED" ) then
-    local visID = C_TransmogCollection.GetSourceInfo(...).visualID;
+    local visID = app.AppID(...);--C_TransmogCollection.GetSourceInfo(...).visualID;
     --If the item is part of an exisiting set, can skip needing to load everything.
     if C_TransmogSets.GetSetsContainingSourceID(...) ~= nil then
       table.insert(SetsFrame.NewVisualIDs, visID);
@@ -1469,7 +1501,7 @@ local function OnEvent(self, event, ...)
       end
     end
   elseif ( event == "TRANSMOG_COLLECTION_SOURCE_REMOVED" ) then
-    local visID = C_TransmogCollection.GetSourceInfo(...).visualID;
+    local visID = app.AppID(...);--C_TransmogCollection.GetSourceInfo(...).visualID;
     --If the removed visualId was in the list of new visual ids, then remove it from that list.
     for i=0,#SetsFrame.NewVisualIDs do
       if SetsFrame.NewVisualIDs[i] == visID then
@@ -1575,7 +1607,7 @@ local function HandleItemFrames(itemFrame, forceItemFrameDataUpdate)
       itemFrame.New:Show();
       itemFrame.New.Anim:Play();
     elseif #SetsFrame.NewVisualIDs > 0 then
-      local itemFrameVisID = C_TransmogCollection.GetSourceInfo(itemFrame.sourceID).visualID;
+      local itemFrameVisID = app.AppID(itemFrame.sourceID)--C_TransmogCollection.GetSourceInfo(itemFrame.sourceID).visualID;
       local setNew = false;
       for i = 1,#SetsFrame.NewVisualIDs do
         if SetsFrame.NewVisualIDs[i] == itemFrameVisID then
@@ -1700,7 +1732,7 @@ local function DisplaySet(self, givenSetID, force)
   WardrobeCollectionFrame.SetsCollectionFrame.Model:Undress()
   
   local showRemix = false;
-  if expacID == 4 then
+  if expacID == 4 and not ExS_Settings.hideMopRemix then
     if app.mopRemixFlag[setID] then
       WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.RemixIcon:SetShown(true);
       showRemix = true;
@@ -1951,11 +1983,13 @@ local function OnSearchUpdate()
   
   oldSearchValue = searchValue;
   
-  SetsFrame.ExS_ScrollFrame_Update();
+  --SetsFrame.ExS_ScrollFrame_Update();
   
   if #BaseList > 0 then --Can happen if you set filters in a way to make an empty list.
     SetsFrame.ScrollToOffset(1, true, true, true);
     WardrobeCollectionFrame.SetsCollectionFrame:Refresh();
+  else
+    SetsFrame.ExS_ScrollFrame_Update();
   end
 end
 
@@ -2424,9 +2458,9 @@ local function SortSets(sets, reverseUIOrder)
       if set1.label == "Holiday" then return true; end
       if set2.label == "Holiday" then return false; end
     end
-		if ( set1.expansionID ~= set2.expansionID ) then
-			return set1.expansionID > set2.expansionID;
-		end
+		--if ( set1.expansionID ~= set2.expansionID ) then
+		--	return set1.expansionID > set2.expansionID;
+		--end
 		if ( set1.patchID ~= set2.patchID ) then
 			return set1.patchID > set2.patchID;
 		end
@@ -2474,6 +2508,14 @@ local function HideBlizzardSets(setID)
                       [2746] = true, --DF dup Primal Elements green set(leather)
                       [2744] = true, --DF dup Primal Elements green set(mail)
                       [2748] = true, --DF dup Primal Elements green set(plate)
+                      [4136] = true, --TBC: Dungeon Plate Silver (like...why..?)
+                      [4131] = true, --TBC: Dungeon Mail Purple (like...why..?)
+                      [4128] = true, --TBC: Dungeon Leather Purple (like...why..?)
+                      [1450] = true, --Trial of Style cloth duplicate with new Blizz TBC Dungeon
+                      [2677] = true, --trading post void-bound plate
+                      [2676] = true, --trading post void-bound mail
+                      [2660] = true, --trading post void-bound leather
+                      [2659] = true, --trading post void-bound cloth
     };
   return setsToHide[setID];
 end
@@ -2619,6 +2661,12 @@ local function HideSetsFromTransmogrify(setID)
                       [3665] = true, --TWW Pre-patch Dup (cloth)
                       [3666] = true, --TWW Pre-patch Dup (mail)
                       [3667] = true, --TWW Pre-patch Dup (leather)
+                      
+                      [1450] = true, --Trial of Style cloth duplicate with new Blizz TBC Dungeon
+                      [2677] = true, --trading post void-bound plate
+                      [2676] = true, --trading post void-bound mail
+                      [2660] = true, --trading post void-bound leather
+                      [2659] = true, --trading post void-bound cloth
     };
   
   return setsToHide[setID];
@@ -2636,7 +2684,19 @@ local function UseSetForTransmogrify(data)
   
   -- If it is a Heritage set, use if for current race.
   if heritageSets[data.setID] ~= nil then
-    if heritageSets[data.setID] ~= transmogrifyRace then
+    if type(heritageSets[data.setID]) == "number" then
+      if heritageSets[data.setID] ~= transmogrifyRace then
+        return;
+      end
+    else
+      if not heritageSets[data.setID][transmogrifyRace] then return; end
+    end
+  elseif data.raceID then
+    if type(data.raceID) == "number" then
+      if data.raceID ~= transmogrifyRace then
+        return;
+      end
+    elseif not data.raceID[transmogrifyRace] then
       return;
     end
   end
@@ -2705,11 +2765,35 @@ local function UseSet(data)
   if HideBlizzardSets(data.setID) then return false; end
   -- If it is a Heritage set, show/hide if for current race.
   if heritageSets[data.setID] ~= nil then
-    if heritageSets[data.setID] == currentRaceID then
-      if data.label == nil then data.label = "Heritage Set" end
-      return true;
+    if type(heritageSets[data.setID]) == "number" then
+      if heritageSets[data.setID] == currentRaceID then
+        if data.label == nil then data.label = "Heritage Set" end
+        return true;
+      else
+        return false;
+      end
     else
-      return false;
+      if heritageSets[data.setID][currentRaceID] then
+        if data.label == nil then data.label = "Heritage Set" end
+        return true;
+      else
+        return false;
+      end
+    end
+  end
+  if data.raceID then
+    if type(data.raceID) == "number" then
+      if data.raceID == currentRaceID then
+        return true;
+      else
+        return false;
+      end
+    else
+      if data.raceID[currentRaceID] then
+        return true;
+      else
+        return false;
+      end
     end
   end
   -- If this the other faction and we are not showing other faction, don't display it.
@@ -2717,11 +2801,13 @@ local function UseSet(data)
   -- If this is from an expansion that is hidden, don't show it.
   if data.expansionID > -1 and not ExS_Settings.expansionToggles[data.expansionID + 1] then return false; end
   -- If we are hiding no longer obtainable and this set applies, don't show it.
-  if (data.noLongerObtainable and ExS_Settings.hideNoLongerObtainable) then return false; end
+  if (data.noLongerObtainable and ExS_Settings.hideNoLongerObtainable and not IsSetCompleted(data.setID, data)) then return false; end
   -- If we are hiding trading post sets, don't show it.
-  if (data.tp and ExS_Settings.hideTradingPost) then return false; end
+  if (data.tp and ExS_Settings.hideTradingPost and not IsSetCompleted(data.setID, data)) then return false; end
   -- If we are hiding shop sets, don't show it.
-  if (data.shop and ExS_Settings.hideShopsets) then return false; end
+  if (data.shop and ExS_Settings.hideShopsets and not IsSetCompleted(data.setID, data)) then return false; end
+  -- If we are hiding Mop Remix, don't show it.
+  if (data.isRemix and ExS_Settings.hideMopRemix and not app.shouldUseMopRemix(data)) then return false; end
   
   
   -- Check for correct class. (Or corect weight if displayOnlyMyClass is not checked).
@@ -2810,6 +2896,7 @@ local setsCustomLabels = {
   [850] = "Naxxramas (Classic)",
   [899] = "Naxxramas (Classic)",
   [3306] = "Trading Post",
+  [1529] = "The Burning Crusade: Dungeon Set 2",
 }
 local setsFlagTP = {
   [3487] = true,
@@ -2822,17 +2909,26 @@ local setsFlagTP = {
   [3652] = true, --deep diver
   [3644] = true, --swimwear
   [3645] = true, --swimwear
-  [3646] = true, --swimwear
+  --[3646] = true, --swimwear
   [3647] = true, --swimwear
   [3636] = true, --swimwear (shorts)
   [3637] = true, --swimwear (shorts)
-  [3638] = true, --swimwear (shorts)
+  --[3638] = true, --swimwear (shorts)
   [3639] = true, --swimwear (shorts)
   [3875] = true, -- Plunderlord's Finery (yellow/orange)
   [3885] = true, --Battered Harvest Golem(red)
-  [3886] = true, --Battered Harvest Golem(purple)
+  --[3886] = true, --Battered Harvest Golem(purple)--purple was from Hallow's End
   [3887] = true, --Battered Harvest Golem(green)
   [3888] = true, --Battered Harvest Golem(blue)
+  [3635] = true, -- purple murloc romper
+  [4213] = true, --Ornate Lunar Festival (Red)
+  [4215] = true, --Ornate Lunar Festival (Purple)
+  [4214] = true, --Ornate Lunar Festival (Pink)
+  [4216] = true, --Ornate Lunar Festival (Teal)
+  [4208] = true, --Clockwork Attire (Blue)
+  [4210] = true, --Clockwork Attire (Green)
+  [4209] = true, --Clockwork Attire (Gold)
+  [4211] = true, --Clockwork Attire (Purple)
 }
 local setsFlagShop = {
   [1903] = true, -- wendigo woolies
@@ -2844,12 +2940,15 @@ local setsFlagShop = {
   [3085] = true, -- high scholar's
   [3355] = true, -- dreadlord's venombane
   [3634] = true, -- green murloc romper
-  [3635] = true, -- purple murloc romper
   [3128] = true, -- stormrider's attire
   [3129] = true, -- thundering stormrider's attire
 }
 local setsFlagNoLongerObtainable = {
   [3443] = true, -- plunderlord's finery
+  [3440] = true, --MoP Remix Warrior HoF Exclusive
+}
+local setsSetClassMask = {
+  [4152] = 400, --Khaz Algar Trophymaster's Cloth Armor (was 0)
 }
 
 local function IsFavorite(setID)
@@ -2861,6 +2960,7 @@ local function FillSetMaps()
   local sets = C_TransmogSets.GetAllSets();
 
   factionNames.playerFaction, _ = UnitFactionGroup('player');
+  playerClassInd =  select(3,UnitClass('player'));
   if factionNames.playerFaction == "Alliance" then
     factionNames.opposingFaction = "Horde";
   else
@@ -2915,6 +3015,14 @@ local function FillSetMaps()
     if app.altNoteDB[data.expansionID] and app.altNoteDB[data.expansionID][data.setID] then
       data.note = app.altNoteDB[data.expansionID][data.setID];
     end
+    --Alt Patch ID
+    if app.altPatchID[data.expansionID] and app.altPatchID[data.expansionID][data.setID] then
+      data.patchID = app.altPatchID[data.expansionID][data.setID];
+    end
+    --Alt Expac ID
+    --if app.altExpacID[data.expansionID] and app.altPatchID[data.expansionID][data.setID] then
+    --  data.expansionID = app.altExpacID[data.expansionID][data.setID];
+    --end
     --Added Remix flag
     if data.expansionID == 4 then
       if app.mopRemixFlag[data.setID] then
@@ -2924,6 +3032,7 @@ local function FillSetMaps()
       end
     end
     if data.classMask == 16383 then data.classMask = 0 end
+    if setsSetClassMask[data.setID] then data.classMask = setsSetClassMask[data.setID] end
     
     local sources = GetSetSources(data.setID, data);
     AddSourcesToSetsMap(data.setID, sources)
@@ -3136,15 +3245,6 @@ local function FillSetMaps()
     RemoveHiddenSetsFromBaseList();
   end
   
-  --Testing. I don't remember what this was for.
-  -- for a,b in pairs(BaseList) do 
-  -- testSourceInfos(b.setID);
-  -- end
-  -- for a,b in pairs(VariantSetsIDs) do
-  -- testSourceInfos(a);
-  -- end
-  
-  
   SetsFrame.SortSets(BaseList, false);
   
   alreadyFilled = true;
@@ -3159,22 +3259,17 @@ local function AddSetToTables(data)
     UseSetForTransmogrify(data);
     return;
   end
-  
   AddSourcesToSetsMap(data.setID, data.sources)
   
   if not UseSet(data) then NotUsedSets[data.setID] = data; return; end
-  
   data.favorite = IsFavorite(data.setID);
   if data.favorite then
     data.favoriteSetID = data.setID;
   end
-
   if data.description == "" or data.description == nil then data.description = data.name; end
-  
   if ClassNameMask[data.classMask] ~= nil then
     data.description = ColorStringByClass(data.description,data.classMask);
   end
-  
   local combineWithOtherBaseSet = false;
   local otherBaseID = 0;
   --for _, baseSet in pairs(BaseSets) do
@@ -3187,12 +3282,10 @@ local function AddSetToTables(data)
   --    break;
   --  end
   --end
-  
   if data.label and BaseListLabels[data.label] then
     combineWithOtherBaseSet = true;
     otherBaseID = BaseListLabels[data.label]
   end
-  
   if not combineWithOtherBaseSet then
     data.baseSetID = data.setID;
     BaseSets[data.setID] = data;
@@ -3210,6 +3303,7 @@ local function AddSetToTables(data)
 end
 
 local function AddAltAppearancesToTables(setID, sourceID, altSourceID)
+  app.AppID(altSourceID);
   local set = GetSetByID(setID);
   if set then
     if set.altSources == nil then
@@ -3381,63 +3475,68 @@ local function ScrollFrame_SelectSet(setID, notDefault)
 end
 
 --Sets the scroll position and updates the buttons to have the data for where its scroll position is.
-local function ScrollToOffset(offset, minimizeScrolling, setSet, forceEmptyList)
-  if #BaseList == 0 and not forceEmptyList then return; end
+local function ScrollToOffset(offset, minimizeScrolling, setSet)
+
+  if not ExS_ButtonCount then return; end
   
-	local index = 0;
 	local currButton = 1;
-  local offsetToSet = offset;
   local mutableOffset = offset;
-  --local buttonsShown = floor(ExS_ScrollFrame:GetHeight() / _ButtonHeight);
   
-  local currTop = ExS_ScrollFrame.buttons[1].setID;
-  local currOffset = 0;
-  
-  --Loop through the List, updating the buttons once we get to the offset.
-	for _, baseSet in pairs(BaseList) do
-		if currButton > #ExS_ScrollFrame.buttons then
-			break;
-		end
-		index = index + 1;
+  if #BaseList > 0 then
+    local index = 0;
+    local offsetToSet = offset;
+    --local buttonsShown = floor(ExS_ScrollFrame:GetHeight() / _ButtonHeight);
     
+    local currTop = ExS_ScrollFrame.buttons[1].setID;
+    local currOffset = 0;
     
-    if minimizeScrolling and ((baseSet.setID == currTop) or (index == mutableOffset)) then
-      if (mutableOffset - index) > 0 then 
-        if (mutableOffset - index + 1) < _ButtonsInFrame then
-          mutableOffset = index;
-        else
-          mutableOffset = mutableOffset - _ButtonsInFrame + 1;
+    --Loop through the List, updating the buttons once we get to the offset.
+    for _, baseSet in pairs(BaseList) do
+      if currButton > #ExS_ScrollFrame.buttons then
+        break;
+      end
+      index = index + 1;
+      
+      
+      if minimizeScrolling and ((baseSet.setID == currTop) or (index == mutableOffset)) then
+        if (mutableOffset - index) > 0 then 
+          if (mutableOffset - index + 1) < ExS_ButtonCount then
+            mutableOffset = index;
+          else
+            mutableOffset = mutableOffset - ExS_ButtonCount + 1;
+          end
         end
+        minimizeScrolling = false;
       end
-      minimizeScrolling = false;
-    end
-    
-    --If we need to select the set, set it if we are there.
-    if setSet and index == offsetToSet then
-      if type(setSet) == "number" then
-        ScrollFrame_SelectSet(setSet);
-      else
-        ScrollFrame_SelectSet(baseSet.setID);
+      
+      --If we need to select the set, set it if we are there.
+      if setSet and index == offsetToSet then
+        if type(setSet) == "number" then
+          ScrollFrame_SelectSet(setSet);
+        else
+          ScrollFrame_SelectSet(baseSet.setID);
+        end
+        setSet = false;
       end
-      setSet = false;
+      
+      --If we are past the offset (don't need to check max as currButton does that).
+      mutableOffset = math.floor(mutableOffset + 0.5); --was getting a weird floating point error
+      if index >= mutableOffset then
+        SetButtonData(ExS_ScrollFrame.buttons[currButton], baseSet);
+        currButton = currButton + 1;
+      end
     end
-    
-    --If we are past the offset (don't need to check max as currButton does that).
-    mutableOffset = math.floor(mutableOffset + 0.5); --was getting a weird floating point error
-		if index >= mutableOffset then
-      SetButtonData(ExS_ScrollFrame.buttons[currButton], baseSet);
-      currButton = currButton + 1;
-		end
-	end
+  end
   
   --If there are leftover buttons, hide them.
-	for i = currButton, #ExS_ScrollFrame.buttons do 
-		ExS_ScrollFrame.buttons[i]:Hide();
+	for i = currButton, #ExS_ScrollFrame.buttons do
+    ExS_ScrollFrame.buttons[i]:SetShown(false);
+		--ExS_ScrollFrame.buttons[i]:Hide();
 	end
   
   
-  local scrollMax = max((#BaseList - _ButtonsInFrame) * 46, 0);
-  ExS_ScrollFrame.scrollBar:SetMinMaxValues(0, scrollMax);
+  local scrollMax = max(math.ceil((#BaseList - ExS_ButtonCount)-0.5) * 46, 46);
+  ExS_ScrollFrame.scrollBar:SetMinMaxValues(46, scrollMax);
 	ExS_ScrollFrame.range = #BaseList * 46;
   
   --Update the scroll bar visual for our current scrolled position.
@@ -3448,9 +3547,9 @@ end
 local function ExS_ScrollFrame_Update()
   local offset = ExS_ScrollFrame.scrollBar:GetValue() / 46;
 
-  if #BaseList > 0 then
-    ScrollToOffset(offset, false, false, false);
-  end
+  --if #BaseList > 0 then
+    ScrollToOffset(offset, false, false);
+  --end
 end
 
 --WIP
@@ -3815,7 +3914,7 @@ local function CreateScrollbar(frame)
   
   ExS_ScrollFrame.scrollBar:SetObeyStepOnDrag(true);
   
-  _ButtonsInFrame = ExS_ScrollFrame:GetHeight() / _ButtonHeight;
+  ExS_ButtonCount = math.ceil(ExS_ScrollFrame:GetHeight() / _ButtonHeight);
 	
   _FavoriteDropDown = LDD:NewMenu(ExS_ScrollFrame, "SetsFavDropdown");
   _FavoriteDropDown:SetStyle('MENU')
@@ -4174,6 +4273,21 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ExS_Settings.hideShopsets end;
     SetsFrame.FilterDropDown:AddLine(info);
     
+    --Show/Hide shop sets
+    info.text = "Hide MoP Remix Sets";
+    info.func = function(self)
+            if (ExS_Settings.hideMopRemix == true) then
+              ExS_Settings.hideMopRemix = false;
+            else
+              ExS_Settings.hideMopRemix = true;
+            end
+            
+            ReInitSets(true, true);
+            self:SetCheckedState(ExS_Settings.hideMopRemix);
+          end
+    info.checked = function() return ExS_Settings.hideMopRemix end;
+    SetsFrame.FilterDropDown:AddLine(info);
+    
     --Show/Hide hidden sets
     info.text = "Show Hidden Sets";
     info.func = function(self)
@@ -4206,6 +4320,7 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     
     SetsFrame.FilterDropDown:AddLine(info);
     info.tooltipText = nil;
+    info.menu = nil;
     
     SetsFrame.FilterDropDown:AddLine({isSpacer = true;});
     
@@ -4219,7 +4334,9 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     info.checked = function() return ExS_Settings.disableHideSetButton end;
     SetsFrame.FilterDropDown:AddLine(info);
     
-    
+    ----
+    -- UI Visibiilty Toggles
+    ----
     info.text = "UI Visibility Toggles";
     info.func = nil;
     info.menu = {};
@@ -4246,14 +4363,14 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
     
     --Hide Description on left list
     info.menu[2] = {};
-    info.menu[2].text = "Hide Description (2nd Line) in Left List";
+    info.menu[2].text = "Show Description (2nd Line) in Left List";
     info.menu[2].func = function(self)
             ExS_Settings.hideListDescription = not ExS_Settings.hideListDescription;
-            self:SetCheckedState(ExS_Settings.hideListDescription);
+            self:SetCheckedState(not ExS_Settings.hideListDescription);
 
             SetsFrame.ScrollToSet(ExS_ScrollFrame.selectedSetID);
           end
-    info.menu[2].checked = function() return ExS_Settings.hideListDescription end;
+    info.menu[2].checked = function() return not ExS_Settings.hideListDescription end;
     info.menu[2].keepShown = true;
     
     info.menu[3] = {};
@@ -4300,6 +4417,15 @@ local function ExS_FilterDropDown_Init(self, level, menuList)
           end
     info.menu[6].checked = function() return ExS_Settings.extraButtonToggles[4] end;
     info.menu[6].keepShown = true;
+    
+    info.menu[7] = {};
+    info.menu[7].text = "Enable Weapon Sets (Takes effect after next reload.)";
+    info.menu[7].func = function(self)
+            ExS_Settings.hideWeaponsTab = not ExS_Settings.hideWeaponsTab;
+            self:SetCheckedState(not ExS_Settings.hideWeaponsTab);
+          end
+    info.menu[7].checked = function() return not ExS_Settings.hideWeaponsTab end;
+    info.menu[7].keepShown = false;
     
     SetsFrame.FilterDropDown:AddLine(info);
     
@@ -4490,7 +4616,7 @@ function AppearanceTooltipOnEnter(self)
       C_TransmogSets.ClearSetNewSourcesForSlot(self.setID, transmogSlot);
     end
     
-    local visID = C_TransmogCollection.GetSourceInfo(self.sourceID).visualID;
+    local visID = app.AppID(self.sourceID)--C_TransmogCollection.GetSourceInfo(self.sourceID).visualID;
     for i=0,#SetsFrame.NewVisualIDs do
       if SetsFrame.NewVisualIDs[i] == visID then
         table.remove(SetsFrame.NewVisualIDs, i);
@@ -4614,8 +4740,8 @@ local function ExS_SetSources_OnMouseDown(button, mouseButton)
       SwapAlternateSourceID(button.setID, button.sourceID);
     end
   ----For help filling in alt appearance db.
-  --else
-  --  print(button.setID,"  setID--sourceID  ",button.sourceID,"    baseSet: ",GetSetByID(button.setID).baseSetID);
+  elseif app.devMode then
+    print(button.setID,"  setID--sourceID  ",button.sourceID,"    baseSet: ",GetSetByID(button.setID).baseSetID,"    #appSources: ",#C_TransmogCollection.GetAllAppearanceSources(app.AppID(button.sourceID)));
 	end
 end
 
@@ -4866,7 +4992,7 @@ local function TransmogrifyGetFirstMatchingSetID(self,sourceIndex)
 		if not button.transmogLocation:IsSecondary() then
 			local sourceID = select(sourceIndex, TransmogUtil.GetInfoForEquippedSlot(button.transmogLocation));
 			if ( sourceID ~= Constants.Transmog.NoTransmogID ) then
-				transmogSourceIDs[button.transmogLocation:GetSlotID()] = C_TransmogCollection.GetSourceInfo(sourceID).visualID;
+				transmogSourceIDs[button.transmogLocation:GetSlotID()] = app.AppID(sourceID)--C_TransmogCollection.GetSourceInfo(sourceID).visualID;
 			end
 		end
 	end
@@ -5197,7 +5323,16 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
       ExS_Settings.extraButtonToggles[4] = true; --Hide Set
     end
     if (ExS_Settings.toggleSlotPreview == nil) then
-      ExS_Settings.toggleSlotPreview = {true, true, true, true, true, true, true, true, true};
+      ExS_Settings.toggleSlotPreview = {true, true, true, true, true, true, true, true, true, true};
+    end
+    if (ExS_Settings.hideWeaponsTab == nil) then
+      ExS_Settings.hideWeaponsTab = false;
+    end
+    if (ExS_Settings.hideMopRemix == nil) then
+      ExS_Settings.hideMopRemix = false;
+    end
+    if (ExS_Settings.toggleSlotPreview[10] == nil) then
+      ExS_Settings.toggleSlotPreview[10] = true;
     end
   
 		--WardrobeCollectionFrameScrollFrame:Hide();
@@ -5253,7 +5388,7 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
 		WardrobeCollectionFrame.SetsCollectionFrame.OnHide = OnHide;
     WardrobeCollectionFrame.SetsCollectionFrame:SetScript("OnHide", OnHide);
 		WardrobeCollectionFrame.SetsCollectionFrame.OnEvent = OnEvent;
-    WardrobeCollectionFrame:HookScript("OnShow", function()
+    WardrobeCollectionFrame.FilterButton:HookScript("OnShow", function()
         if WardrobeCollectionFrame.activeFrame.searchType == Enum.TransmogSearchType.BaseSets then
           WardrobeCollectionFrame.FilterButton:Hide();
         else
@@ -5320,10 +5455,12 @@ frame:SetScript("OnEvent", function(pSelf, pEvent, pUnit)
     else
       factionNames.opposingFaction = "Alliance";
     end
-  
+     
     
     WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton = CreateFrame("Button", nil, WardrobeCollectionFrame.SetsCollectionFrame, "UIResettableDropdownButtonTemplate")
-    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetAllPoints(WardrobeCollectionFrame.FilterButton)
+    --WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetAllPoints(WardrobeCollectionFrame.FilterButton)
+    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetPoint("TOPLEFT", WardrobeCollectionFrame.FilterButton, "TOPLEFT", -2,2)
+    WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetPoint("BOTTOMRIGHT", WardrobeCollectionFrame.FilterButton, "BOTTOMRIGHT", 0,-3)
     WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetText(FILTER)
     WardrobeCollectionFrame.SetsCollectionFrame.FilterDropDownButton:SetScript("OnClick", function() SetsFrame.FilterDropDown:Toggle() end)
     

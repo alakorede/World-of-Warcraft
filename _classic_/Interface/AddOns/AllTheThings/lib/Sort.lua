@@ -55,6 +55,12 @@ local function defaultComparison(a,b)
 		return a < b;
 	end
 	local acomp, bcomp;
+	-- SortPriority
+	acomp = a.SortPriority or 0
+	bcomp = b.SortPriority or 0
+	if acomp ~= 0 or bcomp ~= 0 then
+		return acomp < bcomp
+	end
 	-- Maps
 	acomp = a.mapID;
 	bcomp = b.mapID;
@@ -72,8 +78,8 @@ local function defaultComparison(a,b)
 		return false;
 	end
 	-- Headers/Filters/AchievementCategories (or other Types which are used as Headers)
-	acomp = a.headerID or a.filterID or a.achievementCategoryID or a.isHeader
-	bcomp = b.headerID or b.filterID or b.achievementCategoryID or b.isHeader
+	acomp = a.headerID or a.filterID or a.achievementCategoryID or a.isHeader or a.isMinilistHeader
+	bcomp = b.headerID or b.filterID or b.achievementCategoryID or b.isHeader or b.isMinilistHeader
 	if acomp then
 		if not bcomp then return true; end
 	elseif bcomp then
@@ -193,7 +199,15 @@ app.SortDefaults = setmetatable({
 			-- neither a or b exists, equality returns false
 			return false;
 		end
-		local acomp, bcomp;
+		-- Items always prioritize above other Types
+		local acomp = a.itemID;
+		local bcomp = b.itemID;
+		if acomp then
+			if not bcomp then return true; end
+		elseif bcomp then
+			return false;
+		end
+		-- Otherwise order by container size
 		acomp = a.g
 		bcomp = b.g
 		return (acomp and #acomp or 0) < (bcomp and #bcomp or 0);

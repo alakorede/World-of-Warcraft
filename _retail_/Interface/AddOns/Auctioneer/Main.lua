@@ -8,7 +8,7 @@ if not LibStub then
 	error("Auctioneer requires LibStub")
 end
 
-local AUC_VERSION = "9.1.BETA.5.15"
+local AUC_VERSION = "<%version%>"
 if AUC_VERSION:byte(1) == 60 then -- 60 = '<'
 	AUC_VERSION = "8.3.DEV"
 end
@@ -22,7 +22,6 @@ function parts:Frame()
 end
 
 local libs = {}
-libs.LibRevision = LibStub("LibRevision", true)
 libs.DebugLib = LibStub("DebugLib", true)
 libs.Configator = LibStub("Configator", true)
 libs.Babylonian = LibStub("Babylonian", true)

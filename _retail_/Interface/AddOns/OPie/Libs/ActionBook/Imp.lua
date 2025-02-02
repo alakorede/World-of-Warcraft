@@ -1,4 +1,4 @@
-local MAJ, REV, COMPAT, _, T = 1, 9, select(4,GetBuildInfo()), ...
+local MAJ, REV, COMPAT, _, T = 1, 11, select(4,GetBuildInfo()), ...
 if T.SkipLocalActionBook then return end
 if T.TenEnv then T.TenEnv() end
 
@@ -86,20 +86,31 @@ end
 
 local toMacroText, quantizeMacro, formatMacro, formatToken, setMountPreference do
 	local COMMA_LIST_COMMAND_TYPES, CAST_ESCAPE_COMMAND_TYPES = {[2]=1, [3]=1}, {[0]=1, [1]=1, [3]=1}
+	local function parseListEntryPrefix(s, p)
+		local sp, spc = p, p
+		while spc do
+			sp, spc = spc, s:match("^%s*<[^<]->()", sp)
+		end
+		return sp > p and s:sub(p, sp-1), sp
+	end
 	local genParser do
 		local doRewrite, replaceFunc, critFail, critLine
 		local function replaceAlternatives(ctype, args)
-			local ret, alt2, rfCtx
-			for alt, cpos in (args .. ","):gmatch("(.-),()") do
-				alt2, rfCtx = replaceFunc(ctype, alt, rfCtx, args, cpos)
-				if alt == alt2 or (alt2 and alt2:match("%S")) then
-					if doRewrite then
-						alt2 = alt2:match("^%s*(.-)%s*$")
-						ret = ret and ret .. ", " .. alt2 or alt2
-					else
-						ret = ret and ret .. "," .. alt2 or alt2
-					end
+			local sp, ret, alt, alt2, altPrefix, rfCtx = 1
+			repeat
+				if ctype == 3 then
+					altPrefix, sp = parseListEntryPrefix(args, sp)
 				end
+				alt, sp = args:match("([^,]*),?()", sp)
+				alt2, rfCtx = replaceFunc(ctype, alt, rfCtx, args, sp)
+				if alt == alt2 or (alt2 and alt2:match("%S")) then
+					alt2 = doRewrite and " " .. alt2:match("^%s*(.-)%s*$") or alt2
+					alt2 = altPrefix and altPrefix .. alt2 or alt2
+					ret = ret and ret .. "," .. alt2 or alt2
+				end
+			until sp > #args
+			if not doRewrite and args:sub(-1) == "," then
+				ret = ret and ret .. "," or ret
 			end
 			return ret
 		end
@@ -199,7 +210,7 @@ local toMacroText, quantizeMacro, formatMacro, formatToken, setMountPreference d
 		for id in sidlist:gmatch("%d+") do
 			id = id + 0
 			sn, sr = GetSpellInfo(id), GetSpellSubtext(id)
-			ar = GetSpellSubtext(sn)
+			ar = sn and GetSpellSubtext(sn)
 			local isCastable, castFlag = RW:IsSpellCastable(id, noEscapes)
 			if not MODERN and not isCastable and tk ~= "spellr" then
 				local id2 = select(7,GetSpellInfo(sn))
@@ -233,13 +244,13 @@ local toMacroText, quantizeMacro, formatMacro, formatToken, setMountPreference d
 			local gmi, gmiex = C_MountJournal.GetMountInfoByID, C_MountJournal.GetMountInfoExtraByID
 			for i=1, #idm do
 				i = idm[i]
-				local _1, sid, _3, active, _5, _6, _7, factionLocked, factionId, hide, have, _12, isDragonriding = gmi(i)
+				local _1, sid, _3, active, _5, _6, _7, factionLocked, factionId, hide, have, _12, _isSteadyFlight = gmi(i)
 				if have and not hide
 				   and (not factionLocked or factionId == myFactionId)
 				   and RW:IsSpellCastable(sid, escapeContext)
 				   then
 					local _, _, _, _, t = gmiex(i)
-					local isTypeMatch = t == mtype or (wantDragonriding and isDragonriding)
+					local isTypeMatch = t == mtype or (wantDragonriding and t == 424)
 					if sid == prefSID or (active and isTypeMatch and prefSID == nil) then
 						return sid
 					elseif isTypeMatch and not skip[sid] then
@@ -256,12 +267,12 @@ local toMacroText, quantizeMacro, formatMacro, formatToken, setMountPreference d
 			if tag == "ground" then
 				gmSid = gmSid and IsKnownSpell(gmSid) or findMount(gmPref or gmSid, 230, ctype)
 				return replaceSpellID(ctype, tostring(gmSid), prefix)
+			elseif tag == "dragon" or MODERN and tag == "air" then
+				drSid = drSid and IsKnownSpell(drSid) or findMount(drPref or drSid, 402, ctype)
+				return replaceSpellID(ctype, tostring(drSid), prefix)
 			elseif tag == "air" then
 				fmSid = fmSid and IsKnownSpell(fmSid) or findMount(fmPref or fmSid, 248, ctype)
 				return replaceSpellID(ctype, tostring(fmSid), prefix)
-			elseif tag == "dragon" then
-				drSid = drSid and IsKnownSpell(drSid) or findMount(drPref or drSid, 402, ctype)
-				return replaceSpellID(ctype, tostring(drSid), prefix)
 			end
 			return nil
 		end
@@ -306,6 +317,8 @@ local toMacroText, quantizeMacro, formatMacro, formatToken, setMountPreference d
 		local abMountTokens = {["Ground Mount"]="{{mount:ground}}", ["Flying Mount"]="{{mount:air}}", ["Dragonriding Mount"]=MODERN and "{{mount:dragon}}" or nil}
 		toImpText = genParser(function(ctype, value, skipCount, args, cpos)
 			if type(skipCount) == "number" and skipCount > 0 then
+				-- This replaceAlternatives interaction would get bamboozled by
+				-- a castable token matching ",%s*<[^<]-,[^<]*>".
 				return nil, skipCount-1
 			end
 			local commaList, noEscapes = COMMA_LIST_COMMAND_TYPES[ctype], not CAST_ESCAPE_COMMAND_TYPES[ctype]

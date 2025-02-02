@@ -28,15 +28,42 @@ Bagnon_Sets = {
 	},
 	["mineColor"] = {
 	},
+	["color"] = {
+		["quiver"] = {
+		},
+		["account"] = {
+		},
+		["enchant"] = {
+		},
+		["soul"] = {
+		},
+		["fridge"] = {
+		},
+		["mine"] = {
+		},
+		["engineer"] = {
+		},
+		["leather"] = {
+		},
+		["reagent"] = {
+		},
+		["gem"] = {
+		},
+		["key"] = {
+		},
+		["tackle"] = {
+		},
+		["inscribe"] = {
+		},
+		["normal"] = {
+		},
+		["herb"] = {
+		},
+	},
 	["display"] = {
-	},
-	["latest"] = {
-	},
-	["leatherColor"] = {
 	},
 	["global"] = {
 		["inventory"] = {
-			["y"] = 184.1482086181641,
 			["rules"] = {
 				"all", -- [1]
 				"all/normal", -- [2]
@@ -63,15 +90,17 @@ Bagnon_Sets = {
 				"contain", -- [23]
 			},
 			["point"] = "BOTTOMRIGHT",
-			["hiddenBags"] = {
+			["lockedSlots"] = {
 			},
 			["color"] = {
 			},
-			["lockedSlots"] = {
-			},
+			["y"] = 184.1482086181641,
+			["x"] = -52.962646484375,
 			["borderColor"] = {
 			},
-			["x"] = -52.962646484375,
+			["hiddenBags"] = {
+			},
+			["showBags"] = true,
 		},
 		["vault"] = {
 			["rules"] = {
@@ -100,9 +129,9 @@ Bagnon_Sets = {
 			},
 			["color"] = {
 			},
-			["borderColor"] = {
-			},
 			["lockedSlots"] = {
+			},
+			["borderColor"] = {
 			},
 		},
 		["guild"] = {
@@ -132,12 +161,13 @@ Bagnon_Sets = {
 			},
 			["color"] = {
 			},
-			["borderColor"] = {
-			},
 			["lockedSlots"] = {
+			},
+			["borderColor"] = {
 			},
 		},
 		["bank"] = {
+			["y"] = 479.5714416503906,
 			["rules"] = {
 				"all", -- [1]
 				"all/normal", -- [2]
@@ -159,15 +189,24 @@ Bagnon_Sets = {
 				"trade/recipe", -- [18]
 				"quest", -- [19]
 				"misc", -- [20]
+				"all/souls", -- [21]
+				"equip/ammo", -- [22]
+				"contain", -- [23]
 			},
+			["point"] = "BOTTOMLEFT",
 			["hiddenBags"] = {
 			},
 			["color"] = {
 			},
-			["borderColor"] = {
-			},
 			["lockedSlots"] = {
 			},
+			["borderColor"] = {
+			},
+			["x"] = 94.99999237060547,
 		},
+	},
+	["leatherColor"] = {
+	},
+	["latest"] = {
 	},
 }

@@ -58,16 +58,17 @@ local function IsSourceNotCollectedButBuyable(appID, isArmor)
       end
       --if not canCharCollectIt then
         if isArmor then
-          local itemArmorType = select(7,GetItemInfoInstant(appInfo.itemID));
+          local itemArmorType = select(7,C_Item.GetItemInfoInstant(appInfo.itemID));
           local isPlayerArmorWeight = (appInfo.invType == 17) or (itemArmorType == 0) or (itemArmorType == 5) or app.SetsFrame.GetPlayerClassArmorType() == itemArmorType;
-          local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(appInfo.sourceID));
-          if isPlayerArmorWeight and app.SetsFrame.IsForClass(link) then
+          --local link = select(6, C_TransmogCollection.GetAppearanceSourceInfo(appInfo.sourceID));
+          
+          if isPlayerArmorWeight and app.SetsFrame.IsForClass(appInfo.itemID) then
             --canCharCollectIt = true;
             --break;
             return true;
           end
         else
-          local itemArmorType = select(7,GetItemInfoInstant(appInfo.itemID));
+          local itemArmorType = select(7,C_Item.GetItemInfoInstant(appInfo.itemID));
           local _,_,_,main,off = C_TransmogCollection.GetCategoryInfo(appInfo.categoryID)
           if main or off then
             return true;
@@ -100,23 +101,35 @@ local function FillAHSearchList()
     setName = set.name;
   end
   itemKeys = {};
+  searchCombo = nil;
   for sourceID,_ in pairs(sources) do
     local appID = C_TransmogCollection.GetSourceInfo(sourceID).visualID;
-    if IsSourceNotCollectedButBuyable(appID, WardrobeCollectionFrame.activeFrame == WardrobeCollectionFrame.SetsCollectionFrame) then
+    --if IsSourceNotCollectedButBuyable(appID, WardrobeCollectionFrame.activeFrame == WardrobeCollectionFrame.SetsCollectionFrame) then
       --loop through all the sources of an appearance, if a source is BoE add it to the sources list
       local sourceIDs = C_TransmogCollection.GetAllAppearanceSources(appID)
       for i=1, #sourceIDs do
         local sourceInfo = C_TransmogCollection.GetSourceInfo(sourceIDs[i]);
-        local itemLink = select(6, C_TransmogCollection.GetAppearanceSourceInfo(sourceInfo.sourceID));
-        local _,_,_,iLvl,_,_,_,_,equipLoc,_,_,_,_,bindType = GetItemInfo(itemLink)
-        --local bindType = select(14,GetItemInfo(itemLink));
-        if bindType == 2 then--LE_ITEM_BIND_ON_EQUIP
-          --local itemKey = C_AuctionHouse.MakeItemKey(sourceInfo.itemID, iLvl)
-          --tinsert(itemKeys, itemKey);
-          tinsert(itemKeys, {sourceInfo.name,equipLoc})
+        if not sourceInfo.isCollected then
+          local notInList = true;
+          for j=1,#itemKeys do
+            if itemKeys[j][1] == sourceInfo.name then
+              notInList = false;
+              break;
+            end
+          end
+          if notInList then
+            local itemLink = select(6, C_TransmogCollection.GetAppearanceSourceInfo(sourceInfo.sourceID));
+            local _,_,_,iLvl,_,_,_,_,equipLoc,_,_,_,_,bindType = C_Item.GetItemInfo(itemLink)
+            --local bindType = select(14,GetItemInfo(itemLink));
+            if bindType == 2 then--LE_ITEM_BIND_ON_EQUIP
+              --local itemKey = C_AuctionHouse.MakeItemKey(sourceInfo.itemID, iLvl)
+              --tinsert(itemKeys, itemKey);
+              tinsert(itemKeys, {sourceInfo.name,equipLoc})
+            end
+          end
         end
       end
-    end
+    --end
   end
   
   --for i=1,#itemKeys do
@@ -130,6 +143,8 @@ local function FillAHSearchList()
   if #itemKeys == 0 then 
     print(RED_FONT_COLOR:WrapTextInColorCode(setName.." has no missing items that can be purchased."));
     UIErrorsFrame:AddExternalErrorMessage(setName.." has no missing items that can be purchased.");
+  else
+    print(YELLOW_FONT_COLOR:WrapTextInColorCode(#itemKeys.." missing items that can be purchased for "..setName));
   end
   index = 0;
 end
@@ -156,11 +171,11 @@ local function StartAHSearch()
   index = index + 1;
   if index > #itemKeys then index = 1; end
   
-  AuctionHouseFrame:SendBrowseQuery(itemKeys[index][1], 0, 1000, {4,5,6,7,8,9,10});
+  --AuctionHouseFrame:SendBrowseQuery(itemKeys[index][1], 0, 1000, {4,5,6,7,8,9,10});
+  
+  --C_AuctionHouse.SendBrowseQuery({searchString = itemKeys[index][1], sorts = AH_sorts, filters={4,5,6,7,8,9,10}});
   AuctionHouseFrame.SearchBar.SearchBox:SetText(itemKeys[index][1]);
-  
-  
-  --C_AuctionHouse.SearchForItemKeys(itemKeys, AH_sorts);
+  AuctionHouseFrame.SearchBar.SearchButton:OnClick();
 end
 
 --Create the button in the AH window

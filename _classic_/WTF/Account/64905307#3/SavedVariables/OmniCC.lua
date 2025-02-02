@@ -1,12 +1,15 @@
 
 OmniCCDB = {
-	["profileKeys"] = {
-		["Dishy - Pagle"] = "Default",
-		["Carniça - Pagle"] = "Default",
-	},
 	["global"] = {
 		["dbVersion"] = 6,
-		["addonVersion"] = "10.2.9",
+		["addonVersion"] = "11.0.2",
+	},
+	["profileKeys"] = {
+		["Dishy - Pagle"] = "Default",
+		["Osó - Pagle"] = "Default",
+		["Carniça - Pagle"] = "Default",
+		["Vedronys - Pagle"] = "Default",
+		["Mulungu - Pagle"] = "Default",
 	},
 	["profiles"] = {
 		["Default"] = {
@@ -52,9 +55,9 @@ OmniCCDB = {
 			["themes"] = {
 				["Default"] = {
 					["textStyles"] = {
-						["soon"] = {
-						},
 						["seconds"] = {
+						},
+						["soon"] = {
 						},
 						["minutes"] = {
 						},
@@ -62,9 +65,9 @@ OmniCCDB = {
 				},
 				["Plater Nameplates Theme"] = {
 					["textStyles"] = {
-						["soon"] = {
-						},
 						["seconds"] = {
+						},
+						["soon"] = {
 						},
 						["minutes"] = {
 						},

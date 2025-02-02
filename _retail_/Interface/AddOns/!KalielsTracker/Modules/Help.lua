@@ -4,16 +4,17 @@
 ---
 --- This file is part of addon Kaliel's Tracker.
 
-local addonName, KT = ...
-local M = KT:NewModule(addonName.."_Help")
+---@type KT
+local _, KT = ...
+
+local M = KT:NewModule("Help")
 KT.Help = M
 
 local T = LibStub("MSA-Tutorials-1.0")
 local _DBG = function(...) if _DBG then _DBG("KT", ...) end end
 
 local db, dbChar
-local mediaPath = "Interface\\AddOns\\"..addonName.."\\Media\\"
-local helpPath = mediaPath.."Help\\"
+local helpPath = KT.MEDIA_PATH.."Help\\"
 local helpName = "help"
 local helpNumPages = 12
 local supportersName = "supporters"
@@ -92,7 +93,7 @@ local function SetupTutorials()
 					"- Scrolling when content is greater than max. height\n"..
 					"- Remember collapsed tracker after logout/exit game\n\n"..
 					"... and many other enhancements (see next pages).",
-			shine = KTF,
+			shine = KTF.Background,
 			shineTop = 5,
 			shineBottom = -5,
 			shineLeft = -6,
@@ -103,21 +104,21 @@ local function SetupTutorials()
 			imageHeight = 128,
 			text = cTitle.."Header buttons|r\n\n"..
 					"Minimize button:                                Other buttons:\n"..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:-1:2:32:64:0:14:0:14:209:170:0|t "..cDots.."...|r Expand Tracker                          "..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:4:2:32:64:16:30:0:14:209:170:0|t  "..cDots.."...|r Open Quest Log\n"..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:-1:2:32:64:0:14:16:30:209:170:0|t "..cDots.."...|r Collapse Tracker                        "..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:4:2:32:64:16:30:16:30:209:170:0|t  "..cDots.."...|r Open Achievements\n"..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:-1:2:32:64:0:14:32:46:209:170:0|t "..cDots.."...|r when is tracker empty               "..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:4:2:32:64:16:30:32:46:209:170:0|t  "..cDots.."...|r Open Filters menu\n\n"..
-					"Buttons |T"..mediaPath.."UI-KT-HeaderButtons:14:14:0:2:32:64:16:30:0:14:209:170:0|t and "..
-					"|T"..mediaPath.."UI-KT-HeaderButtons:14:14:0:2:32:64:16:30:16:30:209:170:0|t you can disable in Options.\n\n"..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:-1:2:32:64:0:14:0:14:209:170:0|t "..cDots.."...|r Expand Tracker                          "..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:4:2:32:64:16:30:0:14:209:170:0|t  "..cDots.."...|r Open Quest Log\n"..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:-1:2:32:64:0:14:16:30:209:170:0|t "..cDots.."...|r Collapse Tracker                        "..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:4:2:32:64:16:30:16:30:209:170:0|t  "..cDots.."...|r Open Achievements\n"..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:-1:2:32:64:0:14:32:46:209:170:0|t "..cDots.."...|r when is tracker empty               "..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:4:2:32:64:16:30:32:46:209:170:0|t  "..cDots.."...|r Open Filters menu\n\n"..
+					"Buttons |T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:0:2:32:64:16:30:0:14:209:170:0|t and "..
+					"|T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:0:2:32:64:16:30:16:30:209:170:0|t you can disable in Options.\n\n"..
 					"You can set "..cBold.."[key bind]|r for Minimize button.\n"..
 					cBold.."Alt+Click|r on Minimize button opens "..KT.title.." Options.",
 			textY = 16,
 			shine = KTF.MinimizeButton,
 			shineTop = 13,
 			shineBottom = -14,
-			shineRight = 16,
+			shineRight = 15,
 		},
 		{	-- 3
 			image = helpPath.."help_quest-title-tags",
@@ -127,31 +128,31 @@ local function SetupTutorials()
 					"Tags are also in quest titles inside Quest Log.\n\n"..
 					"|cff00b3ff!|r|T:14:3|t "..cDots..".......|r Daily quest|T:14:121|t|cff00b3ffr|r "..cDots..".......|r Raid quest\n"..
 					"|cff00b3ff!!|r "..cDots.."......|r Weekly quest|T:14:108|t|cff00b3ffr10|r "..cDots.."...|r 10-man raid quest\n"..
-					"|cff00b3ffg3|r "..cDots..".....|r Group quest w/ group size|T:14:25|t|cff00b3ffr25|r "..cDots.."...|r 25-man raid quest\n"..
+					"|cff00b3ffg3|r "..cDots..".....|r Group quest w/ group size|T:14:22|t|cff00b3ffr25|r "..cDots.."...|r 25-man raid quest\n"..
 					"|cff00b3ffpvp|r "..cDots.."...|r PvP quest|T:14:133|t|cff00b3ffs|r "..cDots..".......|r Scenario quest\n"..
 					"|cff00b3ffd|r "..cDots..".......|r Dungeon quest|T:14:97|t|cff00b3ffa|r "..cDots..".......|r Account quest\n"..
 					"|cff00b3ffhc|r "..cDots..".....|r Heroic quest|T:14:113|t|cff00b3ffleg|r "..cDots.."....|r Legendary quest",
-			shineTop = 10,
+			shineTop = 11,
 			shineBottom = -9,
-			shineLeft = -12,
-			shineRight = 10,
+			shineLeft = -11,
+			shineRight = 13,
 		},
 		{	-- 4
 			image = helpPath.."help_tracker-filters",
 			text = cTitle.."Tracker Filters|r\n\n"..
-					"For open Filters menu "..cBold.."Click|r on the button |T"..mediaPath.."UI-KT-HeaderButtons:14:14:-1:2:32:64:16:30:32:46:209:170:0|t.\n\n"..
+					"For open Filters menu "..cBold.."Click|r on the button |T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:-1:2:32:64:16:30:32:46:209:170:0|t.\n\n"..
 					"There are two types of filters:\n"..
 					cTitle.."Static filter|r - adds quests/achievements to tracker by criterion (e.g. \"Daily\") and then you can add/remove items by hand.\n"..
 					cTitle.."Dynamic filter|r - automatically adding quests/achievements to tracker by criterion (e.g. \"|cff00ff00Auto|r Zone\") "..
 					"and continuously changing them. This type doesn't allow add/remove items by hand."..
-					"When is some Dynamic filter active, header button is green |T"..mediaPath.."UI-KT-HeaderButtons:14:14:-1:2:32:64:16:30:32:46:0:255:0|t.\n\n"..
+					"When is some Dynamic filter active, header button is green |T"..KT.MEDIA_PATH.."UI-KT-HeaderButtons:14:14:-1:2:32:64:16:30:32:46:0:255:0|t.\n\n"..
 					"|cff009bffFavorites|r - Quests or Achievements now you can mark as favorites and then filter according to them.\n\n"..
 					"For Achievements can change searched categories, it will affect the outcome of the filter.\n\n"..
 					"This menu displays other options affecting the content of the tracker (e.g. options for addon PetTracker).",
 			textY = 16,
 			shine = KTF.FilterButton,
-			shineTop = 10,
-			shineBottom = -11,
+			shineTop = 9,
+			shineBottom = -10,
 			shineLeft = -10,
 			shineRight = 11,
 		},
@@ -197,7 +198,7 @@ local function SetupTutorials()
 					"Allows to change the order of modules inside the tracker. Supports all modules including external (e.g. PetTracker).\n\n\n"..
 					cTitle.."Collapsible Modules|r\n\n"..
 					"All modules, including external ones, can be collapsed by clicking on the module header.",
-			shine = KTF,
+			shine = KTF.Background,
 			shineTop = 5,
 			shineBottom = -5,
 			shineLeft = -6,
@@ -220,7 +221,9 @@ local function SetupTutorials()
 			text = cTitle.."Support addon TomTom|r\n\n"..
 					"TomTom support combined Blizzard's POI and TomTom's Arrow.\n\n"..
 					"|TInterface\\WorldMap\\UI-QuestPoi-NumberIcons:32:32:-2:0:256:256:128:160:96:128|t+"..
-					"|T"..mediaPath.."KT-TomTomTag:32:32:-8:0|t"..cDots.."...|r   Active POI button of quest with TomTom Waypoint.\n \n"..
+					"|T"..KT.MEDIA_PATH.."KT-TomTomTag:32:32:-8:0:32:16:0:16:0:16|t"..cDots.."...|r   Active POI button with TomTom Waypoint.\n"..
+					"|TInterface\\WorldMap\\UI-QuestPoi-NumberIcons:32:32:-2:0:256:256:128:160:96:128|t+"..
+					"|T"..KT.MEDIA_PATH.."KT-TomTomTag:32:32:-8:0:32:16:16:32:0:16|t"..cDots.."...|r   Active POI button without TomTom Waypoint (no data).\n\n"..
 					"Features:\n"..
 					"- Available for Quests and World Quests, but Quest waypoints are only for"..
 					offs.."current zone!|r (TomTom and Blizzard limitations)\n"..
@@ -251,45 +254,23 @@ local function SetupTutorials()
 					cBold.."Affects World Map|r and removes taint errors. The hack removes call of restricted function "..
 					"SetPassThroughButtons. When the hack is inactive World Map display causes errors. It is not possible "..
 					"to get rid of these errors, since the tracker has a lot of interaction with the game frames.\n\n"..
-					cWarning2.."Negative impacts:|r unknown in WoW 10.2.7",
+					cWarning2.."Negative impacts:|r unknown in WoW 11.0.7",
 			textY = -20,
 		},
 		{	-- 12
 			image = helpPath.."help_whats-new_logo",
-			imageWidth = 182,
-			imageHeight = 40,
-			imageTexCoords = { 0, 0.75, 0, 0.65625 },
+			imageWidth = 256,
+			imageHeight = 128,
+			imageTexCoords = { 0, 1, 0, 1 },
 			imagePoint = "TOPRIGHT",
-			imageX = -20,
-			imageY = 7,
+			imageX = -8,
+			imageY = 1,
 			imageAbsolute = true,
-			text = "            |T"..helpPath.."help_whats-new_title:32:181:0:0:256:32:0:181:0:32|t\n\n"..
-					cTitle.."Version 6.6.0|r\n"..
-					"- ADDED - AddonCompartmentFrame support (button in the upper right corner"..
-					offs.."below the calendar button) - toggle show/hide the tracker\n"..
-					"- ADDED - command '/kt hide' for toggle show/hide the tracker\n"..
-					"- ADDED - blocking the opening of Collections frame (Appearances, Pet Journal)"..
-					offs.."during combat\n"..
-					"- ADDED - Tainted frames Hack - open/close tainted frames during combat (Quest"..
-					offs.."Log, Achievements etc.)\n"..
-					"- ADDED - World Map Hack [Beta] - errors are gone, the hack removes call of"..
-					offs.."restricted function SetPassThroughButtons, see Help page 11\n"..
-					"- ADDED - support for WoW 10.2.7\n"..
-					"- ADDED - support for WoW 10.2.6\n"..
-					"- CHANGED - Wowhead popup\n"..
-					"- CHANGED - addon support - RealUI 2.3.14\n"..
-					"- CHANGED - addon support - ElvUI 13.64\n"..
-					"- CHANGED - addon support - TomTom 3.6.2-release\n"..
-					"- CHANGED - addon support - Masque 10.2.7\n"..
-					"- CHANGED - addon support - PetTracker 10.2.7\n"..
-					"- CHANGED (help) - page What's New\n"..
-					"- CHANGED - Libs\n"..
-					"- FIXED - Edit Mode sometimes stays open\n"..
-					"- FIXED (quests) - error after collapsing a section, when there are Popup quests"..
-					offs.."(2+)\n"..
-					"- PERFORMANCE (quests) - skin Popup quests\n"..
-					"- REMOVED - addon support - SyncUI\n"..
-					"- REMOVED - addon support - SpartanUI\n"..
+			text = "          |T"..helpPath.."help_whats-new_title:32:181:0:0:256:32:0:181:0:32|t\n\n"..
+					cTitle.."Version 7.9.0|r\n"..
+					"- CHANGED - addon support - Auctionator 11.0.20\n"..
+					"- CHANGED - addon support - TomTom 4.0.7\n"..
+					"- CHANGED - addon support - PetTracker 11.0.9\n"..
 					"\n"..
 
 					cTitle.."Issue reporting|r\n"..
@@ -304,7 +285,7 @@ local function SetupTutorials()
 					bottom = 40,
 				}
 			},
-			shine = KTF,
+			shine = KTF.Background,
 			shineTop = 5,
 			shineBottom = -5,
 			shineLeft = -6,
@@ -312,29 +293,32 @@ local function SetupTutorials()
 		},
 		onShow = function(self, i)
 			if dbChar.collapsed then
-				KT:MinimizeButton_OnClick(true)
+				KT:MinimizeButton_OnClick()
 			end
 			if i == 2 then
 				if KTF.FilterButton then
-					self[i].shineLeft = db.hdrOtherButtons and -75 or -35
+					self[i].shineLeft = db.hdrOtherButtons and -74 or -34
 				else
-					self[i].shineLeft = db.hdrOtherButtons and -55 or -15
+					self[i].shineLeft = db.hdrOtherButtons and -54 or -14
 				end
 			elseif i == 3 then
 				local questID = C_QuestLog.GetQuestIDForQuestWatchIndex(1)
-				local block = KT_QUEST_TRACKER_MODULE:GetExistingBlock(questID)
+				local block = KT_QuestObjectiveTracker:GetExistingBlock(questID)
 				if block then
 					self[i].shine = block
 				end
 			elseif i == 5 then
 				self[i].shine = KTF.Buttons
 			elseif i == 10 then
-				for j=1, C_QuestLog.GetNumQuestWatches() do
+				local superTrackedQuestID = C_SuperTrack.GetSuperTrackedQuestID() or 0
+				for j = 1, C_QuestLog.GetNumQuestWatches() do
 					local questID = C_QuestLog.GetQuestIDForQuestWatchIndex(j)
-					local block = KT_QUEST_TRACKER_MODULE:GetExistingBlock(questID)
-					if block and (QuestHasPOIInfo(questID) or block.questCompleted) then
-						self[i].shine = KT_ObjectiveTrackerFrame.BlocksFrame:FindButtonByQuestID(questID)
-						break
+					local block = KT_QuestObjectiveTracker:GetExistingBlock(questID)
+					if block and block.poiButton then
+						if superTrackedQuestID == 0 or superTrackedQuestID == questID then
+							self[i].shine = block.poiButton
+							break
+						end
 					end
 				end
 			end
@@ -360,15 +344,18 @@ local function SetupTutorials()
 					"of time that addon development requires.\n\n"..
 					"                                    Many thanks to all supporters  |T"..helpPath.."help_patreon:16:16:0:0:256:32:157:173:0:16|t\n\n"..
 					cTitle.."Active Patrons|r\n"..
+					SetFormatedPatronName("Legendary", "Zayah", "Vek'nilash")..
 					SetFormatedPatronName("Epic", "Haekwon", "Elune")..
 					SetFormatedPatronName("Epic", "Liothen", "Emerald Dream")..
+					SetFormatedPatronName("Rare", "A")..
 					SetFormatedPatronName("Uncommon", "Anaara", "Auchindoun")..
 					SetFormatedPatronName("Uncommon", "Charles Howarth")..
 					SetFormatedPatronName("Uncommon", "Flex (drantor)")..
-					SetFormatedPatronName("Uncommon", "Jeffrey Hofer")..
+					SetFormatedPatronName("Uncommon", "Illidanclone", "Kazzak")..
 					SetFormatedPatronName("Uncommon", "Mystekal")..
 					SetFormatedPatronName("Uncommon", "Semy", "Ravencrest")..
 					SetFormatedPatronName("Uncommon", "Sopleb")..
+					SetFormatedPatronName("Uncommon", "Xeelee", "Razorfen")..
 					SetFormatedPatronName("Common", "Darren Divecha")..
 					"\n"..
 					cTitle.."Testers|r\n"..

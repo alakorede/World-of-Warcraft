@@ -12,7 +12,7 @@ local Panel = Addon:NewModule('OptionsPanel', LibStub('Sushi-3.2').OptionsGroup:
 function Panel:New(id, icons)
 	local parent = self ~= Panel and self
 	local f = Addon:NewModule(id, Panel:Super(Panel):New(parent or (icons .. ' ' .. ADDON), parent and (L[id] .. '  ' .. icons)))
-	f:SetFooter('Copyright 2006-2024 João Cardoso and Jason Greer')
+	f:SetFooter('Copyright 2006-2025 João Cardoso and Jason Greer')
 	f:SetSubtitle(L[id .. 'Description']:format(ADDON))
 	f:SetChildren(function() f:Populate() end)
 	f.sets, f.frame = Addon.sets, 'inventory'
@@ -41,6 +41,7 @@ function Panel:AddColor(arg)
 	local b = self:AddLabeled('ColorPicker', arg)
 	b:SetCall('OnColor', function(_, v) self.sets[arg] = {v:GetRGBA()} end)
 	b:SetValue(CreateColor(self.sets[arg][1], self.sets[arg][2], self.sets[arg][3], self.sets[arg][4]))
+	b:SetSmall(true)
 	return b
 end
 

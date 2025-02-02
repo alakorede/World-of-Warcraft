@@ -1,8 +1,23 @@
 local _, D4 = ...
+local X = 0
 local Y = 0
 local PARENT = nil
 local TAB = nil
 local TABIsNil = false
+function D4:SetFontSize(element, fontSize, newFontFlags)
+    if not element then return end
+    if element.GetFont == nil then return end
+    if not fontSize then return end
+    local fontType, _, fontFlags = element:GetFont()
+    if fontType == nil then
+        print("SetFontSize FAILED #1:", element:GetName())
+
+        return
+    end
+
+    element:SetFont(fontType, fontSize, newFontFlags or fontFlags)
+end
+
 --[[ INPUTS ]]
 function D4:AddCategory(tab)
     tab.sw = tab.sw or 25
@@ -14,7 +29,11 @@ function D4:AddCategory(tab)
     tab.parent.f:SetText(D4:Trans(tab.name))
 end
 
-function D4:CreateCheckbox(tab)
+function D4:CreateCheckbox(tab, text)
+    if text == nil then
+        text = true
+    end
+
     tab.sw = tab.sw or 25
     tab.sh = tab.sh or 25
     tab.parent = tab.parent or UIParent
@@ -23,7 +42,12 @@ function D4:CreateCheckbox(tab)
     local cb = CreateFrame("CheckButton", tab.name, tab.parent, "UICheckButtonTemplate")
     cb:SetSize(tab.sw, tab.sh)
     cb:SetPoint(unpack(tab.pTab))
-    cb:SetChecked(tab.value)
+    if tab.value == true or tab.value == 1 then
+        cb:SetChecked(true)
+    else
+        cb:SetChecked(false)
+    end
+
     cb:SetScript(
         "OnClick",
         function(sel)
@@ -31,14 +55,22 @@ function D4:CreateCheckbox(tab)
         end
     )
 
-    cb.f = cb:CreateFontString(nil, nil, "GameFontNormal")
-    cb.f:SetPoint("LEFT", cb, "RIGHT", 0, 0)
-    cb.f:SetText(D4:Trans(tab.name))
+    if text then
+        cb.f = cb:CreateFontString(nil, nil, "GameFontNormal")
+        cb.f:SetPoint("LEFT", cb, "RIGHT", 0, 0)
+        cb.f:SetText(D4:Trans(tab.name))
+    end
 
     return cb
 end
 
 function D4:CreateCheckboxForCVAR(tab)
+    if tab.name == nil then
+        D4:MSG("[D4] Missing name for [CreateCheckboxForCVAR]")
+
+        return
+    end
+
     tab.sw = tab.sw or 25
     tab.sh = tab.sh or 25
     tab.parent = tab.parent or UIParent
@@ -58,6 +90,28 @@ function D4:CreateCheckboxForCVAR(tab)
     )
 
     cb.f:SetPoint("LEFT", cb, "RIGHT", 25, 0)
+
+    return cb
+end
+
+function D4:CreateSliderForCVAR(tab)
+    if tab.name == nil then
+        D4:MSG("[D4] Missing name for [CreateSliderForCVAR]")
+
+        return
+    end
+
+    tab.sw = tab.sw or 25
+    tab.sh = tab.sh or 25
+    tab.parent = tab.parent or UIParent
+    tab.pTab = tab.pTab or "CENTER"
+    tab.value = tab.value or nil
+    local cb = D4:CreateCheckbox(tab, false)
+    tab.sw = 460
+    tab.value = tab.value2
+    tab.key = tab.key or tab.name or ""
+    tab.pTab = {tab.pTab[1], tab.pTab[2] + 32, tab.pTab[3] - 18}
+    D4:CreateSlider(tab)
 
     return cb
 end
@@ -91,7 +145,7 @@ function D4:CreateSlider(tab)
         D4:MSG("[D4][CreateSlider] Missing format string:", tab.key, tab.value)
 
         return
-    elseif tab.value == nil then
+    elseif tab.value == nil or type(tonumber(tab.value)) ~= "number" then
         D4:MSG("[D4][CreateSlider] Missing value:", tab.key, tab.value)
 
         return
@@ -107,9 +161,30 @@ function D4:CreateSlider(tab)
     tab.steps = tab.steps or 1
     tab.decimals = tab.decimals or 0
     tab.key = tab.key or tab.name or ""
-    local slider = CreateFrame("Slider", tab.key, tab.parent, "OptionsSliderTemplate")
-    slider:SetWidth(tab.sw)
+    local slider = CreateFrame("Slider", tab.key, tab.parent, "UISliderTemplate")
+    slider:SetSize(tab.sw, 16)
     slider:SetPoint(unpack(tab.pTab))
+    if slider.Low == nil then
+        slider.Low = slider:CreateFontString(nil, nil, "GameFontNormal")
+        slider.Low:SetPoint("BOTTOMLEFT", slider, "BOTTOMLEFT", 0, -12)
+        D4:SetFontSize(slider.Low, 10, "THINOUTLINE")
+        slider.Low:SetTextColor(1, 1, 1)
+    end
+
+    if slider.High == nil then
+        slider.High = slider:CreateFontString(nil, nil, "GameFontNormal")
+        slider.High:SetPoint("BOTTOMRIGHT", slider, "BOTTOMRIGHT", 0, -12)
+        D4:SetFontSize(slider.High, 10, "THINOUTLINE")
+        slider.High:SetTextColor(1, 1, 1)
+    end
+
+    if slider.Text == nil then
+        slider.Text = slider:CreateFontString(nil, nil, "GameFontNormal")
+        slider.Text:SetPoint("TOP", slider, "TOP", 0, 16)
+        D4:SetFontSize(slider.Text, 10, "THINOUTLINE")
+        slider.Text:SetTextColor(1, 1, 1)
+    end
+
     slider.Low:SetText(tab.vmin)
     slider.High:SetText(tab.vmax)
     local struct = D4:Trans(tab.key)
@@ -133,12 +208,14 @@ function D4:CreateSlider(tab)
                 TAB[tab.key] = val
             end
 
-            if tab.funcV then
+            if tab.funcV2 then
+                tab:funcV2(val)
+            elseif tab.funcV then
                 tab:funcV(val)
             end
 
             if tab.func then
-                tab:func()
+                tab:func(val)
             end
 
             local struct2 = D4:Trans(tab.key)
@@ -151,6 +228,121 @@ function D4:CreateSlider(tab)
     )
 
     return slider
+end
+
+function D4:GetColor(name, from)
+    if TAB == nil then
+        D4:MSG("[GetColor] Missing TAB", from)
+
+        return 0, 0, 0, 0
+    end
+
+    local r = TAB[name .. "_R"] or 0
+    local g = TAB[name .. "_G"] or 0
+    local b = TAB[name .. "_B"] or 0
+    local a = TAB[name .. "_A"] or 0
+
+    return r, g, b, a
+end
+
+function D4:SetColor(name, r, g, b, a)
+    if TAB == nil then
+        D4:MSG("[SetColor] Missing TAB")
+
+        return
+    end
+
+    TAB[name .. "_R"] = r or 0
+    TAB[name .. "_G"] = g or 0
+    TAB[name .. "_B"] = b or 0
+    TAB[name .. "_A"] = a or 0
+end
+
+function D4:ShowColorPicker(r, g, b, a, changedCallback, revertCallback)
+    if ColorPickerFrame.SetupColorPickerAndShow then
+        local info = {}
+        info.swatchFunc = changedCallback
+        info.hasOpacity = true
+        info.opacityFunc = changedCallback
+        info.cancelFunc = function() end
+        info.extraInfo = "TEST"
+        info.r = r
+        info.g = g
+        info.b = b
+        info.opacity = a
+        ColorPickerFrame:SetupColorPickerAndShow(info)
+    else
+        D4:MSG("[ShowColorPicker] Missing ColorPicker")
+    end
+end
+
+function D4:AddColorPicker(key, value, func, x, y)
+    if TAB == nil then
+        D4:MSG("[AddColorPicker] Missing TAB")
+
+        return
+    end
+
+    if TAB[key .. "_R"] == nil then
+        TAB[key .. "_R"] = value.R
+    end
+
+    if TAB[key .. "_G"] == nil then
+        TAB[key .. "_G"] = value.G
+    end
+
+    if TAB[key .. "_B"] == nil then
+        TAB[key .. "_B"] = value.B
+    end
+
+    if TAB[key .. "_A"] == nil then
+        TAB[key .. "_A"] = value.A
+    end
+
+    local btn = CreateFrame("Button", key, PARENT, "UIPanelButtonTemplate")
+    btn:SetSize(180, 25)
+    btn:SetPoint("TOPLEFT", PARENT, "TOPLEFT", x, Y)
+    btn:SetText(D4:Trans(key))
+    btn:SetScript(
+        "OnClick",
+        function()
+            local r, g, b, a = D4:GetColor(key)
+            if D4:GetWoWBuild() ~= "RETAIL" then
+                a = 1 - a
+            end
+
+            D4:ShowColorPicker(
+                r,
+                g,
+                b,
+                a,
+                function(restore)
+                    local newR, newG, newB, newA
+                    if restore then
+                        newR, newG, newB, newA = unpack(restore)
+                    else
+                        local alpha = 1
+                        if ColorPickerFrame.GetColorAlpha then
+                            alpha = ColorPickerFrame:GetColorAlpha()
+                        else
+                            alpha = OpacitySliderFrame:GetValue()
+                        end
+
+                        if D4:GetWoWBuild() ~= "RETAIL" then
+                            alpha = 1 - alpha
+                        end
+
+                        newA, newR, newG, newB = alpha, ColorPickerFrame:GetColorRGB()
+                    end
+
+                    D4:SetColor(key, newR, newG, newB, newA)
+                    if func then
+                        func()
+                    end
+                end
+            )
+        end
+    )
 end
 
 --[[ FRAMES ]]
@@ -197,6 +389,14 @@ function D4:CreateFrame(tab)
     return fra
 end
 
+function D4:SetAppendX(newX)
+    X = newX
+end
+
+function D4:GetAppendX()
+    return X
+end
+
 function D4:SetAppendY(newY)
     Y = newY
 end
@@ -221,14 +421,14 @@ function D4:AppendCategory(name, x, y)
     if Y == 0 then
         Y = Y - 5
     else
-        Y = Y - 30
+        Y = Y - 50
     end
 
     D4:AddCategory(
         {
             ["name"] = name,
             ["parent"] = PARENT,
-            ["pTab"] = {"TOPLEFT", x or 5, y or Y},
+            ["pTab"] = {"TOPLEFT", x or X, y or Y},
         }
     )
 
@@ -239,7 +439,7 @@ end
 
 function D4:AppendCheckbox(key, value, func, x, y)
     value = value or false
-    x = x or 5
+    x = x or X
     if TAB == nil then
         if TABIsNil == false then
             TABIsNil = true
@@ -251,14 +451,15 @@ function D4:AppendCheckbox(key, value, func, x, y)
 
     local val = TAB[key]
     if val == nil then
-        val = value
+        TAB[key] = value
+        val = TAB[key]
     end
 
     D4:CreateCheckbox(
         {
             ["name"] = key,
             ["parent"] = PARENT,
-            ["pTab"] = {"TOPLEFT", x, y or Y},
+            ["pTab"] = {"TOPLEFT", x or X, y or Y},
             ["value"] = val,
             ["funcV"] = function(sel, checked)
                 TAB[key] = checked
@@ -275,7 +476,7 @@ function D4:AppendCheckbox(key, value, func, x, y)
 end
 
 function D4:AppendSlider(key, value, min, max, steps, decimals, func, lstr)
-    Y = Y - 15
+    Y = Y - 24
     if key == nil then
         D4:MSG("[D4][AppendSlider] Missing key:", tab.key, tab.value)
 
@@ -299,6 +500,12 @@ function D4:AppendSlider(key, value, min, max, steps, decimals, func, lstr)
         TAB[key] = value
     end
 
+    if TAB[key] and not (type(TAB[key]) == "number" or type(TAB[key]) == "string") then
+        D4:MSG("[D4][AppendSlider] WRONG TYPE value:", TAB[key])
+
+        return
+    end
+
     local slider = {}
     slider.key = key
     slider.parent = PARENT
@@ -310,7 +517,79 @@ function D4:AppendSlider(key, value, min, max, steps, decimals, func, lstr)
     slider.decimals = decimals
     slider.color = {0, 1, 0, 1}
     slider.func = func
-    slider.pTab = {"TOPLEFT", 10, Y}
+    slider.pTab = {"TOPLEFT", X + 5, Y}
     D4:CreateSlider(slider)
+    Y = Y - 30
+end
+
+function D4:AppendColorPicker(key, value, func, x)
+    D4:AddColorPicker(key, value, func, x)
+    Y = Y - 30
+end
+
+function D4:CreateDropdown(key, value, choices, parent, func)
+    if TAB[key] == nil then
+        TAB[key] = value
+    end
+
+    local text = parent:CreateFontString(nil, nil, "GameFontNormal")
+    text:SetPoint("TOPLEFT", X + 5, Y)
+    text:SetText(D4:Trans(key))
+    Y = Y - 18
+    if D4:GetWoWBuild() == "RETAIL" then
+        local Dropdown = CreateFrame("DropdownButton", key, parent, "WowStyle1DropdownTemplate")
+        Dropdown:SetDefaultText(D4:Trans(choices[TAB[key]]))
+        Dropdown:SetPoint("TOPLEFT", X + 5, Y)
+        Dropdown:SetWidth(200)
+        Dropdown:SetupMenu(
+            function(dropdown, rootDescription)
+                rootDescription:CreateTitle(D4:Trans(key))
+                for data, name in pairs(choices) do
+                    rootDescription:CreateButton(
+                        D4:Trans(name),
+                        function()
+                            TAB[key] = data
+                            Dropdown:SetDefaultText(D4:Trans(name))
+                            if func then
+                                func(data)
+                            end
+                        end
+                    )
+                end
+            end
+        )
+    else
+        local dropDown = CreateFrame("Frame", "WPDemoDropDown", PARENT, "UIDropDownMenuTemplate")
+        dropDown:SetPoint("TOPLEFT", -10, Y)
+        UIDropDownMenu_SetWidth(dropDown, 200)
+        function WPDropDownDemo_Menu(frame, level, menuList)
+            local info = UIDropDownMenu_CreateInfo()
+            if level == 1 then
+                for data, name in pairs(choices) do
+                    info.text = D4:Trans(name)
+                    info.arg1 = data
+                    info.checked = name == choices[TAB[key]]
+                    info.func = dropDown.SetValue
+                    UIDropDownMenu_AddButton(info)
+                end
+            end
+        end
+
+        UIDropDownMenu_Initialize(dropDown, WPDropDownDemo_Menu)
+        UIDropDownMenu_SetText(dropDown, choices[TAB[key]])
+        function dropDown:SetValue(newValue)
+            TAB[key] = newValue
+            UIDropDownMenu_SetText(dropDown, newValue)
+            CloseDropDownMenus()
+            if func then
+                func(newValue)
+            end
+        end
+    end
+end
+
+function D4:AppendDropdown(key, value, choices, func)
+    Y = Y - 10
+    D4:CreateDropdown(key, value, choices, PARENT, func)
     Y = Y - 30
 end

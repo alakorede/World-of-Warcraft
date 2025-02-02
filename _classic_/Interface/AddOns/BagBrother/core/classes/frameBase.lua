@@ -5,12 +5,16 @@
 
 
 local ADDON, Addon = ...
+local C = LibStub('C_Everywhere').Item
 local L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
+
 local Frame = Addon.Base:NewClass('Frame', 'Frame', nil, true)
+Frame.Get = GetOrCreateTableEntryByCallback
 Frame.OpenSound = SOUNDKIT.IG_BACKPACK_OPEN
 Frame.CloseSound = SOUNDKIT.IG_BACKPACK_CLOSE
-Frame.MoneyFrame = Addon.MoneyFrame
+Frame.MoneyFrame = Addon.PlayerMoney
 Frame.BagGroup = Addon.BagGroup
+Frame.RegisterEvents = nop
 
 local KEYSTONE_FORMAT = '^' .. strrep('%d+:', 6) .. '%d+$'
 local PET_FORMAT = '^' .. strrep('%d+:', 7) .. '%d+$'
@@ -113,6 +117,10 @@ function Frame:GetPosition()
 	return self.profile.point or 'CENTER', self.profile.x, self.profile.y
 end
 
+function Frame:GetWidget(key)
+	return self:Get(key, function() return Addon[key](self) end)
+end
+
 function Frame:GetExtraButtons()
 	return {}
 end
@@ -151,14 +159,18 @@ function Frame:IsShowingQuality(quality)
 end
 
 function Frame:SortItems()
-	Addon.Sorting:Start(self)
+	if self.profile.serverSort and self.ServerSort then
+		self:ServerSort()
+	else
+		Addon.Sorting:Start(self)
+	end
 end
 
 
 --[[ Properties ]]--
 
 function Frame:GetItemInfo(bag, slot)
-	local bag = self:GetOwner()[bag]
+	local bag = self:GetBagInfo(bag)
 	local data = bag and bag[slot]
 	if data then
 		if data:find(PET_FORMAT) then
@@ -169,19 +181,23 @@ function Frame:GetItemInfo(bag, slot)
 			return item
 		elseif data:find(KEYSTONE_FORMAT) then
 			local item = {itemID = tonumber(data:match('(%d+)'))}
-			_,_,_,_, item.iconFileID = GetItemInfoInstant(item.itemID)
-			_, item.hyperlink, item.quality = GetItemInfo(item.itemID)
+			_,_,_,_, item.iconFileID = C.GetItemInfoInstant(item.itemID)
+			_, item.hyperlink, item.quality = C.GetItemInfo(item.itemID)
 			item.hyperlink = item.hyperlink:gsub('item[:%d]+', data, 1)
 			return item
 		else
 			local link, count = strsplit(';', data)
 			local item = {hyperlink = 'item:' .. link, stackCount = tonumber(count)}
-			item.itemID, _,_,_, item.iconFileID = GetItemInfoInstant(item.hyperlink)
-			_, item.hyperlink, item.quality = GetItemInfo(item.hyperlink) 
+			item.itemID, _,_,_, item.iconFileID = C.GetItemInfoInstant(item.hyperlink)
+			_, item.hyperlink, item.quality = C.GetItemInfo(item.hyperlink) 
 			return item
 		end
 	end
 	return {}
+end
+
+function Frame:GetBagInfo(bag)
+	return self:GetOwner()[bag]
 end
 
 function Frame:GetBagFamily()

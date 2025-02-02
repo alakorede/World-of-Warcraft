@@ -10,6 +10,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("NeatPlates")
 
 local SetTheme = NeatPlatesInternal.SetTheme	-- Use the protected version
 
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local version = GetAddOnMetadata("NeatPlates", "version")
 local versionString = "|cFF666666"..version
 
@@ -23,7 +24,7 @@ NeatPlatesInterfacePanel.OnCommit = NeatPlatesInterfacePanel.okay;
 NeatPlatesInterfacePanel.OnDefault = NeatPlatesInterfacePanel.default;
 NeatPlatesInterfacePanel.OnRefresh = NeatPlatesInterfacePanel.refresh;
 local category, layout
-if Settings and not NEATPLATES_IS_CLASSIC then
+if Settings then
 	category, layout = Settings.RegisterCanvasLayoutCategory(NeatPlatesInterfacePanel, NeatPlatesInterfacePanel.name, NeatPlatesInterfacePanel.name);
 	category.expanded = true
 	Settings.RegisterAddOnCategory(category);
@@ -64,6 +65,12 @@ local function SetCastBars(enable)
 	end
 end
 
+local function SetChannelingCastBars(enable)
+	if enable then NeatPlates:EnableChannelingCastBars()
+		else NeatPlates:DisableChannelingCastBars()
+	end
+end
+
 local function ReplaceColorPatterns(text)
 	text = text:gsub('%%yellow%%', yellow) -- Yellow
 	text = text:gsub('%%blue%%', blue) -- BLue
@@ -98,6 +105,7 @@ NeatPlatesOptions = {
 	EnemyAutomation = {},
 	EmulatedTargetPlate = false,
 	DisableCastBars = false,
+	DisableChannelingCastBars = false,
 	ForceBlizzardFont = false,
 	BlizzardScaling = false,
 	BlizzardNameVisibility = false,
@@ -105,6 +113,7 @@ NeatPlatesOptions = {
 	OverrideOutline = 1,
 	EnforceRequiredCVars = true,
 	ForceHealthUpdates = false,
+	NameplateThrottleUpdate = 0,
 
 	NameplateClickableHeight = 1,
 	NameplateClickableWidth = 1,
@@ -155,13 +164,17 @@ local function RemoveProfile(panel)
 			if category.name == panel.name then INTERFACEOPTIONS_ADDONCATEGORIES[i] = nil end
 		end)
 	else
-		local category = Settings.GetCategory(panel.parent)
+		local category = NeatPlatesPanel.Category
 		table.foreach(category.subcategories, function(i, c)
 			if c.name == panel.name then
 				c:SetParentCategory(nil)
 				table.remove(category.subcategories, i)
 			end
 		end)
+
+		-- Bit of a hack to force a reload (There is probably a better way...)
+		Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
+		Settings.OpenToCategory(category.ID, "NeatPlates")
 	end
 
 	NeatPlatesHubRapidPanel.RemoveVariableSet(panel)	-- Remove stored variables
@@ -253,8 +266,10 @@ local ThemeDropdownMenuItems = {}
 
 local function ApplyAutomationSettings()
 	SetCastBars(not NeatPlatesOptions.DisableCastBars)
+	SetChannelingCastBars(not NeatPlatesOptions.DisableChannelingCastBars)
 	NeatPlates.OverrideFonts(NeatPlatesOptions.ForceBlizzardFont)
 	NeatPlates.ToggleHealthTicker(NeatPlatesOptions.ForceHealthUpdates)
+	NeatPlatesUtility.SetThrottle(NeatPlatesOptions.NameplateThrottleUpdate)
 	if NEATPLATES_IS_CLASSIC then
 		NeatPlates:ToggleEmulatedTargetPlate(NeatPlatesOptions.EmulatedTargetPlate)
 	end
@@ -400,6 +415,9 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.FriendlyAutomation = panel.FriendlyAutomation:GetValue()
 	NeatPlatesOptions.EnemyAutomation = panel.EnemyAutomation:GetValue()
 	NeatPlatesOptions.DisableCastBars = panel.DisableCastBars:GetChecked()
+	if NEATPLATES_IS_CLASSIC_ERA then
+		NeatPlatesOptions.DisableChannelingCastBars = panel.DisableChannelingCastBars:GetChecked()
+	end
 	NeatPlatesOptions.ForceBlizzardFont = panel.ForceBlizzardFont:GetChecked()
 	NeatPlatesOptions.BlizzardScaling = panel.BlizzardScaling:GetChecked()
 	NeatPlatesOptions.BlizzardNameVisibility = panel.BlizzardNameVisibility:GetChecked()
@@ -407,6 +425,7 @@ local function GetPanelValues(panel)
 	NeatPlatesOptions.OverrideOutline = panel.OverrideOutline:GetValue()
 	NeatPlatesOptions.EnforceRequiredCVars = panel.EnforceRequiredCVars:GetChecked()
 	NeatPlatesOptions.ForceHealthUpdates = panel.ForceHealthUpdates:GetChecked()
+	NeatPlatesOptions.NameplateThrottleUpdate = panel.NameplateThrottleUpdate:GetValue()
 	NeatPlatesOptions.NameplateClickableWidth = panel.NameplateClickableWidth:GetValue()
 	NeatPlatesOptions.NameplateClickableHeight = panel.NameplateClickableHeight:GetValue()
 	--NeatPlatesOptions.PrimaryProfile = panel.FirstSpecDropdown:GetValue()
@@ -438,6 +457,9 @@ local function SetPanelValues(panel)
 	end
 
 	panel.DisableCastBars:SetChecked(NeatPlatesOptions.DisableCastBars)
+	if NEATPLATES_IS_CLASSIC_ERA then
+		panel.DisableChannelingCastBars:SetChecked(NeatPlatesOptions.DisableChannelingCastBars)
+	end
 	panel.ForceBlizzardFont:SetChecked(NeatPlatesOptions.ForceBlizzardFont)
 	panel.BlizzardScaling:SetChecked(NeatPlatesOptions.BlizzardScaling)
 	panel.BlizzardNameVisibility:SetChecked(NeatPlatesOptions.BlizzardNameVisibility)
@@ -445,6 +467,7 @@ local function SetPanelValues(panel)
 	panel.OverrideOutline:SetValue(NeatPlatesOptions.OverrideOutline)
 	panel.EnforceRequiredCVars:SetChecked(NeatPlatesOptions.EnforceRequiredCVars)
 	panel.ForceHealthUpdates:SetChecked(NeatPlatesOptions.ForceHealthUpdates)
+	panel.NameplateThrottleUpdate:SetValue(NeatPlatesOptions.NameplateThrottleUpdate)
 	panel.NameplateClickableWidth:SetValue(NeatPlatesOptions.NameplateClickableWidth)
 	panel.NameplateClickableHeight:SetValue(NeatPlatesOptions.NameplateClickableHeight)
 	panel.FriendlyAutomation:SetValue(NeatPlatesOptions.FriendlyAutomation)
@@ -892,16 +915,28 @@ local function BuildInterfacePanel(panel)
 
 	-- Cast Bars
 	panel.DisableCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableCastBars", panel, L["Disable Cast Bars"])
+	local anchorTo = panel.OtherOptionsLabel
 	if NEATPLATES_IS_CLASSIC then
-		panel.DisableCastBars:SetPoint("TOPLEFT", panel.EmulatedTargetPlate, "BOTTOMLEFT", 0, -8)
-	else
-		panel.DisableCastBars:SetPoint("TOPLEFT", panel.OtherOptionsLabel, "BOTTOMLEFT", 0, -8)
+		anchorTo = panel.EmulatedTargetPlate
 	end
+	panel.DisableCastBars:SetPoint("TOPLEFT", anchorTo, "BOTTOMLEFT", 0, -8)
 	panel.DisableCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
+
+	-- Channeling Cast Bars
+	if NEATPLATES_IS_CLASSIC_ERA then
+		panel.DisableChannelingCastBars = PanelHelpers:CreateCheckButton("NeatPlatesOptions_DisableChannelingCastBars", panel, L["Disable Channeling Cast Bars"])
+		panel.DisableChannelingCastBars:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
+		panel.DisableChannelingCastBars:SetScript("OnClick", function(self) SetCastBars(not self:GetChecked()) end)
+
+	end
 
 	-- ForceHealthUpdates
 	panel.ForceHealthUpdates = PanelHelpers:CreateCheckButton("NeatPlatesOptions_ForceHealthUpdates", panel, L["Force Health Updates"])
-	panel.ForceHealthUpdates:SetPoint("TOPLEFT", panel.DisableCastBars, "TOPLEFT", 0, -25)
+	anchorTo = panel.DisableCastBars
+	if NEATPLATES_IS_CLASSIC_ERA then
+		anchorTo = panel.DisableChannelingCastBars
+	end
+	panel.ForceHealthUpdates:SetPoint("TOPLEFT", anchorTo, "TOPLEFT", 0, -25)
 	panel.ForceHealthUpdates:SetScript("OnClick", function(self) NeatPlates.ToggleHealthTicker( self:GetChecked()) end)
 	panel.ForceHealthUpdates.tooltipText = L["Forces health to update every .25sec, try this if you are having health update issues"]
 
@@ -939,11 +974,18 @@ local function BuildInterfacePanel(panel)
 	panel.OverrideOutline = PanelHelpers:CreateDropdownFrame("NeatPlatesOverrideOutline", panel, OutlineStyleItems, 1, nil, true)
 	panel.OverrideOutline:SetPoint("TOPLEFT", panel.OverrideOutlineLabel, "BOTTOMLEFT", -15, -2)
 
+	panel.NameplateThrottleUpdate = PanelHelpers:CreateSliderFrame("NeatPlatesOptions_NameplateThrottleUpdate", panel, L["Nameplate Update Rate (ms)"], 0, 0, 150, 1, "ACTUAL", 170)
+	panel.NameplateThrottleUpdate:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 22, -20)
+	panel.NameplateThrottleUpdate.Callback = function(self) NeatPlatesUtility.SetThrottle(self.ceil(self:GetValue())) end
+
+	panel.NameplateThrottleUpdateTip = PanelHelpers:CreateTipBox("NeatPlatesOptions_NameplateThrottleUpdateTip", L["NAMEPLATE_THROTTLE_TIP"], panel, "BOTTOMRIGHT", panel.NameplateThrottleUpdate, "TOPRIGHT", 35, -20)
+
+
 	-- Class Colors
 	panel.ClassColorLabel = panel:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 	panel.ClassColorLabel:SetFont(font, 22, "")
 	panel.ClassColorLabel:SetText(L["Class Colors"])
-	panel.ClassColorLabel:SetPoint("TOPLEFT", panel.OverrideOutline, "BOTTOMLEFT", 15, -30)
+	panel.ClassColorLabel:SetPoint("TOPLEFT", panel.NameplateThrottleUpdate, "BOTTOMLEFT", -7, -30)
 	panel.ClassColorLabel:SetTextColor(255/255, 105/255, 6/255)
 
 	local F = panel.ClassColorLabel
@@ -1168,7 +1210,7 @@ local function BuildInterfacePanel(panel)
 	-- Blizzard Nameplate Options Button
 	BlizzOptionsButton:SetScript("OnClick", function()
 		if Settings and not NEATPLATES_IS_CLASSIC then
-			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID)
+			Settings.OpenToCategory(Settings.INTERFACE_CATEGORY_ID, "Nameplates")
 		else
 			InterfaceOptionsFrame_OpenToCategory(_G["InterfaceOptionsNamesPanel"])
 		end

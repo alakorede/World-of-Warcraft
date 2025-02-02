@@ -22,25 +22,14 @@ function DebugPrintFullName(frame)
     return name
 end
 
-local GetBagAndSlot = CanIMogIt.RetailWrapper(
-    function (frame)
-        -- Retail
-        local bag, slot
-        if frame:GetParent():GetParent() then
-            slot, bag = frame:GetParent():GetSlotAndBagID()
-        end
-        return bag, slot
-    end,
-    function (frame)
-        -- Classic
-        local bag, slot
-        if frame:GetParent():GetParent() then
-            bag = frame:GetParent():GetParent():GetID()
-            slot = frame:GetParent():GetID()
-        end
-        return bag, slot
+local function GetBagAndSlot(frame)
+    local bag, slot
+    if frame:GetParent():GetParent() then
+        slot, bag = frame:GetParent():GetSlotAndBagID()
     end
-)
+    return bag, slot
+end
+
 
 function ContainerFrame_CIMIUpdateIcon(cimiFrame)
     if not cimiFrame or not cimiFrame:GetParent() or not cimiFrame:GetParent():GetParent() then return end
@@ -55,6 +44,20 @@ function ContainerFrame_CIMIUpdateIcon(cimiFrame)
     -- load everything immediately, so the OnUpdate needs to run until those frames are opened.
     if (bag == 0 and slot == 0) or (bag == 100 and slot == 0) then return end
     CIMI_SetIcon(cimiFrame, ContainerFrame_CIMIUpdateIcon, CanIMogIt:GetTooltipText(itemLink, bag, slot))
+end
+
+
+function WarbankFrame_CIMIUpdateIcon(self)
+    if not self then return end
+    if not CIMI_CheckOverlayIconEnabled() then
+        self.CIMIIconTexture:SetShown(false)
+        self:SetScript("OnUpdate", nil)
+        return
+    end
+
+    local bag, slot = self:GetParent().bankTabID, self:GetParent().containerSlotID
+    local itemLink = C_Container.GetContainerItemLink(bag, slot)
+    CIMI_SetIcon(self, WarbankFrame_CIMIUpdateIcon, CanIMogIt:GetTooltipText(itemLink, bag, slot))
 end
 
 
@@ -166,12 +169,31 @@ local function UpdateContainerFrames()
             ContainerFrame_CIMIUpdateIcon(cimiFrame)
         end
     end
+
+    -- Warbank frame
+    for i=1,CanIMogIt.NUM_WARBANK_ITEMS do
+        local accountBankPanel = _G["AccountBankPanel"]
+        if accountBankPanel == nil then
+            return
+        end
+        local frame = accountBankPanel:FindItemButtonByContainerSlotID(i)
+        if frame then
+            cimiFrame = frame.CanIMogItOverlay
+            if not cimiFrame then
+                cimiFrame = AddToContainerFrame(frame)
+            end
+            WarbankFrame_CIMIUpdateIcon(cimiFrame)
+        end
+    end
 end
 
 hooksecurefunc("ToggleBag", UpdateContainerFrames)
 hooksecurefunc("OpenAllBags", UpdateContainerFrames)
 hooksecurefunc("CloseAllBags", UpdateContainerFrames)
 hooksecurefunc("ToggleAllBags", UpdateContainerFrames)
+
+local accountBankPanel = _G["AccountBankPanel"]
+hooksecurefunc(accountBankPanel, "RefreshBankPanel", function () C_Timer.After(.1, UpdateContainerFrames) end)
 
 local containerFrameEvents = {
     "BAG_UPDATE",
@@ -190,8 +212,7 @@ local function OnContainerFramesEvent(event)
 end
 
 
-CanIMogIt.frame:AddEventFunction(OnContainerFramesEvent)
-CanIMogIt.frame:AddEventFunction(OnContainerFramesEvent)
+CanIMogIt.frame:AddSmartEvent(OnContainerFramesEvent, containerFrameEvents)
 CanIMogIt:RegisterMessage("OptionUpdate", UpdateContainerFrames)
 
 
@@ -219,7 +240,7 @@ local function OnGuildBankLoaded(event, addonName, ...)
     end
 end
 
-CanIMogIt.frame:AddEventFunction(OnGuildBankLoaded)
+CanIMogIt.frame:AddSmartEvent(OnGuildBankLoaded, {"ADDON_LOADED"})
 
 local function OnGuildBankUpdate(event, ...)
     if event == "GUILDBANKBAGSLOTS_CHANGED" then
@@ -227,5 +248,5 @@ local function OnGuildBankUpdate(event, ...)
     end
 end
 
-CanIMogIt.frame:AddEventFunction(OnGuildBankUpdate)
+CanIMogIt.frame:AddSmartEvent(OnGuildBankUpdate, {"GUILDBANKBAGSLOTS_CHANGED"})
 CanIMogIt:RegisterMessage("OptionUpdate", UpdateGuildBank)

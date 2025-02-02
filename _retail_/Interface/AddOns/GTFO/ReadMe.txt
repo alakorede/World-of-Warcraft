@@ -2076,3 +2076,130 @@ Change Log:
 * Added TWW spells for Darkflame Cleft
 * Added Dragonflight spells (world)
 * Added Shadowlands spells (world)
+
+5.11
+* Updated TOC for Classic 1.5.3
+* Fixed options menu opening incorrectly
+* Added Addon Compartment support (Thanks NoctusMirus)
+* Fixed BFA spells for Battle of Dazar'alor
+* Fixed Cataclysm spells for Blackwing Descent (Thanks Emuburger)
+
+5.11.1
+* Fixed issue with update notifications
+
+5.11.2
+* Updated for patch 11.0.2
+
+5.11.3
+* Updated for patch 11.0.2
+* Added The War Within spells (world)
+* Added TWW spells for The Rookery
+* Fixed TWW general environment debuff spells for TWW Delves to be less spammy
+
+5.11.4
+* Added The War Within spells (world)
+* Added TWW spells for The Rookery
+* Added TWW spells for TWW Delves 
+
+5.12
+* Improved internal scanner to assist with verifying alerts marked as "test"
+* Added The War Within spells (world)
+* Added TWW spells for The Rookery
+* Added TWW spells for The Stonevault
+* Added TWW spells for Darkflame Cleft
+* Added TWW spells for Priory of the Scared Flame
+* Added special ignore for "Smothering Shadows" (Darkflame Cleft - TWW)
+
+5.12.1
+* Added TWW spells for City of Threads
+* Added TWW spells for The Dawnbreaker
+* Added TWW spells for Cinderbrew Meadery
+
+5.12.2
+* Added The War Within spells (world)
+* Added TWW spells for Darkflame Cleft
+* Added TWW spells for Priory of the Scared Flame
+* Added TWW spells for TWW Delves 
+
+5.12.3
+* Added The War Within spells (world)
+* Added TWW spells for Nerub-ar Palace
+* Added TWW spells for City of Threads
+* Added TWW spells for Priory of the Scared Flame
+* Added Cataclysm spells for Grim Batol (Mythic)
+
+5.12.4
+* Added The War Within spells (world)
+* Added TWW spells for Nerub-ar Palace
+* Added TWW spells for Ara-Kara, City of Echoes
+* Added TWW spells for TWW Delves 
+* Added SL spells for Mists of Tirna Scithe
+* Added BFA spells for Siege of Boralus
+
+5.12.5
+* Updated ToC and UI updates for WoW Cataclysm 4.4.1
+* Added The War Within spells (world)
+* Added Cataclysm spells for Grim Batol (Mythic)
+* Added TWW spells for TWW Delves 
+* Added TWW spells for Nerub-ar Palace
+
+5.13
+* Disabled sliders temporarily for WoW Classic until a replacement can be found
+* Updated ToC for WoW Classic 1.15.4
+* Removed Pre-Dragonflight UI management
+* Added TWW spells for Nerub-ar Palace
+
+5.13.1
+* Updated for patch 11.0.5 (PTR)
+* Added The War Within spells (world)
+* Added TWW spells for City of Threads
+* Added TWW spells for The Dawnbreaker
+* Added TWW spells for Nerub-ar Palace
+
+5.14
+* Re-enabled sliders for WoW Classic
+* Added The War Within spells (world)
+* Added TWW spells for TWW Delves 
+* Added TWW spells for Cinderbrew Meadery
+* Added TWW spells for Nerub-ar Palace
+
+5.14.1
+* Updated for patch 11.0.5
+* Added TWW spells for Blackrock Depths (Raid)
+* Added TWW spells for Nerub-ar Palace (Thanks Kuhani)
+
+5.14.2
+* Added The War Within spells (world)
+* Added Vanilla spells (world)
+* Added TWW spells for Blackrock Depths (Raid)
+
+5.15
+* Updated for patch 11.0.7
+* Updated TOC for WoW Cataclysm 4.4.1
+* Updated TOC for WoW Classic 1.15.5
+* Added support for ignoring periodic damage
+* Added The War Within spells (world)
+* Added TWW spells for Nerub-ar Palace
+* Added TWW spells for TWW Delves 
+* Added Dragonflight spells (world)
+* Added Battle for Azeroth spells (world)
+* Added BFA spells for Battle of Dazar'alor
+* Added BFA spells for The Eternal Palace
+* Added BFA spells for Ny'alotha, the Waking City
+* Added Classic spells for Azeroth (world)
+
+5.15.1
+* Updated for patch 11.1 (PTR)
+* Added The War Within spells (world)
+* Added Wrath spells for Gundrak (Thanks Zindex)
+* Added TWW spells for TWW Delves 
+* Added TWW spells for Operation: Floodgate
+* Fixed TWW spells for Nerub-ar Palace
+* Fixed WoD spells for Blackrock Foundry
+* Fixed Legion spells for The Emerald Nightmare
+* Fixed Legion spells for Nighthold
+* Fixed Legion spells for Antorus, The Burning Throne
+* Fixed BFA spells for Ny'alotha, the Waking City
+* Fixed Shadowlands spells (world)
+* Fixed SL spells for Castle Nathria
+* Fixed SL spells for Sanctum of Domination

@@ -176,6 +176,7 @@ local function GetDressUpModelSlotSource(slotID, enchantID)
 	local hasAppearance = C_TransmogCollection.PlayerHasTransmog(itemID, itemModID) or IsAppearanceKnown(itemLink)
 
 	if itemName and (slotID == 16 or slotID == 17) then 
+		local GetItemInfo = C_Item and C_Item.GetItemInfo
 		local _, _, _, _, _, _, _, _, _, _, _, classID, subclassID = GetItemInfo(itemName)
 		if classID == LE_ITEM_CLASS_WEAPON then
 			if subclassID == LE_ITEM_WEAPON_BOWS or subclassID == LE_ITEM_WEAPON_GUNS or subclassID == LE_ITEM_WEAPON_CROSSBOW then 
@@ -409,7 +410,7 @@ function DressingRoom:UpdateModel(unit)
 	
 	local itemList;
 	if actor then
-		itemList = CopyTable(actor:GetItemitemList());
+		itemList = CopyTable(actor:GetItemTransmogInfoList());
 	end
 	
 	if unit ~= "player" then
@@ -491,7 +492,7 @@ function BW_DressingRoomFrameMixin:OnLoad()
 	highlight:SetPoint("TOPLEFT",DressUpFrame.LinkButton, "TOPLEFT",-3,-1 )
 	highlight:SetPoint("BOTTOMRIGHT",DressUpFrame.LinkButton, "BOTTOMRIGHT",-8,5 )
 --]]
-	if IsAddOnLoaded("Narcissus") then
+	if C_AddOns.IsAddOnLoaded("Narcissus") then
 		BW_DressingRoomFrame.BW_DressingRoomSwapFormButton:Hide();
 	end
 end
@@ -599,7 +600,7 @@ local function BW_DressingRoomImportButton_OnClick(self)
 				if setType == "set" then
 					sources = C_TransmogSets.GetSetSources(setID)
 				elseif setType == "extraset" then
-					sources = addon.GetSetsources(setID)
+					sources = addon.SetsDataProvider:GetSetSources(setID) --addon.GetSetsources(setID)
 				end
 
 				if not sources then return end
@@ -617,10 +618,15 @@ local function BW_DressingRoomImportButton_OnClick(self)
 
 	
 		if  C_Transmog.IsAtTransmogNPC() then
-		
+			rootDescription:CreateButton(L["Import Set"], function() addon.importFrom = "tmog"; BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_SET_POPUP") end);
+			rootDescription:CreateButton(L["Export Set"], function() addon:ExportTransmogVendorSet() end);
+
+
 		else
-					rootDescription:CreateButton(L["Import Item"], function() BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_ITEM_POPUP") end);
-		--rootDescription:CreateButton(L["Import Set"], function()BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_SET_POPUP") end);
+			rootDescription:CreateButton(L["Import Item"], function() BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_ITEM_POPUP") end);
+			rootDescription:CreateButton(L["Import Set"], function() BetterWardrobeOutfitManager:ShowPopup("BETTER_WARDROBE_IMPORT_SET_POPUP") end);
+			rootDescription:CreateButton(L["Export Set"], function() addon:ExportSet() end);
+
 		--rootDescription:CreateButton(L["Create Dressing Room Command Link"], function() addon:CreateChatLink() end);
 		end
 

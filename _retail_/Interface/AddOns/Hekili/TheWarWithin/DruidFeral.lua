@@ -1,3 +1,4 @@
+
 -- DruidFeral.lua
 -- July 2024
 
@@ -141,7 +142,7 @@ spec:RegisterTalents( {
     rip_and_tear                   = { 82093, 391347, 1 }, -- Applying Rip to a target also applies a Tear that deals 15% of the new Rip's damage over 8 sec.
     saber_jaws                     = { 82094, 421432, 2 }, -- When you spend extra Energy on Ferocious Bite, the extra damage is increased by 40%.
     sabertooth                     = { 82102, 202031, 1 }, -- Ferocious Bite deals 15% increased damage. For each Combo Point spent, Ferocious Bite's primary target takes 3% increased damage from your Cat Form bleed and other periodic abilities for 4 sec.
-    savage_fury                    = { 82099, 449645, 1 }, -- Tiger's Fury increases your Haste by 8% and Energy recovery rate by 20% for 6 sec.
+    savage_fury                    = { 82099, 449645, 1 }, -- Tiger's Fury increases your Haste by 10% and Energy recovery rate by 25% for 6 sec.
     soul_of_the_forest             = { 82096, 158476, 1 }, -- Your finishing moves grant 2 Energy per combo point spent and deal 5% increased damage.
     sudden_ambush                  = { 82104, 384667, 1 }, -- Finishing moves have a 6% chance per combo point spent to make your next Rake or Shred deal damage as though you were stealthed.
     survival_instincts             = { 82116, 61336 , 1 }, -- Reduces all damage you take by 50% for 6 sec.
@@ -337,10 +338,9 @@ spec:RegisterAuras( {
     },
     overflowing_power = {
         id = 405189,
-        duration = function () return talent.incarnation.enabled and 30 or 20 end,
+        duration = 10,
         max_stack = 3,
-        copy = "berserk_overflow",
-        meta = {
+        --[[meta = {
             stack = function( t )
                 if buff.bs_inc.down then return 0 end
                 local deficit = combo_points.deficit
@@ -350,7 +350,7 @@ spec:RegisterAuras( {
             stacks = function( t )
                 return t.stack
             end
-        }
+        }--]]
     },
 
     -- Alias for Berserk vs. Incarnation
@@ -358,7 +358,7 @@ spec:RegisterAuras( {
         alias = { "berserk", "incarnation" },
         aliasMode = "first", -- use duration info from the first buff that's up, as they should all be equal.
         aliasType = "buff",
-        duration = function () return talent.incarnation.enabled and 30 or 20 end,
+        duration = function () return talent.incarnation.enabled and 20 or 15 end,
     },
     bloodtalons = {
         id = 145152,
@@ -432,9 +432,10 @@ spec:RegisterAuras( {
     -- Bleeding for $w1 damage every $t1 seconds. Weakened, dealing $w2% less damage to $@auracaster.
     dreadful_wound = {
         id = 451177,
-        duration = mod_circle_dot( 6.0 ),
-        tick_time = mod_circle_dot( 2.0 ),
+        duration = 6,
+        tick_time = 2,
         pandemic = true,
+        mechanic = "bleed",
         max_stack = 1,
 
         -- Affected by:
@@ -532,7 +533,7 @@ spec:RegisterAuras( {
     -- https://wowhead.com/beta/spell=102543
     incarnation_avatar_of_ashamane = {
         id = 102543,
-        duration = 30,
+        duration = 20,
         max_stack = 1,
         copy = { "incarnation", "incarnation_king_of_the_jungle" }
     },
@@ -694,6 +695,16 @@ spec:RegisterAuras( {
                 return tick_calculator( t, t.key, true )
             end,
         }
+    },
+    ravage = {
+        id = 441585,
+        duration = 20,
+        max_stack = 1,
+        copy = "ravage_fb"
+    },
+    ravage_upon_combat = {
+        duration = 3600,
+        max_stack = 1
     },
     -- Heals $w2 every $t2 sec.
     -- https://wowhead.com/beta/spell=8936
@@ -869,7 +880,7 @@ spec:RegisterAuras( {
     -- https://wowhead.com/beta/spell=5217
     tigers_fury = {
         id = 5217,
-        duration = function() return ( talent.predator.enabled and 15 or 10 ) + ( talent.raging_fury.enabled and 5 or 0 ) end,
+        duration = function() return 10 + ( talent.predator.enabled and 5 or 0 ) + ( talent.raging_fury.enabled and 5 or 0 ) end,
         multiplier = function() return 1.15 + state.conduit.carnivorous_instinct.mod * 0.01 + state.talent.carnivorous_instinct.rank * 0.06 end,
     },
     -- Talent: Your next finishing move restores $391874s1 combo $Lpoint:points;.
@@ -1044,9 +1055,9 @@ spec:RegisterEvent( "PLAYER_REGEN_ENABLED", function ()
     rip_applied = false
 end )
 
-spec:RegisterStateExpr( "opener_done", function ()
+--[[spec:RegisterStateExpr( "opener_done", function ()
     return rip_applied
-end )
+end )--]]
 
 
 local last_bloodtalons_proc = 0
@@ -1129,6 +1140,10 @@ local affinities = {
 spec:RegisterStateFunction( "shift", function( form )
     if conduit.tireless_pursuit.enabled and ( buff.cat_form.up or buff.travel_form.up ) then applyBuff( "tireless_pursuit" ) end
 
+    if buff.bear_form.up and form == "cat_form" and talent.wildshape_mastery.enabled then
+        applyBuff( "wildshape_mastery" )
+    end
+
     removeBuff( "cat_form" )
     removeBuff( "bear_form" )
     removeBuff( "travel_form" )
@@ -1144,6 +1159,9 @@ spec:RegisterStateFunction( "shift", function( form )
     end
 end )
 
+spec:RegisterHook( "runHandler_startCombat", function()
+    if talent.killing_strikes.enabled then applyBuff( "ravage_upon_combat" ) end
+end )
 
 spec:RegisterHook( "runHandler", function( ability )
     local a = class.abilities[ ability ]
@@ -1152,10 +1170,15 @@ spec:RegisterHook( "runHandler", function( ability )
         break_stealth()
     end
 
-    if buff.ravenous_frenzy.up and ability ~= "ravenous_frenzy" then
+    if talent.aggravate_wounds.enabled and debuff.dreadful_wound.up and a.spendType == "energy" and a.spend > 0 then
+        debuff.dreadful_wound.expires = debuff.dreadful_wound.expires + 0.6
+    end
+
+    if covenant.venthyr and buff.ravenous_frenzy.up and ability ~= "ravenous_frenzy" then
         stat.haste = stat.haste + 0.01
         addStack( "ravenous_frenzy", nil, 1 )
     end
+
 end )
 
 
@@ -1221,12 +1244,14 @@ spec:RegisterAuras( {
     bt_swipe = {
         duration = 4,
         max_stack = 1,
-        generate = bt_generator
+        generate = bt_generator,
+        copy = { "bt_swipe_cat", "bt_brutal_slash" }
     },
     bt_thrash = {
         duration = 4,
         max_stack = 1,
-        generate = bt_generator
+        generate = bt_generator,
+        copy = "bt_thrash_cat"
     },
     bt_triggers = {
         alias = { "bt_brutal_slash", "bt_moonfire", "bt_rake", "bt_shred", "bt_swipe", "bt_thrash" },
@@ -1249,6 +1274,10 @@ local SinfulHysteriaHandler = setfenv( function ()
     applyBuff( "ravenous_frenzy_sinful_hysteria" )
 end, state )
 
+
+local ComboPointPeriodic = setfenv( function()
+    gain( 1, "combo_points" )
+end, state )
 
 spec:RegisterHook( "reset_precast", function ()
     if buff.cat_form.down then
@@ -1274,41 +1303,54 @@ spec:RegisterHook( "reset_precast", function ()
     end
 
     if prev_gcd[1].feral_frenzy and now - action.feral_frenzy.lastCast < gcd.execute and combo_points.current < 5 then
-        gain( 5, "combo_points" )
+        -- combo_points.current = 5
+        gain( 5, "combo_points", false )
     end
 
-    opener_done = nil
+    -- opener_done = nil
     last_bloodtalons = nil
 
     if buff.jungle_stalker.up then buff.jungle_stalker.expires = buff.bs_inc.expires end
-    if talent.ashamanes_guidance.enabled and buff.incarnation.up then buff.ashamanes_frenzy.expires = buff.bs_inc.expires + 30 end
 
-    --[[ if buff.lycaras_fleeting_glimpse.up then
-        state:QueueAuraExpiration( "lycaras_fleeting_glimpse", LycarasHandler, buff.lycaras_fleeting_glimpse.expires )
-    end ]]
+    if buff.bs_inc.up then
+        if talent.ashamanes_guidance.enabled then buff.ashamanes_frenzy.expires = buff.bs_inc.expires + 40 end
+
+        -- Queue combo point gain events every 1.5 seconds while Incarnation/Berserk is active, starting 1.5 seconds after cast
+        local tick, expires = buff.bs_inc.applied, buff.bs_inc.expires
+        for i = 1.5, expires - query_time, 1.5 do
+            tick = query_time + i
+            if tick < expires then
+                state:QueueAuraEvent( "incarnation_combo_point_perodic", ComboPointPeriodic, tick, "AURA_TICK" )
+            end
+        end
+    end
 
     if legendary.sinful_hysteria.enabled and buff.ravenous_frenzy.up then
         state:QueueAuraExpiration( "ravenous_frenzy", SinfulHysteriaHandler, buff.ravenous_frenzy.expires )
     end
 end )
 
-spec:RegisterHook( "gain", function( amt, resource )
-    if amt > 0 and resource == "combo_points" and buff.bs_inc.up and buff.overflowing_power.applied == 0 and combo_points.deficit - amt <= 0 then
-        local partial = max( 0, ( query_time - buff.bs_inc.applied ) % 1.5 )
-        applyBuff( "overflowing_power", buff.bs_inc.remains + partial, 0, nil, nil, nil, query_time - partial )
+spec:RegisterHook( "gain", function( amt, resource, overflow )
+    if overflow == nil then overflow = true end -- nil is yes
+    if amt > 0 and resource == "combo_points" then
+        if combo_points.deficit < amt and overflow then -- excess points
+        local combo_points_to_store = amt - combo_points.deficit
+            if buff.overflowing_power.stack > ( 3 - combo_points_to_store ) or buff.bs_inc.down then -- unable to store them all
+                applyBuff( "coiled_to_spring" )
+            end
+            if buff.bs_inc.up then addStack( "overflowing_power", nil, combo_points_to_store ) end -- store as many as possible
+        end
     end
-    -- TODO: Proc Coiled to Spring if Overflowing Power is maxed.
     if azerite.untamed_ferocity.enabled and amt > 0 and resource == "combo_points" then
         if talent.incarnation.enabled then gainChargeTime( "incarnation", 0.2 )
         else gainChargeTime( "berserk", 0.3 ) end
     end
 end )
 
-
 local function comboSpender( a, r )
     if r == "combo_points" and a > 0 then
         if talent.soul_of_the_forest.enabled then
-            gain( a * 3, "energy" )
+            gain( a * 2, "energy" )
         end
 
         if buff.overflowing_power.up then
@@ -1316,25 +1358,18 @@ local function comboSpender( a, r )
             removeBuff( "overflowing_power" )
         end
 
-        if legendary.frenzyband.enabled then
-            reduceCooldown( talent.incarnation.enabled and "incarnation" or "berserk", 0.3 )
-        end
-
-        if talent.berserk_heart_of_the_lion.enabled and buff.bs_inc.up then
-            reduceCooldown( talent.incarnation.enabled and "incarnation" or "berserk", 0.5 )
-        end
-
-        if talent.raging_fury.enabled and buff.tigers_fury.up then
-            buff.tigers_fury.expires = buff.tigers_fury.expires + 0.4 * a
-        end
-
         if buff.tigers_tenacity.up then
             removeStack( "tigers_tenacity" )
             gain( 1, "combo_points" )
         end
 
-        if a >= 5 then
+        if talent.predatory_swiftness.enabled and a >= 5 then
             applyBuff( "predatory_swiftness" )
+        end
+
+        -- Legacy
+        if legendary.frenzyband.enabled then
+            reduceCooldown( talent.incarnation.enabled and "incarnation" or "berserk", 0.3 )
         end
 
         if set_bonus.tier29_4pc > 0 then
@@ -1579,7 +1614,9 @@ spec:RegisterAbilities( {
         handler = function ()
             if buff.cat_form.down then shift( "cat_form" ) end
             applyBuff( "berserk" )
-            applyBuff( "overflowing_power", nil, 0 )
+            for i = 1.5, spec.auras.berserk.duration, 1.5 do
+                state:QueueAuraEvent( "incarnation_combo_point_periodic", ComboPointPeriodic, query_time + i, "AURA_TICK" )
+            end
         end,
 
         copy = { "berserk_cat", "bs_inc" }
@@ -1598,7 +1635,7 @@ spec:RegisterAbilities( {
 
         spend = function ()
             if buff.clearcasting.up then return 0 end
-            return max( 0, 25 * ( buff.incarnation.up and 0.8 or 1 ) + buff.scent_of_blood.v1 )
+            return 25 * ( buff.incarnation.up and 0.75 or 1 )
         end,
         spendType = "energy",
 
@@ -1617,7 +1654,7 @@ spec:RegisterAbilities( {
         cost = function () return max( 1, class.abilities.brutal_slash.spend ) end,
 
         handler = function ()
-            gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1, "combo_points" )
+            gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1 + ( allow_crit_prediction and crit_pct_current * active_enemies >= 230 and 1 or 0 ), "combo_points" )
             if buff.bs_inc.up and talent.berserk_frenzy.enabled then applyDebuff( "target", "frenzied_assault" ) end
 
             if talent.bloodtalons.enabled then
@@ -1625,9 +1662,11 @@ spec:RegisterAbilities( {
                 check_bloodtalons()
             end
 
-            if talent.cats_curiosity.enabled and buff.clearcasting.up then
-                gain( 25 * 0.25, "energy" )
+            if talent.thrashing_claws.enabled and talent.thrash.enabled then
+                applyDebuff( "target", "thrash_cat" ) 
+                active_dot.thrash_cat = min( true_active_enemies, active_dot.thrash_cat + active_enemies  )
             end
+            
             removeStack( "clearcasting" )
         end,
     },
@@ -1750,7 +1789,7 @@ spec:RegisterAbilities( {
         end,
 
         spend = function ()
-            return 25 * ( buff.incarnation.up and 0.8 or 1 ), "energy"
+            return 25 * ( buff.incarnation.up and 0.75 or 1 ), "energy"
         end,
         spendType = "energy",
 
@@ -1763,7 +1802,7 @@ spec:RegisterAbilities( {
         end,
 
         handler = function ()
-            gain( 5, "combo_points" )
+            gain( 5, "combo_points", false )
             applyDebuff( "target", "feral_frenzy" )
             if buff.bs_inc.up and talent.berserk_frenzy.enabled then applyDebuff( "target", "frenzied_assault" ) end
             if set_bonus.tier31_2pc > 0 then applyBuff( "smoldering_frenzy" ) end
@@ -1774,7 +1813,8 @@ spec:RegisterAbilities( {
 
     -- Finishing move that causes Physical damage per combo point and consumes up to $?a102543[${$s2*(1+$102543s2/100)}][$s2] additional Energy to increase damage by up to 100%.       1 point  : ${$m1*1/5} damage     2 points: ${$m1*2/5} damage     3 points: ${$m1*3/5} damage     4 points: ${$m1*4/5} damage     5 points: ${$m1*5/5} damage
     ferocious_bite = {
-        id = 22568,
+        id = function() return buff.ravage.up and 441591 or 22568 end,
+        known = 22568,
         cast = 0,
         cooldown = 0,
         gcd = "totem",
@@ -1783,21 +1823,22 @@ spec:RegisterAbilities( {
         spend = function ()
             if buff.apex_predator.up or buff.apex_predators_craving.up then return 0 end
             -- Support true/false or 1/0 through this awkward transition.
-            if args.max_energy and ( type( args.max_energy ) == 'boolean' or args.max_energy > 0 ) then return 50 * ( buff.incarnation.up and 0.8 or 1 ) * ( talent.relentless_predator.enabled and 0.9 or 1 ) end
-            return max( 25, min( 50 * ( buff.incarnation.up and 0.8 or 1 ), energy.current ) ) * ( talent.relentless_predator.enabled and 0.9 or 1 )
+            if args.max_energy and ( type( args.max_energy ) == 'boolean' or args.max_energy > 0 ) then return 50 * ( buff.incarnation.up and 0.75 or 1 ) * ( talent.relentless_predator.enabled and 0.9 or 1 ) end
+            return max( 25, min( 50 * ( buff.incarnation.up and 0.75 or 1 ), energy.current ) ) * ( talent.relentless_predator.enabled and 0.9 or 1 )
         end,
         spendType = "energy",
 
         startsCombat = true,
+        texture = function() return buff.ravage.up and 5927623 or 132127 end,
         form = "cat_form",
 
-        cycle = "rip",
+        cycle = function() return hero_tree.wildstalker and "bloodseeker_vines" or "rip" end,
         cycle_to = true,
 
         -- Use maximum damage.
-        damage = function () -- TODO: Taste For Blood soulbind conduit
+        damage = function () 
             return calculate_damage( 1.45 * 2 , true, true ) * ( buff.bloodtalons.up and class.auras.bloodtalons.multiplier or 1 ) * ( talent.sabertooth.enabled and 1.15 or 1 ) * ( talent.soul_of_the_forest.enabled and 1.05 or 1 ) * ( talent.lions_strength.enabled and 1.15 or 1 ) *
-                ( 1 + 0.05 * talent.taste_for_blood.rank * ( ( debuff.rip.up and 1 or 0 ) + ( debuff.tear.up and 1 or 0 ) + ( debuff.thrash_cat.up and 1 or 0 ) + ( debuff.sickle_of_the_lion.up and 1 or 0 ) ) )
+                ( 1 + ( talent.taste_for_blood.enabled and ( buff.tigers_fury.up and 0.24 or 0.12 ) or 0 ) ) * ( talent.bestial_strength.enabled and 1.1 or 1 ) * ( buff.coiled_to_spring.up and 1.1 or 1 )
         end,
 
         -- This will override action.X.cost to avoid a non-zero return value, as APL compares damage/cost with Shred.
@@ -1806,15 +1847,11 @@ spec:RegisterAbilities( {
         usable = function () return buff.apex_predator.up or buff.apex_predators_craving.up or combo_points.current > 0 end,
 
         handler = function ()
-            removeBuff( "coiled_to_spring" )
-
-            if talent.sabertooth.enabled and debuff.rip.up then
-                debuff.rip.expires = debuff.rip.expires + ( 4 * combo_points.current )
-            end
-
-            if pvptalent.ferocious_wound.enabled and combo_points.current >= 5 then
-                applyDebuff( "target", "ferocious_wound", nil, min( 2, debuff.ferocious_wound.stack + 1 ) )
-            end
+            if talent.coiled_to_spring.enabled then removeBuff( "coiled_to_spring" ) end
+            if talent.ravage.enabled then removeBuff( "ravage" ) end
+            if talent.bloodtalons.enabled then removeStack( "bloodtalons" ) end
+            if talent.sabertooth.enabled then applyDebuff( "target", "sabertooth" ) end
+            if state.spec.restoration and talent.master_shapeshifter.enabled and combo_points.current == 5 then gain( 175000, "mana" ) end
 
             if buff.apex_predator.up or buff.apex_predators_craving.up then
                 applyBuff( "predatory_swiftness" )
@@ -1824,28 +1861,27 @@ spec:RegisterAbilities( {
                 spend( min( 5, combo_points.current ), "combo_points" )
             end
 
-            removeStack( "bloodtalons" )
-
-            if buff.eye_of_fearful_symmetry.up then
+            --Legacy / PvP
+            if legendary.eye_of_fearful_symmetry.enabled and buff.eye_of_fearful_symmetry.up then
                 gain( 2, "combo_points" )
                 removeStack( "eye_of_fearful_symmetry" )
             end
-
-            if talent.sabertooth.enabled then applyDebuff( "target", "sabertooth" ) end
-
-            opener_done = true
+            if pvptalent.ferocious_wound.enabled and combo_points.current >= 5 then
+                applyDebuff( "target", "ferocious_wound", nil, min( 2, debuff.ferocious_wound.stack + 1 ) )
+            end
+            -- opener_done = true
         end,
 
-        copy = "ferocious_bite_max"
+        copy = { 22568, "ferocious_bite_max", 441591, "ravage" }
     },
 
     -- Talent: Heals you for $o1% health over $d$?s301768[, and increases healing received by $301768s1%][].
     frenzied_regeneration = {
         id = 22842,
         cast = 0,
-        charges = function () return talent.innate_resolve.enabled and 2 or nil end,
+        charges = function () if talent.innate_resolve.enabled then return 2 end end,
         cooldown = function () return 36 * ( buff.berserk.up and talent.berserk_persistence.enabled and 0 or 1 ) * ( 1 - 0.2 * talent.reinvigoration.rank ) end,
-        recharge = function () return talent.innate_resolve.enabled and ( 36 * ( buff.berserk.up and talent.berserk_persistence.enabled and 0 or 1 ) ) or nil end,
+        recharge = function () if talent.innate_resolve.enabled then return ( 36 * ( buff.berserk.up and talent.berserk_persistence.enabled and 0 or 1 ) ) end end,
         gcd = "spell",
         school = "physical",
 
@@ -1954,10 +1990,13 @@ spec:RegisterAbilities( {
             if buff.cat_form.down then shift( "cat_form" ) end
             applyBuff( "incarnation" )
             applyBuff( "jungle_stalker" )
-            if talent.ashamanes_guidance.enabled then applyBuff( "ashamanes_guidance", buff.incarnation.remains + 30 ) end
+            if talent.ashamanes_guidance.enabled then applyBuff( "ashamanes_guidance", buff.incarnation.remains + 40 ) end
             setCooldown( "prowl", 0 )
-            applyBuff( "overflowing_power", nil, 0 )
-            energy.max = energy.max + 50
+
+            for i = 1.5, spec.auras.incarnation.duration, 1.5 do
+                state:QueueAuraEvent( "incarnation_combo_point_periodic", ComboPointPeriodic, query_time + i, "AURA_TICK" )
+            end
+
         end,
 
         copy = { "incarnation_avatar_of_ashamane", "Incarnation" }
@@ -1991,7 +2030,7 @@ spec:RegisterAbilities( {
         gcd = "totem",
         school = "physical",
 
-        spend = function () return 30 * ( buff.incarnation.up and 0.8 or 1 ) end,
+        spend = function () return 30 * ( buff.incarnation.up and 0.75 or 1 ) end,
         spendType = "energy",
 
         talent = "maim",
@@ -2002,16 +2041,17 @@ spec:RegisterAbilities( {
 
         handler = function ()
             applyDebuff( "target", "maim", combo_points.current )
+            if state.spec.restoration and talent.master_shapeshifter.enabled and combo_points.current == 5 then gain( 175000, "mana" ) end
             spend( combo_points.current, "combo_points" )
 
             removeBuff( "iron_jaws" )
 
-            if buff.eye_of_fearful_symmetry.up then
+            if legendary.eye_of_fearful_symmetry.enabled and buff.eye_of_fearful_symmetry.up then
                 gain( 2, "combo_points" )
                 removeStack( "eye_of_fearful_symmetry" )
             end
 
-            opener_done = true
+            -- opener_done = true
         end,
     },
 
@@ -2094,7 +2134,7 @@ spec:RegisterAbilities( {
         cooldown = 0,
         gcd = "spell",
 
-        spend = function () return 30 * ( buff.incarnation.up and 0.8 or 1 ) end,
+        spend = function () return 30 * ( buff.incarnation.up and 0.75 or 1 ) end,
         spendType = "energy",
 
         startsCombat = true,
@@ -2119,7 +2159,7 @@ spec:RegisterAbilities( {
         handler = function ()
             applyDebuff( "target", "lunar_inspiration" )
             debuff.lunar_inspiration.pmultiplier = persistent_multiplier
-            gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1, "combo_points" )
+            gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1 + ( allow_crit_prediction and crit_pct_current >= 95 and 1 or 0 ), "combo_points" )
             if buff.bs_inc.up and talent.berserk_frenzy.enabled then applyDebuff( "target", "frenzied_assault" ) end
 
             if talent.bloodtalons.enabled then
@@ -2180,7 +2220,7 @@ spec:RegisterAbilities( {
         gcd = "totem",
         school = "physical",
 
-        spend = function () return 25 * ( buff.incarnation.up and 0.8 or 1 ) end,
+        spend = function () return 25 * ( buff.incarnation.up and 0.75 or 1 ) end,
         spendType = "energy",
 
         talent = "primal_wrath",
@@ -2208,24 +2248,20 @@ spec:RegisterAbilities( {
 
         usable = function () return combo_points.current > 0, "no combo points" end,
         handler = function ()
-            if talent.tear_open_wounds.enabled and debuff.rip.up then
-                debuff.rip.expires = debuff.rip.expires - 4
-            end
             applyDebuff( "target", "rip", action.primal_wrath.apply_duration )
             active_dot.rip = active_enemies
 
             spend( combo_points.current, "combo_points" )
-            removeStack( "bloodtalons" )
-            removeBuff( "coiled_to_spring" )
+            if talent.bloodtalons.enabled then removeStack( "bloodtalons" ) end
+            if talent.coiled_to_spring.enabled then removeBuff( "coiled_to_spring" ) end
+            if talent.rip_and_tear.enabled then applyDebuff( "target", "tear" ) end
 
-            if buff.eye_of_fearful_symmetry.up then
+            if legendary.eye_of_fearful_symmetry.enabled and buff.eye_of_fearful_symmetry.up then
                 gain( 2, "combo_points" )
                 removeStack( "eye_of_fearful_symmetry" )
             end
 
-            if talent.rip_and_tear.enabled then applyDebuff( "target", "tear" ) end
-
-            opener_done = true
+            -- opener_done = true
         end,
     },
 
@@ -2269,7 +2305,7 @@ spec:RegisterAbilities( {
         school = "physical",
 
         spend = function ()
-            return 35 * ( buff.incarnation.up and 0.8 or 1 ), "energy"
+            return 35 * ( buff.incarnation.up and talent.incarnation_avatar_of_ashamane.enabled and  0.75 or 1 ), "energy"
         end,
         spendType = "energy",
 
@@ -2280,13 +2316,13 @@ spec:RegisterAbilities( {
         min_ttd = 6,
 
         damage = function ()
-            return calculate_damage( 0.16, true ) * ( effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.infected_wounds.enabled and 1.3 or 1 )
+            return calculate_damage( 0.16, true ) * ( effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.infected_wounds.enabled and 1.3 or 1 ) * ( 1 + 0.05 * talent.instincts_of_the_claw.rank )
         end,
         tick_damage = function ()
-            return calculate_damage( 0.2311, true ) * ( effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.infected_wounds.enabled and 1.3 or 1 )
+            return calculate_damage( 0.2311, true ) * ( effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.infected_wounds.enabled and 1.3 or 1 ) * ( 1 + 0.05 * talent.instincts_of_the_claw.rank )
         end,
         tick_dmg = function ()
-            return calculate_damage( 0.2311, true ) * ( effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.infected_wounds.enabled and 1.3 or 1 )
+            return calculate_damage( 0.2311, true ) * ( effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.infected_wounds.enabled and 1.3 or 1 ) * ( 1 + 0.05 * talent.instincts_of_the_claw.rank )
         end,
 
         -- This will override action.X.cost to avoid a non-zero return value, as APL compares damage/cost with Shred.
@@ -2302,86 +2338,21 @@ spec:RegisterAbilities( {
 
             applyDebuff( "target", "rake" )
             debuff.rake.pmultiplier = persistent_multiplier
-            removeBuff( "sudden_ambush" )
-
-            if talent.doubleclawed_rake.enabled and active_dot.rake < true_active_enemies then active_dot.rake = active_dot.rake + 1 end
+            if talent.sudden_ambush.enabled then removeBuff( "sudden_ambush" ) end
+            if talent.doubleclawed_rake.enabled then active_dot.rake = min( true_active_enemies, active_dot.rake + 1 ) end
             if talent.infected_wounds.enabled then applyDebuff( "target", "infected_wounds" ) end
-
-            gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1, "combo_points" )
-
+            if buff.bs_inc.up and talent.berserk_frenzy.enabled then applyDebuff( "target", "frenzied_assault" ) end
             if talent.bloodtalons.enabled then
                 applyBuff( "bt_rake" )
                 check_bloodtalons()
             end
 
-            if buff.bs_inc.up and talent.berserk_frenzy.enabled then applyDebuff( "target", "frenzied_assault" ) end
+            gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1 + ( allow_crit_prediction and crit_pct_current >= 95 and 1 or 0 ), "combo_points" )
+
+
         end,
 
         copy = "rake_bleed"
-    },
-
-    -- Finishing move that slashes through your target in a wide arc, dealing Physical damage per combo point to your target and consuming up to $?a102543[${$s2*(1+$102543s3/100)}][$s2] additional Energy to increase that damage by up to 100%. Hits all other enemies in front of you for reduced damage per combo point spent. ;   1 point: ${$m1*1/5} damage, ${$m3*1/5} in an arc;   2 points: ${$m1*2/5} damage, ${$m3*2/5} in an arc;   3 points: ${$m1*3/5} damage, ${$m3*3/5} in an arc;   4 points: ${$m1*4/5} damage, ${$m3*4/5} in an arc;   5 points: ${$m1*5/5} damage, ${$m3*5/5} in an arc
-    ravage = {
-        id = 441591,
-        cast = 0.0,
-        cooldown = 0.0,
-        gcd = "spell",
-
-        spend = function ()
-            if buff.apex_predator.up or buff.apex_predators_craving.up then return 0 end
-            -- Support true/false or 1/0 through this awkward transition.
-            if args.max_energy and ( type( args.max_energy ) == 'boolean' or args.max_energy > 0 ) then return 50 * ( buff.incarnation.up and 0.8 or 1 ) * ( talent.relentless_predator.enabled and 0.9 or 1 ) end
-            return max( 25, min( 50 * ( buff.incarnation.up and 0.8 or 1 ), energy.current ) ) * ( talent.relentless_predator.enabled and 0.9 or 1 )
-        end,
-        spendType = 'energy',
-
-        startsCombat = true,
-        form = "cat_form",
-
-        cycle = "rip",
-        cycle_to = true,
-
-        -- Use maximum damage.
-        damage = function () -- TODO: Taste For Blood soulbind conduit
-            return calculate_damage( 1.888 * 2 , true, true ) * ( buff.bloodtalons.up and class.auras.bloodtalons.multiplier or 1 ) * ( talent.sabertooth.enabled and 1.15 or 1 ) * ( talent.soul_of_the_forest.enabled and 1.05 or 1 ) * ( talent.lions_strength.enabled and 1.15 or 1 ) *
-                ( 1 + 0.05 * talent.taste_for_blood.rank * ( ( debuff.rip.up and 1 or 0 ) + ( debuff.tear.up and 1 or 0 ) + ( debuff.thrash_cat.up and 1 or 0 ) + ( debuff.sickle_of_the_lion.up and 1 or 0 ) ) )
-        end,
-
-        -- This will override action.X.cost to avoid a non-zero return value, as APL compares damage/cost with Shred.
-        cost = function () return max( 1, class.abilities.ravage.spend ) end,
-
-        usable = function () return buff.apex_predator.up or buff.apex_predators_craving.up or combo_points.current > 0 end,
-
-        handler = function ()
-            removeBuff( "coiled_to_spring" )
-
-            if talent.sabertooth.enabled and debuff.rip.up then
-                debuff.rip.expires = debuff.rip.expires + ( 4 * combo_points.current )
-            end
-
-            if pvptalent.ferocious_wound.enabled and combo_points.current >= 5 then
-                applyDebuff( "target", "ferocious_wound", nil, min( 2, debuff.ferocious_wound.stack + 1 ) )
-            end
-
-            if buff.apex_predator.up or buff.apex_predators_craving.up then
-                applyBuff( "predatory_swiftness" )
-                removeBuff( "apex_predator" )
-                removeBuff( "apex_predators_craving" )
-            else
-                spend( min( 5, combo_points.current ), "combo_points" )
-            end
-
-            removeStack( "bloodtalons" )
-
-            if buff.eye_of_fearful_symmetry.up then
-                gain( 2, "combo_points" )
-                removeStack( "eye_of_fearful_symmetry" )
-            end
-
-            if talent.sabertooth.enabled then applyDebuff( "target", "sabertooth" ) end
-
-            opener_done = true
-        end,
     },
 
     -- Heals a friendly target for $s1 and another ${$o2*$<mult>} over $d.$?s231032[ Initial heal has a $231032s1% increased chance for a critical effect if the target is already affected by Regrowth.][]$?s24858|s197625[ Usable while in Moonkin Form.][]$?s33891[    |C0033AA11Tree of Life: Instant cast.|R][]
@@ -2487,7 +2458,7 @@ spec:RegisterAbilities( {
         gcd = "totem",
         school = "physical",
 
-        spend = function () return 30 * ( buff.incarnation.up and 0.8 or 1 ) end,
+        spend = function () return 20 * ( buff.incarnation.up and 0.75 or 1 ) end,
         spendType = "energy",
 
         talent = "rip",
@@ -2525,14 +2496,20 @@ spec:RegisterAbilities( {
         handler = function ()
             applyDebuff( "target", "rip" )
             debuff.rip.pmultiplier = persistent_multiplier
+            if state.spec.restoration and talent.master_shapeshifter.enabled and combo_points.current == 5 then gain( 175000, "mana" ) end
             spend( combo_points.current, "combo_points" )
 
-            removeStack( "bloodtalons" )
-
-            if buff.eye_of_fearful_symmetry.up then gain( 2, "combo_points" ) end
+            if talent.bloodtalons.enabled then removeStack( "bloodtalons" ) end
             if talent.rip_and_tear.enabled then applyDebuff( "target", "tear" ) end
 
-            opener_done = true
+            if legendary.eye_of_fearful_symmetry.enabled and buff.eye_of_fearful_symmetry.up then
+                gain( 2, "combo_points" )
+                removeStack( "eye_of_fearful_symmetry" )
+            end
+
+            
+
+            -- opener_done = true
         end,
     },
 
@@ -2546,7 +2523,7 @@ spec:RegisterAbilities( {
 
         spend = function ()
             if buff.clearcasting.up then return 0 end
-            return 40 * ( buff.incarnation.up and 0.8 or 1 )
+            return 40 * ( buff.incarnation.up and talent.incarnation_avatar_of_ashamane.enabled and 0.75 or 1 )
         end,
         spendType = "energy",
 
@@ -2557,7 +2534,7 @@ spec:RegisterAbilities( {
         end,
 
         damage = function ()
-            return calculate_damage( 1.025, false, true, ( talent.pouncing_strikes.enabled and effective_stealth and class.auras.prowl.multiplier or 1 ) * ( talent.merciless_claws.enabled and bleeding and 1.2 or 1 ) * ( buff.clearcasting.up and class.auras.clearcasting.multiplier or 1 ) * ( talent.berserk.enabled and buff.bs_inc.up and class.auras.berserk.multiplier or 1 ) )
+            return calculate_damage( 1.025, false, true, ( talent.pouncing_strikes.enabled and effective_stealth and class.auras.prowl.multiplier or 1 ) * ( 1 + ( talent.instincts_of_the_claw.rank * 0.05 )  ) * ( talent.empowered_shapeshifting and 1.06 or 1 ) * ( talent.merciless_claws.enabled and bleeding and 1.2 or 1 ) * ( buff.clearcasting.up and class.auras.clearcasting.multiplier or 1 ) * ( talent.berserk.enabled and buff.bs_inc.up and class.auras.berserk.multiplier or 1 ) )
         end,
 
         -- This will override action.X.cost to avoid a non-zero return value, as APL compares damage/cost with Shred.
@@ -2565,18 +2542,14 @@ spec:RegisterAbilities( {
 
         handler = function ()
             if talent.fluid_form.enabled and buff.cat_form.down then shift( "cat_form" ) end
-
-            removeBuff( "sudden_ambush" )
-            gain( 1 + ( talent.berserk.enabled and buff.bs_inc.up and 1 or 0 ) + ( talent.pouncing_strikes.enabled and buff.prowl.up and 1 or 0 ), "combo_points" )
-
+            if talent.thrashing_claws.enabled and talent.thrash.enabled then applyDebuff( "target", "thrash_cat" ) end
             if talent.bloodtalons.enabled then
                 applyBuff( "bt_shred" )
                 check_bloodtalons()
             end
 
-            if talent.cats_curiosity.enabled and buff.clearcasting.up then
-                gain( 40 * 0.25, "energy" )
-            end
+            gain( 1 + ( talent.berserk.enabled and buff.bs_inc.up and 1 or 0 ) + ( talent.pouncing_strikes.enabled and buff.prowl.up and 1 or 0 ) + ( allow_crit_prediction and crit_pct_current >= 95 and 1 or 0 ), "combo_points" )
+
             removeStack( "clearcasting" )
         end,
     },
@@ -2632,6 +2605,29 @@ spec:RegisterAbilities( {
         end,
     },
 
+    starsurge = {
+        id = 197626,
+        cast = 0,
+        cooldown = function() return 10 - ( 4 * talent.starlight_conduit.rank ) end,
+        gcd = "spell",
+
+        spend = function () return ( talent.starlight_conduit.enabled and 0.003 or 0.006 ) end,
+        spendType = "mana",
+
+        startsCombat = true,
+        texture = 135730,
+        talent = "starsurge",
+
+        handler = function ()
+            gain( 0.3 * health.max, "health" )
+            if talent.master_shapeshifter.enabled then gain( 43750, "mana" ) end
+            if talent.call_of_the_elder_druid.enabled and debuff.oath_of_the_elder_druid.down then
+                applyBuff( "heart_of_the_wild", 15 )
+                applyDebuff( "player", "oath_of_the_elder_druid" )
+            end
+        end,
+    },
+
     -- Talent: Shift into Bear Form and let loose a wild roar, increasing the movement speed of all friendly players within $A1 yards by $s1% for $d.
     stampeding_roar = {
         id = 106898,
@@ -2666,7 +2662,6 @@ spec:RegisterAbilities( {
 
         talent = "sunfire",
         startsCombat = false,
-        form = "moonkin_form",
 
         handler = function ()
             applyDebuff( "target", "sunfire" )
@@ -2686,7 +2681,7 @@ spec:RegisterAbilities( {
 
         spend = function ()
             if buff.clearcasting.up then return 0 end
-            return max( 0, ( 35 * ( buff.incarnation.up and 0.8 or 1 ) ) + buff.scent_of_blood.v1 )
+            return max( 0, ( 35 * ( buff.incarnation.up and 0.75 or 1 ) ) + buff.scent_of_blood.v1 )
         end,
         spendType = "energy",
 
@@ -2704,10 +2699,10 @@ spec:RegisterAbilities( {
         cost = function () return max( 1, class.abilities.swipe_cat.spend ) end,
 
         handler = function ()
-            gain( talent.berserk.enabled and 2 or 1, "combo_points" )
+            gain( talent.berserk.enabled and 2 or 1 + ( allow_crit_prediction and crit_pct_current * active_enemies >= 230 and 1 or 0 ), "combo_points" )
 
             if talent.bloodtalons.enabled then
-                applyBuff( "bt_swipe_cat" )
+                applyBuff( "bt_swipe" )
                 check_bloodtalons()
             end
 
@@ -2757,7 +2752,7 @@ spec:RegisterAbilities( {
 
         spend = function ()
             if buff.clearcasting.up then return 0 end
-            return 40 * ( buff.incarnation.up and 0.8 or 1 )
+            return 40 * ( buff.incarnation.up and 0.75 or 1 )
         end,
         spendType = "energy",
 
@@ -2795,7 +2790,7 @@ spec:RegisterAbilities( {
             end
 
             -- if target.within8 then
-                gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1, "combo_points" )
+                gain( talent.berserk.enabled and buff.bs_inc.up and 2 or 1 + ( allow_crit_prediction and crit_pct_current * active_enemies >= 230 and 1 or 0 ), "combo_points" )
             -- end
 
             if talent.bloodtalons.enabled then
@@ -2843,35 +2838,41 @@ spec:RegisterAbilities( {
         handler = function ()
             shift( "cat_form" )
             applyBuff( "tigers_fury" )
-            if azerite.jungle_fury.enabled then applyBuff( "jungle_fury" ) end
+            if talent.savage_fury.enabled then applyBuff( "savage_fury" ) end
             if talent.tigers_tenacity.enabled then addStack( "tigers_tenacity", nil, 3 ) end
+            if talent.killing_strikes.enabled and buff.ravage_upon_combat.up then
+                applyBuff( "ravage" )
+                removeBuff( "ravage_upon_combat" )
+            end
 
+            -- Legacy
             if legendary.eye_of_fearful_symmetry.enabled then
                 applyBuff( "eye_of_fearful_symmetry", nil, 2 )
             end
+            if azerite.jungle_fury.enabled then applyBuff( "jungle_fury" ) end
         end,
     },
 } )
 
+spec:RegisterRanges( "rake", "shred", "skull_bash", "growl", "moonfire" )
 
---[[ spec:RegisterSetting( "owlweave_cat", false, {
-    name = "|T136036:0|t Attempt Owlweaving (Experimental)",
-    desc = "If checked, the addon will swap to Moonkin Form based on the default priority.",
-    type = "toggle",
-    width = "full"
-} ) ]]
+spec:RegisterOptions( {
+    enabled = true,
 
-spec:RegisterSetting( "frenzy_cp", 2, {
-    name = strformat( "%s: Combo Point Cap", Hekili:GetSpellLinkWithTexture( spec.abilities.feral_frenzy.id ) ),
-    desc = strformat( "In the default priority, %s will only be recommended if you have fewer than the specified number of Combo Points.  "
-        .. "When %s (or %s) is active, this cap is raised by one point.\n\n"
-        .. "Default: |cFF00B4FF2|r", Hekili:GetSpellLinkWithTexture( spec.abilities.feral_frenzy.id ), Hekili:GetSpellLinkWithTexture( spec.abilities.berserk.id ),
-        Hekili:GetSpellLinkWithTexture( spec.abilities.incarnation.id ) ),
-    type = "range",
-    min = 1,
-    max = 5,
-    step = 1,
-    width = "full",
+    aoe = 3,
+    cycle = false,
+
+    nameplates = true,
+    nameplateRange = 10,
+    rangeFilter = false,
+
+    damage = true,
+    damageDots = false,
+    damageExpiration = 3,
+
+    potion = "tempered_potion",
+
+    package = "Feral"
 } )
 
 --[[ TODO: Revisit due to removal of Relentless Predator.
@@ -2895,10 +2896,7 @@ spec:RegisterSetting( "use_funnel", false, {
     width = "full"
 } )  ]]
 
-spec:RegisterStateExpr( "funneling", function()
-    return settings.use_funnel and talent.taste_for_blood.enabled and talent.relentless_predator.enabled and not talent.tear_open_wounds.enabled
-end )
-
+--[[ Currently handled by the APL
 spec:RegisterSetting( "zerk_biteweave", false, {
     name = strformat( "%s Biteweave", Hekili:GetSpellLinkWithTexture( spec.abilities.berserk.id ) ),
     desc = function()
@@ -2912,6 +2910,65 @@ spec:RegisterSetting( "zerk_biteweave", false, {
 
 spec:RegisterVariable( "zerk_biteweave", function()
     return settings.zerk_biteweave ~= false
+end )--]]
+
+--[[ spec:RegisterSetting( "owlweave_cat", false, {
+    name = "|T136036:0|t Attempt Owlweaving (Experimental)",
+    desc = "If checked, the addon will swap to Moonkin Form based on the default priority.",
+    type = "toggle",
+    width = "full"
+} ) ]]
+
+spec:RegisterSetting( "rip_duration", 9, {
+    name = strformat( "%s Duration", Hekili:GetSpellLinkWithTexture( spec.abilities.rip.id ) ),
+    desc = strformat( "If set above |cFFFFD1000|r, %s will not be recommended if the target will die within the specified timeframe.",
+        Hekili:GetSpellLinkWithTexture( spec.abilities.rip.id ) ),
+    type = "range",
+    min = 0,
+    max = 18,
+    step = 0.1,
+    width = 1.5
+} )
+
+spec:RegisterSetting( "frenzy_cp", 2, {
+    name = strformat( "%s: Combo Point Cap", Hekili:GetSpellLinkWithTexture( spec.abilities.feral_frenzy.id ) ),
+    desc = strformat( "In the default priority, %s will only be recommended if you have fewer than the specified number of Combo Points. "
+        .. "When |W%s|w or |W%s|w is active, this cap is raised by one point.\n\nDefault: |cFFFFD1002|r",
+        Hekili:GetSpellLinkWithTexture( spec.abilities.feral_frenzy.id ),
+        Hekili:GetSpellLinkWithTexture( spec.abilities.berserk.id ),
+        Hekili:GetSpellLinkWithTexture( spec.abilities.incarnation.id ) ),
+    type = "range",
+    min = 1,
+    max = 5,
+    step = 1,
+    width = 1.5
+} )
+
+spec:RegisterSetting( "vigil_damage", 50, {
+    name = strformat( "%s Damage Threshold", Hekili:GetSpellLinkWithTexture( class.specs[ 102 ].abilities.natures_vigil.id ) ),
+    desc = strformat( "If set below |cFFFFD100100%%|r, %s may only be recommended if your health has dropped below the specified percentage.\n\n"
+        .. "By default, |W%s|w also requires the |cFFFFD100Defensives|r toggle to be active.",
+        Hekili:GetSpellLinkWithTexture( class.specs[ 102 ].abilities.natures_vigil.id ),
+        class.specs[ 102 ].abilities.natures_vigil.name ),
+    type = "range",
+    min = 1,
+    max = 100,
+    step = 1,
+    width = 1.5
+} )
+
+spec:RegisterSetting( "allow_crit_prediction", true, {
+    name = strformat( "%s Combo Point Prediction", Hekili:GetSpellLinkWithTexture( 159286 ) ), -- Primal Fury
+    desc = strformat( "This setting enables prediction of an additional combo point on critical strikes when talented into %s.\n\n" ..
+                      "This prediction activates only when it is |cFFFFD10095%%|r certain a critical strike will occur based on your critical strike chance and the number of targets the spell will hit.",
+                      Hekili:GetSpellLinkWithTexture( 159286 )
+    ),
+    type = "toggle",
+    width = "full",
+} )
+
+spec:RegisterVariable( "allow_crit_prediction", function()
+    return settings.allow_crit_prediction ~= false
 end )
 
 spec:RegisterSetting( "lazy_swipe", false, {
@@ -2919,7 +2976,8 @@ spec:RegisterSetting( "lazy_swipe", false, {
     desc = function()
         return strformat( "If checked, when %s is talented, the use of %s will be minimized in multi-target situations even if "
             .. "%s is talented.\n\nThis option is a DPS loss but can be easier to execute correctly.",
-            Hekili:GetSpellLinkWithTexture( spec.talents.wild_slashes[2] ), Hekili:GetSpellLinkWithTexture( spec.abilities.shred.id ),
+            Hekili:GetSpellLinkWithTexture( spec.talents.wild_slashes[2] ),
+            Hekili:GetSpellLinkWithTexture( spec.abilities.shred.id ),
             Hekili:GetSpellLinkWithTexture( spec.talents.bloodtalons[2] ) )
     end,
     type = "toggle",
@@ -2933,7 +2991,8 @@ end )
 spec:RegisterSetting( "regrowth", true, {
     name = strformat( "Filler %s", Hekili:GetSpellLinkWithTexture( spec.abilities.regrowth.id ) ),
     desc = strformat( "If checked, %s may be recommended when higher priority abilities are not available or recommended.\n\n"
-        .. "This recommendation generally occurs at very low energy, regardless of your current health.", Hekili:GetSpellLinkWithTexture( spec.abilities.regrowth.id ) ),
+        .. "This recommendation generally occurs at very low energy, regardless of your current health.",
+        Hekili:GetSpellLinkWithTexture( spec.abilities.regrowth.id ) ),
     type = "toggle",
     width = "full",
 } )
@@ -2946,33 +3005,13 @@ spec:RegisterStateExpr( "filler_regrowth", function()
     return settings.regrowth ~= false
 end )
 
-spec:RegisterSetting( "rip_duration", 9, {
-    name = strformat( "%s Duration", Hekili:GetSpellLinkWithTexture( spec.abilities.rip.id ) ),
-    desc = strformat( "If set above 0, %s will not be recommended if the target will die within the timeframe specified.",
-    Hekili:GetSpellLinkWithTexture( spec.abilities.rip.id ) ),
-    type = "range",
-    min = 0,
-    max = 18,
-    step = 0.1,
-    width = "full",
-} )
-
-spec:RegisterSetting( "vigil_damage", 50, {
-    name = strformat( "%s Damage Threshold", Hekili:GetSpellLinkWithTexture( class.specs[ 102 ].abilities.natures_vigil.id ) ),
-    desc = strformat( "If set below 100%%, %s may only be recommended if your health has dropped below the specified percentage.\n\n"
-    .. "By default, |W%s|w also requires the |cFFFFD100Defensives|r toggle to be active.", class.specs[ 102 ].abilities.natures_vigil.name, class.specs[ 102 ].abilities.natures_vigil.name ),
-    type = "range",
-    min = 1,
-    max = 100,
-    step = 1,
-    width = "full"
-} )
-
 spec:RegisterSetting( "solo_prowl", false, {
-    name = strformat( "Solo %s in Combat", Hekili:GetSpellLinkWithTexture( spec.abilities.prowl.id ) ),
-    desc = strformat( "If checked, %s can be recommended in combat when %s is active when you are solo.\n\n"
-        .. "This option is off by default because %s may cause you to drop combat outside of a group/encounter sitation.",
-        Hekili:GetSpellLinkWithTexture( spec.abilities.prowl.id ), Hekili:GetSpellLinkWithTexture( spec.auras.jungle_stalker.id ), spec.abilities.prowl.name ),
+    name = strformat( "Allow %s in Combat When Solo", Hekili:GetSpellLinkWithTexture( spec.abilities.prowl.id ) ),
+    desc = strformat( "If checked, %s can be recommended in combat when %s is active and you are solo.\n\n"
+        .. "This option is off by default because |cFFFF0000it may drop combat|r outside of a group/encounter situation.",
+        Hekili:GetSpellLinkWithTexture( spec.abilities.prowl.id ),
+        Hekili:GetSpellLinkWithTexture( spec.auras.jungle_stalker.id ),
+        spec.abilities.prowl.name ),
     type = "toggle",
     width = "full",
 } )
@@ -2981,8 +3020,11 @@ spec:RegisterSetting( "allow_shadowmeld", nil, {
     name = strformat( "Use %s", Hekili:GetSpellLinkWithTexture( spec.auras.shadowmeld.id ) ),
     desc = strformat( "If checked, %s can be recommended for |W%s|w players if its conditions for use are met.\n\n"
             .. "Your stealth-based abilities can be used in |W%s|w, even if your action bar does not change. |W%s|w can only be recommended in boss fights or when you "
-            .. "are in a group (to avoid resetting combat).", Hekili:GetSpellLinkWithTexture( spec.auras.shadowmeld.id ), C_CreatureInfo.GetRaceInfo(4).raceName,
-            spec.auras.shadowmeld.name, spec.auras.shadowmeld.name ),
+            .. "are in a group (to avoid resetting combat).",
+        Hekili:GetSpellLinkWithTexture( spec.auras.shadowmeld.id ),
+        C_CreatureInfo.GetRaceInfo(4).raceName,
+        spec.auras.shadowmeld.name,
+        spec.auras.shadowmeld.name ),
     type = "toggle",
     width = "full",
     get = function () return not Hekili.DB.profile.specs[ 103 ].abilities.shadowmeld.disabled end,
@@ -2992,26 +3034,4 @@ spec:RegisterSetting( "allow_shadowmeld", nil, {
 } )
 
 
-spec:RegisterRanges( "rake", "shred", "skull_bash", "growl", "moonfire" )
-
-spec:RegisterOptions( {
-    enabled = true,
-
-    aoe = 3,
-    cycle = false,
-
-    nameplates = true,
-    nameplateRange = 10,
-    rangeFilter = false,
-
-    damage = true,
-    damageDots = false,
-    damageExpiration = 3,
-
-    potion = "spectral_agility",
-
-    package = "Feral"
-} )
-
-
-spec:RegisterPack( "Feral", 20240805, [[Hekili:T3ZFVnUTs(zzXI1R9Myhl74TBxeBG7D9kqlUR9qtbE)NTLTLJfwzj)KKJ3ue4p73m8hsKuKu0oYz71xFVT7MirnCMHZmCMHdjN6n93NE)k)8GP)YG(dUT)N6pQx)VBWGrFC695pTly6978x(f)hGFi2Fl83)yqQFe(0NIs8xHFDwY(0LWBME)I9Hr5)u80fAb5TEqB3fSC6V41F4073eUAvaTTbzlNEp22U9)UUdU9ZhN)7Bcoo)F6Nc)vy(MWyOdttwhgbDJ)Y8WK4SE7sdwMSDHF(vJVbE5HORdxp(nl2VEDpYV2B)UJ)SUgV0pF26K0TLTN)eYN82JZxUjy5xoopC9X55PHXFji)48SOe4VxMeN7hgNDCUp8OCF4rjXhNVplqFF9OFAO)IOGRrM3ygWM5nd72SRF0pAFXt751BJFg5n98Fimkm)PNFwZ726NLhKQ)DpgKM5NB(B3GFR23Smnm)uiHbAjHbwiHbwiHb1qcdmscdujH3sh3oaYp(PWFTlY)PW4hooFWX5BdJ3NhqgfFm5lbxtBgqSRdsLAqsCxCiDEYJ4lgw9fbpgad7hazZJZxayCq6xaP2nb(POebk3GcWraZ8uyQEZYEkE51j7gNfKhUMXC9O)7SGOSGX97n6Aa9xfIWCCUFuqCEpg9md60zz7cb(qwR3WENF2g)T(XbzZEyF4k)4LbT4DEpf5XwTlfmwMKeTk5qCVv7t9X(6DVZBq)X9F(z4FE37S0WX97Ck08GVr08GgNMLL8IFFEDcFaQhtB)sF4hq(GKW2YvzkYyqJ8rJpBsYJofM8jly9M2NfBUZ5kBv8OfzZcJxkWyF(ztVRMrerZC26rnuO(U3wdRx6W9bRtwJO5gSQOumO5hS0asXbl79ydpyPfxOQY7sdtGVk8pckCcidvzXP8JcJd6c(kWuob90Ut2cUf0vYJa4HrjXpGZGSCvjq6ojBtsAo(yEFk0dNGCcddFsvszGOKINOCIrLttccp)SzreRYiLVd8fBzp)4NMTAx5iqNp02R3OR0mjoZTbObA6zuVOtNjTTAlP8DU01vD6sxx7X66J)CXaKOxNKpNlWditldUHwNZNfkRRJaDuYtbzrqy8)ge4azkqI7oWVZnGdlJF)M88DzF(MBoC4qVdjhaFpwbCJT3aUyhfn2RF)p2)MDjhcs7ggVEFg0)VFY)l(7hN)tShC3n(t4cX)d6mm9ODyjchs1Jc(kiXg7hryvu5qcWNXbUkFy)UNFMtoSzVMr8pAwYAIwPKZreotu0m6VcVllN2j8HcXwMhckvzZwVp9jSxdIdsF4PERcwhUmmFYiIzGTlsMTljmopB8OwVzvsEV0WD9Ydx(fC(ybGL6dZfV8PLrGTc)0haDqqNHtlGnty8CBq0kc9yCun2pFFkyA9Xqqgc)AYGahG9YoeUlygmqpPVuxdy(bFs7botu(ME7wMF3h7xQoMg8a0BWWJWx5VYFxE4JGzTd(GCKguVnHELB3SvG1)hc4CGNF2CtsdqBzz3nOtlZncS0T8l3nS1BOiMHwfgpBDu4dBYn0oHgqPaa)2cutYSvHbtg1QTrnK9XlsdxffSIbOGyKHT65NnW5h7150yIv6565f2rTwMKj8QxlGBL76mWI0YCkgArOgINjzzyYEWYwyEqb54Vl4RW0gbqW5jGc0Yu)hHpKWwlT5fhay(I8wi0akDr(mOpFa14gpqIhMUpUkMYu1LquzZc1tTRdJdZ2eKIFRSMC9FlMcIv0p1OKqlrGEhiLvAVNj9Td433H(t8gv2IWmI40llb(h80o1Jy(jaVSwKBY4bxySJBsPyGHlp8eiUgUoh8qmdLi0ydI4xu(MqWpOcZYGNlGWpgNYMaWQom5sc8FXyUsoe8(hdizjb82bCakzp8MfyQuc(x7dahqlD2rG5aO4I09GQ0SSiWNvDQMAewPIy5Zimsa970QDPNOcGR369aBhCTAdcWzih9UBbNplT6G)AQpm7lgIpQXVkRWI4TDmHYLjGQnhvWjwqgPw9OwmZHKgLctD)uRhwUI3rJ7Z8GiBpMJSz(BxShWDayTjk90pAnmJZgKlqnMtE6UT7JYd3ffgKENxpZ4B5eB))iKoFtkmeIQjislaRIzfOTaL6xg5FiJiWU1)RHBjUXJDg6ffoAJcSHO8R)JjHRiXOJVUlkX8qQ)QGmtyHjhgAlrCT1sD7agjyraq1zLpTtNwooa4KcJ04jxF40G32KK41HPels6ivrwFBdwYiQvm3)eqprAL3nNm(v0jV2eBdG7FtfFa1H1HrrCF(ZGijadZymRdOgUhcg0Py110SzrvMH2q0MHNLXSUVFxpiqcOfb(zpbTd590xZ83baq2xc3XNXaJz2S1iapuglXhz2sKjHUXGhPftoGygvOWGLj3m0uIu0NBgRSzgAn4vWcFCzfweLKScAzczzeOiaMHVOKdCMfzY)ZvG14KJfYSOrUAhlmphlzOHgNRgE9Pk4ByAGp2YicqAnLgk7mMJNVeNkfGHwFBfDHt0)wZ(YPd0)z1vboCed5vh(3uUo0SODzu5VLprpA(cD3CvsqgOnnhfJW86LSeu7IxXBgj37liogqM4Ffyx7hdrBDRrlIQgaXVh0q3hhbokZHXbIrvufhx9hOFtqFHpeMf0tR0fQkCcmprEc1t0HSKruH9PDkIj64ED0Hzkw(0BpRLWiJoGizGsEguwQvXHaCO5azfqWbGKD7ssZ3hhM)eU8jaNltVWhZ6KogLglu6GHQ3s2bfXNctGsLsTckfZVyw2IijvdxRNfPzmPs2KY5jGOjOPqEzUidkupRrLS0h)dnWNSjEosHfm8ZJ3wdsyShVKbBAkkiWQkynLMnXjJhoQPSq9blXRY077qFGqIn5MYygLOYdGEnMMqQvh0dTcZmWJO4cy2d0M2bssbBdxcMY(HGi)N42P8rhXsWGD8jEzKLfs4ROPYqKlMSpAfAXKfeKoMg34vBrpwny3r7K7cSQYun2a2Z0Lelv(SocYnzwDjoWwpwKjcDDPXiz11yRMt1julQXcUB5NU0plht0hyozzUlSGZLUKcmJn5bm34kkKdYoBgMqec14xQlywn4GIXnJdeU6OnwrrryKquLqIBfOPPsTU4CrLo4HG2zwS)USnjAhV46G17I8POywVKQX(JfzKQt5CvPRW1rAPpoxxOyjXi8EEfoy5DGiC5mrLRYK6soZmQmzuFTaBxc(iDaAnUqeZkCXAaegEzaoGaC(FairlPNWwM5wwx3zoe9eRdabmAnwsDZaL64)4j1WtUBShZ0ybIkNGyXGmeGPg8abTmjocOqnt8G5ovQh6udkmeCrv36301yThuUEnv)ozKKM1c(cRtR(k2YYIZaslERmHc1JMAJnamqhe4lsEpCgs)vKerGkHONfFwOUAq)mW1x9x)nwD)r4iGYkWsOVPvrP7WsZri1fes0mxZ1IxWvWjfawCWxHNLV(AQNkKNLq)mb8fJAyrads0jWPPOKaiwNYY2cwTqRi90gF0HhDvteHhrI(HtDL4gsjeWYrnkMzgPk(agW6PvCd6YzH5bBVgltsEfkqZRLQwwBTICfkqIpNRjpOVy(8TPIDBnLachI3oYTg2nVAroWHr)Yf4wxH302KDPB1uMmU0DDG)xR2VjxQOj4ntBb0W(unvXbxTySxhX6KsBftmrwH09X)b)fA8371D8xx3Pm(7zy8V6NAB8Fqhrjh3g)FlgZLsXojwKupGwqGNTI(wo6Gjeorm(JsFFGPrcsb74bCZ3SQRURk0Dx4JUsHvi8kLJOgnTbslTAUCHpztrRwPy3r)b6rFBvTQD03tf9R(LoG(LeapFQOhvPHBbhyoaIlKOhKZhQ4BN4rkJcXhjheDBlF7WI8RN6VfIWnFgTmhGj3zEt0rl6LgURU11PnhYIDOsTKaMkz1JIqc87jvMtLpxpMGlCpOgr3WexdZQodNfESN2gRudhB9)6mAUjWA6tZIIRANLJvqVfXR5kOldYY5Slx6wLEILxMTjzGwBWx3feNf(ildvKMs9n6EAoSUc3ihyGbKF838j(PCB)RG)mCeZTcpVr4sgrkHRJZ)H9PK1ILgTa1ebcWHdUc(ZGpX(OVFa9lkPaU8(vQvlzW61bljzLJ(jSQLKvRK0NDv7B7)HQHltQRNox1E4hy4xAWdbXWdg1)d2uvUByVru3wbMniprsif1JU9X5HruV0O(VfeNS)HnCoannpS8JkiL5aDkwCiY0y72apUB5k1OWq62EWqkXleIgggDN3jr20eYLkJJ5L18oLE8O(t2Ny)MKRoC3qiUKx1tkSGl57TKkkxTQOfsRalu8KV7DYyUXdc1bOZ6Ff61ONi4xHx80HlM8gGWHBDa5eI6JZFDXrIRS2OIItDI0uTUfwz1zNRJduexakPRLpmVU))NPlBmOUGqyeMVIDK9Bdn4IKdGM(V)R)WV(5IDt1BDzONhLDfwRSFsxP(Cod8QrnelCy)(DBJ6uxn07tDE37GFhyuOUkYdFauFWagjjrLKsdsjExWiVM8C8HJHp8AkFLfJ1HKummuAQTdZyrfM5JMhwUc0FZlPs6VwqCEJujo527nsLsCIHZYicJLtOCgP3VpL07G)iaEvMR(2wfnElU(fyN4hjLoFs10xSki4QGdZ5CZUdKsJNiqwiQcgH8txrx0nYgSIywaZVFoPue(vCz3waJnRcw7Vpk3bAhf0iZYDiaSDHgnbnLG8Aq3SGyC8ROS4yRLiTwEPQuGb75)((0yIhWNoEvuIEoIrGk3dji3JKb0vfkY)hj)xVmePCr9fqLA)kHkpuEIOIPGyg4NEpUz)aGX2OOF3qVP3FaMcc(4SP3t2dOHBXL9Izw59cRa)7rE()AFiXrJSeu7XFFEcB22LB8JFiaN4Kw684Ek9)emaeqxDO3RFHnFpDUndVL72e0Q2EFTtbS)o9WwmN6kawAHfmavVbxeu(4pRHTYD)704PgqqrxOvWoj)(nq3gGQWS9Qmtb)aCJCzkanc1wUtnuqRYx4iwvSHFon8AOkELAAJTuGGSwKRTjsdgVyGJX2In7mamBtcBdRlBsZc8xawlS9LTH5YnR57Kxafq2G12WDEdAsa)cWxCBFBdDzVVbbRjKTYKmfjkQwTfTnPzb(laRnPTOTjnlWFbyTnTeJnR57KxafOxJrtdAsa)cWxT6mvFFdcwti7i9ZwRjgW3lpTTUOen4PIH(O6IDQ0fMxn0A7HcZufr1YJnuJPkDT5Ic(lgG)gH3j7cOTiJgpLdYiw2U9fnP(1KqhwQ)SOqxlh3VJ7c1xqewaFRdDlgb(4RGERH(Ob1BR0dVqb0lm4Vya(BeE)AP3wzX4(ZUERBi85O3AihinQERH(Ob1BR0dVqb0lm4Vya(VX7)TaVRyN02bj0jy4XLtbk9MklE0zDYcP3kvzfputFABH5oJZwOAmX)TMxFwS6xeN2j(N7m664Zfs9F6vyUjd9rdo3uLEGr(Ao9LQyuqFBUOG)Ib4)gV)3c8(vCUPQEfFbo170btjlMVQN7D6XMxH5MCJxFwS6xeN2j(N7m664Zfs9FFdRoPOT20G3baRTeI1aCtTZr831Ubf3MD6G3X1uX2c28IbUPCBBcWNB4bxyW7aGDBW0C7Ce)DTBolzgNxs8ZrMXzG7Omt1zxngfHjt4oD0GQ1wRjTtLtMtfTahprq1g5HPXw1E0R2EKFqGwmt5RhF7MxD(2nxa(wpwTVSojkk5aPu18bOMH1qmw(O0TnczlWHnJwSz4M2dlZ0f7Z5TJSP)xNSpwQ1RwHnELFU)c)SGpF8NpoVlEmkGhm8Al6MZQyYmeSN4gD(9YH5j(khlhiol80qTb1ON3q1coN8oBWDJm4kW)kfMbL)DMv)ffM1T6axGkETG)O28taY6bSjXfwDYEAslgwjSlrjgYnUCAiOPmHwDRxPXhknnXP0SEEa3myVaPBQzr9lkWDaS4KhcYh68fw41xqC9Ic8AbR7oO6KFWV8UXQFWMseKx9mhTn5cc86M4UrvnBwu)IcChaRvvZkV(cIRxuGxlyDpFdoPA(Y7MZke1ZZU1ff4xiW(6GZE9BuPqfKUHH(LcUxCS(4p)tepjrO9j5icrhfNEp5NWlIoHDhe8R)c5QTJzLE6)GFXXn9EXDFZ07L2GZ4hDpgUyaerZ07FdqCLB3k(2wICuWqIQr4uR648oKN3U88oOUZpSJZV748Bpo)5Npox44Vr8XgoiY5nPd9UZlnChLYAWJlVP5t)LbkmqvgdNhWoC1i0V)s1taXJZhtoEH7u8EPZbuYtfoqtjnVp5PVH1fvo2EzmADNdFu(M2t3kKP51JY24YcKJnuKwh(xFAT80oej4BnsWs9af1Sh6xzxuEAHHDXidkGi2AxXRDX5zyjD22cPQ9qoJmm0HtcN(yOIY15EoYJCIp6O0vP1K6qnTgZGE67mWZJ2h7JxwpO3R(0hzEeVnUBU1EMglzZILbgnBMr98DHZm96jWkIhaX9PlgBSGaXU57BcEydt6E9TRm9NnvhT0GPzKj7Bzf1TVLNt9wKSyNXK1XaiV3So0ycfq5ULzpT8iu32mceoPRtnxCI17ecF2w69uN(0MkJf7(wD1s6u1uvA5KpD9jOT5jbT70x5zGS5brvXBS)QzgXIE3YC6FK0LwrVId)tTQH5OUfD)ERZl5sKW8rX0X5tiNJiTO2vmDCovy8Pginur4Z0X7KINBLqrNZQfS2WD1mvxzhRB)PtjcjkGO04j4XpLXlDQqr)SsqRzDkmANuvzIFqrruwkO)eHZskDo0XBO8b6uTb8qPLIlRlfYW8HjfXbj26(WOdts71IreHu2U03UmQi2kQpsEo)obqJ7(wTFs(yHR(nfXZQ7S)YoG)v6gglBJ89tbnc2z0RxDUITDx0LVYdjkrJ6thRepzwjcQJ4OVY9fNGT8YJWkhCBxM3NjDDrqWafEVojCZ(dBCotGe7xIlsx4I687TeILxTIelOFSVSbu(HTIaDspkx05WjVjY3dGkUFXy1wV)fldDZ6DWibJlME2CZjN)vKgxylLIQ1DVmAT1knR6j1lvWtYkOz1gdxlIASVkoSZS0QxmYKJ6MhE0IJUZxRJuS50hoLPJ(2R4iGOol9ENrAMaR2t4jJsR)3k8fJxpKcbcO1XdRrcyWQVDVyLNfslzRCf9ir1SvdxRRPLDsvtLoYul8FYUpK1iu3s1y9DcktLvqJW56hnYH(ftkxDWaFrXtfoiMKgjSsB8eOQZDvhiTj0X9)CsBIjigPpZtdXMdt3nJz9tFWEcXlMIt1h7(X00US4MhjjOMvqEzJl8(4EYj2f4AG8A9XlXlwcGEvFPseFStvqYrCi9daBVrKdDVK4C6KN(LhC8KklJqGmzb2hXRxpD(BDcSNb2OJxLxQJ2gusBQQYmAlCTOGu9R2TYC6MR9FzTefMn3qGUv(HVOMhN)o8qqRpph5iPt(13v33rBVA6B5htPKdPYDr(pr8cdmvTnmEpEjlXO6RPnJEVci1a(TpqYJb0mqP(cCHA4PSInd0NpoNCPNZoZcX6IkIlkvrqelrsJcBKRZ)P33V3OcPpTUslmWQdsvfrO96ROqWGxvHaRmp1Og0QvqD8PrzlDAg1JYvAuEVWiYUm3gh5HkMKRbtSTTy0Iw2)ahXrlk7XVpVo998IBodYDbiQqiPFVepVpLuRXZRvCcMnj5rnOUSA4MVyD5xprxtk1AkK9gw0vBpOr0Twm5ck6AbhRZeLAmUMmrz1yI5HljNQnmyw745nsna)2zLVeey(abgE9groh4n6Dtrl1GquLs6QsnPcwP10WnsnWzSs1LuZyLNawPyaID)AqwUywZZoYoUEXvyQlghb1KcyDP7emBpYxOgWdXBkd0vd8OLMdKUtY2Gfdtk5isMrm8xQZOa)M(OoJrEfIDdOrU4qL0iurbxUcrrqmhlDIT(FvOSj4hB(yyNdlY0jnZKnDLuqKdSKfeAolewJ0oLpw(2Urx4CYzzvIB(T9oGuj7MQRVClJlHmoMONLkXSRMQZIKiRDi0uVzQZ6ux2RQoUPlwzX0gDA13LB9UqHKvkmOwDhov0ocj23A54uZhxDPBTM4EAgiQCBtkASGTkOMtvFtXMmxNi5M3pwVObkR1pYPrGfvyqhn8olPk2bKMUMWAXzl5g2kGvwuERcpvY3RfBEVGlmtNX9I1j)CSIvtULT2Xc3wMguwZfMMwZeW1Nzk(eJxrK4UTpzYRQ6OSf4OdVHdjTtCZ5j8YruOuy)tZvFdDTsqxQQu(C)j5kds0hj19ROU5LRNvtNuKGuDfReefGtEl0WbdlhlK3wKC)BVPYiGcVSPUwHK8xuix8NzUITuPdT0uKe8fxBmzHXK9F8fFndjsA8RBIZkfVTRjGVcb)RCoYqAimYxrkihYT(5oLpvxEXZoEo3(rI8mHR5ilPp2r(M8L3JmRQsS9xrwPOVP8OVr3psQ8))GTeMgsXRDMp5clQBrKYeZexXEChedFx5VWFo8VEw49NiirqvZaXFjULLuh2O4QP0ltUfDSNpp57Lifw2R99OKP8s6aDuU2OosbVWRwjtPlZbuvSSnDezpVBDjToXxVcTQ7KI4UWsHZYCdR6hSUIZnsXpyEnPTxGaNCbDOSY9)LD36idDXARRKpvuraMZgqtZfEDO3Qf)G8wwYEHjkP2sdCKChOtIumidTXHkpCFkPMwinJSQp076Cs8KRa93FmedbHmzT6wla)ECAPyQrukmOxy6yzOZ05lslxVMzGPTHuMnSXZxM988uUkrg2JaKo1H0rzonqUNokt1NPUnuszOehiR3hoONSd3zP7JdZFcxSqy0ktermpMujHnKy5TM7h3aMM80OMDll5aYP(4KszJBBIwjgDHFiqxIiartJTfEWy6wc2vYzjaOCaiuM1RpjR0SRMjS)d0W40LPjL8ukpSPjnBNA2FLqmldDet2ksPLDdz2BEhum9nV5cjlq(JOtdx0NSz)LBIzcIYqKl4FJrUrk08k9fwzQwNpsxFOeFbAkBa9nTLlaqEOqKXBPNwel7PeyOxFPuRw6TU58JRukJ0Y3SWQRaDrWd12oOSZwhKcIdG1T4)4j7MzRYDgvWC0SIs8Pi007YlPsDi7qH5BmxW3Dp6sPcqw(DnWyCLbFXc4S6WNUzlkMtHUmNGohw8FI)EjVSDvANXjTWmTNLtGnmOVaRYzPVBDOgce7LBhDkFqx9RuVialRWwhlleBjYzcn1Ywnz4go1r4pT4MauQua(3AUWokaQ2YAGVu4c7FlLIBcfgeksGjQsQkZ0XxWEA5)Xxf(R5vpywXZ4R1)gayOpwCmPh6PKpgZBu4xcOPR4ZcbRJjUaLh)1FJLSQq6C6OWi9nTeYOhztTgsZ)bX39R5lvYcEINizbb3lzWpU(AAsujpJL2eb8f9KDrads0qBPP8HaiwNY2BTyIzxr6jA6z1vBveEeXJCo1vIBiLqtmgd1OyMzKQ4dyaRNnVbzF)G)2Mq1tyLV92emJt2Tj4zZMGoGwVnHbvTjuPCM0ytqAMNb6Ic4uMTQUA5QD92thuoGwbusv(Lva5SaVIvX4eLsz6Oqjq9aQhtpKxj5ZL1b4MWprSUukxMxW3KG01Kd9vQruwv93vf6AJnYMnaRShfoTbPuBCApTCADa6e40vK1iXm4VpFts607)F8)I)MWVesE60)Vp]] )
+spec:RegisterPack( "Feral", 20241022, [[Hekili:T3ZFVnUnY(zzrr9A3K4yPeVBBXMa0R9vCT4U(o0uG7poCXwXMorVil5tsoEtrG)S)MH)sKuKu0o2B337o0I2yjQHdho)MdjVn62F72BMNutU9xIhfFz0O44Hrxo(9xm(2BQFEf52BwLm7XK7H)ipzj8F)rszsg(0NZksMJFDvX6YzWBU9M7wNMv)t53ENDqEb02vKz3(lrJG)8H05ZjS2sQMD7nyBplA0zXXF72PrrdhnC82FE7ptF8OV5S4i4X3KU873oD9ke6QVmAe8YFm9JW)HuwmlTyD12P)PuOrtxM8XjKCs59pR(bJU80TtX))x7bQJUaE5VTHK842P1jL3tQtZVVPbF9zXxk)6vLPfLP1p3goF9zrJHM9DZ)FwxvBbbxuuUD6FpnBEvDs2JKsTVeh0)1KsabkwaiXdewtp1Fhshv)uEnPSC9kOptYNd4zrb(9YM9Eg6)BuyMqXH6hsZHP2YIfPzWeAYS60I8QHRkjZkwExs9jxD(sazMuSycaQjBamz7pBRvai2KDA6IREZDRxSyi9NdxVYEJNLupbiclBAV4j0p5l2oD2dKzajifjbLP5psGXuvwb8FNvKxNKMdeZe4r1jWJkYbssfmO6)uszAYDzWFMcnGr(FKGeKuOnZsWgXiRW8k0IS0hrgM0YsCkjhH)MIYhXj9PBaIZ2PpKunbG9eelhyF0i60trXLR4O7Ki6NuD6tjzRLpDy0qva27nnppTAy6YvKYfKz1tsQMrYNNKp75jvKY1lnAyXtP5jFSAYss5S1qNNnHC)9gTbOtZkOy7KhtRQWzW5KeyiTdJHyRJHyhJH4qhdXbmgI9pg(cgVXgy2lPe(pRYsEMoRfJtN5RrXm4RFQ4rYPSMbJ2fGOMAdkYpJY2u8e(IlA)cYtKCgJqXAG14osjmsEeeHEGKuwRiHMbO4UqyJMu9C(StlwDvfOIzbNahX()tizvKRaLHNcJG5PimVcuuqYRhYhsuzXQvPG2GkGKXExs1djltYjvtUFDks3j9eD(qdMYE9ByvMvuKnVyt(W5RltW(6l)YO4rxn6LxG)3x(LEA4vJ2jbI4)GgZXh8XSoZx(BR7I)dq9Cw7NLa)bsh043MnVsOVHZJbnkb1X9qrD2UqK3zgR30FViZd2xEl5JURAsA(mfc7lV46DDmJ8YlH1JwgH27EFnSBUJWNS2zjId3KvlHI4d)KLfqQoz5VhpWtwwXfMOm3TQ0FNi91OcfzrplYsZjNbUKWfob50ZUEj49XzAoEapmRi)E0iYS5na5SRREOOSgFSOpv6HDGpr44NjNsSkNsKkFItHtxmcV8IBweV8inVdC5B2WK8NNmFvZmWGVQF0WXN00k01bQhFj3NMbJjAdIT1GLjvaTdBGfudfCgm46(Ev208UqWTOUWTOGWTioUHUDZNIvDpM(5crgaB75WF5U8swkUVidKYPpv9BRECDw2K7aDbApLhqWxaS9)fG1gJKy70paos)a4D0vV9H66vvF75NVzZMHBk2aE5mhiRlphIHll7QOrJE3OZxvSHuEwA(I1vauF71)n83yShSh8HZtUwiU8Ny2YgY6Wg0iLjXs(iqdZbh)WXgJJNc8jcGBsVwV6LxedBUDYjupXeHNO5ggLcceb2pH3vvZ6ezqcgOvvDXQjlr)sVh757NnFyjbL2RUAupY)AD6QvK529BvTtRtbnbvtwSU8zem9zHIoCozr6S06RVymQ8A5DftwvKMxxDLXVV(Ql6nVOEyz6kO7xusa15aY2JriYkkMduauVX6vd61)UIQQElsV)H6jCC9dxfbqSVP6z(BVoEKEZVE8aRToz(Zgnmk(LxWUBWa1rBzc4HZSNNLbAGPbmxbAIeZBaQdqDjjBoDUZjNEEs9AyGo5PuqWd)APuvj5EO91p0dMNZQFyieCbevr9hE)iySBWAq)Tc1hPqAOkmtSjju4R(LjZtwvN(eyGztcipAz4IZy6TAYCWk89KHGLIzp(Hl61)nUBtD6mmMZxEXDteZUXd69ggIz0WHP5twKHZy96tLxBqWgPM153vMopJmN9nadKGvtIcpqklMuxsidNxIAw4IwZYs2my3OjTuz1nrYoAoKKJtwZ7PnUgwTjDfGyj1xh1ZyyOIOlePFzYDP1ejILSI8rWYkzEsDbWWmRmbf8PAwBuQNtaC4U6Ei0aC(UAGYKEpYHDv8GU10ieRoTc(Sz1nSkAO6xi0xUrjLqSm4qZiXDf4llbJsyagiN92PNSD6tK08suNujeHrwXgW5dqzo8KkEgMQYtwbEGaqaeNRkWWjWSISb8jrZQa8jiEzW00RHrqbV6jDbLHpubnX0wdgnqiDQPVsr7DZZv4bf84J71suwQeAupdLLG2R(UAoWrPRQDGfTen6nh0UFb2btLZI2l1zAbybWBSinpTcOXiPxhj7(BXSUoN9PoejG5pvGcKufpvsxcsQ4RkY(a6l9Bm53v8ge9CAgorFxDadQKcmPqDHCxFv8rg7eQ1Ls7cb9NbnkPlQHOJqgYETTdurYiSrfIixJobSm5JkoZnuzm2YJDf8H7So3vDZXavQhzvWCzIrBuIUQn9bq)nbtAj6YVRUK1yKqIdpvFeeIxSwG4bQ2UYMgnM4jOpJ2uMPs0BONksNJPPy1kQ2M7kRWKXIZGvd3o97YQkafleu30DLRHUdtllaas15BGwsNIzjBfW5tfzqtKTeSZHbBbo(kMbGOrnWP0GKy9P0Tr7JFwhpH2V2S7O4nJslhUa9igI1IoyOZUF4siAuo728u6pltatEisJwQMxjvoaVYWFdDJrGIHZ8z5CGV5akvdbzFZOdE5fTE5dD0jUOysjpK8W5rqL6t4ZD96hoz41qf(ere0mOkzqzSGCoum69XNiwKNkroGbVzbwWZxwuKViTKeg9uN013g91LIWldHI4EEvgvj1ck4jUAedmVjPpD1Y1z1PRYsjLFiAO3oL2Em0cUtMCOIHdOhqelI0Q14s6njz5DRPAr61OTE2SjOAeYCNurz0bFYgcUqATitSpgaMQ5ZySia)deJBxmjUImsvHnNxzEXA4xi7lmsWVlOHNl0e5TVO2QmWPnQORqfT10Stv)aMvA(4b5)rlq0Xzq8)7a)ECq870rrwQcj2c6MxKFMYec3KJlmwajks3XKIhuuag30)9Nx41mLVinldSAgKftmBsbnjeWC)Rcqpa(K1KBlpAsGOxEMbpVSpi881H6(n969vAb4c8Dj4YuFxTmps7khGtna2jk(zrqRL7Req388(GU)0aD4gfsMMoydyPw1ch0UoaCya6DVIXGoFyade1OpSy83irL00ncEIn2L1U(7MP2bFviAMOpWiYzE)RMeqBdeD)a(mF00K(YVaZE(9LjZjSqAQQPPqKzqcT0I5AVCtkwibCuJzMAvs(CYY0zq8u)ajl5zHjSeSGukWiGW)Avrvv6D0szbIEkLwzkRrt5ihbRBTqlPSXymq9vnTScghqm6GIMjnuJRTYBRq5KjrzOmVjTO(2HSna715FbH32qY04v4r3fOZgT7snDL6MPT18DoGC7sbCnBume0dLuolPQ2DojTy3dxntG6aHDZk)nlbEl5eNxWRkkAbSKt(i8ZOHJboV)XFM8yAw6)C70F7)(h(Vz17gljaawtDaJMdacwDcBaZGLK)1AyqM9mTUQWSpcKoAa9eO5lPRZeIit3KKwpD7uAgrai8aJF(oK1NwQCWWWQIoyibtTSIo8ueixnAySMUtyWmHpYMubtE9mw0L3pQxR0iXfOBcL1xc9U(Iqyn3x(TgxHcAA2cauDkRdCGzrbRXUS0vcDp0egJUX0OSjVwvxd8WkLuk7r1t3gg3f9rHiEURUUSZMI5o(zAlwWWCcUKMZskZPlRmcjJvo79SvoJs1X4wmkBXMQo4ESohHNnN9w56hau(cvJdnZqPynFUGGXiXI3tPQiptf6wrBSi(sRjlpfRTsr9gW8lvBrVX2XwQgRvmsZIlQMUwJcjyq4yqSkge7edIcfdIKyWxOuHvm6ftyNVUk2WqE7LQMnClOVJvj1hS4RWSU(hkYvxmVatmmktcAvWQELWl0qArILjx1(K7PzoohvbZkwfur)J0FVQG1ZCKIf(mvpF1Z51y6STGBSpQnEXgpglY8fWWSFdHgr1Fhgy90EcV0C65TwDeqmIxoo5kvjdkqKuEgJtgRgUKNiO9dwFa6UwNHpg)Inpqq3TGFikKx4NptH093ZYAarTwIbRzOu23)dGxy)yH49yfcxj(uCMydvUkltycfRM9uWMY2PF3F7VG2zbisZm(pY63nIQoMvyPkYWd9Y(Z0nyvWT6urXRwPma4vNmUEbLnLgU)oPTuUljL2lUULfzRltMXJh0RFqZ9VdGVl1gbX9CMhLsJg0SUJ2QBohvkHFqoagAVrxdLOvwRWn(xAPmRetDxfnqTqgTwXsxRByPhZOsOZ4XwNXJ)8zgpAFMXTye41oJBfKAZ4roMXB)L(MXJhOYRSdZ4k1TK6S(C6IIKmdxEK1vWFNKxTmftA6K6KkxwWE5fDv7XXwzPwG7cOjGl25)(ZSWWuwaxSgtA5nT67JzzMoBtYZAwX4tpTQ(z0n0NlwZkyABOJL5v64RTPkFvd1LJnX7aQWmrXny6iG(iU9sLP)(laWWY00qLvq66XN5SmEfLbttzyPTkYNlZgXQnOndrSFmJMVB44tqkpzb3ZZvBov18gqnQjjy4y0TOK(hxMSCvc6TjRwAWTGedlXi2O7Ii6(JG3mn4Yah4u6tWC(CXcUjMVFhZE9ccTgcfRxW2P)Kw3)Rjpb(9Xbl10OWmCsgg1j79Sf(492HOKfsu2f0eOLUeyP3asA0O30x0c13EDuV(08mP(WgDzdhBgljllkgTwMwaSI7EJSmAO0SjckRSwN67fDOftgD5ZHaXFeeWrYBLOMI4OtjLUqrhpa7DNirfS5d4RGAjgCiYgubaeD2smZHK3vBqFkroI1RGPRFnvwI0klPpF7B1WOGZQAUBl4r4kdUJaHHs4DnMDD03UflKBGI58SLXtHHT5uSwM6yDwKKEvQGbfcRfODPcMSQw1SSM8z6eGHOzAAVE5fXJVSN(C6a780fQ5kbiNtWm7CvK1gBuzCn7BsSyYBteFJz8kDdsxRiGcqy6WkqFMjFCfjVkff5Xurq)ywSl38a1B9tWnViRszobf7PBUMlhDc8VxmMNeJOOXI8FHjyLxtjS4ZzboJa8I4tG)n(R5F03el2WOIXKWQ9jML4dzbU72WQbK9j615d7zN0)YrFfDGQLhpAvoo4K(x8vC8RKCpjhEW4rFvFFCh0uWYeljaOwMutvLcMnabN860mvTLK8I13)qtoaTwUnddyKQwjw6JY(9bQ8znRUIbj5S(XxWg(kPfbzzh8LAdCweV0ugwsQxxMtdWzDlZpj8SvMd0s6SPid6OjN87jbmwmtqOyG4AvaPA7BYoK0frJhlCt7Rgn8cWjNbdAQ)JS15jyPSJoNqBddMQ5UsdQAVWgC77APOCKB(bAlnsthXsdNzhWMlk15xQnNjIyQ)hHBpTzpwXsmHQk)UNj45wtSNsBPnTxl1USIdg1H9fSkttMEmfHlAWZik1ngix6Coo4qq9Q(rclJllwI5Qe8be4oqx3zKl6MuwyMd0)HPoG8rO)rNsIuCULr(5kIqlQldanvYGIGBnKaJoXBJK79LR1JRieiRBzkikG0F(z0CzzHomTR)5Bz(1btpieW1NOAfDl)UGNXLtLRtbFtJ)fHWeiYyvlsREecNy(Cbb8KXhisiWjww8rQoDpeswY5SqhzEDPS)YkeeOWOb8S(zsfmYG4jTEHKoe5MqycKOXwg)fRWgHfsAtE9y5ZelZuQPbwP5YljE(U4GrkWyf(nWWbvJWcuxeM3oYIeqbzaeazzcdw3asU0(g8xOEaeZ59TFmfyfVVaNYOlsZCjd(3v8F96qWM6wqIIb8v7wvixxsRHLMATQ9I84SNKgTeFtTUwvDxIfid4f4QsYtTnrE7npHRme8h0ZrKrFtC0T3Sb8GaNmU9g6bxr6YvfL1CX)3QuzfVf5n(xRtPEkwvG(gLSUUG7S0Shqpfq)EyB8n8ih57bbvsj91V1UFaVLjq54TIy1Gw1p6JdKW(s7WwTc5maS6RCb1XhfO(12HAR6rYa0TEVl4)nhfSoYbX4Gm9f9UJgnz7pBHhMRo4GW)2SBqnqUMx4CypYoin2mwgW1Xw1QfWDitOSlImaSYB2vG2SpKmGzZl2vqQ4pQbmv9unS5B5g(E3MXBHzTwHwuLRe74VTU1R9RQscuVNLlw6LUAF4DR1DyR9E0vtdVZCDeZyV)80A)6Q1wPiNZvTEDGaTlAVzV0v7dVBdBUYBtdVZcEUQRwR1Lo02BXlEdjFB(57qTIJ(ODo(n6c3lcqN9q7vKs4YUfwBBT5Oc(JgG)dcVlaPjAlQyE(hapINdSfztCUeP99HL2pnJS1YRgniCM6JicRGVDHUYzG3)jqU1rFCaLBB1dVsg0Jm4pAa(pi8(tLCBRZBPp3LBddH3h5whrCEqLBD0hhq52w9WRKb9id(JgG)p49)wG3T0t67OOBhu8eY5iODvLYhTxNnD21s1uowD0N(wAL940PRdv8)rtR3ls9RIshe9lCcDx0zjxVJSvEqTn5OpoG2MA1d8HVLZVVwkfS3MJk4pAa()G3)BbE)j02uBVIpcNBQ2GPMgZpPNCQ2XMpb2McJwVxK6xfLoi6x4e6UOZsU(2RpZRuEYCPpo0WpeiBTO3TaDxTl0rqO9dYYnzpGV5rhRfqBPjhyO7AHdcbY8t0wF4DttoWqFNX79n6MJn8dbYHXj6UDHoccTF2po(2hwYwa9EZXhm03doNo5jT2Kdm0dfVB7AJZq4Cz)mOt2BRg6CPw04CZ2qi24qZU9BTGoTonVTguOlMwt8jYl(06TwOOm8r6IZNoA(5FMrZp)tonFOJIMyVkYlhl76RSkHSIFIr0UHGXDiUFGk0EXiCVb356GtI)xCuiWEHDRIg0a6TEVl4FyR0hgmDuwATQFCdi369bY0jKxFvmDgwVAoOf8y7s2aTrVla3EFq3c0wBYre4U5YKGTdIHLg4N9vsL7eFT2KJiWLG11QjSF04axQI9d4Ub7riLThwu)Oc8aalY3QO5WgBTYRpI46rf4Dc2WdrkOqXE9DJ3iXCLm19tI)OcC3G9iiAEyr9JkWdaSEfnB96JiUEubENGn881fKO5RVB8NKKihEs66aKWGB3z7c0lqX2V(T7KxGoqA2(l3ad5B6ChIGo2kcQBVEd4PDWiSBqDpDpF7p)tuAgcQ3lo8uWdIe6Ei7NV9g6FH3TXk7Oi4N)c92sMdUB)t3EtXQBVPIulUQCV9gr0u4FLTM08aXMSI(KjSRszLDM1T13(lXgaxaZMDym7QsUmDf7fO8JNBmIBVbAAnb6)BVr9mRCAVTtFZ2P(J)s0Q(n7Vn5(edFfnWq1tb5TthGdIlCmiupCebet9KaajRkOAFLtjRooup3o9dqKBBN(YlBNQCSPO(yh3DbQnPVy0ipgcWbO2jaX2PxFf9o68m82E151naqdO)ByKoXHaj9Hgibo6zyNbE8HGrddMLpNUlpqgLlnyuAya4mM225xcs1(pzFiNP)mzAwiIjp2prY7yhYHnnsN94WCfzOnnAFoQVuZJZjyh3xa07zHl3DY(aUQP35KJZ2HgndBTEiKIJMOHbJj8JZybldBMq5EOG(uLd66TtVIEOkWGofkMNMdIxk7x5PyqZmn9SPgh3V)Z5XDxJq6lLhZ2bmSBo)WXX(x7qmaXc)MHmTyYzADUTo3tQIJrJMSP9BAeC49n7Ou(H7Yazxuy7tEoou6MI8moYJg5yOBzBKVltZbGjkx7h7YS4(DfMqhRMUDAWf)AgmHXo2IcIyLl)v1D1tJgWVzsuX5aWrZPEtFm3BGz30zKBxt6sBvZIP0Cfte4eH4e9whVWhsXjt75A40rWvEBrFG4HPr0WvOgKcu3u3U5IrNPm53SDPSqhhMgf9P(qoectTadpSkY0H5izh96jdw7EtZfboYuU7rCZNBHPn2LoAZHRhVnE3REuhBQ9CNh1oegOgxPhwd2snGXKPMd)9A7AJf)2m1V2wn0SMRtxbq5szTpGhA6aXxjdxxoXjVMWv7xrSAYwrV2WnAHRWnmVyqzPwHN)dzYs86CEF5b4h)(BG63aEc)HoQQEmQsDC26Z5X01J7yR(LPTYSU2X7OWMigZgEq7I)T(jw00pCfE6JidSPjVfAhBumhDgzdaxtr4bEGGWr52FyumpKwkYPhlOYrTJTqa8R3r7k6PjQ5gwvBIzMQ2SiL1C2n1ddSv9k2MkT)(rs6Tru6sCq)iesBiRDTHBZ549cJuOvSJAkVoFQFFwBQIZZTDTiIF2W)nm(uVxp4nXP59kcNc4yf374HH566cxGcg5J4k65og2Jn6yCCyVOi2ie20qz)z0WHLlxEa7MGBvbz4ZcDng75pSMinLn8XFG(rBmgCE1K3LFDins)AkNopgRj1OFeT2H71TgpSBYCQJEbPXxOEZQB2sbT0voto1NOleD1bTvjHEQ8XAiMCorUAjTo5IuzWAFiePA2XMrjDHqlRZHfbqvLbJBS3z5WLLX9YueB1gk3qvFFGqkfzZ68ahQZ1nQkgew167c36jomez4G0yQ1UzqhXv1g3dKjxScCwJxYbFLQ6djhMogiN6uL3vpvEzuUrsoK2kfWxiFQYQpPPrW7ytSwy2cHkGH21xjY4ZNHJn116ZwWAg6LTFjYthf29Vq)YKNkOXVq5vDYG9bSWlKNnyYameTBzs5JclNO6hd3X7o0bpXD4n9kMMvThwHPQ9UxNuJ6AquDWc9PkV27XvL92B9WMYEtDDorzyrIF4YspGwzFpMiv0ycaGAMcgL7El(fvGSsNzMAy3nqpswvZs3hEFdXoeLRXS4uHRinMkWLPLLYlYiW(0JkN1RALsT6IlZrlr1PBliTDywj2)SshhIy2BFyZkEp9USnGJBgWMkF5d40f32oVuEQYijoXAP79TOUWVXmGq)MTAHrumjBN(LyCDJelbeQuJ(ZVSRVJ1EZf9vS8S0Ji5vzjpt5CIrwQ814vXbFuZVnnyxSuAnqC9tXwUVlA)c26aVrCRFWxI3VLgofwvkm2zcYlZzXAXGIf7VtMWjKSk4VhnCSKRmYwiTkZT2GuBUewV(jKpi(tkFGxINPPnRcgAUXEyildomsiMzjXC4ZsaKR2einKwujbJj(2vVwrl)FqG4Oh5983w3LiFn9EubBpEVkH3gGZ0eXP3XGgxftvjOPniSPSdOSSzMAE1YYF6yDDjuBz7CDGzDT2dwyD7etoISUEWXUur1khBU0r5vBI75lT4fCmB25e65Ana)2jnVe4y(kkmIgoMMscNEtP0Y4aBPfuNj)YQaTRBH)w1ICUwdcg)n9r3n(7SLwM1AWFdTA8RiV0FNiHC1w(HTpE5XDgg2ftpfOY6SRXa81VvDHhIxxUOlmZM3aKZUU6bSmql1UZe4V0MMgXL1xxA4IK8YXSi58udPnmZ2RbiXn3dnhhJfASyzQ32ke2xP6D2X66Hn7eWsfBu1aUssJepvxrHDALU()TKK2XFRx4sUQJw2k2OjEiVP)WYVeV3(Yyje9rAr9Glwx5Mu0vD5T9ogSP4wtcVwS43KA06obVqPBUAPxvuvLsjvnxf407PDurcTBVvFP66l7ggfggYwVFVztE2P9AZkAjvCOr(dToB7Q)C1DYLgj8PyB54qnZH7w5lhwVBTWv0Q1glH43GukZknFE7QDW7sXUZvrUYcsQvgjUtDil)sQx)sDVqhskK3sOXmMhDtm0Cmk0R0UQMLIo0REmwj3tBWhRP2hb(Z)XFM8yAw6)uEbeDdEHgHt3aQqlZlAbwtqVN3SD6cC3zaKo8k9HDRNHfpcTAPjqZxs32diImDtsA9uCONHxgAGflQaiEnjMmhtHemMv0PwOCL)DRT1808YptrJQ2kS)EzjOALO)M2RsBVUs5oUU94v4sAn6WxS)fPnKj8qejA5i5U1f(llR9T2sOi(CTAlrVg0CvCDw0)pldVHmzAVPRSf2znQRXLYwQTgFyvZAFfmclRXM9rJEhRQO3o2OQQ8Q4YtH75Tp4f(MEpywQpsh92RTbKqZYjuoUlhr9QOTUo(Qqpq0WlOTt94wq5LJhjCM2VuNIHttpR)C5M2u1xBZZHcBoi2nbN5kcfPotTE1mao9TqdJVOzgr)4Uqer15TMhmOLhQ7ItT4ouwcmBEfgeDOtR0Q(i3(wUKsICCtxsjAJgEbB55If0k(AeZ7vNNbhQ9RTBctzpB92W0FF33RJ9VZRpKdSe0GocXuh6drmyooa3RPQ8fM2W3Z1CZtjeivpAE1BYxFEZX3R9UcvD0X1rVFlzLtLQxX0iWYpbBK78KwP9eyx30OQ4FtHZ7EnO8lY6nvBsMXtcoNCSmczucH9cTF(GXNABTqR2Upx8PQunLB4upRVtG0nZcW8eFzv9erDP8hhn6pORgvt6pEhO6z9HcK4BCtFQt9nVYqPVnke6VnWIFyhK(J1vQQjTJbbxlNb9260d9R1LmQXO4ODXOQomuQ(e75F3ZOq6(MYociWrW(DHPAn(RUzunJeqf3n2q(TccZl0faX2TGQAOiUUStnSN64Ayv3oNEcgzbQiKx8NRzlLt(7BkN8MrOIZW2CexgTelb5GBbyvWO(7MU0YIcWk(wH7w2wRfvmm2s9F1ALBmnCJBRoJYWPzneUhRBh4zcd78Ef3lKfQPbTjs608ASixWPeMMbLQ85mvO7ljU8MeBL6yEuI1I60(muPtQtKc1rBck2MNJYmPWmkzqqLMQyJFgliRWBBLipljaVFaBLb)zYupTtTqxSWKT43vtcYSjUvmhMVxstHsg1caE3kt9rLUi4z0SXHJGK7tqvt5yk8yAVqFCFK(7wgOqF(P5jS658ASm)Cniuh99AVltW4MLr2Oo)kSzt)kTNkD6Ax8GjAeN4B68LPe12MQE7EWx4Zy8(vcN9BuWxUodFm(fBEGGgEzXbqlLn4NptH093Z2gSef4w9qcn3dF)pa2a(XcX7XAKRs8P4K2gQKywMiBTvRiZsxGrn9D)T)cgRnar6jCXpYDdsu3DSYAsrQxjlQO0hmtTSYMZq7Iop3sImrbBSb9BEJ1cFUJmSgpwjc2GN6FNSVDRAnywPZ6wx(izW6nPNORc1WP39b3Fduin6fzO6HPL7cOqcrRvpGy1HfLW9GwfresivwHDmHPTD4LzawtKZQfgCTcyvSxLICdVSqXdcOs25aenWwB(L6ZCKxUG)pcJB0RIX1Hz2JgJR3(ZfJBKpgxBqSBg342mUTkTfFmUT9VWZkWySnaUsUnZSU2sMTnUHhgKcsYMSac753F2AKbIgAzUYmGXSnjpRz0xAm1Oy4WGjFUynAvkxZ4UBd5HTzrVCSDQGoBxNhvCkmnEChRnD19zLu72EHsNW2Xhd1o5Fy7W1Z2gsn2P4ciZrKALDtJLWzK(0PCcYzUchjSZiTZLvjXQnOIt9St(UHJpbNXjl4XjSAZPQUwaZl1KeCvxtXcJu)JltwUkbJnGTx6qXi2yLmhC74VlQmAEZ0GldCqiepLsJXLraf8zVJ5R0cYgQ7r8TtZ2P)Kw3)R0JJpoyP2heUaLKHj3G9EwYHEVviQY6QV1DujSk7RXM8RRD29PPwEOED5yWeB5BvkTGbQo7k3hDuY3ebr2CreccXFdRNP5DUIqEKuobP8vn7qvfuMFohkq5o6G3PMyz9JirPgCFrqt31J7YjvJg1X2zOOf0wXZevZ4VIDyOv9kIzyZTEOFxaKWu9tm0GIqw91SQNXC6YmhaL4cKJcTvWCmnVtC5muyy1gmqnu(D9kq46xX2Y1Z3mY5joSrSgLbvd9vkrZnzChzrbMKaAxJhdjv0myjR6658AUInPAlzbW3pbRVeTDxRE5D4j2DJ91RxoRwYOOAZpkw(v2Uu21b8qR(Xzy6w27Zuf8jRbfKL3EZFn5XKhsFmL(0B)F)]] )

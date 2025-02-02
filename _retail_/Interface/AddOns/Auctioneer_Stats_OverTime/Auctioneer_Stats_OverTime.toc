@@ -1,13 +1,13 @@
 ## Title: Auctioneer Stats: |cff447722Over Time
 ## Notes: Provides statistics to Auctioneer
 ##
-## Interface: 110000
+## Interface: 110002
 ## LoadOnDemand: 0
 ## Dependencies: Stubby, Auctioneer
 ## OptionalDependencies: !nLog, SlideBar, Configator, Babylonian, DebugLib, TipHelper, LibExtraTip, LibDataBroker
 ## SavedVariables: AuctioneerStatsOverTimeData
 ##
-## Version: 9.1.BETA.5.17 (OneMawTime)
+## Version: 11.x.BETA.4 (TheWarWithBlizzardAPIs)
 ## Revision: $Id$
 ## Author: Norganna's AddOns
 ## X-Part-Of: Auctioneer
